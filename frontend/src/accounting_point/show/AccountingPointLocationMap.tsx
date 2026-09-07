@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Map, {
   FullscreenControl,
   Layer,
@@ -234,7 +234,7 @@ const SubstationInfoPopup = ({
       </table>
       {isAlreadySelected ? (
         <p className="text-xs text-center text-gray-500 italic">
-          Already set as grid location
+          Selected as grid location
         </p>
       ) : (
         <Button size="small" variant="primary" onClick={onSelect}>
@@ -251,7 +251,7 @@ type Props = {
   onSubstationClick?: (substation: Substation) => void;
   highlightedSubstationBusinessId?: string | null;
   selectedSubstation: Substation | null;
-  formSelectionTick: number;
+  selectionTick: number;
 };
 
 export const AccountingPointLocationMap = ({
@@ -260,7 +260,7 @@ export const AccountingPointLocationMap = ({
   onSubstationClick,
   highlightedSubstationBusinessId,
   selectedSubstation,
-  formSelectionTick,
+  selectionTick,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
@@ -272,35 +272,23 @@ export const AccountingPointLocationMap = ({
   const mapRef = useRef<MapRef>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const [markerPopup, setMarkerPopup] = useState<{
-    substation: Substation;
-    longitude: number;
-    latitude: number;
-    formSelectionTickAtOpen: number;
-  } | null>(null);
-  const [dismissedFormSelectionTick, setDismissedFormSelectionTick] = useState<
-    number | null
-  >(null);
+  const [closedSelectionTick, setClosedSelectionTick] = useState<number | null>(
+    null,
+  );
 
-  const selectedSubstationPopup = useMemo(() => {
-    if (!selectedSubstation?.position?.coordinates) return null;
-    const [longitude, latitude] = selectedSubstation.position.coordinates;
-    return { substation: selectedSubstation, longitude, latitude };
-  }, [selectedSubstation]);
-
-  const activeSelectedPopup =
-    selectedSubstationPopup && dismissedFormSelectionTick !== formSelectionTick
-      ? selectedSubstationPopup
-      : null;
-  const isMarkerPopupStale =
-    !!markerPopup && markerPopup.formSelectionTickAtOpen !== formSelectionTick;
   const activePopup =
-    (isMarkerPopupStale ? null : markerPopup) ?? activeSelectedPopup;
+    selectedSubstation?.position?.coordinates &&
+    closedSelectionTick !== selectionTick
+      ? {
+          substation: selectedSubstation,
+          longitude: selectedSubstation.position.coordinates[0],
+          latitude: selectedSubstation.position.coordinates[1],
+        }
+      : null;
 
   const closePopup = useCallback(() => {
-    setMarkerPopup(null);
-    setDismissedFormSelectionTick(formSelectionTick);
-  }, [formSelectionTick]);
+    setClosedSelectionTick(selectionTick);
+  }, [selectionTick]);
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
@@ -312,16 +300,9 @@ export const AccountingPointLocationMap = ({
           substation.position.coordinates[1],
         ]);
       }
-      if (!onSubstationClick) return;
-      const [longitude, latitude] = substation.position.coordinates;
-      setMarkerPopup({
-        substation,
-        longitude,
-        latitude,
-        formSelectionTickAtOpen: formSelectionTick,
-      });
+      onSubstationClick?.(substation);
     },
-    [onSubstationClick, formSelectionTick],
+    [onSubstationClick],
   );
 
   useEffect(() => {
@@ -334,7 +315,6 @@ export const AccountingPointLocationMap = ({
     if (!activePopup) return;
     if (document.fullscreenElement) await document.exitFullscreen();
     onSubstationClick?.(activePopup.substation);
-    setMarkerPopup(null);
   }, [activePopup, onSubstationClick]);
 
   const lastFittedIdRef = useRef<string | null | undefined>(undefined);

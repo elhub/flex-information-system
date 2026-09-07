@@ -36,16 +36,16 @@ export const AccountingPointShow = () => {
     setSelectedSubstation(null);
   };
 
-  const handleFormSubstationSelect = (substation: Substation | null) => {
+  const handleSubstationSelect = (substation: Substation | null) => {
     setSelectedSubstation(substation);
     if (substation) {
-      setFormSelectionTick((current) => current + 1);
+      setSelectionTick((current) => current + 1);
     }
   };
 
   const [selectedSubstation, setSelectedSubstation] =
     useState<Substation | null>(null);
-  const [formSelectionTick, setFormSelectionTick] = useState(0);
+  const [selectionTick, setSelectionTick] = useState(0);
 
   const {
     data: viewModel,
@@ -102,7 +102,7 @@ export const AccountingPointShow = () => {
             gridLocation={viewModel.gridLocation}
             userCanEdit={canEditGridLocation}
             selectedSubstation={selectedSubstation}
-            onSelectSubstation={handleFormSubstationSelect}
+            onSelectSubstation={handleSubstationSelect}
             onClearSelection={handleClearSelection}
             onCancelSelection={handleCancelSelection}
           />
@@ -113,8 +113,8 @@ export const AccountingPointShow = () => {
         gridLocation={viewModel.gridLocation}
         location={ap.location}
         selectedSubstation={selectedSubstation}
-        onSelectSubstation={setSelectedSubstation}
-        formSelectionTick={formSelectionTick}
+        onSelectSubstation={handleSubstationSelect}
+        selectionTick={selectionTick}
       />
     </ShowPageLayout>
   );
