@@ -5,7 +5,7 @@ import {
   ListBaseProps,
   useListContext,
 } from "ra-core";
-import { BodyText, Pagination, Panel } from "../../ui";
+import { BodyText, FormItem, Pagination, Panel } from "../../ui";
 import { Combobox } from "../../../components/ui";
 
 type ListProps = ListBaseProps & {
@@ -88,11 +88,13 @@ const ListPagination = () => {
         />
       </div>
       <div className="w-32 shrink-0">
-        <Combobox
-          options={selectableOptions}
-          selectedOptions={perPage ? [perPage.toString()] : []}
-          onToggleSelected={(option) => setPerPage(+option)}
-        />
+        <FormItem size="medium">
+          <Combobox
+            options={selectableOptions}
+            selectedOptions={perPage ? [perPage.toString()] : []}
+            onToggleSelected={(option) => setPerPage(+option)}
+          />
+        </FormItem>
       </div>
     </div>
   );
