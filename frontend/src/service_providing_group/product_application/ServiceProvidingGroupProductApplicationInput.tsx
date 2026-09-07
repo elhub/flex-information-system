@@ -16,10 +16,6 @@ import {
   VerticalSpace,
 } from "../../components/ui";
 import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../../productApplicationBlock";
-import {
   TextAreaInput,
   EnumInput,
   AutocompleteReferenceInput,
@@ -94,17 +90,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   const createOrUpdate = useCreateOrUpdate();
 
   const [draftId] = useState(() => restoredDraftId ?? crypto.randomUUID());
-
-  if (createOrUpdate === "create" && isProductApplicationBlocked()) {
-    return (
-      <FormContainer>
-        <Alert variant="warning">
-          Product applications cannot be created before{" "}
-          {getProductApplicationBlockDate()}.
-        </Alert>
-      </FormContainer>
-    );
-  }
 
   const fields = getFields(spgpaFormSchema.shape);
 
