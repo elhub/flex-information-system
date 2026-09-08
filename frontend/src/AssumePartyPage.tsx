@@ -33,11 +33,15 @@ import {
 const AssumePartyButton = ({ field }: any) => {
   const notify = useNotify();
   const redirect = useRedirect();
-  const record = useRecordContext()!;
+  const record = useRecordContext();
   const permissions = usePermissions();
   const login = useLogin();
   const identity = useGetIdentity();
   const [loading, setLoading] = useState(false);
+
+  // When the referenced party record no longer exists, useRecordContext() returns undefined
+  if (!record) return null;
+
   const assumeParty = async () => {
     setLoading(true);
     return login({ party_id: record[field] })
