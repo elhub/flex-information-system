@@ -25,6 +25,8 @@ class ServiceProvidingGroupHistoryResponse:
         bidding_zone (ServiceProvidingGroupBiddingZone): The bidding zone that restricts which CUs that can be added to
             the group. Also known as scheduling area or price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus): The status of the group. Example: active.
+        created_at (datetime.datetime): When the service providing group was first created. Example:
+            2022-01-08T12:00:00+02.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
@@ -41,6 +43,7 @@ class ServiceProvidingGroupHistoryResponse:
     service_provider_id: int
     bidding_zone: ServiceProvidingGroupBiddingZone
     status: ServiceProvidingGroupStatus
+    created_at: datetime.datetime
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_id: int
@@ -59,6 +62,8 @@ class ServiceProvidingGroupHistoryResponse:
         bidding_zone = self.bidding_zone.value
 
         status = self.status.value
+
+        created_at = self.created_at.isoformat()
 
         recorded_at = self.recorded_at.isoformat()
 
@@ -95,6 +100,7 @@ class ServiceProvidingGroupHistoryResponse:
                 "service_provider_id": service_provider_id,
                 "bidding_zone": bidding_zone,
                 "status": status,
+                "created_at": created_at,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
                 "service_providing_group_id": service_providing_group_id,
@@ -121,6 +127,8 @@ class ServiceProvidingGroupHistoryResponse:
         bidding_zone = ServiceProvidingGroupBiddingZone(d.pop("bidding_zone"))
 
         status = ServiceProvidingGroupStatus(d.pop("status"))
+
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
         recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
@@ -169,6 +177,7 @@ class ServiceProvidingGroupHistoryResponse:
             service_provider_id=service_provider_id,
             bidding_zone=bidding_zone,
             status=status,
+            created_at=created_at,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_id=service_providing_group_id,

@@ -13,6 +13,7 @@ import {
   EventButton,
   NestedResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
+import { toDateTimeString } from "../../../util";
 
 type Props = {
   spgpq: ServiceProvidingGroupGridPrequalification;
@@ -79,7 +80,7 @@ export const SpgpqShowSummary = ({ spgpq, spg, isHistory }: Props) => {
           <LabelValue
             size="small"
             label="Prequalified at"
-            value={spgpq.prequalified_at}
+            value={toDateTimeString(spgpq.prequalified_at)}
           />
         </div>
       </Panel>

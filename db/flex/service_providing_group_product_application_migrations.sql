@@ -218,3 +218,61 @@ flex.service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_product_type_ids_not_empty();
+
+-- changeset flex:spgpa-created-at-complete-at runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'created_at'
+ALTER TABLE flex.service_providing_group_product_application
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS created_at timestamp with time zone;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS complete_at timestamp with time zone;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS created_at timestamp with time zone;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS complete_at timestamp with time zone;
+
+-- must compute the field manually for existing records
+-- (we pick the earliest record in history or main table)
+UPDATE flex.service_providing_group_product_application AS spgpa
+SET
+    created_at = coalesce(
+        (
+            SELECT min(lower(spgpah.record_time_range))
+            FROM flex.service_providing_group_product_application_history AS spgpah
+            WHERE spgpah.id = spgpa.id
+        ),
+        lower(spgpa.record_time_range)
+    )
+WHERE created_at IS NULL;
+
+UPDATE flex.service_providing_group_product_application_history AS h
+SET created_at = spgpa.created_at
+FROM flex.service_providing_group_product_application AS spgpa
+WHERE h.id = spgpa.id
+    AND h.created_at IS NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN created_at SET DEFAULT localtimestamp;
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN created_at SET NOT NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ENABLE TRIGGER USER;
+
+-- changeset flex:spgpa-check-timestamp-on-status-complete runOnChange:true endDelimiter:--
+-- SPGPA-VAL011
+CREATE OR REPLACE TRIGGER spgpa_check_timestamp_on_status_complete
+BEFORE UPDATE ON flex.service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'complete_at', 'status',
+    '{prequalification,temporary_qualified,prequalified,verified}',
+    '{}'
+);

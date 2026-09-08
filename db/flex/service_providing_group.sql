@@ -4,7 +4,7 @@
 -- changeset flex:service-providing-group-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name text NOT NULL,
+    name text NOT NULL, -- noqa
     service_provider_id bigint NOT NULL,
     service_provider_party_type text GENERATED ALWAYS AS (
         'service_provider'
@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
         )
     ),
     additional_information text,
+    created_at timestamp with time zone NOT NULL DEFAULT localtimestamp,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),

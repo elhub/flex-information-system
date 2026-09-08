@@ -934,6 +934,16 @@ resources:
           en: Additional information
           nb: Tilleggsinformasjon
           nn: Tilleggsinformasjon
+      created_at:
+        description: When the service providing group was first created.
+        format: date-time
+        type: string
+        readOnly: true
+        example: "2022-01-08T12:00:00+02"
+        x-intl:
+          en: Created at
+          nb: Opprettet
+          nn: Oppretta
 
   - id: service_providing_group_membership
     acronym: SPGM
@@ -4142,6 +4152,27 @@ resources:
           en: Ramping description
           nb: Rampingbeskrivelse
           nn: Rampingbeskriving
+      created_at:
+        description: When the application was first created.
+        format: date-time
+        type: string
+        readOnly: true
+        example: "2022-01-08T12:00:00+02"
+        x-intl:
+          en: Created at
+          nb: Opprettet
+          nn: Oppretta
+      complete_at:
+        description: >-
+          When the application was last marked complete by the procuring system operator.
+        format: date-time
+        type: string
+        nullable: true
+        example: "2022-08-08T12:00:00+02"
+        x-intl:
+          en: Completed at
+          nb: Fullført
+          nn: Fullført
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

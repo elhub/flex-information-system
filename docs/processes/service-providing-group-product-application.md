@@ -18,10 +18,12 @@ simplify if certain conditions are met.
 
 ## Completion
 
-Applications are first marked _complete_ by the procuring system operator, and
-they are meant to be processed in chronological order based on the resulting
-`completed_at` timestamps. Any change to the application or the underlying SPG
-causes the system to consider the application as possibly incomplete again.
+Applications are marked _complete_ by the procuring system operator, and they
+are meant to be processed in chronological order based on the resulting
+`complete_at` timestamps. An application is considered still complete in the
+system when neither it nor its group has been updated since last time the PSO
+considered it complete. This means any change to an application or the
+underlying SPG requires the PSO to check changes and mark it complete again.
 
 ## Prequalification checks
 
