@@ -4,12 +4,14 @@ import { BaseField, BaseFieldProps } from "./BaseField";
 
 type EnumFieldProps = BaseFieldProps & {
   enumKey: string;
+  hideLabel?: boolean;
 };
 
 export const EnumField = ({
   enumKey,
   source,
   label,
+  hideLabel,
   tooltip,
   labelDirection = "row",
   textSize = "small",
@@ -27,7 +29,7 @@ export const EnumField = ({
   return (
     <BaseField
       source={source}
-      label={label}
+      label={hideLabel ? false : label}
       tooltip={tooltip}
       labelDirection={labelDirection}
       textSize={textSize}
