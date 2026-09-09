@@ -18,6 +18,7 @@ import { ServiceProvidingGroupMembershipHistoryList } from "../service_providing
 import { ServiceProvidingGroupGridPrequalificationShow } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationShow";
 import { ServiceProvidingGroupGridPrequalificationInput } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationInput";
 import { ServiceProvidingGroupGridPrequalificationList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
+import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationHistoryList";
 import { ServiceProvidingGroupProductApplicationInput } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationInput";
 import { ServiceProvidingGroupProductApplicationShow } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationShow";
 import { ServiceProvidingGroupProductApplicationPrint } from "../service_providing_group/product_application/print/ServiceProvidingGroupProductApplicationPrint";
@@ -302,7 +303,12 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
+      >
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history"
+          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
+        />
+      </Resource>,
     );
   }
 
