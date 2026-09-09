@@ -3416,6 +3416,7 @@ export const zListControllableUnitHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3464,6 +3465,7 @@ export const zListControllableUnitSuspensionHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3498,6 +3500,7 @@ export const zListControllableUnitSuspensionCommentHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3554,6 +3557,7 @@ export const zListControllableUnitServiceProviderHistoryQuery = z.object({
   valid_from: z.string().optional(),
   valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3589,6 +3593,7 @@ export const zListServiceProvidingGroupHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3641,6 +3646,7 @@ export const zListServiceProvidingGroupMembershipHistoryQuery = z.object({
   valid_from: z.string().optional(),
   valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3680,6 +3686,7 @@ export const zListServiceProvidingGroupGridPrequalificationHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -3717,6 +3724,7 @@ export const zListServiceProvidingGroupGridPrequalificationCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -3769,6 +3777,7 @@ export const zListServiceProvidingGroupGridSuspensionHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3804,6 +3813,7 @@ export const zListServiceProvidingGroupGridSuspensionCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -3854,6 +3864,7 @@ export const zListPartyHistoryQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   name: z.string().optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3902,6 +3913,7 @@ export const zListPartyMembershipHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3947,6 +3959,7 @@ export const zListTechnicalResourceHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -3980,6 +3993,7 @@ export const zListAccountingPointGridLocationHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -4019,6 +4033,7 @@ export const zListSystemOperatorProductTypeHistoryQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   status: z.string().optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -4062,6 +4077,7 @@ export const zListServiceProviderProductApplicationHistoryQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   status: z.string().optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -4097,6 +4113,7 @@ export const zListServiceProviderProductApplicationCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4152,6 +4169,7 @@ export const zListServiceProviderProductSuspensionHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  as_of: z.iso.datetime({ offset: true }).optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -4187,6 +4205,7 @@ export const zListServiceProviderProductSuspensionCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4233,6 +4252,7 @@ export const zListServiceProvidingGroupProductApplicationHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4285,6 +4305,7 @@ export const zListServiceProvidingGroupProductApplicationAttachmentHistoryQuery 
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4322,6 +4343,7 @@ export const zListServiceProvidingGroupProductApplicationCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4379,6 +4401,7 @@ export const zListServiceProvidingGroupProductSuspensionHistoryQuery = z.object(
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),
@@ -4416,6 +4439,7 @@ export const zListServiceProvidingGroupProductSuspensionCommentHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
+    as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),
     offset: z.string().optional(),

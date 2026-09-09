@@ -600,8 +600,9 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
-// errInvalidValidAt is returned when valid_at does not match an accepted datetime format.
-var errInvalidValidAt = errors.New("invalid valid_at format")
+// errInvalidTimeRangeParam is returned when a time-range shorthand query parameter
+// (e.g. valid_at, as_of) does not match an accepted datetime format.
+var errInvalidTimeRangeParam = errors.New("invalid datetime format")
 
 // isValidDatetime reports whether value matches one of the accepted datetime input formats.
 func isValidDatetime(value string) bool {
@@ -628,27 +629,42 @@ func isValidDatetime(value string) bool {
 	return false
 }
 
-// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
-// Returns an error if the valid_at value does not match the expected datetime format.
-func validAtQueryRewrite(query url.Values) error {
+// timeRangeQueryRewrite rewrites a shorthand query parameter (e.g. "valid_at", or
+// prefixed as "<relation>.valid_at") into "<fromCol>" and an "or" filter on
+// "<toCol>". Returns an error if the parameter value does not match the expected
+// datetime format.
+func timeRangeQueryRewrite(query url.Values, paramName, fromCol, toCol string) error {
 	for key := range query {
-		if key == "valid_at" || strings.HasSuffix(key, ".valid_at") {
-			keyFrom := key[:len(key)-len("valid_at")] + "valid_from"
-			keyOr := key[:len(key)-len("valid_at")] + "or"
+		if key == paramName || strings.HasSuffix(key, "."+paramName) {
+			prefix := key[:len(key)-len(paramName)]
+			keyFrom := prefix + fromCol
+			keyOr := prefix + "or"
 			query.Del(keyFrom)
 			query.Del(keyOr)
-			if validAt := query.Get(key); validAt != "" {
-				if !isValidDatetime(validAt) {
-					return errInvalidValidAt
+			if value := query.Get(key); value != "" {
+				if !isValidDatetime(value) {
+					return fmt.Errorf("%w: %s", errInvalidTimeRangeParam, paramName)
 				}
 				query.Del(key)
-				query.Set(keyFrom, "lte."+validAt)
-				query.Add(keyOr, "(valid_to.gt."+validAt+",valid_to.is.null)")
+				query.Set(keyFrom, "lte."+value)
+				query.Add(keyOr, "("+toCol+".gt."+value+","+toCol+".is.null)")
 			}
 		}
 	}
 
 	return nil
+}
+
+// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
+// Returns an error if the valid_at value does not match the expected datetime format.
+func validAtQueryRewrite(query url.Values) error {
+	return timeRangeQueryRewrite(query, "valid_at", "valid_from", "valid_to")
+}
+
+// asOfQueryRewrite rewrites the "as_of" query parameter into "recorded_at" and "replaced_at".
+// Returns an error if the as_of value does not match the expected datetime format.
+func asOfQueryRewrite(query url.Values) error {
+	return timeRangeQueryRewrite(query, "as_of", "recorded_at", "replaced_at")
 }
 
 func (data *api) eventHandler(w http.ResponseWriter, req *http.Request) {
@@ -741,6 +757,14 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err := validAtQueryRewrite(query); err != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	if err := asOfQueryRewrite(query); err != nil {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: err.Error(),
 		})

@@ -317,7 +317,7 @@ def link_template(target_resource, field):
     }
 
 
-def generate_list_parameters(resource, filter_fields):
+def generate_list_parameters(resource, filter_fields, is_history=False):
     endpoint_parameters = []
 
     # add all filterable fields to list responses
@@ -350,6 +350,17 @@ def generate_list_parameters(resource, filter_fields):
                 "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.",
             }
             endpoint_parameters.append(valid_at_parameter_template)
+
+    if is_history:
+        endpoint_parameters.append(
+            {
+                "in": "query",
+                "name": "as_of",
+                "schema": {"type": "string", "format": "date-time"},
+                "example": "2023-12-31T23:59:00+00:00",
+                "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together.",
+            }
+        )
 
     endpoint_parameters += list_parameters_template
     return endpoint_parameters
@@ -844,7 +855,7 @@ def generate_openapi_document(
 
             if operation == "list":
                 endpoint_template["parameters"] = generate_list_parameters(
-                    resource, filter_fields
+                    resource, filter_fields, is_history=True
                 )
 
             endpoint_response_codes = endpoint_template["g-responses"]
