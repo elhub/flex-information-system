@@ -1,12 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import type { Exporter } from "ra-core";
-import {
-  defaultExporter,
-  useGetIdentity,
-  usePermissions,
-  useRecordContext,
-  useTranslate,
-} from "ra-core";
+import { useRecordContext, useTranslate } from "ra-core";
 import { ExportButton } from "react-admin";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
@@ -14,22 +7,18 @@ import {
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
+import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
-import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
-import { Permissions } from "../auth/permissions";
-import { zControllableUnit } from "../generated-client/zod.gen";
-import { getFields } from "../zod";
-import { IconPlus } from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
   AccountingPointBalanceResponsibleParty,
   AccountingPointBiddingZone,
-  ControllableUnit,
 } from "../generated-client";
-
 import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
+import { useControllableUnitListController } from "./useControllableUnitListController";
+import { IconPlus } from "@elhub/ds-icons";
 
 const CULookupButton = () => (
   <Button
@@ -53,6 +42,10 @@ const CreateButton = () => (
   </Button>
 );
 
+// RA-bridge field renderers: these read the current row via
+// useRecordContext(), so they must remain components rendered inside
+// Datagrid's per-row context (they can't be plain data returned from a
+// hook, unlike SimpleTable's render functions).
 const BiddingZoneField = ({ source: _source }: { source: string }) => {
   const record = useRecordContext();
   const translate = useTranslate();
@@ -119,15 +112,22 @@ const IsSmallField = ({
   );
 };
 
+// Presentational: the controller hook returns plain booleans/labels/
+// functions/config only. This component decides which JSX (filters,
+// actions) to build from that data. List/Datagrid stay as the established
+// RA-bridge components.
 export const ControllableUnitList = () => {
-  const { permissions } = usePermissions<Permissions>();
-  const { data: identity } = useGetIdentity();
-  const translate = useTranslate();
-  const canLookup = permissions?.allow("controllable_unit", "lookup");
-  const isFiso =
-    identity?.role === "flex_flexibility_information_system_operator";
+  const {
+    fields,
+    canLookup,
+    isFiso,
+    accountingPointFilterLabel,
+    exporter,
+    sort,
+    filter,
+  } = useControllableUnitListController();
 
-  const controllableUnitFilters = [
+  const filters = [
     <TextInput
       key="name"
       source="name@ilike"
@@ -137,7 +137,7 @@ export const ControllableUnitList = () => {
     <TextInput
       key="accounting_point"
       source="accounting_point.business_id@ilike"
-      overrideLabel={translate("field.controllable_unit.accounting_point_id")}
+      overrideLabel={accountingPointFilterLabel}
       tooltip={false}
     />,
     <EnumArrayInput
@@ -147,41 +147,6 @@ export const ControllableUnitList = () => {
     />,
   ];
 
-  const fields = getFields(zControllableUnit.shape);
-
-  const exporter: Exporter = async (
-    records,
-    fetchRelatedRecords,
-    dataProvider,
-    resource,
-  ) => {
-    const { data } = await dataProvider.getList<ControllableUnit>(
-      "controllable_unit",
-      {
-        filter: { embed: "accounting_point" },
-        pagination: { page: 1, perPage: 100000 },
-        sort: { field: "id", order: "DESC" },
-      },
-    );
-
-    const rows = data.map((record) => ({
-      id: record.id,
-      business_id: record.business_id,
-      accounting_point: record.accounting_point?.business_id ?? "",
-      name: record.name,
-      maximum_active_power: record.maximum_active_power,
-      is_small: record.is_small,
-      regulation_direction: record.regulation_direction,
-      start_date: record.start_date,
-      status: record.status,
-      additional_information: record.additional_information,
-      recorded_by: record.recorded_by,
-      recorded_at: record.recorded_at,
-    }));
-
-    defaultExporter(rows, fetchRelatedRecords, dataProvider, resource);
-  };
-
   const actions = [
     ...(canLookup ? [<CULookupButton key="lookup" />] : []),
     ...(isFiso ? [<CreateButton key="create" />] : []),
@@ -190,14 +155,11 @@ export const ControllableUnitList = () => {
 
   return (
     <List
-      sort={{ field: "id", order: "DESC" }}
+      sort={sort}
       empty={false}
-      filters={controllableUnitFilters}
+      filters={filters}
       actions={actions}
-      filter={{
-        embed:
-          "accounting_point!(bidding_zone, balance_responsible_party(balance_responsible_party))",
-      }}
+      filter={filter}
     >
       <Datagrid>
         <TextField source={fields.id.source} />
