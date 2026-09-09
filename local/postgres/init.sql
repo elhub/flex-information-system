@@ -14,6 +14,9 @@ CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
 GRANT CREATE ON DATABASE flex TO flex;
 -- also manage replication slots
 ALTER USER flex WITH REPLICATION;
+-- allow flex to temporarily disable triggers within its own
+-- transaction during migrations, without being a superuser
+GRANT SET ON PARAMETER session_replication_role TO flex; -- noqa
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
 -- grant cron job execution to flex

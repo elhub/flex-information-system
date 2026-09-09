@@ -73,8 +73,7 @@ add_spg_grid_prequalifications_for_future_impacted_system_operators(bigint);
 -- changeset flex:service-providing-group-created-at runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group' AND column_name = 'created_at'
-ALTER TABLE flex.service_providing_group
-DISABLE TRIGGER USER;
+SET LOCAL session_replication_role = 'replica';
 
 ALTER TABLE flex.service_providing_group
 ADD COLUMN IF NOT EXISTS created_at timestamp with time zone;
@@ -107,6 +106,3 @@ ALTER COLUMN created_at SET DEFAULT LOCALTIMESTAMP;
 
 ALTER TABLE flex.service_providing_group
 ALTER COLUMN created_at SET NOT NULL;
-
-ALTER TABLE flex.service_providing_group
-ENABLE TRIGGER USER;
