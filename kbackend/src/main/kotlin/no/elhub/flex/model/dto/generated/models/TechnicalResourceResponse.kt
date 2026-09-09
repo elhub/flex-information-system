@@ -93,4 +93,9 @@ public data class TechnicalResourceResponse(
    */
   @SerialName("controllable_unit")
   public val controllableUnit: ControllableUnitResponse? = null,
+  /**
+   * Embedded controllable_unit_history
+   */
+  @SerialName("controllable_unit_history")
+  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
 )

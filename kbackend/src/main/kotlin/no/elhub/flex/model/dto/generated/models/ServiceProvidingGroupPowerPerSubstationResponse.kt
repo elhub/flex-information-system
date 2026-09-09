@@ -34,4 +34,9 @@ public data class ServiceProvidingGroupPowerPerSubstationResponse(
    */
   @SerialName("service_providing_group")
   public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
+  /**
+   * Embedded service_providing_group_history
+   */
+  @SerialName("service_providing_group_history")
+  public val serviceProvidingGroupHistory: List<ServiceProvidingGroupHistoryResponse>? = null,
 )

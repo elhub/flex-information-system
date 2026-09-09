@@ -9,6 +9,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.controllable_unit_summary_response_technical_resource import (
         ControllableUnitSummaryResponseTechnicalResource,
@@ -34,12 +35,15 @@ class ControllableUnitSummaryResponse:
             {'solar': {'count': 2, 'maximum_active_power': {'sum': 130, 'average': 65, 'min': 50, 'max': 80}}, 'battery':
             {'count': 1, 'maximum_active_power': {'sum': 20, 'average': 20, 'min': 20, 'max': 20}}}}}.
         controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
+        controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
+            controllable_unit_history
     """
 
     id: int
     controllable_unit_id: int
     technical_resource: ControllableUnitSummaryResponseTechnicalResource
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
+    controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -59,6 +63,18 @@ class ControllableUnitSummaryResponse:
         else:
             controllable_unit = self.controllable_unit
 
+        controllable_unit_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.controllable_unit_history, Unset):
+            controllable_unit_history = UNSET
+        elif isinstance(self.controllable_unit_history, list):
+            controllable_unit_history = []
+            for controllable_unit_history_type_0_item_data in self.controllable_unit_history:
+                controllable_unit_history_type_0_item = controllable_unit_history_type_0_item_data.to_dict()
+                controllable_unit_history.append(controllable_unit_history_type_0_item)
+
+        else:
+            controllable_unit_history = self.controllable_unit_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -70,11 +86,14 @@ class ControllableUnitSummaryResponse:
         )
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
+        if controllable_unit_history is not UNSET:
+            field_dict["controllable_unit_history"] = controllable_unit_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.controllable_unit_summary_response_technical_resource import (
             ControllableUnitSummaryResponseTechnicalResource,
@@ -104,11 +123,36 @@ class ControllableUnitSummaryResponse:
 
         controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
+        def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                controllable_unit_history_type_0 = []
+                _controllable_unit_history_type_0 = data
+                for controllable_unit_history_type_0_item_data in _controllable_unit_history_type_0:
+                    controllable_unit_history_type_0_item = ControllableUnitHistoryResponse.from_dict(
+                        controllable_unit_history_type_0_item_data
+                    )
+
+                    controllable_unit_history_type_0.append(controllable_unit_history_type_0_item)
+
+                return controllable_unit_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
+
+        controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
+
         controllable_unit_summary_response = cls(
             id=id,
             controllable_unit_id=controllable_unit_id,
             technical_resource=technical_resource,
             controllable_unit=controllable_unit,
+            controllable_unit_history=controllable_unit_history,
         )
 
         controllable_unit_summary_response.additional_properties = d

@@ -11,6 +11,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.accounting_point_response import AccountingPointResponse
+    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
 
 
@@ -30,6 +31,7 @@ class AccountingPointEndUserResponse:
             Midnight aligned on Norwegian timezone.
         accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
         end_user (None | PartyResponse | Unset): Embedded party
+        end_user_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     accounting_point_id: int
@@ -38,6 +40,7 @@ class AccountingPointEndUserResponse:
     valid_to: datetime.datetime | None | Unset = UNSET
     accounting_point: AccountingPointResponse | None | Unset = UNSET
     end_user: None | PartyResponse | Unset = UNSET
+    end_user_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -74,6 +77,18 @@ class AccountingPointEndUserResponse:
         else:
             end_user = self.end_user
 
+        end_user_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.end_user_history, Unset):
+            end_user_history = UNSET
+        elif isinstance(self.end_user_history, list):
+            end_user_history = []
+            for end_user_history_type_0_item_data in self.end_user_history:
+                end_user_history_type_0_item = end_user_history_type_0_item_data.to_dict()
+                end_user_history.append(end_user_history_type_0_item)
+
+        else:
+            end_user_history = self.end_user_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -89,12 +104,15 @@ class AccountingPointEndUserResponse:
             field_dict["accounting_point"] = accounting_point
         if end_user is not UNSET:
             field_dict["end_user"] = end_user
+        if end_user_history is not UNSET:
+            field_dict["end_user_history"] = end_user_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -155,6 +173,28 @@ class AccountingPointEndUserResponse:
 
         end_user = _parse_end_user(d.pop("end_user", UNSET))
 
+        def _parse_end_user_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                end_user_history_type_0 = []
+                _end_user_history_type_0 = data
+                for end_user_history_type_0_item_data in _end_user_history_type_0:
+                    end_user_history_type_0_item = PartyHistoryResponse.from_dict(end_user_history_type_0_item_data)
+
+                    end_user_history_type_0.append(end_user_history_type_0_item)
+
+                return end_user_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        end_user_history = _parse_end_user_history(d.pop("end_user_history", UNSET))
+
         accounting_point_end_user_response = cls(
             accounting_point_id=accounting_point_id,
             end_user_id=end_user_id,
@@ -162,6 +202,7 @@ class AccountingPointEndUserResponse:
             valid_to=valid_to,
             accounting_point=accounting_point,
             end_user=end_user,
+            end_user_history=end_user_history,
         )
 
         accounting_point_end_user_response.additional_properties = d

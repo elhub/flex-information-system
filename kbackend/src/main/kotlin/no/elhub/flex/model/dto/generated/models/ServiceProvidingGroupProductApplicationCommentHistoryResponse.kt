@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -66,4 +67,17 @@ public data class ServiceProvidingGroupProductApplicationCommentHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Response schema - Relation between a service providing group and a system operator for a
+   * product type, for the SPG to deliver a product to the SO later.
+   */
+  @SerialName("service_providing_group_product_application")
+  public val serviceProvidingGroupProductApplication:
+      ServiceProvidingGroupProductApplicationResponse? = null,
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  @SerialName("service_providing_group_product_application_history")
+  public val serviceProvidingGroupProductApplicationHistory:
+      List<ServiceProvidingGroupProductApplicationHistoryResponse>? = null,
 )

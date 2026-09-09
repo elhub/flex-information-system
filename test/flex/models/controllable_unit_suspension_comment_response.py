@@ -11,6 +11,7 @@ from ..models.controllable_unit_suspension_comment_visibility import Controllabl
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
     from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
 
 
@@ -34,6 +35,8 @@ class ControllableUnitSuspensionCommentResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded
             controllable_unit_suspension
+        controllable_unit_suspension_history (list[ControllableUnitSuspensionHistoryResponse] | None | Unset): Embedded
+            controllable_unit_suspension_history
     """
 
     id: int
@@ -45,6 +48,7 @@ class ControllableUnitSuspensionCommentResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     controllable_unit_suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
+    controllable_unit_suspension_history: list[ControllableUnitSuspensionHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -74,6 +78,20 @@ class ControllableUnitSuspensionCommentResponse:
         else:
             controllable_unit_suspension = self.controllable_unit_suspension
 
+        controllable_unit_suspension_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.controllable_unit_suspension_history, Unset):
+            controllable_unit_suspension_history = UNSET
+        elif isinstance(self.controllable_unit_suspension_history, list):
+            controllable_unit_suspension_history = []
+            for controllable_unit_suspension_history_type_0_item_data in self.controllable_unit_suspension_history:
+                controllable_unit_suspension_history_type_0_item = (
+                    controllable_unit_suspension_history_type_0_item_data.to_dict()
+                )
+                controllable_unit_suspension_history.append(controllable_unit_suspension_history_type_0_item)
+
+        else:
+            controllable_unit_suspension_history = self.controllable_unit_suspension_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -90,11 +108,14 @@ class ControllableUnitSuspensionCommentResponse:
         )
         if controllable_unit_suspension is not UNSET:
             field_dict["controllable_unit_suspension"] = controllable_unit_suspension
+        if controllable_unit_suspension_history is not UNSET:
+            field_dict["controllable_unit_suspension_history"] = controllable_unit_suspension_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
         from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
 
         d = dict(src_dict)
@@ -131,6 +152,38 @@ class ControllableUnitSuspensionCommentResponse:
 
         controllable_unit_suspension = _parse_controllable_unit_suspension(d.pop("controllable_unit_suspension", UNSET))
 
+        def _parse_controllable_unit_suspension_history(
+            data: object,
+        ) -> list[ControllableUnitSuspensionHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                controllable_unit_suspension_history_type_0 = []
+                _controllable_unit_suspension_history_type_0 = data
+                for (
+                    controllable_unit_suspension_history_type_0_item_data
+                ) in _controllable_unit_suspension_history_type_0:
+                    controllable_unit_suspension_history_type_0_item = (
+                        ControllableUnitSuspensionHistoryResponse.from_dict(
+                            controllable_unit_suspension_history_type_0_item_data
+                        )
+                    )
+
+                    controllable_unit_suspension_history_type_0.append(controllable_unit_suspension_history_type_0_item)
+
+                return controllable_unit_suspension_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitSuspensionHistoryResponse] | None | Unset, data)
+
+        controllable_unit_suspension_history = _parse_controllable_unit_suspension_history(
+            d.pop("controllable_unit_suspension_history", UNSET)
+        )
+
         controllable_unit_suspension_comment_response = cls(
             id=id,
             controllable_unit_suspension_id=controllable_unit_suspension_id,
@@ -141,6 +194,7 @@ class ControllableUnitSuspensionCommentResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             controllable_unit_suspension=controllable_unit_suspension,
+            controllable_unit_suspension_history=controllable_unit_suspension_history,
         )
 
         controllable_unit_suspension_comment_response.additional_properties = d

@@ -23,6 +23,7 @@ def _get_kwargs(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -44,6 +45,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["service_providing_group_grid_suspension_comment_id"] = service_providing_group_grid_suspension_comment_id
 
@@ -165,6 +168,7 @@ def sync_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> Response[
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
@@ -182,6 +186,7 @@ def sync_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -200,6 +205,7 @@ def sync_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     )
 
@@ -220,6 +226,7 @@ def sync(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
@@ -235,6 +242,7 @@ def sync(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -254,6 +262,7 @@ def sync(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     ).parsed
 
@@ -268,6 +277,7 @@ async def asyncio_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> Response[
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
@@ -285,6 +295,7 @@ async def asyncio_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -303,6 +314,7 @@ async def asyncio_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     )
 
@@ -321,6 +333,7 @@ async def asyncio(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
@@ -336,6 +349,7 @@ async def asyncio(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -356,6 +370,7 @@ async def asyncio(
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
         )
     ).parsed

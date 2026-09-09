@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -64,4 +65,10 @@ public data class ServiceProvidingGroupProductApplicationAttachmentResponse(
   @SerialName("service_providing_group_product_application")
   public val serviceProvidingGroupProductApplication:
       ServiceProvidingGroupProductApplicationResponse? = null,
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  @SerialName("service_providing_group_product_application_history")
+  public val serviceProvidingGroupProductApplicationHistory:
+      List<ServiceProvidingGroupProductApplicationHistoryResponse>? = null,
 )

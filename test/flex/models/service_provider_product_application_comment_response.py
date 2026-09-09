@@ -13,6 +13,9 @@ from ..models.service_provider_product_application_comment_visibility import (
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.service_provider_product_application_history_response import (
+        ServiceProviderProductApplicationHistoryResponse,
+    )
     from ..models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
 
 
@@ -37,6 +40,8 @@ class ServiceProviderProductApplicationCommentResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_provider_product_application (None | ServiceProviderProductApplicationResponse | Unset): Embedded
             service_provider_product_application
+        service_provider_product_application_history (list[ServiceProviderProductApplicationHistoryResponse] | None |
+            Unset): Embedded service_provider_product_application_history
     """
 
     id: int
@@ -48,6 +53,9 @@ class ServiceProviderProductApplicationCommentResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_provider_product_application: None | ServiceProviderProductApplicationResponse | Unset = UNSET
+    service_provider_product_application_history: (
+        list[ServiceProviderProductApplicationHistoryResponse] | None | Unset
+    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -77,6 +85,24 @@ class ServiceProviderProductApplicationCommentResponse:
         else:
             service_provider_product_application = self.service_provider_product_application
 
+        service_provider_product_application_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_provider_product_application_history, Unset):
+            service_provider_product_application_history = UNSET
+        elif isinstance(self.service_provider_product_application_history, list):
+            service_provider_product_application_history = []
+            for (
+                service_provider_product_application_history_type_0_item_data
+            ) in self.service_provider_product_application_history:
+                service_provider_product_application_history_type_0_item = (
+                    service_provider_product_application_history_type_0_item_data.to_dict()
+                )
+                service_provider_product_application_history.append(
+                    service_provider_product_application_history_type_0_item
+                )
+
+        else:
+            service_provider_product_application_history = self.service_provider_product_application_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -93,11 +119,16 @@ class ServiceProviderProductApplicationCommentResponse:
         )
         if service_provider_product_application is not UNSET:
             field_dict["service_provider_product_application"] = service_provider_product_application
+        if service_provider_product_application_history is not UNSET:
+            field_dict["service_provider_product_application_history"] = service_provider_product_application_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.service_provider_product_application_history_response import (
+            ServiceProviderProductApplicationHistoryResponse,
+        )
         from ..models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
 
         d = dict(src_dict)
@@ -138,6 +169,40 @@ class ServiceProviderProductApplicationCommentResponse:
             d.pop("service_provider_product_application", UNSET)
         )
 
+        def _parse_service_provider_product_application_history(
+            data: object,
+        ) -> list[ServiceProviderProductApplicationHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_provider_product_application_history_type_0 = []
+                _service_provider_product_application_history_type_0 = data
+                for (
+                    service_provider_product_application_history_type_0_item_data
+                ) in _service_provider_product_application_history_type_0:
+                    service_provider_product_application_history_type_0_item = (
+                        ServiceProviderProductApplicationHistoryResponse.from_dict(
+                            service_provider_product_application_history_type_0_item_data
+                        )
+                    )
+
+                    service_provider_product_application_history_type_0.append(
+                        service_provider_product_application_history_type_0_item
+                    )
+
+                return service_provider_product_application_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProviderProductApplicationHistoryResponse] | None | Unset, data)
+
+        service_provider_product_application_history = _parse_service_provider_product_application_history(
+            d.pop("service_provider_product_application_history", UNSET)
+        )
+
         service_provider_product_application_comment_response = cls(
             id=id,
             service_provider_product_application_id=service_provider_product_application_id,
@@ -148,6 +213,7 @@ class ServiceProviderProductApplicationCommentResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_provider_product_application=service_provider_product_application,
+            service_provider_product_application_history=service_provider_product_application_history,
         )
 
         service_provider_product_application_comment_response.additional_properties = d

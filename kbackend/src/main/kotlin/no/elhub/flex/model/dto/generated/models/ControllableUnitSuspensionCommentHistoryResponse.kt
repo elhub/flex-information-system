@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -66,4 +67,16 @@ public data class ControllableUnitSuspensionCommentHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
+   * controllable unit.
+   */
+  @SerialName("controllable_unit_suspension")
+  public val controllableUnitSuspension: ControllableUnitSuspensionResponse? = null,
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  @SerialName("controllable_unit_suspension_history")
+  public val controllableUnitSuspensionHistory: List<ControllableUnitSuspensionHistoryResponse>? =
+      null,
 )

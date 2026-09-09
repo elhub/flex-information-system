@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -51,4 +52,9 @@ public data class AccountingPointEndUserResponse(
    */
   @SerialName("end_user")
   public val endUser: PartyResponse? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("end_user_history")
+  public val endUserHistory: List<PartyHistoryResponse>? = null,
 )

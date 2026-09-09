@@ -13,6 +13,9 @@ from ..models.service_providing_group_grid_prequalification_comment_visibility i
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.service_providing_group_grid_prequalification_history_response import (
+        ServiceProvidingGroupGridPrequalificationHistoryResponse,
+    )
     from ..models.service_providing_group_grid_prequalification_response import (
         ServiceProvidingGroupGridPrequalificationResponse,
     )
@@ -39,6 +42,9 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_grid_prequalification (None | ServiceProvidingGroupGridPrequalificationResponse |
             Unset): Embedded service_providing_group_grid_prequalification
+        service_providing_group_grid_prequalification_history
+            (list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset): Embedded
+            service_providing_group_grid_prequalification_history
     """
 
     id: int
@@ -52,6 +58,9 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
     service_providing_group_grid_prequalification: None | ServiceProvidingGroupGridPrequalificationResponse | Unset = (
         UNSET
     )
+    service_providing_group_grid_prequalification_history: (
+        list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset
+    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -85,6 +94,26 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
         else:
             service_providing_group_grid_prequalification = self.service_providing_group_grid_prequalification
 
+        service_providing_group_grid_prequalification_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_providing_group_grid_prequalification_history, Unset):
+            service_providing_group_grid_prequalification_history = UNSET
+        elif isinstance(self.service_providing_group_grid_prequalification_history, list):
+            service_providing_group_grid_prequalification_history = []
+            for (
+                service_providing_group_grid_prequalification_history_type_0_item_data
+            ) in self.service_providing_group_grid_prequalification_history:
+                service_providing_group_grid_prequalification_history_type_0_item = (
+                    service_providing_group_grid_prequalification_history_type_0_item_data.to_dict()
+                )
+                service_providing_group_grid_prequalification_history.append(
+                    service_providing_group_grid_prequalification_history_type_0_item
+                )
+
+        else:
+            service_providing_group_grid_prequalification_history = (
+                self.service_providing_group_grid_prequalification_history
+            )
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -101,11 +130,18 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
         )
         if service_providing_group_grid_prequalification is not UNSET:
             field_dict["service_providing_group_grid_prequalification"] = service_providing_group_grid_prequalification
+        if service_providing_group_grid_prequalification_history is not UNSET:
+            field_dict["service_providing_group_grid_prequalification_history"] = (
+                service_providing_group_grid_prequalification_history
+            )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.service_providing_group_grid_prequalification_history_response import (
+            ServiceProvidingGroupGridPrequalificationHistoryResponse,
+        )
         from ..models.service_providing_group_grid_prequalification_response import (
             ServiceProvidingGroupGridPrequalificationResponse,
         )
@@ -150,6 +186,42 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
             d.pop("service_providing_group_grid_prequalification", UNSET)
         )
 
+        def _parse_service_providing_group_grid_prequalification_history(
+            data: object,
+        ) -> list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_providing_group_grid_prequalification_history_type_0 = []
+                _service_providing_group_grid_prequalification_history_type_0 = data
+                for (
+                    service_providing_group_grid_prequalification_history_type_0_item_data
+                ) in _service_providing_group_grid_prequalification_history_type_0:
+                    service_providing_group_grid_prequalification_history_type_0_item = (
+                        ServiceProvidingGroupGridPrequalificationHistoryResponse.from_dict(
+                            service_providing_group_grid_prequalification_history_type_0_item_data
+                        )
+                    )
+
+                    service_providing_group_grid_prequalification_history_type_0.append(
+                        service_providing_group_grid_prequalification_history_type_0_item
+                    )
+
+                return service_providing_group_grid_prequalification_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset, data)
+
+        service_providing_group_grid_prequalification_history = (
+            _parse_service_providing_group_grid_prequalification_history(
+                d.pop("service_providing_group_grid_prequalification_history", UNSET)
+            )
+        )
+
         service_providing_group_grid_prequalification_comment_response = cls(
             id=id,
             service_providing_group_grid_prequalification_id=service_providing_group_grid_prequalification_id,
@@ -160,6 +232,7 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_grid_prequalification=service_providing_group_grid_prequalification,
+            service_providing_group_grid_prequalification_history=service_providing_group_grid_prequalification_history,
         )
 
         service_providing_group_grid_prequalification_comment_response.additional_properties = d

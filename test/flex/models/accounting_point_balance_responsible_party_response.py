@@ -14,6 +14,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.accounting_point_response import AccountingPointResponse
+    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
 
 
@@ -35,6 +36,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
             the balance responsible party is valid. Midnight aligned on Norwegian timezone.
         accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
         balance_responsible_party (None | PartyResponse | Unset): Embedded party
+        balance_responsible_party_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     accounting_point_id: int
@@ -44,6 +46,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
     valid_to: datetime.datetime | None | Unset = UNSET
     accounting_point: AccountingPointResponse | None | Unset = UNSET
     balance_responsible_party: None | PartyResponse | Unset = UNSET
+    balance_responsible_party_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -82,6 +85,20 @@ class AccountingPointBalanceResponsiblePartyResponse:
         else:
             balance_responsible_party = self.balance_responsible_party
 
+        balance_responsible_party_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.balance_responsible_party_history, Unset):
+            balance_responsible_party_history = UNSET
+        elif isinstance(self.balance_responsible_party_history, list):
+            balance_responsible_party_history = []
+            for balance_responsible_party_history_type_0_item_data in self.balance_responsible_party_history:
+                balance_responsible_party_history_type_0_item = (
+                    balance_responsible_party_history_type_0_item_data.to_dict()
+                )
+                balance_responsible_party_history.append(balance_responsible_party_history_type_0_item)
+
+        else:
+            balance_responsible_party_history = self.balance_responsible_party_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -98,12 +115,15 @@ class AccountingPointBalanceResponsiblePartyResponse:
             field_dict["accounting_point"] = accounting_point
         if balance_responsible_party is not UNSET:
             field_dict["balance_responsible_party"] = balance_responsible_party
+        if balance_responsible_party_history is not UNSET:
+            field_dict["balance_responsible_party_history"] = balance_responsible_party_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -166,6 +186,32 @@ class AccountingPointBalanceResponsiblePartyResponse:
 
         balance_responsible_party = _parse_balance_responsible_party(d.pop("balance_responsible_party", UNSET))
 
+        def _parse_balance_responsible_party_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                balance_responsible_party_history_type_0 = []
+                _balance_responsible_party_history_type_0 = data
+                for balance_responsible_party_history_type_0_item_data in _balance_responsible_party_history_type_0:
+                    balance_responsible_party_history_type_0_item = PartyHistoryResponse.from_dict(
+                        balance_responsible_party_history_type_0_item_data
+                    )
+
+                    balance_responsible_party_history_type_0.append(balance_responsible_party_history_type_0_item)
+
+                return balance_responsible_party_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        balance_responsible_party_history = _parse_balance_responsible_party_history(
+            d.pop("balance_responsible_party_history", UNSET)
+        )
+
         accounting_point_balance_responsible_party_response = cls(
             accounting_point_id=accounting_point_id,
             balance_responsible_party_id=balance_responsible_party_id,
@@ -174,6 +220,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
             valid_to=valid_to,
             accounting_point=accounting_point,
             balance_responsible_party=balance_responsible_party,
+            balance_responsible_party_history=balance_responsible_party_history,
         )
 
         accounting_point_balance_responsible_party_response.additional_properties = d

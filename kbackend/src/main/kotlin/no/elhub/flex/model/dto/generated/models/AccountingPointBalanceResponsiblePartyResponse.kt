@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -56,4 +57,9 @@ public data class AccountingPointBalanceResponsiblePartyResponse(
    */
   @SerialName("balance_responsible_party")
   public val balanceResponsibleParty: PartyResponse? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("balance_responsible_party_history")
+  public val balanceResponsiblePartyHistory: List<PartyHistoryResponse>? = null,
 )

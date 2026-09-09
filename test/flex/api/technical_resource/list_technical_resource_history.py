@@ -22,6 +22,7 @@ def _get_kwargs(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -45,6 +46,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["technical_resource_id"] = technical_resource_id
 
@@ -161,6 +164,7 @@ def sync_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse]]:
     """List Technical Resource - history
@@ -177,6 +181,7 @@ def sync_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -196,6 +201,7 @@ def sync_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     )
 
@@ -217,6 +223,7 @@ def sync(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse] | None:
     """List Technical Resource - history
@@ -233,6 +240,7 @@ def sync(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -253,6 +261,7 @@ def sync(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     ).parsed
 
@@ -268,6 +277,7 @@ async def asyncio_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse]]:
     """List Technical Resource - history
@@ -284,6 +294,7 @@ async def asyncio_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -303,6 +314,7 @@ async def asyncio_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     )
 
@@ -322,6 +334,7 @@ async def asyncio(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse] | None:
     """List Technical Resource - history
@@ -338,6 +351,7 @@ async def asyncio(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -359,6 +373,7 @@ async def asyncio(
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             technical_resource_id=technical_resource_id,
         )
     ).parsed

@@ -735,7 +735,11 @@ def generate_openapi_document(
     # returns, that a query is possible on another resource using the foreign key
     # as an id)
     links = {}
-    rels = []
+
+    # embeddable relationships, collected exactly the same way as for the
+    # generated SQL functions and the backend embed relation table, so that the
+    # documented relations match the ones actually accepted by the API
+    rels = relationship.collect(resources, module=module)
 
     for resource in resources:
         # setup endpoint groups:
@@ -781,18 +785,6 @@ def generate_openapi_document(
             for field, field_info in resource["properties"].items()
             if field_info.get("x-foreign-key") is not None
         ]
-        for field, field_info in foreign_key_fields:
-            if not field.endswith("_id"):
-                continue
-            rels.extend(
-                relationship.from_foreign_key(
-                    resource["id"],
-                    field,
-                    field_info["x-foreign-key"]["resource"],
-                    field_info["x-foreign-key"]["field"],
-                    field_info["x-foreign-key"]["cardinality"],
-                )
-            )
 
         filter_fields = [
             (field, field_info)

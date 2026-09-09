@@ -13,10 +13,18 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.accounting_point_response import AccountingPointResponse
+    from ..models.controllable_unit_service_provider_history_response import (
+        ControllableUnitServiceProviderHistoryResponse,
+    )
     from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
     from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+    from ..models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
     from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+    from ..models.service_providing_group_membership_history_response import (
+        ServiceProvidingGroupMembershipHistoryResponse,
+    )
     from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+    from ..models.technical_resource_history_response import TechnicalResourceHistoryResponse
     from ..models.technical_resource_response import TechnicalResourceResponse
 
 
@@ -51,12 +59,20 @@ class ControllableUnitResponse:
             if needed.
         accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
         suspension (list[ControllableUnitSuspensionResponse] | None | Unset): Embedded controllable_unit_suspension
+        suspension_history (list[ControllableUnitSuspensionHistoryResponse] | None | Unset): Embedded
+            controllable_unit_suspension_history
         service_provider (list[ControllableUnitServiceProviderResponse] | None | Unset): Embedded
             controllable_unit_service_provider
+        service_provider_history (list[ControllableUnitServiceProviderHistoryResponse] | None | Unset): Embedded
+            controllable_unit_service_provider_history
         summary (ControllableUnitSummaryResponse | None | Unset): Embedded controllable_unit_summary
         service_providing_group_membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
             service_providing_group_membership
+        service_providing_group_membership_history (list[ServiceProvidingGroupMembershipHistoryResponse] | None |
+            Unset): Embedded service_providing_group_membership_history
         technical_resource (list[TechnicalResourceResponse] | None | Unset): Embedded technical_resource
+        technical_resource_history (list[TechnicalResourceHistoryResponse] | None | Unset): Embedded
+            technical_resource_history
     """
 
     id: int
@@ -73,10 +89,16 @@ class ControllableUnitResponse:
     additional_information: None | str | Unset = UNSET
     accounting_point: AccountingPointResponse | None | Unset = UNSET
     suspension: list[ControllableUnitSuspensionResponse] | None | Unset = UNSET
+    suspension_history: list[ControllableUnitSuspensionHistoryResponse] | None | Unset = UNSET
     service_provider: list[ControllableUnitServiceProviderResponse] | None | Unset = UNSET
+    service_provider_history: list[ControllableUnitServiceProviderHistoryResponse] | None | Unset = UNSET
     summary: ControllableUnitSummaryResponse | None | Unset = UNSET
     service_providing_group_membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
+    service_providing_group_membership_history: list[ServiceProvidingGroupMembershipHistoryResponse] | None | Unset = (
+        UNSET
+    )
     technical_resource: list[TechnicalResourceResponse] | None | Unset = UNSET
+    technical_resource_history: list[TechnicalResourceHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -137,6 +159,18 @@ class ControllableUnitResponse:
         else:
             suspension = self.suspension
 
+        suspension_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.suspension_history, Unset):
+            suspension_history = UNSET
+        elif isinstance(self.suspension_history, list):
+            suspension_history = []
+            for suspension_history_type_0_item_data in self.suspension_history:
+                suspension_history_type_0_item = suspension_history_type_0_item_data.to_dict()
+                suspension_history.append(suspension_history_type_0_item)
+
+        else:
+            suspension_history = self.suspension_history
+
         service_provider: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_provider, Unset):
             service_provider = UNSET
@@ -148,6 +182,18 @@ class ControllableUnitResponse:
 
         else:
             service_provider = self.service_provider
+
+        service_provider_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_provider_history, Unset):
+            service_provider_history = UNSET
+        elif isinstance(self.service_provider_history, list):
+            service_provider_history = []
+            for service_provider_history_type_0_item_data in self.service_provider_history:
+                service_provider_history_type_0_item = service_provider_history_type_0_item_data.to_dict()
+                service_provider_history.append(service_provider_history_type_0_item)
+
+        else:
+            service_provider_history = self.service_provider_history
 
         summary: dict[str, Any] | None | Unset
         if isinstance(self.summary, Unset):
@@ -171,6 +217,24 @@ class ControllableUnitResponse:
         else:
             service_providing_group_membership = self.service_providing_group_membership
 
+        service_providing_group_membership_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_providing_group_membership_history, Unset):
+            service_providing_group_membership_history = UNSET
+        elif isinstance(self.service_providing_group_membership_history, list):
+            service_providing_group_membership_history = []
+            for (
+                service_providing_group_membership_history_type_0_item_data
+            ) in self.service_providing_group_membership_history:
+                service_providing_group_membership_history_type_0_item = (
+                    service_providing_group_membership_history_type_0_item_data.to_dict()
+                )
+                service_providing_group_membership_history.append(
+                    service_providing_group_membership_history_type_0_item
+                )
+
+        else:
+            service_providing_group_membership_history = self.service_providing_group_membership_history
+
         technical_resource: list[dict[str, Any]] | None | Unset
         if isinstance(self.technical_resource, Unset):
             technical_resource = UNSET
@@ -182,6 +246,18 @@ class ControllableUnitResponse:
 
         else:
             technical_resource = self.technical_resource
+
+        technical_resource_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.technical_resource_history, Unset):
+            technical_resource_history = UNSET
+        elif isinstance(self.technical_resource_history, list):
+            technical_resource_history = []
+            for technical_resource_history_type_0_item_data in self.technical_resource_history:
+                technical_resource_history_type_0_item = technical_resource_history_type_0_item_data.to_dict()
+                technical_resource_history.append(technical_resource_history_type_0_item)
+
+        else:
+            technical_resource_history = self.technical_resource_history
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -207,24 +283,40 @@ class ControllableUnitResponse:
             field_dict["accounting_point"] = accounting_point
         if suspension is not UNSET:
             field_dict["suspension"] = suspension
+        if suspension_history is not UNSET:
+            field_dict["suspension_history"] = suspension_history
         if service_provider is not UNSET:
             field_dict["service_provider"] = service_provider
+        if service_provider_history is not UNSET:
+            field_dict["service_provider_history"] = service_provider_history
         if summary is not UNSET:
             field_dict["summary"] = summary
         if service_providing_group_membership is not UNSET:
             field_dict["service_providing_group_membership"] = service_providing_group_membership
+        if service_providing_group_membership_history is not UNSET:
+            field_dict["service_providing_group_membership_history"] = service_providing_group_membership_history
         if technical_resource is not UNSET:
             field_dict["technical_resource"] = technical_resource
+        if technical_resource_history is not UNSET:
+            field_dict["technical_resource_history"] = technical_resource_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_service_provider_history_response import (
+            ControllableUnitServiceProviderHistoryResponse,
+        )
         from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
         from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+        from ..models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
         from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+        from ..models.service_providing_group_membership_history_response import (
+            ServiceProvidingGroupMembershipHistoryResponse,
+        )
         from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.technical_resource_history_response import TechnicalResourceHistoryResponse
         from ..models.technical_resource_response import TechnicalResourceResponse
 
         d = dict(src_dict)
@@ -313,6 +405,30 @@ class ControllableUnitResponse:
 
         suspension = _parse_suspension(d.pop("suspension", UNSET))
 
+        def _parse_suspension_history(data: object) -> list[ControllableUnitSuspensionHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                suspension_history_type_0 = []
+                _suspension_history_type_0 = data
+                for suspension_history_type_0_item_data in _suspension_history_type_0:
+                    suspension_history_type_0_item = ControllableUnitSuspensionHistoryResponse.from_dict(
+                        suspension_history_type_0_item_data
+                    )
+
+                    suspension_history_type_0.append(suspension_history_type_0_item)
+
+                return suspension_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitSuspensionHistoryResponse] | None | Unset, data)
+
+        suspension_history = _parse_suspension_history(d.pop("suspension_history", UNSET))
+
         def _parse_service_provider(data: object) -> list[ControllableUnitServiceProviderResponse] | None | Unset:
             if data is None:
                 return data
@@ -336,6 +452,32 @@ class ControllableUnitResponse:
             return cast(list[ControllableUnitServiceProviderResponse] | None | Unset, data)
 
         service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
+
+        def _parse_service_provider_history(
+            data: object,
+        ) -> list[ControllableUnitServiceProviderHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_provider_history_type_0 = []
+                _service_provider_history_type_0 = data
+                for service_provider_history_type_0_item_data in _service_provider_history_type_0:
+                    service_provider_history_type_0_item = ControllableUnitServiceProviderHistoryResponse.from_dict(
+                        service_provider_history_type_0_item_data
+                    )
+
+                    service_provider_history_type_0.append(service_provider_history_type_0_item)
+
+                return service_provider_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitServiceProviderHistoryResponse] | None | Unset, data)
+
+        service_provider_history = _parse_service_provider_history(d.pop("service_provider_history", UNSET))
 
         def _parse_summary(data: object) -> ControllableUnitSummaryResponse | None | Unset:
             if data is None:
@@ -382,6 +524,40 @@ class ControllableUnitResponse:
             d.pop("service_providing_group_membership", UNSET)
         )
 
+        def _parse_service_providing_group_membership_history(
+            data: object,
+        ) -> list[ServiceProvidingGroupMembershipHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_providing_group_membership_history_type_0 = []
+                _service_providing_group_membership_history_type_0 = data
+                for (
+                    service_providing_group_membership_history_type_0_item_data
+                ) in _service_providing_group_membership_history_type_0:
+                    service_providing_group_membership_history_type_0_item = (
+                        ServiceProvidingGroupMembershipHistoryResponse.from_dict(
+                            service_providing_group_membership_history_type_0_item_data
+                        )
+                    )
+
+                    service_providing_group_membership_history_type_0.append(
+                        service_providing_group_membership_history_type_0_item
+                    )
+
+                return service_providing_group_membership_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupMembershipHistoryResponse] | None | Unset, data)
+
+        service_providing_group_membership_history = _parse_service_providing_group_membership_history(
+            d.pop("service_providing_group_membership_history", UNSET)
+        )
+
         def _parse_technical_resource(data: object) -> list[TechnicalResourceResponse] | None | Unset:
             if data is None:
                 return data
@@ -406,6 +582,30 @@ class ControllableUnitResponse:
 
         technical_resource = _parse_technical_resource(d.pop("technical_resource", UNSET))
 
+        def _parse_technical_resource_history(data: object) -> list[TechnicalResourceHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                technical_resource_history_type_0 = []
+                _technical_resource_history_type_0 = data
+                for technical_resource_history_type_0_item_data in _technical_resource_history_type_0:
+                    technical_resource_history_type_0_item = TechnicalResourceHistoryResponse.from_dict(
+                        technical_resource_history_type_0_item_data
+                    )
+
+                    technical_resource_history_type_0.append(technical_resource_history_type_0_item)
+
+                return technical_resource_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[TechnicalResourceHistoryResponse] | None | Unset, data)
+
+        technical_resource_history = _parse_technical_resource_history(d.pop("technical_resource_history", UNSET))
+
         controllable_unit_response = cls(
             id=id,
             business_id=business_id,
@@ -421,10 +621,14 @@ class ControllableUnitResponse:
             additional_information=additional_information,
             accounting_point=accounting_point,
             suspension=suspension,
+            suspension_history=suspension_history,
             service_provider=service_provider,
+            service_provider_history=service_provider_history,
             summary=summary,
             service_providing_group_membership=service_providing_group_membership,
+            service_providing_group_membership_history=service_providing_group_membership_history,
             technical_resource=technical_resource,
+            technical_resource_history=technical_resource_history,
         )
 
         controllable_unit_response.additional_properties = d

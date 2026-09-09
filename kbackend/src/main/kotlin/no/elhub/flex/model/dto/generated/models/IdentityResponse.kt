@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -63,4 +64,9 @@ public data class IdentityResponse(
    */
   @SerialName("party")
   public val party: PartyResponse? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("party_history")
+  public val partyHistory: List<PartyHistoryResponse>? = null,
 )
