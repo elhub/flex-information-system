@@ -257,6 +257,14 @@ FROM flex.service_providing_group_product_application AS spgpa
 WHERE h.id = spgpa.id
     AND h.created_at IS NULL;
 
+UPDATE flex.service_providing_group_product_application
+SET complete_at = created_at -- initial best guess
+WHERE status NOT IN ('requested', 'rejected') AND complete_at IS NULL;
+
+UPDATE flex.service_providing_group_product_application_history
+SET complete_at = created_at -- initial best guess
+WHERE status NOT IN ('requested', 'rejected') AND complete_at IS NULL;
+
 ALTER TABLE flex.service_providing_group_product_application
 ALTER COLUMN created_at SET DEFAULT localtimestamp;
 
