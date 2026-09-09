@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ramping_description text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
-    created_at timestamp with time zone NOT NULL DEFAULT localtimestamp,
+    created_at timestamp with time zone NOT NULL DEFAULT current_timestamp,
     complete_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'

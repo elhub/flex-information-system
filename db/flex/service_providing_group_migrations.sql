@@ -102,7 +102,7 @@ WHERE h.id = spg.id
     AND h.created_at IS NULL;
 
 ALTER TABLE flex.service_providing_group
-ALTER COLUMN created_at SET DEFAULT LOCALTIMESTAMP;
+ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;
 
 ALTER TABLE flex.service_providing_group
 ALTER COLUMN created_at SET NOT NULL;

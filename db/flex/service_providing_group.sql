@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
         )
     ),
     additional_information text,
-    created_at timestamp with time zone NOT NULL DEFAULT localtimestamp,
+    created_at timestamp with time zone NOT NULL DEFAULT current_timestamp,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
