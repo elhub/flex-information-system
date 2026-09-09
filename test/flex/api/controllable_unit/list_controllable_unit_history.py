@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -18,6 +19,7 @@ def _get_kwargs(
     name: str | Unset = UNSET,
     status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -36,6 +38,11 @@ def _get_kwargs(
     params["status"] = status
 
     params["accounting_point_id"] = accounting_point_id
+
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
 
     params["select"] = select
 
@@ -157,6 +164,7 @@ def sync_detailed(
     name: str | Unset = UNSET,
     status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -174,6 +182,7 @@ def sync_detailed(
         name (str | Unset):
         status (str | Unset):
         accounting_point_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -194,6 +203,7 @@ def sync_detailed(
         name=name,
         status=status,
         accounting_point_id=accounting_point_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -216,6 +226,7 @@ def sync(
     name: str | Unset = UNSET,
     status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -233,6 +244,7 @@ def sync(
         name (str | Unset):
         status (str | Unset):
         accounting_point_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -254,6 +266,7 @@ def sync(
         name=name,
         status=status,
         accounting_point_id=accounting_point_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -270,6 +283,7 @@ async def asyncio_detailed(
     name: str | Unset = UNSET,
     status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -287,6 +301,7 @@ async def asyncio_detailed(
         name (str | Unset):
         status (str | Unset):
         accounting_point_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -307,6 +322,7 @@ async def asyncio_detailed(
         name=name,
         status=status,
         accounting_point_id=accounting_point_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -327,6 +343,7 @@ async def asyncio(
     name: str | Unset = UNSET,
     status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -344,6 +361,7 @@ async def asyncio(
         name (str | Unset):
         status (str | Unset):
         accounting_point_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -366,6 +384,7 @@ async def asyncio(
             name=name,
             status=status,
             accounting_point_id=accounting_point_id,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,

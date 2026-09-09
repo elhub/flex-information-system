@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -17,6 +18,7 @@ def _get_kwargs(
     *,
     id: str | Unset = UNSET,
     service_providing_group_product_application_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -29,6 +31,11 @@ def _get_kwargs(
     params["id"] = id
 
     params["service_providing_group_product_application_id"] = service_providing_group_product_application_id
+
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
 
     params["select"] = select
 
@@ -161,6 +168,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_product_application_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -177,6 +185,7 @@ def sync_detailed(
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -194,6 +203,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         service_providing_group_product_application_id=service_providing_group_product_application_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -213,6 +223,7 @@ def sync(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_product_application_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -233,6 +244,7 @@ def sync(
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -251,6 +263,7 @@ def sync(
         client=client,
         id=id,
         service_providing_group_product_application_id=service_providing_group_product_application_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -264,6 +277,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_product_application_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -280,6 +294,7 @@ async def asyncio_detailed(
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -297,6 +312,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         service_providing_group_product_application_id=service_providing_group_product_application_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -314,6 +330,7 @@ async def asyncio(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_product_application_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -334,6 +351,7 @@ async def asyncio(
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -353,6 +371,7 @@ async def asyncio(
             client=client,
             id=id,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,

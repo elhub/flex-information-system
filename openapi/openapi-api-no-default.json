@@ -10059,6 +10059,16 @@
                         "name": "accounting_point_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -11031,6 +11041,16 @@
                         "name": "impacted_system_operator_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -11886,6 +11906,16 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit suspension.",
                         "name": "controllable_unit_suspension_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -12941,6 +12971,16 @@
                         },
                         "example": "eq.somevalid_to",
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -14208,6 +14248,16 @@
                         "name": "service_provider_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -15236,6 +15286,16 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -16120,6 +16180,16 @@
                         "name": "impacted_system_operator_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -16975,6 +17045,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group grid prequalification.",
                         "name": "service_providing_group_grid_prequalification_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -17949,6 +18029,16 @@
                         "name": "service_providing_group_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -18804,6 +18894,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group grid suspension.",
                         "name": "service_providing_group_grid_suspension_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -20922,6 +21022,16 @@
                         "description": "Name of the party. Maximum 128 characters."
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -21892,6 +22002,16 @@
                         "example": "eq.55",
                         "description": "Reference to the entity that the party represents.",
                         "name": "entity_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -23223,6 +23343,16 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit that this technical resource belongs to.",
                         "name": "controllable_unit_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -26539,6 +26669,16 @@
                         "name": "accounting_point_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -27755,6 +27895,16 @@
                         "example": "eq.somestatus"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -28682,6 +28832,16 @@
                         "example": "eq.somestatus"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -29537,6 +29697,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service provider product application.",
                         "name": "service_provider_product_application_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -30538,6 +30708,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -31393,6 +31573,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service provider product suspension.",
                         "name": "service_provider_product_suspension_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -32306,6 +32496,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -33155,6 +33355,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group product application.",
                         "name": "service_providing_group_product_application_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -34012,6 +34222,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group product application.",
                         "name": "service_providing_group_product_application_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -35013,6 +35233,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -35868,6 +36098,16 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group product suspension.",
                         "name": "service_providing_group_product_suspension_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
