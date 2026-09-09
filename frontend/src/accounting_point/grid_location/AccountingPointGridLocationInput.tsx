@@ -1,17 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { Form, ResourceContextProvider, useNotify } from "ra-core";
+import { useEffect, useState } from "react";
+import { Form, ResourceContextProvider } from "ra-core";
 import { useFormContext } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
-import z from "zod";
-import {
-  AccountingPointGridLocation,
-  createAccountingPointGridLocation,
-  updateAccountingPointGridLocation,
-} from "../../generated-client";
-import {
-  zAccountingPointGridLocationCreateRequest,
-  zAccountingPointGridLocationUpdateRequest,
-} from "../../generated-client/zod.gen";
+import { AccountingPointGridLocation } from "../../generated-client";
+import { zAccountingPointGridLocationCreateRequest } from "../../generated-client/zod.gen";
 import { FormContainer } from "../../components/ui";
 import {
   EnumInput,
@@ -19,13 +10,16 @@ import {
   TextAreaInput,
   FormToolbar,
 } from "../../components/EDS-ra";
-import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
-import { unTypedZodResolver, getFields } from "../../zod";
+import { getFields } from "../../zod";
 import { Substation } from "../show/AccountingPointLocationMap";
 import { SubstationReferenceInput } from "./SubstationReferenceInput";
+import { useAccountingPointGridLocationFormController } from "./useAccountingPointGridLocationFormController";
 
 const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
 
+// RA-bridge leaf component: must live inside RA's <Form> tree to use
+// useFormContext, so it can't be pulled fully into a hook (same precedent
+// as DeleteButton/BiddingZoneField elsewhere).
 const GridLocationFormFields = ({
   onDone,
   onCancel,
@@ -118,6 +112,8 @@ const GridLocationFormFields = ({
   );
 };
 
+// Presentational wiring: the mutation, record initialisation, and resolver
+// live in useAccountingPointGridLocationFormController.
 export const AccountingPointGridLocationInput = ({
   apId,
   gridLocation,
@@ -135,70 +131,13 @@ export const AccountingPointGridLocationInput = ({
   onSelectSubstation?: (substation: Substation | null) => void;
   onClearMapSelection?: () => void;
 }) => {
-  const queryClient = useQueryClient();
-  const notify = useNotify();
-  const isCreate = gridLocation === undefined;
-
-  // clearing selectedSubstation by picking via the combobox should not reset
-  // the form fields (namely nominal voltage) so we compute the initial form
-  // values once when the input component loads and then only explicit
-  // manipulation of the form state can cause changes
-  const record = useMemo(() => {
-    const base: Partial<
-      z.infer<typeof zAccountingPointGridLocationCreateRequest>
-    > = isCreate
-      ? {
-          accounting_point_id: apId,
-          object_type: "substation",
-          quality: "guessed",
-        }
-      : {
-          accounting_point_id: apId,
-          name: gridLocation.name,
-          object_type: gridLocation.object_type,
-          business_id: gridLocation.business_id ?? undefined,
-          nominal_voltage: gridLocation.nominal_voltage,
-          quality: gridLocation.quality,
-          additional_information: gridLocation.additional_information ?? "",
-        };
-
-    if (selectedSubstation) {
-      return {
-        ...base,
-        name: selectedSubstation.name,
-        object_type: "substation" as const,
-        business_id: selectedSubstation.business_id,
-        nominal_voltage: undefined,
-      };
-    }
-    return base;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSubmit = async (values: object) => {
-    if (isCreate) {
-      const body = zAccountingPointGridLocationCreateRequest.parse(values);
-      const result = await createAccountingPointGridLocation({ body });
-      if (result.error) {
-        notify(result.error.message ?? "An error occurred", { type: "error" });
-        return;
-      }
-    } else {
-      const body = zAccountingPointGridLocationUpdateRequest.parse(values);
-      const result = await updateAccountingPointGridLocation({
-        path: { id: gridLocation.id },
-        body,
-      });
-      if (result.error) {
-        notify(result.error.message ?? "An error occurred", { type: "error" });
-        return;
-      }
-    }
-    await queryClient.invalidateQueries({
-      queryKey: accountingPointViewModelQueryKey(apId),
+  const { record, resolver, onSubmit } =
+    useAccountingPointGridLocationFormController({
+      apId,
+      gridLocation,
+      selectedSubstation,
+      onDone,
     });
-    onDone();
-  };
 
   return (
     <ResourceContextProvider value="accounting_point_grid_location">
@@ -207,15 +146,7 @@ export const AccountingPointGridLocationInput = ({
           Selected transformer: <strong>{selectedSubstation.name}</strong>
         </div>
       )}
-      <Form
-        record={record}
-        resolver={unTypedZodResolver(
-          isCreate
-            ? zAccountingPointGridLocationCreateRequest
-            : zAccountingPointGridLocationUpdateRequest,
-        )}
-        onSubmit={onSubmit}
-      >
+      <Form record={record} resolver={resolver} onSubmit={onSubmit}>
         <FormContainer>
           <GridLocationFormFields
             onDone={onDone}

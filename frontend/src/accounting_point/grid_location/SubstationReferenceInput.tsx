@@ -1,11 +1,7 @@
-import React, { useId, useState } from "react";
-import { useInput, useTranslate } from "ra-core";
-import { useQuery } from "@tanstack/react-query";
 import { BaseInput } from "../../components/EDS-ra/inputs/BaseInput";
 import { Combobox } from "../../components/ui";
-import { gridURL } from "../../httpConfig";
 import { Substation } from "../show/AccountingPointLocationMap";
-import { fetchJSON } from "../../util";
+import { useSubstationReferenceInputController } from "./useSubstationReferenceInputController";
 
 // need at least a name and a business ID to render a substation in the combobox
 type SubstationLabel = Pick<Substation, "name" | "business_id">;
@@ -18,6 +14,8 @@ type Props = {
   knownSubstation?: SubstationLabel | null;
 };
 
+// Presentational: RA (useInput/useTranslate), the search query, and
+// option/selection mapping live in useSubstationReferenceInputController.
 export const SubstationReferenceInput = ({
   source,
   required,
@@ -25,74 +23,29 @@ export const SubstationReferenceInput = ({
   onSelect,
   knownSubstation,
 }: Props) => {
-  const translate = useTranslate();
-  const { id: inputId, field, fieldState } = useInput({ source });
-  const fallbackId = useId();
-  const id = inputId || fallbackId;
-
-  const [search, setSearch] = useState("");
-
-  const queryParams = new URLSearchParams({
-    kind: "eq.transformer",
-    status: "eq.active",
-    or: `(business_id.ilike.${search}*,name.ilike.*${search}*)`,
-    limit: "10",
-    order: "name",
+  const {
+    id,
+    error,
+    descriptionText,
+    options,
+    selectedOption,
+    isFetching,
+    handleInputChange,
+    handleToggle,
+  } = useSubstationReferenceInputController({
+    source,
+    onSelect,
+    knownSubstation,
   });
-
-  const { data: substations, isFetching } = useQuery({
-    queryKey: ["grid", "substation_search", search],
-    queryFn: () =>
-      fetchJSON<Substation>(`${gridURL}/substation?${queryParams.toString()}`),
-    placeholderData: (prev) => prev,
-  });
-
-  const options = (substations ?? []).map((s) => ({
-    label: `${s.name} (${s.business_id})`,
-    value: s.business_id,
-  }));
-
-  const selectedOption =
-    options.find((o) => o.value === field.value) ??
-    (field.value && knownSubstation?.business_id === field.value
-      ? {
-          label: `${knownSubstation!.name} (${knownSubstation!.business_id})`,
-          value: field.value,
-        }
-      : field.value
-        ? { label: field.value, value: field.value }
-        : undefined);
-
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement> | null,
-  ) => {
-    const search = event?.currentTarget.value ?? "";
-    // sanitise the search string to avoid malformed query params
-    const cleanSearch = search.trim().replace(/[^a-zA-Z0-9-\s]/, "");
-    setSearch(cleanSearch);
-  };
-
-  const handleToggle = (value: string, isSelected: boolean) => {
-    if (!isSelected) {
-      field.onChange(null);
-      onSelect(null);
-      return;
-    }
-    const substation = (substations ?? []).find((s) => s.business_id === value);
-    field.onChange(value);
-    onSelect(substation ?? null);
-  };
 
   return (
     <BaseInput
       source={source}
-      descriptionOverride={translate(
-        "text.substation_reference_input.search_for_substation",
-      )}
+      descriptionOverride={descriptionText}
       required={required}
       tooltip={tooltip}
       id={id}
-      error={fieldState.error?.message}
+      error={error}
       resource="accounting_point_grid_location"
     >
       <Combobox
