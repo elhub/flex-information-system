@@ -73,7 +73,7 @@ import datetime
 
 
 # return a structurally minimal but valid single-page PDF
-def minimal_pdf() -> bytes:
+def minimal_pdf(extra_null_bytes: int = 0) -> bytes:
     stream = b"BT /F1 12 Tf 72 720 Td (hello) Tj ET"
     length = len(stream)
     parts = []
@@ -108,7 +108,9 @@ def minimal_pdf() -> bytes:
     for off in offsets:
         w(f"{off:010d} 00000 n \n".encode())
     w(b"trailer\n<< /Size 6 /Root 1 0 R >>\n")
-    w(f"startxref\n{xref_offset}\n%%EOF\n".encode())
+    w(f"startxref\n{xref_offset}\n".encode())
+    w(b"\x00" * extra_null_bytes)
+    w("\n%%EOF\n".encode())
     return b"".join(parts)
 
 
@@ -123,10 +125,9 @@ def upload_attachment(
     client: AuthenticatedClient,
     spgpa_id: int,
     filename: str = "test.pdf",
-    pdf_bytes: bytes | None = None,
+    extra_null_bytes: int = 0,
 ):
-    if pdf_bytes is None:
-        pdf_bytes = minimal_pdf()
+    pdf_bytes = minimal_pdf(extra_null_bytes)
     body = CreateServiceProvidingGroupProductApplicationAttachmentBody(
         service_providing_group_product_application_id=spgpa_id,
         file=_make_file(pdf_bytes, filename),
@@ -142,10 +143,9 @@ def upload_attachment_detailed(
     client: AuthenticatedClient,
     spgpa_id: int,
     filename: str = "test.pdf",
-    pdf_bytes: bytes | None = None,
+    extra_null_bytes: int = 0,
 ):
-    if pdf_bytes is None:
-        pdf_bytes = minimal_pdf()
+    pdf_bytes = minimal_pdf(extra_null_bytes=extra_null_bytes)
     body = CreateServiceProvidingGroupProductApplicationAttachmentBody(
         service_providing_group_product_application_id=spgpa_id,
         file=_make_file(pdf_bytes, filename),
@@ -391,7 +391,7 @@ def test_spgpaa_fiso(data):
 
     # a file exceeding the 20 MB size limit is rejected
     resp = upload_attachment_detailed(
-        client_fiso, spgpa_id, filename="big.pdf", pdf_bytes=bytes(20_000_001)
+        client_fiso, spgpa_id, filename="big.pdf", extra_null_bytes=20 * 1024 * 1024
     )
     assert resp.status_code.value == 400
 
