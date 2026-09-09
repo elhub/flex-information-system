@@ -4145,7 +4145,7 @@ see <a href="../../technical/accounting-point-grid-location/">Accounting Point G
 </tr>
 <tr>
 <td><a name="field-quality" href="#field-quality">quality</a></td>
-<td>The quality of the grid location registration.</td>
+<td>Indicates how the grid location was determined. Guessed means that Flexibility Information System has estimated the location, while confirmed means that someone has verified it.</td>
 <td>text<br/>One of: <code>confirmed</code>, <code>guessed</code><br/>Required</td>
 <td></td>
 </tr>
@@ -4185,7 +4185,7 @@ see <a href="../../technical/accounting-point-grid-location/">Accounting Point G
 </tr>
 <tr>
 <td>APGL-VAL003</td>
-<td>A grid location can only be <code>confirmed</code> with a non-zero voltage level.</td>
+<td>A grid location can only be <code>confirmed</code> with a non-zero voltage level, unless the source is the <code>grid_model</code>.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -4207,7 +4207,7 @@ of the record. <code>yes</code> means the transition is allowed, <code>no</code>
 <tr>
 <td><code>grid_model</code></td>
 <td>yes</td>
-<td>no</td>
+<td>yes (voltage level)</td>
 <td>no</td>
 <td>no</td>
 </tr>

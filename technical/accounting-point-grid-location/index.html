@@ -4422,7 +4422,7 @@ location based on the current source.</p>
 <tr>
 <td><code>grid_model</code></td>
 <td>yes</td>
-<td>no</td>
+<td>yes (voltage level)</td>
 <td>no</td>
 <td>no</td>
 </tr>
@@ -4457,7 +4457,8 @@ location based on the current source.</p>
 </tbody>
 </table>
 <p>The table shows that the priority order of the source is <code>grid_model</code> &gt; <code>cso</code> &gt;
-<code>so</code> &gt; <code>system</code>.</p>
+<code>so</code> &gt; <code>system</code>. A location set by the grid model cannot be changed, but the CSO
+can always fill in the gaps if the voltage level is missing.</p>
 <h2 id="guessing-grid-location">Guessing grid location</h2>
 <p>Since we know the geographical location of the accounting point and substations,
 we can make an educated guess on the grid location.</p>
