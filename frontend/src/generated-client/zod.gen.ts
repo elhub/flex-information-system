@@ -1175,787 +1175,9 @@ export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   });
 
 /**
- * Controllable unit - history
- */
-export const zControllableUnitHistory = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .readonly(),
-  name: z.string().max(512),
-  start_date: z.iso.date().optional(),
-  status: zControllableUnitStatus,
-  regulation_direction: zControllableUnitRegulationDirection,
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  is_small: z.boolean().readonly(),
-  accounting_point_id: z.coerce.number(),
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Controllable Unit Suspension - history
- */
-export const zControllableUnitSuspensionHistory = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number(),
-  reason: zControllableUnitSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  controllable_unit_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Controllable Unit Suspension Comment - history
- */
-export const zControllableUnitSuspensionCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zControllableUnitSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  controllable_unit_suspension_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Relation between controllable unit and service provider - history
- */
-export const zControllableUnitServiceProviderHistory = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  end_user_id: z.coerce.number(),
-  contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  controllable_unit_service_provider_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service providing group - history
- */
-export const zServiceProvidingGroupHistory = z.object({
-  id: z.coerce.number().readonly(),
-  name: z.string().max(128),
-  service_provider_id: z.coerce.number(),
-  bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus,
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Membership relation of controllable unit in service providing group - history
- */
-export const zServiceProvidingGroupMembershipHistory = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_membership_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Grid prequalification for service providing group - history
- */
-export const zServiceProvidingGroupGridPrequalificationHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number(),
-  status: zServiceProvidingGroupGridPrequalificationStatus,
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_grid_prequalification_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Grid prequalification for service providing group Comment - history
- */
-export const zServiceProvidingGroupGridPrequalificationCommentHistory =
-  z.object({
-    id: z.coerce.number().readonly(),
-    service_providing_group_grid_prequalification_id: z.coerce.number(),
-    created_by: z.coerce.number().readonly(),
-    created_at: z.iso.datetime({ offset: true }).readonly(),
-    visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
-    content: z.string().max(2048),
-    recorded_at: z.iso.datetime({ offset: true }).readonly(),
-    recorded_by: z.coerce.number().readonly(),
-    service_providing_group_grid_prequalification_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Providing Group Grid Suspension - history
- */
-export const zServiceProvidingGroupGridSuspensionHistory = z.object({
-  id: z.coerce.number().readonly(),
-  impacted_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  reason: zServiceProvidingGroupGridSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_grid_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Grid Suspension Comment - history
- */
-export const zServiceProvidingGroupGridSuspensionCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_grid_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_grid_suspension_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Party - history
- */
-export const zPartyHistory = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z.string(),
-  business_id_type: zPartyBusinessIdType,
-  entity_id: z.coerce.number(),
-  name: z.string(),
-  role: zPartyRole,
-  type: zPartyType,
-  status: zPartyStatus,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  party_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Party Membership - history
- */
-export const zPartyMembershipHistory = z.object({
-  id: z.coerce.number().readonly(),
-  party_id: z.coerce.number(),
-  entity_id: z.coerce.number(),
-  scopes: z.array(zAuthScope),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  party_membership_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Technical Resource - history
- */
-export const zTechnicalResourceHistory = z.object({
-  id: z.coerce.number().readonly(),
-  name: z.string(),
-  controllable_unit_id: z.coerce.number(),
-  technology: z.array(zTechnology).min(1),
-  category: z.array(zCategory).readonly(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  device_type: zDeviceType,
-  make: z.string().max(128).optional(),
-  model: z.string().max(128).optional(),
-  business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  technical_resource_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Accounting Point Grid Location - history
- */
-export const zAccountingPointGridLocationHistory = z.object({
-  id: z.coerce.number().readonly(),
-  accounting_point_id: z.coerce.number(),
-  object_type: zAccountingPointGridLocationObjectType,
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    ),
-  name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource.readonly(),
-  quality: zAccountingPointGridLocationQuality,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  accounting_point_grid_location_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * System Operator Product Type - history
- */
-export const zSystemOperatorProductTypeHistory = z.object({
-  id: z.coerce.number().readonly(),
-  system_operator_id: z.coerce.number(),
-  product_type_id: z.coerce.number(),
-  status: zSystemOperatorProductTypeStatus,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  system_operator_product_type_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Application - history
- */
-export const zServiceProviderProductApplicationHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_id: z.coerce.number(),
-  system_operator_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProviderProductApplicationStatus,
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_provider_product_application_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Application Comment - history
- */
-export const zServiceProviderProductApplicationCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_product_application_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProviderProductApplicationCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_provider_product_application_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Suspension - history
- */
-export const zServiceProviderProductSuspensionHistory = z.object({
-  id: z.coerce.number().readonly(),
-  procuring_system_operator_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProviderProductSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_provider_product_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Suspension Comment - history
- */
-export const zServiceProviderProductSuspensionCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_product_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProviderProductSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_provider_product_suspension_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Product Application - history
- */
-export const zServiceProvidingGroupProductApplicationHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_id: z.coerce.number(),
-  procuring_system_operator_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
-  ramping_capability:
-    zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
-  ramping_description: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_product_application_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Product Application Attachment - history
- */
-export const zServiceProvidingGroupProductApplicationAttachmentHistory =
-  z.object({
-    id: z.coerce.number().readonly(),
-    service_providing_group_product_application_id: z.coerce.number(),
-    object_id: z.string(),
-    filename: z.string(),
-    filename_sanitised: z.string(),
-    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
-    size_bytes: z.coerce.number(),
-    recorded_at: z.iso.datetime({ offset: true }).readonly(),
-    recorded_by: z.coerce.number().readonly(),
-    service_providing_group_product_application_attachment_id:
-      z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Providing Group Product Application Comment - history
- */
-export const zServiceProvidingGroupProductApplicationCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_product_application_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_product_application_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Product Suspension - history
- */
-export const zServiceProvidingGroupProductSuspensionHistory = z.object({
-  id: z.coerce.number().readonly(),
-  procuring_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProvidingGroupProductSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_product_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Product Suspension Comment - history
- */
-export const zServiceProvidingGroupProductSuspensionCommentHistory = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_product_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-  service_providing_group_product_suspension_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
  * An empty object
  */
 export const zEmptyObjectWritable = z.record(z.string(), z.never());
-
-/**
- * Controllable unit - history
- */
-export const zControllableUnitHistoryWritable = z.object({
-  name: z.string().max(512),
-  start_date: z.iso.date().optional(),
-  status: zControllableUnitStatus,
-  regulation_direction: zControllableUnitRegulationDirection,
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  accounting_point_id: z.coerce.number(),
-  additional_information: z.string().optional(),
-  controllable_unit_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Controllable Unit Suspension - history
- */
-export const zControllableUnitSuspensionHistoryWritable = z.object({
-  controllable_unit_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number(),
-  reason: zControllableUnitSuspensionReason,
-  controllable_unit_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Controllable Unit Suspension Comment - history
- */
-export const zControllableUnitSuspensionCommentHistoryWritable = z.object({
-  controllable_unit_suspension_id: z.coerce.number(),
-  visibility: zControllableUnitSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  controllable_unit_suspension_comment_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Relation between controllable unit and service provider - history
- */
-export const zControllableUnitServiceProviderHistoryWritable = z.object({
-  controllable_unit_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  end_user_id: z.coerce.number(),
-  contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  controllable_unit_service_provider_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service providing group - history
- */
-export const zServiceProvidingGroupHistoryWritable = z.object({
-  name: z.string().max(128),
-  service_provider_id: z.coerce.number(),
-  bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus,
-  additional_information: z.string().optional(),
-  service_providing_group_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Membership relation of controllable unit in service providing group - history
- */
-export const zServiceProvidingGroupMembershipHistoryWritable = z.object({
-  controllable_unit_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  service_providing_group_membership_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Grid prequalification for service providing group - history
- */
-export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
-  z.object({
-    service_providing_group_id: z.coerce.number(),
-    impacted_system_operator_id: z.coerce.number(),
-    status: zServiceProvidingGroupGridPrequalificationStatus,
-    prequalified_at: z.iso.datetime({ offset: true }).optional(),
-    service_providing_group_grid_prequalification_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Grid prequalification for service providing group Comment - history
- */
-export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
-  z.object({
-    service_providing_group_grid_prequalification_id: z.coerce.number(),
-    visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
-    content: z.string().max(2048),
-    service_providing_group_grid_prequalification_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Providing Group Grid Suspension - history
- */
-export const zServiceProvidingGroupGridSuspensionHistoryWritable = z.object({
-  impacted_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  reason: zServiceProvidingGroupGridSuspensionReason,
-  service_providing_group_grid_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Grid Suspension Comment - history
- */
-export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
-  z.object({
-    service_providing_group_grid_suspension_id: z.coerce.number(),
-    visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
-    content: z.string().max(2048),
-    service_providing_group_grid_suspension_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Party - history
- */
-export const zPartyHistoryWritable = z.object({
-  business_id: z.string(),
-  business_id_type: zPartyBusinessIdType,
-  entity_id: z.coerce.number(),
-  name: z.string(),
-  role: zPartyRole,
-  type: zPartyType,
-  status: zPartyStatus,
-  party_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Party Membership - history
- */
-export const zPartyMembershipHistoryWritable = z.object({
-  party_id: z.coerce.number(),
-  entity_id: z.coerce.number(),
-  scopes: z.array(zAuthScope),
-  party_membership_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Technical Resource - history
- */
-export const zTechnicalResourceHistoryWritable = z.object({
-  name: z.string(),
-  controllable_unit_id: z.coerce.number(),
-  technology: z.array(zTechnology).min(1),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  device_type: zDeviceType,
-  make: z.string().max(128).optional(),
-  model: z.string().max(128).optional(),
-  business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
-  additional_information: z.string().optional(),
-  technical_resource_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Accounting Point Grid Location - history
- */
-export const zAccountingPointGridLocationHistoryWritable = z.object({
-  accounting_point_id: z.coerce.number(),
-  object_type: zAccountingPointGridLocationObjectType,
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    ),
-  name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().optional(),
-  quality: zAccountingPointGridLocationQuality,
-  accounting_point_grid_location_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * System Operator Product Type - history
- */
-export const zSystemOperatorProductTypeHistoryWritable = z.object({
-  system_operator_id: z.coerce.number(),
-  product_type_id: z.coerce.number(),
-  status: zSystemOperatorProductTypeStatus,
-  system_operator_product_type_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Application - history
- */
-export const zServiceProviderProductApplicationHistoryWritable = z.object({
-  service_provider_id: z.coerce.number(),
-  system_operator_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProviderProductApplicationStatus,
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
-  service_provider_product_application_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Application Comment - history
- */
-export const zServiceProviderProductApplicationCommentHistoryWritable =
-  z.object({
-    service_provider_product_application_id: z.coerce.number(),
-    visibility: zServiceProviderProductApplicationCommentVisibility,
-    content: z.string().max(2048),
-    service_provider_product_application_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Provider Product Suspension - history
- */
-export const zServiceProviderProductSuspensionHistoryWritable = z.object({
-  procuring_system_operator_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProviderProductSuspensionReason,
-  service_provider_product_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Provider Product Suspension Comment - history
- */
-export const zServiceProviderProductSuspensionCommentHistoryWritable = z.object(
-  {
-    service_provider_product_suspension_id: z.coerce.number(),
-    visibility: zServiceProviderProductSuspensionCommentVisibility,
-    content: z.string().max(2048),
-    service_provider_product_suspension_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  },
-);
-
-/**
- * Service Providing Group Product Application - history
- */
-export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
-  {
-    service_providing_group_id: z.coerce.number(),
-    procuring_system_operator_id: z.coerce.number(),
-    product_type_ids: z.array(z.coerce.number()),
-    status: zServiceProvidingGroupProductApplicationStatus,
-    maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-    maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
-    additional_information: z.string().max(512).optional(),
-    prequalified_at: z.iso.datetime({ offset: true }).optional(),
-    verified_at: z.iso.datetime({ offset: true }).optional(),
-    ramping_capability:
-      zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
-    ramping_description: z.string().optional(),
-    service_providing_group_product_application_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  },
-);
-
-/**
- * Service Providing Group Product Application Attachment - history
- */
-export const zServiceProvidingGroupProductApplicationAttachmentHistoryWritable =
-  z.object({
-    service_providing_group_product_application_id: z.coerce.number(),
-    object_id: z.string(),
-    filename: z.string(),
-    filename_sanitised: z.string(),
-    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
-    size_bytes: z.coerce.number(),
-    service_providing_group_product_application_attachment_id:
-      z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Providing Group Product Application Comment - history
- */
-export const zServiceProvidingGroupProductApplicationCommentHistoryWritable =
-  z.object({
-    service_providing_group_product_application_id: z.coerce.number(),
-    visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
-    content: z.string().max(2048),
-    service_providing_group_product_application_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
-
-/**
- * Service Providing Group Product Suspension - history
- */
-export const zServiceProvidingGroupProductSuspensionHistoryWritable = z.object({
-  procuring_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProvidingGroupProductSuspensionReason,
-  service_providing_group_product_suspension_id: z.coerce.number(),
-  replaced_by: z.coerce.number().optional(),
-  replaced_at: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Service Providing Group Product Suspension Comment - history
- */
-export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
-  z.object({
-    service_providing_group_product_suspension_id: z.coerce.number(),
-    visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
-    content: z.string().max(2048),
-    service_providing_group_product_suspension_comment_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
-  });
 
 /**
  * Format of the data field in a notice with data.kind = notice.data.party.missing
@@ -2005,14 +1227,26 @@ export const zControllableUnit = z.object({
   recorded_by: z.coerce.number().readonly(),
   accounting_point: z.lazy((): any => zAccountingPoint).nullish(),
   suspension: z.array(z.lazy((): any => zControllableUnitSuspension)).nullish(),
+  suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistory))
+    .nullish(),
   service_provider: z
     .array(z.lazy((): any => zControllableUnitServiceProvider))
+    .nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zControllableUnitServiceProviderHistory))
     .nullish(),
   summary: z.lazy((): any => zControllableUnitSummary).nullish(),
   service_providing_group_membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembership))
     .nullish(),
+  service_providing_group_membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistory))
+    .nullish(),
   technical_resource: z.array(z.lazy((): any => zTechnicalResource)).nullish(),
+  technical_resource_history: z
+    .array(z.lazy((): any => zTechnicalResourceHistory))
+    .nullish(),
 });
 
 /**
@@ -2026,9 +1260,18 @@ export const zControllableUnitSuspension = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zControllableUnitSuspensionComment))
+    .nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionCommentHistory))
     .nullish(),
 });
 
@@ -2045,6 +1288,9 @@ export const zControllableUnitSuspensionComment = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit_suspension: zControllableUnitSuspension.nullish(),
+  controllable_unit_suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistory))
+    .nullish(),
 });
 
 /**
@@ -2061,8 +1307,13 @@ export const zControllableUnitServiceProvider = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
   service_provider: z.lazy((): any => zParty).nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   end_user: z.lazy((): any => zParty).nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2096,6 +1347,9 @@ export const zControllableUnitSummary = z.object({
     })
     .readonly(),
   controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
 });
 
 /**
@@ -2125,6 +1379,9 @@ export const zServiceProvidingGroupPowerPerSubstation = z.object({
     )
     .readonly(),
   service_providing_group: z.lazy((): any => zServiceProvidingGroup).nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
 });
 
 /**
@@ -2166,6 +1423,9 @@ export const zServiceProvidingGroupSummary = z.object({
     })
     .readonly(),
   service_providing_group: z.lazy((): any => zServiceProvidingGroup).nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
 });
 
 /**
@@ -2183,20 +1443,36 @@ export const zServiceProvidingGroup = z.object({
   power_per_substation: zServiceProvidingGroupPowerPerSubstation.nullish(),
   summary: zServiceProvidingGroupSummary.nullish(),
   service_provider: z.lazy((): any => zParty).nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembership))
+    .nullish(),
+  membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistory))
     .nullish(),
   grid_prequalification: z
     .array(z.lazy((): any => zServiceProvidingGroupGridPrequalification))
     .nullish(),
+  grid_prequalification_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridPrequalificationHistory))
+    .nullish(),
   grid_suspension: z
     .array(z.lazy((): any => zServiceProvidingGroupGridSuspension))
+    .nullish(),
+  grid_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionHistory))
     .nullish(),
   product_application: z
     .array(z.lazy((): any => zServiceProvidingGroupProductApplication))
     .nullish(),
+  product_application_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationHistory))
+    .nullish(),
   product_suspension: z
     .array(z.lazy((): any => zServiceProvidingGroupProductSuspension))
+    .nullish(),
+  product_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionHistory))
     .nullish(),
 });
 
@@ -2212,7 +1488,13 @@ export const zServiceProvidingGroupMembership = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
 });
 
 /**
@@ -2227,9 +1509,22 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProvidingGroupGridPrequalificationComment))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridPrequalificationCommentHistory,
+      ),
+    )
     .nullish(),
 });
 
@@ -2247,6 +1542,9 @@ export const zServiceProvidingGroupGridPrequalificationComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_grid_prequalification:
     zServiceProvidingGroupGridPrequalification.nullish(),
+  service_providing_group_grid_prequalification_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridPrequalificationHistory))
+    .nullish(),
 });
 
 /**
@@ -2260,9 +1558,20 @@ export const zServiceProvidingGroupGridSuspension = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionComment))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionCommentHistory),
+    )
     .nullish(),
 });
 
@@ -2280,6 +1589,9 @@ export const zServiceProvidingGroupGridSuspensionComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_grid_suspension:
     zServiceProvidingGroupGridSuspension.nullish(),
+  service_providing_group_grid_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionHistory))
+    .nullish(),
 });
 
 /**
@@ -2302,7 +1614,11 @@ export const zEntity = z.object({
   recorded_by: z.coerce.number().readonly(),
   client: z.array(z.lazy((): any => zEntityClient)).nullish(),
   party: z.array(z.lazy((): any => zParty)).nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   party_membership: z.array(z.lazy((): any => zPartyMembership)).nullish(),
+  party_membership_history: z
+    .array(z.lazy((): any => zPartyMembershipHistory))
+    .nullish(),
   identity: z.array(z.lazy((): any => zIdentity)).nullish(),
 });
 
@@ -2327,6 +1643,7 @@ export const zEntityClient = z.object({
   recorded_by: z.coerce.number().readonly(),
   entity: zEntity.nullish(),
   party: z.lazy((): any => zParty).nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2365,6 +1682,7 @@ export const zPartyMembership = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   party: zParty.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   entity: zEntity.nullish(),
 });
 
@@ -2379,6 +1697,7 @@ export const zIdentity = z.object({
   party_name: z.string().readonly().optional(),
   entity: zEntity.nullish(),
   party: zParty.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2400,6 +1719,9 @@ export const zTechnicalResource = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
 });
 
 /**
@@ -2434,6 +1756,7 @@ export const zNotification = z.object({
   recorded_by: z.coerce.number().readonly(),
   event: zEvent.nullish(),
   party: zParty.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2450,7 +1773,11 @@ export const zAccountingPoint = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: z.array(zControllableUnit).nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistory))
+    .nullish(),
   system_operator: zParty.nullish(),
+  system_operator_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   balance_responsible_party: z
     .array(z.lazy((): any => zAccountingPointBalanceResponsibleParty))
     .nullish(),
@@ -2465,6 +1792,9 @@ export const zAccountingPoint = z.object({
     .array(z.lazy((): any => zAccountingPointMeteringGridArea))
     .nullish(),
   grid_location: z.lazy((): any => zAccountingPointGridLocation).nullish(),
+  grid_location_history: z
+    .array(z.lazy((): any => zAccountingPointGridLocationHistory))
+    .nullish(),
 });
 
 /**
@@ -2479,6 +1809,9 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
   valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
   accounting_point: zAccountingPoint.nullish(),
   balance_responsible_party: zParty.nullish(),
+  balance_responsible_party_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
 });
 
 /**
@@ -2502,6 +1835,7 @@ export const zAccountingPointEndUser = z.object({
   valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
   accounting_point: zAccountingPoint.nullish(),
   end_user: zParty.nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2514,6 +1848,7 @@ export const zAccountingPointEnergySupplier = z.object({
   valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
   accounting_point: zAccountingPoint.nullish(),
   energy_supplier: zParty.nullish(),
+  energy_supplier_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
 });
 
 /**
@@ -2576,6 +1911,9 @@ export const zProductType = z.object({
   system_operator_product_type: z
     .array(z.lazy((): any => zSystemOperatorProductType))
     .nullish(),
+  system_operator_product_type_history: z
+    .array(z.lazy((): any => zSystemOperatorProductTypeHistory))
+    .nullish(),
 });
 
 /**
@@ -2589,6 +1927,7 @@ export const zSystemOperatorProductType = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   system_operator: zParty.nullish(),
+  system_operator_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   product_type: zProductType.nullish(),
 });
 
@@ -2605,9 +1944,14 @@ export const zServiceProviderProductApplication = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_provider: zParty.nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   system_operator: zParty.nullish(),
+  system_operator_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProviderProductApplicationComment))
+    .nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zServiceProviderProductApplicationCommentHistory))
     .nullish(),
 });
 
@@ -2625,6 +1969,9 @@ export const zServiceProviderProductApplicationComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_provider_product_application:
     zServiceProviderProductApplication.nullish(),
+  service_provider_product_application_history: z
+    .array(z.lazy((): any => zServiceProviderProductApplicationHistory))
+    .nullish(),
 });
 
 /**
@@ -2639,9 +1986,16 @@ export const zServiceProviderProductSuspension = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   service_provider: zParty.nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProviderProductSuspensionComment))
+    .nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zServiceProviderProductSuspensionCommentHistory))
     .nullish(),
 });
 
@@ -2659,6 +2013,9 @@ export const zServiceProviderProductSuspensionComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_provider_product_suspension:
     zServiceProviderProductSuspension.nullish(),
+  service_provider_product_suspension_history: z
+    .array(z.lazy((): any => zServiceProviderProductSuspensionHistory))
+    .nullish(),
 });
 
 /**
@@ -2681,14 +2038,32 @@ export const zServiceProvidingGroupProductApplication = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
   procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   attachment: z
     .array(
       z.lazy((): any => zServiceProvidingGroupProductApplicationAttachment),
     )
     .nullish(),
+  attachment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationAttachmentHistory,
+      ),
+    )
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProvidingGroupProductApplicationComment))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductApplicationCommentHistory),
+    )
     .nullish(),
 });
 
@@ -2707,6 +2082,9 @@ export const zServiceProvidingGroupProductApplicationAttachment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_product_application:
     zServiceProvidingGroupProductApplication.nullish(),
+  service_providing_group_product_application_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationHistory))
+    .nullish(),
 });
 
 /**
@@ -2723,6 +2101,9 @@ export const zServiceProvidingGroupProductApplicationComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_product_application:
     zServiceProvidingGroupProductApplication.nullish(),
+  service_providing_group_product_application_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationHistory))
+    .nullish(),
 });
 
 /**
@@ -2737,9 +2118,20 @@ export const zServiceProvidingGroupProductSuspension = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistory))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionComment))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionCommentHistory),
+    )
     .nullish(),
 });
 
@@ -2757,6 +2149,9 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_product_suspension:
     zServiceProvidingGroupProductSuspension.nullish(),
+  service_providing_group_product_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionHistory))
+    .nullish(),
 });
 
 /**
@@ -2779,6 +2174,640 @@ export const zNotice = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   party: zParty.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
+});
+
+/**
+ * Controllable unit - history
+ */
+export const zControllableUnitHistory = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    )
+    .readonly(),
+  name: z.string().max(512),
+  start_date: z.iso.date().optional(),
+  status: zControllableUnitStatus,
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  is_small: z.boolean().readonly(),
+  accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  accounting_point: zAccountingPoint.nullish(),
+  suspension: z.array(zControllableUnitSuspension).nullish(),
+  suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistory))
+    .nullish(),
+  service_provider: z.array(zControllableUnitServiceProvider).nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zControllableUnitServiceProviderHistory))
+    .nullish(),
+  summary: zControllableUnitSummary.nullish(),
+  service_providing_group_membership: z
+    .array(zServiceProvidingGroupMembership)
+    .nullish(),
+  service_providing_group_membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistory))
+    .nullish(),
+  technical_resource: z.array(zTechnicalResource).nullish(),
+  technical_resource_history: z
+    .array(z.lazy((): any => zTechnicalResourceHistory))
+    .nullish(),
+});
+
+/**
+ * Controllable Unit Suspension - history
+ */
+export const zControllableUnitSuspensionHistory = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
+  reason: zControllableUnitSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z.array(zControllableUnitHistory).nullish(),
+  impacted_system_operator: zParty.nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
+  comment: z.array(zControllableUnitSuspensionComment).nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionCommentHistory))
+    .nullish(),
+});
+
+/**
+ * Controllable Unit Suspension Comment - history
+ */
+export const zControllableUnitSuspensionCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zControllableUnitSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit_suspension_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit_suspension: zControllableUnitSuspension.nullish(),
+  controllable_unit_suspension_history: z
+    .array(zControllableUnitSuspensionHistory)
+    .nullish(),
+});
+
+/**
+ * Relation between controllable unit and service provider - history
+ */
+export const zControllableUnitServiceProviderHistory = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
+  contract_reference: z.string().max(128),
+  valid_from: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit_service_provider_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z.array(zControllableUnitHistory).nullish(),
+  service_provider: zParty.nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
+  end_user: zParty.nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
+});
+
+/**
+ * Service providing group - history
+ */
+export const zServiceProvidingGroupHistory = z.object({
+  id: z.coerce.number().readonly(),
+  name: z.string().max(128),
+  service_provider_id: z.coerce.number(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: zServiceProvidingGroupStatus,
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  power_per_substation: zServiceProvidingGroupPowerPerSubstation.nullish(),
+  summary: zServiceProvidingGroupSummary.nullish(),
+  service_provider: zParty.nullish(),
+  service_provider_history: z.array(z.lazy((): any => zPartyHistory)).nullish(),
+  membership: z.array(zServiceProvidingGroupMembership).nullish(),
+  membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistory))
+    .nullish(),
+  grid_prequalification: z
+    .array(zServiceProvidingGroupGridPrequalification)
+    .nullish(),
+  grid_prequalification_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridPrequalificationHistory))
+    .nullish(),
+  grid_suspension: z.array(zServiceProvidingGroupGridSuspension).nullish(),
+  grid_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionHistory))
+    .nullish(),
+  product_application: z
+    .array(zServiceProvidingGroupProductApplication)
+    .nullish(),
+  product_application_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationHistory))
+    .nullish(),
+  product_suspension: z
+    .array(zServiceProvidingGroupProductSuspension)
+    .nullish(),
+  product_suspension_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionHistory))
+    .nullish(),
+});
+
+/**
+ * Membership relation of controllable unit in service providing group - history
+ */
+export const zServiceProvidingGroupMembershipHistory = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  valid_from: z.iso.datetime({ offset: true }),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_membership_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z.array(zControllableUnitHistory).nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistory)
+    .nullish(),
+});
+
+/**
+ * Grid prequalification for service providing group - history
+ */
+export const zServiceProvidingGroupGridPrequalificationHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
+  status: zServiceProvidingGroupGridPrequalificationStatus,
+  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_grid_prequalification_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistory)
+    .nullish(),
+  impacted_system_operator: zParty.nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
+  comment: z.array(zServiceProvidingGroupGridPrequalificationComment).nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridPrequalificationCommentHistory,
+      ),
+    )
+    .nullish(),
+});
+
+/**
+ * Grid prequalification for service providing group Comment - history
+ */
+export const zServiceProvidingGroupGridPrequalificationCommentHistory =
+  z.object({
+    id: z.coerce.number().readonly(),
+    service_providing_group_grid_prequalification_id: z.coerce.number(),
+    created_by: z.coerce.number().readonly(),
+    created_at: z.iso.datetime({ offset: true }).readonly(),
+    visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
+    content: z.string().max(2048),
+    recorded_at: z.iso.datetime({ offset: true }).readonly(),
+    recorded_by: z.coerce.number().readonly(),
+    service_providing_group_grid_prequalification_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_grid_prequalification:
+      zServiceProvidingGroupGridPrequalification.nullish(),
+    service_providing_group_grid_prequalification_history: z
+      .array(zServiceProvidingGroupGridPrequalificationHistory)
+      .nullish(),
+  });
+
+/**
+ * Service Providing Group Grid Suspension - history
+ */
+export const zServiceProvidingGroupGridSuspensionHistory = z.object({
+  id: z.coerce.number().readonly(),
+  impacted_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  impacted_system_operator: zParty.nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistory))
+    .nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistory)
+    .nullish(),
+  comment: z.array(zServiceProvidingGroupGridSuspensionComment).nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionCommentHistory),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Grid Suspension Comment - history
+ */
+export const zServiceProvidingGroupGridSuspensionCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group_grid_suspension:
+    zServiceProvidingGroupGridSuspension.nullish(),
+  service_providing_group_grid_suspension_history: z
+    .array(zServiceProvidingGroupGridSuspensionHistory)
+    .nullish(),
+});
+
+/**
+ * Party - history
+ */
+export const zPartyHistory = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z.string(),
+  business_id_type: zPartyBusinessIdType,
+  entity_id: z.coerce.number(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: zPartyStatus,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  party_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  entity: zEntity.nullish(),
+});
+
+/**
+ * Party Membership - history
+ */
+export const zPartyMembershipHistory = z.object({
+  id: z.coerce.number().readonly(),
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
+  scopes: z.array(zAuthScope),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  party_membership_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  party: zParty.nullish(),
+  party_history: z.array(zPartyHistory).nullish(),
+  entity: zEntity.nullish(),
+});
+
+/**
+ * Technical Resource - history
+ */
+export const zTechnicalResourceHistory = z.object({
+  id: z.coerce.number().readonly(),
+  name: z.string(),
+  controllable_unit_id: z.coerce.number(),
+  technology: z.array(zTechnology).min(1),
+  category: z.array(zCategory).readonly(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  technical_resource_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnit.nullish(),
+  controllable_unit_history: z.array(zControllableUnitHistory).nullish(),
+});
+
+/**
+ * Accounting Point Grid Location - history
+ */
+export const zAccountingPointGridLocationHistory = z.object({
+  id: z.coerce.number().readonly(),
+  accounting_point_id: z.coerce.number(),
+  object_type: zAccountingPointGridLocationObjectType,
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    ),
+  name: z.string().max(512),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
+  additional_information: z.string().optional(),
+  source: zAccountingPointGridLocationSource.readonly(),
+  quality: zAccountingPointGridLocationQuality,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  accounting_point_grid_location_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  accounting_point: zAccountingPoint.nullish(),
+});
+
+/**
+ * System Operator Product Type - history
+ */
+export const zSystemOperatorProductTypeHistory = z.object({
+  id: z.coerce.number().readonly(),
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
+  status: zSystemOperatorProductTypeStatus,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  system_operator_product_type_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  system_operator: zParty.nullish(),
+  system_operator_history: z.array(zPartyHistory).nullish(),
+  product_type: zProductType.nullish(),
+});
+
+/**
+ * Service Provider Product Application - history
+ */
+export const zServiceProviderProductApplicationHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  status: zServiceProviderProductApplicationStatus,
+  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_application_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider: zParty.nullish(),
+  service_provider_history: z.array(zPartyHistory).nullish(),
+  system_operator: zParty.nullish(),
+  system_operator_history: z.array(zPartyHistory).nullish(),
+  comment: z.array(zServiceProviderProductApplicationComment).nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zServiceProviderProductApplicationCommentHistory))
+    .nullish(),
+});
+
+/**
+ * Service Provider Product Application Comment - history
+ */
+export const zServiceProviderProductApplicationCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProviderProductApplicationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_application_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider_product_application:
+    zServiceProviderProductApplication.nullish(),
+  service_provider_product_application_history: z
+    .array(zServiceProviderProductApplicationHistory)
+    .nullish(),
+});
+
+/**
+ * Service Provider Product Suspension - history
+ */
+export const zServiceProviderProductSuspensionHistory = z.object({
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProviderProductSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z.array(zPartyHistory).nullish(),
+  service_provider: zParty.nullish(),
+  service_provider_history: z.array(zPartyHistory).nullish(),
+  comment: z.array(zServiceProviderProductSuspensionComment).nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zServiceProviderProductSuspensionCommentHistory))
+    .nullish(),
+});
+
+/**
+ * Service Provider Product Suspension Comment - history
+ */
+export const zServiceProviderProductSuspensionCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_product_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProviderProductSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_suspension_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider_product_suspension:
+    zServiceProviderProductSuspension.nullish(),
+  service_provider_product_suspension_history: z
+    .array(zServiceProviderProductSuspensionHistory)
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Product Application - history
+ */
+export const zServiceProvidingGroupProductApplicationHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  procuring_system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  status: zServiceProvidingGroupProductApplicationStatus,
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  additional_information: z.string().max(512).optional(),
+  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  verified_at: z.iso.datetime({ offset: true }).optional(),
+  ramping_capability:
+    zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
+  ramping_description: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_application_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistory)
+    .nullish(),
+  procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z.array(zPartyHistory).nullish(),
+  attachment: z
+    .array(zServiceProvidingGroupProductApplicationAttachment)
+    .nullish(),
+  attachment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationAttachmentHistory,
+      ),
+    )
+    .nullish(),
+  comment: z.array(zServiceProvidingGroupProductApplicationComment).nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductApplicationCommentHistory),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Product Application Attachment - history
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentHistory =
+  z.object({
+    id: z.coerce.number().readonly(),
+    service_providing_group_product_application_id: z.coerce.number(),
+    object_id: z.string(),
+    filename: z.string(),
+    filename_sanitised: z.string(),
+    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+    size_bytes: z.coerce.number(),
+    recorded_at: z.iso.datetime({ offset: true }).readonly(),
+    recorded_by: z.coerce.number().readonly(),
+    service_providing_group_product_application_attachment_id:
+      z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_product_application:
+      zServiceProvidingGroupProductApplication.nullish(),
+    service_providing_group_product_application_history: z
+      .array(zServiceProvidingGroupProductApplicationHistory)
+      .nullish(),
+  });
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export const zServiceProvidingGroupProductApplicationCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_application_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group_product_application:
+    zServiceProvidingGroupProductApplication.nullish(),
+  service_providing_group_product_application_history: z
+    .array(zServiceProvidingGroupProductApplicationHistory)
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Product Suspension - history
+ */
+export const zServiceProvidingGroupProductSuspensionHistory = z.object({
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  procuring_system_operator: zParty.nullish(),
+  procuring_system_operator_history: z.array(zPartyHistory).nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistory)
+    .nullish(),
+  comment: z.array(zServiceProvidingGroupProductSuspensionComment).nullish(),
+  comment_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionCommentHistory),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Product Suspension Comment - history
+ */
+export const zServiceProvidingGroupProductSuspensionCommentHistory = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_suspension_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group_product_suspension:
+    zServiceProvidingGroupProductSuspension.nullish(),
+  service_providing_group_product_suspension_history: z
+    .array(zServiceProvidingGroupProductSuspensionHistory)
+    .nullish(),
 });
 
 /**
@@ -2821,15 +2850,27 @@ export const zControllableUnitWritable = z.object({
   suspension: z
     .array(z.lazy((): any => zControllableUnitSuspensionWritable))
     .nullish(),
+  suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistoryWritable))
+    .nullish(),
   service_provider: z
     .array(z.lazy((): any => zControllableUnitServiceProviderWritable))
+    .nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zControllableUnitServiceProviderHistoryWritable))
     .nullish(),
   summary: z.lazy((): any => zControllableUnitSummaryWritable).nullish(),
   service_providing_group_membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
     .nullish(),
+  service_providing_group_membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistoryWritable))
+    .nullish(),
   technical_resource: z
     .array(z.lazy((): any => zTechnicalResourceWritable))
+    .nullish(),
+  technical_resource_history: z
+    .array(z.lazy((): any => zTechnicalResourceHistoryWritable))
     .nullish(),
 });
 
@@ -2841,9 +2882,18 @@ export const zControllableUnitSuspensionWritable = z.object({
   impacted_system_operator_id: z.coerce.number(),
   reason: zControllableUnitSuspensionReason,
   controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zControllableUnitSuspensionCommentWritable))
+    .nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionCommentHistoryWritable))
     .nullish(),
 });
 
@@ -2855,6 +2905,9 @@ export const zControllableUnitSuspensionCommentWritable = z.object({
   visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
   controllable_unit_suspension: zControllableUnitSuspensionWritable.nullish(),
+  controllable_unit_suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -2868,8 +2921,15 @@ export const zControllableUnitServiceProviderWritable = z.object({
   valid_from: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.iso.datetime({ offset: true }).optional(),
   controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   end_user: z.lazy((): any => zPartyWritable).nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
 
 /**
@@ -2877,6 +2937,9 @@ export const zControllableUnitServiceProviderWritable = z.object({
  */
 export const zControllableUnitSummaryWritable = z.object({
   controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -2886,6 +2949,9 @@ export const zServiceProvidingGroupPowerPerSubstationWritable = z.object({
   service_providing_group: z
     .lazy((): any => zServiceProvidingGroupWritable)
     .nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -2894,6 +2960,9 @@ export const zServiceProvidingGroupPowerPerSubstationWritable = z.object({
 export const zServiceProvidingGroupSummaryWritable = z.object({
   service_providing_group: z
     .lazy((): any => zServiceProvidingGroupWritable)
+    .nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
     .nullish(),
 });
 
@@ -2910,22 +2979,52 @@ export const zServiceProvidingGroupWritable = z.object({
     zServiceProvidingGroupPowerPerSubstationWritable.nullish(),
   summary: zServiceProvidingGroupSummaryWritable.nullish(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
+    .nullish(),
+  membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistoryWritable))
     .nullish(),
   grid_prequalification: z
     .array(
       z.lazy((): any => zServiceProvidingGroupGridPrequalificationWritable),
     )
     .nullish(),
+  grid_prequalification_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridPrequalificationHistoryWritable,
+      ),
+    )
+    .nullish(),
   grid_suspension: z
     .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionWritable))
+    .nullish(),
+  grid_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionHistoryWritable),
+    )
     .nullish(),
   product_application: z
     .array(z.lazy((): any => zServiceProvidingGroupProductApplicationWritable))
     .nullish(),
+  product_application_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationHistoryWritable,
+      ),
+    )
+    .nullish(),
   product_suspension: z
     .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionWritable))
+    .nullish(),
+  product_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionHistoryWritable),
+    )
     .nullish(),
 });
 
@@ -2938,7 +3037,13 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
   valid_from: z.iso.datetime({ offset: true }),
   valid_to: z.iso.datetime({ offset: true }).optional(),
   controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -2950,11 +3055,25 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   comment: z
     .array(
       z.lazy(
         (): any => zServiceProvidingGroupGridPrequalificationCommentWritable,
+      ),
+    )
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any =>
+          zServiceProvidingGroupGridPrequalificationCommentHistoryWritable,
       ),
     )
     .nullish(),
@@ -2970,6 +3089,13 @@ export const zServiceProvidingGroupGridPrequalificationCommentWritable =
     content: z.string().max(2048),
     service_providing_group_grid_prequalification:
       zServiceProvidingGroupGridPrequalificationWritable.nullish(),
+    service_providing_group_grid_prequalification_history: z
+      .array(
+        z.lazy(
+          (): any => zServiceProvidingGroupGridPrequalificationHistoryWritable,
+        ),
+      )
+      .nullish(),
   });
 
 /**
@@ -2980,10 +3106,23 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
   service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
   comment: z
     .array(
       z.lazy((): any => zServiceProvidingGroupGridSuspensionCommentWritable),
+    )
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridSuspensionCommentHistoryWritable,
+      ),
     )
     .nullish(),
 });
@@ -2997,6 +3136,11 @@ export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
   content: z.string().max(2048),
   service_providing_group_grid_suspension:
     zServiceProvidingGroupGridSuspensionWritable.nullish(),
+  service_providing_group_grid_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionHistoryWritable),
+    )
+    .nullish(),
 });
 
 /**
@@ -3016,8 +3160,12 @@ export const zEntityWritable = z.object({
   type: zEntityType,
   client: z.array(z.lazy((): any => zEntityClientWritable)).nullish(),
   party: z.array(z.lazy((): any => zPartyWritable)).nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
   party_membership: z
     .array(z.lazy((): any => zPartyMembershipWritable))
+    .nullish(),
+  party_membership_history: z
+    .array(z.lazy((): any => zPartyMembershipHistoryWritable))
     .nullish(),
   identity: z.array(z.lazy((): any => zIdentityWritable)).nullish(),
 });
@@ -3039,6 +3187,7 @@ export const zEntityClientWritable = z.object({
     .optional(),
   entity: zEntityWritable.nullish(),
   party: z.lazy((): any => zPartyWritable).nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
 
 /**
@@ -3071,6 +3220,7 @@ export const zPartyMembershipWritable = z.object({
   entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
   party: zPartyWritable.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
   entity: zEntityWritable.nullish(),
 });
 
@@ -3080,6 +3230,7 @@ export const zPartyMembershipWritable = z.object({
 export const zIdentityWritable = z.object({
   entity: zEntityWritable.nullish(),
   party: zPartyWritable.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
 
 /**
@@ -3097,6 +3248,9 @@ export const zTechnicalResourceWritable = z.object({
   business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
   controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3115,6 +3269,7 @@ export const zNotificationWritable = z.object({
   party_id: z.coerce.number(),
   event: zEventWritable.nullish(),
   party: zPartyWritable.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
 
 /**
@@ -3122,7 +3277,13 @@ export const zNotificationWritable = z.object({
  */
 export const zAccountingPointWritable = z.object({
   controllable_unit: z.array(zControllableUnitWritable).nullish(),
+  controllable_unit_history: z
+    .array(z.lazy((): any => zControllableUnitHistoryWritable))
+    .nullish(),
   system_operator: zPartyWritable.nullish(),
+  system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   balance_responsible_party: z
     .array(z.lazy((): any => zAccountingPointBalanceResponsiblePartyWritable))
     .nullish(),
@@ -3141,6 +3302,9 @@ export const zAccountingPointWritable = z.object({
   grid_location: z
     .lazy((): any => zAccountingPointGridLocationWritable)
     .nullish(),
+  grid_location_history: z
+    .array(z.lazy((): any => zAccountingPointGridLocationHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3149,6 +3313,9 @@ export const zAccountingPointWritable = z.object({
 export const zAccountingPointBalanceResponsiblePartyWritable = z.object({
   accounting_point: zAccountingPointWritable.nullish(),
   balance_responsible_party: zPartyWritable.nullish(),
+  balance_responsible_party_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3165,6 +3332,7 @@ export const zAccountingPointBiddingZoneWritable = z.object({
 export const zAccountingPointEndUserWritable = z.object({
   accounting_point: zAccountingPointWritable.nullish(),
   end_user: zPartyWritable.nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
 
 /**
@@ -3173,6 +3341,9 @@ export const zAccountingPointEndUserWritable = z.object({
 export const zAccountingPointEnergySupplierWritable = z.object({
   accounting_point: zAccountingPointWritable.nullish(),
   energy_supplier: zPartyWritable.nullish(),
+  energy_supplier_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3217,6 +3388,9 @@ export const zProductTypeWritable = z.object({
   system_operator_product_type: z
     .array(z.lazy((): any => zSystemOperatorProductTypeWritable))
     .nullish(),
+  system_operator_product_type_history: z
+    .array(z.lazy((): any => zSystemOperatorProductTypeHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3227,6 +3401,9 @@ export const zSystemOperatorProductTypeWritable = z.object({
   product_type_id: z.coerce.number(),
   status: zSystemOperatorProductTypeStatus,
   system_operator: zPartyWritable.nullish(),
+  system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   product_type: zProductTypeWritable.nullish(),
 });
 
@@ -3240,9 +3417,22 @@ export const zServiceProviderProductApplicationWritable = z.object({
   status: zServiceProviderProductApplicationStatus,
   qualified_at: z.iso.datetime({ offset: true }).optional(),
   service_provider: zPartyWritable.nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   system_operator: zPartyWritable.nullish(),
+  system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProviderProductApplicationCommentWritable))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProviderProductApplicationCommentHistoryWritable,
+      ),
+    )
     .nullish(),
 });
 
@@ -3255,6 +3445,9 @@ export const zServiceProviderProductApplicationCommentWritable = z.object({
   content: z.string().max(2048),
   service_provider_product_application:
     zServiceProviderProductApplicationWritable.nullish(),
+  service_provider_product_application_history: z
+    .array(z.lazy((): any => zServiceProviderProductApplicationHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3266,9 +3459,22 @@ export const zServiceProviderProductSuspensionWritable = z.object({
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
   procuring_system_operator: zPartyWritable.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   service_provider: zPartyWritable.nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProviderProductSuspensionCommentWritable))
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProviderProductSuspensionCommentHistoryWritable,
+      ),
+    )
     .nullish(),
 });
 
@@ -3281,6 +3487,9 @@ export const zServiceProviderProductSuspensionCommentWritable = z.object({
   content: z.string().max(2048),
   service_provider_product_suspension:
     zServiceProviderProductSuspensionWritable.nullish(),
+  service_provider_product_suspension_history: z
+    .array(z.lazy((): any => zServiceProviderProductSuspensionHistoryWritable))
+    .nullish(),
 });
 
 /**
@@ -3300,7 +3509,13 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
     zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
   ramping_description: z.string().optional(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
   procuring_system_operator: zPartyWritable.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   attachment: z
     .array(
       z.lazy(
@@ -3308,10 +3523,26 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
       ),
     )
     .nullish(),
+  attachment_history: z
+    .array(
+      z.lazy(
+        (): any =>
+          zServiceProvidingGroupProductApplicationAttachmentHistoryWritable,
+      ),
+    )
+    .nullish(),
   comment: z
     .array(
       z.lazy(
         (): any => zServiceProvidingGroupProductApplicationCommentWritable,
+      ),
+    )
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any =>
+          zServiceProvidingGroupProductApplicationCommentHistoryWritable,
       ),
     )
     .nullish(),
@@ -3330,6 +3561,13 @@ export const zServiceProvidingGroupProductApplicationAttachmentWritable =
     size_bytes: z.coerce.number(),
     service_providing_group_product_application:
       zServiceProvidingGroupProductApplicationWritable.nullish(),
+    service_providing_group_product_application_history: z
+      .array(
+        z.lazy(
+          (): any => zServiceProvidingGroupProductApplicationHistoryWritable,
+        ),
+      )
+      .nullish(),
   });
 
 /**
@@ -3342,6 +3580,13 @@ export const zServiceProvidingGroupProductApplicationCommentWritable = z.object(
     content: z.string().max(2048),
     service_providing_group_product_application:
       zServiceProvidingGroupProductApplicationWritable.nullish(),
+    service_providing_group_product_application_history: z
+      .array(
+        z.lazy(
+          (): any => zServiceProvidingGroupProductApplicationHistoryWritable,
+        ),
+      )
+      .nullish(),
   },
 );
 
@@ -3354,10 +3599,24 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
   procuring_system_operator: zPartyWritable.nullish(),
+  procuring_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupHistoryWritable))
+    .nullish(),
   comment: z
     .array(
       z.lazy((): any => zServiceProvidingGroupProductSuspensionCommentWritable),
+    )
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any =>
+          zServiceProvidingGroupProductSuspensionCommentHistoryWritable,
+      ),
     )
     .nullish(),
 });
@@ -3371,6 +3630,11 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
   content: z.string().max(2048),
   service_providing_group_product_suspension:
     zServiceProvidingGroupProductSuspensionWritable.nullish(),
+  service_providing_group_product_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionHistoryWritable),
+    )
+    .nullish(),
 });
 
 /**
@@ -3379,7 +3643,608 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
 export const zNoticeWritable = z.object({
   status: zNoticeStatus,
   party: zPartyWritable.nullish(),
+  party_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
 });
+
+/**
+ * Controllable unit - history
+ */
+export const zControllableUnitHistoryWritable = z.object({
+  name: z.string().max(512),
+  start_date: z.iso.date().optional(),
+  status: zControllableUnitStatus,
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
+  controllable_unit_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  accounting_point: zAccountingPointWritable.nullish(),
+  suspension: z.array(zControllableUnitSuspensionWritable).nullish(),
+  suspension_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionHistoryWritable))
+    .nullish(),
+  service_provider: z.array(zControllableUnitServiceProviderWritable).nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zControllableUnitServiceProviderHistoryWritable))
+    .nullish(),
+  summary: zControllableUnitSummaryWritable.nullish(),
+  service_providing_group_membership: z
+    .array(zServiceProvidingGroupMembershipWritable)
+    .nullish(),
+  service_providing_group_membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistoryWritable))
+    .nullish(),
+  technical_resource: z.array(zTechnicalResourceWritable).nullish(),
+  technical_resource_history: z
+    .array(z.lazy((): any => zTechnicalResourceHistoryWritable))
+    .nullish(),
+});
+
+/**
+ * Controllable Unit Suspension - history
+ */
+export const zControllableUnitSuspensionHistoryWritable = z.object({
+  controllable_unit_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
+  reason: zControllableUnitSuspensionReason,
+  controllable_unit_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(zControllableUnitHistoryWritable)
+    .nullish(),
+  impacted_system_operator: zPartyWritable.nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
+  comment: z.array(zControllableUnitSuspensionCommentWritable).nullish(),
+  comment_history: z
+    .array(z.lazy((): any => zControllableUnitSuspensionCommentHistoryWritable))
+    .nullish(),
+});
+
+/**
+ * Controllable Unit Suspension Comment - history
+ */
+export const zControllableUnitSuspensionCommentHistoryWritable = z.object({
+  controllable_unit_suspension_id: z.coerce.number(),
+  visibility: zControllableUnitSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  controllable_unit_suspension_comment_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit_suspension: zControllableUnitSuspensionWritable.nullish(),
+  controllable_unit_suspension_history: z
+    .array(zControllableUnitSuspensionHistoryWritable)
+    .nullish(),
+});
+
+/**
+ * Relation between controllable unit and service provider - history
+ */
+export const zControllableUnitServiceProviderHistoryWritable = z.object({
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
+  contract_reference: z.string().max(128),
+  valid_from: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit_service_provider_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(zControllableUnitHistoryWritable)
+    .nullish(),
+  service_provider: zPartyWritable.nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
+  end_user: zPartyWritable.nullish(),
+  end_user_history: z.array(z.lazy((): any => zPartyHistoryWritable)).nullish(),
+});
+
+/**
+ * Service providing group - history
+ */
+export const zServiceProvidingGroupHistoryWritable = z.object({
+  name: z.string().max(128),
+  service_provider_id: z.coerce.number(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: zServiceProvidingGroupStatus,
+  additional_information: z.string().optional(),
+  service_providing_group_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  power_per_substation:
+    zServiceProvidingGroupPowerPerSubstationWritable.nullish(),
+  summary: zServiceProvidingGroupSummaryWritable.nullish(),
+  service_provider: zPartyWritable.nullish(),
+  service_provider_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
+  membership: z.array(zServiceProvidingGroupMembershipWritable).nullish(),
+  membership_history: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipHistoryWritable))
+    .nullish(),
+  grid_prequalification: z
+    .array(zServiceProvidingGroupGridPrequalificationWritable)
+    .nullish(),
+  grid_prequalification_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridPrequalificationHistoryWritable,
+      ),
+    )
+    .nullish(),
+  grid_suspension: z
+    .array(zServiceProvidingGroupGridSuspensionWritable)
+    .nullish(),
+  grid_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionHistoryWritable),
+    )
+    .nullish(),
+  product_application: z
+    .array(zServiceProvidingGroupProductApplicationWritable)
+    .nullish(),
+  product_application_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationHistoryWritable,
+      ),
+    )
+    .nullish(),
+  product_suspension: z
+    .array(zServiceProvidingGroupProductSuspensionWritable)
+    .nullish(),
+  product_suspension_history: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionHistoryWritable),
+    )
+    .nullish(),
+});
+
+/**
+ * Membership relation of controllable unit in service providing group - history
+ */
+export const zServiceProvidingGroupMembershipHistoryWritable = z.object({
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  valid_from: z.iso.datetime({ offset: true }),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group_membership_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(zControllableUnitHistoryWritable)
+    .nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistoryWritable)
+    .nullish(),
+});
+
+/**
+ * Grid prequalification for service providing group - history
+ */
+export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
+  z.object({
+    service_providing_group_id: z.coerce.number(),
+    impacted_system_operator_id: z.coerce.number(),
+    status: zServiceProvidingGroupGridPrequalificationStatus,
+    prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_grid_prequalification_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group: zServiceProvidingGroupWritable.nullish(),
+    service_providing_group_history: z
+      .array(zServiceProvidingGroupHistoryWritable)
+      .nullish(),
+    impacted_system_operator: zPartyWritable.nullish(),
+    impacted_system_operator_history: z
+      .array(z.lazy((): any => zPartyHistoryWritable))
+      .nullish(),
+    comment: z
+      .array(zServiceProvidingGroupGridPrequalificationCommentWritable)
+      .nullish(),
+    comment_history: z
+      .array(
+        z.lazy(
+          (): any =>
+            zServiceProvidingGroupGridPrequalificationCommentHistoryWritable,
+        ),
+      )
+      .nullish(),
+  });
+
+/**
+ * Grid prequalification for service providing group Comment - history
+ */
+export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
+  z.object({
+    service_providing_group_grid_prequalification_id: z.coerce.number(),
+    visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
+    content: z.string().max(2048),
+    service_providing_group_grid_prequalification_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_grid_prequalification:
+      zServiceProvidingGroupGridPrequalificationWritable.nullish(),
+    service_providing_group_grid_prequalification_history: z
+      .array(zServiceProvidingGroupGridPrequalificationHistoryWritable)
+      .nullish(),
+  });
+
+/**
+ * Service Providing Group Grid Suspension - history
+ */
+export const zServiceProvidingGroupGridSuspensionHistoryWritable = z.object({
+  impacted_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+  service_providing_group_grid_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  impacted_system_operator: zPartyWritable.nullish(),
+  impacted_system_operator_history: z
+    .array(z.lazy((): any => zPartyHistoryWritable))
+    .nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistoryWritable)
+    .nullish(),
+  comment: z
+    .array(zServiceProvidingGroupGridSuspensionCommentWritable)
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridSuspensionCommentHistoryWritable,
+      ),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Grid Suspension Comment - history
+ */
+export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
+  z.object({
+    service_providing_group_grid_suspension_id: z.coerce.number(),
+    visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
+    content: z.string().max(2048),
+    service_providing_group_grid_suspension_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_grid_suspension:
+      zServiceProvidingGroupGridSuspensionWritable.nullish(),
+    service_providing_group_grid_suspension_history: z
+      .array(zServiceProvidingGroupGridSuspensionHistoryWritable)
+      .nullish(),
+  });
+
+/**
+ * Party - history
+ */
+export const zPartyHistoryWritable = z.object({
+  business_id: z.string(),
+  business_id_type: zPartyBusinessIdType,
+  entity_id: z.coerce.number(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: zPartyStatus,
+  party_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  entity: zEntityWritable.nullish(),
+});
+
+/**
+ * Party Membership - history
+ */
+export const zPartyMembershipHistoryWritable = z.object({
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
+  scopes: z.array(zAuthScope),
+  party_membership_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  party: zPartyWritable.nullish(),
+  party_history: z.array(zPartyHistoryWritable).nullish(),
+  entity: zEntityWritable.nullish(),
+});
+
+/**
+ * Technical Resource - history
+ */
+export const zTechnicalResourceHistoryWritable = z.object({
+  name: z.string(),
+  controllable_unit_id: z.coerce.number(),
+  technology: z.array(zTechnology).min(1),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
+  technical_resource_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit_history: z
+    .array(zControllableUnitHistoryWritable)
+    .nullish(),
+});
+
+/**
+ * Accounting Point Grid Location - history
+ */
+export const zAccountingPointGridLocationHistoryWritable = z.object({
+  accounting_point_id: z.coerce.number(),
+  object_type: zAccountingPointGridLocationObjectType,
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    ),
+  name: z.string().max(512),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
+  additional_information: z.string().optional(),
+  quality: zAccountingPointGridLocationQuality,
+  accounting_point_grid_location_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  accounting_point: zAccountingPointWritable.nullish(),
+});
+
+/**
+ * System Operator Product Type - history
+ */
+export const zSystemOperatorProductTypeHistoryWritable = z.object({
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
+  status: zSystemOperatorProductTypeStatus,
+  system_operator_product_type_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  system_operator: zPartyWritable.nullish(),
+  system_operator_history: z.array(zPartyHistoryWritable).nullish(),
+  product_type: zProductTypeWritable.nullish(),
+});
+
+/**
+ * Service Provider Product Application - history
+ */
+export const zServiceProviderProductApplicationHistoryWritable = z.object({
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  status: zServiceProviderProductApplicationStatus,
+  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider_product_application_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider: zPartyWritable.nullish(),
+  service_provider_history: z.array(zPartyHistoryWritable).nullish(),
+  system_operator: zPartyWritable.nullish(),
+  system_operator_history: z.array(zPartyHistoryWritable).nullish(),
+  comment: z.array(zServiceProviderProductApplicationCommentWritable).nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProviderProductApplicationCommentHistoryWritable,
+      ),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Provider Product Application Comment - history
+ */
+export const zServiceProviderProductApplicationCommentHistoryWritable =
+  z.object({
+    service_provider_product_application_id: z.coerce.number(),
+    visibility: zServiceProviderProductApplicationCommentVisibility,
+    content: z.string().max(2048),
+    service_provider_product_application_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_provider_product_application:
+      zServiceProviderProductApplicationWritable.nullish(),
+    service_provider_product_application_history: z
+      .array(zServiceProviderProductApplicationHistoryWritable)
+      .nullish(),
+  });
+
+/**
+ * Service Provider Product Suspension - history
+ */
+export const zServiceProviderProductSuspensionHistoryWritable = z.object({
+  procuring_system_operator_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProviderProductSuspensionReason,
+  service_provider_product_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  procuring_system_operator: zPartyWritable.nullish(),
+  procuring_system_operator_history: z.array(zPartyHistoryWritable).nullish(),
+  service_provider: zPartyWritable.nullish(),
+  service_provider_history: z.array(zPartyHistoryWritable).nullish(),
+  comment: z.array(zServiceProviderProductSuspensionCommentWritable).nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any => zServiceProviderProductSuspensionCommentHistoryWritable,
+      ),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Provider Product Suspension Comment - history
+ */
+export const zServiceProviderProductSuspensionCommentHistoryWritable = z.object(
+  {
+    service_provider_product_suspension_id: z.coerce.number(),
+    visibility: zServiceProviderProductSuspensionCommentVisibility,
+    content: z.string().max(2048),
+    service_provider_product_suspension_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_provider_product_suspension:
+      zServiceProviderProductSuspensionWritable.nullish(),
+    service_provider_product_suspension_history: z
+      .array(zServiceProviderProductSuspensionHistoryWritable)
+      .nullish(),
+  },
+);
+
+/**
+ * Service Providing Group Product Application - history
+ */
+export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
+  {
+    service_providing_group_id: z.coerce.number(),
+    procuring_system_operator_id: z.coerce.number(),
+    product_type_ids: z.array(z.coerce.number()),
+    status: zServiceProvidingGroupProductApplicationStatus,
+    maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+    maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+    additional_information: z.string().max(512).optional(),
+    prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    verified_at: z.iso.datetime({ offset: true }).optional(),
+    ramping_capability:
+      zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
+    ramping_description: z.string().optional(),
+    service_providing_group_product_application_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group: zServiceProvidingGroupWritable.nullish(),
+    service_providing_group_history: z
+      .array(zServiceProvidingGroupHistoryWritable)
+      .nullish(),
+    procuring_system_operator: zPartyWritable.nullish(),
+    procuring_system_operator_history: z.array(zPartyHistoryWritable).nullish(),
+    attachment: z
+      .array(zServiceProvidingGroupProductApplicationAttachmentWritable)
+      .nullish(),
+    attachment_history: z
+      .array(
+        z.lazy(
+          (): any =>
+            zServiceProvidingGroupProductApplicationAttachmentHistoryWritable,
+        ),
+      )
+      .nullish(),
+    comment: z
+      .array(zServiceProvidingGroupProductApplicationCommentWritable)
+      .nullish(),
+    comment_history: z
+      .array(
+        z.lazy(
+          (): any =>
+            zServiceProvidingGroupProductApplicationCommentHistoryWritable,
+        ),
+      )
+      .nullish(),
+  },
+);
+
+/**
+ * Service Providing Group Product Application Attachment - history
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentHistoryWritable =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    object_id: z.string(),
+    filename: z.string(),
+    filename_sanitised: z.string(),
+    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+    size_bytes: z.coerce.number(),
+    service_providing_group_product_application_attachment_id:
+      z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_product_application:
+      zServiceProvidingGroupProductApplicationWritable.nullish(),
+    service_providing_group_product_application_history: z
+      .array(zServiceProvidingGroupProductApplicationHistoryWritable)
+      .nullish(),
+  });
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export const zServiceProvidingGroupProductApplicationCommentHistoryWritable =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
+    content: z.string().max(2048),
+    service_providing_group_product_application_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_product_application:
+      zServiceProvidingGroupProductApplicationWritable.nullish(),
+    service_providing_group_product_application_history: z
+      .array(zServiceProvidingGroupProductApplicationHistoryWritable)
+      .nullish(),
+  });
+
+/**
+ * Service Providing Group Product Suspension - history
+ */
+export const zServiceProvidingGroupProductSuspensionHistoryWritable = z.object({
+  procuring_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+  service_providing_group_product_suspension_id: z.coerce.number(),
+  replaced_by: z.coerce.number().optional(),
+  replaced_at: z.iso.datetime({ offset: true }).optional(),
+  procuring_system_operator: zPartyWritable.nullish(),
+  procuring_system_operator_history: z.array(zPartyHistoryWritable).nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  service_providing_group_history: z
+    .array(zServiceProvidingGroupHistoryWritable)
+    .nullish(),
+  comment: z
+    .array(zServiceProvidingGroupProductSuspensionCommentWritable)
+    .nullish(),
+  comment_history: z
+    .array(
+      z.lazy(
+        (): any =>
+          zServiceProvidingGroupProductSuspensionCommentHistoryWritable,
+      ),
+    )
+    .nullish(),
+});
+
+/**
+ * Service Providing Group Product Suspension Comment - history
+ */
+export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
+  z.object({
+    service_providing_group_product_suspension_id: z.coerce.number(),
+    visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
+    content: z.string().max(2048),
+    service_providing_group_product_suspension_comment_id: z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    service_providing_group_product_suspension:
+      zServiceProvidingGroupProductSuspensionWritable.nullish(),
+    service_providing_group_product_suspension_history: z
+      .array(zServiceProvidingGroupProductSuspensionHistoryWritable)
+      .nullish(),
+  });
 
 /**
  * OK
@@ -3400,42 +4265,6 @@ export const zCallEntityLookupBody = zEntityLookupRequest;
  */
 export const zCallEntityLookupResponse = zEntityLookup;
 
-export const zListControllableUnitHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  business_id: z.string().optional(),
-  name: z.string().optional(),
-  status: z.string().optional(),
-  accounting_point_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListControllableUnitHistoryResponse = z.union([
-  z.array(zControllableUnitHistory),
-  z.array(zControllableUnitHistory),
-]);
-
-export const zReadControllableUnitHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadControllableUnitHistoryResponse = zControllableUnitHistory;
-
 export const zDeleteControllableUnitSuspensionBody = zEmptyObjectWritable;
 
 export const zDeleteControllableUnitSuspensionPath = z.object({
@@ -3446,78 +4275,6 @@ export const zDeleteControllableUnitSuspensionPath = z.object({
  * No Content
  */
 export const zDeleteControllableUnitSuspensionResponse = z.void();
-
-export const zListControllableUnitSuspensionHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_suspension_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  impacted_system_operator_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListControllableUnitSuspensionHistoryResponse = z.union([
-  z.array(zControllableUnitSuspensionHistory),
-  z.array(zControllableUnitSuspensionHistory),
-]);
-
-export const zReadControllableUnitSuspensionHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadControllableUnitSuspensionHistoryResponse =
-  zControllableUnitSuspensionHistory;
-
-export const zListControllableUnitSuspensionCommentHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_suspension_comment_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_suspension_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
-  z.array(zControllableUnitSuspensionCommentHistory),
-  z.array(zControllableUnitSuspensionCommentHistory),
-]);
-
-export const zReadControllableUnitSuspensionCommentHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadControllableUnitSuspensionCommentHistoryResponse =
-  zControllableUnitSuspensionCommentHistory;
 
 export const zDeleteControllableUnitServiceProviderBody = zEmptyObjectWritable;
 
@@ -3530,86 +4287,6 @@ export const zDeleteControllableUnitServiceProviderPath = z.object({
  */
 export const zDeleteControllableUnitServiceProviderResponse = z.void();
 
-export const zListControllableUnitServiceProviderHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_service_provider_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_provider_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  end_user_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  valid_from: z.string().optional(),
-  valid_at: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.string().optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListControllableUnitServiceProviderHistoryResponse = z.union([
-  z.array(zControllableUnitServiceProviderHistory),
-  z.array(zControllableUnitServiceProviderHistory),
-]);
-
-export const zReadControllableUnitServiceProviderHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadControllableUnitServiceProviderHistoryResponse =
-  zControllableUnitServiceProviderHistory;
-
-export const zListServiceProvidingGroupHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_providing_group_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  name: z.string().optional(),
-  service_provider_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListServiceProvidingGroupHistoryResponse = z.union([
-  z.array(zServiceProvidingGroupHistory),
-  z.array(zServiceProvidingGroupHistory),
-]);
-
-export const zReadServiceProvidingGroupHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupHistoryResponse =
-  zServiceProvidingGroupHistory;
-
 export const zDeleteServiceProvidingGroupMembershipBody = zEmptyObjectWritable;
 
 export const zDeleteServiceProvidingGroupMembershipPath = z.object({
@@ -3620,125 +4297,6 @@ export const zDeleteServiceProvidingGroupMembershipPath = z.object({
  * No Content
  */
 export const zDeleteServiceProvidingGroupMembershipResponse = z.void();
-
-export const zListServiceProvidingGroupMembershipHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_providing_group_membership_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  controllable_unit_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_providing_group_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  valid_from: z.string().optional(),
-  valid_at: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.string().optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
-  z.array(zServiceProvidingGroupMembershipHistory),
-  z.array(zServiceProvidingGroupMembershipHistory),
-]);
-
-export const zReadServiceProvidingGroupMembershipHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupMembershipHistoryResponse =
-  zServiceProvidingGroupMembershipHistory;
-
-export const zListServiceProvidingGroupGridPrequalificationHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_grid_prequalification_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    impacted_system_operator_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupGridPrequalificationHistory),
-    z.array(zServiceProvidingGroupGridPrequalificationHistory),
-  ]);
-
-export const zReadServiceProvidingGroupGridPrequalificationHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupGridPrequalificationHistoryResponse =
-  zServiceProvidingGroupGridPrequalificationHistory;
-
-export const zListServiceProvidingGroupGridPrequalificationCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_grid_prequalification_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_grid_prequalification_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupGridPrequalificationCommentHistory),
-    z.array(zServiceProvidingGroupGridPrequalificationCommentHistory),
-  ]);
-
-export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
-  zServiceProvidingGroupGridPrequalificationCommentHistory;
 
 export const zDeleteServiceProvidingGroupGridSuspensionBody =
   zEmptyObjectWritable;
@@ -3752,81 +4310,6 @@ export const zDeleteServiceProvidingGroupGridSuspensionPath = z.object({
  */
 export const zDeleteServiceProvidingGroupGridSuspensionResponse = z.void();
 
-export const zListServiceProvidingGroupGridSuspensionHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_providing_group_grid_suspension_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  impacted_system_operator_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_providing_group_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
-  z.array(zServiceProvidingGroupGridSuspensionHistory),
-  z.array(zServiceProvidingGroupGridSuspensionHistory),
-]);
-
-export const zReadServiceProvidingGroupGridSuspensionHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupGridSuspensionHistoryResponse =
-  zServiceProvidingGroupGridSuspensionHistory;
-
-export const zListServiceProvidingGroupGridSuspensionCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_grid_suspension_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_grid_suspension_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupGridSuspensionCommentHistory),
-    z.array(zServiceProvidingGroupGridSuspensionCommentHistory),
-  ]);
-
-export const zReadServiceProvidingGroupGridSuspensionCommentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
-  zServiceProvidingGroupGridSuspensionCommentHistory;
-
 export const zDeleteEntityClientBody = zEmptyObjectWritable;
 
 export const zDeleteEntityClientPath = z.object({
@@ -3837,42 +4320,6 @@ export const zDeleteEntityClientPath = z.object({
  * No Content
  */
 export const zDeleteEntityClientResponse = z.void();
-
-export const zListPartyHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  party_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  business_id: z.string().optional(),
-  business_id_type: z.string().optional(),
-  entity_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  name: z.string().optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListPartyHistoryResponse = z.union([
-  z.array(zPartyHistory),
-  z.array(zPartyHistory),
-]);
-
-export const zReadPartyHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadPartyHistoryResponse = zPartyHistory;
 
 export const zDeletePartyMembershipBody = zEmptyObjectWritable;
 
@@ -3885,43 +4332,6 @@ export const zDeletePartyMembershipPath = z.object({
  */
 export const zDeletePartyMembershipResponse = z.void();
 
-export const zListPartyMembershipHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  party_membership_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  party_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  entity_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListPartyMembershipHistoryResponse = z.union([
-  z.array(zPartyMembershipHistory),
-  z.array(zPartyMembershipHistory),
-]);
-
-export const zReadPartyMembershipHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadPartyMembershipHistoryResponse = zPartyMembershipHistory;
-
 export const zDeleteTechnicalResourceBody = zEmptyObjectWritable;
 
 export const zDeleteTechnicalResourcePath = z.object({
@@ -3933,193 +4343,6 @@ export const zDeleteTechnicalResourcePath = z.object({
  */
 export const zDeleteTechnicalResourceResponse = z.void();
 
-export const zListTechnicalResourceHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  technical_resource_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  name: z.string().optional(),
-  controllable_unit_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListTechnicalResourceHistoryResponse = z.union([
-  z.array(zTechnicalResourceHistory),
-  z.array(zTechnicalResourceHistory),
-]);
-
-export const zReadTechnicalResourceHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadTechnicalResourceHistoryResponse = zTechnicalResourceHistory;
-
-export const zListAccountingPointGridLocationHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  accounting_point_grid_location_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  accounting_point_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListAccountingPointGridLocationHistoryResponse = z.union([
-  z.array(zAccountingPointGridLocationHistory),
-  z.array(zAccountingPointGridLocationHistory),
-]);
-
-export const zReadAccountingPointGridLocationHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadAccountingPointGridLocationHistoryResponse =
-  zAccountingPointGridLocationHistory;
-
-export const zListSystemOperatorProductTypeHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  system_operator_product_type_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  system_operator_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  product_type_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  status: z.string().optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListSystemOperatorProductTypeHistoryResponse = z.union([
-  z.array(zSystemOperatorProductTypeHistory),
-  z.array(zSystemOperatorProductTypeHistory),
-]);
-
-export const zReadSystemOperatorProductTypeHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadSystemOperatorProductTypeHistoryResponse =
-  zSystemOperatorProductTypeHistory;
-
-export const zListServiceProviderProductApplicationHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_provider_product_application_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_provider_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  system_operator_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  product_type_ids: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  status: z.string().optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListServiceProviderProductApplicationHistoryResponse = z.union([
-  z.array(zServiceProviderProductApplicationHistory),
-  z.array(zServiceProviderProductApplicationHistory),
-]);
-
-export const zReadServiceProviderProductApplicationHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProviderProductApplicationHistoryResponse =
-  zServiceProviderProductApplicationHistory;
-
-export const zListServiceProviderProductApplicationCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_provider_product_application_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_provider_product_application_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProviderProductApplicationCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProviderProductApplicationCommentHistory),
-    z.array(zServiceProviderProductApplicationCommentHistory),
-  ]);
-
-export const zReadServiceProviderProductApplicationCommentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProviderProductApplicationCommentHistoryResponse =
-  zServiceProviderProductApplicationCommentHistory;
-
 export const zDeleteServiceProviderProductSuspensionBody = zEmptyObjectWritable;
 
 export const zDeleteServiceProviderProductSuspensionPath = z.object({
@@ -4130,132 +4353,6 @@ export const zDeleteServiceProviderProductSuspensionPath = z.object({
  * No Content
  */
 export const zDeleteServiceProviderProductSuspensionResponse = z.void();
-
-export const zListServiceProviderProductSuspensionHistoryQuery = z.object({
-  id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_provider_product_suspension_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  procuring_system_operator_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  service_provider_id: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  product_type_ids: z
-    .string()
-    .regex(/^eq\.[0-9]+$/)
-    .optional(),
-  select: z.string().optional(),
-  order: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
-});
-
-export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
-  z.array(zServiceProviderProductSuspensionHistory),
-  z.array(zServiceProviderProductSuspensionHistory),
-]);
-
-export const zReadServiceProviderProductSuspensionHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProviderProductSuspensionHistoryResponse =
-  zServiceProviderProductSuspensionHistory;
-
-export const zListServiceProviderProductSuspensionCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_provider_product_suspension_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_provider_product_suspension_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProviderProductSuspensionCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProviderProductSuspensionCommentHistory),
-    z.array(zServiceProviderProductSuspensionCommentHistory),
-  ]);
-
-export const zReadServiceProviderProductSuspensionCommentHistoryPath = z.object(
-  {
-    id: z.coerce.number(),
-  },
-);
-
-/**
- * OK
- */
-export const zReadServiceProviderProductSuspensionCommentHistoryResponse =
-  zServiceProviderProductSuspensionCommentHistory;
-
-export const zListServiceProvidingGroupProductApplicationHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_application_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    procuring_system_operator_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    product_type_ids: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupProductApplicationHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupProductApplicationHistory),
-    z.array(zServiceProvidingGroupProductApplicationHistory),
-  ]);
-
-export const zReadServiceProvidingGroupProductApplicationHistoryPath = z.object(
-  {
-    id: z.coerce.number(),
-  },
-);
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupProductApplicationHistoryResponse =
-  zServiceProvidingGroupProductApplicationHistory;
 
 export const zDeleteServiceProvidingGroupProductApplicationAttachmentBody =
   zEmptyObjectWritable;
@@ -4271,80 +4368,6 @@ export const zDeleteServiceProvidingGroupProductApplicationAttachmentPath =
 export const zDeleteServiceProvidingGroupProductApplicationAttachmentResponse =
   z.void();
 
-export const zListServiceProvidingGroupProductApplicationAttachmentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_application_attachment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_application_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
-    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
-  ]);
-
-export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
-  zServiceProvidingGroupProductApplicationAttachmentHistory;
-
-export const zListServiceProvidingGroupProductApplicationCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_application_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_application_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupProductApplicationCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
-    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
-  ]);
-
-export const zReadServiceProvidingGroupProductApplicationCommentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupProductApplicationCommentHistoryResponse =
-  zServiceProvidingGroupProductApplicationCommentHistory;
-
 export const zDeleteServiceProvidingGroupProductSuspensionBody =
   zEmptyObjectWritable;
 
@@ -4356,88 +4379,6 @@ export const zDeleteServiceProvidingGroupProductSuspensionPath = z.object({
  * No Content
  */
 export const zDeleteServiceProvidingGroupProductSuspensionResponse = z.void();
-
-export const zListServiceProvidingGroupProductSuspensionHistoryQuery = z.object(
-  {
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_suspension_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    procuring_system_operator_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    product_type_ids: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  },
-);
-
-export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupProductSuspensionHistory),
-    z.array(zServiceProvidingGroupProductSuspensionHistory),
-  ]);
-
-export const zReadServiceProvidingGroupProductSuspensionHistoryPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupProductSuspensionHistoryResponse =
-  zServiceProvidingGroupProductSuspensionHistory;
-
-export const zListServiceProvidingGroupProductSuspensionCommentHistoryQuery =
-  z.object({
-    id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_suspension_comment_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    service_providing_group_product_suspension_id: z
-      .string()
-      .regex(/^eq\.[0-9]+$/)
-      .optional(),
-    select: z.string().optional(),
-    order: z.string().optional(),
-    offset: z.string().optional(),
-    limit: z.string().optional(),
-  });
-
-export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
-  z.union([
-    z.array(zServiceProvidingGroupProductSuspensionCommentHistory),
-    z.array(zServiceProvidingGroupProductSuspensionCommentHistory),
-  ]);
-
-export const zReadServiceProvidingGroupProductSuspensionCommentHistoryPath =
-  z.object({
-    id: z.coerce.number(),
-  });
-
-/**
- * OK
- */
-export const zReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
-  zServiceProvidingGroupProductSuspensionCommentHistory;
 
 export const zCallDownloadServiceProvidingGroupProductApplicationAttachmentPath =
   z.object({
@@ -4505,6 +4446,47 @@ export const zUpdateControllableUnitResponse = z.union([
   z.void(),
 ]);
 
+export const zListControllableUnitHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  business_id: z.string().optional(),
+  name: z.string().optional(),
+  status: z.string().optional(),
+  accounting_point_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListControllableUnitHistoryResponse = z.union([
+  z.array(zControllableUnitHistory),
+  z.array(zControllableUnitHistory),
+]);
+
+export const zReadControllableUnitHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadControllableUnitHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitHistoryResponse = zControllableUnitHistory;
+
 export const zListControllableUnitSuspensionQuery = z.object({
   id: z
     .string()
@@ -4571,6 +4553,49 @@ export const zUpdateControllableUnitSuspensionResponse = z.union([
   z.void(),
 ]);
 
+export const zListControllableUnitSuspensionHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_suspension_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  impacted_system_operator_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListControllableUnitSuspensionHistoryResponse = z.union([
+  z.array(zControllableUnitSuspensionHistory),
+  z.array(zControllableUnitSuspensionHistory),
+]);
+
+export const zReadControllableUnitSuspensionHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadControllableUnitSuspensionHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitSuspensionHistoryResponse =
+  zControllableUnitSuspensionHistory;
+
 export const zListControllableUnitSuspensionCommentQuery = z.object({
   id: z
     .string()
@@ -4632,6 +4657,45 @@ export const zUpdateControllableUnitSuspensionCommentResponse = z.union([
   zControllableUnitSuspensionComment,
   z.void(),
 ]);
+
+export const zListControllableUnitSuspensionCommentHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_suspension_comment_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_suspension_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
+  z.array(zControllableUnitSuspensionCommentHistory),
+  z.array(zControllableUnitSuspensionCommentHistory),
+]);
+
+export const zReadControllableUnitSuspensionCommentHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadControllableUnitSuspensionCommentHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitSuspensionCommentHistoryResponse =
+  zControllableUnitSuspensionCommentHistory;
 
 export const zListControllableUnitServiceProviderQuery = z.object({
   id: z
@@ -4705,6 +4769,56 @@ export const zUpdateControllableUnitServiceProviderResponse = z.union([
   zControllableUnitServiceProvider,
   z.void(),
 ]);
+
+export const zListControllableUnitServiceProviderHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_service_provider_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_provider_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  end_user_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.string().optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListControllableUnitServiceProviderHistoryResponse = z.union([
+  z.array(zControllableUnitServiceProviderHistory),
+  z.array(zControllableUnitServiceProviderHistory),
+]);
+
+export const zReadControllableUnitServiceProviderHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadControllableUnitServiceProviderHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitServiceProviderHistoryResponse =
+  zControllableUnitServiceProviderHistory;
 
 export const zReadControllableUnitSummaryPath = z.object({
   id: z.coerce.number(),
@@ -4808,6 +4922,46 @@ export const zUpdateServiceProvidingGroupResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProvidingGroupHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_providing_group_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  name: z.string().optional(),
+  service_provider_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListServiceProvidingGroupHistoryResponse = z.union([
+  z.array(zServiceProvidingGroupHistory),
+  z.array(zServiceProvidingGroupHistory),
+]);
+
+export const zReadServiceProvidingGroupHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupHistoryResponse =
+  zServiceProvidingGroupHistory;
+
 export const zListServiceProvidingGroupMembershipQuery = z.object({
   id: z
     .string()
@@ -4877,6 +5031,52 @@ export const zUpdateServiceProvidingGroupMembershipResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProvidingGroupMembershipHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_providing_group_membership_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  controllable_unit_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_providing_group_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.string().optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
+  z.array(zServiceProvidingGroupMembershipHistory),
+  z.array(zServiceProvidingGroupMembershipHistory),
+]);
+
+export const zReadServiceProvidingGroupMembershipHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupMembershipHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupMembershipHistoryResponse =
+  zServiceProvidingGroupMembershipHistory;
+
 export const zListServiceProvidingGroupGridPrequalificationQuery = z.object({
   id: z
     .string()
@@ -4942,6 +5142,53 @@ export const zUpdateServiceProvidingGroupGridPrequalificationResponse = z.union(
   [zServiceProvidingGroupGridPrequalification, z.void()],
 );
 
+export const zListServiceProvidingGroupGridPrequalificationHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_grid_prequalification_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    impacted_system_operator_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupGridPrequalificationHistory),
+    z.array(zServiceProvidingGroupGridPrequalificationHistory),
+  ]);
+
+export const zReadServiceProvidingGroupGridPrequalificationHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupGridPrequalificationHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupGridPrequalificationHistoryResponse =
+  zServiceProvidingGroupGridPrequalificationHistory;
+
 export const zListServiceProvidingGroupGridPrequalificationCommentQuery =
   z.object({
     id: z
@@ -5006,6 +5253,49 @@ export const zUpdateServiceProvidingGroupGridPrequalificationCommentPath =
 
 export const zUpdateServiceProvidingGroupGridPrequalificationCommentResponse =
   z.union([zServiceProvidingGroupGridPrequalificationComment, z.void()]);
+
+export const zListServiceProvidingGroupGridPrequalificationCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_grid_prequalification_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_grid_prequalification_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupGridPrequalificationCommentHistory),
+    z.array(zServiceProvidingGroupGridPrequalificationCommentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
+  zServiceProvidingGroupGridPrequalificationCommentHistory;
 
 export const zListServiceProvidingGroupGridSuspensionQuery = z.object({
   id: z
@@ -5073,6 +5363,49 @@ export const zUpdateServiceProvidingGroupGridSuspensionResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProvidingGroupGridSuspensionHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_providing_group_grid_suspension_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  impacted_system_operator_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_providing_group_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
+  z.array(zServiceProvidingGroupGridSuspensionHistory),
+  z.array(zServiceProvidingGroupGridSuspensionHistory),
+]);
+
+export const zReadServiceProvidingGroupGridSuspensionHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupGridSuspensionHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupGridSuspensionHistoryResponse =
+  zServiceProvidingGroupGridSuspensionHistory;
+
 export const zListServiceProvidingGroupGridSuspensionCommentQuery = z.object({
   id: z
     .string()
@@ -5132,6 +5465,49 @@ export const zUpdateServiceProvidingGroupGridSuspensionCommentPath = z.object({
 
 export const zUpdateServiceProvidingGroupGridSuspensionCommentResponse =
   z.union([zServiceProvidingGroupGridSuspensionComment, z.void()]);
+
+export const zListServiceProvidingGroupGridSuspensionCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_grid_suspension_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_grid_suspension_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupGridSuspensionCommentHistory),
+    z.array(zServiceProvidingGroupGridSuspensionCommentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupGridSuspensionCommentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupGridSuspensionCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
+  zServiceProvidingGroupGridSuspensionCommentHistory;
 
 export const zListEntityQuery = z.object({
   id: z
@@ -5302,6 +5678,47 @@ export const zUpdatePartyPath = z.object({
 
 export const zUpdatePartyResponse = z.union([zParty, z.void()]);
 
+export const zListPartyHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  party_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  business_id: z.string().optional(),
+  business_id_type: z.string().optional(),
+  entity_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  name: z.string().optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListPartyHistoryResponse = z.union([
+  z.array(zPartyHistory),
+  z.array(zPartyHistory),
+]);
+
+export const zReadPartyHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadPartyHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadPartyHistoryResponse = zPartyHistory;
+
 export const zListPartyMembershipQuery = z.object({
   id: z
     .string()
@@ -5363,6 +5780,48 @@ export const zUpdatePartyMembershipResponse = z.union([
   zPartyMembership,
   z.void(),
 ]);
+
+export const zListPartyMembershipHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  party_membership_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  party_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  entity_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListPartyMembershipHistoryResponse = z.union([
+  z.array(zPartyMembershipHistory),
+  z.array(zPartyMembershipHistory),
+]);
+
+export const zReadPartyMembershipHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadPartyMembershipHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadPartyMembershipHistoryResponse = zPartyMembershipHistory;
 
 export const zListIdentityQuery = z.object({
   id: z
@@ -5468,6 +5927,45 @@ export const zUpdateTechnicalResourceResponse = z.union([
   zTechnicalResource,
   z.void(),
 ]);
+
+export const zListTechnicalResourceHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  technical_resource_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  name: z.string().optional(),
+  controllable_unit_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListTechnicalResourceHistoryResponse = z.union([
+  z.array(zTechnicalResourceHistory),
+  z.array(zTechnicalResourceHistory),
+]);
+
+export const zReadTechnicalResourceHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadTechnicalResourceHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadTechnicalResourceHistoryResponse = zTechnicalResourceHistory;
 
 export const zListEventQuery = z.object({
   id: z
@@ -5791,6 +6289,45 @@ export const zUpdateAccountingPointGridLocationResponse = z.union([
   z.void(),
 ]);
 
+export const zListAccountingPointGridLocationHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  accounting_point_grid_location_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  accounting_point_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListAccountingPointGridLocationHistoryResponse = z.union([
+  z.array(zAccountingPointGridLocationHistory),
+  z.array(zAccountingPointGridLocationHistory),
+]);
+
+export const zReadAccountingPointGridLocationHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadAccountingPointGridLocationHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadAccountingPointGridLocationHistoryResponse =
+  zAccountingPointGridLocationHistory;
+
 export const zListProductTypeQuery = z.object({
   id: z
     .string()
@@ -5890,6 +6427,50 @@ export const zUpdateSystemOperatorProductTypeResponse = z.union([
   z.void(),
 ]);
 
+export const zListSystemOperatorProductTypeHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  system_operator_product_type_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  system_operator_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  product_type_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  status: z.string().optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListSystemOperatorProductTypeHistoryResponse = z.union([
+  z.array(zSystemOperatorProductTypeHistory),
+  z.array(zSystemOperatorProductTypeHistory),
+]);
+
+export const zReadSystemOperatorProductTypeHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadSystemOperatorProductTypeHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadSystemOperatorProductTypeHistoryResponse =
+  zSystemOperatorProductTypeHistory;
+
 export const zListServiceProviderProductApplicationQuery = z.object({
   id: z
     .string()
@@ -5961,6 +6542,54 @@ export const zUpdateServiceProviderProductApplicationResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProviderProductApplicationHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_provider_product_application_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_provider_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  system_operator_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  product_type_ids: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  status: z.string().optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListServiceProviderProductApplicationHistoryResponse = z.union([
+  z.array(zServiceProviderProductApplicationHistory),
+  z.array(zServiceProviderProductApplicationHistory),
+]);
+
+export const zReadServiceProviderProductApplicationHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductApplicationHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProviderProductApplicationHistoryResponse =
+  zServiceProviderProductApplicationHistory;
+
 export const zListServiceProviderProductApplicationCommentQuery = z.object({
   id: z
     .string()
@@ -6022,6 +6651,49 @@ export const zUpdateServiceProviderProductApplicationCommentResponse = z.union([
   zServiceProviderProductApplicationComment,
   z.void(),
 ]);
+
+export const zListServiceProviderProductApplicationCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_provider_product_application_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_provider_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProviderProductApplicationCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProviderProductApplicationCommentHistory),
+    z.array(zServiceProviderProductApplicationCommentHistory),
+  ]);
+
+export const zReadServiceProviderProductApplicationCommentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProviderProductApplicationCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProviderProductApplicationCommentHistoryResponse =
+  zServiceProviderProductApplicationCommentHistory;
 
 export const zListServiceProviderProductSuspensionQuery = z.object({
   id: z
@@ -6093,6 +6765,53 @@ export const zUpdateServiceProviderProductSuspensionResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProviderProductSuspensionHistoryQuery = z.object({
+  id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_provider_product_suspension_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  procuring_system_operator_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  service_provider_id: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  product_type_ids: z
+    .string()
+    .regex(/^eq\.[0-9]+$/)
+    .optional(),
+  select: z.string().optional(),
+  order: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
+  embed: z.string().optional(),
+});
+
+export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
+  z.array(zServiceProviderProductSuspensionHistory),
+  z.array(zServiceProviderProductSuspensionHistory),
+]);
+
+export const zReadServiceProviderProductSuspensionHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductSuspensionHistoryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProviderProductSuspensionHistoryResponse =
+  zServiceProviderProductSuspensionHistory;
+
 export const zListServiceProviderProductSuspensionCommentQuery = z.object({
   id: z
     .string()
@@ -6154,6 +6873,50 @@ export const zUpdateServiceProviderProductSuspensionCommentResponse = z.union([
   zServiceProviderProductSuspensionComment,
   z.void(),
 ]);
+
+export const zListServiceProviderProductSuspensionCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_provider_product_suspension_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_provider_product_suspension_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProviderProductSuspensionCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProviderProductSuspensionCommentHistory),
+    z.array(zServiceProviderProductSuspensionCommentHistory),
+  ]);
+
+export const zReadServiceProviderProductSuspensionCommentHistoryPath = z.object(
+  {
+    id: z.coerce.number(),
+  },
+);
+
+export const zReadServiceProviderProductSuspensionCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProviderProductSuspensionCommentHistoryResponse =
+  zServiceProviderProductSuspensionCommentHistory;
 
 export const zListServiceProvidingGroupProductApplicationQuery = z.object({
   id: z
@@ -6225,6 +6988,58 @@ export const zUpdateServiceProvidingGroupProductApplicationResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProvidingGroupProductApplicationHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    procuring_system_operator_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    product_type_ids: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductApplicationHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationHistory),
+    z.array(zServiceProvidingGroupProductApplicationHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductApplicationHistoryPath = z.object(
+  {
+    id: z.coerce.number(),
+  },
+);
+
+export const zReadServiceProvidingGroupProductApplicationHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationHistoryResponse =
+  zServiceProvidingGroupProductApplicationHistory;
+
 export const zListServiceProvidingGroupProductApplicationAttachmentQuery =
   z.object({
     id: z
@@ -6274,6 +7089,49 @@ export const zReadServiceProvidingGroupProductApplicationAttachmentQuery =
  */
 export const zReadServiceProvidingGroupProductApplicationAttachmentResponse =
   zServiceProvidingGroupProductApplicationAttachment;
+
+export const zListServiceProvidingGroupProductApplicationAttachmentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_attachment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
+    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  zServiceProvidingGroupProductApplicationAttachmentHistory;
 
 export const zListServiceProvidingGroupProductApplicationCommentQuery =
   z.object({
@@ -6340,6 +7198,49 @@ export const zUpdateServiceProvidingGroupProductApplicationCommentPath =
 
 export const zUpdateServiceProvidingGroupProductApplicationCommentResponse =
   z.union([zServiceProvidingGroupProductApplicationComment, z.void()]);
+
+export const zListServiceProvidingGroupProductApplicationCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
+    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductApplicationCommentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupProductApplicationCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  zServiceProvidingGroupProductApplicationCommentHistory;
 
 export const zListServiceProvidingGroupProductSuspensionQuery = z.object({
   id: z
@@ -6411,6 +7312,58 @@ export const zUpdateServiceProvidingGroupProductSuspensionResponse = z.union([
   z.void(),
 ]);
 
+export const zListServiceProvidingGroupProductSuspensionHistoryQuery = z.object(
+  {
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_suspension_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    procuring_system_operator_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    product_type_ids: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  },
+);
+
+export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductSuspensionHistory),
+    z.array(zServiceProvidingGroupProductSuspensionHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductSuspensionHistoryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupProductSuspensionHistoryQuery = z.object(
+  {
+    embed: z.string().optional(),
+  },
+);
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductSuspensionHistoryResponse =
+  zServiceProvidingGroupProductSuspensionHistory;
+
 export const zListServiceProvidingGroupProductSuspensionCommentQuery = z.object(
   {
     id: z
@@ -6476,6 +7429,49 @@ export const zUpdateServiceProvidingGroupProductSuspensionCommentPath =
 
 export const zUpdateServiceProvidingGroupProductSuspensionCommentResponse =
   z.union([zServiceProvidingGroupProductSuspensionComment, z.void()]);
+
+export const zListServiceProvidingGroupProductSuspensionCommentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_suspension_comment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_suspension_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductSuspensionCommentHistory),
+    z.array(zServiceProvidingGroupProductSuspensionCommentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductSuspensionCommentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupProductSuspensionCommentHistoryQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
+  zServiceProvidingGroupProductSuspensionCommentHistory;
 
 export const zListNoticeQuery = z.object({
   id: z

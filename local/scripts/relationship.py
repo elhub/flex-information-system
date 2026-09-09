@@ -63,6 +63,64 @@ def from_foreign_key(
     return rels
 
 
+# map a field of a resource into the equivalent field of its history view
+# (a reference to id becomes a reference to <resource>_id in the history view)
+def history_field(field: Field) -> Field:
+    return Field(
+        resource=field.resource + "_history",
+        name=(field.resource + "_id" if field.name == "id" else field.name),
+    )
+
+
+# derive the history variants of a relationship
+# (current -> history, history -> current, and history -> history)
+def history_variants(
+    rel: Relationship, history_resources: set[str]
+) -> List[Relationship]:
+    child_has_history = rel.child.resource in history_resources
+    parent_has_history = rel.parent.resource in history_resources
+
+    rels = []
+
+    if parent_has_history:
+        # current -> history
+        rels.append(
+            Relationship(
+                child=rel.child,
+                name=rel.name + "_history",
+                parent=history_field(rel.parent),
+                cardinality="many",
+                hidden=rel.hidden,
+            )
+        )
+
+    if child_has_history:
+        # history -> current
+        rels.append(
+            Relationship(
+                child=history_field(rel.child),
+                name=rel.name,
+                parent=rel.parent,
+                cardinality=rel.cardinality,
+                hidden=rel.hidden,
+            )
+        )
+
+    if child_has_history and parent_has_history:
+        # history -> history
+        rels.append(
+            Relationship(
+                child=history_field(rel.child),
+                name=rel.name + "_history",
+                parent=history_field(rel.parent),
+                cardinality="many",
+                hidden=rel.hidden,
+            )
+        )
+
+    return rels
+
+
 def name_from_field(child_field_name):
     """
     Derive the name of the embed field name.
@@ -92,6 +150,7 @@ def collect(resources, module="api") -> list[Relationship]:
     """
     rels = []
     seen_reverse: set[tuple[str, str]] = set()  # (child_resource, embed_name)
+    history_resources = {r["id"] for r in resources if r.get("history")}
     for resource in resources:
         child = resource["id"]
         if resource.get("module") != module:
@@ -119,4 +178,11 @@ def collect(resources, module="api") -> list[Relationship]:
                     continue
                 seen_reverse.add(key)
                 rels.append(rel)
+
+                for hrel in history_variants(rel, history_resources):
+                    hkey = (hrel.child.resource, hrel.name)
+                    if hkey in seen_reverse:
+                        continue
+                    seen_reverse.add(hkey)
+                    rels.append(hrel)
     return rels

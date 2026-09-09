@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
     from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
     from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
+    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
 
 
@@ -39,6 +40,7 @@ class NoticeResponse:
         data (None | NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
             NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
         party (None | PartyResponse | Unset): Embedded party
+        party_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     id: int
@@ -57,6 +59,7 @@ class NoticeResponse:
         | Unset
     ) = UNSET
     party: None | PartyResponse | Unset = UNSET
+    party_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -106,6 +109,18 @@ class NoticeResponse:
         else:
             party = self.party
 
+        party_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.party_history, Unset):
+            party_history = UNSET
+        elif isinstance(self.party_history, list):
+            party_history = []
+            for party_history_type_0_item_data in self.party_history:
+                party_history_type_0_item = party_history_type_0_item_data.to_dict()
+                party_history.append(party_history_type_0_item)
+
+        else:
+            party_history = self.party_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -124,6 +139,8 @@ class NoticeResponse:
             field_dict["data"] = data
         if party is not UNSET:
             field_dict["party"] = party
+        if party_history is not UNSET:
+            field_dict["party_history"] = party_history
 
         return field_dict
 
@@ -133,6 +150,7 @@ class NoticeResponse:
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
+        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -232,6 +250,28 @@ class NoticeResponse:
 
         party = _parse_party(d.pop("party", UNSET))
 
+        def _parse_party_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                party_history_type_0 = []
+                _party_history_type_0 = data
+                for party_history_type_0_item_data in _party_history_type_0:
+                    party_history_type_0_item = PartyHistoryResponse.from_dict(party_history_type_0_item_data)
+
+                    party_history_type_0.append(party_history_type_0_item)
+
+                return party_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        party_history = _parse_party_history(d.pop("party_history", UNSET))
+
         notice_response = cls(
             id=id,
             status=status,
@@ -242,6 +282,7 @@ class NoticeResponse:
             source=source,
             data=data,
             party=party,
+            party_history=party_history,
         )
 
         notice_response.additional_properties = d

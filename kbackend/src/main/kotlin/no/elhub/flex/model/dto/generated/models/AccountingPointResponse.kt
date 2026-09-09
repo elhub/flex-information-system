@@ -45,6 +45,11 @@ public data class AccountingPointResponse(
   @SerialName("controllable_unit")
   public val controllableUnit: List<ControllableUnitResponse>? = null,
   /**
+   * Embedded controllable_unit_history
+   */
+  @SerialName("controllable_unit_history")
+  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
+  /**
    * Response schema - The body that interacts with the Flexibility Information System
    *
    * A party is the thing that is authorized to access or modify data in the Flexiblity Information
@@ -58,6 +63,11 @@ public data class AccountingPointResponse(
    */
   @SerialName("system_operator")
   public val systemOperator: PartyResponse? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("system_operator_history")
+  public val systemOperatorHistory: List<PartyHistoryResponse>? = null,
   /**
    * Embedded accounting_point_balance_responsible_party
    */
@@ -89,4 +99,9 @@ public data class AccountingPointResponse(
    */
   @SerialName("grid_location")
   public val gridLocation: AccountingPointGridLocationResponse? = null,
+  /**
+   * Embedded accounting_point_grid_location_history
+   */
+  @SerialName("grid_location_history")
+  public val gridLocationHistory: List<AccountingPointGridLocationHistoryResponse>? = null,
 )

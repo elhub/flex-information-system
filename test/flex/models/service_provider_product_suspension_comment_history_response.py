@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -11,6 +11,13 @@ from ..models.service_provider_product_suspension_comment_visibility import (
     ServiceProviderProductSuspensionCommentVisibility,
 )
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.service_provider_product_suspension_history_response import (
+        ServiceProviderProductSuspensionHistoryResponse,
+    )
+    from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
+
 
 T = TypeVar("T", bound="ServiceProviderProductSuspensionCommentHistoryResponse")
 
@@ -34,6 +41,10 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
+        service_provider_product_suspension (None | ServiceProviderProductSuspensionResponse | Unset): Embedded
+            service_provider_product_suspension
+        service_provider_product_suspension_history (list[ServiceProviderProductSuspensionHistoryResponse] | None |
+            Unset): Embedded service_provider_product_suspension_history
     """
 
     id: int
@@ -47,9 +58,15 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
     service_provider_product_suspension_comment_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
+    service_provider_product_suspension: None | ServiceProviderProductSuspensionResponse | Unset = UNSET
+    service_provider_product_suspension_history: (
+        list[ServiceProviderProductSuspensionHistoryResponse] | None | Unset
+    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
+
         id = self.id
 
         service_provider_product_suspension_id = self.service_provider_product_suspension_id
@@ -82,6 +99,32 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
+        service_provider_product_suspension: dict[str, Any] | None | Unset
+        if isinstance(self.service_provider_product_suspension, Unset):
+            service_provider_product_suspension = UNSET
+        elif isinstance(self.service_provider_product_suspension, ServiceProviderProductSuspensionResponse):
+            service_provider_product_suspension = self.service_provider_product_suspension.to_dict()
+        else:
+            service_provider_product_suspension = self.service_provider_product_suspension
+
+        service_provider_product_suspension_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_provider_product_suspension_history, Unset):
+            service_provider_product_suspension_history = UNSET
+        elif isinstance(self.service_provider_product_suspension_history, list):
+            service_provider_product_suspension_history = []
+            for (
+                service_provider_product_suspension_history_type_0_item_data
+            ) in self.service_provider_product_suspension_history:
+                service_provider_product_suspension_history_type_0_item = (
+                    service_provider_product_suspension_history_type_0_item_data.to_dict()
+                )
+                service_provider_product_suspension_history.append(
+                    service_provider_product_suspension_history_type_0_item
+                )
+
+        else:
+            service_provider_product_suspension_history = self.service_provider_product_suspension_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -101,11 +144,20 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
+        if service_provider_product_suspension is not UNSET:
+            field_dict["service_provider_product_suspension"] = service_provider_product_suspension
+        if service_provider_product_suspension_history is not UNSET:
+            field_dict["service_provider_product_suspension_history"] = service_provider_product_suspension_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.service_provider_product_suspension_history_response import (
+            ServiceProviderProductSuspensionHistoryResponse,
+        )
+        from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -151,6 +203,61 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
+        def _parse_service_provider_product_suspension(
+            data: object,
+        ) -> None | ServiceProviderProductSuspensionResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_provider_product_suspension_type_0 = ServiceProviderProductSuspensionResponse.from_dict(data)
+
+                return service_provider_product_suspension_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProviderProductSuspensionResponse | Unset, data)
+
+        service_provider_product_suspension = _parse_service_provider_product_suspension(
+            d.pop("service_provider_product_suspension", UNSET)
+        )
+
+        def _parse_service_provider_product_suspension_history(
+            data: object,
+        ) -> list[ServiceProviderProductSuspensionHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_provider_product_suspension_history_type_0 = []
+                _service_provider_product_suspension_history_type_0 = data
+                for (
+                    service_provider_product_suspension_history_type_0_item_data
+                ) in _service_provider_product_suspension_history_type_0:
+                    service_provider_product_suspension_history_type_0_item = (
+                        ServiceProviderProductSuspensionHistoryResponse.from_dict(
+                            service_provider_product_suspension_history_type_0_item_data
+                        )
+                    )
+
+                    service_provider_product_suspension_history_type_0.append(
+                        service_provider_product_suspension_history_type_0_item
+                    )
+
+                return service_provider_product_suspension_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProviderProductSuspensionHistoryResponse] | None | Unset, data)
+
+        service_provider_product_suspension_history = _parse_service_provider_product_suspension_history(
+            d.pop("service_provider_product_suspension_history", UNSET)
+        )
+
         service_provider_product_suspension_comment_history_response = cls(
             id=id,
             service_provider_product_suspension_id=service_provider_product_suspension_id,
@@ -163,6 +270,8 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             service_provider_product_suspension_comment_id=service_provider_product_suspension_comment_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
+            service_provider_product_suspension=service_provider_product_suspension,
+            service_provider_product_suspension_history=service_provider_product_suspension_history,
         )
 
         service_provider_product_suspension_comment_history_response.additional_properties = d

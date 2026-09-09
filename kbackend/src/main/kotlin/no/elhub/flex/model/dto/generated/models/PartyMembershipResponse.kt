@@ -57,6 +57,11 @@ public data class PartyMembershipResponse(
   @SerialName("party")
   public val party: PartyResponse? = null,
   /**
+   * Embedded party_history
+   */
+  @SerialName("party_history")
+  public val partyHistory: List<PartyHistoryResponse>? = null,
+  /**
    * Response schema - Entity - Natural or legal person
    *
    * An entity is a natural or legal person that can be a party in the Flexibility Information

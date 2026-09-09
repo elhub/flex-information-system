@@ -57,13 +57,29 @@ public data class ServiceProvidingGroupGridSuspensionResponse(
   @SerialName("impacted_system_operator")
   public val impactedSystemOperator: PartyResponse? = null,
   /**
+   * Embedded party_history
+   */
+  @SerialName("impacted_system_operator_history")
+  public val impactedSystemOperatorHistory: List<PartyHistoryResponse>? = null,
+  /**
    * Response schema - Group of controllable units
    */
   @SerialName("service_providing_group")
   public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
   /**
+   * Embedded service_providing_group_history
+   */
+  @SerialName("service_providing_group_history")
+  public val serviceProvidingGroupHistory: List<ServiceProvidingGroupHistoryResponse>? = null,
+  /**
    * Embedded service_providing_group_grid_suspension_comment
    */
   @SerialName("comment")
   public val comment: List<ServiceProvidingGroupGridSuspensionCommentResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_suspension_comment_history
+   */
+  @SerialName("comment_history")
+  public val commentHistory: List<ServiceProvidingGroupGridSuspensionCommentHistoryResponse>? =
+      null,
 )

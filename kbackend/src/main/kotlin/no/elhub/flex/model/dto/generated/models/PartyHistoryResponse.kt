@@ -76,4 +76,17 @@ public data class PartyHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Response schema - Entity - Natural or legal person
+   *
+   * An entity is a natural or legal person that can be a party in the Flexibility Information
+   * System.
+   *
+   * Example entity types:
+   *
+   * * Person
+   * * Organisation
+   */
+  @SerialName("entity")
+  public val entity: EntityResponse? = null,
 )
