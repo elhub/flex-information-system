@@ -630,24 +630,20 @@ func isValidDatetime(value string) bool {
 }
 
 // timeRangeQueryRewrite rewrites a shorthand query parameter (e.g. "valid_at", or
-// prefixed as "<relation>.valid_at") into "<fromCol>" and an "or" filter on
+// prefixed as "<relation>.valid_at") into and and-filter with "<fromCol>" and an "or" filter on
 // "<toCol>". Returns an error if the parameter value does not match the expected
 // datetime format.
 func timeRangeQueryRewrite(query url.Values, paramName, fromCol, toCol string) error {
 	for key := range query {
 		if key == paramName || strings.HasSuffix(key, "."+paramName) {
 			prefix := key[:len(key)-len(paramName)]
-			keyFrom := prefix + fromCol
-			keyOr := prefix + "or"
-			query.Del(keyFrom)
-			query.Del(keyOr)
+			keyAnd := prefix + "and"
 			if value := query.Get(key); value != "" {
 				if !isValidDatetime(value) {
 					return fmt.Errorf("%w: %s", errInvalidTimeRangeParam, paramName)
 				}
 				query.Del(key)
-				query.Set(keyFrom, "lte."+value)
-				query.Add(keyOr, "("+toCol+".gt."+value+","+toCol+".is.null)")
+				query.Set(keyAnd, "("+fromCol+".lte."+value+",or("+toCol+".gt."+value+","+toCol+".is.null))")
 			}
 		}
 	}

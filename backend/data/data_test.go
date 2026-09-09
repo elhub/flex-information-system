@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const andKey = "and"
+
 func TestIsValidDatetime(t *testing.T) {
 	t.Parallel()
 
@@ -99,57 +101,57 @@ func TestTimeRangeQueryRewrite(t *testing.T) {
 			expectedError: false,
 		},
 		{
-			name:  paramName + " RFC 3339 with offset rewrites to " + fromCol + " and or",
+			name:  paramName + " RFC 3339 with offset rewrites to a single and-filter",
 			input: url.Values{paramName: {"2024-01-15T10:30:00+01:00"}},
 			expected: url.Values{
-				fromCol: {"lte.2024-01-15T10:30:00+01:00"},
-				"or":    {"(" + toCol + ".gt.2024-01-15T10:30:00+01:00," + toCol + ".is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15T10:30:00+01:00,or(" + toCol + ".gt.2024-01-15T10:30:00+01:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:  paramName + " RFC 3339 with milliseconds rewrites to " + fromCol + " and or",
+			name:  paramName + " RFC 3339 with milliseconds rewrites to a single and-filter",
 			input: url.Values{paramName: {"2024-01-15T10:30:00.123+00:00"}},
 			expected: url.Values{
-				fromCol: {"lte.2024-01-15T10:30:00.123+00:00"},
-				"or":    {"(" + toCol + ".gt.2024-01-15T10:30:00.123+00:00," + toCol + ".is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15T10:30:00.123+00:00,or(" + toCol + ".gt.2024-01-15T10:30:00.123+00:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:  paramName + " extended format with UTC abbreviation rewrites to " + fromCol + " and or",
+			name:  paramName + " extended format with UTC abbreviation rewrites to a single and-filter",
 			input: url.Values{paramName: {"2024-01-15 10:30:00 UTC"}},
 			expected: url.Values{
-				fromCol: {"lte.2024-01-15 10:30:00 UTC"},
-				"or":    {"(" + toCol + ".gt.2024-01-15 10:30:00 UTC," + toCol + ".is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15 10:30:00 UTC,or(" + toCol + ".gt.2024-01-15 10:30:00 UTC," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:          paramName + " with empty value clears existing " + fromCol + " and or",
-			input:         url.Values{paramName: {""}, fromCol: {"lte.2023-01-01T00:00Z"}, "or": {"(" + toCol + ".gt.2023-01-01T00:00Z," + toCol + ".is.null)"}},
-			expected:      url.Values{paramName: {""}},
+			name: paramName + " with empty value leaves query unchanged",
+			input: url.Values{
+				paramName: {""},
+				andKey:    {"(some_other_filter)"},
+			},
+			expected: url.Values{
+				paramName: {""},
+				andKey:    {"(some_other_filter)"},
+			},
 			expectedError: false,
 		},
 		{
 			name:  "prefixed " + paramName + " rewrites prefixed keys",
 			input: url.Values{"some_table." + paramName: {"2024-06-01T12:00:00+00:00"}},
 			expected: url.Values{
-				"some_table." + fromCol: {"lte.2024-06-01T12:00:00+00:00"},
-				"some_table.or":         {"(" + toCol + ".gt.2024-06-01T12:00:00+00:00," + toCol + ".is.null)"},
+				"some_table.and": {"(" + fromCol + ".lte.2024-06-01T12:00:00+00:00,or(" + toCol + ".gt.2024-06-01T12:00:00+00:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name: paramName + " replaces pre-existing " + fromCol + " and or",
+			name: paramName + " replaces pre-existing and-filter",
 			input: url.Values{
 				paramName: {"2024-03-10T08:00:00Z"},
-				fromCol:   {"lte.2020-01-01T00:00Z"},
-				"or":      {"(" + toCol + ".gt.2020-01-01T00:00Z," + toCol + ".is.null)"},
+				andKey:    {"(some_old_filter)"},
 			},
 			expected: url.Values{
-				fromCol: {"lte.2024-03-10T08:00:00Z"},
-				"or":    {"(" + toCol + ".gt.2024-03-10T08:00:00Z," + toCol + ".is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-03-10T08:00:00Z,or(" + toCol + ".gt.2024-03-10T08:00:00Z," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
@@ -157,8 +159,7 @@ func TestTimeRangeQueryRewrite(t *testing.T) {
 			name:  "unrelated parameters are preserved alongside " + paramName + " rewrite",
 			input: url.Values{paramName: {utcTimestamp}, "status": {"eq.active"}},
 			expected: url.Values{
-				fromCol:  {"lte." + utcTimestamp},
-				"or":     {"(" + toCol + ".gt.2024-01-15T10:30:00Z," + toCol + ".is.null)"},
+				andKey:   {"(" + fromCol + ".lte." + utcTimestamp + ",or(" + toCol + ".gt." + utcTimestamp + "," + toCol + ".is.null))"},
 				"status": {"eq.active"},
 			},
 			expectedError: false,
@@ -221,8 +222,7 @@ func TestValidAtQueryRewrite(t *testing.T) {
 	}
 
 	assertQueryValues(t, input, url.Values{
-		"valid_from": {"lte.2024-01-15T10:30:00Z"},
-		"or":         {"(valid_to.gt.2024-01-15T10:30:00Z,valid_to.is.null)"},
+		andKey: {"(valid_from.lte.2024-01-15T10:30:00Z,or(valid_to.gt.2024-01-15T10:30:00Z,valid_to.is.null))"},
 	})
 }
 
@@ -238,7 +238,6 @@ func TestAsOfQueryRewrite(t *testing.T) {
 	}
 
 	assertQueryValues(t, input, url.Values{
-		"recorded_at": {"lte.2024-01-15T10:30:00Z"},
-		"or":          {"(replaced_at.gt.2024-01-15T10:30:00Z,replaced_at.is.null)"},
+		andKey: {"(recorded_at.lte.2024-01-15T10:30:00Z,or(replaced_at.gt.2024-01-15T10:30:00Z,replaced_at.is.null))"},
 	})
 }
