@@ -1,4 +1,3 @@
-import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Tabs } from "../../components/ui";
 import {
   AccountingPoint,
@@ -8,12 +7,7 @@ import {
   AccountingPointLocationMap,
   Substation,
 } from "./AccountingPointLocationMap";
-import { Permissions } from "../../auth/permissions";
-import { useTabSearchParam } from "../../hooks/useTabSearchParam";
-
-const userCanViewGrid = (identity: UserIdentity | undefined) =>
-  identity?.role === "flex_flexibility_information_system_operator" ||
-  identity?.role === "flex_system_operator";
+import { useAccountingPointShowTabsController } from "./useAccountingPointShowTabsController";
 
 type Props = {
   gridLocation: AccountingPointGridLocation | undefined;
@@ -24,6 +18,8 @@ type Props = {
   onClosePopup: () => void;
 };
 
+// Presentational: RA (permissions/identity) and tab state live in
+// useAccountingPointShowTabsController.
 export const AccountingPointShowTabs = ({
   gridLocation,
   location,
@@ -32,27 +28,18 @@ export const AccountingPointShowTabs = ({
   popupSubstation,
   onClosePopup,
 }: Props) => {
-  const { permissions } = usePermissions<Permissions>();
-  const { data: identity } = useGetIdentity();
-  const canViewLocation = !!permissions?.allow(
-    "accounting_point.location",
-    "read",
-  );
-
-  const canEditGridLocation = !!permissions?.allow(
-    "accounting_point_grid_location",
-    "update",
-  );
-  const [tab, setTab] = useTabSearchParam("location");
-
-  const highlightedBusinessId =
-    selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
-
-  const handleSubstationClick = canEditGridLocation
-    ? (substation: Substation) => {
-        onSelectSubstation(substation);
-      }
-    : undefined;
+  const {
+    tab,
+    setTab,
+    canViewLocation,
+    canViewGrid,
+    highlightedBusinessId,
+    handleSubstationClick,
+  } = useAccountingPointShowTabsController({
+    gridLocation,
+    selectedSubstation,
+    onSelectSubstation,
+  });
 
   return (
     <Tabs
@@ -67,7 +54,7 @@ export const AccountingPointShowTabs = ({
         {canViewLocation && (
           <AccountingPointLocationMap
             location={location}
-            canViewGrid={userCanViewGrid(identity)}
+            canViewGrid={canViewGrid}
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
             selectedSubstation={selectedSubstation}

@@ -1,90 +1,70 @@
-import { useTranslate } from "ra-core";
-import { useSearchParams } from "react-router-dom";
-import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
+import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { Loader, Tag } from "../../components/ui";
-import { useTranslateEnum } from "../../intl/intl";
-import { EnumLabel } from "../../intl/enum-labels";
 import { TechnicalResourceDetailModal } from "../../controllable_unit/technical_resource/TechnicalResourceDetailModal";
-import {
-  useSpgTechnicalResources,
-  SpgTechnicalResource,
-} from "./useSpgTechnicalResources";
-import { formatScaled, KILO, Scale } from "../../utils/scales";
+import { Scale } from "../../utils/scales";
+import { useSpgTechnicalResourceListController } from "./useSpgTechnicalResourceListController";
+import { SpgTechnicalResource } from "./useSpgTechnicalResources";
 
 type Props = {
   spgId: number;
   powerScale: Scale;
 };
 
+// Presentational: builds the column definitions (and the DS components they
+// render, e.g. Tag) from the plain labels/formatters returned by
+// useSpgTechnicalResourceListController, which itself has no UI imports.
 export const SpgTechnicalResourceList = ({ spgId, powerScale }: Props) => {
-  const translate = useTranslate();
-  const translateEnum = useTranslateEnum();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const selectedTechnicalResourceId = (() => {
-    const value = searchParams.get("technical_resource");
-    const id = value ? Number(value) : NaN;
-    return Number.isFinite(id) ? id : null;
-  })();
-
-  const setSelectedTechnicalResourceId = (id: number | null) =>
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        if (id != null) {
-          next.set("technical_resource", String(id));
-        } else {
-          next.delete("technical_resource");
-        }
-        return next;
-      },
-      { replace: true },
-    );
-
-  const { data, isLoading } = useSpgTechnicalResources(spgId);
+  const {
+    rows,
+    isLoading,
+    selectedRecord,
+    selectedTechnicalResourceId,
+    selectTechnicalResource,
+    formatPower,
+    translateDeviceType,
+    translateCategory,
+    translateTechnology,
+    labels,
+  } = useSpgTechnicalResourceListController(spgId, powerScale);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  const selectedRecord =
-    data?.find((r) => r.id === selectedTechnicalResourceId) ?? null;
-
   const columns: ColumnOf<SpgTechnicalResource[]>[] = [
     {
       key: "controllable_unit_name",
-      header: translate("text.controllable_unit"),
+      header: labels.controllableUnitName,
     },
-    { key: "name", header: translate("field.technical_resource.name") },
+    { key: "name", header: labels.name },
     {
       key: "maximum_active_power",
-      header: translate("field.technical_resource.maximum_active_power"),
-      render: (value) => formatScaled(Number(value), "W", KILO, powerScale),
+      header: labels.maximumActivePower,
+      render: (value) => formatPower(value),
     },
     {
       key: "device_type",
-      header: translate("field.technical_resource.device_type"),
-      render: (value) =>
-        translateEnum(`device_type.${value as string}` as EnumLabel),
+      header: labels.deviceType,
+      render: (value) => translateDeviceType(value),
     },
     {
       key: "category",
-      header: translate("field.technical_resource.category"),
+      header: labels.category,
       render: (value) => (
         <div className="flex gap-2 flex-wrap">
           {(value as SpgTechnicalResource["category"]).map((v) => (
-            <Tag key={v}>{translateEnum(`category.${v}` as EnumLabel)}</Tag>
+            <Tag key={v}>{translateCategory(v)}</Tag>
           ))}
         </div>
       ),
     },
     {
       key: "technology",
-      header: translate("field.technical_resource.technology"),
+      header: labels.technology,
       render: (value) => (
         <div className="flex gap-2 flex-wrap">
           {(value as SpgTechnicalResource["technology"]).map((v) => (
-            <Tag key={v}>{translateEnum(`technology.${v}` as EnumLabel)}</Tag>
+            <Tag key={v}>{translateTechnology(v)}</Tag>
           ))}
         </div>
       ),
@@ -95,15 +75,13 @@ export const SpgTechnicalResourceList = ({ spgId, powerScale }: Props) => {
     <div className="flex flex-col gap-4">
       <SimpleTable
         columns={columns}
-        data={data ?? []}
-        rowClick={(record) => {
-          setSelectedTechnicalResourceId(record.id);
-        }}
+        data={rows}
+        rowClick={(record) => selectTechnicalResource(record.id)}
       />
       <TechnicalResourceDetailModal
         record={selectedRecord}
         open={selectedTechnicalResourceId !== null}
-        onClose={() => setSelectedTechnicalResourceId(null)}
+        onClose={() => selectTechnicalResource(null)}
         displayScale={powerScale}
       />
     </div>

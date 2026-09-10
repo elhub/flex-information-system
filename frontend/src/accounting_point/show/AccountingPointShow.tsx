@@ -1,59 +1,30 @@
-import { useAccountingPointViewModel } from "./useAccountingPointViewModel";
-import { useParams } from "react-router-dom";
 import { Heading, Loader, Panel } from "../../components/ui";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
-import { useGetIdentity } from "react-admin";
 import { AccountingPointConnections } from "./AccountingPointConnections";
 import { AccountingPointShowTabs } from "./AccountingPointShowTabs";
 import { LabelValue } from "../../components/LabelValue";
 import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
-import { usePermissions } from "ra-core";
-import { Permissions } from "../../auth/permissions";
-import { useState } from "react";
-import { Substation } from "./AccountingPointLocationMap";
+import { useAccountingPointShowController } from "./useAccountingPointShowController";
 
+// Presentational: routing, RA (identity/permissions), data fetching, and
+// selection state all live in useAccountingPointShowController. This
+// component only handles layout.
 export const AccountingPointShow = () => {
-  const { id } = useParams<{ id: string }>();
-  const apId = Number(id);
-  const { data: identity } = useGetIdentity();
-  const { permissions } = usePermissions<Permissions>();
-
-  const canViewGridLocation = !!permissions?.allow(
-    "accounting_point_grid_location",
-    "read",
-  );
-
-  const canEditGridLocation = !!permissions?.allow(
-    "accounting_point_grid_location",
-    "update",
-  );
-
-  const handleCancelSelection = () => {
-    setSelectedSubstation(null);
-    setPopupSubstation(null);
-  };
-
-  const handleClearSelection = () => {
-    setSelectedSubstation(null);
-    setPopupSubstation(null);
-  };
-
-  const handleSubstationSelect = (substation: Substation | null) => {
-    setSelectedSubstation(substation);
-    setPopupSubstation(substation);
-  };
-
-  const [selectedSubstation, setSelectedSubstation] =
-    useState<Substation | null>(null);
-  const [popupSubstation, setPopupSubstation] = useState<Substation | null>(
-    null,
-  );
-
   const {
-    data: viewModel,
+    viewModel,
     isPending,
     error,
-  } = useAccountingPointViewModel(apId);
+    canSeeConnections,
+    canViewGridLocation,
+    canEditGridLocation,
+    isConnectingSystemOperator,
+    selectedSubstation,
+    popupSubstation,
+    handleSubstationSelect,
+    handleClearSelection,
+    handleCancelSelection,
+    closePopup,
+  } = useAccountingPointShowController();
 
   if (error) {
     throw error;
@@ -86,8 +57,7 @@ export const AccountingPointShow = () => {
               value={ap.business_id}
             />
 
-            {identity?.role ===
-              "flex_flexibility_information_system_operator" && (
+            {canSeeConnections && (
               <AccountingPointConnections
                 endUser={viewModel.endUser}
                 meteringGridArea={viewModel.meteringGridArea}
@@ -100,10 +70,7 @@ export const AccountingPointShow = () => {
             apId={ap.id}
             gridLocation={viewModel.gridLocation}
             userCanEdit={canEditGridLocation}
-            isConnectingSystemOperator={
-              identity?.partyID !== undefined &&
-              identity.partyID === ap.system_operator_id
-            }
+            isConnectingSystemOperator={isConnectingSystemOperator}
             selectedSubstation={selectedSubstation}
             onSelectSubstation={handleSubstationSelect}
             onClearSelection={handleClearSelection}
@@ -118,7 +85,7 @@ export const AccountingPointShow = () => {
         selectedSubstation={selectedSubstation}
         onSelectSubstation={handleSubstationSelect}
         popupSubstation={popupSubstation}
-        onClosePopup={() => setPopupSubstation(null)}
+        onClosePopup={closePopup}
       />
     </ShowPageLayout>
   );
