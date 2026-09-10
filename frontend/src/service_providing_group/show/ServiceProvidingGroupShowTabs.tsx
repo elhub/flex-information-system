@@ -4,6 +4,7 @@ import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProv
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
 import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
+import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
 import {
   ServiceProvidingGroupStatus,
   ServiceProvidingGroupSummary,
@@ -16,16 +17,20 @@ import { Scale } from "../../utils/scales";
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
+  spgCreatedAt?: string;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
+  showChanges?: boolean;
   powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgStatus,
+  spgCreatedAt,
   summary,
   showPowerPerSubstation,
+  showChanges,
   powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("summary");
@@ -55,6 +60,9 @@ export const ServiceProvidingGroupShowTabs = ({
             label={translate("text.tab.power_per_substation")}
             value="power_per_substation"
           />
+        )}
+        {showChanges && (
+          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
         )}
       </Tabs.List>
       <Tabs.Panel value="summary">
@@ -87,6 +95,15 @@ export const ServiceProvidingGroupShowTabs = ({
         <Tabs.Panel value="power_per_substation">
           <ServiceProvidingGroupShowPowerPerSubstationTable
             spgId={spgId}
+            powerScale={powerScale}
+          />
+        </Tabs.Panel>
+      )}
+      {showChanges && (
+        <Tabs.Panel value="changes">
+          <ServiceProvidingGroupShowChangesTab
+            spgId={spgId}
+            spgCreatedAt={spgCreatedAt}
             powerScale={powerScale}
           />
         </Tabs.Panel>
