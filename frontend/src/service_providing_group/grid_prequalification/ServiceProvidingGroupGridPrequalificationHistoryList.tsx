@@ -12,8 +12,10 @@ import {
   zServiceProvidingGroupGridPrequalificationHistory,
 } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
+import { useTranslateField } from "../../intl/intl";
 
 export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
+  const t = useTranslateField();
   const { service_providing_group_grid_prequalification_id } = useParams();
 
   const fields = getFields(zServiceProvidingGroupGridPrequalification.shape);
@@ -37,12 +39,20 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
         <ReferenceField
           {...fields.service_providing_group_id}
           reference="service_providing_group"
+          label={t(
+            "service_providing_group_grid_prequalification_history.service_providing_group_id",
+          )}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
           {...fields.impacted_system_operator_id}
           reference="party"
+          label={t(
+            "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+          )}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>

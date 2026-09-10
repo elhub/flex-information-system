@@ -15,9 +15,11 @@ import {
 import { getFields } from "../../zod";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { FunctionField } from "react-admin";
+import { useTranslateField } from "../../intl/intl";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const { service_providing_group_product_application_id } = useParams();
+  const t = useTranslateField();
 
   const spgpaFields = getFields(zServiceProvidingGroupProductApplication.shape);
   const historyFields = getFields(
@@ -38,6 +40,10 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
         <ReferenceField
           {...spgpaFields.procuring_system_operator_id}
           reference="party"
+          label={t(
+            "service_providing_group_product_application_history.procuring_system_operator_id",
+          )}
+          hideLabel={true}
         >
           <TextField {...procuringSystemOperatorIdFields.name} />
         </ReferenceField>
