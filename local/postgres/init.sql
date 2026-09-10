@@ -14,9 +14,34 @@ CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
 GRANT CREATE ON DATABASE flex TO flex;
 -- also manage replication slots
 ALTER USER flex WITH REPLICATION;
--- allow flex to temporarily disable triggers within its own
--- transaction during migrations, without being a superuser
-GRANT SET ON PARAMETER session_replication_role TO flex; -- noqa
+
+-- to allow the flex user to disable triggers during migrations,
+-- we must grant it the ability to set the session_replication_role parameter
+-- we do this via a security definer function since granting a user the privilege to
+-- directly set it requires superuser privileges which is uncommon in cloud managed databases.
+CREATE OR REPLACE FUNCTION public.disable_triggers()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    SET LOCAL session_replication_role = 'replica';
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.enable_triggers()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    SET LOCAL session_replication_role = DEFAULT;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.disable_triggers() TO flex;
+GRANT EXECUTE ON FUNCTION public.enable_triggers() TO flex;
+
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
 -- grant cron job execution to flex

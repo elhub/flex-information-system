@@ -39,21 +39,40 @@ In order to apply a migration to a database table, you need to add a new
 _changeset_ in Liquibase where the actual changes are made on the table.
 We write those in plain SQL because it allows for more flexibility and is more
 natural to write than "SQL-looking" YAML code for instance.
-It starts by disabling triggers for the duration of the changeset's transaction,
-if the migration touches data on a table that has triggers:
 
-```sql
-SET LOCAL session_replication_role = 'replica';
-```
-
-`SET LOCAL` only applies to the current transaction, and each changeset runs in
-its own transaction, so this resets automatically once the changeset is done and
-does not affect other connections in the meantime.
-
-Then, you need to write the changes by one or several calls to `ALTER TABLE`.
+You need to write the changes by one or several calls to `ALTER TABLE`.
 More complex changes may require temporary fields or tables to be added, so that
 arbitrary computations can be run to populate them on the side
 (with `INSERT`/`UPDATE` statements) before actually erasing the former data.
+
+If we are touching any data we probably want to disable triggers to avoid
+history records being created and such. We are using the session parameter
+[session_replication_role](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-SESSION-REPLICATION-ROLE)
+for this. It disables triggers for the connected user, but not for other
+legitimate users.
+
+Due to lack of superuser privileges in managed databases, we
+are wrapping access to setting the parameter in dedicated functions.
+Changing data then means having a changeset that looks like this.
+
+```sql
+-- changeset flex:something-foo runOnChange:false endDelimiter:;
+
+ALTER TABLE flex.something
+ADD COLUMN IF NOT EXISTS foo text;
+
+SELECT public.disable_triggers();
+
+UPDATE flex.something SET foo = 'bar';
+
+SELECT public.enable_triggers();
+```
+
+The parameter is set using `SET LOCAL` so it only applies to the current
+transaction. Each changeset runs in its own transaction, so this resets
+automatically once the changeset is done and does not affect other connections
+in the meantime. This means that the call to `public.enable_triggers()` might
+not be needed in all circumstances.
 
 Do not forget to also migrate elements that are directly linked to the table
 definition, like constraints and history tables.

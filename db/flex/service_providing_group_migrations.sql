@@ -73,13 +73,14 @@ add_spg_grid_prequalifications_for_future_impacted_system_operators(bigint);
 -- changeset flex:service-providing-group-created-at runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group' AND column_name = 'created_at'
-SET LOCAL session_replication_role = 'replica';
 
 ALTER TABLE flex.service_providing_group
 ADD COLUMN IF NOT EXISTS created_at timestamp with time zone;
 
 ALTER TABLE flex.service_providing_group_history
 ADD COLUMN IF NOT EXISTS created_at timestamp with time zone;
+
+SELECT public.disable_triggers();
 
 -- must compute the field manually for existing records
 -- (we pick the earliest record in history or main table)
@@ -100,6 +101,8 @@ SET created_at = spg.created_at
 FROM flex.service_providing_group AS spg
 WHERE h.id = spg.id
     AND h.created_at IS NULL;
+
+SELECT public.enable_triggers();
 
 ALTER TABLE flex.service_providing_group
 ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;
