@@ -37,6 +37,7 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
     >
       <Datagrid rowClick={false}>
         <TextField {...spgpaFields.id} />
+        <TextField {...historyFields.service_providing_group_product_application_id} />
         <ReferenceField
           {...spgpaFields.procuring_system_operator_id}
           reference="party"
