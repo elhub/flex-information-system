@@ -11,7 +11,7 @@ import {
 import { useParty } from "../../../hooks/party";
 import {
   EventButton,
-  NestedResourceHistoryButton,
+  ResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 
 type Props = {
@@ -85,7 +85,7 @@ export const SpgpqShowSummary = ({ spgpq, spg, isHistory }: Props) => {
       </Panel>
       {!isHistory && (
         <div className="flex gap-4 mt-2">
-          <NestedResourceHistoryButton child="grid_prequalification" />
+          <ResourceHistoryButton id={String(spgpq.id)} />
           <EventButton filterOnSubject recordId={String(spgpq.id)} />
         </div>
       )}

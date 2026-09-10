@@ -18,18 +18,18 @@ import { ServiceProvidingGroupMembershipHistoryList } from "../service_providing
 import { ServiceProvidingGroupGridPrequalificationShow } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationShow";
 import { ServiceProvidingGroupGridPrequalificationInput } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationInput";
 import { ServiceProvidingGroupGridPrequalificationList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
+import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationHistoryList";
 import { ServiceProvidingGroupProductApplicationInput } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationInput";
 import { ServiceProvidingGroupProductApplicationShow } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationShow";
 import { ServiceProvidingGroupProductApplicationPrint } from "../service_providing_group/product_application/print/ServiceProvidingGroupProductApplicationPrint";
+import { ServiceProvidingGroupProductApplicationHistoryList } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationHistoryList";
+import { ServiceProvidingGroupProductApplicationList } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationList";
 import { ServiceProvidingGroupProductSuspensionInput } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionInput";
 import { ServiceProvidingGroupProductSuspensionShow } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionShow";
 import { ServiceProvidingGroupProductSuspensionHistoryList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionHistoryList";
-import {
-  ServiceProvidingGroupGridSuspensionHistoryList,
-  ServiceProvidingGroupGridSuspensionInput,
-  ServiceProvidingGroupGridSuspensionShow,
-  ServiceProvidingGroupProductApplicationList,
-} from "../service_providing_group";
+import { ServiceProvidingGroupGridSuspensionInput } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionInput";
+import { ServiceProvidingGroupGridSuspensionShow } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionShow";
+import { ServiceProvidingGroupGridSuspensionHistoryList } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionHistoryList";
 
 export const createServiceProvidingGroupResources = (
   permissions: Permissions,
@@ -303,7 +303,12 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
+      >
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history"
+          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
+        />
+      </Resource>,
     );
   }
 
@@ -401,6 +406,10 @@ export const createServiceProvidingGroupResources = (
           )
         }
       >
+        <Route
+          path=":service_providing_group_product_application_id/history"
+          element={<ServiceProvidingGroupProductApplicationHistoryList />}
+        />
         <Route
           path=":id/print"
           element={<ServiceProvidingGroupProductApplicationPrint />}
