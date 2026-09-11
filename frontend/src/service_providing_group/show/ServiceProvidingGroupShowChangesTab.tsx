@@ -2,8 +2,16 @@ import { useState } from "react";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useTranslate } from "ra-core";
-import { IconMinus, IconPlus } from "@elhub/ds-icons";
-import { BodyText, DateTimePicker, Loader, Table } from "../../components/ui";
+import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
+import {
+  BodyText,
+  DateTimePicker,
+  FormItem,
+  FormItemLabel,
+  Loader,
+  Switch,
+  Table,
+} from "../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { cn, toDateString } from "../../util";
@@ -22,6 +30,8 @@ const rowClassName = (status: SpgChangeRow["status"]) => {
       return "bg-semantic-background-success";
     case "removed":
       return "bg-semantic-background-error";
+    case "changed":
+      return "bg-semantic-background-information";
     default:
       return undefined;
   }
@@ -33,6 +43,9 @@ const StatusMarker = ({ status }: { status: SpgChangeRow["status"] }) => {
   }
   if (status === "removed") {
     return <IconMinus className="text-semantic-text-error" />;
+  }
+  if (status === "changed") {
+    return <IconPencil className="text-semantic-text-information" />;
   }
   return null;
 };
@@ -72,8 +85,12 @@ export const ServiceProvidingGroupShowChangesTab = ({
 }: Props) => {
   const translate = useTranslate();
   const [asOf, setAsOf] = useState<string | undefined>(spgCreatedAt);
+  const [showUnchanged, setShowUnchanged] = useState(false);
 
   const { data: rows, isLoading, error } = useSpgChangesViewModel(spgId, asOf);
+  const visibleRows = rows?.filter(
+    (row) => showUnchanged || row.status !== "unchanged",
+  );
 
   const formatPower = (value: number | undefined) =>
     value != null ? formatScaled(value, "W", KILO, powerScale) : undefined;
@@ -104,6 +121,16 @@ export const ServiceProvidingGroupShowChangesTab = ({
         />
       </div>
 
+      <FormItem id="show-unchanged">
+        <FormItemLabel>
+          {translate("text.spg_changes_show_unchanged")}
+        </FormItemLabel>
+        <Switch
+          checked={showUnchanged}
+          onChange={(e) => setShowUnchanged(e.target.checked)}
+        />
+      </FormItem>
+
       {isLoading && <Loader />}
       {error ? (
         <BodyText className="text-semantic-background-action-danger">
@@ -111,11 +138,11 @@ export const ServiceProvidingGroupShowChangesTab = ({
         </BodyText>
       ) : null}
 
-      {!isLoading && !error && (!rows || rows.length === 0) && (
+      {!isLoading && !error && (!visibleRows || visibleRows.length === 0) && (
         <BodyText>{translate("text.spg_changes_empty")}</BodyText>
       )}
 
-      {!isLoading && !error && rows && rows.length > 0 && (
+      {!isLoading && !error && visibleRows && visibleRows.length > 0 && (
         <Table size="small" className="w-full">
           <Table.Header>
             <Table.Row>
@@ -141,7 +168,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {rows.map((row) => (
+            {visibleRows.map((row) => (
               <Table.Row key={row.id} className={cn(rowClassName(row.status))}>
                 <Table.DataCell>
                   <StatusMarker status={row.status} />
