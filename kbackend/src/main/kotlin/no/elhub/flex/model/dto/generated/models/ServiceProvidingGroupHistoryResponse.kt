@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -72,4 +73,38 @@ public data class ServiceProvidingGroupHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("service_provider_history")
+  public val serviceProviderHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  @SerialName("membership_history")
+  public val membershipHistory: List<ServiceProvidingGroupMembershipHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  @SerialName("grid_prequalification_history")
+  public val gridPrequalificationHistory:
+      List<ServiceProvidingGroupGridPrequalificationHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  @SerialName("grid_suspension_history")
+  public val gridSuspensionHistory: List<ServiceProvidingGroupGridSuspensionHistoryResponse>? =
+      null,
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  @SerialName("product_application_history")
+  public val productApplicationHistory:
+      List<ServiceProvidingGroupProductApplicationHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  @SerialName("product_suspension_history")
+  public val productSuspensionHistory: List<ServiceProvidingGroupProductSuspensionHistoryResponse>?
+      = null,
 )

@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -74,4 +75,19 @@ public data class ControllableUnitServiceProviderHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded controllable_unit_history
+   */
+  @SerialName("controllable_unit_history")
+  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("service_provider_history")
+  public val serviceProviderHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("end_user_history")
+  public val endUserHistory: List<PartyHistoryResponse>? = null,
 )

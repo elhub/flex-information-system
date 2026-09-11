@@ -7126,6 +7126,66 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "suspension_history": {
+                        "description": "Embedded controllable_unit_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded controllable_unit_service_provider_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_service_provider_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_membership_history": {
+                        "description": "Embedded service_providing_group_membership_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "technical_resource_history": {
+                        "description": "Embedded technical_resource_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/technical_resource_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7201,6 +7261,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded controllable_unit_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7287,6 +7392,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_suspension_history": {
+                        "description": "Embedded controllable_unit_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7384,6 +7504,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "end_user_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7473,6 +7638,96 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "membership_history": {
+                        "description": "Embedded service_providing_group_membership_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_prequalification_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_suspension_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_suspension_history": {
+                        "description": "Embedded service_providing_group_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7555,6 +7810,36 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7633,6 +7918,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7719,6 +8049,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_grid_prequalification_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7792,6 +8137,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7878,6 +8268,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_grid_suspension_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8049,6 +8454,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "party_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8202,6 +8622,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8382,6 +8817,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8473,6 +8923,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_provider_product_application_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8560,6 +9055,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_product_application_history": {
+                        "description": "Embedded service_provider_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8645,6 +9155,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_provider_product_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8732,6 +9287,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_product_suspension_history": {
+                        "description": "Embedded service_provider_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8889,6 +9459,66 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "attachment_history": {
+                        "description": "Embedded service_providing_group_product_application_attachment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_product_application_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8982,6 +9612,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9071,6 +9716,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9156,6 +9816,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_product_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9243,6 +9948,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_suspension_history": {
+                        "description": "Embedded service_providing_group_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -10159,6 +10879,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -10386,7 +11114,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/controllable_unit_suspension": {
@@ -11141,6 +11878,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -11368,7 +12113,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/controllable_unit_suspension_comment": {
@@ -12008,6 +12762,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -12235,7 +12997,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/controllable_unit_service_provider": {
@@ -13073,6 +13844,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -13300,7 +14079,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/controllable_unit_summary/{id}": {
@@ -14348,6 +15136,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -14575,7 +15371,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_membership": {
@@ -15386,6 +16191,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -15613,7 +16426,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_prequalification": {
@@ -16280,6 +17102,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -16507,7 +17337,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_prequalification_comment": {
@@ -17147,6 +17986,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -17374,7 +18221,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_suspension": {
@@ -18129,6 +18985,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -18356,7 +19220,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_suspension_comment": {
@@ -18996,6 +19869,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -19223,7 +20104,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/entity": {
@@ -21122,6 +22012,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21349,7 +22247,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/party_membership": {
@@ -22104,6 +23011,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -22331,7 +23246,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/identity": {
@@ -23445,6 +24369,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -23672,7 +24604,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/event": {
@@ -27995,6 +28936,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -28222,7 +29171,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_provider_product_application": {
@@ -28932,6 +29890,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -29159,7 +30125,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_provider_product_application_comment": {
@@ -29799,6 +30774,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -30026,7 +31009,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_provider_product_suspension": {
@@ -30808,6 +31800,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -31035,7 +32035,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_provider_product_suspension_comment": {
@@ -31675,6 +32684,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -31902,7 +32919,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_product_application": {
@@ -32596,6 +33622,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -32823,7 +33857,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_product_application_attachment": {
@@ -33457,6 +34500,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -33684,7 +34735,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_product_application_comment": {
@@ -34324,6 +35384,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -34551,7 +35619,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_product_suspension": {
@@ -35333,6 +36410,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -35560,7 +36645,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/service_providing_group_product_suspension_comment": {
@@ -36200,6 +37294,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -36427,7 +37529,16 @@
                     },
                     {}
                 ],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
             }
         },
         "/notice": {

@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -61,4 +62,20 @@ public data class ServiceProvidingGroupGridPrequalificationHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded service_providing_group_history
+   */
+  @SerialName("service_providing_group_history")
+  public val serviceProvidingGroupHistory: List<ServiceProvidingGroupHistoryResponse>? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("impacted_system_operator_history")
+  public val impactedSystemOperatorHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment_history
+   */
+  @SerialName("comment_history")
+  public val commentHistory: List<ServiceProvidingGroupGridPrequalificationCommentHistoryResponse>?
+      = null,
 )

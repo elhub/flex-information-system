@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,6 +12,10 @@ from ..models.device_type import DeviceType
 from ..models.technical_resource_business_id_type import TechnicalResourceBusinessIdType
 from ..models.technology import Technology
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
+
 
 T = TypeVar("T", bound="TechnicalResourceHistoryResponse")
 
@@ -47,6 +51,8 @@ class TechnicalResourceHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
+        controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
+            controllable_unit_history
     """
 
     id: int
@@ -66,6 +72,7 @@ class TechnicalResourceHistoryResponse:
     additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
+    controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -141,6 +148,18 @@ class TechnicalResourceHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
+        controllable_unit_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.controllable_unit_history, Unset):
+            controllable_unit_history = UNSET
+        elif isinstance(self.controllable_unit_history, list):
+            controllable_unit_history = []
+            for controllable_unit_history_type_0_item_data in self.controllable_unit_history:
+                controllable_unit_history_type_0_item = controllable_unit_history_type_0_item_data.to_dict()
+                controllable_unit_history.append(controllable_unit_history_type_0_item)
+
+        else:
+            controllable_unit_history = self.controllable_unit_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -171,11 +190,15 @@ class TechnicalResourceHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
+        if controllable_unit_history is not UNSET:
+            field_dict["controllable_unit_history"] = controllable_unit_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -286,6 +309,30 @@ class TechnicalResourceHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
+        def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                controllable_unit_history_type_0 = []
+                _controllable_unit_history_type_0 = data
+                for controllable_unit_history_type_0_item_data in _controllable_unit_history_type_0:
+                    controllable_unit_history_type_0_item = ControllableUnitHistoryResponse.from_dict(
+                        controllable_unit_history_type_0_item_data
+                    )
+
+                    controllable_unit_history_type_0.append(controllable_unit_history_type_0_item)
+
+                return controllable_unit_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
+
+        controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
+
         technical_resource_history_response = cls(
             id=id,
             name=name,
@@ -304,6 +351,7 @@ class TechnicalResourceHistoryResponse:
             additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
+            controllable_unit_history=controllable_unit_history,
         )
 
         technical_resource_history_response.additional_properties = d

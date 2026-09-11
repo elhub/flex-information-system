@@ -3445,6 +3445,22 @@ export type ControllableUnitHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
+  /**
+   * Embedded controllable_unit_service_provider_history
+   */
+  service_provider_history?: Array<ControllableUnitServiceProviderHistory> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
+  /**
+   * Embedded technical_resource_history
+   */
+  technical_resource_history?: Array<TechnicalResourceHistory> | null;
 };
 
 /**
@@ -3484,6 +3500,18 @@ export type ControllableUnitSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded controllable_unit_suspension_comment_history
+   */
+  comment_history?: Array<ControllableUnitSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3531,6 +3559,10 @@ export type ControllableUnitSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
 };
 
 /**
@@ -3585,6 +3617,18 @@ export type ControllableUnitServiceProviderHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  end_user_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -3633,6 +3677,30 @@ export type ServiceProvidingGroupHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -3679,6 +3747,14 @@ export type ServiceProvidingGroupMembershipHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
 };
 
 /**
@@ -3722,6 +3798,18 @@ export type ServiceProvidingGroupGridPrequalificationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistory> | null;
 };
 
 /**
@@ -3769,6 +3857,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
 };
 
 /**
@@ -3808,6 +3900,18 @@ export type ServiceProvidingGroupGridSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3855,6 +3959,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
 };
 
 /**
@@ -3943,6 +4051,10 @@ export type PartyMembershipHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -4014,6 +4126,10 @@ export type TechnicalResourceHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
 };
 
 /**
@@ -4106,6 +4222,10 @@ export type SystemOperatorProductTypeHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -4153,6 +4273,18 @@ export type ServiceProviderProductApplicationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_provider_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -4200,6 +4332,10 @@ export type ServiceProviderProductApplicationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_application_history
+   */
+  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistory> | null;
 };
 
 /**
@@ -4243,6 +4379,18 @@ export type ServiceProviderProductSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_provider_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -4290,6 +4438,10 @@ export type ServiceProviderProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_suspension_history
+   */
+  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistory> | null;
 };
 
 /**
@@ -4366,6 +4518,22 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_attachment_history
+   */
+  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -4417,6 +4585,10 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -4464,6 +4636,10 @@ export type ServiceProvidingGroupProductApplicationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -4507,6 +4683,18 @@ export type ServiceProvidingGroupProductSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -4554,6 +4742,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -5693,6 +5885,22 @@ export type ControllableUnitHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
+  /**
+   * Embedded controllable_unit_service_provider_history
+   */
+  service_provider_history?: Array<ControllableUnitServiceProviderHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
+  /**
+   * Embedded technical_resource_history
+   */
+  technical_resource_history?: Array<TechnicalResourceHistoryWritable> | null;
 };
 
 /**
@@ -5720,6 +5928,18 @@ export type ControllableUnitSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded controllable_unit_suspension_comment_history
+   */
+  comment_history?: Array<ControllableUnitSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5747,6 +5967,10 @@ export type ControllableUnitSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5789,6 +6013,18 @@ export type ControllableUnitServiceProviderHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  end_user_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -5821,6 +6057,30 @@ export type ServiceProvidingGroupHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5855,6 +6115,14 @@ export type ServiceProvidingGroupMembershipHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
 };
 
 /**
@@ -5886,6 +6154,18 @@ export type ServiceProvidingGroupGridPrequalificationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryWritable> | null;
 };
 
 /**
@@ -5913,6 +6193,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
 };
 
 /**
@@ -5940,6 +6224,18 @@ export type ServiceProvidingGroupGridSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5967,6 +6263,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -6031,6 +6331,10 @@ export type PartyMembershipHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6086,6 +6390,10 @@ export type TechnicalResourceHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
 };
 
 /**
@@ -6153,6 +6461,10 @@ export type SystemOperatorProductTypeHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6188,6 +6500,18 @@ export type ServiceProviderProductApplicationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_provider_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6215,6 +6539,10 @@ export type ServiceProviderProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_application_history
+   */
+  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6246,6 +6574,18 @@ export type ServiceProviderProductSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_provider_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6273,6 +6613,10 @@ export type ServiceProviderProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_suspension_history
+   */
+  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -6333,6 +6677,22 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_attachment_history
+   */
+  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6372,6 +6732,10 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6399,6 +6763,10 @@ export type ServiceProvidingGroupProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6430,6 +6798,18 @@ export type ServiceProvidingGroupProductSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6457,6 +6837,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 export type ReadOpenapiJsonData = {
@@ -6872,6 +7256,10 @@ export type ListControllableUnitHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_history";
 };
@@ -6932,7 +7320,12 @@ export type ReadControllableUnitHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_history/{id}";
 };
 
@@ -7313,6 +7706,10 @@ export type ListControllableUnitSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_history";
 };
@@ -7373,7 +7770,12 @@ export type ReadControllableUnitSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_history/{id}";
 };
 
@@ -7701,6 +8103,10 @@ export type ListControllableUnitSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_comment_history";
 };
@@ -7761,7 +8167,12 @@ export type ReadControllableUnitSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_comment_history/{id}";
 };
 
@@ -8174,6 +8585,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_service_provider_history";
 };
@@ -8234,7 +8649,12 @@ export type ReadControllableUnitServiceProviderHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_service_provider_history/{id}";
 };
 
@@ -8732,6 +9152,10 @@ export type ListServiceProvidingGroupHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_history";
 };
@@ -8792,7 +9216,12 @@ export type ReadServiceProvidingGroupHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_history/{id}";
 };
 
@@ -9197,6 +9626,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_membership_history";
 };
@@ -9257,7 +9690,12 @@ export type ReadServiceProvidingGroupMembershipHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_membership_history/{id}";
 };
 
@@ -9593,6 +10031,10 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_history";
 };
@@ -9653,7 +10095,12 @@ export type ReadServiceProvidingGroupGridPrequalificationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_history/{id}";
 };
 
@@ -9981,6 +10428,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_comment_history";
 };
@@ -10043,7 +10494,12 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_comment_history/{id}";
 };
 
@@ -10426,6 +10882,10 @@ export type ListServiceProvidingGroupGridSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_history";
 };
@@ -10486,7 +10946,12 @@ export type ReadServiceProvidingGroupGridSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_history/{id}";
 };
 
@@ -10814,6 +11279,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_comment_history";
 };
@@ -10874,7 +11343,12 @@ export type ReadServiceProvidingGroupGridSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_comment_history/{id}";
 };
 
@@ -11765,6 +12239,10 @@ export type ListPartyHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_history";
 };
@@ -11825,7 +12303,12 @@ export type ReadPartyHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_history/{id}";
 };
 
@@ -12206,6 +12689,10 @@ export type ListPartyMembershipHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_membership_history";
 };
@@ -12266,7 +12753,12 @@ export type ReadPartyMembershipHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_membership_history/{id}";
 };
 
@@ -12795,6 +13287,10 @@ export type ListTechnicalResourceHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/technical_resource_history";
 };
@@ -12855,7 +13351,12 @@ export type ReadTechnicalResourceHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/technical_resource_history/{id}";
 };
 
@@ -14812,6 +15313,10 @@ export type ListSystemOperatorProductTypeHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/system_operator_product_type_history";
 };
@@ -14872,7 +15377,12 @@ export type ReadSystemOperatorProductTypeHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/system_operator_product_type_history/{id}";
 };
 
@@ -15218,6 +15728,10 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_history";
 };
@@ -15278,7 +15792,12 @@ export type ReadServiceProviderProductApplicationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_history/{id}";
 };
 
@@ -15606,6 +16125,10 @@ export type ListServiceProviderProductApplicationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_comment_history";
 };
@@ -15666,7 +16189,12 @@ export type ReadServiceProviderProductApplicationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_comment_history/{id}";
 };
 
@@ -16055,6 +16583,10 @@ export type ListServiceProviderProductSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_history";
 };
@@ -16115,7 +16647,12 @@ export type ReadServiceProviderProductSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_history/{id}";
 };
 
@@ -16443,6 +16980,10 @@ export type ListServiceProviderProductSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_comment_history";
 };
@@ -16503,7 +17044,12 @@ export type ReadServiceProviderProductSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_comment_history/{id}";
 };
 
@@ -16847,6 +17393,10 @@ export type ListServiceProvidingGroupProductApplicationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_history";
 };
@@ -16907,7 +17457,12 @@ export type ReadServiceProvidingGroupProductApplicationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_history/{id}";
 };
 
@@ -17230,6 +17785,10 @@ export type ListServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_attachment_history";
 };
@@ -17292,7 +17851,12 @@ export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_attachment_history/{id}";
 };
 
@@ -17622,6 +18186,10 @@ export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_comment_history";
 };
@@ -17683,7 +18251,12 @@ export type ReadServiceProvidingGroupProductApplicationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_comment_history/{id}";
 };
 
@@ -18073,6 +18646,10 @@ export type ListServiceProvidingGroupProductSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_history";
 };
@@ -18133,7 +18710,12 @@ export type ReadServiceProvidingGroupProductSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_history/{id}";
 };
 
@@ -18461,6 +19043,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_comment_history";
 };
@@ -18522,7 +19108,12 @@ export type ReadServiceProvidingGroupProductSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_comment_history/{id}";
 };
 

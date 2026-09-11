@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -55,4 +56,9 @@ public data class SystemOperatorProductTypeHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("system_operator_history")
+  public val systemOperatorHistory: List<PartyHistoryResponse>? = null,
 )

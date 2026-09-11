@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.party_history_response import PartyHistoryResponse
+
 
 T = TypeVar("T", bound="PartyMembershipHistoryResponse")
 
@@ -31,6 +35,7 @@ class PartyMembershipHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
+        party_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     id: int
@@ -42,6 +47,7 @@ class PartyMembershipHistoryResponse:
     party_membership_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
+    party_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -76,6 +82,18 @@ class PartyMembershipHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
+        party_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.party_history, Unset):
+            party_history = UNSET
+        elif isinstance(self.party_history, list):
+            party_history = []
+            for party_history_type_0_item_data in self.party_history:
+                party_history_type_0_item = party_history_type_0_item_data.to_dict()
+                party_history.append(party_history_type_0_item)
+
+        else:
+            party_history = self.party_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -93,11 +111,15 @@ class PartyMembershipHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
+        if party_history is not UNSET:
+            field_dict["party_history"] = party_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.party_history_response import PartyHistoryResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -144,6 +166,28 @@ class PartyMembershipHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
+        def _parse_party_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                party_history_type_0 = []
+                _party_history_type_0 = data
+                for party_history_type_0_item_data in _party_history_type_0:
+                    party_history_type_0_item = PartyHistoryResponse.from_dict(party_history_type_0_item_data)
+
+                    party_history_type_0.append(party_history_type_0_item)
+
+                return party_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        party_history = _parse_party_history(d.pop("party_history", UNSET))
+
         party_membership_history_response = cls(
             id=id,
             party_id=party_id,
@@ -154,6 +198,7 @@ class PartyMembershipHistoryResponse:
             party_membership_id=party_membership_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
+            party_history=party_history,
         )
 
         party_membership_history_response.additional_properties = d

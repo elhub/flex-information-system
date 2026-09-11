@@ -43,10 +43,21 @@ var embedRelations = map[string]map[string]string{
 		"suspension": "controllable_unit_suspension",
 		"technical_resource": "technical_resource",
 	},
+	"controllable_unit_history": {
+		"service_provider_history": "controllable_unit_service_provider_history",
+		"service_providing_group_membership_history": "service_providing_group_membership_history",
+		"suspension_history": "controllable_unit_suspension_history",
+		"technical_resource_history": "technical_resource_history",
+	},
 	"controllable_unit_service_provider": {
 		"controllable_unit": "controllable_unit",
 		"end_user": "party",
 		"service_provider": "party",
+	},
+	"controllable_unit_service_provider_history": {
+		"controllable_unit_history": "controllable_unit_history",
+		"end_user_history": "party_history",
+		"service_provider_history": "party_history",
 	},
 	"controllable_unit_summary": {
 		"controllable_unit": "controllable_unit",
@@ -54,6 +65,10 @@ var embedRelations = map[string]map[string]string{
 	"controllable_unit_suspension": {
 		"controllable_unit": "controllable_unit",
 		"impacted_system_operator": "party",
+	},
+	"controllable_unit_suspension_history": {
+		"controllable_unit_history": "controllable_unit_history",
+		"impacted_system_operator_history": "party_history",
 	},
 	"entity": {
 		"client": "entity_client",
@@ -87,9 +102,16 @@ var embedRelations = map[string]map[string]string{
 		"membership": "party_membership",
 		"system_operator_product_type": "system_operator_product_type",
 	},
+	"party_history": {
+		"membership_history": "party_membership_history",
+		"system_operator_product_type_history": "system_operator_product_type_history",
+	},
 	"party_membership": {
 		"entity": "entity",
 		"party": "party",
+	},
+	"party_membership_history": {
+		"party_history": "party_history",
 	},
 	"product_type": {
 		"system_operator_product_type": "system_operator_product_type",
@@ -98,9 +120,17 @@ var embedRelations = map[string]map[string]string{
 		"service_provider": "party",
 		"system_operator": "party",
 	},
+	"service_provider_product_application_history": {
+		"service_provider_history": "party_history",
+		"system_operator_history": "party_history",
+	},
 	"service_provider_product_suspension": {
 		"procuring_system_operator": "party",
 		"service_provider": "party",
+	},
+	"service_provider_product_suspension_history": {
+		"procuring_system_operator_history": "party_history",
+		"service_provider_history": "party_history",
 	},
 	"service_providing_group": {
 		"grid_prequalification": "service_providing_group_grid_prequalification",
@@ -116,13 +146,33 @@ var embedRelations = map[string]map[string]string{
 		"impacted_system_operator": "party",
 		"service_providing_group": "service_providing_group",
 	},
+	"service_providing_group_grid_prequalification_history": {
+		"impacted_system_operator_history": "party_history",
+		"service_providing_group_history": "service_providing_group_history",
+	},
 	"service_providing_group_grid_suspension": {
 		"impacted_system_operator": "party",
 		"service_providing_group": "service_providing_group",
 	},
+	"service_providing_group_grid_suspension_history": {
+		"impacted_system_operator_history": "party_history",
+		"service_providing_group_history": "service_providing_group_history",
+	},
+	"service_providing_group_history": {
+		"grid_prequalification_history": "service_providing_group_grid_prequalification_history",
+		"grid_suspension_history": "service_providing_group_grid_suspension_history",
+		"membership_history": "service_providing_group_membership_history",
+		"product_application_history": "service_providing_group_product_application_history",
+		"product_suspension_history": "service_providing_group_product_suspension_history",
+		"service_provider_history": "party_history",
+	},
 	"service_providing_group_membership": {
 		"controllable_unit": "controllable_unit",
 		"service_providing_group": "service_providing_group",
+	},
+	"service_providing_group_membership_history": {
+		"controllable_unit_history": "controllable_unit_history",
+		"service_providing_group_history": "service_providing_group_history",
 	},
 	"service_providing_group_power_per_substation": {
 		"service_providing_group": "service_providing_group",
@@ -131,9 +181,17 @@ var embedRelations = map[string]map[string]string{
 		"procuring_system_operator": "party",
 		"service_providing_group": "service_providing_group",
 	},
+	"service_providing_group_product_application_history": {
+		"procuring_system_operator_history": "party_history",
+		"service_providing_group_history": "service_providing_group_history",
+	},
 	"service_providing_group_product_suspension": {
 		"procuring_system_operator": "party",
 		"service_providing_group": "service_providing_group",
+	},
+	"service_providing_group_product_suspension_history": {
+		"procuring_system_operator_history": "party_history",
+		"service_providing_group_history": "service_providing_group_history",
 	},
 	"service_providing_group_summary": {
 		"service_providing_group": "service_providing_group",
@@ -142,7 +200,13 @@ var embedRelations = map[string]map[string]string{
 		"product_type": "product_type",
 		"system_operator": "party",
 	},
+	"system_operator_product_type_history": {
+		"system_operator_history": "party_history",
+	},
 	"technical_resource": {
 		"controllable_unit": "controllable_unit",
+	},
+	"technical_resource_history": {
+		"controllable_unit_history": "controllable_unit_history",
 	},
 }

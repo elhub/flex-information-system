@@ -4,6 +4,7 @@ import java.math.BigDecimal
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
@@ -95,4 +96,25 @@ public data class ControllableUnitHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  @SerialName("suspension_history")
+  public val suspensionHistory: List<ControllableUnitSuspensionHistoryResponse>? = null,
+  /**
+   * Embedded controllable_unit_service_provider_history
+   */
+  @SerialName("service_provider_history")
+  public val serviceProviderHistory: List<ControllableUnitServiceProviderHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  @SerialName("service_providing_group_membership_history")
+  public val serviceProvidingGroupMembershipHistory:
+      List<ServiceProvidingGroupMembershipHistoryResponse>? = null,
+  /**
+   * Embedded technical_resource_history
+   */
+  @SerialName("technical_resource_history")
+  public val technicalResourceHistory: List<TechnicalResourceHistoryResponse>? = null,
 )
