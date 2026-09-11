@@ -2350,7 +2350,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_balance_responsible_party;
@@ -2363,7 +2364,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_energy_supplier;
@@ -2376,7 +2378,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_end_user;
@@ -2399,7 +2402,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2420,7 +2424,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_market_operator;
@@ -2433,7 +2438,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_system_operator;
@@ -2456,7 +2462,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -2477,7 +2484,8 @@ GRANT SELECT (
     status,
     additional_information,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at
 ) ON TABLE
 api.service_providing_group
 TO flex_third_party;
@@ -2497,7 +2505,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_balance_responsible_party;
@@ -2513,7 +2522,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_energy_supplier;
@@ -2529,7 +2539,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_end_user;
@@ -2545,7 +2556,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_flexibility_information_system_operator;
@@ -2561,7 +2573,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_market_operator;
@@ -2577,7 +2590,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_system_operator;
@@ -2593,7 +2607,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_service_provider;
@@ -2609,7 +2624,8 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at
 ) ON TABLE
 api.service_providing_group_history
 TO flex_third_party;
@@ -6639,7 +6655,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_balance_responsible_party;
@@ -6658,7 +6676,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_energy_supplier;
@@ -6677,7 +6697,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_end_user;
@@ -6696,7 +6718,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
@@ -6710,7 +6734,8 @@ GRANT UPDATE (
     prequalified_at,
     verified_at,
     ramping_capability,
-    ramping_description
+    ramping_description,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
@@ -6729,7 +6754,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_market_operator;
@@ -6748,7 +6775,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_system_operator;
@@ -6757,7 +6786,8 @@ GRANT UPDATE (
     product_type_ids,
     status,
     prequalified_at,
-    verified_at
+    verified_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_system_operator;
@@ -6790,7 +6820,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -6821,7 +6853,9 @@ GRANT SELECT (
     ramping_capability,
     ramping_description,
     recorded_at,
-    recorded_by
+    recorded_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_third_party;
@@ -6847,7 +6881,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_balance_responsible_party;
@@ -6869,7 +6905,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_energy_supplier;
@@ -6891,7 +6929,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_end_user;
@@ -6913,7 +6953,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_flexibility_information_system_operator;
@@ -6935,7 +6977,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_market_operator;
@@ -6957,7 +7001,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_system_operator;
@@ -6979,7 +7025,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_service_provider;
@@ -7001,7 +7049,9 @@ GRANT SELECT (
     recorded_at,
     replaced_at,
     recorded_by,
-    replaced_by
+    replaced_by,
+    created_at,
+    complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_third_party;

@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -20,6 +21,7 @@ def _get_kwargs(
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -39,6 +41,11 @@ def _get_kwargs(
     params["product_type_ids"] = product_type_ids
 
     params["status"] = status
+
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
 
     params["select"] = select
 
@@ -162,6 +169,7 @@ def sync_detailed(
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -180,6 +188,7 @@ def sync_detailed(
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -201,6 +210,7 @@ def sync_detailed(
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -224,6 +234,7 @@ def sync(
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -242,6 +253,7 @@ def sync(
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -264,6 +276,7 @@ def sync(
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -281,6 +294,7 @@ async def asyncio_detailed(
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -299,6 +313,7 @@ async def asyncio_detailed(
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -320,6 +335,7 @@ async def asyncio_detailed(
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -341,6 +357,7 @@ async def asyncio(
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -359,6 +376,7 @@ async def asyncio(
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -382,6 +400,7 @@ async def asyncio(
             system_operator_id=system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,

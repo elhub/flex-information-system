@@ -20,6 +20,7 @@ def _get_kwargs(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -44,6 +45,11 @@ def _get_kwargs(
     params["valid_at"] = json_valid_at
 
     params["valid_to"] = valid_to
+
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
 
     params["select"] = select
 
@@ -168,6 +174,7 @@ def sync_detailed(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -188,6 +195,7 @@ def sync_detailed(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -210,6 +218,7 @@ def sync_detailed(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -234,6 +243,7 @@ def sync(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -254,6 +264,7 @@ def sync(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -277,6 +288,7 @@ def sync(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -295,6 +307,7 @@ async def asyncio_detailed(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -315,6 +328,7 @@ async def asyncio_detailed(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -337,6 +351,7 @@ async def asyncio_detailed(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -359,6 +374,7 @@ async def asyncio(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -379,6 +395,7 @@ async def asyncio(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -403,6 +420,7 @@ async def asyncio(
             valid_from=valid_from,
             valid_at=valid_at,
             valid_to=valid_to,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,

@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -18,6 +19,7 @@ def _get_kwargs(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -37,6 +39,11 @@ def _get_kwargs(
     params["entity_id"] = entity_id
 
     params["name"] = name
+
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
 
     params["select"] = select
 
@@ -160,6 +167,7 @@ def sync_detailed(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -177,6 +185,7 @@ def sync_detailed(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -198,6 +207,7 @@ def sync_detailed(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -221,6 +231,7 @@ def sync(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -238,6 +249,7 @@ def sync(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -260,6 +272,7 @@ def sync(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -277,6 +290,7 @@ async def asyncio_detailed(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -294,6 +308,7 @@ async def asyncio_detailed(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -315,6 +330,7 @@ async def asyncio_detailed(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
@@ -336,6 +352,7 @@ async def asyncio(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -353,6 +370,7 @@ async def asyncio(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -376,6 +394,7 @@ async def asyncio(
             business_id_type=business_id_type,
             entity_id=entity_id,
             name=name,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,

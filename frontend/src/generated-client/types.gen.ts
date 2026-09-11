@@ -1268,6 +1268,10 @@ export type ServiceProvidingGroup = {
    */
   additional_information?: string;
   /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -3176,6 +3180,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -3220,6 +3228,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -3268,6 +3280,14 @@ export type ServiceProvidingGroupProductApplication = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3941,6 +3961,10 @@ export type ServiceProvidingGroupHistory = {
    * Free text field for extra information about the service providing group if needed.
    */
   additional_information?: string;
+  /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4906,6 +4930,14 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -6375,6 +6407,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   ramping_description?: string;
   /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
@@ -7546,6 +7582,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    */
   ramping_description?: string;
   /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * Reference to the resource that was updated.
    */
   service_providing_group_product_application_id: number;
@@ -8157,6 +8197,10 @@ export type ListControllableUnitHistoryData = {
      */
     accounting_point_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -8603,6 +8647,10 @@ export type ListControllableUnitSuspensionHistoryData = {
      */
     impacted_system_operator_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -8995,6 +9043,10 @@ export type ListControllableUnitSuspensionCommentHistoryData = {
      * Reference to the controllable unit suspension.
      */
     controllable_unit_suspension_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -9473,6 +9525,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -10037,6 +10093,10 @@ export type ListServiceProvidingGroupHistoryData = {
      */
     service_provider_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10507,6 +10567,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      */
     valid_to?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10908,6 +10972,10 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      */
     impacted_system_operator_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -11300,6 +11368,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      * Reference to the service providing group grid prequalification.
      */
     service_providing_group_grid_prequalification_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -11751,6 +11823,10 @@ export type ListServiceProvidingGroupGridSuspensionHistoryData = {
      */
     service_providing_group_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -12143,6 +12219,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
      * Reference to the service providing group grid suspension.
      */
     service_providing_group_grid_suspension_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -13100,6 +13180,10 @@ export type ListPartyHistoryData = {
      */
     name?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -13545,6 +13629,10 @@ export type ListPartyMembershipHistoryData = {
      * Reference to the entity that the party represents.
      */
     entity_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -14139,6 +14227,10 @@ export type ListTechnicalResourceHistoryData = {
      * Reference to the controllable unit that this technical resource belongs to.
      */
     controllable_unit_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -15622,6 +15714,10 @@ export type ListAccountingPointGridLocationHistoryData = {
      */
     accounting_point_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -16167,6 +16263,10 @@ export type ListSystemOperatorProductTypeHistoryData = {
     product_type_id?: string;
     status?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -16578,6 +16678,10 @@ export type ListServiceProviderProductApplicationHistoryData = {
     product_type_ids?: string;
     status?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -16970,6 +17074,10 @@ export type ListServiceProviderProductApplicationCommentHistoryData = {
      * Reference to the service provider product application.
      */
     service_provider_product_application_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -17425,6 +17533,10 @@ export type ListServiceProviderProductSuspensionHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -17817,6 +17929,10 @@ export type ListServiceProviderProductSuspensionCommentHistoryData = {
      * Reference to the service provider product suspension.
      */
     service_provider_product_suspension_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -18227,6 +18343,10 @@ export type ListServiceProvidingGroupProductApplicationHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -18614,6 +18734,10 @@ export type ListServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      * Reference to the service providing group product application.
      */
     service_providing_group_product_application_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -19011,6 +19135,10 @@ export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
      * Reference to the service providing group product application.
      */
     service_providing_group_product_application_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -19468,6 +19596,10 @@ export type ListServiceProvidingGroupProductSuspensionHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -19860,6 +19992,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
      * Reference to the service providing group product suspension.
      */
     service_providing_group_product_suspension_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */

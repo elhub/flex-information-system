@@ -22,7 +22,9 @@ WITH (security_invoker = true) AS (
         prequalified_at,
         verified_at,
         ramping_capability,
-        ramping_description
+        ramping_description,
+        created_at,
+        complete_at
     FROM flex.service_providing_group_product_application
 );
 -- changeset flex:api-service-providing-group-product-application-history-create endDelimiter:-- runOnChange:true
@@ -48,7 +50,9 @@ WITH (
         prequalified_at,
         verified_at,
         ramping_capability,
-        ramping_description
+        ramping_description,
+        created_at,
+        complete_at
     FROM flex.service_providing_group_product_application
     UNION ALL
     SELECT
@@ -68,6 +72,8 @@ WITH (
         prequalified_at,
         verified_at,
         ramping_capability,
-        ramping_description
+        ramping_description,
+        created_at,
+        complete_at
     FROM flex.service_providing_group_product_application_history
 );

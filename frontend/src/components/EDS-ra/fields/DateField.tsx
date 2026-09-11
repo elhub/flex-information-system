@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 import { BodyText } from "../../ui";
+import { toDateTimeString } from "../../../util";
 
 type DateFieldProps = BaseFieldProps & {
   showTime?: boolean;
@@ -20,12 +21,7 @@ export const DateField = ({
   const value = record?.[source];
   const content = value ? (
     <BodyText size={textSize}>
-      {new Date(value).toLocaleString(
-        "no-NO",
-        showTime
-          ? { dateStyle: "medium", timeStyle: "short", hour12: false }
-          : { dateStyle: "medium" },
-      )}
+      {toDateTimeString(value, { showTime: showTime ?? false })}
     </BodyText>
   ) : emptyText ? (
     <BodyText size={textSize}>{emptyText}</BodyText>

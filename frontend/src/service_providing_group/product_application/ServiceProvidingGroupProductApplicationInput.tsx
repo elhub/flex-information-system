@@ -205,6 +205,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           tooltip={false}
         />
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
+        <DateTimeInput {...fields.complete_at} description tooltip={false} />
         <FormToolbarWithConfirmation
           confirmTitle={translate("ra.action.save")}
           confirmContent={
