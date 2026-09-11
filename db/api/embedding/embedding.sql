@@ -18,23 +18,6 @@ api.accounting_point(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit_history-accounting_point_id-to-accounting_point runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.accounting_point(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.accounting_point ROWS 1 AS $$
-  select *
-  from api.accounting_point
-  where id = $1.accounting_point_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-accounting_point_id-to-accounting_point-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.accounting_point(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:accounting_point-id-to-controllable_unit runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.controllable_unit(
     api.accounting_point
@@ -48,23 +31,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:accounting_point-id-to-controllable_unit-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.controllable_unit(
-    api.accounting_point
-)
-TO flex_common, flex_entity;
-
--- changeset flex:accounting_point-id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.accounting_point
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where accounting_point_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point-id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
     api.accounting_point
 )
 TO flex_common, flex_entity;
@@ -86,57 +52,6 @@ api.controllable_unit(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit_suspension-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.controllable_unit_suspension
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.controllable_unit_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_suspension_history-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit(
-    api.controllable_unit_suspension_history
-)
-RETURNS SETOF api.controllable_unit ROWS 1 AS $$
-  select *
-  from api.controllable_unit
-  where id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension_history-controllable_unit_id-to-controllable_unit-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit(
-    api.controllable_unit_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_suspension_history-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.controllable_unit_suspension_history
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension_history-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.controllable_unit_suspension_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit-id-to-controllable_unit_suspension runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.suspension(
     api.controllable_unit
@@ -151,57 +66,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.suspension(
     api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit-id-to-controllable_unit_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.suspension_history(
-    api.controllable_unit
-)
-RETURNS SETOF api.controllable_unit_suspension_history AS $$
-  select *
-  from api.controllable_unit_suspension_history
-  where controllable_unit_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit-id-to-controllable_unit_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.suspension_history(
-    api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_suspension runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.suspension(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.controllable_unit_suspension AS $$
-  select *
-  from api.controllable_unit_suspension
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_suspension-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.suspension(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.suspension_history(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.controllable_unit_suspension_history AS $$
-  select *
-  from api.controllable_unit_suspension_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.suspension_history(
-    api.controllable_unit_history
 )
 TO flex_common, flex_entity;
 
@@ -222,57 +86,6 @@ api.impacted_system_operator(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit_suspension-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.controllable_unit_suspension
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.controllable_unit_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_suspension_history-impacted_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator(
-    api.controllable_unit_suspension_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension_history-impacted_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator(
-    api.controllable_unit_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_suspension_history-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.controllable_unit_suspension_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_suspension_history-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.controllable_unit_suspension_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit_service_provider-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.controllable_unit(
     api.controllable_unit_service_provider
@@ -287,57 +100,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.controllable_unit(
     api.controllable_unit_service_provider
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.controllable_unit_service_provider
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.controllable_unit_service_provider
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.controllable_unit ROWS 1 AS $$
-  select *
-  from api.controllable_unit
-  where id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-controllable_unit_id-to-controllable_unit-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit(
-    api.controllable_unit_service_provider_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.controllable_unit_service_provider_history
 )
 TO flex_common, flex_entity;
 
@@ -358,57 +120,6 @@ api.service_provider(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit-id-to-controllable_unit_service_provider_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.controllable_unit
-)
-RETURNS SETOF api.controllable_unit_service_provider_history AS $$
-  select *
-  from api.controllable_unit_service_provider_history
-  where controllable_unit_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit-id-to-controllable_unit_service_provider_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_service_provider runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.controllable_unit_service_provider AS $$
-  select *
-  from api.controllable_unit_service_provider
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_service_provider-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_service_provider_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.controllable_unit_service_provider_history AS $$
-  select *
-  from api.controllable_unit_service_provider_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_service_provider_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit_service_provider-service_provider_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_provider(
     api.controllable_unit_service_provider
@@ -423,57 +134,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.service_provider(
     api.controllable_unit_service_provider
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.controllable_unit_service_provider
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.controllable_unit_service_provider
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-service_provider_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-service_provider_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider(
-    api.controllable_unit_service_provider_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.controllable_unit_service_provider_history
 )
 TO flex_common, flex_entity;
 
@@ -494,57 +154,6 @@ api.end_user(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit_service_provider-end_user_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.end_user_history(
-    api.controllable_unit_service_provider
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.end_user_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider-end_user_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.end_user_history(
-    api.controllable_unit_service_provider
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-end_user_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.end_user(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.end_user_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-end_user_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.end_user(
-    api.controllable_unit_service_provider_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_service_provider_history-end_user_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.end_user_history(
-    api.controllable_unit_service_provider_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.end_user_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_service_provider_history-end_user_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.end_user_history(
-    api.controllable_unit_service_provider_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit_summary-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.controllable_unit(
     api.controllable_unit_summary
@@ -558,23 +167,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:controllable_unit_summary-controllable_unit_id-to-controllable_unit-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.controllable_unit(
-    api.controllable_unit_summary
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_summary-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.controllable_unit_summary
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_summary-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
     api.controllable_unit_summary
 )
 TO flex_common, flex_entity;
@@ -596,23 +188,6 @@ api.summary(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_summary runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.summary(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.controllable_unit_summary ROWS 1 AS $$
-  select *
-  from api.controllable_unit_summary
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-controllable_unit_summary-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.summary(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_providing_group(
     api.service_providing_group_power_per_substation
@@ -626,23 +201,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.service_providing_group(
-    api.service_providing_group_power_per_substation
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_power_per_substation
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
     api.service_providing_group_power_per_substation
 )
 TO flex_common, flex_entity;
@@ -664,23 +222,6 @@ api.power_per_substation(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_power_per_substation runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.power_per_substation(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_power_per_substation ROWS 1 AS $$
-  select *
-  from api.service_providing_group_power_per_substation
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_power_per_substation-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.power_per_substation(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_providing_group(
     api.service_providing_group_summary
@@ -694,23 +235,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.service_providing_group(
-    api.service_providing_group_summary
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_summary
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
     api.service_providing_group_summary
 )
 TO flex_common, flex_entity;
@@ -732,23 +256,6 @@ api.summary(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_summary runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.summary(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_summary ROWS 1 AS $$
-  select *
-  from api.service_providing_group_summary
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_summary-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.summary(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-service_provider_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_provider(
     api.service_providing_group
@@ -763,57 +270,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.service_provider(
     api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_provider_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_provider_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_providing_group_history
 )
 TO flex_common, flex_entity;
 
@@ -834,57 +290,6 @@ api.controllable_unit(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_membership-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.service_providing_group_membership
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.service_providing_group_membership
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_membership_history-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit(
-    api.service_providing_group_membership_history
-)
-RETURNS SETOF api.controllable_unit ROWS 1 AS $$
-  select *
-  from api.controllable_unit
-  where id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership_history-controllable_unit_id-to-controllable_unit-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit(
-    api.service_providing_group_membership_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_membership_history-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.service_providing_group_membership_history
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership_history-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.service_providing_group_membership_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit-id-to-service_providing_group_membership runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_providing_group_membership(
     api.controllable_unit
@@ -899,57 +304,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.service_providing_group_membership(
     api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit-id-to-service_providing_group_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_membership_history(
-    api.controllable_unit
-)
-RETURNS SETOF api.service_providing_group_membership_history AS $$
-  select *
-  from api.service_providing_group_membership_history
-  where controllable_unit_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit-id-to-service_providing_group_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_membership_history(
-    api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-service_providing_group_membership runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_membership(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.service_providing_group_membership AS $$
-  select *
-  from api.service_providing_group_membership
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-service_providing_group_membership-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_membership(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-service_providing_group_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_membership_history(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.service_providing_group_membership_history AS $$
-  select *
-  from api.service_providing_group_membership_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-service_providing_group_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_membership_history(
-    api.controllable_unit_history
 )
 TO flex_common, flex_entity;
 
@@ -970,57 +324,6 @@ api.service_providing_group(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_membership-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_membership
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_membership
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_membership_history-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group(
-    api.service_providing_group_membership_history
-)
-RETURNS SETOF api.service_providing_group ROWS 1 AS $$
-  select *
-  from api.service_providing_group
-  where id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership_history-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group(
-    api.service_providing_group_membership_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_membership_history-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_membership_history
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_membership_history-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_membership_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-id-to-service_providing_group_membership runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.membership(
     api.service_providing_group
@@ -1035,57 +338,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.membership(
     api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.service_providing_group_membership_history AS $$
-  select *
-  from api.service_providing_group_membership_history
-  where service_providing_group_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_membership runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_membership AS $$
-  select *
-  from api.service_providing_group_membership
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_membership-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_membership_history AS $$
-  select *
-  from api.service_providing_group_membership_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership_history(
-    api.service_providing_group_history
 )
 TO flex_common, flex_entity;
 
@@ -1106,57 +358,6 @@ api.service_providing_group(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_grid_prequalification-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_grid_prequalification
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_grid_prequalification
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_prequalification_history-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group(
-    api.service_providing_group_grid_prequalification_history
-)
-RETURNS SETOF api.service_providing_group ROWS 1 AS $$
-  select *
-  from api.service_providing_group
-  where id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification_history-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group(
-    api.service_providing_group_grid_prequalification_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_prequalification_history-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_grid_prequalification_history
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification_history-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_grid_prequalification_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-id-to-service_providing_group_grid_prequalification runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.grid_prequalification(
     api.service_providing_group
@@ -1171,57 +372,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.grid_prequalification(
     api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_grid_prequalification_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_prequalification_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.service_providing_group_grid_prequalification_history AS $$
-  select *
-  from api.service_providing_group_grid_prequalification_history
-  where service_providing_group_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_grid_prequalification_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_prequalification_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_prequalification runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_prequalification(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_grid_prequalification AS $$
-  select *
-  from api.service_providing_group_grid_prequalification
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_prequalification-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_prequalification(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_prequalification_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_prequalification_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_grid_prequalification_history AS $$
-  select *
-  from api.service_providing_group_grid_prequalification_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_prequalification_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_prequalification_history(
-    api.service_providing_group_history
 )
 TO flex_common, flex_entity;
 
@@ -1242,57 +392,6 @@ api.impacted_system_operator(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_grid_prequalification-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.service_providing_group_grid_prequalification
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.service_providing_group_grid_prequalification
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_prequalification_history-impacted_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator(
-    api.service_providing_group_grid_prequalification_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification_history-impacted_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator(
-    api.service_providing_group_grid_prequalification_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_prequalification_history-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.service_providing_group_grid_prequalification_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_prequalification_history-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.service_providing_group_grid_prequalification_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group_grid_suspension-impacted_system_operator_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.impacted_system_operator(
     api.service_providing_group_grid_suspension
@@ -1307,57 +406,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.impacted_system_operator(
     api.service_providing_group_grid_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_suspension-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.service_providing_group_grid_suspension
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.service_providing_group_grid_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_suspension_history-impacted_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator(
-    api.service_providing_group_grid_suspension_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension_history-impacted_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator(
-    api.service_providing_group_grid_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_suspension_history-impacted_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.impacted_system_operator_history(
-    api.service_providing_group_grid_suspension_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.impacted_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension_history-impacted_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.impacted_system_operator_history(
-    api.service_providing_group_grid_suspension_history
 )
 TO flex_common, flex_entity;
 
@@ -1378,57 +426,6 @@ api.service_providing_group(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_grid_suspension-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_grid_suspension
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_grid_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_suspension_history-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group(
-    api.service_providing_group_grid_suspension_history
-)
-RETURNS SETOF api.service_providing_group ROWS 1 AS $$
-  select *
-  from api.service_providing_group
-  where id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension_history-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group(
-    api.service_providing_group_grid_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_grid_suspension_history-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_grid_suspension_history
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_grid_suspension_history-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_grid_suspension_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-id-to-service_providing_group_grid_suspension runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.grid_suspension(
     api.service_providing_group
@@ -1443,57 +440,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.grid_suspension(
     api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_grid_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_suspension_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.service_providing_group_grid_suspension_history AS $$
-  select *
-  from api.service_providing_group_grid_suspension_history
-  where service_providing_group_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_grid_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_suspension_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_suspension runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_suspension(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_grid_suspension AS $$
-  select *
-  from api.service_providing_group_grid_suspension
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_suspension-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_suspension(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_suspension_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_grid_suspension_history AS $$
-  select *
-  from api.service_providing_group_grid_suspension_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_grid_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_suspension_history(
-    api.service_providing_group_history
 )
 TO flex_common, flex_entity;
 
@@ -1548,23 +494,6 @@ api.party(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:entity_client-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.entity_client
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:entity_client-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
-    api.entity_client
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:party-entity_id-to-entity runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.entity(
     api.party
@@ -1582,23 +511,6 @@ api.entity(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:party_history-entity_id-to-entity runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.entity(
-    api.party_history
-)
-RETURNS SETOF api.entity ROWS 1 AS $$
-  select *
-  from api.entity
-  where id = $1.entity_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_history-entity_id-to-entity-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.entity(
-    api.party_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:entity-id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.party(
     api.entity
@@ -1612,23 +524,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:entity-id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.party(
-    api.entity
-)
-TO flex_common, flex_entity;
-
--- changeset flex:entity-id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.entity
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where entity_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:entity-id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
     api.entity
 )
 TO flex_common, flex_entity;
@@ -1650,57 +545,6 @@ api.party(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:party_membership-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.party_membership
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_membership-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
-    api.party_membership
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_membership_history-party_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party(
-    api.party_membership_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_membership_history-party_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party(
-    api.party_membership_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_membership_history-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.party_membership_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_membership_history-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
-    api.party_membership_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:party-id-to-party_membership runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.membership(
     api.party
@@ -1715,57 +559,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.membership(
     api.party
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party-id-to-party_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership_history(
-    api.party
-)
-RETURNS SETOF api.party_membership_history AS $$
-  select *
-  from api.party_membership_history
-  where party_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party-id-to-party_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership_history(
-    api.party
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_history-party_id-to-party_membership runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership(
-    api.party_history
-)
-RETURNS SETOF api.party_membership AS $$
-  select *
-  from api.party_membership
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_history-party_id-to-party_membership-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership(
-    api.party_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_history-party_id-to-party_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.membership_history(
-    api.party_history
-)
-RETURNS SETOF api.party_membership_history AS $$
-  select *
-  from api.party_membership_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_history-party_id-to-party_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.membership_history(
-    api.party_history
 )
 TO flex_common, flex_entity;
 
@@ -1786,23 +579,6 @@ api.entity(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:party_membership_history-entity_id-to-entity runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.entity(
-    api.party_membership_history
-)
-RETURNS SETOF api.entity ROWS 1 AS $$
-  select *
-  from api.entity
-  where id = $1.entity_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_membership_history-entity_id-to-entity-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.entity(
-    api.party_membership_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:entity-id-to-party_membership runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.party_membership(
     api.entity
@@ -1816,23 +592,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:entity-id-to-party_membership-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.party_membership(
-    api.entity
-)
-TO flex_common, flex_entity;
-
--- changeset flex:entity-id-to-party_membership_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_membership_history(
-    api.entity
-)
-RETURNS SETOF api.party_membership_history AS $$
-  select *
-  from api.party_membership_history
-  where entity_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:entity-id-to-party_membership_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_membership_history(
     api.entity
 )
 TO flex_common, flex_entity;
@@ -1888,23 +647,6 @@ api.party(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:identity-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.identity
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:identity-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
-    api.identity
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:technical_resource-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.controllable_unit(
     api.technical_resource
@@ -1922,57 +664,6 @@ api.controllable_unit(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:technical_resource-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.technical_resource
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:technical_resource-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.technical_resource
-)
-TO flex_common, flex_entity;
-
--- changeset flex:technical_resource_history-controllable_unit_id-to-controllable_unit runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit(
-    api.technical_resource_history
-)
-RETURNS SETOF api.controllable_unit ROWS 1 AS $$
-  select *
-  from api.controllable_unit
-  where id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:technical_resource_history-controllable_unit_id-to-controllable_unit-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit(
-    api.technical_resource_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:technical_resource_history-controllable_unit_id-to-controllable_unit_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.controllable_unit_history(
-    api.technical_resource_history
-)
-RETURNS SETOF api.controllable_unit_history AS $$
-  select *
-  from api.controllable_unit_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:technical_resource_history-controllable_unit_id-to-controllable_unit_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.controllable_unit_history(
-    api.technical_resource_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:controllable_unit-id-to-technical_resource runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.technical_resource(
     api.controllable_unit
@@ -1987,57 +678,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.technical_resource(
     api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit-id-to-technical_resource_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.technical_resource_history(
-    api.controllable_unit
-)
-RETURNS SETOF api.technical_resource_history AS $$
-  select *
-  from api.technical_resource_history
-  where controllable_unit_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit-id-to-technical_resource_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.technical_resource_history(
-    api.controllable_unit
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-technical_resource runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.technical_resource(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.technical_resource AS $$
-  select *
-  from api.technical_resource
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-technical_resource-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.technical_resource(
-    api.controllable_unit_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-technical_resource_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.technical_resource_history(
-    api.controllable_unit_history
-)
-RETURNS SETOF api.technical_resource_history AS $$
-  select *
-  from api.technical_resource_history
-  where controllable_unit_id = $1.controllable_unit_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:controllable_unit_history-controllable_unit_id-to-technical_resource_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.technical_resource_history(
-    api.controllable_unit_history
 )
 TO flex_common, flex_entity;
 
@@ -2092,23 +732,6 @@ api.party(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:notification-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.notification
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:notification-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
-    api.notification
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:accounting_point-system_operator_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.system_operator(
     api.accounting_point
@@ -2122,23 +745,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:accounting_point-system_operator_id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.system_operator(
-    api.accounting_point
-)
-TO flex_common, flex_entity;
-
--- changeset flex:accounting_point-system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_history(
-    api.accounting_point
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point-system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_history(
     api.accounting_point
 )
 TO flex_common, flex_entity;
@@ -2190,23 +796,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:accounting_point_balance_responsible_party-balance_responsible_party_id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.balance_responsible_party(
-    api.accounting_point_balance_responsible_party
-)
-TO flex_common, flex_entity;
-
--- changeset flex:accounting_point_balance_responsible_party-balance_responsible_party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.balance_responsible_party_history(
-    api.accounting_point_balance_responsible_party
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.balance_responsible_party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point_balance_responsible_party-balance_responsible_party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.balance_responsible_party_history(
     api.accounting_point_balance_responsible_party
 )
 TO flex_common, flex_entity;
@@ -2296,23 +885,6 @@ api.end_user(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:accounting_point_end_user-end_user_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.end_user_history(
-    api.accounting_point_end_user
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.end_user_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point_end_user-end_user_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.end_user_history(
-    api.accounting_point_end_user
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:accounting_point_energy_supplier-accounting_point_id-to-accounting_point runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.accounting_point(
     api.accounting_point_energy_supplier
@@ -2360,23 +932,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:accounting_point_energy_supplier-energy_supplier_id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.energy_supplier(
-    api.accounting_point_energy_supplier
-)
-TO flex_common, flex_entity;
-
--- changeset flex:accounting_point_energy_supplier-energy_supplier_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.energy_supplier_history(
-    api.accounting_point_energy_supplier
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.energy_supplier_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point_energy_supplier-energy_supplier_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.energy_supplier_history(
     api.accounting_point_energy_supplier
 )
 TO flex_common, flex_entity;
@@ -2466,23 +1021,6 @@ api.accounting_point(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:accounting_point_grid_location_history-accounting_point_id-to-accounting_point runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.accounting_point(
-    api.accounting_point_grid_location_history
-)
-RETURNS SETOF api.accounting_point ROWS 1 AS $$
-  select *
-  from api.accounting_point
-  where id = $1.accounting_point_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point_grid_location_history-accounting_point_id-to-accounting_point-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.accounting_point(
-    api.accounting_point_grid_location_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:accounting_point-id-to-accounting_point_grid_location runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.grid_location(
     api.accounting_point
@@ -2496,23 +1034,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:accounting_point-id-to-accounting_point_grid_location-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.grid_location(
-    api.accounting_point
-)
-TO flex_common, flex_entity;
-
--- changeset flex:accounting_point-id-to-accounting_point_grid_location_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.grid_location_history(
-    api.accounting_point
-)
-RETURNS SETOF api.accounting_point_grid_location_history AS $$
-  select *
-  from api.accounting_point_grid_location_history
-  where accounting_point_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:accounting_point-id-to-accounting_point_grid_location_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.grid_location_history(
     api.accounting_point
 )
 TO flex_common, flex_entity;
@@ -2534,57 +1055,6 @@ api.system_operator(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:system_operator_product_type-system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_history(
-    api.system_operator_product_type
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:system_operator_product_type-system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_history(
-    api.system_operator_product_type
-)
-TO flex_common, flex_entity;
-
--- changeset flex:system_operator_product_type_history-system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator(
-    api.system_operator_product_type_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:system_operator_product_type_history-system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator(
-    api.system_operator_product_type_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:system_operator_product_type_history-system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_history(
-    api.system_operator_product_type_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:system_operator_product_type_history-system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_history(
-    api.system_operator_product_type_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:party-id-to-system_operator_product_type runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.system_operator_product_type(
     api.party
@@ -2599,57 +1069,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.system_operator_product_type(
     api.party
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party-id-to-system_operator_product_type_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_product_type_history(
-    api.party
-)
-RETURNS SETOF api.system_operator_product_type_history AS $$
-  select *
-  from api.system_operator_product_type_history
-  where system_operator_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party-id-to-system_operator_product_type_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_product_type_history(
-    api.party
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_history-party_id-to-system_operator_product_type runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_product_type(
-    api.party_history
-)
-RETURNS SETOF api.system_operator_product_type AS $$
-  select *
-  from api.system_operator_product_type
-  where system_operator_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_history-party_id-to-system_operator_product_type-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_product_type(
-    api.party_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:party_history-party_id-to-system_operator_product_type_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_product_type_history(
-    api.party_history
-)
-RETURNS SETOF api.system_operator_product_type_history AS $$
-  select *
-  from api.system_operator_product_type_history
-  where system_operator_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:party_history-party_id-to-system_operator_product_type_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_product_type_history(
-    api.party_history
 )
 TO flex_common, flex_entity;
 
@@ -2670,23 +1089,6 @@ api.product_type(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:system_operator_product_type_history-product_type_id-to-product_type runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_type(
-    api.system_operator_product_type_history
-)
-RETURNS SETOF api.product_type ROWS 1 AS $$
-  select *
-  from api.product_type
-  where id = $1.product_type_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:system_operator_product_type_history-product_type_id-to-product_type-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_type(
-    api.system_operator_product_type_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:product_type-id-to-system_operator_product_type runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.system_operator_product_type(
     api.product_type
@@ -2700,23 +1102,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:product_type-id-to-system_operator_product_type-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.system_operator_product_type(
-    api.product_type
-)
-TO flex_common, flex_entity;
-
--- changeset flex:product_type-id-to-system_operator_product_type_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_product_type_history(
-    api.product_type
-)
-RETURNS SETOF api.system_operator_product_type_history AS $$
-  select *
-  from api.system_operator_product_type_history
-  where product_type_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:product_type-id-to-system_operator_product_type_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_product_type_history(
     api.product_type
 )
 TO flex_common, flex_entity;
@@ -2738,57 +1123,6 @@ api.service_provider(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_provider_product_application-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_provider_product_application
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_provider_product_application
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_application_history-service_provider_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider(
-    api.service_provider_product_application_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application_history-service_provider_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider(
-    api.service_provider_product_application_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_application_history-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_provider_product_application_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application_history-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_provider_product_application_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_provider_product_application-system_operator_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.system_operator(
     api.service_provider_product_application
@@ -2803,57 +1137,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.system_operator(
     api.service_provider_product_application
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_application-system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_history(
-    api.service_provider_product_application
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application-system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_history(
-    api.service_provider_product_application
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_application_history-system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator(
-    api.service_provider_product_application_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application_history-system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator(
-    api.service_provider_product_application_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_application_history-system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.system_operator_history(
-    api.service_provider_product_application_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_application_history-system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.system_operator_history(
-    api.service_provider_product_application_history
 )
 TO flex_common, flex_entity;
 
@@ -2874,57 +1157,6 @@ api.procuring_system_operator(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_provider_product_suspension-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_provider_product_suspension
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_provider_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_suspension_history-procuring_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator(
-    api.service_provider_product_suspension_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension_history-procuring_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator(
-    api.service_provider_product_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_suspension_history-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_provider_product_suspension_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension_history-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_provider_product_suspension_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_provider_product_suspension-service_provider_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_provider(
     api.service_provider_product_suspension
@@ -2939,57 +1171,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.service_provider(
     api.service_provider_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_suspension-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_provider_product_suspension
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_provider_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_suspension_history-service_provider_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider(
-    api.service_provider_product_suspension_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension_history-service_provider_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider(
-    api.service_provider_product_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_provider_product_suspension_history-service_provider_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_provider_history(
-    api.service_provider_product_suspension_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.service_provider_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_provider_product_suspension_history-service_provider_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_provider_history(
-    api.service_provider_product_suspension_history
 )
 TO flex_common, flex_entity;
 
@@ -3010,57 +1191,6 @@ api.service_providing_group(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_product_application-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_product_application
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_product_application
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_application_history-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group(
-    api.service_providing_group_product_application_history
-)
-RETURNS SETOF api.service_providing_group ROWS 1 AS $$
-  select *
-  from api.service_providing_group
-  where id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application_history-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group(
-    api.service_providing_group_product_application_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_application_history-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_product_application_history
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application_history-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_product_application_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-id-to-service_providing_group_product_application runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.product_application(
     api.service_providing_group
@@ -3075,57 +1205,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.product_application(
     api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_product_application_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_application_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.service_providing_group_product_application_history AS $$
-  select *
-  from api.service_providing_group_product_application_history
-  where service_providing_group_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_product_application_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_application_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_application runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_application(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_product_application AS $$
-  select *
-  from api.service_providing_group_product_application
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_application-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_application(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_application_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_application_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_product_application_history AS $$
-  select *
-  from api.service_providing_group_product_application_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_application_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_application_history(
-    api.service_providing_group_history
 )
 TO flex_common, flex_entity;
 
@@ -3146,57 +1225,6 @@ api.procuring_system_operator(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_product_application-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_providing_group_product_application
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_providing_group_product_application
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_application_history-procuring_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator(
-    api.service_providing_group_product_application_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application_history-procuring_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator(
-    api.service_providing_group_product_application_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_application_history-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_providing_group_product_application_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_application_history-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_providing_group_product_application_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group_product_suspension-procuring_system_operator_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.procuring_system_operator(
     api.service_providing_group_product_suspension
@@ -3211,57 +1239,6 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.procuring_system_operator(
     api.service_providing_group_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_suspension-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_providing_group_product_suspension
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_providing_group_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_suspension_history-procuring_system_operator_id-to-party runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator(
-    api.service_providing_group_product_suspension_history
-)
-RETURNS SETOF api.party ROWS 1 AS $$
-  select *
-  from api.party
-  where id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension_history-procuring_system_operator_id-to-party-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator(
-    api.service_providing_group_product_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_suspension_history-procuring_system_operator_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.procuring_system_operator_history(
-    api.service_providing_group_product_suspension_history
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.procuring_system_operator_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension_history-procuring_system_operator_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.procuring_system_operator_history(
-    api.service_providing_group_product_suspension_history
 )
 TO flex_common, flex_entity;
 
@@ -3282,57 +1259,6 @@ api.service_providing_group(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_product_suspension-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_product_suspension
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_product_suspension
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_suspension_history-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group(
-    api.service_providing_group_product_suspension_history
-)
-RETURNS SETOF api.service_providing_group ROWS 1 AS $$
-  select *
-  from api.service_providing_group
-  where id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension_history-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group(
-    api.service_providing_group_product_suspension_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_product_suspension_history-service_providing_group_id-to-service_providing_group_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.service_providing_group_history(
-    api.service_providing_group_product_suspension_history
-)
-RETURNS SETOF api.service_providing_group_history AS $$
-  select *
-  from api.service_providing_group_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_product_suspension_history-service_providing_group_id-to-service_providing_group_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.service_providing_group_history(
-    api.service_providing_group_product_suspension_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:service_providing_group-id-to-service_providing_group_product_suspension runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.product_suspension(
     api.service_providing_group
@@ -3350,57 +1276,6 @@ api.product_suspension(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group-id-to-service_providing_group_product_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_suspension_history(
-    api.service_providing_group
-)
-RETURNS SETOF api.service_providing_group_product_suspension_history AS $$
-  select *
-  from api.service_providing_group_product_suspension_history
-  where service_providing_group_id = $1.id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group-id-to-service_providing_group_product_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_suspension_history(
-    api.service_providing_group
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_suspension runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_suspension(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_product_suspension AS $$
-  select *
-  from api.service_providing_group_product_suspension
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_suspension-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_suspension(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_suspension_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.product_suspension_history(
-    api.service_providing_group_history
-)
-RETURNS SETOF api.service_providing_group_product_suspension_history AS $$
-  select *
-  from api.service_providing_group_product_suspension_history
-  where service_providing_group_id = $1.service_providing_group_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:service_providing_group_history-service_providing_group_id-to-service_providing_group_product_suspension_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.product_suspension_history(
-    api.service_providing_group_history
-)
-TO flex_common, flex_entity;
-
 -- changeset flex:notice-party_id-to-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.party(
     api.notice
@@ -3414,23 +1289,6 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:notice-party_id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.party(
-    api.notice
-)
-TO flex_common, flex_entity;
-
--- changeset flex:notice-party_id-to-party_history runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION api.party_history(
-    api.notice
-)
-RETURNS SETOF api.party_history AS $$
-  select *
-  from api.party_history
-  where party_id = $1.party_id
-$$ STABLE LANGUAGE sql;
-
--- changeset flex:notice-party_id-to-party_history-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION
-api.party_history(
     api.notice
 )
 TO flex_common, flex_entity;
