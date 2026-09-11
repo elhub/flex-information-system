@@ -68,20 +68,10 @@ public data class EntityResponse(
   @SerialName("party")
   public val party: List<PartyResponse>? = null,
   /**
-   * Embedded party_history
-   */
-  @SerialName("party_history")
-  public val partyHistory: List<PartyHistoryResponse>? = null,
-  /**
    * Embedded party_membership
    */
   @SerialName("party_membership")
   public val partyMembership: List<PartyMembershipResponse>? = null,
-  /**
-   * Embedded party_membership_history
-   */
-  @SerialName("party_membership_history")
-  public val partyMembershipHistory: List<PartyMembershipHistoryResponse>? = null,
   /**
    * Embedded identity
    */

@@ -16,9 +16,6 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_grid_prequalification_history_response import (
         ServiceProvidingGroupGridPrequalificationHistoryResponse,
     )
-    from ..models.service_providing_group_grid_prequalification_response import (
-        ServiceProvidingGroupGridPrequalificationResponse,
-    )
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCommentHistoryResponse")
@@ -45,8 +42,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        service_providing_group_grid_prequalification (None | ServiceProvidingGroupGridPrequalificationResponse |
-            Unset): Embedded service_providing_group_grid_prequalification
         service_providing_group_grid_prequalification_history
             (list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset): Embedded
             service_providing_group_grid_prequalification_history
@@ -63,19 +58,12 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
     service_providing_group_grid_prequalification_comment_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    service_providing_group_grid_prequalification: None | ServiceProvidingGroupGridPrequalificationResponse | Unset = (
-        UNSET
-    )
     service_providing_group_grid_prequalification_history: (
         list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset
     ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
-        )
-
         id = self.id
 
         service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
@@ -109,16 +97,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
             replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
-
-        service_providing_group_grid_prequalification: dict[str, Any] | None | Unset
-        if isinstance(self.service_providing_group_grid_prequalification, Unset):
-            service_providing_group_grid_prequalification = UNSET
-        elif isinstance(
-            self.service_providing_group_grid_prequalification, ServiceProvidingGroupGridPrequalificationResponse
-        ):
-            service_providing_group_grid_prequalification = self.service_providing_group_grid_prequalification.to_dict()
-        else:
-            service_providing_group_grid_prequalification = self.service_providing_group_grid_prequalification
 
         service_providing_group_grid_prequalification_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_grid_prequalification_history, Unset):
@@ -159,8 +137,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if service_providing_group_grid_prequalification is not UNSET:
-            field_dict["service_providing_group_grid_prequalification"] = service_providing_group_grid_prequalification
         if service_providing_group_grid_prequalification_history is not UNSET:
             field_dict["service_providing_group_grid_prequalification_history"] = (
                 service_providing_group_grid_prequalification_history
@@ -172,9 +148,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_grid_prequalification_history_response import (
             ServiceProvidingGroupGridPrequalificationHistoryResponse,
-        )
-        from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
         )
 
         d = dict(src_dict)
@@ -224,29 +197,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_service_providing_group_grid_prequalification(
-            data: object,
-        ) -> None | ServiceProvidingGroupGridPrequalificationResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_providing_group_grid_prequalification_type_0 = (
-                    ServiceProvidingGroupGridPrequalificationResponse.from_dict(data)
-                )
-
-                return service_providing_group_grid_prequalification_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProvidingGroupGridPrequalificationResponse | Unset, data)
-
-        service_providing_group_grid_prequalification = _parse_service_providing_group_grid_prequalification(
-            d.pop("service_providing_group_grid_prequalification", UNSET)
-        )
-
         def _parse_service_providing_group_grid_prequalification_history(
             data: object,
         ) -> list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None | Unset:
@@ -295,7 +245,6 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
             service_providing_group_grid_prequalification_comment_id=service_providing_group_grid_prequalification_comment_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            service_providing_group_grid_prequalification=service_providing_group_grid_prequalification,
             service_providing_group_grid_prequalification_history=service_providing_group_grid_prequalification_history,
         )
 

@@ -9,7 +9,6 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.system_operator_product_type_history_response import SystemOperatorProductTypeHistoryResponse
     from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
 
 
@@ -28,8 +27,6 @@ class ProductTypeResponse:
         products (str): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
         system_operator_product_type (list[SystemOperatorProductTypeResponse] | None | Unset): Embedded
             system_operator_product_type
-        system_operator_product_type_history (list[SystemOperatorProductTypeHistoryResponse] | None | Unset): Embedded
-            system_operator_product_type_history
     """
 
     id: int
@@ -38,7 +35,6 @@ class ProductTypeResponse:
     service: str
     products: str
     system_operator_product_type: list[SystemOperatorProductTypeResponse] | None | Unset = UNSET
-    system_operator_product_type_history: list[SystemOperatorProductTypeHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -64,20 +60,6 @@ class ProductTypeResponse:
         else:
             system_operator_product_type = self.system_operator_product_type
 
-        system_operator_product_type_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.system_operator_product_type_history, Unset):
-            system_operator_product_type_history = UNSET
-        elif isinstance(self.system_operator_product_type_history, list):
-            system_operator_product_type_history = []
-            for system_operator_product_type_history_type_0_item_data in self.system_operator_product_type_history:
-                system_operator_product_type_history_type_0_item = (
-                    system_operator_product_type_history_type_0_item_data.to_dict()
-                )
-                system_operator_product_type_history.append(system_operator_product_type_history_type_0_item)
-
-        else:
-            system_operator_product_type_history = self.system_operator_product_type_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -91,14 +73,11 @@ class ProductTypeResponse:
         )
         if system_operator_product_type is not UNSET:
             field_dict["system_operator_product_type"] = system_operator_product_type
-        if system_operator_product_type_history is not UNSET:
-            field_dict["system_operator_product_type_history"] = system_operator_product_type_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.system_operator_product_type_history_response import SystemOperatorProductTypeHistoryResponse
         from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
 
         d = dict(src_dict)
@@ -136,38 +115,6 @@ class ProductTypeResponse:
 
         system_operator_product_type = _parse_system_operator_product_type(d.pop("system_operator_product_type", UNSET))
 
-        def _parse_system_operator_product_type_history(
-            data: object,
-        ) -> list[SystemOperatorProductTypeHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                system_operator_product_type_history_type_0 = []
-                _system_operator_product_type_history_type_0 = data
-                for (
-                    system_operator_product_type_history_type_0_item_data
-                ) in _system_operator_product_type_history_type_0:
-                    system_operator_product_type_history_type_0_item = (
-                        SystemOperatorProductTypeHistoryResponse.from_dict(
-                            system_operator_product_type_history_type_0_item_data
-                        )
-                    )
-
-                    system_operator_product_type_history_type_0.append(system_operator_product_type_history_type_0_item)
-
-                return system_operator_product_type_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[SystemOperatorProductTypeHistoryResponse] | None | Unset, data)
-
-        system_operator_product_type_history = _parse_system_operator_product_type_history(
-            d.pop("system_operator_product_type_history", UNSET)
-        )
-
         product_type_response = cls(
             id=id,
             business_id=business_id,
@@ -175,7 +122,6 @@ class ProductTypeResponse:
             service=service,
             products=products,
             system_operator_product_type=system_operator_product_type,
-            system_operator_product_type_history=system_operator_product_type_history,
         )
 
         product_type_response.additional_properties = d

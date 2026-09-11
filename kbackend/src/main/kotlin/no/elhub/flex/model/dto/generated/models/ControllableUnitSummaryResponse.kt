@@ -1,7 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
-import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,9 +30,4 @@ public data class ControllableUnitSummaryResponse(
    */
   @SerialName("controllable_unit")
   public val controllableUnit: ControllableUnitResponse? = null,
-  /**
-   * Embedded controllable_unit_history
-   */
-  @SerialName("controllable_unit_history")
-  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
 )

@@ -16,13 +16,10 @@ if TYPE_CHECKING:
     from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
     from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
     from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
-    from ..models.accounting_point_grid_location_history_response import AccountingPointGridLocationHistoryResponse
     from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
     from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
-    from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.geojson_point import GeojsonPoint
-    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
 
 
@@ -43,10 +40,7 @@ class AccountingPointResponse:
         location (GeojsonPoint | None | Unset): Geographic location of the accounting point (WGS84), as a GeoJSON point
             object. Example: {'type': 'Point', 'coordinates': [-2.0259056, 48.6504504]}.
         controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
-        controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
-            controllable_unit_history
         system_operator (None | PartyResponse | Unset): Embedded party
-        system_operator_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
         balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded
             accounting_point_balance_responsible_party
         bidding_zone (list[AccountingPointBiddingZoneResponse] | None | Unset): Embedded accounting_point_bidding_zone
@@ -56,8 +50,6 @@ class AccountingPointResponse:
         metering_grid_area (list[AccountingPointMeteringGridAreaResponse] | None | Unset): Embedded
             accounting_point_metering_grid_area
         grid_location (AccountingPointGridLocationResponse | None | Unset): Embedded accounting_point_grid_location
-        grid_location_history (list[AccountingPointGridLocationHistoryResponse] | None | Unset): Embedded
-            accounting_point_grid_location_history
     """
 
     id: int
@@ -67,16 +59,13 @@ class AccountingPointResponse:
     recorded_by: int
     location: GeojsonPoint | None | Unset = UNSET
     controllable_unit: list[ControllableUnitResponse] | None | Unset = UNSET
-    controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
-    system_operator_history: list[PartyHistoryResponse] | None | Unset = UNSET
     balance_responsible_party: list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset = UNSET
     bidding_zone: list[AccountingPointBiddingZoneResponse] | None | Unset = UNSET
     end_user: list[AccountingPointEndUserResponse] | None | Unset = UNSET
     energy_supplier: list[AccountingPointEnergySupplierResponse] | None | Unset = UNSET
     metering_grid_area: list[AccountingPointMeteringGridAreaResponse] | None | Unset = UNSET
     grid_location: AccountingPointGridLocationResponse | None | Unset = UNSET
-    grid_location_history: list[AccountingPointGridLocationHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -114,18 +103,6 @@ class AccountingPointResponse:
         else:
             controllable_unit = self.controllable_unit
 
-        controllable_unit_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.controllable_unit_history, Unset):
-            controllable_unit_history = UNSET
-        elif isinstance(self.controllable_unit_history, list):
-            controllable_unit_history = []
-            for controllable_unit_history_type_0_item_data in self.controllable_unit_history:
-                controllable_unit_history_type_0_item = controllable_unit_history_type_0_item_data.to_dict()
-                controllable_unit_history.append(controllable_unit_history_type_0_item)
-
-        else:
-            controllable_unit_history = self.controllable_unit_history
-
         system_operator: dict[str, Any] | None | Unset
         if isinstance(self.system_operator, Unset):
             system_operator = UNSET
@@ -133,18 +110,6 @@ class AccountingPointResponse:
             system_operator = self.system_operator.to_dict()
         else:
             system_operator = self.system_operator
-
-        system_operator_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.system_operator_history, Unset):
-            system_operator_history = UNSET
-        elif isinstance(self.system_operator_history, list):
-            system_operator_history = []
-            for system_operator_history_type_0_item_data in self.system_operator_history:
-                system_operator_history_type_0_item = system_operator_history_type_0_item_data.to_dict()
-                system_operator_history.append(system_operator_history_type_0_item)
-
-        else:
-            system_operator_history = self.system_operator_history
 
         balance_responsible_party: list[dict[str, Any]] | None | Unset
         if isinstance(self.balance_responsible_party, Unset):
@@ -214,18 +179,6 @@ class AccountingPointResponse:
         else:
             grid_location = self.grid_location
 
-        grid_location_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.grid_location_history, Unset):
-            grid_location_history = UNSET
-        elif isinstance(self.grid_location_history, list):
-            grid_location_history = []
-            for grid_location_history_type_0_item_data in self.grid_location_history:
-                grid_location_history_type_0_item = grid_location_history_type_0_item_data.to_dict()
-                grid_location_history.append(grid_location_history_type_0_item)
-
-        else:
-            grid_location_history = self.grid_location_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -241,12 +194,8 @@ class AccountingPointResponse:
             field_dict["location"] = location
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
-        if controllable_unit_history is not UNSET:
-            field_dict["controllable_unit_history"] = controllable_unit_history
         if system_operator is not UNSET:
             field_dict["system_operator"] = system_operator
-        if system_operator_history is not UNSET:
-            field_dict["system_operator_history"] = system_operator_history
         if balance_responsible_party is not UNSET:
             field_dict["balance_responsible_party"] = balance_responsible_party
         if bidding_zone is not UNSET:
@@ -259,8 +208,6 @@ class AccountingPointResponse:
             field_dict["metering_grid_area"] = metering_grid_area
         if grid_location is not UNSET:
             field_dict["grid_location"] = grid_location
-        if grid_location_history is not UNSET:
-            field_dict["grid_location_history"] = grid_location_history
 
         return field_dict
 
@@ -272,13 +219,10 @@ class AccountingPointResponse:
         from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
         from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
         from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
-        from ..models.accounting_point_grid_location_history_response import AccountingPointGridLocationHistoryResponse
         from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
         from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
-        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.geojson_point import GeojsonPoint
-        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -333,30 +277,6 @@ class AccountingPointResponse:
 
         controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
-        def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                controllable_unit_history_type_0 = []
-                _controllable_unit_history_type_0 = data
-                for controllable_unit_history_type_0_item_data in _controllable_unit_history_type_0:
-                    controllable_unit_history_type_0_item = ControllableUnitHistoryResponse.from_dict(
-                        controllable_unit_history_type_0_item_data
-                    )
-
-                    controllable_unit_history_type_0.append(controllable_unit_history_type_0_item)
-
-                return controllable_unit_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
-
-        controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
-
         def _parse_system_operator(data: object) -> None | PartyResponse | Unset:
             if data is None:
                 return data
@@ -373,30 +293,6 @@ class AccountingPointResponse:
             return cast(None | PartyResponse | Unset, data)
 
         system_operator = _parse_system_operator(d.pop("system_operator", UNSET))
-
-        def _parse_system_operator_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                system_operator_history_type_0 = []
-                _system_operator_history_type_0 = data
-                for system_operator_history_type_0_item_data in _system_operator_history_type_0:
-                    system_operator_history_type_0_item = PartyHistoryResponse.from_dict(
-                        system_operator_history_type_0_item_data
-                    )
-
-                    system_operator_history_type_0.append(system_operator_history_type_0_item)
-
-                return system_operator_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[PartyHistoryResponse] | None | Unset, data)
-
-        system_operator_history = _parse_system_operator_history(d.pop("system_operator_history", UNSET))
 
         def _parse_balance_responsible_party(
             data: object,
@@ -535,32 +431,6 @@ class AccountingPointResponse:
 
         grid_location = _parse_grid_location(d.pop("grid_location", UNSET))
 
-        def _parse_grid_location_history(
-            data: object,
-        ) -> list[AccountingPointGridLocationHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                grid_location_history_type_0 = []
-                _grid_location_history_type_0 = data
-                for grid_location_history_type_0_item_data in _grid_location_history_type_0:
-                    grid_location_history_type_0_item = AccountingPointGridLocationHistoryResponse.from_dict(
-                        grid_location_history_type_0_item_data
-                    )
-
-                    grid_location_history_type_0.append(grid_location_history_type_0_item)
-
-                return grid_location_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[AccountingPointGridLocationHistoryResponse] | None | Unset, data)
-
-        grid_location_history = _parse_grid_location_history(d.pop("grid_location_history", UNSET))
-
         accounting_point_response = cls(
             id=id,
             business_id=business_id,
@@ -569,16 +439,13 @@ class AccountingPointResponse:
             recorded_by=recorded_by,
             location=location,
             controllable_unit=controllable_unit,
-            controllable_unit_history=controllable_unit_history,
             system_operator=system_operator,
-            system_operator_history=system_operator_history,
             balance_responsible_party=balance_responsible_party,
             bidding_zone=bidding_zone,
             end_user=end_user,
             energy_supplier=energy_supplier,
             metering_grid_area=metering_grid_area,
             grid_location=grid_location,
-            grid_location_history=grid_location_history,
         )
 
         accounting_point_response.additional_properties = d

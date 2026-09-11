@@ -2,7 +2,6 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
-import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -59,10 +58,4 @@ public data class ServiceProvidingGroupGridPrequalificationCommentResponse(
   @SerialName("service_providing_group_grid_prequalification")
   public val serviceProvidingGroupGridPrequalification:
       ServiceProvidingGroupGridPrequalificationResponse? = null,
-  /**
-   * Embedded service_providing_group_grid_prequalification_history
-   */
-  @SerialName("service_providing_group_grid_prequalification_history")
-  public val serviceProvidingGroupGridPrequalificationHistory:
-      List<ServiceProvidingGroupGridPrequalificationHistoryResponse>? = null,
 )

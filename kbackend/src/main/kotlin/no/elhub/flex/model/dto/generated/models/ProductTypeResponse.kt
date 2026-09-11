@@ -41,10 +41,4 @@ public data class ProductTypeResponse(
    */
   @SerialName("system_operator_product_type")
   public val systemOperatorProductType: List<SystemOperatorProductTypeResponse>? = null,
-  /**
-   * Embedded system_operator_product_type_history
-   */
-  @SerialName("system_operator_product_type_history")
-  public val systemOperatorProductTypeHistory: List<SystemOperatorProductTypeHistoryResponse>? =
-      null,
 )

@@ -786,17 +786,9 @@ export type ControllableUnit = {
    */
   suspension?: Array<ControllableUnitSuspension> | null;
   /**
-   * Embedded controllable_unit_suspension_history
-   */
-  suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
-  /**
    * Embedded controllable_unit_service_provider
    */
   service_provider?: Array<ControllableUnitServiceProvider> | null;
-  /**
-   * Embedded controllable_unit_service_provider_history
-   */
-  service_provider_history?: Array<ControllableUnitServiceProviderHistory> | null;
   /**
    * Embedded controllable_unit_summary
    */
@@ -806,17 +798,9 @@ export type ControllableUnit = {
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
   /**
-   * Embedded service_providing_group_membership_history
-   */
-  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
-  /**
    * Embedded technical_resource
    */
   technical_resource?: Array<TechnicalResource> | null;
-  /**
-   * Embedded technical_resource_history
-   */
-  technical_resource_history?: Array<TechnicalResourceHistory> | null;
 };
 
 /**
@@ -871,25 +855,13 @@ export type ControllableUnitSuspension = {
    */
   controllable_unit?: ControllableUnit | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
-  /**
    * Embedded party
    */
   impacted_system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded controllable_unit_suspension_comment
    */
   comment?: Array<ControllableUnitSuspensionComment> | null;
-  /**
-   * Embedded controllable_unit_suspension_comment_history
-   */
-  comment_history?: Array<ControllableUnitSuspensionCommentHistory> | null;
 };
 
 /**
@@ -955,10 +927,6 @@ export type ControllableUnitSuspensionComment = {
    * Embedded controllable_unit_suspension
    */
   controllable_unit_suspension?: ControllableUnitSuspension | null;
-  /**
-   * Embedded controllable_unit_suspension_history
-   */
-  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
 };
 
 /**
@@ -1054,25 +1022,13 @@ export type ControllableUnitServiceProvider = {
    */
   controllable_unit?: ControllableUnit | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
-  /**
    * Embedded party
    */
   service_provider?: Party | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistory> | null;
-  /**
    * Embedded party
    */
   end_user?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  end_user_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -1110,10 +1066,6 @@ export type ControllableUnitSummary = {
    * Embedded controllable_unit
    */
   controllable_unit?: ControllableUnit | null;
-  /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
 };
 
 /**
@@ -1147,10 +1099,6 @@ export type ServiceProvidingGroupPowerPerSubstation = {
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroup | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
 };
 
 /**
@@ -1203,10 +1151,6 @@ export type ServiceProvidingGroupSummary = {
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroup | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
 };
 
 /**
@@ -1292,49 +1236,25 @@ export type ServiceProvidingGroup = {
    */
   service_provider?: Party | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_providing_group_membership
    */
   membership?: Array<ServiceProvidingGroupMembership> | null;
-  /**
-   * Embedded service_providing_group_membership_history
-   */
-  membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
   /**
    * Embedded service_providing_group_grid_prequalification
    */
   grid_prequalification?: Array<ServiceProvidingGroupGridPrequalification> | null;
   /**
-   * Embedded service_providing_group_grid_prequalification_history
-   */
-  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
-  /**
    * Embedded service_providing_group_grid_suspension
    */
   grid_suspension?: Array<ServiceProvidingGroupGridSuspension> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_history
-   */
-  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
   /**
    * Embedded service_providing_group_product_application
    */
   product_application?: Array<ServiceProvidingGroupProductApplication> | null;
   /**
-   * Embedded service_providing_group_product_application_history
-   */
-  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
-  /**
    * Embedded service_providing_group_product_suspension
    */
   product_suspension?: Array<ServiceProvidingGroupProductSuspension> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_history
-   */
-  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -1410,17 +1330,9 @@ export type ServiceProvidingGroupMembership = {
    */
   controllable_unit?: ControllableUnit | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroup | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
 };
 
 /**
@@ -1487,25 +1399,13 @@ export type ServiceProvidingGroupGridPrequalification = {
    */
   service_providing_group?: ServiceProvidingGroup | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
    * Embedded party
    */
   impacted_system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_comment
    */
   comment?: Array<ServiceProvidingGroupGridPrequalificationComment> | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistory> | null;
 };
 
 /**
@@ -1571,10 +1471,6 @@ export type ServiceProvidingGroupGridPrequalificationComment = {
    * Embedded service_providing_group_grid_prequalification
    */
   service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_history
-   */
-  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
 };
 
 /**
@@ -1629,25 +1525,13 @@ export type ServiceProvidingGroupGridSuspension = {
    */
   impacted_system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroup | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
    * Embedded service_providing_group_grid_suspension_comment
    */
   comment?: Array<ServiceProvidingGroupGridSuspensionComment> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistory> | null;
 };
 
 /**
@@ -1713,10 +1597,6 @@ export type ServiceProvidingGroupGridSuspensionComment = {
    * Embedded service_providing_group_grid_suspension
    */
   service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspension | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_history
-   */
-  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
 };
 
 /**
@@ -1804,17 +1684,9 @@ export type Entity = {
    */
   party?: Array<Party> | null;
   /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
-  /**
    * Embedded party_membership
    */
   party_membership?: Array<PartyMembership> | null;
-  /**
-   * Embedded party_membership_history
-   */
-  party_membership_history?: Array<PartyMembershipHistory> | null;
   /**
    * Embedded identity
    */
@@ -1932,10 +1804,6 @@ export type EntityClient = {
    * Embedded party
    */
   party?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2094,10 +1962,6 @@ export type PartyMembership = {
    */
   party?: Party | null;
   /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
-  /**
    * Embedded entity
    */
   entity?: Entity | null;
@@ -2135,10 +1999,6 @@ export type Identity = {
    * Embedded party
    */
   party?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2284,10 +2144,6 @@ export type TechnicalResource = {
    * Embedded controllable_unit
    */
   controllable_unit?: ControllableUnit | null;
-  /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
 };
 
 /**
@@ -2374,10 +2230,6 @@ export type Notification = {
    * Embedded party
    */
   party?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2413,17 +2265,9 @@ export type AccountingPoint = {
    */
   controllable_unit?: Array<ControllableUnit> | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistory> | null;
-  /**
    * Embedded party
    */
   system_operator?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistory> | null;
   /**
    * Embedded accounting_point_balance_responsible_party
    */
@@ -2448,10 +2292,6 @@ export type AccountingPoint = {
    * Embedded accounting_point_grid_location
    */
   grid_location?: AccountingPointGridLocation | null;
-  /**
-   * Embedded accounting_point_grid_location_history
-   */
-  grid_location_history?: Array<AccountingPointGridLocationHistory> | null;
 };
 
 /**
@@ -2483,10 +2323,6 @@ export type AccountingPointBalanceResponsibleParty = {
    * Embedded party
    */
   balance_responsible_party?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  balance_responsible_party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2540,10 +2376,6 @@ export type AccountingPointEndUser = {
    * Embedded party
    */
   end_user?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  end_user_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2574,10 +2406,6 @@ export type AccountingPointEnergySupplier = {
    * Embedded party
    */
   energy_supplier?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  energy_supplier_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -2759,10 +2587,6 @@ export type ProductType = {
    * Embedded system_operator_product_type
    */
   system_operator_product_type?: Array<SystemOperatorProductType> | null;
-  /**
-   * Embedded system_operator_product_type_history
-   */
-  system_operator_product_type_history?: Array<SystemOperatorProductTypeHistory> | null;
 };
 
 /**
@@ -2816,10 +2640,6 @@ export type SystemOperatorProductType = {
    * Embedded party
    */
   system_operator?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistory> | null;
   /**
    * Embedded product_type
    */
@@ -2902,25 +2722,13 @@ export type ServiceProviderProductApplication = {
    */
   service_provider?: Party | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistory> | null;
-  /**
    * Embedded party
    */
   system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_provider_product_application_comment
    */
   comment?: Array<ServiceProviderProductApplicationComment> | null;
-  /**
-   * Embedded service_provider_product_application_comment_history
-   */
-  comment_history?: Array<ServiceProviderProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -2986,10 +2794,6 @@ export type ServiceProviderProductApplicationComment = {
    * Embedded service_provider_product_application
    */
   service_provider_product_application?: ServiceProviderProductApplication | null;
-  /**
-   * Embedded service_provider_product_application_history
-   */
-  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistory> | null;
 };
 
 /**
@@ -3056,25 +2860,13 @@ export type ServiceProviderProductSuspension = {
    */
   procuring_system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded party
    */
   service_provider?: Party | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_provider_product_suspension_comment
    */
   comment?: Array<ServiceProviderProductSuspensionComment> | null;
-  /**
-   * Embedded service_provider_product_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProviderProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3140,10 +2932,6 @@ export type ServiceProviderProductSuspensionComment = {
    * Embedded service_provider_product_suspension
    */
   service_provider_product_suspension?: ServiceProviderProductSuspension | null;
-  /**
-   * Embedded service_provider_product_suspension_history
-   */
-  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistory> | null;
 };
 
 /**
@@ -3301,33 +3089,17 @@ export type ServiceProvidingGroupProductApplication = {
    */
   service_providing_group?: ServiceProvidingGroup | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
    * Embedded party
    */
   procuring_system_operator?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistory> | null;
   /**
    * Embedded service_providing_group_product_application_attachment
    */
   attachment?: Array<ServiceProvidingGroupProductApplicationAttachment> | null;
   /**
-   * Embedded service_providing_group_product_application_attachment_history
-   */
-  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistory> | null;
-  /**
    * Embedded service_providing_group_product_application_comment
    */
   comment?: Array<ServiceProvidingGroupProductApplicationComment> | null;
-  /**
-   * Embedded service_providing_group_product_application_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -3371,10 +3143,6 @@ export type ServiceProvidingGroupProductApplicationAttachment = {
    * Embedded service_providing_group_product_application
    */
   service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
-  /**
-   * Embedded service_providing_group_product_application_history
-   */
-  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -3440,10 +3208,6 @@ export type ServiceProvidingGroupProductApplicationComment = {
    * Embedded service_providing_group_product_application
    */
   service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
-  /**
-   * Embedded service_providing_group_product_application_history
-   */
-  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -3510,25 +3274,13 @@ export type ServiceProvidingGroupProductSuspension = {
    */
   procuring_system_operator?: Party | null;
   /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistory> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroup | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
    * Embedded service_providing_group_product_suspension_comment
    */
   comment?: Array<ServiceProvidingGroupProductSuspensionComment> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3594,10 +3346,6 @@ export type ServiceProvidingGroupProductSuspensionComment = {
    * Embedded service_providing_group_product_suspension
    */
   service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspension | null;
-  /**
-   * Embedded service_providing_group_product_suspension_history
-   */
-  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -3637,10 +3385,6 @@ export type Notice = {
    * Embedded party
    */
   party?: Party | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -3702,41 +3446,17 @@ export type ControllableUnitHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded accounting_point
-   */
-  accounting_point?: AccountingPoint | null;
-  /**
-   * Embedded controllable_unit_suspension
-   */
-  suspension?: Array<ControllableUnitSuspension> | null;
-  /**
    * Embedded controllable_unit_suspension_history
    */
   suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
-  /**
-   * Embedded controllable_unit_service_provider
-   */
-  service_provider?: Array<ControllableUnitServiceProvider> | null;
   /**
    * Embedded controllable_unit_service_provider_history
    */
   service_provider_history?: Array<ControllableUnitServiceProviderHistory> | null;
   /**
-   * Embedded controllable_unit_summary
-   */
-  summary?: ControllableUnitSummary | null;
-  /**
-   * Embedded service_providing_group_membership
-   */
-  service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
-  /**
    * Embedded service_providing_group_membership_history
    */
   service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
-  /**
-   * Embedded technical_resource
-   */
-  technical_resource?: Array<TechnicalResource> | null;
   /**
    * Embedded technical_resource_history
    */
@@ -3781,25 +3501,13 @@ export type ControllableUnitSuspensionHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnit | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistory> | null;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded controllable_unit_suspension_comment
-   */
-  comment?: Array<ControllableUnitSuspensionComment> | null;
   /**
    * Embedded controllable_unit_suspension_comment_history
    */
@@ -3851,10 +3559,6 @@ export type ControllableUnitSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded controllable_unit_suspension
-   */
-  controllable_unit_suspension?: ControllableUnitSuspension | null;
   /**
    * Embedded controllable_unit_suspension_history
    */
@@ -3914,25 +3618,13 @@ export type ControllableUnitServiceProviderHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnit | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistory> | null;
   /**
-   * Embedded party
-   */
-  service_provider?: Party | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded party
-   */
-  end_user?: Party | null;
   /**
    * Embedded party_history
    */
@@ -3986,57 +3678,25 @@ export type ServiceProvidingGroupHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_power_per_substation
-   */
-  power_per_substation?: ServiceProvidingGroupPowerPerSubstation | null;
-  /**
-   * Embedded service_providing_group_summary
-   */
-  summary?: ServiceProvidingGroupSummary | null;
-  /**
-   * Embedded party
-   */
-  service_provider?: Party | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded service_providing_group_membership
-   */
-  membership?: Array<ServiceProvidingGroupMembership> | null;
   /**
    * Embedded service_providing_group_membership_history
    */
   membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
   /**
-   * Embedded service_providing_group_grid_prequalification
-   */
-  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalification> | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_history
    */
   grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension
-   */
-  grid_suspension?: Array<ServiceProvidingGroupGridSuspension> | null;
   /**
    * Embedded service_providing_group_grid_suspension_history
    */
   grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
   /**
-   * Embedded service_providing_group_product_application
-   */
-  product_application?: Array<ServiceProvidingGroupProductApplication> | null;
-  /**
    * Embedded service_providing_group_product_application_history
    */
   product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
-  /**
-   * Embedded service_providing_group_product_suspension
-   */
-  product_suspension?: Array<ServiceProvidingGroupProductSuspension> | null;
   /**
    * Embedded service_providing_group_product_suspension_history
    */
@@ -4088,17 +3748,9 @@ export type ServiceProvidingGroupMembershipHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnit | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistory> | null;
-  /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroup | null;
   /**
    * Embedded service_providing_group_history
    */
@@ -4147,25 +3799,13 @@ export type ServiceProvidingGroupGridPrequalificationHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroup | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_comment
-   */
-  comment?: Array<ServiceProvidingGroupGridPrequalificationComment> | null;
   /**
    * Embedded service_providing_group_grid_prequalification_comment_history
    */
@@ -4218,10 +3858,6 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_grid_prequalification
-   */
-  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_history
    */
   service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
@@ -4265,25 +3901,13 @@ export type ServiceProvidingGroupGridSuspensionHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistory> | null;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroup | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_comment
-   */
-  comment?: Array<ServiceProvidingGroupGridSuspensionComment> | null;
   /**
    * Embedded service_providing_group_grid_suspension_comment_history
    */
@@ -4336,10 +3960,6 @@ export type ServiceProvidingGroupGridSuspensionCommentHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_grid_suspension
-   */
-  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspension | null;
-  /**
    * Embedded service_providing_group_grid_suspension_history
    */
   service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
@@ -4389,10 +4009,6 @@ export type PartyHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded entity
-   */
-  entity?: Entity | null;
 };
 
 /**
@@ -4436,17 +4052,9 @@ export type PartyMembershipHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  party?: Party | null;
-  /**
    * Embedded party_history
    */
   party_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded entity
-   */
-  entity?: Entity | null;
 };
 
 /**
@@ -4519,10 +4127,6 @@ export type TechnicalResourceHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnit | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistory> | null;
@@ -4579,10 +4183,6 @@ export type AccountingPointGridLocationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded accounting_point
-   */
-  accounting_point?: AccountingPoint | null;
 };
 
 /**
@@ -4623,17 +4223,9 @@ export type SystemOperatorProductTypeHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   system_operator_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded product_type
-   */
-  product_type?: ProductType | null;
 };
 
 /**
@@ -4682,25 +4274,13 @@ export type ServiceProviderProductApplicationHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  service_provider?: Party | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistory> | null;
   /**
-   * Embedded party
-   */
-  system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   system_operator_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded service_provider_product_application_comment
-   */
-  comment?: Array<ServiceProviderProductApplicationComment> | null;
   /**
    * Embedded service_provider_product_application_comment_history
    */
@@ -4753,10 +4333,6 @@ export type ServiceProviderProductApplicationCommentHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_provider_product_application
-   */
-  service_provider_product_application?: ServiceProviderProductApplication | null;
-  /**
    * Embedded service_provider_product_application_history
    */
   service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistory> | null;
@@ -4804,25 +4380,13 @@ export type ServiceProviderProductSuspensionHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  procuring_system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistory> | null;
   /**
-   * Embedded party
-   */
-  service_provider?: Party | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistory> | null;
-  /**
-   * Embedded service_provider_product_suspension_comment
-   */
-  comment?: Array<ServiceProviderProductSuspensionComment> | null;
   /**
    * Embedded service_provider_product_suspension_comment_history
    */
@@ -4874,10 +4438,6 @@ export type ServiceProviderProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_provider_product_suspension
-   */
-  service_provider_product_suspension?: ServiceProviderProductSuspension | null;
   /**
    * Embedded service_provider_product_suspension_history
    */
@@ -4959,33 +4519,17 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroup | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
-   * Embedded party
-   */
-  procuring_system_operator?: Party | null;
   /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistory> | null;
   /**
-   * Embedded service_providing_group_product_application_attachment
-   */
-  attachment?: Array<ServiceProvidingGroupProductApplicationAttachment> | null;
-  /**
    * Embedded service_providing_group_product_application_attachment_history
    */
   attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistory> | null;
-  /**
-   * Embedded service_providing_group_product_application_comment
-   */
-  comment?: Array<ServiceProvidingGroupProductApplicationComment> | null;
   /**
    * Embedded service_providing_group_product_application_comment_history
    */
@@ -5042,10 +4586,6 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_product_application
-   */
-  service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
-  /**
    * Embedded service_providing_group_product_application_history
    */
   service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
@@ -5097,10 +4637,6 @@ export type ServiceProvidingGroupProductApplicationCommentHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_product_application
-   */
-  service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
-  /**
    * Embedded service_providing_group_product_application_history
    */
   service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
@@ -5148,25 +4684,13 @@ export type ServiceProvidingGroupProductSuspensionHistory = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  procuring_system_operator?: Party | null;
-  /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistory> | null;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroup | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_comment
-   */
-  comment?: Array<ServiceProvidingGroupProductSuspensionComment> | null;
   /**
    * Embedded service_providing_group_product_suspension_comment_history
    */
@@ -5218,10 +4742,6 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_providing_group_product_suspension
-   */
-  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspension | null;
   /**
    * Embedded service_providing_group_product_suspension_history
    */
@@ -5320,17 +4840,9 @@ export type ControllableUnitWritable = {
    */
   suspension?: Array<ControllableUnitSuspensionWritable> | null;
   /**
-   * Embedded controllable_unit_suspension_history
-   */
-  suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
-  /**
    * Embedded controllable_unit_service_provider
    */
   service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
-  /**
-   * Embedded controllable_unit_service_provider_history
-   */
-  service_provider_history?: Array<ControllableUnitServiceProviderHistoryWritable> | null;
   /**
    * Embedded controllable_unit_summary
    */
@@ -5340,17 +4852,9 @@ export type ControllableUnitWritable = {
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
   /**
-   * Embedded service_providing_group_membership_history
-   */
-  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
-  /**
    * Embedded technical_resource
    */
   technical_resource?: Array<TechnicalResourceWritable> | null;
-  /**
-   * Embedded technical_resource_history
-   */
-  technical_resource_history?: Array<TechnicalResourceHistoryWritable> | null;
 };
 
 /**
@@ -5371,25 +4875,13 @@ export type ControllableUnitSuspensionWritable = {
    */
   controllable_unit?: ControllableUnitWritable | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
-  /**
    * Embedded party
    */
   impacted_system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded controllable_unit_suspension_comment
    */
   comment?: Array<ControllableUnitSuspensionCommentWritable> | null;
-  /**
-   * Embedded controllable_unit_suspension_comment_history
-   */
-  comment_history?: Array<ControllableUnitSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5409,10 +4901,6 @@ export type ControllableUnitSuspensionCommentWritable = {
    * Embedded controllable_unit_suspension
    */
   controllable_unit_suspension?: ControllableUnitSuspensionWritable | null;
-  /**
-   * Embedded controllable_unit_suspension_history
-   */
-  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5448,25 +4936,13 @@ export type ControllableUnitServiceProviderWritable = {
    */
   controllable_unit?: ControllableUnitWritable | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
-  /**
    * Embedded party
    */
   service_provider?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded party
    */
   end_user?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  end_user_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -5477,10 +4953,6 @@ export type ControllableUnitSummaryWritable = {
    * Embedded controllable_unit
    */
   controllable_unit?: ControllableUnitWritable | null;
-  /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
 };
 
 /**
@@ -5491,10 +4963,6 @@ export type ServiceProvidingGroupPowerPerSubstationWritable = {
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
 };
 
 /**
@@ -5505,10 +4973,6 @@ export type ServiceProvidingGroupSummaryWritable = {
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
 };
 
 /**
@@ -5542,49 +5006,25 @@ export type ServiceProvidingGroupWritable = {
    */
   service_provider?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_membership
    */
   membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
-  /**
-   * Embedded service_providing_group_membership_history
-   */
-  membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
   /**
    * Embedded service_providing_group_grid_prequalification
    */
   grid_prequalification?: Array<ServiceProvidingGroupGridPrequalificationWritable> | null;
   /**
-   * Embedded service_providing_group_grid_prequalification_history
-   */
-  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_grid_suspension
    */
   grid_suspension?: Array<ServiceProvidingGroupGridSuspensionWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_history
-   */
-  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
   /**
    * Embedded service_providing_group_product_application
    */
   product_application?: Array<ServiceProvidingGroupProductApplicationWritable> | null;
   /**
-   * Embedded service_providing_group_product_application_history
-   */
-  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_product_suspension
    */
   product_suspension?: Array<ServiceProvidingGroupProductSuspensionWritable> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_history
-   */
-  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5612,17 +5052,9 @@ export type ServiceProvidingGroupMembershipWritable = {
    */
   controllable_unit?: ControllableUnitWritable | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
 };
 
 /**
@@ -5647,25 +5079,13 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
    * Embedded party
    */
   impacted_system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_comment
    */
   comment?: Array<ServiceProvidingGroupGridPrequalificationCommentWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryWritable> | null;
 };
 
 /**
@@ -5685,10 +5105,6 @@ export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
    * Embedded service_providing_group_grid_prequalification
    */
   service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_history
-   */
-  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
 };
 
 /**
@@ -5709,25 +5125,13 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
    */
   impacted_system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_grid_suspension_comment
    */
   comment?: Array<ServiceProvidingGroupGridSuspensionCommentWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5747,10 +5151,6 @@ export type ServiceProvidingGroupGridSuspensionCommentWritable = {
    * Embedded service_providing_group_grid_suspension
    */
   service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_history
-   */
-  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5783,17 +5183,9 @@ export type EntityWritable = {
    */
   party?: Array<PartyWritable> | null;
   /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded party_membership
    */
   party_membership?: Array<PartyMembershipWritable> | null;
-  /**
-   * Embedded party_membership_history
-   */
-  party_membership_history?: Array<PartyMembershipHistoryWritable> | null;
   /**
    * Embedded identity
    */
@@ -5837,10 +5229,6 @@ export type EntityClientWritable = {
    * Embedded party
    */
   party?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -5898,10 +5286,6 @@ export type PartyMembershipWritable = {
    */
   party?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded entity
    */
   entity?: EntityWritable | null;
@@ -5919,10 +5303,6 @@ export type IdentityWritable = {
    * Embedded party
    */
   party?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -5970,10 +5350,6 @@ export type TechnicalResourceWritable = {
    * Embedded controllable_unit
    */
   controllable_unit?: ControllableUnitWritable | null;
-  /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
 };
 
 /**
@@ -6010,10 +5386,6 @@ export type NotificationWritable = {
    * Embedded party
    */
   party?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6025,17 +5397,9 @@ export type AccountingPointWritable = {
    */
   controllable_unit?: Array<ControllableUnitWritable> | null;
   /**
-   * Embedded controllable_unit_history
-   */
-  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
-  /**
    * Embedded party
    */
   system_operator?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
    * Embedded accounting_point_balance_responsible_party
    */
@@ -6060,10 +5424,6 @@ export type AccountingPointWritable = {
    * Embedded accounting_point_grid_location
    */
   grid_location?: AccountingPointGridLocationWritable | null;
-  /**
-   * Embedded accounting_point_grid_location_history
-   */
-  grid_location_history?: Array<AccountingPointGridLocationHistoryWritable> | null;
 };
 
 /**
@@ -6078,10 +5438,6 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
    * Embedded party
    */
   balance_responsible_party?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  balance_responsible_party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6107,10 +5463,6 @@ export type AccountingPointEndUserWritable = {
    * Embedded party
    */
   end_user?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  end_user_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6125,10 +5477,6 @@ export type AccountingPointEnergySupplierWritable = {
    * Embedded party
    */
   energy_supplier?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  energy_supplier_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6195,10 +5543,6 @@ export type ProductTypeWritable = {
    * Embedded system_operator_product_type
    */
   system_operator_product_type?: Array<SystemOperatorProductTypeWritable> | null;
-  /**
-   * Embedded system_operator_product_type_history
-   */
-  system_operator_product_type_history?: Array<SystemOperatorProductTypeHistoryWritable> | null;
 };
 
 /**
@@ -6218,10 +5562,6 @@ export type SystemOperatorProductTypeWritable = {
    * Embedded party
    */
   system_operator?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
    * Embedded product_type
    */
@@ -6254,25 +5594,13 @@ export type ServiceProviderProductApplicationWritable = {
    */
   service_provider?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded party
    */
   system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_provider_product_application_comment
    */
   comment?: Array<ServiceProviderProductApplicationCommentWritable> | null;
-  /**
-   * Embedded service_provider_product_application_comment_history
-   */
-  comment_history?: Array<ServiceProviderProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6292,10 +5620,6 @@ export type ServiceProviderProductApplicationCommentWritable = {
    * Embedded service_provider_product_application
    */
   service_provider_product_application?: ServiceProviderProductApplicationWritable | null;
-  /**
-   * Embedded service_provider_product_application_history
-   */
-  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6320,25 +5644,13 @@ export type ServiceProviderProductSuspensionWritable = {
    */
   procuring_system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded party
    */
   service_provider?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_provider_product_suspension_comment
    */
   comment?: Array<ServiceProviderProductSuspensionCommentWritable> | null;
-  /**
-   * Embedded service_provider_product_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProviderProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6358,10 +5670,6 @@ export type ServiceProviderProductSuspensionCommentWritable = {
    * Embedded service_provider_product_suspension
    */
   service_provider_product_suspension?: ServiceProviderProductSuspensionWritable | null;
-  /**
-   * Embedded service_provider_product_suspension_history
-   */
-  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -6415,33 +5723,17 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
    * Embedded party
    */
   procuring_system_operator?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
    * Embedded service_providing_group_product_application_attachment
    */
   attachment?: Array<ServiceProvidingGroupProductApplicationAttachmentWritable> | null;
   /**
-   * Embedded service_providing_group_product_application_attachment_history
-   */
-  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_product_application_comment
    */
   comment?: Array<ServiceProvidingGroupProductApplicationCommentWritable> | null;
-  /**
-   * Embedded service_providing_group_product_application_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6473,10 +5765,6 @@ export type ServiceProvidingGroupProductApplicationAttachmentWritable = {
    * Embedded service_providing_group_product_application
    */
   service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
-  /**
-   * Embedded service_providing_group_product_application_history
-   */
-  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6496,10 +5784,6 @@ export type ServiceProvidingGroupProductApplicationCommentWritable = {
    * Embedded service_providing_group_product_application
    */
   service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
-  /**
-   * Embedded service_providing_group_product_application_history
-   */
-  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6524,25 +5808,13 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
    */
   procuring_system_operator?: PartyWritable | null;
   /**
-   * Embedded party_history
-   */
-  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
   /**
-   * Embedded service_providing_group_history
-   */
-  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
    * Embedded service_providing_group_product_suspension_comment
    */
   comment?: Array<ServiceProvidingGroupProductSuspensionCommentWritable> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_comment_history
-   */
-  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6562,10 +5834,6 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
    * Embedded service_providing_group_product_suspension
    */
   service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
-  /**
-   * Embedded service_providing_group_product_suspension_history
-   */
-  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -6577,10 +5845,6 @@ export type NoticeWritable = {
    * Embedded party
    */
   party?: PartyWritable | null;
-  /**
-   * Embedded party_history
-   */
-  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6622,41 +5886,17 @@ export type ControllableUnitHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded accounting_point
-   */
-  accounting_point?: AccountingPointWritable | null;
-  /**
-   * Embedded controllable_unit_suspension
-   */
-  suspension?: Array<ControllableUnitSuspensionWritable> | null;
-  /**
    * Embedded controllable_unit_suspension_history
    */
   suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
-  /**
-   * Embedded controllable_unit_service_provider
-   */
-  service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
   /**
    * Embedded controllable_unit_service_provider_history
    */
   service_provider_history?: Array<ControllableUnitServiceProviderHistoryWritable> | null;
   /**
-   * Embedded controllable_unit_summary
-   */
-  summary?: ControllableUnitSummaryWritable | null;
-  /**
-   * Embedded service_providing_group_membership
-   */
-  service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
-  /**
    * Embedded service_providing_group_membership_history
    */
   service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
-  /**
-   * Embedded technical_resource
-   */
-  technical_resource?: Array<TechnicalResourceWritable> | null;
   /**
    * Embedded technical_resource_history
    */
@@ -6689,25 +5929,13 @@ export type ControllableUnitSuspensionHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnitWritable | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded controllable_unit_suspension_comment
-   */
-  comment?: Array<ControllableUnitSuspensionCommentWritable> | null;
   /**
    * Embedded controllable_unit_suspension_comment_history
    */
@@ -6739,10 +5967,6 @@ export type ControllableUnitSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded controllable_unit_suspension
-   */
-  controllable_unit_suspension?: ControllableUnitSuspensionWritable | null;
   /**
    * Embedded controllable_unit_suspension_history
    */
@@ -6790,25 +6014,13 @@ export type ControllableUnitServiceProviderHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnitWritable | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
   /**
-   * Embedded party
-   */
-  service_provider?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded party
-   */
-  end_user?: PartyWritable | null;
   /**
    * Embedded party_history
    */
@@ -6846,57 +6058,25 @@ export type ServiceProvidingGroupHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_power_per_substation
-   */
-  power_per_substation?: ServiceProvidingGroupPowerPerSubstationWritable | null;
-  /**
-   * Embedded service_providing_group_summary
-   */
-  summary?: ServiceProvidingGroupSummaryWritable | null;
-  /**
-   * Embedded party
-   */
-  service_provider?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_membership
-   */
-  membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
   /**
    * Embedded service_providing_group_membership_history
    */
   membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
   /**
-   * Embedded service_providing_group_grid_prequalification
-   */
-  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalificationWritable> | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_history
    */
   grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension
-   */
-  grid_suspension?: Array<ServiceProvidingGroupGridSuspensionWritable> | null;
   /**
    * Embedded service_providing_group_grid_suspension_history
    */
   grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
   /**
-   * Embedded service_providing_group_product_application
-   */
-  product_application?: Array<ServiceProvidingGroupProductApplicationWritable> | null;
-  /**
    * Embedded service_providing_group_product_application_history
    */
   product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_product_suspension
-   */
-  product_suspension?: Array<ServiceProvidingGroupProductSuspensionWritable> | null;
   /**
    * Embedded service_providing_group_product_suspension_history
    */
@@ -6936,17 +6116,9 @@ export type ServiceProvidingGroupMembershipHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnitWritable | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroupWritable | null;
   /**
    * Embedded service_providing_group_history
    */
@@ -6983,25 +6155,13 @@ export type ServiceProvidingGroupGridPrequalificationHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_prequalification_comment
-   */
-  comment?: Array<ServiceProvidingGroupGridPrequalificationCommentWritable> | null;
   /**
    * Embedded service_providing_group_grid_prequalification_comment_history
    */
@@ -7034,10 +6194,6 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_grid_prequalification
-   */
-  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
-  /**
    * Embedded service_providing_group_grid_prequalification_history
    */
   service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
@@ -7069,25 +6225,13 @@ export type ServiceProvidingGroupGridSuspensionHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  impacted_system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_grid_suspension_comment
-   */
-  comment?: Array<ServiceProvidingGroupGridSuspensionCommentWritable> | null;
   /**
    * Embedded service_providing_group_grid_suspension_comment_history
    */
@@ -7119,10 +6263,6 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_providing_group_grid_suspension
-   */
-  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
   /**
    * Embedded service_providing_group_grid_suspension_history
    */
@@ -7161,10 +6301,6 @@ export type PartyHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded entity
-   */
-  entity?: EntityWritable | null;
 };
 
 /**
@@ -7196,17 +6332,9 @@ export type PartyMembershipHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  party?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   party_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded entity
-   */
-  entity?: EntityWritable | null;
 };
 
 /**
@@ -7263,10 +6391,6 @@ export type TechnicalResourceHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded controllable_unit
-   */
-  controllable_unit?: ControllableUnitWritable | null;
-  /**
    * Embedded controllable_unit_history
    */
   controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
@@ -7310,10 +6434,6 @@ export type AccountingPointGridLocationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded accounting_point
-   */
-  accounting_point?: AccountingPointWritable | null;
 };
 
 /**
@@ -7342,17 +6462,9 @@ export type SystemOperatorProductTypeHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded product_type
-   */
-  product_type?: ProductTypeWritable | null;
 };
 
 /**
@@ -7389,25 +6501,13 @@ export type ServiceProviderProductApplicationHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  service_provider?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistoryWritable> | null;
   /**
-   * Embedded party
-   */
-  system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   system_operator_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded service_provider_product_application_comment
-   */
-  comment?: Array<ServiceProviderProductApplicationCommentWritable> | null;
   /**
    * Embedded service_provider_product_application_comment_history
    */
@@ -7439,10 +6539,6 @@ export type ServiceProviderProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_provider_product_application
-   */
-  service_provider_product_application?: ServiceProviderProductApplicationWritable | null;
   /**
    * Embedded service_provider_product_application_history
    */
@@ -7479,25 +6575,13 @@ export type ServiceProviderProductSuspensionHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  procuring_system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
-   * Embedded party
-   */
-  service_provider?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   service_provider_history?: Array<PartyHistoryWritable> | null;
-  /**
-   * Embedded service_provider_product_suspension_comment
-   */
-  comment?: Array<ServiceProviderProductSuspensionCommentWritable> | null;
   /**
    * Embedded service_provider_product_suspension_comment_history
    */
@@ -7529,10 +6613,6 @@ export type ServiceProviderProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_provider_product_suspension
-   */
-  service_provider_product_suspension?: ServiceProviderProductSuspensionWritable | null;
   /**
    * Embedded service_provider_product_suspension_history
    */
@@ -7598,33 +6678,17 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
-   * Embedded party
-   */
-  procuring_system_operator?: PartyWritable | null;
   /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
-   * Embedded service_providing_group_product_application_attachment
-   */
-  attachment?: Array<ServiceProvidingGroupProductApplicationAttachmentWritable> | null;
-  /**
    * Embedded service_providing_group_product_application_attachment_history
    */
   attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_product_application_comment
-   */
-  comment?: Array<ServiceProvidingGroupProductApplicationCommentWritable> | null;
   /**
    * Embedded service_providing_group_product_application_comment_history
    */
@@ -7669,10 +6733,6 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded service_providing_group_product_application
-   */
-  service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
-  /**
    * Embedded service_providing_group_product_application_history
    */
   service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
@@ -7703,10 +6763,6 @@ export type ServiceProvidingGroupProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_providing_group_product_application
-   */
-  service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
   /**
    * Embedded service_providing_group_product_application_history
    */
@@ -7743,25 +6799,13 @@ export type ServiceProvidingGroupProductSuspensionHistoryWritable = {
    */
   replaced_at?: string;
   /**
-   * Embedded party
-   */
-  procuring_system_operator?: PartyWritable | null;
-  /**
    * Embedded party_history
    */
   procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
   /**
-   * Embedded service_providing_group
-   */
-  service_providing_group?: ServiceProvidingGroupWritable | null;
-  /**
    * Embedded service_providing_group_history
    */
   service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
-  /**
-   * Embedded service_providing_group_product_suspension_comment
-   */
-  comment?: Array<ServiceProvidingGroupProductSuspensionCommentWritable> | null;
   /**
    * Embedded service_providing_group_product_suspension_comment_history
    */
@@ -7793,10 +6837,6 @@ export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
-  /**
-   * Embedded service_providing_group_product_suspension
-   */
-  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
   /**
    * Embedded service_providing_group_product_suspension_history
    */
@@ -15733,10 +14773,6 @@ export type ListAccountingPointGridLocationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
-    /**
-     * Comma-separated list of related resources to embed in the response.
-     */
-    embed?: string;
   };
   url: "/accounting_point_grid_location_history";
 };
@@ -15797,12 +14833,7 @@ export type ReadAccountingPointGridLocationHistoryData = {
      */
     id: number;
   };
-  query?: {
-    /**
-     * Comma-separated list of related resources to embed in the response.
-     */
-    embed?: string;
-  };
+  query?: never;
   url: "/accounting_point_grid_location_history/{id}";
 };
 

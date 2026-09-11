@@ -13,9 +13,6 @@ from ..models.service_providing_group_grid_suspension_comment_visibility import 
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.service_providing_group_grid_suspension_history_response import (
-        ServiceProvidingGroupGridSuspensionHistoryResponse,
-    )
     from ..models.service_providing_group_grid_suspension_response import ServiceProvidingGroupGridSuspensionResponse
 
 
@@ -40,8 +37,6 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_grid_suspension (None | ServiceProvidingGroupGridSuspensionResponse | Unset): Embedded
             service_providing_group_grid_suspension
-        service_providing_group_grid_suspension_history (list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None
-            | Unset): Embedded service_providing_group_grid_suspension_history
     """
 
     id: int
@@ -53,9 +48,6 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_grid_suspension: None | ServiceProvidingGroupGridSuspensionResponse | Unset = UNSET
-    service_providing_group_grid_suspension_history: (
-        list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None | Unset
-    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -87,24 +79,6 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
         else:
             service_providing_group_grid_suspension = self.service_providing_group_grid_suspension
 
-        service_providing_group_grid_suspension_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.service_providing_group_grid_suspension_history, Unset):
-            service_providing_group_grid_suspension_history = UNSET
-        elif isinstance(self.service_providing_group_grid_suspension_history, list):
-            service_providing_group_grid_suspension_history = []
-            for (
-                service_providing_group_grid_suspension_history_type_0_item_data
-            ) in self.service_providing_group_grid_suspension_history:
-                service_providing_group_grid_suspension_history_type_0_item = (
-                    service_providing_group_grid_suspension_history_type_0_item_data.to_dict()
-                )
-                service_providing_group_grid_suspension_history.append(
-                    service_providing_group_grid_suspension_history_type_0_item
-                )
-
-        else:
-            service_providing_group_grid_suspension_history = self.service_providing_group_grid_suspension_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -121,18 +95,11 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
         )
         if service_providing_group_grid_suspension is not UNSET:
             field_dict["service_providing_group_grid_suspension"] = service_providing_group_grid_suspension
-        if service_providing_group_grid_suspension_history is not UNSET:
-            field_dict["service_providing_group_grid_suspension_history"] = (
-                service_providing_group_grid_suspension_history
-            )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.service_providing_group_grid_suspension_history_response import (
-            ServiceProvidingGroupGridSuspensionHistoryResponse,
-        )
         from ..models.service_providing_group_grid_suspension_response import (
             ServiceProvidingGroupGridSuspensionResponse,
         )
@@ -177,40 +144,6 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
             d.pop("service_providing_group_grid_suspension", UNSET)
         )
 
-        def _parse_service_providing_group_grid_suspension_history(
-            data: object,
-        ) -> list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                service_providing_group_grid_suspension_history_type_0 = []
-                _service_providing_group_grid_suspension_history_type_0 = data
-                for (
-                    service_providing_group_grid_suspension_history_type_0_item_data
-                ) in _service_providing_group_grid_suspension_history_type_0:
-                    service_providing_group_grid_suspension_history_type_0_item = (
-                        ServiceProvidingGroupGridSuspensionHistoryResponse.from_dict(
-                            service_providing_group_grid_suspension_history_type_0_item_data
-                        )
-                    )
-
-                    service_providing_group_grid_suspension_history_type_0.append(
-                        service_providing_group_grid_suspension_history_type_0_item
-                    )
-
-                return service_providing_group_grid_suspension_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None | Unset, data)
-
-        service_providing_group_grid_suspension_history = _parse_service_providing_group_grid_suspension_history(
-            d.pop("service_providing_group_grid_suspension_history", UNSET)
-        )
-
         service_providing_group_grid_suspension_comment_response = cls(
             id=id,
             service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
@@ -221,7 +154,6 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_grid_suspension=service_providing_group_grid_suspension,
-            service_providing_group_grid_suspension_history=service_providing_group_grid_suspension_history,
         )
 
         service_providing_group_grid_suspension_comment_response.additional_properties = d

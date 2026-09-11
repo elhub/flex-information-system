@@ -9,7 +9,6 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
     from ..models.service_providing_group_power_per_substation_response_substations_item import (
         ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem,
     )
@@ -36,15 +35,12 @@ class ServiceProvidingGroupPowerPerSubstationResponse:
                 'controllable_unit': {'count': 3, 'maximum_active_power': {'sum': 120, 'average': 40, 'min': 20, 'max': 60}},
                 'technical_resource': {'count': 5, 'maximum_active_power': {'sum': 150, 'average': 50, 'min': 30, 'max': 80}}}].
             service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
-            service_providing_group_history (list[ServiceProvidingGroupHistoryResponse] | None | Unset): Embedded
-                service_providing_group_history
     """
 
     id: int
     service_providing_group_id: int
     substations: list[ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem]
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
-    service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -67,18 +63,6 @@ class ServiceProvidingGroupPowerPerSubstationResponse:
         else:
             service_providing_group = self.service_providing_group
 
-        service_providing_group_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.service_providing_group_history, Unset):
-            service_providing_group_history = UNSET
-        elif isinstance(self.service_providing_group_history, list):
-            service_providing_group_history = []
-            for service_providing_group_history_type_0_item_data in self.service_providing_group_history:
-                service_providing_group_history_type_0_item = service_providing_group_history_type_0_item_data.to_dict()
-                service_providing_group_history.append(service_providing_group_history_type_0_item)
-
-        else:
-            service_providing_group_history = self.service_providing_group_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -90,14 +74,11 @@ class ServiceProvidingGroupPowerPerSubstationResponse:
         )
         if service_providing_group is not UNSET:
             field_dict["service_providing_group"] = service_providing_group
-        if service_providing_group_history is not UNSET:
-            field_dict["service_providing_group_history"] = service_providing_group_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
         from ..models.service_providing_group_power_per_substation_response_substations_item import (
             ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem,
         )
@@ -134,40 +115,11 @@ class ServiceProvidingGroupPowerPerSubstationResponse:
 
         service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
 
-        def _parse_service_providing_group_history(
-            data: object,
-        ) -> list[ServiceProvidingGroupHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                service_providing_group_history_type_0 = []
-                _service_providing_group_history_type_0 = data
-                for service_providing_group_history_type_0_item_data in _service_providing_group_history_type_0:
-                    service_providing_group_history_type_0_item = ServiceProvidingGroupHistoryResponse.from_dict(
-                        service_providing_group_history_type_0_item_data
-                    )
-
-                    service_providing_group_history_type_0.append(service_providing_group_history_type_0_item)
-
-                return service_providing_group_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ServiceProvidingGroupHistoryResponse] | None | Unset, data)
-
-        service_providing_group_history = _parse_service_providing_group_history(
-            d.pop("service_providing_group_history", UNSET)
-        )
-
         service_providing_group_power_per_substation_response = cls(
             id=id,
             service_providing_group_id=service_providing_group_id,
             substations=substations,
             service_providing_group=service_providing_group,
-            service_providing_group_history=service_providing_group_history,
         )
 
         service_providing_group_power_per_substation_response.additional_properties = d

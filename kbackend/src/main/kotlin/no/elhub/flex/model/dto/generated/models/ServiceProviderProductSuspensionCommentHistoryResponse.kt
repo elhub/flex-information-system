@@ -68,12 +68,6 @@ public data class ServiceProviderProductSuspensionCommentHistoryResponse(
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
   /**
-   * Response schema - The relation allowing a procuring system operator to temporarily suspend a
-   * service provider from delivering them products of the given types.
-   */
-  @SerialName("service_provider_product_suspension")
-  public val serviceProviderProductSuspension: ServiceProviderProductSuspensionResponse? = null,
-  /**
    * Embedded service_provider_product_suspension_history
    */
   @SerialName("service_provider_product_suspension_history")

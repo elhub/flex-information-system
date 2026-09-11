@@ -92,20 +92,10 @@ public data class ControllableUnitResponse(
   @SerialName("suspension")
   public val suspension: List<ControllableUnitSuspensionResponse>? = null,
   /**
-   * Embedded controllable_unit_suspension_history
-   */
-  @SerialName("suspension_history")
-  public val suspensionHistory: List<ControllableUnitSuspensionHistoryResponse>? = null,
-  /**
    * Embedded controllable_unit_service_provider
    */
   @SerialName("service_provider")
   public val serviceProvider: List<ControllableUnitServiceProviderResponse>? = null,
-  /**
-   * Embedded controllable_unit_service_provider_history
-   */
-  @SerialName("service_provider_history")
-  public val serviceProviderHistory: List<ControllableUnitServiceProviderHistoryResponse>? = null,
   /**
    * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
    */
@@ -117,19 +107,8 @@ public data class ControllableUnitResponse(
   @SerialName("service_providing_group_membership")
   public val serviceProvidingGroupMembership: List<ServiceProvidingGroupMembershipResponse>? = null,
   /**
-   * Embedded service_providing_group_membership_history
-   */
-  @SerialName("service_providing_group_membership_history")
-  public val serviceProvidingGroupMembershipHistory:
-      List<ServiceProvidingGroupMembershipHistoryResponse>? = null,
-  /**
    * Embedded technical_resource
    */
   @SerialName("technical_resource")
   public val technicalResource: List<TechnicalResourceResponse>? = null,
-  /**
-   * Embedded technical_resource_history
-   */
-  @SerialName("technical_resource_history")
-  public val technicalResourceHistory: List<TechnicalResourceHistoryResponse>? = null,
 )
