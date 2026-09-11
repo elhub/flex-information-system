@@ -7,6 +7,7 @@ export type TextKey =
   | "tab.product_applications"
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
+  | "tab.changes"
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
@@ -57,6 +58,16 @@ export type TextKey =
   | "spg_show_table_search_label"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
+  | "spg_changes_since_label"
+  | "spg_changes_column_id"
+  | "spg_changes_column_name"
+  | "spg_changes_column_map"
+  | "spg_changes_column_first_change"
+  | "spg_changes_column_last_change"
+  | "spg_changes_column_status"
+  | "spg_changes_empty"
+  | "spg_changes_error"
+  | "spg_changes_show_unchanged"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -141,6 +152,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Product applications",
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
+    "tab.changes": "Changes",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
@@ -244,6 +256,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
       "Filter by name, id or accounting point id",
+    spg_changes_since_label: "Compare changes since",
+    spg_changes_column_id: "ID",
+    spg_changes_column_name: "Name",
+    spg_changes_column_map: "Flexible power",
+    spg_changes_column_first_change: "First change",
+    spg_changes_column_last_change: "Last change",
+    spg_changes_column_status: "Change",
+    spg_changes_empty: "No controllable units to compare.",
+    spg_changes_error: "Failed to load changes.",
+    spg_changes_show_unchanged: "Show unchanged controllable units",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -317,6 +339,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Produktprekvalifiseringer",
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
+    "tab.changes": "Endringer",
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
@@ -419,6 +442,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id eller avregningspunkt",
+    spg_changes_since_label: "Sammenlign endringer siden",
+    spg_changes_column_id: "ID",
+    spg_changes_column_name: "Navn",
+    spg_changes_column_map: "Fleksibel effekt",
+    spg_changes_column_first_change: "Første endring",
+    spg_changes_column_last_change: "Siste endring",
+    spg_changes_column_status: "Endring",
+    spg_changes_empty: "Ingen kontrollerbare enheter å sammenligne.",
+    spg_changes_error: "Kunne ikke laste endringer.",
+    spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
