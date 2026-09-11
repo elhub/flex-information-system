@@ -67,6 +67,7 @@ export type TextKey =
   | "spg_changes_column_status"
   | "spg_changes_empty"
   | "spg_changes_error"
+  | "spg_changes_show_unchanged"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -258,12 +259,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_since_label: "Compare changes since",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
-    spg_changes_column_map: "Flexible power (MAP)",
+    spg_changes_column_map: "Flexible power",
     spg_changes_column_valid_from: "Valid from",
     spg_changes_column_valid_to: "Valid to",
     spg_changes_column_status: "Change",
     spg_changes_empty: "No controllable units to compare.",
     spg_changes_error: "Failed to load changes.",
+    spg_changes_show_unchanged: "Show unchanged controllable units",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -443,12 +445,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",
-    spg_changes_column_map: "Fleksibel effekt (MAP)",
+    spg_changes_column_map: "Fleksibel effekt",
     spg_changes_column_valid_from: "Gyldig fra",
     spg_changes_column_valid_to: "Gyldig til",
     spg_changes_column_status: "Endring",
     spg_changes_empty: "Ingen kontrollerbare enheter å sammenligne.",
     spg_changes_error: "Kunne ikke laste endringer.",
+    spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
