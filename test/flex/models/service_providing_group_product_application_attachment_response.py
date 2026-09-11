@@ -13,9 +13,6 @@ from ..models.service_providing_group_product_application_attachment_content_typ
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.service_providing_group_product_application_history_response import (
-        ServiceProvidingGroupProductApplicationHistoryResponse,
-    )
     from ..models.service_providing_group_product_application_response import (
         ServiceProvidingGroupProductApplicationResponse,
     )
@@ -45,9 +42,6 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
             recorded_by (int): The identity that recorded the resource. Example: 145.
             service_providing_group_product_application (None | ServiceProvidingGroupProductApplicationResponse | Unset):
                 Embedded service_providing_group_product_application
-            service_providing_group_product_application_history
-                (list[ServiceProvidingGroupProductApplicationHistoryResponse] | None | Unset): Embedded
-                service_providing_group_product_application_history
     """
 
     id: int
@@ -60,9 +54,6 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_product_application: None | ServiceProvidingGroupProductApplicationResponse | Unset = UNSET
-    service_providing_group_product_application_history: (
-        list[ServiceProvidingGroupProductApplicationHistoryResponse] | None | Unset
-    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -98,26 +89,6 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
         else:
             service_providing_group_product_application = self.service_providing_group_product_application
 
-        service_providing_group_product_application_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.service_providing_group_product_application_history, Unset):
-            service_providing_group_product_application_history = UNSET
-        elif isinstance(self.service_providing_group_product_application_history, list):
-            service_providing_group_product_application_history = []
-            for (
-                service_providing_group_product_application_history_type_0_item_data
-            ) in self.service_providing_group_product_application_history:
-                service_providing_group_product_application_history_type_0_item = (
-                    service_providing_group_product_application_history_type_0_item_data.to_dict()
-                )
-                service_providing_group_product_application_history.append(
-                    service_providing_group_product_application_history_type_0_item
-                )
-
-        else:
-            service_providing_group_product_application_history = (
-                self.service_providing_group_product_application_history
-            )
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -135,18 +106,11 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
         )
         if service_providing_group_product_application is not UNSET:
             field_dict["service_providing_group_product_application"] = service_providing_group_product_application
-        if service_providing_group_product_application_history is not UNSET:
-            field_dict["service_providing_group_product_application_history"] = (
-                service_providing_group_product_application_history
-            )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.service_providing_group_product_application_history_response import (
-            ServiceProvidingGroupProductApplicationHistoryResponse,
-        )
         from ..models.service_providing_group_product_application_response import (
             ServiceProvidingGroupProductApplicationResponse,
         )
@@ -193,42 +157,6 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
             d.pop("service_providing_group_product_application", UNSET)
         )
 
-        def _parse_service_providing_group_product_application_history(
-            data: object,
-        ) -> list[ServiceProvidingGroupProductApplicationHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                service_providing_group_product_application_history_type_0 = []
-                _service_providing_group_product_application_history_type_0 = data
-                for (
-                    service_providing_group_product_application_history_type_0_item_data
-                ) in _service_providing_group_product_application_history_type_0:
-                    service_providing_group_product_application_history_type_0_item = (
-                        ServiceProvidingGroupProductApplicationHistoryResponse.from_dict(
-                            service_providing_group_product_application_history_type_0_item_data
-                        )
-                    )
-
-                    service_providing_group_product_application_history_type_0.append(
-                        service_providing_group_product_application_history_type_0_item
-                    )
-
-                return service_providing_group_product_application_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ServiceProvidingGroupProductApplicationHistoryResponse] | None | Unset, data)
-
-        service_providing_group_product_application_history = (
-            _parse_service_providing_group_product_application_history(
-                d.pop("service_providing_group_product_application_history", UNSET)
-            )
-        )
-
         service_providing_group_product_application_attachment_response = cls(
             id=id,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
@@ -240,7 +168,6 @@ class ServiceProvidingGroupProductApplicationAttachmentResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_product_application=service_providing_group_product_application,
-            service_providing_group_product_application_history=service_providing_group_product_application_history,
         )
 
         service_providing_group_product_application_attachment_response.additional_properties = d

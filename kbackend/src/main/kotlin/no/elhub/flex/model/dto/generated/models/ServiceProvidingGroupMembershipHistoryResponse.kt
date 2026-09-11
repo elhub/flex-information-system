@@ -64,20 +64,10 @@ public data class ServiceProvidingGroupMembershipHistoryResponse(
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
   /**
-   * Response schema - Controllable unit
-   */
-  @SerialName("controllable_unit")
-  public val controllableUnit: ControllableUnitResponse? = null,
-  /**
    * Embedded controllable_unit_history
    */
   @SerialName("controllable_unit_history")
   public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
-  /**
-   * Response schema - Group of controllable units
-   */
-  @SerialName("service_providing_group")
-  public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
   /**
    * Embedded service_providing_group_history
    */

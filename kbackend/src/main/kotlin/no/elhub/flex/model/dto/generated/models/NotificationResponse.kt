@@ -2,7 +2,6 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Boolean
 import kotlin.Long
-import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -61,9 +60,4 @@ public data class NotificationResponse(
    */
   @SerialName("party")
   public val party: PartyResponse? = null,
-  /**
-   * Embedded party_history
-   */
-  @SerialName("party_history")
-  public val partyHistory: List<PartyHistoryResponse>? = null,
 )

@@ -16,9 +16,6 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_product_suspension_history_response import (
         ServiceProvidingGroupProductSuspensionHistoryResponse,
     )
-    from ..models.service_providing_group_product_suspension_response import (
-        ServiceProvidingGroupProductSuspensionResponse,
-    )
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupProductSuspensionCommentHistoryResponse")
@@ -45,8 +42,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        service_providing_group_product_suspension (None | ServiceProvidingGroupProductSuspensionResponse | Unset):
-            Embedded service_providing_group_product_suspension
         service_providing_group_product_suspension_history (list[ServiceProvidingGroupProductSuspensionHistoryResponse]
             | None | Unset): Embedded service_providing_group_product_suspension_history
     """
@@ -62,17 +57,12 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
     service_providing_group_product_suspension_comment_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    service_providing_group_product_suspension: None | ServiceProvidingGroupProductSuspensionResponse | Unset = UNSET
     service_providing_group_product_suspension_history: (
         list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None | Unset
     ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.service_providing_group_product_suspension_response import (
-            ServiceProvidingGroupProductSuspensionResponse,
-        )
-
         id = self.id
 
         service_providing_group_product_suspension_id = self.service_providing_group_product_suspension_id
@@ -106,16 +96,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
             replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
-
-        service_providing_group_product_suspension: dict[str, Any] | None | Unset
-        if isinstance(self.service_providing_group_product_suspension, Unset):
-            service_providing_group_product_suspension = UNSET
-        elif isinstance(
-            self.service_providing_group_product_suspension, ServiceProvidingGroupProductSuspensionResponse
-        ):
-            service_providing_group_product_suspension = self.service_providing_group_product_suspension.to_dict()
-        else:
-            service_providing_group_product_suspension = self.service_providing_group_product_suspension
 
         service_providing_group_product_suspension_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_product_suspension_history, Unset):
@@ -154,8 +134,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if service_providing_group_product_suspension is not UNSET:
-            field_dict["service_providing_group_product_suspension"] = service_providing_group_product_suspension
         if service_providing_group_product_suspension_history is not UNSET:
             field_dict["service_providing_group_product_suspension_history"] = (
                 service_providing_group_product_suspension_history
@@ -167,9 +145,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_product_suspension_history_response import (
             ServiceProvidingGroupProductSuspensionHistoryResponse,
-        )
-        from ..models.service_providing_group_product_suspension_response import (
-            ServiceProvidingGroupProductSuspensionResponse,
         )
 
         d = dict(src_dict)
@@ -219,29 +194,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_service_providing_group_product_suspension(
-            data: object,
-        ) -> None | ServiceProvidingGroupProductSuspensionResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_providing_group_product_suspension_type_0 = (
-                    ServiceProvidingGroupProductSuspensionResponse.from_dict(data)
-                )
-
-                return service_providing_group_product_suspension_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProvidingGroupProductSuspensionResponse | Unset, data)
-
-        service_providing_group_product_suspension = _parse_service_providing_group_product_suspension(
-            d.pop("service_providing_group_product_suspension", UNSET)
-        )
-
         def _parse_service_providing_group_product_suspension_history(
             data: object,
         ) -> list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None | Unset:
@@ -288,7 +240,6 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
             service_providing_group_product_suspension_comment_id=service_providing_group_product_suspension_comment_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            service_providing_group_product_suspension=service_providing_group_product_suspension,
             service_providing_group_product_suspension_history=service_providing_group_product_suspension_history,
         )
 

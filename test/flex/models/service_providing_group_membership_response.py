@@ -10,9 +10,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
-    from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
     from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
 
@@ -37,11 +35,7 @@ class ServiceProvidingGroupMembershipResponse:
         valid_to (datetime.datetime | None | Unset): The date until which the relation between the controllable unit and
             the service providing group is valid. Midnight aligned on Norwegian timezone.
         controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
-        controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
-            controllable_unit_history
         service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
-        service_providing_group_history (list[ServiceProvidingGroupHistoryResponse] | None | Unset): Embedded
-            service_providing_group_history
     """
 
     id: int
@@ -52,9 +46,7 @@ class ServiceProvidingGroupMembershipResponse:
     recorded_by: int
     valid_to: datetime.datetime | None | Unset = UNSET
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
-    controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
-    service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -89,18 +81,6 @@ class ServiceProvidingGroupMembershipResponse:
         else:
             controllable_unit = self.controllable_unit
 
-        controllable_unit_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.controllable_unit_history, Unset):
-            controllable_unit_history = UNSET
-        elif isinstance(self.controllable_unit_history, list):
-            controllable_unit_history = []
-            for controllable_unit_history_type_0_item_data in self.controllable_unit_history:
-                controllable_unit_history_type_0_item = controllable_unit_history_type_0_item_data.to_dict()
-                controllable_unit_history.append(controllable_unit_history_type_0_item)
-
-        else:
-            controllable_unit_history = self.controllable_unit_history
-
         service_providing_group: dict[str, Any] | None | Unset
         if isinstance(self.service_providing_group, Unset):
             service_providing_group = UNSET
@@ -108,18 +88,6 @@ class ServiceProvidingGroupMembershipResponse:
             service_providing_group = self.service_providing_group.to_dict()
         else:
             service_providing_group = self.service_providing_group
-
-        service_providing_group_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.service_providing_group_history, Unset):
-            service_providing_group_history = UNSET
-        elif isinstance(self.service_providing_group_history, list):
-            service_providing_group_history = []
-            for service_providing_group_history_type_0_item_data in self.service_providing_group_history:
-                service_providing_group_history_type_0_item = service_providing_group_history_type_0_item_data.to_dict()
-                service_providing_group_history.append(service_providing_group_history_type_0_item)
-
-        else:
-            service_providing_group_history = self.service_providing_group_history
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -137,20 +105,14 @@ class ServiceProvidingGroupMembershipResponse:
             field_dict["valid_to"] = valid_to
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
-        if controllable_unit_history is not UNSET:
-            field_dict["controllable_unit_history"] = controllable_unit_history
         if service_providing_group is not UNSET:
             field_dict["service_providing_group"] = service_providing_group
-        if service_providing_group_history is not UNSET:
-            field_dict["service_providing_group_history"] = service_providing_group_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
         from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         d = dict(src_dict)
@@ -200,30 +162,6 @@ class ServiceProvidingGroupMembershipResponse:
 
         controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
-        def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                controllable_unit_history_type_0 = []
-                _controllable_unit_history_type_0 = data
-                for controllable_unit_history_type_0_item_data in _controllable_unit_history_type_0:
-                    controllable_unit_history_type_0_item = ControllableUnitHistoryResponse.from_dict(
-                        controllable_unit_history_type_0_item_data
-                    )
-
-                    controllable_unit_history_type_0.append(controllable_unit_history_type_0_item)
-
-                return controllable_unit_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
-
-        controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
-
         def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
             if data is None:
                 return data
@@ -241,34 +179,6 @@ class ServiceProvidingGroupMembershipResponse:
 
         service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
 
-        def _parse_service_providing_group_history(
-            data: object,
-        ) -> list[ServiceProvidingGroupHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                service_providing_group_history_type_0 = []
-                _service_providing_group_history_type_0 = data
-                for service_providing_group_history_type_0_item_data in _service_providing_group_history_type_0:
-                    service_providing_group_history_type_0_item = ServiceProvidingGroupHistoryResponse.from_dict(
-                        service_providing_group_history_type_0_item_data
-                    )
-
-                    service_providing_group_history_type_0.append(service_providing_group_history_type_0_item)
-
-                return service_providing_group_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ServiceProvidingGroupHistoryResponse] | None | Unset, data)
-
-        service_providing_group_history = _parse_service_providing_group_history(
-            d.pop("service_providing_group_history", UNSET)
-        )
-
         service_providing_group_membership_response = cls(
             id=id,
             controllable_unit_id=controllable_unit_id,
@@ -278,9 +188,7 @@ class ServiceProvidingGroupMembershipResponse:
             recorded_by=recorded_by,
             valid_to=valid_to,
             controllable_unit=controllable_unit,
-            controllable_unit_history=controllable_unit_history,
             service_providing_group=service_providing_group,
-            service_providing_group_history=service_providing_group_history,
         )
 
         service_providing_group_membership_response.additional_properties = d

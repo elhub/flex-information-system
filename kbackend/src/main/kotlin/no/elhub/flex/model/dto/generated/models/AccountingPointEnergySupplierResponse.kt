@@ -1,7 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
-import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -52,9 +51,4 @@ public data class AccountingPointEnergySupplierResponse(
    */
   @SerialName("energy_supplier")
   public val energySupplier: PartyResponse? = null,
-  /**
-   * Embedded party_history
-   */
-  @SerialName("energy_supplier_history")
-  public val energySupplierHistory: List<PartyHistoryResponse>? = null,
 )

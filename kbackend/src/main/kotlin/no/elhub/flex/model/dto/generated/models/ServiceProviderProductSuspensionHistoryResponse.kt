@@ -62,48 +62,15 @@ public data class ServiceProviderProductSuspensionHistoryResponse(
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
   /**
-   * Response schema - The body that interacts with the Flexibility Information System
-   *
-   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
-   * System.
-   *
-   * Example party types:
-   *
-   * * Service Provider
-   * * System Operator
-   * * End User
-   */
-  @SerialName("procuring_system_operator")
-  public val procuringSystemOperator: PartyResponse? = null,
-  /**
    * Embedded party_history
    */
   @SerialName("procuring_system_operator_history")
   public val procuringSystemOperatorHistory: List<PartyHistoryResponse>? = null,
   /**
-   * Response schema - The body that interacts with the Flexibility Information System
-   *
-   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
-   * System.
-   *
-   * Example party types:
-   *
-   * * Service Provider
-   * * System Operator
-   * * End User
-   */
-  @SerialName("service_provider")
-  public val serviceProvider: PartyResponse? = null,
-  /**
    * Embedded party_history
    */
   @SerialName("service_provider_history")
   public val serviceProviderHistory: List<PartyHistoryResponse>? = null,
-  /**
-   * Embedded service_provider_product_suspension_comment
-   */
-  @SerialName("comment")
-  public val comment: List<ServiceProviderProductSuspensionCommentResponse>? = null,
   /**
    * Embedded service_provider_product_suspension_comment_history
    */

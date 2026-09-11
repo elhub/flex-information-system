@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -11,10 +11,6 @@ from ..models.accounting_point_grid_location_object_type import AccountingPointG
 from ..models.accounting_point_grid_location_quality import AccountingPointGridLocationQuality
 from ..models.accounting_point_grid_location_source import AccountingPointGridLocationSource
 from ..types import UNSET, Unset
-
-if TYPE_CHECKING:
-    from ..models.accounting_point_response import AccountingPointResponse
-
 
 T = TypeVar("T", bound="AccountingPointGridLocationHistoryResponse")
 
@@ -47,7 +43,6 @@ class AccountingPointGridLocationHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
     """
 
     id: int
@@ -64,12 +59,9 @@ class AccountingPointGridLocationHistoryResponse:
     additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    accounting_point: AccountingPointResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_response import AccountingPointResponse
-
         id = self.id
 
         accounting_point_id = self.accounting_point_id
@@ -112,14 +104,6 @@ class AccountingPointGridLocationHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        accounting_point: dict[str, Any] | None | Unset
-        if isinstance(self.accounting_point, Unset):
-            accounting_point = UNSET
-        elif isinstance(self.accounting_point, AccountingPointResponse):
-            accounting_point = self.accounting_point.to_dict()
-        else:
-            accounting_point = self.accounting_point
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -143,15 +127,11 @@ class AccountingPointGridLocationHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if accounting_point is not UNSET:
-            field_dict["accounting_point"] = accounting_point
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.accounting_point_response import AccountingPointResponse
-
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -210,23 +190,6 @@ class AccountingPointGridLocationHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_accounting_point(data: object) -> AccountingPointResponse | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                accounting_point_type_0 = AccountingPointResponse.from_dict(data)
-
-                return accounting_point_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(AccountingPointResponse | None | Unset, data)
-
-        accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
-
         accounting_point_grid_location_history_response = cls(
             id=id,
             accounting_point_id=accounting_point_id,
@@ -242,7 +205,6 @@ class AccountingPointGridLocationHistoryResponse:
             additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            accounting_point=accounting_point,
         )
 
         accounting_point_grid_location_history_response.additional_properties = d

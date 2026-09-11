@@ -68,12 +68,6 @@ public data class ServiceProvidingGroupGridPrequalificationCommentHistoryRespons
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
   /**
-   * Response schema - Grid prequalification for service providing group
-   */
-  @SerialName("service_providing_group_grid_prequalification")
-  public val serviceProvidingGroupGridPrequalification:
-      ServiceProvidingGroupGridPrequalificationResponse? = null,
-  /**
    * Embedded service_providing_group_grid_prequalification_history
    */
   @SerialName("service_providing_group_grid_prequalification_history")

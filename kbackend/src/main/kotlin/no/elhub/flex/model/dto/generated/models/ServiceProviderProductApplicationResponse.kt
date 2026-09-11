@@ -67,11 +67,6 @@ public data class ServiceProviderProductApplicationResponse(
   @SerialName("service_provider")
   public val serviceProvider: PartyResponse? = null,
   /**
-   * Embedded party_history
-   */
-  @SerialName("service_provider_history")
-  public val serviceProviderHistory: List<PartyHistoryResponse>? = null,
-  /**
    * Response schema - The body that interacts with the Flexibility Information System
    *
    * A party is the thing that is authorized to access or modify data in the Flexiblity Information
@@ -86,18 +81,8 @@ public data class ServiceProviderProductApplicationResponse(
   @SerialName("system_operator")
   public val systemOperator: PartyResponse? = null,
   /**
-   * Embedded party_history
-   */
-  @SerialName("system_operator_history")
-  public val systemOperatorHistory: List<PartyHistoryResponse>? = null,
-  /**
    * Embedded service_provider_product_application_comment
    */
   @SerialName("comment")
   public val comment: List<ServiceProviderProductApplicationCommentResponse>? = null,
-  /**
-   * Embedded service_provider_product_application_comment_history
-   */
-  @SerialName("comment_history")
-  public val commentHistory: List<ServiceProviderProductApplicationCommentHistoryResponse>? = null,
 )

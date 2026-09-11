@@ -14,7 +14,6 @@ from ..models.technology import Technology
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
 
 
@@ -49,8 +48,6 @@ class TechnicalResourceResponse:
         additional_information (None | str | Unset): Free text field for extra information about the technical resource
             if needed.
         controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
-        controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
-            controllable_unit_history
     """
 
     id: int
@@ -68,7 +65,6 @@ class TechnicalResourceResponse:
     business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
-    controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -138,18 +134,6 @@ class TechnicalResourceResponse:
         else:
             controllable_unit = self.controllable_unit
 
-        controllable_unit_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.controllable_unit_history, Unset):
-            controllable_unit_history = UNSET
-        elif isinstance(self.controllable_unit_history, list):
-            controllable_unit_history = []
-            for controllable_unit_history_type_0_item_data in self.controllable_unit_history:
-                controllable_unit_history_type_0_item = controllable_unit_history_type_0_item_data.to_dict()
-                controllable_unit_history.append(controllable_unit_history_type_0_item)
-
-        else:
-            controllable_unit_history = self.controllable_unit_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -177,14 +161,11 @@ class TechnicalResourceResponse:
             field_dict["additional_information"] = additional_information
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
-        if controllable_unit_history is not UNSET:
-            field_dict["controllable_unit_history"] = controllable_unit_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
 
         d = dict(src_dict)
@@ -286,30 +267,6 @@ class TechnicalResourceResponse:
 
         controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
-        def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                controllable_unit_history_type_0 = []
-                _controllable_unit_history_type_0 = data
-                for controllable_unit_history_type_0_item_data in _controllable_unit_history_type_0:
-                    controllable_unit_history_type_0_item = ControllableUnitHistoryResponse.from_dict(
-                        controllable_unit_history_type_0_item_data
-                    )
-
-                    controllable_unit_history_type_0.append(controllable_unit_history_type_0_item)
-
-                return controllable_unit_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
-
-        controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
-
         technical_resource_response = cls(
             id=id,
             name=name,
@@ -326,7 +283,6 @@ class TechnicalResourceResponse:
             business_id_type=business_id_type,
             additional_information=additional_information,
             controllable_unit=controllable_unit,
-            controllable_unit_history=controllable_unit_history,
         )
 
         technical_resource_response.additional_properties = d

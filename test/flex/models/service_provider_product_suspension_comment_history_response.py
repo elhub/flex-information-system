@@ -16,7 +16,6 @@ if TYPE_CHECKING:
     from ..models.service_provider_product_suspension_history_response import (
         ServiceProviderProductSuspensionHistoryResponse,
     )
-    from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
 
 
 T = TypeVar("T", bound="ServiceProviderProductSuspensionCommentHistoryResponse")
@@ -41,8 +40,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        service_provider_product_suspension (None | ServiceProviderProductSuspensionResponse | Unset): Embedded
-            service_provider_product_suspension
         service_provider_product_suspension_history (list[ServiceProviderProductSuspensionHistoryResponse] | None |
             Unset): Embedded service_provider_product_suspension_history
     """
@@ -58,15 +55,12 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
     service_provider_product_suspension_comment_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    service_provider_product_suspension: None | ServiceProviderProductSuspensionResponse | Unset = UNSET
     service_provider_product_suspension_history: (
         list[ServiceProviderProductSuspensionHistoryResponse] | None | Unset
     ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
-
         id = self.id
 
         service_provider_product_suspension_id = self.service_provider_product_suspension_id
@@ -98,14 +92,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
-
-        service_provider_product_suspension: dict[str, Any] | None | Unset
-        if isinstance(self.service_provider_product_suspension, Unset):
-            service_provider_product_suspension = UNSET
-        elif isinstance(self.service_provider_product_suspension, ServiceProviderProductSuspensionResponse):
-            service_provider_product_suspension = self.service_provider_product_suspension.to_dict()
-        else:
-            service_provider_product_suspension = self.service_provider_product_suspension
 
         service_provider_product_suspension_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_provider_product_suspension_history, Unset):
@@ -144,8 +130,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if service_provider_product_suspension is not UNSET:
-            field_dict["service_provider_product_suspension"] = service_provider_product_suspension
         if service_provider_product_suspension_history is not UNSET:
             field_dict["service_provider_product_suspension_history"] = service_provider_product_suspension_history
 
@@ -156,7 +140,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
         from ..models.service_provider_product_suspension_history_response import (
             ServiceProviderProductSuspensionHistoryResponse,
         )
-        from ..models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -202,27 +185,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
-
-        def _parse_service_provider_product_suspension(
-            data: object,
-        ) -> None | ServiceProviderProductSuspensionResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_provider_product_suspension_type_0 = ServiceProviderProductSuspensionResponse.from_dict(data)
-
-                return service_provider_product_suspension_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProviderProductSuspensionResponse | Unset, data)
-
-        service_provider_product_suspension = _parse_service_provider_product_suspension(
-            d.pop("service_provider_product_suspension", UNSET)
-        )
 
         def _parse_service_provider_product_suspension_history(
             data: object,
@@ -270,7 +232,6 @@ class ServiceProviderProductSuspensionCommentHistoryResponse:
             service_provider_product_suspension_comment_id=service_provider_product_suspension_comment_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            service_provider_product_suspension=service_provider_product_suspension,
             service_provider_product_suspension_history=service_provider_product_suspension_history,
         )
 

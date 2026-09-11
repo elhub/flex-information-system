@@ -11,9 +11,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
-    from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
-    from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupMembershipHistoryResponse")
@@ -40,10 +38,8 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
         controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
             controllable_unit_history
-        service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
         service_providing_group_history (list[ServiceProvidingGroupHistoryResponse] | None | Unset): Embedded
             service_providing_group_history
     """
@@ -58,16 +54,11 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     valid_to: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
-    service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
-
         id = self.id
 
         controllable_unit_id = self.controllable_unit_id
@@ -104,14 +95,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        controllable_unit: dict[str, Any] | None | Unset
-        if isinstance(self.controllable_unit, Unset):
-            controllable_unit = UNSET
-        elif isinstance(self.controllable_unit, ControllableUnitResponse):
-            controllable_unit = self.controllable_unit.to_dict()
-        else:
-            controllable_unit = self.controllable_unit
-
         controllable_unit_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.controllable_unit_history, Unset):
             controllable_unit_history = UNSET
@@ -123,14 +106,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
 
         else:
             controllable_unit_history = self.controllable_unit_history
-
-        service_providing_group: dict[str, Any] | None | Unset
-        if isinstance(self.service_providing_group, Unset):
-            service_providing_group = UNSET
-        elif isinstance(self.service_providing_group, ServiceProvidingGroupResponse):
-            service_providing_group = self.service_providing_group.to_dict()
-        else:
-            service_providing_group = self.service_providing_group
 
         service_providing_group_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_history, Unset):
@@ -163,12 +138,8 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if controllable_unit is not UNSET:
-            field_dict["controllable_unit"] = controllable_unit
         if controllable_unit_history is not UNSET:
             field_dict["controllable_unit_history"] = controllable_unit_history
-        if service_providing_group is not UNSET:
-            field_dict["service_providing_group"] = service_providing_group
         if service_providing_group_history is not UNSET:
             field_dict["service_providing_group_history"] = service_providing_group_history
 
@@ -177,9 +148,7 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
-        from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -239,23 +208,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
-
-                return controllable_unit_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(ControllableUnitResponse | None | Unset, data)
-
-        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
-
         def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
             if data is None:
                 return data
@@ -279,23 +231,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             return cast(list[ControllableUnitHistoryResponse] | None | Unset, data)
 
         controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
-
-        def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_providing_group_type_0 = ServiceProvidingGroupResponse.from_dict(data)
-
-                return service_providing_group_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProvidingGroupResponse | Unset, data)
-
-        service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
 
         def _parse_service_providing_group_history(
             data: object,
@@ -336,9 +271,7 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             valid_to=valid_to,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            controllable_unit=controllable_unit,
             controllable_unit_history=controllable_unit_history,
-            service_providing_group=service_providing_group,
             service_providing_group_history=service_providing_group_history,
         )
 

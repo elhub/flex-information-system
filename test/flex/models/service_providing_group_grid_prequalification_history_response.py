@@ -14,15 +14,10 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.party_history_response import PartyHistoryResponse
-    from ..models.party_response import PartyResponse
     from ..models.service_providing_group_grid_prequalification_comment_history_response import (
         ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
     )
-    from ..models.service_providing_group_grid_prequalification_comment_response import (
-        ServiceProvidingGroupGridPrequalificationCommentResponse,
-    )
     from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
-    from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationHistoryResponse")
@@ -48,13 +43,9 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
         service_providing_group_history (list[ServiceProvidingGroupHistoryResponse] | None | Unset): Embedded
             service_providing_group_history
-        impacted_system_operator (None | PartyResponse | Unset): Embedded party
         impacted_system_operator_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
-        comment (list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset): Embedded
-            service_providing_group_grid_prequalification_comment
         comment_history (list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse] | None | Unset): Embedded
             service_providing_group_grid_prequalification_comment_history
     """
@@ -69,18 +60,12 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
     prequalified_at: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
-    impacted_system_operator: None | PartyResponse | Unset = UNSET
     impacted_system_operator_history: list[PartyHistoryResponse] | None | Unset = UNSET
-    comment: list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset = UNSET
     comment_history: list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
-
         id = self.id
 
         service_providing_group_id = self.service_providing_group_id
@@ -117,14 +102,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        service_providing_group: dict[str, Any] | None | Unset
-        if isinstance(self.service_providing_group, Unset):
-            service_providing_group = UNSET
-        elif isinstance(self.service_providing_group, ServiceProvidingGroupResponse):
-            service_providing_group = self.service_providing_group.to_dict()
-        else:
-            service_providing_group = self.service_providing_group
-
         service_providing_group_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_history, Unset):
             service_providing_group_history = UNSET
@@ -136,14 +113,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         else:
             service_providing_group_history = self.service_providing_group_history
-
-        impacted_system_operator: dict[str, Any] | None | Unset
-        if isinstance(self.impacted_system_operator, Unset):
-            impacted_system_operator = UNSET
-        elif isinstance(self.impacted_system_operator, PartyResponse):
-            impacted_system_operator = self.impacted_system_operator.to_dict()
-        else:
-            impacted_system_operator = self.impacted_system_operator
 
         impacted_system_operator_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.impacted_system_operator_history, Unset):
@@ -158,18 +127,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         else:
             impacted_system_operator_history = self.impacted_system_operator_history
-
-        comment: list[dict[str, Any]] | None | Unset
-        if isinstance(self.comment, Unset):
-            comment = UNSET
-        elif isinstance(self.comment, list):
-            comment = []
-            for comment_type_0_item_data in self.comment:
-                comment_type_0_item = comment_type_0_item_data.to_dict()
-                comment.append(comment_type_0_item)
-
-        else:
-            comment = self.comment
 
         comment_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment_history, Unset):
@@ -202,16 +159,10 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if service_providing_group is not UNSET:
-            field_dict["service_providing_group"] = service_providing_group
         if service_providing_group_history is not UNSET:
             field_dict["service_providing_group_history"] = service_providing_group_history
-        if impacted_system_operator is not UNSET:
-            field_dict["impacted_system_operator"] = impacted_system_operator
         if impacted_system_operator_history is not UNSET:
             field_dict["impacted_system_operator_history"] = impacted_system_operator_history
-        if comment is not UNSET:
-            field_dict["comment"] = comment
         if comment_history is not UNSET:
             field_dict["comment_history"] = comment_history
 
@@ -220,15 +171,10 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.party_history_response import PartyHistoryResponse
-        from ..models.party_response import PartyResponse
         from ..models.service_providing_group_grid_prequalification_comment_history_response import (
             ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
         )
-        from ..models.service_providing_group_grid_prequalification_comment_response import (
-            ServiceProvidingGroupGridPrequalificationCommentResponse,
-        )
         from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -288,23 +234,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_providing_group_type_0 = ServiceProvidingGroupResponse.from_dict(data)
-
-                return service_providing_group_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProvidingGroupResponse | Unset, data)
-
-        service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
-
         def _parse_service_providing_group_history(
             data: object,
         ) -> list[ServiceProvidingGroupHistoryResponse] | None | Unset:
@@ -333,23 +262,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             d.pop("service_providing_group_history", UNSET)
         )
 
-        def _parse_impacted_system_operator(data: object) -> None | PartyResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                impacted_system_operator_type_0 = PartyResponse.from_dict(data)
-
-                return impacted_system_operator_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | PartyResponse | Unset, data)
-
-        impacted_system_operator = _parse_impacted_system_operator(d.pop("impacted_system_operator", UNSET))
-
         def _parse_impacted_system_operator_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
             if data is None:
                 return data
@@ -375,32 +287,6 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
         impacted_system_operator_history = _parse_impacted_system_operator_history(
             d.pop("impacted_system_operator_history", UNSET)
         )
-
-        def _parse_comment(
-            data: object,
-        ) -> list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                comment_type_0 = []
-                _comment_type_0 = data
-                for comment_type_0_item_data in _comment_type_0:
-                    comment_type_0_item = ServiceProvidingGroupGridPrequalificationCommentResponse.from_dict(
-                        comment_type_0_item_data
-                    )
-
-                    comment_type_0.append(comment_type_0_item)
-
-                return comment_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset, data)
-
-        comment = _parse_comment(d.pop("comment", UNSET))
 
         def _parse_comment_history(
             data: object,
@@ -441,11 +327,8 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             prequalified_at=prequalified_at,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            service_providing_group=service_providing_group,
             service_providing_group_history=service_providing_group_history,
-            impacted_system_operator=impacted_system_operator,
             impacted_system_operator_history=impacted_system_operator_history,
-            comment=comment,
             comment_history=comment_history,
         )
 

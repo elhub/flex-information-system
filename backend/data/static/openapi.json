@@ -1484,21 +1484,6 @@
                         ],
                         "nullable": true
                     },
-                    "suspension_history": {
-                        "description": "Embedded controllable_unit_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider": {
                         "description": "Embedded controllable_unit_service_provider",
                         "oneOf": [
@@ -1506,21 +1491,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/controllable_unit_service_provider_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider_history": {
-                        "description": "Embedded controllable_unit_service_provider_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_service_provider_history_response"
                                 }
                             },
                             {
@@ -1556,21 +1526,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_providing_group_membership_history": {
-                        "description": "Embedded service_providing_group_membership_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "technical_resource": {
                         "description": "Embedded technical_resource",
                         "oneOf": [
@@ -1578,21 +1533,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/technical_resource_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "technical_resource_history": {
-                        "description": "Embedded technical_resource_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/technical_resource_history_response"
                                 }
                             },
                             {
@@ -1704,41 +1644,11 @@
                         ],
                         "nullable": true
                     },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "impacted_system_operator": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "impacted_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -1753,21 +1663,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded controllable_unit_suspension_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
                                 }
                             },
                             {
@@ -1894,21 +1789,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/controllable_unit_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "controllable_unit_suspension_history": {
-                        "description": "Embedded controllable_unit_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -2086,21 +1966,6 @@
                         ],
                         "nullable": true
                     },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider": {
                         "description": "Embedded party",
                         "oneOf": [
@@ -2113,41 +1978,11 @@
                         ],
                         "nullable": true
                     },
-                    "service_provider_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "end_user": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "end_user_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -2294,21 +2129,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -2405,21 +2225,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -2602,21 +2407,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -2786,21 +2576,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_provider_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "membership": {
                         "description": "Embedded service_providing_group_membership",
                         "oneOf": [
@@ -2808,21 +2583,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_membership_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "membership_history": {
-                        "description": "Embedded service_providing_group_membership_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
                                 }
                             },
                             {
@@ -2846,21 +2606,6 @@
                         ],
                         "nullable": true
                     },
-                    "grid_prequalification_history": {
-                        "description": "Embedded service_providing_group_grid_prequalification_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "grid_suspension": {
                         "description": "Embedded service_providing_group_grid_suspension",
                         "oneOf": [
@@ -2868,21 +2613,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "grid_suspension_history": {
-                        "description": "Embedded service_providing_group_grid_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
                                 }
                             },
                             {
@@ -2906,21 +2636,6 @@
                         ],
                         "nullable": true
                     },
-                    "product_application_history": {
-                        "description": "Embedded service_providing_group_product_application_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "product_suspension": {
                         "description": "Embedded service_providing_group_product_suspension",
                         "oneOf": [
@@ -2928,21 +2643,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "product_suspension_history": {
-                        "description": "Embedded service_providing_group_product_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
                                 }
                             },
                             {
@@ -3080,41 +2780,11 @@
                         ],
                         "nullable": true
                     },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group": {
                         "description": "Embedded service_providing_group",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -3245,41 +2915,11 @@
                         ],
                         "nullable": true
                     },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "impacted_system_operator": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "impacted_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -3294,21 +2934,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_providing_group_grid_prequalification_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history_response"
                                 }
                             },
                             {
@@ -3441,21 +3066,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "service_providing_group_grid_prequalification_history": {
-                        "description": "Embedded service_providing_group_grid_prequalification_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -3558,41 +3168,11 @@
                         ],
                         "nullable": true
                     },
-                    "impacted_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group": {
                         "description": "Embedded service_providing_group",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -3607,21 +3187,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_providing_group_grid_suspension_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
                                 }
                             },
                             {
@@ -3748,21 +3313,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_grid_suspension_history": {
-                        "description": "Embedded service_providing_group_grid_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -3900,21 +3450,6 @@
                         ],
                         "nullable": true
                     },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "party_membership": {
                         "description": "Embedded party_membership",
                         "oneOf": [
@@ -3922,21 +3457,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_membership_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "party_membership_history": {
-                        "description": "Embedded party_membership_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_membership_history_response"
                                 }
                             },
                             {
@@ -4177,21 +3697,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -4469,21 +3974,6 @@
                         ],
                         "nullable": true
                     },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "entity": {
                         "description": "Embedded entity",
                         "oneOf": [
@@ -4565,21 +4055,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -4913,21 +4388,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -5110,21 +4570,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -5212,41 +4657,11 @@
                         ],
                         "nullable": true
                     },
-                    "controllable_unit_history": {
-                        "description": "Embedded controllable_unit_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "system_operator": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -5340,21 +4755,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "grid_location_history": {
-                        "description": "Embedded accounting_point_grid_location_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -5419,21 +4819,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "balance_responsible_party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -5553,21 +4938,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "end_user_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -5626,21 +4996,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "energy_supplier_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -6031,21 +5386,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "system_operator_product_type_history": {
-                        "description": "Embedded system_operator_product_type_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/system_operator_product_type_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -6141,21 +5481,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -6338,41 +5663,11 @@
                         ],
                         "nullable": true
                     },
-                    "service_provider_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "system_operator": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -6387,21 +5682,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_provider_product_application_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_provider_product_application_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_application_comment_history_response"
                                 }
                             },
                             {
@@ -6529,21 +5809,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_provider_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider_product_application_history": {
-                        "description": "Embedded service_provider_product_application_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_application_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -6689,41 +5954,11 @@
                         ],
                         "nullable": true
                     },
-                    "procuring_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -6738,21 +5973,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_provider_product_suspension_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_suspension_comment_history_response"
                                 }
                             },
                             {
@@ -6880,21 +6100,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_provider_product_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider_product_suspension_history": {
-                        "description": "Embedded service_provider_product_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -7247,41 +6452,11 @@
                         ],
                         "nullable": true
                     },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "procuring_system_operator": {
                         "description": "Embedded party",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "procuring_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -7304,21 +6479,6 @@
                         ],
                         "nullable": true
                     },
-                    "attachment_history": {
-                        "description": "Embedded service_providing_group_product_application_attachment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "comment": {
                         "description": "Embedded service_providing_group_product_application_comment",
                         "oneOf": [
@@ -7326,21 +6486,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_providing_group_product_application_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
                                 }
                             },
                             {
@@ -7427,21 +6572,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_product_application_history": {
-                        "description": "Embedded service_providing_group_product_application_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -7570,21 +6700,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_product_application_history": {
-                        "description": "Embedded service_providing_group_product_application_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -7730,41 +6845,11 @@
                         ],
                         "nullable": true
                     },
-                    "procuring_system_operator_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group": {
                         "description": "Embedded service_providing_group",
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_history": {
-                        "description": "Embedded service_providing_group_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -7779,21 +6864,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment_history": {
-                        "description": "Embedded service_providing_group_product_suspension_comment_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history_response"
                                 }
                             },
                             {
@@ -7927,21 +6997,6 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "service_providing_group_product_suspension_history": {
-                        "description": "Embedded service_providing_group_product_suspension_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -8028,21 +7083,6 @@
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "party_history": {
-                        "description": "Embedded party_history",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/party_history_response"
-                                }
                             },
                             {
                                 "type": "null"
@@ -8163,33 +7203,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "accounting_point": {
-                        "description": "Embedded accounting_point",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/accounting_point_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "suspension": {
-                        "description": "Embedded controllable_unit_suspension",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_suspension_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "suspension_history": {
                         "description": "Embedded controllable_unit_suspension_history",
                         "oneOf": [
@@ -8197,21 +7210,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider": {
-                        "description": "Embedded controllable_unit_service_provider",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_service_provider_response"
                                 }
                             },
                             {
@@ -8235,33 +7233,6 @@
                         ],
                         "nullable": true
                     },
-                    "summary": {
-                        "description": "Embedded controllable_unit_summary",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_summary_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group_membership": {
-                        "description": "Embedded service_providing_group_membership",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_membership_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_membership_history": {
                         "description": "Embedded service_providing_group_membership_history",
                         "oneOf": [
@@ -8269,21 +7240,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_membership_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "technical_resource": {
-                        "description": "Embedded technical_resource",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/technical_resource_response"
                                 }
                             },
                             {
@@ -8382,18 +7338,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "controllable_unit": {
-                        "description": "Embedded controllable_unit",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "controllable_unit_history": {
                         "description": "Embedded controllable_unit_history",
                         "oneOf": [
@@ -8409,18 +7353,6 @@
                         ],
                         "nullable": true
                     },
-                    "impacted_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "impacted_system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -8428,21 +7360,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded controllable_unit_suspension_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
                                 }
                             },
                             {
@@ -8552,18 +7469,6 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
-                    },
-                    "controllable_unit_suspension": {
-                        "description": "Embedded controllable_unit_suspension",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     },
                     "controllable_unit_suspension_history": {
                         "description": "Embedded controllable_unit_suspension_history",
@@ -8677,18 +7582,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "controllable_unit": {
-                        "description": "Embedded controllable_unit",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "controllable_unit_history": {
                         "description": "Embedded controllable_unit_history",
                         "oneOf": [
@@ -8704,18 +7597,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_provider": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -8724,18 +7605,6 @@
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
                                 }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "end_user": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
                             },
                             {
                                 "type": "null"
@@ -8848,42 +7717,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "power_per_substation": {
-                        "description": "Embedded service_providing_group_power_per_substation",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_power_per_substation_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "summary": {
-                        "description": "Embedded service_providing_group_summary",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_summary_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_provider": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -8891,21 +7724,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "membership": {
-                        "description": "Embedded service_providing_group_membership",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_membership_response"
                                 }
                             },
                             {
@@ -8929,21 +7747,6 @@
                         ],
                         "nullable": true
                     },
-                    "grid_prequalification": {
-                        "description": "Embedded service_providing_group_grid_prequalification",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "grid_prequalification_history": {
                         "description": "Embedded service_providing_group_grid_prequalification_history",
                         "oneOf": [
@@ -8951,21 +7754,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "grid_suspension": {
-                        "description": "Embedded service_providing_group_grid_suspension",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
                                 }
                             },
                             {
@@ -8989,21 +7777,6 @@
                         ],
                         "nullable": true
                     },
-                    "product_application": {
-                        "description": "Embedded service_providing_group_product_application",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "product_application_history": {
                         "description": "Embedded service_providing_group_product_application_history",
                         "oneOf": [
@@ -9011,21 +7784,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "product_suspension": {
-                        "description": "Embedded service_providing_group_product_suspension",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
                                 }
                             },
                             {
@@ -9131,18 +7889,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "controllable_unit": {
-                        "description": "Embedded controllable_unit",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "controllable_unit_history": {
                         "description": "Embedded controllable_unit_history",
                         "oneOf": [
@@ -9151,18 +7897,6 @@
                                 "items": {
                                     "$ref": "#/components/schemas/controllable_unit_history_response"
                                 }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "service_providing_group": {
-                        "description": "Embedded service_providing_group",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_response"
                             },
                             {
                                 "type": "null"
@@ -9264,18 +7998,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group": {
-                        "description": "Embedded service_providing_group",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_history": {
                         "description": "Embedded service_providing_group_history",
                         "oneOf": [
@@ -9291,18 +8013,6 @@
                         ],
                         "nullable": true
                     },
-                    "impacted_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "impacted_system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -9310,21 +8020,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_providing_group_grid_prequalification_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
                                 }
                             },
                             {
@@ -9435,18 +8130,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group_grid_prequalification": {
-                        "description": "Embedded service_providing_group_grid_prequalification",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_grid_prequalification_history": {
                         "description": "Embedded service_providing_group_grid_prequalification_history",
                         "oneOf": [
@@ -9535,18 +8218,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "impacted_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "impacted_system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -9562,18 +8233,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_providing_group": {
-                        "description": "Embedded service_providing_group",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_history": {
                         "description": "Embedded service_providing_group_history",
                         "oneOf": [
@@ -9581,21 +8240,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_providing_group_grid_suspension_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
                                 }
                             },
                             {
@@ -9706,18 +8350,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group_grid_suspension": {
-                        "description": "Embedded service_providing_group_grid_suspension",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_grid_suspension_history": {
                         "description": "Embedded service_providing_group_grid_suspension_history",
                         "oneOf": [
@@ -9822,18 +8454,6 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
-                    },
-                    "entity": {
-                        "description": "Embedded entity",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/entity_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -9918,18 +8538,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "party": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "party_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -9938,18 +8546,6 @@
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
                                 }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "entity": {
-                        "description": "Embedded entity",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/entity_response"
                             },
                             {
                                 "type": "null"
@@ -10110,18 +8706,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "controllable_unit": {
-                        "description": "Embedded controllable_unit",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/controllable_unit_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "controllable_unit_history": {
                         "description": "Embedded controllable_unit_history",
                         "oneOf": [
@@ -10241,18 +8825,6 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
-                    },
-                    "accounting_point": {
-                        "description": "Embedded accounting_point",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/accounting_point_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     }
                 },
                 "required": [
@@ -10330,18 +8902,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -10350,18 +8910,6 @@
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
                                 }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "product_type": {
-                        "description": "Embedded product_type",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/product_type_response"
                             },
                             {
                                 "type": "null"
@@ -10461,18 +9009,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_provider": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -10488,18 +9024,6 @@
                         ],
                         "nullable": true
                     },
-                    "system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -10507,21 +9031,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_provider_product_application_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_application_comment_response"
                                 }
                             },
                             {
@@ -10633,18 +9142,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_provider_product_application": {
-                        "description": "Embedded service_provider_product_application",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_provider_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider_product_application_history": {
                         "description": "Embedded service_provider_product_application_history",
                         "oneOf": [
@@ -10745,18 +9242,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "procuring_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "procuring_system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -10772,18 +9257,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_provider": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_provider_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -10791,21 +9264,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/party_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_provider_product_suspension_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
                                 }
                             },
                             {
@@ -10916,18 +9374,6 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
-                    },
-                    "service_provider_product_suspension": {
-                        "description": "Embedded service_provider_product_suspension",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_provider_product_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     },
                     "service_provider_product_suspension_history": {
                         "description": "Embedded service_provider_product_suspension_history",
@@ -11102,18 +9548,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group": {
-                        "description": "Embedded service_providing_group",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_history": {
                         "description": "Embedded service_providing_group_history",
                         "oneOf": [
@@ -11122,18 +9556,6 @@
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_history_response"
                                 }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "procuring_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
                             },
                             {
                                 "type": "null"
@@ -11156,21 +9578,6 @@
                         ],
                         "nullable": true
                     },
-                    "attachment": {
-                        "description": "Embedded service_providing_group_product_application_attachment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "attachment_history": {
                         "description": "Embedded service_providing_group_product_application_attachment_history",
                         "oneOf": [
@@ -11178,21 +9585,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_providing_group_product_application_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
                                 }
                             },
                             {
@@ -11309,18 +9701,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group_product_application": {
-                        "description": "Embedded service_providing_group_product_application",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_product_application_history": {
                         "description": "Embedded service_providing_group_product_application_history",
                         "oneOf": [
@@ -11426,18 +9806,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "service_providing_group_product_application": {
-                        "description": "Embedded service_providing_group_product_application",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_product_application_history": {
                         "description": "Embedded service_providing_group_product_application_history",
                         "oneOf": [
@@ -11538,18 +9906,6 @@
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
                     },
-                    "procuring_system_operator": {
-                        "description": "Embedded party",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/party_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "procuring_system_operator_history": {
                         "description": "Embedded party_history",
                         "oneOf": [
@@ -11565,18 +9921,6 @@
                         ],
                         "nullable": true
                     },
-                    "service_providing_group": {
-                        "description": "Embedded service_providing_group",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "service_providing_group_history": {
                         "description": "Embedded service_providing_group_history",
                         "oneOf": [
@@ -11584,21 +9928,6 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/service_providing_group_history_response"
-                                }
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "comment": {
-                        "description": "Embedded service_providing_group_product_suspension_comment",
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
                                 }
                             },
                             {
@@ -11709,18 +10038,6 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
-                    },
-                    "service_providing_group_product_suspension": {
-                        "description": "Embedded service_providing_group_product_suspension",
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "nullable": true
                     },
                     "service_providing_group_product_suspension_history": {
                         "description": "Embedded service_providing_group_product_suspension_history",
@@ -29881,14 +28198,6 @@
                         }
                     },
                     {
-                        "in": "query",
-                        "name": "embed",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Comma-separated list of related resources to embed in the response."
-                    },
-                    {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
@@ -30118,14 +28427,6 @@
                     {}
                 ],
                 "parameters": [
-                    {
-                        "in": "query",
-                        "name": "embed",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Comma-separated list of related resources to embed in the response."
-                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }

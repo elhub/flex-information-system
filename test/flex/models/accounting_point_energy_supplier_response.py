@@ -11,7 +11,6 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.accounting_point_response import AccountingPointResponse
-    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
 
 
@@ -31,7 +30,6 @@ class AccountingPointEnergySupplierResponse:
             the energy supplier is valid. Midnight aligned on Norwegian timezone.
         accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
         energy_supplier (None | PartyResponse | Unset): Embedded party
-        energy_supplier_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     accounting_point_id: int
@@ -40,7 +38,6 @@ class AccountingPointEnergySupplierResponse:
     valid_to: datetime.datetime | None | Unset = UNSET
     accounting_point: AccountingPointResponse | None | Unset = UNSET
     energy_supplier: None | PartyResponse | Unset = UNSET
-    energy_supplier_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -77,18 +74,6 @@ class AccountingPointEnergySupplierResponse:
         else:
             energy_supplier = self.energy_supplier
 
-        energy_supplier_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.energy_supplier_history, Unset):
-            energy_supplier_history = UNSET
-        elif isinstance(self.energy_supplier_history, list):
-            energy_supplier_history = []
-            for energy_supplier_history_type_0_item_data in self.energy_supplier_history:
-                energy_supplier_history_type_0_item = energy_supplier_history_type_0_item_data.to_dict()
-                energy_supplier_history.append(energy_supplier_history_type_0_item)
-
-        else:
-            energy_supplier_history = self.energy_supplier_history
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -104,15 +89,12 @@ class AccountingPointEnergySupplierResponse:
             field_dict["accounting_point"] = accounting_point
         if energy_supplier is not UNSET:
             field_dict["energy_supplier"] = energy_supplier
-        if energy_supplier_history is not UNSET:
-            field_dict["energy_supplier_history"] = energy_supplier_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -173,30 +155,6 @@ class AccountingPointEnergySupplierResponse:
 
         energy_supplier = _parse_energy_supplier(d.pop("energy_supplier", UNSET))
 
-        def _parse_energy_supplier_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                energy_supplier_history_type_0 = []
-                _energy_supplier_history_type_0 = data
-                for energy_supplier_history_type_0_item_data in _energy_supplier_history_type_0:
-                    energy_supplier_history_type_0_item = PartyHistoryResponse.from_dict(
-                        energy_supplier_history_type_0_item_data
-                    )
-
-                    energy_supplier_history_type_0.append(energy_supplier_history_type_0_item)
-
-                return energy_supplier_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[PartyHistoryResponse] | None | Unset, data)
-
-        energy_supplier_history = _parse_energy_supplier_history(d.pop("energy_supplier_history", UNSET))
-
         accounting_point_energy_supplier_response = cls(
             accounting_point_id=accounting_point_id,
             energy_supplier_id=energy_supplier_id,
@@ -204,7 +162,6 @@ class AccountingPointEnergySupplierResponse:
             valid_to=valid_to,
             accounting_point=accounting_point,
             energy_supplier=energy_supplier,
-            energy_supplier_history=energy_supplier_history,
         )
 
         accounting_point_energy_supplier_response.additional_properties = d

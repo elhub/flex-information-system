@@ -11,7 +11,6 @@ from ..models.system_operator_product_type_status import SystemOperatorProductTy
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.party_history_response import PartyHistoryResponse
     from ..models.party_response import PartyResponse
     from ..models.product_type_response import ProductTypeResponse
 
@@ -32,7 +31,6 @@ class SystemOperatorProductTypeResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         system_operator (None | PartyResponse | Unset): Embedded party
-        system_operator_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
         product_type (None | ProductTypeResponse | Unset): Embedded product_type
     """
 
@@ -43,7 +41,6 @@ class SystemOperatorProductTypeResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     system_operator: None | PartyResponse | Unset = UNSET
-    system_operator_history: list[PartyHistoryResponse] | None | Unset = UNSET
     product_type: None | ProductTypeResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -71,18 +68,6 @@ class SystemOperatorProductTypeResponse:
         else:
             system_operator = self.system_operator
 
-        system_operator_history: list[dict[str, Any]] | None | Unset
-        if isinstance(self.system_operator_history, Unset):
-            system_operator_history = UNSET
-        elif isinstance(self.system_operator_history, list):
-            system_operator_history = []
-            for system_operator_history_type_0_item_data in self.system_operator_history:
-                system_operator_history_type_0_item = system_operator_history_type_0_item_data.to_dict()
-                system_operator_history.append(system_operator_history_type_0_item)
-
-        else:
-            system_operator_history = self.system_operator_history
-
         product_type: dict[str, Any] | None | Unset
         if isinstance(self.product_type, Unset):
             product_type = UNSET
@@ -105,8 +90,6 @@ class SystemOperatorProductTypeResponse:
         )
         if system_operator is not UNSET:
             field_dict["system_operator"] = system_operator
-        if system_operator_history is not UNSET:
-            field_dict["system_operator_history"] = system_operator_history
         if product_type is not UNSET:
             field_dict["product_type"] = product_type
 
@@ -114,7 +97,6 @@ class SystemOperatorProductTypeResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_history_response import PartyHistoryResponse
         from ..models.party_response import PartyResponse
         from ..models.product_type_response import ProductTypeResponse
 
@@ -148,30 +130,6 @@ class SystemOperatorProductTypeResponse:
 
         system_operator = _parse_system_operator(d.pop("system_operator", UNSET))
 
-        def _parse_system_operator_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, list):
-                    raise TypeError()
-                system_operator_history_type_0 = []
-                _system_operator_history_type_0 = data
-                for system_operator_history_type_0_item_data in _system_operator_history_type_0:
-                    system_operator_history_type_0_item = PartyHistoryResponse.from_dict(
-                        system_operator_history_type_0_item_data
-                    )
-
-                    system_operator_history_type_0.append(system_operator_history_type_0_item)
-
-                return system_operator_history_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(list[PartyHistoryResponse] | None | Unset, data)
-
-        system_operator_history = _parse_system_operator_history(d.pop("system_operator_history", UNSET))
-
         def _parse_product_type(data: object) -> None | ProductTypeResponse | Unset:
             if data is None:
                 return data
@@ -197,7 +155,6 @@ class SystemOperatorProductTypeResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             system_operator=system_operator,
-            system_operator_history=system_operator_history,
             product_type=product_type,
         )
 

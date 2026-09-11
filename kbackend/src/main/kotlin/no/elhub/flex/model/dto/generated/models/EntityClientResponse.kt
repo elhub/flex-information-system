@@ -96,9 +96,4 @@ public data class EntityClientResponse(
    */
   @SerialName("party")
   public val party: PartyResponse? = null,
-  /**
-   * Embedded party_history
-   */
-  @SerialName("party_history")
-  public val partyHistory: List<PartyHistoryResponse>? = null,
 )

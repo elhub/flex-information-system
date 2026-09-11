@@ -11,9 +11,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
-    from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.party_history_response import PartyHistoryResponse
-    from ..models.party_response import PartyResponse
 
 
 T = TypeVar("T", bound="ControllableUnitServiceProviderHistoryResponse")
@@ -43,12 +41,9 @@ class ControllableUnitServiceProviderHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
-        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
         controllable_unit_history (list[ControllableUnitHistoryResponse] | None | Unset): Embedded
             controllable_unit_history
-        service_provider (None | PartyResponse | Unset): Embedded party
         service_provider_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
-        end_user (None | PartyResponse | Unset): Embedded party
         end_user_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
@@ -64,18 +59,12 @@ class ControllableUnitServiceProviderHistoryResponse:
     valid_to: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
-    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     controllable_unit_history: list[ControllableUnitHistoryResponse] | None | Unset = UNSET
-    service_provider: None | PartyResponse | Unset = UNSET
     service_provider_history: list[PartyHistoryResponse] | None | Unset = UNSET
-    end_user: None | PartyResponse | Unset = UNSET
     end_user_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.party_response import PartyResponse
-
         id = self.id
 
         controllable_unit_id = self.controllable_unit_id
@@ -122,14 +111,6 @@ class ControllableUnitServiceProviderHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        controllable_unit: dict[str, Any] | None | Unset
-        if isinstance(self.controllable_unit, Unset):
-            controllable_unit = UNSET
-        elif isinstance(self.controllable_unit, ControllableUnitResponse):
-            controllable_unit = self.controllable_unit.to_dict()
-        else:
-            controllable_unit = self.controllable_unit
-
         controllable_unit_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.controllable_unit_history, Unset):
             controllable_unit_history = UNSET
@@ -142,14 +123,6 @@ class ControllableUnitServiceProviderHistoryResponse:
         else:
             controllable_unit_history = self.controllable_unit_history
 
-        service_provider: dict[str, Any] | None | Unset
-        if isinstance(self.service_provider, Unset):
-            service_provider = UNSET
-        elif isinstance(self.service_provider, PartyResponse):
-            service_provider = self.service_provider.to_dict()
-        else:
-            service_provider = self.service_provider
-
         service_provider_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_provider_history, Unset):
             service_provider_history = UNSET
@@ -161,14 +134,6 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         else:
             service_provider_history = self.service_provider_history
-
-        end_user: dict[str, Any] | None | Unset
-        if isinstance(self.end_user, Unset):
-            end_user = UNSET
-        elif isinstance(self.end_user, PartyResponse):
-            end_user = self.end_user.to_dict()
-        else:
-            end_user = self.end_user
 
         end_user_history: list[dict[str, Any]] | None | Unset
         if isinstance(self.end_user_history, Unset):
@@ -204,16 +169,10 @@ class ControllableUnitServiceProviderHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
-        if controllable_unit is not UNSET:
-            field_dict["controllable_unit"] = controllable_unit
         if controllable_unit_history is not UNSET:
             field_dict["controllable_unit_history"] = controllable_unit_history
-        if service_provider is not UNSET:
-            field_dict["service_provider"] = service_provider
         if service_provider_history is not UNSET:
             field_dict["service_provider_history"] = service_provider_history
-        if end_user is not UNSET:
-            field_dict["end_user"] = end_user
         if end_user_history is not UNSET:
             field_dict["end_user_history"] = end_user_history
 
@@ -222,9 +181,7 @@ class ControllableUnitServiceProviderHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
-        from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.party_history_response import PartyHistoryResponse
-        from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -303,23 +260,6 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
-        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
-
-                return controllable_unit_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(ControllableUnitResponse | None | Unset, data)
-
-        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
-
         def _parse_controllable_unit_history(data: object) -> list[ControllableUnitHistoryResponse] | None | Unset:
             if data is None:
                 return data
@@ -344,23 +284,6 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         controllable_unit_history = _parse_controllable_unit_history(d.pop("controllable_unit_history", UNSET))
 
-        def _parse_service_provider(data: object) -> None | PartyResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_provider_type_0 = PartyResponse.from_dict(data)
-
-                return service_provider_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | PartyResponse | Unset, data)
-
-        service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
-
         def _parse_service_provider_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
             if data is None:
                 return data
@@ -384,23 +307,6 @@ class ControllableUnitServiceProviderHistoryResponse:
             return cast(list[PartyHistoryResponse] | None | Unset, data)
 
         service_provider_history = _parse_service_provider_history(d.pop("service_provider_history", UNSET))
-
-        def _parse_end_user(data: object) -> None | PartyResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                end_user_type_0 = PartyResponse.from_dict(data)
-
-                return end_user_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | PartyResponse | Unset, data)
-
-        end_user = _parse_end_user(d.pop("end_user", UNSET))
 
         def _parse_end_user_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
             if data is None:
@@ -437,11 +343,8 @@ class ControllableUnitServiceProviderHistoryResponse:
             valid_to=valid_to,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
-            controllable_unit=controllable_unit,
             controllable_unit_history=controllable_unit_history,
-            service_provider=service_provider,
             service_provider_history=service_provider_history,
-            end_user=end_user,
             end_user_history=end_user_history,
         )
 
