@@ -21,6 +21,7 @@ class Relationship:
     parent: Field
     cardinality: str
     hidden: bool = False
+    history: bool = False
 
 
 def from_foreign_key(
@@ -73,7 +74,7 @@ def history_field(field: Field) -> Field:
 
 
 # derive the history variants of a relationship
-# (current -> history, history -> current, and history -> history)
+# (history -> history)
 def history_variants(
     rel: Relationship, history_resources: set[str]
 ) -> List[Relationship]:
@@ -81,30 +82,6 @@ def history_variants(
     parent_has_history = rel.parent.resource in history_resources
 
     rels = []
-
-    if parent_has_history:
-        # current -> history
-        rels.append(
-            Relationship(
-                child=rel.child,
-                name=rel.name + "_history",
-                parent=history_field(rel.parent),
-                cardinality="many",
-                hidden=rel.hidden,
-            )
-        )
-
-    if child_has_history:
-        # history -> current
-        rels.append(
-            Relationship(
-                child=history_field(rel.child),
-                name=rel.name,
-                parent=rel.parent,
-                cardinality=rel.cardinality,
-                hidden=rel.hidden,
-            )
-        )
 
     if child_has_history and parent_has_history:
         # history -> history
@@ -115,6 +92,7 @@ def history_variants(
                 parent=history_field(rel.parent),
                 cardinality="many",
                 hidden=rel.hidden,
+                history=True,
             )
         )
 
