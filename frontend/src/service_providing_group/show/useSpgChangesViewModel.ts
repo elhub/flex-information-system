@@ -44,6 +44,7 @@ const fetchSnapshot = async (
   > = {
     service_providing_group_id: `eq.${spgId}`,
     as_of: asOf,
+    valid_at: new Date().toISOString(),
     embed: "controllable_unit_history!",
     "controllable_unit_history.as_of": asOf,
   };
