@@ -322,7 +322,7 @@ export const AccountingPointLocationMap = ({
       ],
       { padding: 80, maxZoom: 13 },
     );
-  }, [selectedSubstation]);
+  }, [selectedSubstation, apLon, apLat]);
 
   const lastFittedIdRef = useRef<string | null | undefined>(undefined);
 

@@ -81,6 +81,22 @@ export const toDateString = (value: string | undefined): string => {
   return formatDate(value, "dd.MM.yyyy");
 };
 
+// Format a date-time string (ISO) to a local date (and, optionally, time)
+// string, or "-" if absent. To be used in all places needing to display a
+// date-time value (e.g., EDS-ra DateField).
+export const toDateTimeString = (
+  value: string | undefined | null,
+  { showTime = true }: { showTime?: boolean } = {},
+): string => {
+  if (!value) return "-";
+  return new Date(value).toLocaleString(
+    "no-NO",
+    showTime
+      ? { dateStyle: "medium", timeStyle: "short", hour12: false }
+      : { dateStyle: "medium" },
+  );
+};
+
 // Find the currently valid record from a list of time-ranged records
 export const findCurrentlyValidRecord = <
   T extends { valid_from?: string; valid_to?: string },

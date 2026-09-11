@@ -218,6 +218,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             prequalified_at=datetime.datetime.fromisoformat(
                 "2024-01-01T00:00:00+01:00"
             ),
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))

@@ -124,6 +124,7 @@ CREATE TABLE api.service_providing_group (
     bidding_zone text NOT NULL,
     status text NOT NULL,
     additional_information text NULL,
+    created_at timestamp with time zone NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -135,6 +136,7 @@ CREATE TABLE api.service_providing_group_history (
     bidding_zone text NOT NULL,
     status text NOT NULL,
     additional_information text NULL,
+    created_at timestamp with time zone NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -577,6 +579,8 @@ CREATE TABLE api.service_providing_group_product_application (
     verified_at timestamp with time zone NULL,
     ramping_capability text NULL,
     ramping_description text NULL,
+    created_at timestamp with time zone NOT NULL,
+    complete_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -594,6 +598,8 @@ CREATE TABLE api.service_providing_group_product_application_history (
     verified_at timestamp with time zone NULL,
     ramping_capability text NULL,
     ramping_description text NULL,
+    created_at timestamp with time zone NOT NULL,
+    complete_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

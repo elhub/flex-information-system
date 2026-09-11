@@ -43,6 +43,11 @@ public data class ServiceProvidingGroupHistoryResponse(
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
   /**
+   * When the service providing group was first created.
+   */
+  @SerialName("created_at")
+  public val createdAt: Instant? = null,
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   @SerialName("recorded_at")

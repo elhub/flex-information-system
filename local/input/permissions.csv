@@ -93,6 +93,7 @@ service_providing_group;status;api;;R;R;R;RCU;R;R;RCU;R;;;;
 service_providing_group;additional_information;api;;R;R;R;RCU;R;R;RCU;R;;;;
 service_providing_group;recorded_at;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group;recorded_by;api;;R;R;R;R;R;R;R;R;;;;
+service_providing_group;created_at;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group_summary;;api;;;;;;;;;;;;;
 service_providing_group_summary;id;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group_summary;service_providing_group_id;api;;R;R;R;R;R;R;R;R;;;;
@@ -278,6 +279,8 @@ service_providing_group_product_application;ramping_capability;api;;R;R;R;RU;R;R
 service_providing_group_product_application;ramping_description;api;;R;R;R;RU;R;R;RCU;R;;;;
 service_providing_group_product_application;recorded_at;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group_product_application;recorded_by;api;;R;R;R;R;R;R;R;R;;;;
+service_providing_group_product_application;created_at;api;;R;R;R;R;R;R;R;R;;;;
+service_providing_group_product_application;complete_at;api;;R;R;R;RU;R;RU;R;R;;;;
 service_providing_group_product_application_comment;;api;;;;;;;;;;;;R;
 service_providing_group_product_application_comment;id;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group_product_application_comment;service_providing_group_product_application_id;api;;R;R;R;RC;R;RC;RC;R;;;;

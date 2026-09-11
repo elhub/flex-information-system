@@ -1212,6 +1212,10 @@ export type ServiceProvidingGroup = {
    */
   additional_information?: string;
   /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -2964,6 +2968,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -3008,6 +3016,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -3056,6 +3068,14 @@ export type ServiceProvidingGroupProductApplication = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3589,6 +3609,10 @@ export type ServiceProvidingGroupHistory = {
    * Free text field for extra information about the service providing group if needed.
    */
   additional_information?: string;
+  /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4314,6 +4338,14 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -5491,6 +5523,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   ramping_description?: string;
   /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
@@ -6281,6 +6317,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * Reference to the resource that was updated.
    */

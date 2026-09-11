@@ -168,7 +168,7 @@ export const SystemOperatorProductTypesInput = ({
       }
       previousSystemOperatorID.current = systemOperatorID;
     }
-  }, [systemOperatorID, getValues, setValue]);
+  }, [systemOperatorID, getValues, setValue, source]);
 
   return (
     <ProductTypeArrayInput

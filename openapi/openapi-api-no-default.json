@@ -2480,6 +2480,13 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "created_at": {
+                        "description": "When the service providing group was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -2612,6 +2619,7 @@
                     "service_provider_id",
                     "bidding_zone",
                     "status",
+                    "created_at",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -6123,6 +6131,13 @@
                         "type": "string",
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -6215,6 +6230,13 @@
                         "type": "string",
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 },
                 "required": [
@@ -6322,6 +6344,20 @@
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
+                    "created_at": {
+                        "description": "When the application was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -6399,6 +6435,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "created_at",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -7396,6 +7433,13 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "created_at": {
+                        "description": "When the service providing group was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -7437,6 +7481,7 @@
                     "service_provider_id",
                     "bidding_zone",
                     "status",
+                    "created_at",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_id"
@@ -8797,6 +8842,20 @@
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
+                    "created_at": {
+                        "description": "When the application was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -8840,6 +8899,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "created_at",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"

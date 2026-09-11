@@ -16,6 +16,7 @@ import {
   ResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 import { useTranslateEnum } from "../../../intl/intl";
+import { toDateTimeString } from "../../../util";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -148,13 +149,23 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
 
           <LabelValue
             size="large"
+            label="Created at"
+            value={toDateTimeString(spgpa.created_at)}
+          />
+          <LabelValue
+            size="large"
             label="Prequalified at"
-            value={spgpa.prequalified_at}
+            value={toDateTimeString(spgpa.prequalified_at)}
           />
           <LabelValue
             size="large"
             label="Verified at"
-            value={spgpa.verified_at}
+            value={toDateTimeString(spgpa.verified_at)}
+          />
+          <LabelValue
+            size="large"
+            label="Complete at"
+            value={toDateTimeString(spgpa.complete_at)}
           />
 
           {spgpa.additional_information && (

@@ -50,6 +50,8 @@ change from `requested` will trigger this check as well.
 | <a name="field-verified_at" href="#field-verified_at">verified_at</a>                                                    | When the product application was last verified.                                                                                   | date-time                                                                                                                                |                                                                   |
 | <a name="field-ramping_capability" href="#field-ramping_capability">ramping_capability</a>                               | Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. | text<br/>One of: `always`, `partial`, `never`                                                                                            |                                                                   |
 | <a name="field-ramping_description" href="#field-ramping_description">ramping_description</a>                            | Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).                          | text                                                                                                                                     |                                                                   |
+| <a name="field-created_at" href="#field-created_at">created_at</a>                                                       | When the application was first created.                                                                                           | date-time<br/>Read only                                                                                                                  |                                                                   |
+| <a name="field-complete_at" href="#field-complete_at">complete_at</a>                                                    | When the application was last marked complete by the procuring system operator.                                                   | date-time                                                                                                                                |                                                                   |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                                    | When the resource was recorded (created or updated) in the system.                                                                | date-time<br/>Read only                                                                                                                  |                                                                   |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                                    | The identity that recorded the resource.                                                                                          | bigint<br/>Read only                                                                                                                     |                                                                   |
 
@@ -67,6 +69,7 @@ change from `requested` will trigger this check as well.
 | SPGPA-VAL008        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_description` must be set                              | DONE   |
 | SPGPA-VAL009        | `product_type_ids` must not be empty.                                                                                            | DONE   |
 | SPGPA-VAL010        | Product types can be applied for only once per SPG and system operator.                                                          | DONE   |
+| SPGPA-VAL011        | When `status` is different from `requested` or `rejected`, then `complete_at` must be set in the resource or by the request.     | DONE   |
 
 ## Notifications
 
@@ -154,3 +157,5 @@ For party type abbreviations, check
 | ramping_description          |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | recorded_at                  |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by                  |      | R   | R  | R  | R    | R  | R   | R  |     |
+| created_at                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| complete_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |

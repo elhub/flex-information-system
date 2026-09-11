@@ -108,7 +108,7 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
 
   const selectableFilteredCUs = useMemo(
     () => filteredCUs.filter(isCuSelectable),
-    [filteredCUs, effectiveCheckedIds],
+    [filteredCUs, effectiveCheckedIds, isCuSelectable],
   );
 
   const allFilteredSelected =

@@ -97,7 +97,7 @@ export const DraftAutosaveWatcher = ({
       unsubscribe();
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
-  }, [watch, selectedSpgId, draftId]);
+  }, [watch, selectedSpgId, draftId, notify]);
 
   return null;
 };

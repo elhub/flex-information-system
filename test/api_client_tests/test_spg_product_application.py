@@ -402,6 +402,7 @@ def test_spgpa_fiso_sp_so(data):
             prequalified_at=datetime.datetime.fromisoformat(
                 "2020-01-01T00:00:00+01:00"
             ),
+            complete_at=datetime.datetime.fromisoformat("2020-01-01T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -672,6 +673,49 @@ def test_spgpa_product_type_ids_not_empty(data):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+
+# SPGPA-VAL011
+def test_spgpa_val011_complete_at_required(data):
+    (sts, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    so_id = so_ids[0]
+
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert spgpa.complete_at is None
+
+    # trying to start prequalification without setting complete_at must fail
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # setting complete_at together with the status change is fine
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert u.complete_at is not None
 
 
 # SPGPA-VAL010

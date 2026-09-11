@@ -353,6 +353,7 @@ export type PermissionTarget =
   | "service_providing_group"
   | "service_providing_group.additional_information"
   | "service_providing_group.bidding_zone"
+  | "service_providing_group.created_at"
   | "service_providing_group.id"
   | "service_providing_group.name"
   | "service_providing_group.recorded_at"
@@ -440,6 +441,7 @@ export type PermissionTarget =
   | "service_providing_group_history"
   | "service_providing_group_history.additional_information"
   | "service_providing_group_history.bidding_zone"
+  | "service_providing_group_history.created_at"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
   | "service_providing_group_history.recorded_at"
@@ -474,6 +476,8 @@ export type PermissionTarget =
   | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application"
   | "service_providing_group_product_application.additional_information"
+  | "service_providing_group_product_application.complete_at"
+  | "service_providing_group_product_application.created_at"
   | "service_providing_group_product_application.id"
   | "service_providing_group_product_application.maximum_active_power_down"
   | "service_providing_group_product_application.maximum_active_power_up"
@@ -520,6 +524,8 @@ export type PermissionTarget =
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history"
   | "service_providing_group_product_application_history.additional_information"
+  | "service_providing_group_product_application_history.complete_at"
+  | "service_providing_group_product_application_history.created_at"
   | "service_providing_group_product_application_history.id"
   | "service_providing_group_product_application_history.maximum_active_power_down"
   | "service_providing_group_product_application_history.maximum_active_power_up"
@@ -1955,6 +1961,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -2345,6 +2355,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -2482,6 +2496,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -2689,6 +2711,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -4455,6 +4485,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -4845,6 +4879,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -4982,6 +5020,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -5189,6 +5235,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -6955,6 +7009,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -7345,6 +7403,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -7482,6 +7544,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -7689,6 +7759,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -10007,6 +10085,10 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -10541,6 +10623,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -10720,6 +10806,18 @@ const rawPermissions: Record<
       target:
         "service_providing_group_product_application.additional_information",
       operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
+      operation: "read",
     },
     {
       target: "service_providing_group_product_application.id",
@@ -11030,6 +11128,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -13063,6 +13169,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -13453,6 +13563,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -13590,6 +13704,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -13797,6 +13919,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -15879,6 +16009,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -16371,6 +16505,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -16508,6 +16646,18 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -16764,6 +16914,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -18952,6 +19110,10 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -19426,6 +19588,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -19612,8 +19778,16 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application",
       operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
+      operation: "read",
     },
     {
       target: "service_providing_group_product_application.id",
@@ -19952,6 +20126,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {
@@ -21835,6 +22017,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -22225,6 +22411,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.created_at",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.id",
       operation: "read",
     },
@@ -22362,6 +22552,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.created_at",
       operation: "read",
     },
     {
@@ -22569,6 +22767,14 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.complete_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.created_at",
       operation: "read",
     },
     {

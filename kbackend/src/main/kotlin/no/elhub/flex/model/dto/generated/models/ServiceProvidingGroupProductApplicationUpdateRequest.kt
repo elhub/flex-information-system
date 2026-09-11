@@ -66,4 +66,9 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
    */
   @SerialName("ramping_description")
   public val rampingDescription: String? = null,
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  @SerialName("complete_at")
+  public val completeAt: Instant? = null,
 )

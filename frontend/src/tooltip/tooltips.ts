@@ -182,6 +182,8 @@ export const tooltips = {
   "service_providing_group.status": "The status of the group.",
   "service_providing_group.additional_information":
     "Free text field for extra information about the service providing group if needed.",
+  "service_providing_group.created_at":
+    "When the service providing group was first created.",
   "service_providing_group.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group.recorded_by":
@@ -196,6 +198,8 @@ export const tooltips = {
   "service_providing_group_history.status": "The status of the group.",
   "service_providing_group_history.additional_information":
     "Free text field for extra information about the service providing group if needed.",
+  "service_providing_group_history.created_at":
+    "When the service providing group was first created.",
   "service_providing_group_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_history.recorded_by":
@@ -889,6 +893,10 @@ export const tooltips = {
     "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+  "service_providing_group_product_application.created_at":
+    "When the application was first created.",
+  "service_providing_group_product_application.complete_at":
+    "When the application was last marked complete by the procuring system operator.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -917,6 +925,10 @@ export const tooltips = {
     "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application_history.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+  "service_providing_group_product_application_history.created_at":
+    "When the application was first created.",
+  "service_providing_group_product_application_history.complete_at":
+    "When the application was last marked complete by the procuring system operator.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

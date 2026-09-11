@@ -6,6 +6,7 @@ import { ServiceProvidingGroup } from "../../generated-client";
 import { IconPencil } from "@elhub/ds-icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
+import { toDateTimeString } from "../../util";
 
 export const ServiceProvidingGroupShowSummary = ({
   spg,
@@ -48,6 +49,10 @@ export const ServiceProvidingGroupShowSummary = ({
             enumKey="service_providing_group.bidding_zone"
           />
         </RecordContextProvider>
+        <LabelValue
+          label="Created at"
+          value={toDateTimeString(spg.created_at)}
+        />
         {spg.additional_information && (
           <LabelValue
             label="Additional information"
