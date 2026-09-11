@@ -14,7 +14,7 @@ import {
 } from "../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
-import { cn, toDateString } from "../../util";
+import { cn, toDateTimeString } from "../../util";
 
 type Props = {
   spgId: number;
@@ -33,7 +33,7 @@ const rowClassName = (status: SpgChangeRow["status"]) => {
     case "changed":
       return "bg-semantic-background-information";
     default:
-      return undefined;
+      return "bg-white";
   }
 };
 
@@ -160,50 +160,49 @@ export const ServiceProvidingGroupShowChangesTab = ({
                 {translate("text.spg_changes_column_map")}
               </Table.ColumnHeader>
               <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_valid_from")}
+                {translate("text.spg_changes_column_first_change")}
               </Table.ColumnHeader>
               <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_valid_to")}
+                {translate("text.spg_changes_column_last_change")}
               </Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {visibleRows.map((row) => (
-              <Table.Row key={row.id} className={cn(rowClassName(row.status))}>
-                <Table.DataCell>
-                  <StatusMarker status={row.status} />
-                </Table.DataCell>
-                <Table.DataCell>{row.id}</Table.DataCell>
-                <Table.DataCell>
-                  <DiffText
-                    oldValue={row.oldName}
-                    newValue={row.newName}
-                    status={row.status}
-                  />
-                </Table.DataCell>
-                <Table.DataCell>
-                  <DiffText
-                    oldValue={formatPower(row.oldMaximumActivePower)}
-                    newValue={formatPower(row.newMaximumActivePower)}
-                    status={row.status}
-                  />
-                </Table.DataCell>
-                <Table.DataCell>
-                  <DiffText
-                    oldValue={toDateString(row.oldValidFrom)}
-                    newValue={toDateString(row.newValidFrom)}
-                    status={row.status}
-                  />
-                </Table.DataCell>
-                <Table.DataCell>
-                  <DiffText
-                    oldValue={toDateString(row.oldValidTo)}
-                    newValue={toDateString(row.newValidTo)}
-                    status={row.status}
-                  />
-                </Table.DataCell>
-              </Table.Row>
-            ))}
+            {visibleRows.map((row) => {
+              const oldCu = row.old?.controllable_unit_history?.[0];
+              const newCu = row.new?.controllable_unit_history?.[0];
+              return (
+                <Table.Row
+                  key={row.id}
+                  className={cn(rowClassName(row.status))}
+                >
+                  <Table.DataCell>
+                    <StatusMarker status={row.status} />
+                  </Table.DataCell>
+                  <Table.DataCell>{row.id}</Table.DataCell>
+                  <Table.DataCell>
+                    <DiffText
+                      oldValue={oldCu?.name}
+                      newValue={newCu?.name}
+                      status={row.status}
+                    />
+                  </Table.DataCell>
+                  <Table.DataCell>
+                    <DiffText
+                      oldValue={formatPower(oldCu?.maximum_active_power)}
+                      newValue={formatPower(newCu?.maximum_active_power)}
+                      status={row.status}
+                    />
+                  </Table.DataCell>
+                  <Table.DataCell>
+                    {toDateTimeString(row.firstChange)}
+                  </Table.DataCell>
+                  <Table.DataCell>
+                    {toDateTimeString(row.lastChange)}
+                  </Table.DataCell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table>
       )}
