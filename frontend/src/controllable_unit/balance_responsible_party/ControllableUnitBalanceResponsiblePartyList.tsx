@@ -47,11 +47,16 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
         sort={{ field: "valid_from", order: "ASC" }}
         disableSyncWithLocation
       >
-        <Datagrid>
+        <Datagrid
+          rowClick={(record) =>
+            `/party/${record.balance_responsible_party_id}/show`
+          }
+        >
           <ReferenceField
             source="balance_responsible_party_id"
             reference="party"
             label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
+            hideLabel={true}
           >
             <TextField source="name" />
           </ReferenceField>
@@ -59,16 +64,19 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
             source="energy_direction"
             enumKey="accounting_point_balance_responsible_party.energy_direction"
             label="field.accounting_point_balance_responsible_party.energy_direction"
+            hideLabel={true}
           />
           <DateField
             source="valid_from"
             showTime
             label="field.accounting_point_balance_responsible_party.valid_from"
+            hideLabel={true}
           />
           <DateField
             source="valid_to"
             showTime
             label="field.accounting_point_balance_responsible_party.valid_to"
+            hideLabel={true}
           />
         </Datagrid>
       </List>

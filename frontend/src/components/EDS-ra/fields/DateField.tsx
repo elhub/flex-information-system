@@ -7,6 +7,7 @@ import { toDateTimeString } from "../../../util";
 type DateFieldProps = BaseFieldProps & {
   showTime?: boolean;
   emptyText?: ReactNode;
+  hideLabel?: boolean;
 };
 
 export const DateField = ({
@@ -14,6 +15,7 @@ export const DateField = ({
   showTime,
   emptyText,
   label,
+  hideLabel,
   tooltip,
   textSize = "small",
 }: DateFieldProps) => {
@@ -30,7 +32,7 @@ export const DateField = ({
   return (
     <BaseField
       source={source}
-      label={label}
+      label={hideLabel ? false : label}
       tooltip={tooltip}
       textSize={textSize}
     >
