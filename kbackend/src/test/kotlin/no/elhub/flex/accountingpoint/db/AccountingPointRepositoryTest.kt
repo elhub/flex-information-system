@@ -722,12 +722,7 @@ class AccountingPointRepositoryTest : FunSpec({
                 )
             }.shouldBeRight()
 
-            // when — incoming data replaces both periods with a single one whose start falls
-            // strictly between the two existing start times, so neither old row matches by
-            // start time and the new row's range overlaps both old rows. This reproduces the
-            // scenario that could transiently violate
-            // accounting_point_energy_supplier_valid_time_overlap if stale rows were not fully
-            // deleted before the new row is inserted.
+            // when
             with(internalDataPrincipal) {
                 repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, newStart, null)),
