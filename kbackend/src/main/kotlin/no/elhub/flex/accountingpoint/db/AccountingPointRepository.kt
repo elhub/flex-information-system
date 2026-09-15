@@ -325,6 +325,29 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         resolveOrCreateEndUserParty(conn, entityId, businessId)
                     }
 
+                val params = mapOf(
+                    "accountingPointId" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }),
+                    "endUserId" to conn.createBigintArray(accountingPointEndUsers.map { partyIdByBusinessId.getValue(it.endUserBusinessId) }),
+                    "validFrom" to conn.createTimestampArray(accountingPointEndUsers.map { it.validFrom }),
+                    "validTo" to conn.createNullableTimestampArray(accountingPointEndUsers.map { it.validTo }),
+                    "accountingPointIds" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }.distinct()),
+                )
+
+                conn.prepareNamed(
+                    """
+                    DELETE FROM flex.accounting_point_end_user AS apeu
+                    WHERE apeu.accounting_point_id = ANY(:accountingPointIds::bigint[])
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM unnest(:accountingPointId::bigint[], :validFrom::timestamptz[])
+                            AS src(accounting_point_id, valid_from)
+                        WHERE src.accounting_point_id = apeu.accounting_point_id
+                        AND src.valid_from = lower(apeu.valid_time_range)
+                    )
+                    """,
+                    params,
+                ).use { stmt -> stmt.execute() }
+
                 conn.prepareNamed(
                     """
                     MERGE INTO flex.accounting_point_end_user AS apeu
@@ -348,17 +371,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     WHEN NOT MATCHED BY TARGET
                         THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
                         VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                    WHEN NOT MATCHED BY SOURCE
-                        AND apeu.accounting_point_id = ANY(:accountingPointIds::bigint[])
-                        THEN DELETE
                     """,
-                    mapOf(
-                        "accountingPointId" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }),
-                        "endUserId" to conn.createBigintArray(accountingPointEndUsers.map { partyIdByBusinessId.getValue(it.endUserBusinessId) }),
-                        "validFrom" to conn.createTimestampArray(accountingPointEndUsers.map { it.validFrom }),
-                        "validTo" to conn.createNullableTimestampArray(accountingPointEndUsers.map { it.validTo }),
-                        "accountingPointIds" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }.distinct()),
-                    ),
+                    params,
                 ).use { stmt -> stmt.execute() }
                 Unit
             }.mapLeft { e ->
@@ -375,6 +389,29 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             Either.catch {
                 val glns = accountingPointEnergySuppliers.map { it.energySupplierBusinessId }.distinct()
                 val partyIdByBusinessId = conn.fetchEnergySupplierPartyIds(glns)
+
+                val params = mapOf(
+                    "accountingPointId" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }),
+                    "energySupplierId" to conn.createBigintArray(accountingPointEnergySuppliers.map { partyIdByBusinessId.getValue(it.energySupplierBusinessId) }),
+                    "validFrom" to conn.createTimestampArray(accountingPointEnergySuppliers.map { it.validFrom }),
+                    "validTo" to conn.createNullableTimestampArray(accountingPointEnergySuppliers.map { it.validTo }),
+                    "accountingPointIds" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }.distinct()),
+                )
+
+                conn.prepareNamed(
+                    """
+                    DELETE FROM flex.accounting_point_energy_supplier AS apes
+                    WHERE apes.accounting_point_id = ANY(:accountingPointIds::bigint[])
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM unnest(:accountingPointId::bigint[], :validFrom::timestamptz[])
+                            AS src(accounting_point_id, valid_from)
+                        WHERE src.accounting_point_id = apes.accounting_point_id
+                        AND src.valid_from = lower(apes.valid_time_range)
+                    )
+                    """,
+                    params,
+                ).use { stmt -> stmt.execute() }
 
                 conn.prepareNamed(
                     """
@@ -399,17 +436,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     WHEN NOT MATCHED BY TARGET
                         THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
                         VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                    WHEN NOT MATCHED BY SOURCE
-                        AND apes.accounting_point_id = ANY(:accountingPointIds::bigint[])
-                        THEN DELETE
                     """,
-                    mapOf(
-                        "accountingPointId" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }),
-                        "energySupplierId" to conn.createBigintArray(accountingPointEnergySuppliers.map { partyIdByBusinessId.getValue(it.energySupplierBusinessId) }),
-                        "validFrom" to conn.createTimestampArray(accountingPointEnergySuppliers.map { it.validFrom }),
-                        "validTo" to conn.createNullableTimestampArray(accountingPointEnergySuppliers.map { it.validTo }),
-                        "accountingPointIds" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }.distinct()),
-                    ),
+                    params,
                 ).use { stmt -> stmt.execute() }
                 Unit
             }.mapLeft { e ->

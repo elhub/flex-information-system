@@ -423,6 +423,37 @@ class AccountingPointRepositoryTest : FunSpec({
             rows[0].validFrom shouldBe newStart
         }
 
+        test("replaces two adjacent periods with a single overlapping period without violating the exclusion constraint") {
+            // given — two adjacent existing periods: [t1, t2) and [t2, null)
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val pid = uniquePid()
+            val t1 = Instant.parse("2023-12-31T23:00:00Z")
+            val t2 = Instant.parse("2024-05-31T22:00:00Z")
+            val newStart = Instant.parse("2024-02-29T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(
+                        AccountingPointEndUser(apId, pid, t1, t2),
+                        AccountingPointEndUser(apId, pid, t2, null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEndUserRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe newStart
+            rows[0].validTo shouldBe null
+        }
+
         test("does not delete rows for accounting points absent from the input when deletion is triggered") {
             // given
             val apId = insertAccountingPoint(uniqueGsrn())
@@ -671,6 +702,38 @@ class AccountingPointRepositoryTest : FunSpec({
             val rows = queryEnergySupplierRows(apId)
             rows.size shouldBe 1
             rows[0].validFrom shouldBe newStart
+        }
+
+        test("replaces two adjacent periods with a single overlapping period without violating the exclusion constraint") {
+            // given — two adjacent existing periods: [t1, t2) and [t2, null)
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val gln = uniqueGln()
+            insertEnergySupplierParty(gln)
+            val t1 = Instant.parse("2023-12-31T23:00:00Z")
+            val t2 = Instant.parse("2024-05-31T22:00:00Z")
+            val newStart = Instant.parse("2024-02-29T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEnergySupplier(
+                    listOf(
+                        AccountingPointEnergySupplier(apId, gln, t1, t2),
+                        AccountingPointEnergySupplier(apId, gln, t2, null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows2 = queryEnergySupplierRows(apId)
+            rows2.size shouldBe 1
+            rows2[0].validFrom shouldBe newStart
+            rows2[0].validTo shouldBe null
         }
 
         test("does not delete rows for accounting points absent from the input when deletion is triggered") {
