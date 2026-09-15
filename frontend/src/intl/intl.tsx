@@ -80,7 +80,11 @@ export const useI18nProvider = () => {
     },
 
     getEnumValues: (enumKey: string) =>
-      Object.keys(enumLabels).filter((key) => key.startsWith(enumKey)),
+      Object.keys(enumLabels).filter((key) => {
+        if (!key.startsWith(`${enumKey}.`)) return false;
+        // exclude nested metadata keys such as "<enumKey>.<value>.description"
+        return !key.slice(enumKey.length + 1).includes(".");
+      }),
   };
 };
 
