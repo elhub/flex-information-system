@@ -168,7 +168,8 @@ $$;
 REVOKE EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) FROM public;
 
 -- changeset flex:auth-entity-identity-of-external-id-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common;
+GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common,
+flex_entity;
 
 -- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.assume_party(in_party_id bigint)

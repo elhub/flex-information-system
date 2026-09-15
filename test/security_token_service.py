@@ -56,19 +56,23 @@ def _find_party_id(entity_client, party_name) -> int:
     return cast(int, party.id)
 
 
-class TestEntity(Enum):
+class TestEntityClient(Enum):
     TEST = "Test"
     COMMON = "Common"
     TEST_ORG = "TestAS"
+    # entity_client restricted to the "Test SP" party (see justfile/test_data.sql)
+    TEST_SP = "TestSP"
 
     # name prefix used to create the parties in the DB
     def party_name_prefix(self):
         match self:
-            case TestEntity.TEST:
+            case TestEntityClient.TEST:
                 return "Test"
-            case TestEntity.COMMON:
+            case TestEntityClient.COMMON:
                 return "Common"
-            case TestEntity.TEST_ORG:
+            case TestEntityClient.TEST_ORG:
+                return "Test"
+            case TestEntityClient.TEST_SP:
                 return "Test"
 
     # make pytest ignore this class
@@ -77,12 +81,14 @@ class TestEntity(Enum):
 
     def client_id(self):
         match self:
-            case TestEntity.TEST:
+            case TestEntityClient.TEST:
                 return "3733e21b-5def-400d-8133-06bcda02465e"
-            case TestEntity.COMMON:
+            case TestEntityClient.COMMON:
                 return "df8bee5f-6e60-4a21-8927-e5bcdd4ce768"
-            case TestEntity.TEST_ORG:
+            case TestEntityClient.TEST_ORG:
                 return "eed86ad4-9d5c-4d83-a93a-e7675e13a977"
+            case TestEntityClient.TEST_SP:
+                return "85f46ccc-1b07-4591-b830-d2cf4e206e5d"
 
 
 """
@@ -165,7 +171,7 @@ class SecurityTokenService:
             return userinfo
 
     # network call for authentication
-    def _get_client(self, entity: TestEntity, party_name=None):
+    def _get_client(self, entity: TestEntityClient, party_name=None):
         entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
         entity_client = AuthenticatedClient(
             base_url=self.api_url,
@@ -189,7 +195,7 @@ class SecurityTokenService:
         )
 
     # memoised method for authentication
-    _clients: dict[tuple[TestEntity, str | None], AuthenticatedClient] = {}
+    _clients: dict[tuple[TestEntityClient, str | None], AuthenticatedClient] = {}
 
     def get_client(self, entity=None, party_name=None, reset=False):
         """
@@ -227,7 +233,7 @@ class SecurityTokenService:
 
     def fresh_client(self, entity, party_name):
         client_fiso = cast(
-            AuthenticatedClient, self.get_client(TestEntity.TEST, "FISO")
+            AuthenticatedClient, self.get_client(TestEntityClient.TEST, "FISO")
         )
 
         party_type = self._party_types[party_name]

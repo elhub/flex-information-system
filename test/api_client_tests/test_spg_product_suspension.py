@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
@@ -84,12 +84,14 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # chain of dependency to be able to create SPG product suspensions:
@@ -239,10 +241,10 @@ def data():
 
     # we need 2 different SOs
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_other_so = sts.fresh_client(TestEntity.COMMON, "SO")
+    client_other_so = sts.fresh_client(TestEntityClient.COMMON, "SO")
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     first_pt_id = 4
@@ -293,7 +295,7 @@ def check_history(client, spgps_id):
 def test_spgps_fiso(data):
     (sts, spg_id, (_, so_id), _, _, (pt_id, _, unqualified_pt_id)) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # RLS: SPGPS-VAL001
     # cannot suspend an unqualified product type
@@ -356,7 +358,7 @@ def test_spgps_fiso(data):
 def test_spgps_sp(data):
     (sts, spg_id, (_, so_id), _, (client_sp, _), (pt_id, _, _)) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     spgps = create_service_providing_group_product_suspension.sync(
         client=client_fiso,

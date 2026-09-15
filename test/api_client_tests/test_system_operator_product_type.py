@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     SystemOperatorProductTypeStatus,
@@ -34,14 +34,14 @@ def sts():
 
 
 def test_sopt_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     all_sopt = list_system_operator_product_type.sync(client=client_fiso)
     assert isinstance(all_sopt, list)
     nb_total_sopt = len(all_sopt)
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # endpoint: GET /system_operator_product_type
         sopt_visible = list_system_operator_product_type.sync(
@@ -83,7 +83,7 @@ def test_sopt_common(sts):
 # RLS: SOPT-FISO001
 # FISO can read, create and update
 def test_sopt_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     pts = list_product_type.sync(client=client_fiso)
     assert isinstance(pts, list)
@@ -98,7 +98,7 @@ def test_sopt_fiso(sts):
     assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     so_id = sts.get_userinfo(
-        sts.fresh_client(TestEntity.TEST, "SO"),
+        sts.fresh_client(TestEntityClient.TEST, "SO"),
     )["party_id"]
 
     # endpoint: POST /system_operator_product_type
@@ -125,10 +125,10 @@ def test_sopt_fiso(sts):
 # RLS: SOPT-SO001
 # SO can create and update when they are SO
 def test_sopt_so(sts):
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_other_so = sts.fresh_client(TestEntity.COMMON, "SO")
+    client_other_so = sts.fresh_client(TestEntityClient.COMMON, "SO")
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     pts = list_product_type.sync(client=client_so)

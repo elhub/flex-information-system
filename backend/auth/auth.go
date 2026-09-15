@@ -1259,6 +1259,40 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	_, clientID, _, err := models.GetEntityIdentityByExternalID(ctx, tx, entityToken.ExternalID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not get entity identity in token exchange handler",
+			err,
+		))
+
+		return
+	}
+
+	if clientID != nil {
+		entityClient, err := models.GetEntityClientByClientID(ctx, tx, *clientID)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+				http.StatusInternalServerError,
+				"could not get entity client in token exchange handler",
+				err,
+			))
+
+			return
+		}
+
+		// a client restricted to a specific party can only assume that party
+		if entityClient.PartyID != nil && *entityClient.PartyID != assumePartyID {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidClient,
+				ErrorDescription: "client is not allowed to assume the requested party",
+			})
+
+			return
+		}
+	}
+
 	eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{

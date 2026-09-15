@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import AccountingPointMeteringGridAreaResponse
 from flex.api.accounting_point_metering_grid_area import (
@@ -17,7 +17,7 @@ def sts():
 
 # RLS: APMGA-FISO001
 def test_accounting_point_metering_grid_area_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /accounting_point_metering_grid_area
     apmga = list_accounting_point_metering_grid_area.sync(
@@ -34,7 +34,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         apmga = list_accounting_point_metering_grid_area.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(apmga, list)
         assert len(apmga) == 0
