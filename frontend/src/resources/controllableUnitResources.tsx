@@ -22,6 +22,7 @@ import { TechnicalResourceHistoryList } from "../controllable_unit/technical_res
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import ControllableUnitCreate from "../controllable_unit/ControllableUnitCreate";
+import { ControllableUnitSpgMembershipHistoryList } from "../controllable_unit/show/ControllableUnitSpgMembershipHistoryList";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -218,6 +219,11 @@ export const createControllableUnitResources = (permissions: Permissions) => {
               <ControllableUnitBalanceResponsiblePartyList />
             </ResourceContextProvider>
           }
+        />
+        {/* controllable unit service providing group membership history */}
+        <Route
+          path=":controllable_unit_id/membership_history"
+          element={<ControllableUnitSpgMembershipHistoryList />}
         />
       </Resource>,
     );
