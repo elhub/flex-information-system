@@ -145,13 +145,16 @@ func TestTimeRangeQueryRewrite(t *testing.T) {
 			expectedError: false,
 		},
 		{
-			name: paramName + " replaces pre-existing and-filter",
+			name: paramName + " adds to pre-existing and-filter",
 			input: url.Values{
 				paramName: {"2024-03-10T08:00:00Z"},
 				andKey:    {"(some_old_filter)"},
 			},
 			expected: url.Values{
-				andKey: {"(" + fromCol + ".lte.2024-03-10T08:00:00Z,or(" + toCol + ".gt.2024-03-10T08:00:00Z," + toCol + ".is.null))"},
+				andKey: {
+					"(some_old_filter)",
+					"(" + fromCol + ".lte.2024-03-10T08:00:00Z,or(" + toCol + ".gt.2024-03-10T08:00:00Z," + toCol + ".is.null))",
+				},
 			},
 			expectedError: false,
 		},

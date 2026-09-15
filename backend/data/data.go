@@ -643,7 +643,7 @@ func timeRangeQueryRewrite(query url.Values, paramName, fromCol, toCol string) e
 					return fmt.Errorf("%w: %s", errInvalidTimeRangeParam, paramName)
 				}
 				query.Del(key)
-				query.Set(keyAnd, "("+fromCol+".lte."+value+",or("+toCol+".gt."+value+","+toCol+".is.null))")
+				query.Add(keyAnd, "("+fromCol+".lte."+value+",or("+toCol+".gt."+value+","+toCol+".is.null))")
 			}
 		}
 	}
