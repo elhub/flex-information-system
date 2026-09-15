@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.system_operator_product_type_status import SystemOperatorProductTypeStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.party_history_response import PartyHistoryResponse
+
 
 T = TypeVar("T", bound="SystemOperatorProductTypeHistoryResponse")
 
@@ -29,6 +33,7 @@ class SystemOperatorProductTypeHistoryResponse:
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
+        system_operator_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
     """
 
     id: int
@@ -40,6 +45,7 @@ class SystemOperatorProductTypeHistoryResponse:
     system_operator_product_type_id: int
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
+    system_operator_history: list[PartyHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -71,6 +77,18 @@ class SystemOperatorProductTypeHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
+        system_operator_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.system_operator_history, Unset):
+            system_operator_history = UNSET
+        elif isinstance(self.system_operator_history, list):
+            system_operator_history = []
+            for system_operator_history_type_0_item_data in self.system_operator_history:
+                system_operator_history_type_0_item = system_operator_history_type_0_item_data.to_dict()
+                system_operator_history.append(system_operator_history_type_0_item)
+
+        else:
+            system_operator_history = self.system_operator_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -88,11 +106,15 @@ class SystemOperatorProductTypeHistoryResponse:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
+        if system_operator_history is not UNSET:
+            field_dict["system_operator_history"] = system_operator_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.party_history_response import PartyHistoryResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -134,6 +156,30 @@ class SystemOperatorProductTypeHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
+        def _parse_system_operator_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                system_operator_history_type_0 = []
+                _system_operator_history_type_0 = data
+                for system_operator_history_type_0_item_data in _system_operator_history_type_0:
+                    system_operator_history_type_0_item = PartyHistoryResponse.from_dict(
+                        system_operator_history_type_0_item_data
+                    )
+
+                    system_operator_history_type_0.append(system_operator_history_type_0_item)
+
+                return system_operator_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        system_operator_history = _parse_system_operator_history(d.pop("system_operator_history", UNSET))
+
         system_operator_product_type_history_response = cls(
             id=id,
             system_operator_id=system_operator_id,
@@ -144,6 +190,7 @@ class SystemOperatorProductTypeHistoryResponse:
             system_operator_product_type_id=system_operator_product_type_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
+            system_operator_history=system_operator_history,
         )
 
         system_operator_product_type_history_response.additional_properties = d

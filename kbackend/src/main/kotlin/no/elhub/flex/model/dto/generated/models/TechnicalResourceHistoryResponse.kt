@@ -103,4 +103,9 @@ public data class TechnicalResourceHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded controllable_unit_history
+   */
+  @SerialName("controllable_unit_history")
+  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
 )

@@ -57,4 +57,9 @@ public data class PartyMembershipHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("party_history")
+  public val partyHistory: List<PartyHistoryResponse>? = null,
 )

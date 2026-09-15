@@ -61,4 +61,19 @@ public data class ServiceProviderProductSuspensionHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("procuring_system_operator_history")
+  public val procuringSystemOperatorHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("service_provider_history")
+  public val serviceProviderHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded service_provider_product_suspension_comment_history
+   */
+  @SerialName("comment_history")
+  public val commentHistory: List<ServiceProviderProductSuspensionCommentHistoryResponse>? = null,
 )

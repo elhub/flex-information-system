@@ -114,4 +114,26 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded service_providing_group_history
+   */
+  @SerialName("service_providing_group_history")
+  public val serviceProvidingGroupHistory: List<ServiceProvidingGroupHistoryResponse>? = null,
+  /**
+   * Embedded party_history
+   */
+  @SerialName("procuring_system_operator_history")
+  public val procuringSystemOperatorHistory: List<PartyHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_product_application_attachment_history
+   */
+  @SerialName("attachment_history")
+  public val attachmentHistory:
+      List<ServiceProvidingGroupProductApplicationAttachmentHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_product_application_comment_history
+   */
+  @SerialName("comment_history")
+  public val commentHistory: List<ServiceProvidingGroupProductApplicationCommentHistoryResponse>? =
+      null,
 )
