@@ -103,8 +103,18 @@ const fetchSpgChanges = async (
       status,
       old: oldMembership,
       new: newMembership,
-      firstChange: minDate(oldMembership?.replaced_at, oldCu?.replaced_at),
-      lastChange: maxDate(newMembership?.recorded_at, newCu?.recorded_at),
+      firstChange: minDate(
+        oldMembership?.replaced_at,
+        oldCu?.replaced_at,
+        newMembership?.recorded_at,
+        newCu?.recorded_at,
+      ),
+      lastChange: maxDate(
+        oldMembership?.replaced_at,
+        oldCu?.replaced_at,
+        newMembership?.recorded_at,
+        newCu?.recorded_at,
+      ),
     };
   });
 
