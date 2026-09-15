@@ -168,11 +168,13 @@ BEGIN
             tr.recorded_by,
             lower(tr.record_time_range) AS recorded_at
         INTO l_old
-        FROM flex.technical_resource AS tr;
+        FROM flex.technical_resource AS tr
+        WHERE tr.id = NEW.id;
 
         IF NOT FOUND THEN
-            RAISE sqlstate 'PT401' using
-                    message = 'Unauthorized';
+            RAISE sqlstate 'PT404' using
+                    message = 'Not Found'
+                    ;
             RETURN null;
         END IF;
 
@@ -181,7 +183,6 @@ BEGIN
         END IF;
 
         UPDATE flex.technical_resource SET
-            controllable_unit_id = NEW.controllable_unit_id,
             name = NEW.name,
             technology = NEW.technology,
             maximum_active_power = NEW.maximum_active_power,
