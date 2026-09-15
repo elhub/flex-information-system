@@ -88,10 +88,9 @@ const fetchSpgChanges = async (
       newMembership &&
       oldCu &&
       newCu &&
+      // Only compare the fields that are actually rendered/diffed in the table.
       (oldCu.name !== newCu.name ||
-        oldCu.maximum_active_power !== newCu.maximum_active_power ||
-        oldMembership.valid_from !== newMembership.valid_from ||
-        oldMembership.valid_to !== newMembership.valid_to)
+        oldCu.maximum_active_power !== newCu.maximum_active_power)
     ) {
       status = "changed";
     } else {

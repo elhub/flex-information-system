@@ -37,17 +37,34 @@ const rowClassName = (status: SpgChangeRow["status"]) => {
   }
 };
 
-const StatusMarker = ({ status }: { status: SpgChangeRow["status"] }) => {
-  if (status === "added") {
-    return <IconPlus className="text-semantic-text-success" />;
-  }
-  if (status === "removed") {
-    return <IconMinus className="text-semantic-text-error" />;
-  }
-  if (status === "changed") {
-    return <IconPencil className="text-semantic-text-information" />;
-  }
-  return null;
+const StatusMarker = ({
+  status,
+  label,
+}: {
+  status: SpgChangeRow["status"];
+  label: string;
+}) => {
+  const icon = (() => {
+    if (status === "added") {
+      return <IconPlus className="text-semantic-text-success" aria-hidden />;
+    }
+    if (status === "removed") {
+      return <IconMinus className="text-semantic-text-error" aria-hidden />;
+    }
+    if (status === "changed") {
+      return (
+        <IconPencil className="text-semantic-text-information" aria-hidden />
+      );
+    }
+    return null;
+  })();
+
+  return (
+    <>
+      {icon}
+      <span className="sr-only">{label}</span>
+    </>
+  );
 };
 
 const DiffText = ({
@@ -95,13 +112,28 @@ export const ServiceProvidingGroupShowChangesTab = ({
   const formatPower = (value: number | undefined) =>
     value != null ? formatScaled(value, "W", KILO, powerScale) : undefined;
 
+  const statusLabel = (status: SpgChangeRow["status"]) => {
+    switch (status) {
+      case "added":
+        return translate("text.spg_changes_status_added");
+      case "removed":
+        return translate("text.spg_changes_status_removed");
+      case "changed":
+        return translate("text.spg_changes_status_changed");
+      default:
+        return translate("text.spg_changes_status_unchanged");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1 w-fit">
-        <BodyText size="small">
+        <BodyText size="small" id="spg-changes-since-label">
           {translate("text.spg_changes_since_label")}
         </BodyText>
         <DateTimePicker
+          id="spg-changes-since"
+          ariaLabelledBy="spg-changes-since-label"
           selected={
             asOf ? parseISO(asOf, { in: tz(OSLO_TIMEZONE) }) : undefined
           }
@@ -177,7 +209,10 @@ export const ServiceProvidingGroupShowChangesTab = ({
                   className={cn(rowClassName(row.status))}
                 >
                   <Table.DataCell>
-                    <StatusMarker status={row.status} />
+                    <StatusMarker
+                      status={row.status}
+                      label={statusLabel(row.status)}
+                    />
                   </Table.DataCell>
                   <Table.DataCell>{row.id}</Table.DataCell>
                   <Table.DataCell>

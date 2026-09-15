@@ -68,6 +68,10 @@ export type TextKey =
   | "spg_changes_empty"
   | "spg_changes_error"
   | "spg_changes_show_unchanged"
+  | "spg_changes_status_added"
+  | "spg_changes_status_removed"
+  | "spg_changes_status_changed"
+  | "spg_changes_status_unchanged"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -266,6 +270,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_empty: "No controllable units to compare.",
     spg_changes_error: "Failed to load changes.",
     spg_changes_show_unchanged: "Show unchanged controllable units",
+    spg_changes_status_added: "Added",
+    spg_changes_status_removed: "Removed",
+    spg_changes_status_changed: "Changed",
+    spg_changes_status_unchanged: "Unchanged",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -452,6 +460,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_empty: "Ingen kontrollerbare enheter å sammenligne.",
     spg_changes_error: "Kunne ikke laste endringer.",
     spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
+    spg_changes_status_added: "Lagt til",
+    spg_changes_status_removed: "Fjernet",
+    spg_changes_status_changed: "Endret",
+    spg_changes_status_unchanged: "Uendret",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
