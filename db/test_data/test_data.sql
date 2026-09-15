@@ -61,6 +61,15 @@ BEGIN
     '{manage:data, read:grid, manage:auth, manage:attachment}'
   );
 
+  IF party_type IN ('service_provider', 'system_operator') THEN
+    INSERT INTO flex.entity_client (entity_id, party_id, name, scopes)
+    VALUES (
+      parent_entity_id,
+      party_id,
+      party_name || ' Client',
+      '{manage:data, read:grid, manage:auth, manage:attachment}'
+    );
+  END IF;
 
   RETURN party_id;
 END;
@@ -647,8 +656,8 @@ BEGIN
 
   INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
-  (entity_id_person, 'PC #1', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
-  (entity_id_org, 'Laptop #4', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
+  (entity_id_person, entity_first_name || ' Person Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
+  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
 
   -- end user parties
 
