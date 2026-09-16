@@ -61,6 +61,16 @@ $defs:
         description: The raw string value stored in the database / API.
       x-intl:
         $ref: "#/$defs/intl"
+      description:
+        type: object
+        description: >-
+          Optional translatable description of this enum value (e.g. shown
+          as a tooltip in the UI).
+        required: [x-intl]
+        additionalProperties: false
+        properties:
+          x-intl:
+            $ref: "#/$defs/intl"
 
   schema_fragment:
     description: >-
