@@ -4,6 +4,11 @@ import {
   SubstationRow,
   useSpgPowerPerSubstation,
 } from "./useSpgPowerPerSubstation";
+import {
+  controllableUnitsForSubstation,
+  SpgControllableUnitRow,
+  useSpgControllableUnits,
+} from "./useSpgControllableUnits";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
 import { useTranslate } from "ra-core";
@@ -18,30 +23,72 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
+  const { data: cus } = useSpgControllableUnits(spgId);
   const translate = useTranslate();
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
 
+  const controllableUnitColumns: Column<SpgControllableUnitRow>[] = [
+    {
+      key: "name",
+      header: translate("text.table.header.name"),
+    },
+    {
+      key: "status",
+      header: translate("text.table.header.status"),
+    },
+    {
+      key: "validFrom",
+      header: translate("text.table.header.valid_from"),
+    },
+    {
+      key: "validTo",
+      header: translate("text.table.header.valid_to"),
+    },
+    {
+      key: "maximum_active_power",
+      header: translate("text.table.header.max_active_power"),
+      render: (value) => (
+        <div className="text-right">
+          {formatPower(value as number | undefined)}
+        </div>
+      ),
+    },
+    {
+      key: "rated_power",
+      header: translate("text.table.header.rated_power"),
+      render: (value) => (
+        <div className="text-right">
+          {formatPower(value as number | undefined)}
+        </div>
+      ),
+    },
+    {
+      key: "regulation_direction",
+      header: translate("text.table.header.regulation_direction"),
+    },
+  ];
+
   const columns: Column<SubstationRow>[] = [
     {
       key: "substationName",
-      header: "Substation",
+      header: translate("text.table.header.substation"),
       render: (v, row) =>
         v
           ? String(v)
           : row.substationBusinessId
             ? String(row.substationBusinessId)
-            : "(unassigned)",
+            : translate("text.table.cell.unassigned"),
     },
     {
       key: "substationBusinessId",
-      header: "Business ID",
+      header: translate("text.table.header.business_id"),
       render: (v) => (v ? String(v) : "-"),
     },
     {
       key: "controllableUnitCount",
-      header: "Controllable units",
+      header: translate("text.table.header.controllable_units"),
       render: (v) => <div className="text-right">{String(v)}</div>,
     },
     {
@@ -90,7 +137,19 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
 
   return (
     <SimpleTable
-      size="small"
+      expandPanel={(row: SubstationRow) => {
+        const rows = controllableUnitsForSubstation(
+          cus,
+          row.substationBusinessId,
+        );
+        return (
+          <SimpleTable
+            columns={controllableUnitColumns}
+            data={rows}
+            className="w-full p-0"
+          />
+        );
+      }}
       data={data ?? []}
       columns={columns}
       className="w-full"
