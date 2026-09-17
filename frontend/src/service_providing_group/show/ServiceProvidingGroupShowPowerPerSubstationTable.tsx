@@ -25,9 +25,12 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
-  const [hasExpanded, setHasExpanded] = useState(false);
+  const [expandedSubstationId, setExpandedSubstationId] = useState<
+    string | undefined
+  >(undefined);
   const { data: cus } = useSpgControllableUnits(
-    hasExpanded ? spgId : undefined,
+    expandedSubstationId ? spgId : undefined,
+    expandedSubstationId,
   );
   const translate = useTranslate();
   const t = useTranslateField();
@@ -139,8 +142,10 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
           />
         );
       }}
-      onExpand={(_, isOpen) => {
-        if (isOpen) setHasExpanded(true);
+      onExpand={(row, isOpen) => {
+        if (isOpen && row.substationBusinessId) {
+          setExpandedSubstationId(row.substationBusinessId);
+        }
       }}
       data={data ?? []}
       columns={columns}

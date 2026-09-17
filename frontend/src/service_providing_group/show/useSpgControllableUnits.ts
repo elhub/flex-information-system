@@ -1,8 +1,7 @@
-import { fetchJSON, toDateString } from "../../util";
+import { toDateString, throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
-import { ServiceProvidingGroupMembership } from "../../generated-client";
+import { listServiceProvidingGroupMembership } from "../../generated-client";
 import { SubstationRow } from "./useSpgPowerPerSubstation";
-import { apiURL } from "../../httpConfig";
 
 export type SpgControllableUnitRow = {
   id: number;
@@ -18,24 +17,18 @@ export type SpgControllableUnitRow = {
 
 const fetchSpgControllableUnits = async (
   spgId: number,
-  substationBusinessId?: string,
+  substationBusinessId: string,
 ): Promise<SpgControllableUnitRow[]> => {
-  const queryParams = new URLSearchParams({
+  const query: Record<string, string> = {
     embed: "controllable_unit!(accounting_point!(grid_location!))",
     valid_at: new Date().toISOString(),
     service_providing_group_id: `eq.${spgId}`,
-  });
+    "controllable_unit.accounting_point.grid_location.business_id": `eq.${substationBusinessId}`,
+  };
 
-  if (substationBusinessId) {
-    queryParams.set(
-      "controllable_unit.accounting_point.grid_location.business_id",
-      `eq.${substationBusinessId}`,
-    );
-  }
-
-  const memberships = await fetchJSON<ServiceProvidingGroupMembership>(
-    `${apiURL}/service_providing_group_membership?${queryParams.toString()}`,
-  );
+  const memberships = await listServiceProvidingGroupMembership({
+    query,
+  }).then(throwOnError);
 
   return memberships
     .filter((m) => m.controllable_unit)
@@ -58,12 +51,13 @@ const fetchSpgControllableUnits = async (
 
 export const useSpgControllableUnits = (
   spgId: number | undefined,
-  substationBusinessId?: string,
+  substationBusinessId: string | undefined,
 ) =>
   useQuery({
     queryKey: ["spg_cu", spgId, substationBusinessId],
-    queryFn: () => fetchSpgControllableUnits(spgId ?? 0, substationBusinessId),
-    enabled: !!spgId,
+    queryFn: () =>
+      fetchSpgControllableUnits(spgId ?? 0, substationBusinessId ?? ""),
+    enabled: !!spgId && !!substationBusinessId,
   });
 
 export const controllableUnitsForSubstation = (
