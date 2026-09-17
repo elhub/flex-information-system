@@ -3922,6 +3922,9 @@ nest further embeds inside this relation, using the same syntax recursively.</li
 </tr>
 </tbody>
 </table>
+<p>History resources can be embedded as well. Whenever a resource has a history
+endpoint, every embedding relation it is involved in also exists in a history
+version.</p>
 <h3 id="scope-enforcement">Scope enforcement</h3>
 <p>The proxy checks that the caller's OAuth2 token contains a <code>read:data:&lt;resource&gt;</code>
 scope for <strong>every</strong> embedded resource. If a required scope is missing the

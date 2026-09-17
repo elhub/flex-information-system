@@ -4168,6 +4168,18 @@ change from <code>requested</code> will trigger this check as well.</p>
 <td></td>
 </tr>
 <tr>
+<td><a name="field-created_at" href="#field-created_at">created_at</a></td>
+<td>When the application was first created.</td>
+<td>date-time<br/>Read only</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-complete_at" href="#field-complete_at">complete_at</a></td>
+<td>When the application was last marked complete by the procuring system operator.</td>
+<td>date-time</td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-recorded_at" href="#field-recorded_at">recorded_at</a></td>
 <td>When the resource was recorded (created or updated) in the system.</td>
 <td>date-time<br/>Read only</td>
@@ -4239,6 +4251,11 @@ change from <code>requested</code> will trigger this check as well.</p>
 <tr>
 <td>SPGPA-VAL010</td>
 <td>Product types can be applied for only once per SPG and system operator.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGPA-VAL011</td>
+<td>When <code>status</code> is different from <code>requested</code> or <code>rejected</code>, then <code>complete_at</code> must be set in the resource or by the request.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -4543,6 +4560,30 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>created_at</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>complete_at</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RU</td>
+<td>RU</td>
 <td>R</td>
 <td>R</td>
 <td></td>

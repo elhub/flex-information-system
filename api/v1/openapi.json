@@ -2519,6 +2519,13 @@
             "type": "string",
             "nullable": true
           },
+          "created_at": {
+            "description": "When the service providing group was first created.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-01-08T12:00:00+02"
+          },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
             "format": "date-time",
@@ -2651,6 +2658,7 @@
           "service_provider_id",
           "bidding_zone",
           "status",
+          "created_at",
           "recorded_at",
           "recorded_by"
         ]
@@ -6189,6 +6197,13 @@
             "type": "string",
             "nullable": true,
             "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+          },
+          "complete_at": {
+            "description": "When the application was last marked complete by the procuring system operator.",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "example": "2022-08-08T12:00:00+02"
           }
         }
       },
@@ -6282,6 +6297,13 @@
             "type": "string",
             "nullable": true,
             "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+          },
+          "complete_at": {
+            "description": "When the application was last marked complete by the procuring system operator.",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "example": "2022-08-08T12:00:00+02"
           }
         },
         "required": [
@@ -6390,6 +6412,20 @@
             "nullable": true,
             "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
           },
+          "created_at": {
+            "description": "When the application was first created.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-01-08T12:00:00+02"
+          },
+          "complete_at": {
+            "description": "When the application was last marked complete by the procuring system operator.",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "example": "2022-08-08T12:00:00+02"
+          },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
             "format": "date-time",
@@ -6467,6 +6503,7 @@
           "status",
           "maximum_active_power_up",
           "maximum_active_power_down",
+          "created_at",
           "recorded_at",
           "recorded_by"
         ]
@@ -7165,6 +7202,66 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "suspension_history": {
+            "description": "Embedded controllable_unit_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_provider_history": {
+            "description": "Embedded controllable_unit_service_provider_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_service_provider_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_providing_group_membership_history": {
+            "description": "Embedded service_providing_group_membership_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "technical_resource_history": {
+            "description": "Embedded technical_resource_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/technical_resource_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7240,6 +7337,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "controllable_unit_history": {
+            "description": "Embedded controllable_unit_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "impacted_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded controllable_unit_suspension_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7327,6 +7469,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "controllable_unit_suspension_history": {
+            "description": "Embedded controllable_unit_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7424,6 +7581,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "controllable_unit_history": {
+            "description": "Embedded controllable_unit_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_provider_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "end_user_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7474,6 +7676,13 @@
             "type": "string",
             "nullable": true
           },
+          "created_at": {
+            "description": "When the service providing group was first created.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-01-08T12:00:00+02"
+          },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
             "format": "date-time",
@@ -7507,6 +7716,96 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_provider_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "membership_history": {
+            "description": "Embedded service_providing_group_membership_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "grid_prequalification_history": {
+            "description": "Embedded service_providing_group_grid_prequalification_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "grid_suspension_history": {
+            "description": "Embedded service_providing_group_grid_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "product_application_history": {
+            "description": "Embedded service_providing_group_product_application_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "product_suspension_history": {
+            "description": "Embedded service_providing_group_product_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7515,6 +7814,7 @@
           "service_provider_id",
           "bidding_zone",
           "status",
+          "created_at",
           "recorded_at",
           "recorded_by",
           "service_providing_group_id"
@@ -7588,6 +7888,36 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "controllable_unit_history": {
+            "description": "Embedded controllable_unit_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_providing_group_history": {
+            "description": "Embedded service_providing_group_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7667,6 +7997,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_history": {
+            "description": "Embedded service_providing_group_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "impacted_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_providing_group_grid_prequalification_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7754,6 +8129,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_grid_prequalification_history": {
+            "description": "Embedded service_providing_group_grid_prequalification_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7827,6 +8217,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "impacted_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_providing_group_history": {
+            "description": "Embedded service_providing_group_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_providing_group_grid_suspension_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -7914,6 +8349,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_grid_suspension_history": {
+            "description": "Embedded service_providing_group_grid_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8087,6 +8537,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "party_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8240,6 +8705,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "controllable_unit_history": {
+            "description": "Embedded controllable_unit_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/controllable_unit_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8421,6 +8901,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8513,6 +9008,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_provider_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_provider_product_application_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_provider_product_application_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8601,6 +9141,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_provider_product_application_history": {
+            "description": "Embedded service_provider_product_application_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_provider_product_application_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8686,6 +9241,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "procuring_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_provider_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_provider_product_suspension_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8774,6 +9374,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_provider_product_suspension_history": {
+            "description": "Embedded service_provider_product_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8885,6 +9500,20 @@
             "nullable": true,
             "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
           },
+          "created_at": {
+            "description": "When the application was first created.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-01-08T12:00:00+02"
+          },
+          "complete_at": {
+            "description": "When the application was last marked complete by the procuring system operator.",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "example": "2022-08-08T12:00:00+02"
+          },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
             "format": "date-time",
@@ -8918,6 +9547,66 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_history": {
+            "description": "Embedded service_providing_group_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "procuring_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "attachment_history": {
+            "description": "Embedded service_providing_group_product_application_attachment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_providing_group_product_application_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -8928,6 +9617,7 @@
           "status",
           "maximum_active_power_up",
           "maximum_active_power_down",
+          "created_at",
           "recorded_at",
           "recorded_by",
           "service_providing_group_product_application_id"
@@ -9010,6 +9700,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_product_application_history": {
+            "description": "Embedded service_providing_group_product_application_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -9100,6 +9805,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_product_application_history": {
+            "description": "Embedded service_providing_group_product_application_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -9185,6 +9905,51 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "procuring_system_operator_history": {
+            "description": "Embedded party_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/party_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "service_providing_group_history": {
+            "description": "Embedded service_providing_group_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          },
+          "comment_history": {
+            "description": "Embedded service_providing_group_product_suspension_comment_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -9273,6 +10038,21 @@
             "type": "string",
             "nullable": true,
             "example": "2024-07-07T10:00:00+00:00"
+          },
+          "service_providing_group_product_suspension_history": {
+            "description": "Embedded service_providing_group_product_suspension_history",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -10213,6 +10993,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -10442,6 +11230,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -11220,6 +12016,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -11449,6 +12253,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -12108,6 +12920,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -12337,6 +13157,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -13198,6 +14026,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -13427,6 +14263,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -14503,6 +15347,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -14732,6 +15584,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -15566,6 +16426,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -15795,6 +16663,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -16481,6 +17357,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -16710,6 +17594,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -17369,6 +18261,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -17598,6 +18498,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -18376,6 +19284,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -18605,6 +19521,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -19264,6 +20188,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -19493,6 +20425,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -21443,6 +22383,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -21672,6 +22620,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -22450,6 +23406,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -22679,6 +23643,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -23822,6 +24794,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -24051,6 +25031,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -28463,6 +29451,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -28692,6 +29688,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -29421,6 +30425,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -29650,6 +30662,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -30309,6 +31329,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -30538,6 +31566,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -31343,6 +32379,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -31572,6 +32616,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -32231,6 +33283,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -32460,6 +33520,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -33173,6 +34241,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -33402,6 +34478,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -34055,6 +35139,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -34284,6 +35376,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -34943,6 +36043,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -35172,6 +36280,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -35977,6 +37093,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -36206,6 +37330,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
@@ -36865,6 +37997,14 @@
             }
           },
           {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
+          {
             "$ref": "#/components/parameters/ApiVersion"
           }
         ],
@@ -37094,6 +38234,14 @@
           {}
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          },
           {
             "$ref": "#/components/parameters/ApiVersion"
           }
