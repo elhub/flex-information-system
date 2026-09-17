@@ -1,4 +1,4 @@
-import { toDateString, throwOnError } from "../../util";
+import { throwOnError, toDateString } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { listServiceProvidingGroupMembership } from "../../generated-client";
 
