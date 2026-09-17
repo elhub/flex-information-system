@@ -1,7 +1,8 @@
-import { throwOnError, toDateString } from "../../util";
+import { fetchJSON, toDateString } from "../../util";
 import { useQuery } from "@tanstack/react-query";
-import { listServiceProvidingGroupMembership } from "../../generated-client";
+import { ServiceProvidingGroupMembership } from "../../generated-client";
 import { SubstationRow } from "./useSpgPowerPerSubstation";
+import { apiURL } from "../../httpConfig";
 
 export type SpgControllableUnitRow = {
   id: number;
@@ -10,22 +11,23 @@ export type SpgControllableUnitRow = {
   validFrom: string;
   validTo: string;
   maximum_active_power: number;
-  rated_power: number | undefined;
   regulation_direction: string;
-  accountingPointId: number;
-  status: string;
+  accountingPointId?: string;
   substationBusinessId: string | null;
 };
 
 const fetchSpgControllableUnits = async (
   spgId: number,
 ): Promise<SpgControllableUnitRow[]> => {
-  const memberships = await listServiceProvidingGroupMembership({
-    query: {
-      service_providing_group_id: `eq.${spgId}`,
-      embed: "controllable_unit(accounting_point(grid_location))",
-    },
-  }).then(throwOnError);
+  const queryParams = new URLSearchParams({
+    embed: "controllable_unit(summary,accounting_point(grid_location))",
+    valid_at: new Date().toISOString(),
+    service_providing_group_id: `eq.${spgId}`,
+  });
+
+  const memberships = await fetchJSON<ServiceProvidingGroupMembership>(
+    `${apiURL}/service_providing_group_membership?${queryParams.toString()}`,
+  );
 
   return memberships
     .filter((m) => m.controllable_unit)
@@ -38,10 +40,8 @@ const fetchSpgControllableUnits = async (
         validFrom: toDateString(m.valid_from),
         validTo: toDateString(m.valid_to),
         maximum_active_power: cu.maximum_active_power,
-        rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
         regulation_direction: cu.regulation_direction,
-        accountingPointId: cu.accounting_point_id,
-        status: cu.status,
+        accountingPointId: cu?.accounting_point?.business_id,
         substationBusinessId:
           cu.accounting_point?.grid_location?.business_id ?? null,
       };

@@ -15,11 +15,10 @@ export type TextKey =
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
   | "table.header.name"
-  | "table.header.status"
+  | "table.header.accountingpoint"
   | "table.header.valid_from"
   | "table.header.valid_to"
   | "table.header.max_active_power"
-  | "table.header.rated_power"
   | "table.header.regulation_direction"
   | "table.header.substation"
   | "table.header.business_id"
@@ -173,11 +172,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
     "table.header.name": "Name",
-    "table.header.status": "Status",
+    "table.header.accountingpoint": "Accounting point ID",
     "table.header.valid_from": "Valid from",
     "table.header.valid_to": "Valid to",
-    "table.header.max_active_power": "Max active power",
-    "table.header.rated_power": "Rated power",
+    "table.header.max_active_power": "Flexible power",
     "table.header.regulation_direction": "Regulation direction",
     "table.header.substation": "Substation",
     "table.header.business_id": "Business ID",
@@ -377,11 +375,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "table.header.name": "Navn",
-    "table.header.status": "Status",
+    "table.header.accountingpoint": "Målepunkt",
     "table.header.valid_from": "Gyldig fra",
     "table.header.valid_to": "Gyldig til",
-    "table.header.max_active_power": "Maks aktiv effekt",
-    "table.header.rated_power": "Merkeeffekt",
+    "table.header.max_active_power": "Fleksibel effekt",
     "table.header.regulation_direction": "Reguleringsretning",
     "table.header.substation": "Substasjon",
     "table.header.business_id": "Forretnings-ID",

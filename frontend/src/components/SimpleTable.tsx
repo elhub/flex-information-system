@@ -19,6 +19,7 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   action?: { render: (row: T) => ReactNode; header?: string };
   rowActions?: (row: T) => ReactNode;
   expandPanel?: (row: T) => ReactNode;
+  onExpand?: (row: T, isOpen: boolean) => void;
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
   rowKey?: (row: T) => string | number;
   className?: string;
@@ -33,6 +34,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   action,
   rowActions,
   expandPanel,
+  onExpand,
   checkbox,
   className,
   rowKey,
@@ -99,6 +101,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
               key={String(row.id)}
               style={hasRowClick ? { cursor: "pointer" } : undefined}
               content={expandPanel(row)}
+              onOpenChange={(isOpen: boolean) => onExpand?.(row, isOpen)}
             >
               {checkbox && (
                 <Table.DataCell>{checkbox.render(row)}</Table.DataCell>

@@ -12,6 +12,7 @@ import {
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
 import { useTranslate } from "ra-core";
+import { useState } from "react";
 
 type Props = {
   spgId: number;
@@ -23,7 +24,10 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
-  const { data: cus } = useSpgControllableUnits(spgId);
+  const [hasExpanded, setHasExpanded] = useState(false);
+  const { data: cus } = useSpgControllableUnits(
+    hasExpanded ? spgId : undefined,
+  );
   const translate = useTranslate();
 
   const formatPower = (value: number | undefined) =>
@@ -35,29 +39,12 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
       header: translate("text.table.header.name"),
     },
     {
-      key: "status",
-      header: translate("text.table.header.status"),
-    },
-    {
-      key: "validFrom",
-      header: translate("text.table.header.valid_from"),
-    },
-    {
-      key: "validTo",
-      header: translate("text.table.header.valid_to"),
+      key: "accountingPointId",
+      header: translate("text.table.header.accountingpoint"),
     },
     {
       key: "maximum_active_power",
       header: translate("text.table.header.max_active_power"),
-      render: (value) => (
-        <div className="text-right">
-          {formatPower(value as number | undefined)}
-        </div>
-      ),
-    },
-    {
-      key: "rated_power",
-      header: translate("text.table.header.rated_power"),
       render: (value) => (
         <div className="text-right">
           {formatPower(value as number | undefined)}
@@ -149,6 +136,9 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
             className="w-full p-0"
           />
         );
+      }}
+      onExpand={(_, isOpen) => {
+        if (isOpen) setHasExpanded(true);
       }}
       data={data ?? []}
       columns={columns}
