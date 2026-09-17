@@ -5,7 +5,6 @@ import {
   useSpgPowerPerSubstation,
 } from "./useSpgPowerPerSubstation";
 import {
-  controllableUnitsForSubstation,
   SpgControllableUnitRow,
   useSpgControllableUnits,
 } from "./useSpgControllableUnits";
@@ -129,15 +128,11 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
 
   return (
     <SimpleTable
-      expandPanel={(row: SubstationRow) => {
-        const rows = controllableUnitsForSubstation(
-          cus,
-          row.substationBusinessId,
-        );
+      expandPanel={(_) => {
         return (
           <SimpleTable
             columns={controllableUnitColumns}
-            data={rows}
+            data={cus ? cus : []}
             className="w-full p-0"
           />
         );

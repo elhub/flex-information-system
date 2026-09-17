@@ -1,7 +1,6 @@
 import { toDateString, throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { listServiceProvidingGroupMembership } from "../../generated-client";
-import { SubstationRow } from "./useSpgPowerPerSubstation";
 
 export type SpgControllableUnitRow = {
   id: number;
@@ -59,13 +58,3 @@ export const useSpgControllableUnits = (
       fetchSpgControllableUnits(spgId ?? 0, substationBusinessId ?? ""),
     enabled: !!spgId && !!substationBusinessId,
   });
-
-export const controllableUnitsForSubstation = (
-  cus: SpgControllableUnitRow[] | undefined,
-  substationBusinessId: SubstationRow["substationBusinessId"],
-): SpgControllableUnitRow[] =>
-  (cus ?? []).filter((cu) =>
-    substationBusinessId === null
-      ? cu.substationBusinessId === null
-      : cu.substationBusinessId === substationBusinessId,
-  );
