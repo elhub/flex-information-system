@@ -23,8 +23,22 @@ import java.time.OffsetDateTime
  */
 interface ServiceProvidingGroupRepository {
 
+    /**
+     * Fetches the grid prequalification and product application status for each
+     * controllable unit that is a member of the given service providing group.
+     *
+     * Grid prequalification is resolved per controllable unit (based on the system
+     * operator(s) relevant to its accounting point), while product applications are
+     * shared across all member controllable units of the service providing group,
+     * with `prequalifiedAt` only populated if the controllable unit was
+     * already a member at the time the application reached that status.
+     *
+     * @param serviceProvidingGroupId the surrogate key of the service providing group.
+     * @return either a [RepositoryError], or the list of [ControllableUnitApplications]
+     * for each member controllable unit.
+     */
     context(principal: FlexPrincipal)
-    suspend fun getApplicationStatusForControllableUnits(
+    suspend fun getApplicationsForControllableUnits(
         serviceProvidingGroupId: Long,
     ): Either<RepositoryError, List<ControllableUnitApplications>>
 }
@@ -34,7 +48,7 @@ private val logger = KotlinLogging.logger {}
 @Single(createdAtStart = true)
 class ServiceProvidingGroupRepositoryImpl : ServiceProvidingGroupRepository {
     context(principal: FlexPrincipal)
-    override suspend fun getApplicationStatusForControllableUnits(
+    override suspend fun getApplicationsForControllableUnits(
         serviceProvidingGroupId: Long
     ): Either<RepositoryError, List<ControllableUnitApplications>> =
         flexTransaction { conn ->
@@ -84,7 +98,7 @@ class ServiceProvidingGroupRepositoryImpl : ServiceProvidingGroupRepository {
                     )
                 }
             }.mapLeft { e ->
-                logger.error { "getApplicationStatusForControllableUnits failed: ${e.message}" }
+                logger.error { "getApplicationsForControllableUnits failed: ${e.message}" }
                 DatabaseError("Failed to read application statuses for controllable units in SPG $serviceProvidingGroupId")
             }
         }

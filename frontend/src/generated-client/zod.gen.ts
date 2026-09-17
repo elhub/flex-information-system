@@ -3712,14 +3712,14 @@ export const zCallEntityLookupBody = zEntityLookupRequest;
  */
 export const zCallEntityLookupResponse = zEntityLookup;
 
-export const zReadSpgCuApplicationStatusPath = z.object({
+export const zReadSpgCuApplicationsPath = z.object({
   spg_id: z.coerce.number(),
 });
 
 /**
  * OK
  */
-export const zReadSpgCuApplicationStatusResponse = z.array(
+export const zReadSpgCuApplicationsResponse = z.array(
   zServiceProvidingGroupControllableUnitsApplications,
 );
 

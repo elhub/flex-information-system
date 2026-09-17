@@ -1,4 +1,12 @@
-import { BodyText, Button, Loader, Search } from "../../components/ui";
+import {
+  BodyText,
+  Button,
+  FormItem,
+  FormItemLabel,
+  Loader,
+  Search,
+  Switch,
+} from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   type SpgMembershipRow,
@@ -9,7 +17,12 @@ import { usePermissions, useTranslate } from "ra-core";
 import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
+import {
+  IconCross,
+  IconCrossCircle,
+  IconUser,
+  IconValidationCheck,
+} from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
@@ -65,6 +78,7 @@ export const ServiceProvidingGroupShowTable = ({
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const [searchQuery, setSearchQuery] = useState("");
+  const [hidePrequalified, setHidePrequalified] = useState(false);
   const filteredCUs = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     let result = data?.rows;
@@ -76,8 +90,13 @@ export const ServiceProvidingGroupShowTable = ({
           (cu.mpid != null && String(cu.mpid).includes(q)),
       );
     }
+    if (hidePrequalified) {
+      result = result?.filter(
+        (cu) => !cu.gridPrequalifiedAt || !cu.productApplicationPrequalifiedAt,
+      );
+    }
     return result;
-  }, [searchQuery, data?.rows]);
+  }, [searchQuery, hidePrequalified, data?.rows]);
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
@@ -188,21 +207,68 @@ export const ServiceProvidingGroupShowTable = ({
           />
         ) : null,
     },
+    {
+      key: "gridPrequalifiedAt",
+      header: translate("text.table.header.grid_prequalification"),
+      render: (value) =>
+        value ? (
+          <IconValidationCheck
+            style={{ width: 18, height: 18 }}
+            className="text-semantic-text-success"
+            aria-hidden
+          />
+        ) : (
+          <IconCross
+            style={{ width: 18, height: 18 }}
+            className="text-semantic-text-error"
+            aria-hidden
+          />
+        ),
+    },
+    {
+      key: "productApplicationPrequalifiedAt",
+      header: translate("text.table.header.product_application"),
+      render: (value) =>
+        value ? (
+          <IconValidationCheck
+            style={{ width: 18, height: 18 }}
+            className="text-semantic-text-success"
+            aria-hidden
+          />
+        ) : (
+          <IconCross
+            style={{ width: 18, height: 18 }}
+            className="text-semantic-text-error"
+            aria-hidden
+          />
+        ),
+    },
   ];
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
-        <div className="flex-1 mr-4">
-          <Search
-            label={translate("text.spg_show_table_search_label")}
-            hideLabel
-            clearButtonLabel={translate("text.spg_show_table_search_clear")}
-            placeholder={translate("text.spg_show_table_search_placeholder")}
-            value={searchQuery}
-            onChange={(value) => setSearchQuery(value)}
-            onClear={() => setSearchQuery("")}
-          />
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-1 items-center gap-4">
+          <div className="w-1/2">
+            <Search
+              label={translate("text.spg_show_table_search_label")}
+              hideLabel
+              clearButtonLabel={translate("text.spg_show_table_search_clear")}
+              placeholder={translate("text.spg_show_table_search_placeholder")}
+              value={searchQuery}
+              onChange={(value) => setSearchQuery(value)}
+              onClear={() => setSearchQuery("")}
+            />
+          </div>
+          <FormItem id="hide-prequalified">
+            <FormItemLabel>
+              {translate("text.spg_show_table_hide_prequalified")}
+            </FormItemLabel>
+            <Switch
+              checked={hidePrequalified}
+              onChange={(e) => setHidePrequalified(e.target.checked)}
+            />
+          </FormItem>
         </div>
         {canManageMembers && (
           <Button

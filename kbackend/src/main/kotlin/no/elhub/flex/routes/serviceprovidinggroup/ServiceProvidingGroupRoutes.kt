@@ -6,10 +6,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.elhub.flex.auth.AccessTokenKey
-import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.Scope
 import no.elhub.flex.auth.ScopeVerb
-import no.elhub.flex.auth.requireRoles
 import no.elhub.flex.auth.requireScope
 import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.model.dto.toDtos
@@ -24,9 +22,8 @@ import org.koin.ktor.ext.inject
 fun Application.serviceProvidingGroupRoutes() {
     routing {
         val repo: ServiceProvidingGroupRepository by inject()
-        route("/service_providing_group") {
+        route("/service_providing_groups") {
             route("/{spgId}/controllable_units/applications") {
-                requireRoles(FlexRole.SERVICE_PROVIDER, FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR) // / TODO: Which roles?
                 requireScope(
                     Scope(ScopeVerb.Read, "data")
                 )
@@ -38,7 +35,7 @@ fun Application.serviceProvidingGroupRoutes() {
                             ?: raise(ParsingError("spgId should be an integer"))
                         val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
                         with(principal) {
-                            repo.getApplicationStatusForControllableUnits(spgId)
+                            repo.getApplicationsForControllableUnits(spgId)
                                 .mapLeft { _ -> InternalServerError(traceIdOrUnknown()) }
                                 .bind().toDtos()
                         }

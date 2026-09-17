@@ -6995,7 +6995,7 @@ export type CallEntityLookupResponses = {
 export type CallEntityLookupResponse =
   CallEntityLookupResponses[keyof CallEntityLookupResponses];
 
-export type ReadSpgCuApplicationStatusData = {
+export type ReadSpgCuApplicationsData = {
   body?: never;
   path: {
     /**
@@ -7004,10 +7004,10 @@ export type ReadSpgCuApplicationStatusData = {
     spg_id: number;
   };
   query?: never;
-  url: "/service_providing_group/{spg_id}/controllable_units/applications";
+  url: "/service_providing_groups/{spg_id}/controllable_units/applications";
 };
 
-export type ReadSpgCuApplicationStatusErrors = {
+export type ReadSpgCuApplicationsErrors = {
   /**
    * Bad Request
    */
@@ -7022,18 +7022,18 @@ export type ReadSpgCuApplicationStatusErrors = {
   500: ErrorMessage;
 };
 
-export type ReadSpgCuApplicationStatusError =
-  ReadSpgCuApplicationStatusErrors[keyof ReadSpgCuApplicationStatusErrors];
+export type ReadSpgCuApplicationsError =
+  ReadSpgCuApplicationsErrors[keyof ReadSpgCuApplicationsErrors];
 
-export type ReadSpgCuApplicationStatusResponses = {
+export type ReadSpgCuApplicationsResponses = {
   /**
    * OK
    */
   200: Array<ServiceProvidingGroupControllableUnitsApplications>;
 };
 
-export type ReadSpgCuApplicationStatusResponse =
-  ReadSpgCuApplicationStatusResponses[keyof ReadSpgCuApplicationStatusResponses];
+export type ReadSpgCuApplicationsResponse =
+  ReadSpgCuApplicationsResponses[keyof ReadSpgCuApplicationsResponses];
 
 export type ListControllableUnitData = {
   body?: never;

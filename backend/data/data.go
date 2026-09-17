@@ -93,7 +93,7 @@ func NewAPIHandler(
 
 	// reverse-proxied to the Kotlin backend
 	mux.HandleFunc(
-		"POST /service_providing_group/{spg_id}/controllable_units/application_status",
+		"GET /service_providing_groups/{spg_id}/controllable_units/applications",
 		data.kbackendProxyHandler,
 	)
 

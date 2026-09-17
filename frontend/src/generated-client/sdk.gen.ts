@@ -483,9 +483,9 @@ import type {
   ReadServiceProvidingGroupSummaryData,
   ReadServiceProvidingGroupSummaryErrors,
   ReadServiceProvidingGroupSummaryResponses,
-  ReadSpgCuApplicationStatusData,
-  ReadSpgCuApplicationStatusErrors,
-  ReadSpgCuApplicationStatusResponses,
+  ReadSpgCuApplicationsData,
+  ReadSpgCuApplicationsErrors,
+  ReadSpgCuApplicationsResponses,
   ReadSystemOperatorProductTypeData,
   ReadSystemOperatorProductTypeErrors,
   ReadSystemOperatorProductTypeHistoryData,
@@ -675,22 +675,20 @@ export const callEntityLookup = <ThrowOnError extends boolean = false>(
 /**
  * Read applications for each controllable unit in a service providing group
  */
-export const readSpgCuApplicationStatus = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<ReadSpgCuApplicationStatusData, ThrowOnError>,
+export const readSpgCuApplications = <ThrowOnError extends boolean = false>(
+  options: Options<ReadSpgCuApplicationsData, ThrowOnError>,
 ): RequestResult<
-  ReadSpgCuApplicationStatusResponses,
-  ReadSpgCuApplicationStatusErrors,
+  ReadSpgCuApplicationsResponses,
+  ReadSpgCuApplicationsErrors,
   ThrowOnError
 > =>
   (options.client ?? client).get<
-    ReadSpgCuApplicationStatusResponses,
-    ReadSpgCuApplicationStatusErrors,
+    ReadSpgCuApplicationsResponses,
+    ReadSpgCuApplicationsErrors,
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/service_providing_group/{spg_id}/controllable_units/applications",
+    url: "/service_providing_groups/{spg_id}/controllable_units/applications",
     ...options,
   });
 

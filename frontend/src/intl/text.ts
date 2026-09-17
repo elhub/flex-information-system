@@ -14,6 +14,8 @@ export type TextKey =
   | "table.header.aggregated_rated_power"
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
+  | "table.header.grid_prequalification"
+  | "table.header.product_application"
   | "form_toolbar.save"
   | "form_toolbar.cancel"
   | "form_toolbar.confirm"
@@ -58,6 +60,7 @@ export type TextKey =
   | "spg_show_table_search_label"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
+  | "spg_show_table_hide_prequalified"
   | "spg_changes_since_label"
   | "spg_changes_column_id"
   | "spg_changes_column_name"
@@ -161,6 +164,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
+    "table.header.grid_prequalification": "Grid prequalification",
+    "table.header.product_application": "Product application",
     "form_toolbar.save": "Save",
     "form_toolbar.cancel": "Cancel",
     "form_toolbar.confirm": "Confirm",
@@ -260,6 +265,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
       "Filter by name, id or accounting point id",
+    spg_show_table_hide_prequalified: "Hide prequalified",
     spg_changes_since_label: "Compare changes since",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
@@ -354,6 +360,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
+    "table.header.grid_prequalification": "Nettprekvalifisering",
+    "table.header.product_application": "Produktprekvalifisering",
     "form_toolbar.save": "Lagre",
     "form_toolbar.cancel": "Avbryt",
     "form_toolbar.confirm": "Bekreft",
@@ -450,6 +458,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id eller avregningspunkt",
+    spg_show_table_hide_prequalified: "Skjul prekvalifiserte",
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",

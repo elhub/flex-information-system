@@ -10253,9 +10253,9 @@
                 "parameters": []
             }
         },
-        "/service_providing_group/{spg_id}/controllable_units/applications": {
+        "/service_providing_groups/{spg_id}/controllable_units/applications": {
             "get": {
-                "operationId": "read_spg_cu_application_status",
+                "operationId": "read_spg_cu_applications",
                 "summary": "Read applications for each controllable unit in a service providing group",
                 "security": [
                     {

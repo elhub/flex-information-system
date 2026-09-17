@@ -7,7 +7,7 @@ SELECT
     cu.name as cu_name,
     spggp.id as grid_prequalification_id,
     CASE WHEN
-             spggp.status IN ('prequalified')
+             spggp.status IN ('approved', 'conditionally_approved')
                  AND lower(member.record_time_range) <= spggp.prequalified_at
              THEN spggp.prequalified_at END as grid_prequalification_prequalified_at
 FROM flex.controllable_unit cu

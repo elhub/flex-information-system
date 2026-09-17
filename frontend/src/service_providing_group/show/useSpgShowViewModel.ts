@@ -7,6 +7,7 @@ import {
   listServiceProvidingGroupMembership,
   readParty,
   readServiceProvidingGroup,
+  readSpgCuApplications,
 } from "../../generated-client";
 import { allControllableUnitsWithMembershipQueryKey } from "../membership/useSpgMemberships";
 import {
@@ -29,6 +30,8 @@ export type SpgMembershipRow = {
   accountingPointId: number;
   brpName: string;
   status: string;
+  gridPrequalifiedAt: string | undefined;
+  productApplicationPrequalifiedAt: string | undefined;
 };
 
 type SpgShowViewModel = {
@@ -52,12 +55,21 @@ export const useServiceProvidingGroup = (spgId: number | undefined) =>
   });
 
 const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
-  const memberships = await listServiceProvidingGroupMembership({
-    query: {
-      service_providing_group_id: `eq.${serviceProvidingGroupId}`,
-      order: "id.desc",
-    },
-  }).then(throwOnError);
+  const [memberships, applications] = await Promise.all([
+    listServiceProvidingGroupMembership({
+      query: {
+        service_providing_group_id: `eq.${serviceProvidingGroupId}`,
+        order: "id.desc",
+      },
+    }).then(throwOnError),
+    readSpgCuApplications({
+      path: { spg_id: serviceProvidingGroupId },
+    }).then(throwOnError),
+  ]);
+
+  const applicationsByCuId = new Map(
+    applications.map((application) => [application.id, application]),
+  );
 
   if (memberships.length === 0) {
     return {
@@ -120,6 +132,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     const membership = memberships.find(
       (m) => m.controllable_unit_id === cu.id,
     );
+    const application = applicationsByCuId.get(cu.id);
 
     return {
       id: cu.id,
@@ -138,6 +151,9 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
         return brpId ? (brpPartyMap[brpId]?.name ?? "-") : "-";
       })(),
       status: cu.status,
+      gridPrequalifiedAt: application?.grid_prequalification?.prequalified_at,
+      productApplicationPrequalifiedAt:
+        application?.product_applications?.[0]?.prequalified_at,
     };
   });
 
