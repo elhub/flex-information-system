@@ -12,6 +12,7 @@ import {
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
 import { useTranslate } from "ra-core";
+import { useTranslateField } from "../../intl/intl";
 import { useState } from "react";
 
 type Props = {
@@ -29,6 +30,7 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
     hasExpanded ? spgId : undefined,
   );
   const translate = useTranslate();
+  const t = useTranslateField();
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
@@ -36,15 +38,15 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   const controllableUnitColumns: Column<SpgControllableUnitRow>[] = [
     {
       key: "name",
-      header: translate("text.table.header.name"),
+      header: t("controllable_unit.name"),
     },
     {
       key: "accountingPointId",
-      header: translate("text.table.header.accountingpoint"),
+      header: t("controllable_unit.accounting_point_id"),
     },
     {
       key: "maximum_active_power",
-      header: translate("text.table.header.max_active_power"),
+      header: t("controllable_unit.maximum_active_power"),
       render: (value) => (
         <div className="text-right">
           {formatPower(value as number | undefined)}
@@ -53,7 +55,7 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
     },
     {
       key: "regulation_direction",
-      header: translate("text.table.header.regulation_direction"),
+      header: t("controllable_unit.regulation_direction"),
     },
   ];
 

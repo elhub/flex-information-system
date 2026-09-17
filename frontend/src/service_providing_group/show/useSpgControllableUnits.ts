@@ -18,12 +18,20 @@ export type SpgControllableUnitRow = {
 
 const fetchSpgControllableUnits = async (
   spgId: number,
+  substationBusinessId?: string,
 ): Promise<SpgControllableUnitRow[]> => {
   const queryParams = new URLSearchParams({
-    embed: "controllable_unit(summary,accounting_point(grid_location))",
+    embed: "controllable_unit!(accounting_point!(grid_location!))",
     valid_at: new Date().toISOString(),
     service_providing_group_id: `eq.${spgId}`,
   });
+
+  if (substationBusinessId) {
+    queryParams.set(
+      "controllable_unit.accounting_point.grid_location.business_id",
+      `eq.${substationBusinessId}`,
+    );
+  }
 
   const memberships = await fetchJSON<ServiceProvidingGroupMembership>(
     `${apiURL}/service_providing_group_membership?${queryParams.toString()}`,
@@ -48,10 +56,13 @@ const fetchSpgControllableUnits = async (
     });
 };
 
-export const useSpgControllableUnits = (spgId: number | undefined) =>
+export const useSpgControllableUnits = (
+  spgId: number | undefined,
+  substationBusinessId?: string,
+) =>
   useQuery({
-    queryKey: ["spg_cu", spgId],
-    queryFn: () => fetchSpgControllableUnits(spgId ?? 0),
+    queryKey: ["spg_cu", spgId, substationBusinessId],
+    queryFn: () => fetchSpgControllableUnits(spgId ?? 0, substationBusinessId),
     enabled: !!spgId,
   });
 
