@@ -3,6 +3,7 @@ import { ErrorMessage } from "./generated-client";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 import { formatDate } from "date-fns";
+import { API_VERSION } from "./httpConfig";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -125,7 +126,7 @@ export const findCurrentlyValidRecord = <
 // TODO: replace all occurrences with calls to a generated API client
 export const fetchJSON = async <T>(url: string): Promise<T[]> => {
   const response = await fetch(url, {
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", "Api-Version": API_VERSION },
     credentials: "include",
   });
 

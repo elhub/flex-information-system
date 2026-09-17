@@ -14,6 +14,12 @@ export type TextKey =
   | "table.header.aggregated_rated_power"
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
+  | "table.header.valid_from"
+  | "table.header.valid_to"
+  | "table.header.substation"
+  | "table.header.business_id"
+  | "table.header.controllable_units"
+  | "table.cell.unassigned"
   | "form_toolbar.save"
   | "form_toolbar.cancel"
   | "form_toolbar.confirm"
@@ -161,6 +167,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
+    "table.header.valid_from": "Valid from",
+    "table.header.valid_to": "Valid to",
+    "table.header.substation": "Substation",
+    "table.header.business_id": "Business ID",
+    "table.header.controllable_units": "Controllable units",
+    "table.cell.unassigned": "(unassigned)",
     "form_toolbar.save": "Save",
     "form_toolbar.cancel": "Cancel",
     "form_toolbar.confirm": "Confirm",
@@ -354,6 +366,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
+    "table.header.valid_from": "Gyldig fra",
+    "table.header.valid_to": "Gyldig til",
+    "table.header.substation": "Substasjon",
+    "table.header.business_id": "Forretnings-ID",
+    "table.header.controllable_units": "Kontrollerbare enheter",
+    "table.cell.unassigned": "(ikke tildelt)",
     "form_toolbar.save": "Lagre",
     "form_toolbar.cancel": "Avbryt",
     "form_toolbar.confirm": "Bekreft",

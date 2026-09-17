@@ -4,9 +4,15 @@ import {
   SubstationRow,
   useSpgPowerPerSubstation,
 } from "./useSpgPowerPerSubstation";
+import {
+  SpgControllableUnitRow,
+  useSpgControllableUnits,
+} from "./useSpgControllableUnits";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
 import { useTranslate } from "ra-core";
+import { useTranslateField } from "../../intl/intl";
+import { useState } from "react";
 
 type Props = {
   spgId: number;
@@ -18,30 +24,62 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
+  const [expandedSubstationId, setExpandedSubstationId] = useState<
+    string | undefined
+  >(undefined);
+  const { data: cus } = useSpgControllableUnits(
+    expandedSubstationId ? spgId : undefined,
+    expandedSubstationId,
+  );
   const translate = useTranslate();
+  const t = useTranslateField();
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
 
+  const controllableUnitColumns: Column<SpgControllableUnitRow>[] = [
+    {
+      key: "name",
+      header: t("controllable_unit.name"),
+    },
+    {
+      key: "accountingPointId",
+      header: t("controllable_unit.accounting_point_id"),
+    },
+    {
+      key: "maximum_active_power",
+      header: t("controllable_unit.maximum_active_power"),
+      render: (value) => (
+        <div className="text-right">
+          {formatPower(value as number | undefined)}
+        </div>
+      ),
+    },
+    {
+      key: "regulation_direction",
+      header: t("controllable_unit.regulation_direction"),
+    },
+  ];
+
   const columns: Column<SubstationRow>[] = [
     {
       key: "substationName",
-      header: "Substation",
+      header: translate("text.table.header.substation"),
       render: (v, row) =>
         v
           ? String(v)
           : row.substationBusinessId
             ? String(row.substationBusinessId)
-            : "(unassigned)",
+            : translate("text.table.cell.unassigned"),
     },
     {
       key: "substationBusinessId",
-      header: "Business ID",
+      header: translate("text.table.header.business_id"),
       render: (v) => (v ? String(v) : "-"),
     },
     {
       key: "controllableUnitCount",
-      header: "Controllable units",
+      header: translate("text.table.header.controllable_units"),
       render: (v) => <div className="text-right">{String(v)}</div>,
     },
     {
@@ -90,7 +128,20 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
 
   return (
     <SimpleTable
-      size="small"
+      expandPanel={(_) => {
+        return (
+          <SimpleTable
+            columns={controllableUnitColumns}
+            data={cus ? cus : []}
+            className="w-full p-0"
+          />
+        );
+      }}
+      onExpand={(row, isOpen) => {
+        if (isOpen && row.substationBusinessId) {
+          setExpandedSubstationId(row.substationBusinessId);
+        }
+      }}
       data={data ?? []}
       columns={columns}
       className="w-full"
