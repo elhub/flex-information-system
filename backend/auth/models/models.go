@@ -131,6 +131,58 @@ func GetEntityClientByUUID(
 	return entityID, eid, pubKeyPEM, scopes, nil
 }
 
+// EntityClient is the full model of an entity client record.
+type EntityClient struct {
+	ID         int
+	EntityID   int
+	ExternalID string
+	ClientID   string
+	PartyID    *int
+	Scopes     scope.List
+	Name       *string
+	PublicKey  *string
+}
+
+// GetEntityClientByClientID gets the full entity client record identified by its client ID.
+func GetEntityClientByClientID(
+	ctx context.Context,
+	tx pgx.Tx,
+	clientID string,
+) (EntityClient, error) {
+	var (
+		ec           EntityClient
+		scopeStrings []string
+	)
+
+	err := tx.QueryRow(
+		ctx,
+		"select id, entity_id, external_id, client_id, party_id, scopes, name, public_key"+
+			" from auth.entity_client_by_client_id($1)",
+		clientID,
+	).Scan(
+		&ec.ID,
+		&ec.EntityID,
+		&ec.ExternalID,
+		&ec.ClientID,
+		&ec.PartyID,
+		&scopeStrings,
+		&ec.Name,
+		&ec.PublicKey,
+	)
+	if err != nil {
+		return EntityClient{}, fmt.Errorf("failed to get entity client: %w", err)
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		return EntityClient{}, fmt.Errorf("failed to parse scopes: %w", err)
+	}
+
+	ec.Scopes = scopes
+
+	return ec, nil
+}
+
 // AssumeParty checks if a entity is allowed to assume a party and returns details.
 // Scopes are returned when the party is assumed through membership.
 func AssumeParty(

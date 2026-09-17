@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.api.accounting_point_energy_supplier import (
     list_accounting_point_energy_supplier,
@@ -15,7 +15,7 @@ def sts():
 
 # RLS: APES-FISO001
 def test_apes_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # check they can read all APES
 
@@ -32,7 +32,7 @@ def test_apes_fiso(sts):
 
 # RLS: APES-SO001
 def test_apes_so(sts):
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     # test APs are in Test SO's MGA between 1000 and 2000
 
@@ -50,7 +50,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         spgs = list_accounting_point_energy_supplier.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(spgs, list)
         assert len(spgs) == 0

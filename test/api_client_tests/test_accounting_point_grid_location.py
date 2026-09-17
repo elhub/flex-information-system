@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     AccountingPointGridLocationResponse,
@@ -91,7 +91,7 @@ def _base_create_request(
 
 # RLS: APGL-FISO001
 def test_apgl_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /accounting_point_grid_location
     apgls = list_accounting_point_grid_location.sync(client=client_fiso)
@@ -161,8 +161,8 @@ def test_apgl_fiso(sts):
 
 # RLS: APGL-SO001 (CSO path)
 def test_apgl_so_cso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     # Test SO is CSO for APs 1001-2000
 
@@ -209,10 +209,10 @@ def test_apgl_so_cso(sts):
 
 # RLS: APGL-SO001 (PSO)
 def test_apgl_so_procuring(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # Common SO is not PSO for any AP in test data to start with
-    client_pso = sts.get_client(TestEntity.COMMON, "SO")
+    client_pso = sts.get_client(TestEntityClient.COMMON, "SO")
     pso_id = sts.get_userinfo(client_pso)["party_id"]
 
     # Confirm PSO cannot see any APGLs before setup
@@ -243,7 +243,7 @@ def test_apgl_so_procuring(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -255,7 +255,7 @@ def test_apgl_so_procuring(sts):
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -361,7 +361,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_access:
         result = list_accounting_point_grid_location.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(result, ErrorMessage)
 
@@ -380,7 +380,7 @@ def test_rla_absence(sts):
 
 
 def test_apgl_validation_object_type(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     apgl = create_accounting_point_grid_location.sync(
         client=client_fiso,
@@ -400,7 +400,7 @@ def test_apgl_validation_object_type(sts):
 
 
 def test_apgl_validation_name_too_long(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     result = create_accounting_point_grid_location.sync(
         client=client_fiso,
@@ -417,7 +417,7 @@ def test_apgl_validation_name_too_long(sts):
 
 
 def test_apgl_validation_nominal_voltage_negative(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     result = create_accounting_point_grid_location.sync(
         client=client_fiso,
@@ -434,7 +434,7 @@ def test_apgl_validation_nominal_voltage_negative(sts):
 
 
 def test_apgl_validation_source(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     apgl = create_accounting_point_grid_location.sync(
         client=client_fiso,
@@ -454,7 +454,7 @@ def test_apgl_validation_source(sts):
 
 
 def test_apgl_validation_quality(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     apgl = create_accounting_point_grid_location.sync(
         client=client_fiso,
@@ -474,7 +474,7 @@ def test_apgl_validation_quality(sts):
 
 
 def test_apgl_validation_business_id_missing(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # Create a valid record first, then PATCH with business_id=null,
     # which violates the NOT NULL constraint on the column.
@@ -496,7 +496,7 @@ def test_apgl_validation_business_id_missing(sts):
 
 
 def test_apgl_validation_business_id_not_in_db(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # A well-formed UUID that does not exist in the substation table.
     result = create_accounting_point_grid_location.sync(

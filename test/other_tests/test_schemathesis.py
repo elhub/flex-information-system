@@ -5,7 +5,7 @@ from typing import Protocol
 
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
     AuthenticatedClient,
     API_VERSION,
 )
@@ -18,7 +18,7 @@ are consistent with the documented error cases in the OpenAPI specification.
 load_dotenv()
 
 # login to get access to the OpenAPI file
-client = SecurityTokenService().get_client(TestEntity.TEST, "FISO")
+client = SecurityTokenService().get_client(TestEntityClient.TEST, "FISO")
 assert isinstance(client, AuthenticatedClient)
 token = client.token
 

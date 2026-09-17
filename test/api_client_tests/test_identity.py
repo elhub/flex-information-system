@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import IdentityResponse, ErrorMessage
 from flex.api.identity import (
@@ -20,12 +20,12 @@ def sts():
 # RLS: ID-ENT001
 # RLS: ID-COM001
 def test_identity(sts):
-    client_ent = sts.get_client(TestEntity.TEST)
+    client_ent = sts.get_client(TestEntityClient.TEST)
 
     # generate clients before listing identities
     # (the first generation of a client creates a new identity, so this loop
     # iteration modifies the state of the very thing we test here)
-    clients = [sts.get_client(TestEntity.TEST, role) for role in sts.COMMON_ROLES]
+    clients = [sts.get_client(TestEntityClient.TEST, role) for role in sts.COMMON_ROLES]
 
     ids = list_identity.sync(client=client_ent)
     assert isinstance(ids, list)

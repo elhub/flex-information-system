@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
     AuthenticatedClient,
 )
 from flex.models import (
@@ -36,7 +36,9 @@ from datetime import date, timedelta, time, timezone
 @pytest.fixture
 def data():
     sts = SecurityTokenService()
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
     # Create new controllable unit to play with
     cu = create_controllable_unit.sync(
@@ -50,7 +52,7 @@ def data():
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     unrelated_eu_id = 4  # Common AS end user, has no relation to AP 1002
@@ -64,7 +66,7 @@ def data():
 # RLS: CUSP-FISO001
 def test_cusp_fiso(data):
     (sts, cu_id, eu_id, unrelated_eu_id) = data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # create a CU-SP relation, check the visible list is one relation longer
 
@@ -74,7 +76,7 @@ def test_cusp_fiso(data):
     )
     assert isinstance(cusps, list)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # cannot create a CUSP for an end user not related to the CU
@@ -217,10 +219,10 @@ def test_cusp_fiso(data):
 def test_cusp_sp(data):
     (sts, cu_id, eu_id, _) = data
 
-    sp1_client = sts.get_client(TestEntity.TEST, "SP")
+    sp1_client = sts.get_client(TestEntityClient.TEST, "SP")
     sp1_id = sts.get_userinfo(sp1_client)["party_id"]
 
-    sp2_client = sts.get_client(TestEntity.COMMON, "SP")
+    sp2_client = sts.get_client(TestEntityClient.COMMON, "SP")
     sp2_id = sts.get_userinfo(sp2_client)["party_id"]
 
     # SP can do CU-SP without seeing the CU, they just need the ID
@@ -367,8 +369,8 @@ def test_cusp_sp(data):
 # RLS: CUSP-SO001
 def test_cusp_so(data):
     (sts, _, _, _) = data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     # SO can read the CUs where they are CSO
     # Test SO manages all CUs in the test data so all CUSPs should be visible
@@ -402,7 +404,7 @@ def test_cusp_history(data):
     (sts, _, _, _) = data
 
     for role in ["FISO", "SO", "SP"]:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # check a role can see the history for CUs they can see
         visible_cusps = list_controllable_unit_service_provider.sync(client=client)
@@ -426,7 +428,7 @@ def test_cusp_eu(data):
     # former AP end user can see the old version of the CU-SPs in the test data,
     # but not the current contracts
 
-    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+    client_former_eu = sts.get_client(TestEntityClient.COMMON, "EU")
 
     cusphs_former_eu = list_controllable_unit_service_provider_history.sync(
         client=client_former_eu,
@@ -453,7 +455,7 @@ def test_cusp_eu(data):
     # current AP end user can see the current version of the CU-SP contract,
     # but not the old records
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
 
     cusp = read_controllable_unit_service_provider.sync(
         client=client_eu,
@@ -482,7 +484,7 @@ def test_rla_absence(data):
 
     for role in roles_without_rla:
         cusps = list_controllable_unit_service_provider.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(cusps, list)
         assert len(cusps) == 0

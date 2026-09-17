@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     EntityLookupRequest,
@@ -24,7 +24,7 @@ def sts():
 
 
 def test_entity_lookup_params(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # ill formed requests
 
@@ -122,7 +122,7 @@ def test_entity_lookup_params(sts):
 
 
 def test_entity_lookup_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     es = list_entity.sync(client=client_fiso, business_id="eq.133700000")
     assert isinstance(es, list)
@@ -173,7 +173,7 @@ def test_entity_lookup_other(sts):
 
     for role in roles_that_cannot_lookup:
         e = call_entity_lookup.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
             body=EntityLookupRequest(
                 business_id="test@example.com",
                 business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
