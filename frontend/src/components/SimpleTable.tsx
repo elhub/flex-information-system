@@ -98,7 +98,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
         {data.map((row, i) =>
           expandPanel ? (
             <Table.ExpandableRow
-              key={String(row.id)}
+              key={rowKey ? rowKey(row) : String(row.id ?? i)}
               style={hasRowClick ? { cursor: "pointer" } : undefined}
               content={expandPanel(row)}
               onOpenChange={(isOpen: boolean) => onExpand?.(row, isOpen)}
