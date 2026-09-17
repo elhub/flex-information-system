@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ErrorMessage,
@@ -55,9 +55,9 @@ def test_tr_brp(sts):
     # former AP BRP can see the old version of the TRs in the test data,
     # but not the current record
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
+    client_former_brp = sts.get_client(TestEntityClient.COMMON, "BRP")
 
     # endpoint: GET /technical_resource
     trs_former_brp = list_technical_resource.sync(client=client_former_brp)
@@ -99,7 +99,7 @@ def test_tr_brp(sts):
 
     # current AP BRP can see the current version of the TR
 
-    client_brp = sts.get_client(TestEntity.TEST, "BRP")
+    client_brp = sts.get_client(TestEntityClient.TEST, "BRP")
 
     # endpoint: GET /technical_resource/{id}
     tr = read_technical_resource.sync(
@@ -123,7 +123,7 @@ def test_tr_eu(sts):
     # former AP EU can see the old version of the TRs in the test data,
     # but not the current record
 
-    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+    client_former_eu = sts.get_client(TestEntityClient.COMMON, "EU")
 
     trhs_former_eu = list_technical_resource_history.sync(client=client_former_eu)
     assert isinstance(trhs_former_eu, list)
@@ -148,7 +148,7 @@ def test_tr_eu(sts):
     # current AP EU can see the current version of the TR,
     # but not the old records
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
 
     tr = read_technical_resource.sync(
         client=client_eu,
@@ -174,7 +174,7 @@ def test_tr_es(sts):
     # former AP ES can see the old version of the TRs in the test data,
     # but not the current record
 
-    client_former_es = sts.get_client(TestEntity.COMMON, "ES")
+    client_former_es = sts.get_client(TestEntityClient.COMMON, "ES")
 
     trhs_former_es = list_technical_resource_history.sync(client=client_former_es)
     assert isinstance(trhs_former_es, list)
@@ -199,7 +199,7 @@ def test_tr_es(sts):
     # current AP ES can see the current version of the TR,
     # but not the old records
 
-    client_es = sts.get_client(TestEntity.TEST, "ES")
+    client_es = sts.get_client(TestEntityClient.TEST, "ES")
 
     tr = read_technical_resource.sync(
         client=client_es,
@@ -220,7 +220,7 @@ def test_tr_es(sts):
 
 
 def test_tr_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # RLS: TR-FISO002
     # FISO can read all TR history
@@ -270,8 +270,8 @@ def test_tr_fiso(sts):
 
 
 def test_tr_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     cus_so = list_controllable_unit.sync(client=client_so)
     assert isinstance(cus_so, list)
@@ -321,8 +321,8 @@ def test_tr_so(sts):
 # RLS: TR-SP002
 # RLS: TR-SP003
 def test_tr_sp(sts):
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    client_common_sp = sts.get_client(TestEntity.COMMON, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
+    client_common_sp = sts.get_client(TestEntityClient.COMMON, "SP")
 
     trs_sp = list_technical_resource.sync(client=client_sp)
     assert isinstance(trs_sp, list)
@@ -349,7 +349,7 @@ def test_tr_sp(sts):
 
     # create new TR on new CU as FISO
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -412,7 +412,7 @@ def test_tr_sp(sts):
     # add common CUSP from today midnight on new CU
 
     common_sp_id = sts.get_userinfo(client_common_sp)["party_id"]
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
     cusp_common = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -492,7 +492,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         trs = list_technical_resource.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(trs, list)
         assert len(trs) == 0

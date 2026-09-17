@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ErrorMessage,
@@ -116,8 +116,8 @@ def sts():
 
 
 def test_event_eu(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
 
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -130,7 +130,7 @@ def test_event_eu(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    sp_id = sts.get_userinfo(sts.get_client(TestEntity.TEST, "SP"))["party_id"]
+    sp_id = sts.get_userinfo(sts.get_client(TestEntityClient.TEST, "SP"))["party_id"]
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cusp = create_controllable_unit_service_provider.sync(
@@ -196,7 +196,7 @@ def test_event_eu(sts):
     assert check(client_eu) == (1, 1, 1)
 
     # does not work for the other EU
-    client_other_eu = sts.get_client(TestEntity.COMMON, "EU")
+    client_other_eu = sts.get_client(TestEntityClient.COMMON, "EU")
     assert check(client_other_eu) == (0, 0, 0)
 
 
@@ -205,7 +205,7 @@ def test_event_eu(sts):
 
 
 def test_event_sp(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # This test creates a lot of resources related to a *fresh* SP so we can
     # run the test multiple times without interference. However, as SO, we use
@@ -215,13 +215,13 @@ def test_event_sp(sts):
     # a meaningless one related to another fresh SO just to test that SP can see
     # the event.
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cu = create_controllable_unit.sync(
@@ -295,7 +295,7 @@ def test_event_sp(sts):
     )
     if isinstance(sopt, ErrorMessage):
         # SOPT already exists, create dummy SOPT for a fresh SO
-        client_so = sts.fresh_client(TestEntity.TEST, "SO")
+        client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
         new_so_id = sts.get_userinfo(client_so)["party_id"]
         sopt = create_system_operator_product_type.sync(
             client=client_fiso,
@@ -665,7 +665,7 @@ def test_event_sp(sts):
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
 
-    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
+    client_other_sp = sts.fresh_client(TestEntityClient.COMMON, "SP")
     events_other = list_event.sync(client=client_other_sp, limit="10000")
     assert isinstance(events_other, list)
 
@@ -749,8 +749,8 @@ def test_event_sp(sts):
 # This test comes after the SP test. Doing so, we can then test all resources
 # because the SP test creates one of each.
 def test_event_fiso_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     def check(client):
         events = list_event.sync(client=client, limit="10000")
@@ -787,7 +787,7 @@ def test_event_anon(sts):
 
 
 def test_event_ent(sts):
-    client_ent = sts.get_client(TestEntity.TEST)
+    client_ent = sts.get_client(TestEntityClient.TEST)
 
     events = list_event.sync(client=client_ent)
     assert isinstance(events, ErrorMessage)

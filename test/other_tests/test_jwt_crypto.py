@@ -1,7 +1,7 @@
 import jwt
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 
 """Check that the JWT tokens are signed with a recent enough algorithm"""
@@ -10,8 +10,8 @@ from security_token_service import (
 def test_token_alg():
     sts = SecurityTokenService()
 
-    entity_token = sts.get_client(TestEntity.TEST).token
-    party_token = sts.get_client(TestEntity.TEST, "SP").token
+    entity_token = sts.get_client(TestEntityClient.TEST).token
+    party_token = sts.get_client(TestEntityClient.TEST, "SP").token
 
     for token in [entity_token, party_token]:
         unverified_header = jwt.get_unverified_header(token)

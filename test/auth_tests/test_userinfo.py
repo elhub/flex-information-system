@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 import os
 import requests
@@ -33,7 +33,7 @@ def test_no_login():
 
 # Login as FISO (only client credentials step) and call userinfo
 def test_only_client_credentials(sts):
-    entity_token = sts.get_client(TestEntity.TEST).token
+    entity_token = sts.get_client(TestEntityClient.TEST).token
 
     response = requests.get(
         auth_url + "/userinfo", headers={"Authorization": f"Bearer {entity_token}"}
@@ -53,7 +53,7 @@ def test_only_client_credentials(sts):
 
 # Perform login step 2 (token exchange) and call userinfo again
 def test_token_exchange(sts):
-    party_token = sts.get_client(TestEntity.TEST, "SP").token
+    party_token = sts.get_client(TestEntityClient.TEST, "SP").token
 
     response = requests.get(
         auth_url + "/userinfo", headers={"Authorization": f"Bearer {party_token}"}

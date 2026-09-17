@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     EntityClientCreateRequest,
@@ -45,10 +45,10 @@ def sts():
 
 
 def test_entity_client_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_ent = sts.get_client(TestEntity.TEST)
-    client_other_ent = sts.get_client(TestEntity.COMMON)
+    client_ent = sts.get_client(TestEntityClient.TEST)
+    client_other_ent = sts.get_client(TestEntityClient.COMMON)
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
@@ -217,9 +217,9 @@ def test_entity_client_fiso(sts):
 
 
 def test_entity_client_org(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_org = sts.get_client(TestEntity.TEST, "ORG")
+    client_org = sts.get_client(TestEntityClient.TEST, "ORG")
     org_info = sts.get_userinfo(client_org)
     org_pty_id = org_info["party_id"]
 
@@ -258,7 +258,7 @@ def test_entity_client_org(sts):
     assert isinstance(e, ErrorMessage)
 
     # create as the org entity to test fail update and delete as ORG party below
-    client_org_ent = sts.get_client(TestEntity.TEST_ORG)
+    client_org_ent = sts.get_client(TestEntityClient.TEST_ORG)
     clt = create_entity_client.sync(
         client=client_org_ent,
         body=EntityClientCreateRequest(
@@ -286,7 +286,7 @@ def test_entity_client_org(sts):
     # test that org entities with entity client get the policy denied
     # (they respect none of the 2 conditions)
 
-    client_org_with_org_ent = sts.get_client(TestEntity.TEST_ORG, "ORG")
+    client_org_with_org_ent = sts.get_client(TestEntityClient.TEST_ORG, "ORG")
 
     e = update_entity_client.sync(
         client=client_org_with_org_ent,

@@ -4,7 +4,7 @@ from typing import cast
 from flex import AuthenticatedClient
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 
 
@@ -12,7 +12,7 @@ def test_openapi():
     api_url = os.environ["FLEX_URL_BASE"] + "/api/v1"
 
     entity_token = cast(
-        AuthenticatedClient, SecurityTokenService().get_client(TestEntity.TEST)
+        AuthenticatedClient, SecurityTokenService().get_client(TestEntityClient.TEST)
     ).token
 
     # endpoint: GET /openapi.json

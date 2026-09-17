@@ -1,7 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     AuthenticatedClient,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
@@ -50,13 +50,13 @@ def data():
 
     client_fiso = cast(
         AuthenticatedClient,
-        sts.get_client(TestEntity.TEST, "FISO"),
+        sts.get_client(TestEntityClient.TEST, "FISO"),
     )
 
     # setup : create a SPPA and suspend it
 
     # get fresh SO and ask for a product type
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     sopt = create_system_operator_product_type.sync(
@@ -69,7 +69,7 @@ def data():
     assert not isinstance(sopt, ErrorMessage)
 
     # get fresh SP and create a SPPA for this SO
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     sppa = create_service_provider_product_application.sync(
@@ -107,7 +107,7 @@ def data():
     # create another, completely unrelated SPPS to check comments are
     # unreachable there
 
-    client_so2 = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so2 = sts.fresh_client(TestEntityClient.TEST, "SO")
     so2_id = sts.get_userinfo(client_so2)["party_id"]
 
     sopt = create_system_operator_product_type.sync(
@@ -119,7 +119,7 @@ def data():
     )
     assert not isinstance(sopt, ErrorMessage)
 
-    client_sp2 = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp2 = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp2_id = sts.get_userinfo(client_sp2)["party_id"]
 
     sppa = create_service_provider_product_application.sync(
@@ -182,7 +182,7 @@ def check_history(clt, sppsc_id):
 def test_sppsc_fiso(data):
     (sts, client_so, _, spps_id, _) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # both parties create a comment
     # (minimal visibility so the test is even more powerful)
@@ -366,7 +366,7 @@ def test_sppsc_so_sp(data):
     assert check_history(client_sp, sppsc_so.id)
 
     # delete the SPPS so that comments disappear
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     d = delete_service_provider_product_suspension.sync(
         client=client_fiso,
         id=spps_id,

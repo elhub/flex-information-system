@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitResponse,
@@ -61,7 +61,7 @@ def sts():
 
 # RLS: CU-FISO001
 def test_controllable_unit_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     # create a CU and check the list of visible CUs is one CU longer
 
     # endpoint: GET /controllable_unit
@@ -176,13 +176,13 @@ def test_controllable_unit_fiso(sts):
 
 
 def test_controllable_unit_so(sts):
-    client_so = sts.get_client(TestEntity.TEST, "SO")
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     all_cus = list_controllable_unit.sync(client=client_fiso, limit="10000")
     assert isinstance(all_cus, list)
 
-    client_iso = sts.get_client(TestEntity.COMMON, "SO")
+    client_iso = sts.get_client(TestEntityClient.COMMON, "SO")
 
     # RLS: CU-SO001
     # all test CUs on APs in 1000-2000 are within one MGA belonging to Test SO,
@@ -226,7 +226,7 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -238,7 +238,7 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -317,7 +317,7 @@ def test_controllable_unit_eu(sts):
     # former AP end user can see the old version of the CUs in the test data,
     # but not the current record
 
-    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+    client_former_eu = sts.get_client(TestEntityClient.COMMON, "EU")
 
     cuhs_former_eu = list_controllable_unit_history.sync(
         client=client_former_eu,
@@ -346,7 +346,7 @@ def test_controllable_unit_eu(sts):
     # current AP end user can see the current version of the CU,
     # but not the old records
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
 
     cu = read_controllable_unit.sync(
         client=client_eu,
@@ -375,7 +375,7 @@ def test_controllable_unit_es(sts):
     # former AP energy supplier can see the old version of the CUs in the test
     # data, but not the current record
 
-    client_former_es = sts.get_client(TestEntity.COMMON, "ES")
+    client_former_es = sts.get_client(TestEntityClient.COMMON, "ES")
 
     cuhs_former_es = list_controllable_unit_history.sync(
         client=client_former_es,
@@ -403,7 +403,7 @@ def test_controllable_unit_es(sts):
     # current AP energy supplier can see the current version of the CU,
     # but not the old records
 
-    client_es = sts.get_client(TestEntity.TEST, "ES")
+    client_es = sts.get_client(TestEntityClient.TEST, "ES")
 
     cu = read_controllable_unit.sync(
         client=client_es,
@@ -432,7 +432,7 @@ def test_controllable_unit_brp(sts):
     # former AP BRP can see the old version of the CUs in the test data,
     # but not the current record
 
-    client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
+    client_former_brp = sts.get_client(TestEntityClient.COMMON, "BRP")
 
     cus_former_brp = list_controllable_unit.sync(client=client_former_brp)
     assert isinstance(cus_former_brp, list)
@@ -468,7 +468,7 @@ def test_controllable_unit_brp(sts):
     # current AP BRP can see the current version of the CU,
     # but not the old records
 
-    client_brp = sts.get_client(TestEntity.TEST, "BRP")
+    client_brp = sts.get_client(TestEntityClient.TEST, "BRP")
 
     cu = read_controllable_unit.sync(
         client=client_brp,
@@ -487,15 +487,15 @@ def test_controllable_unit_brp(sts):
 
 
 def test_controllable_unit_sp(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp1 = sts.get_client(TestEntity.TEST, "SP")
+    client_sp1 = sts.get_client(TestEntityClient.TEST, "SP")
     sp1_id = sts.get_userinfo(client_sp1)["party_id"]
 
-    client_sp2 = sts.get_client(TestEntity.COMMON, "SP")
+    client_sp2 = sts.get_client(TestEntityClient.COMMON, "SP")
     sp2_id = sts.get_userinfo(client_sp2)["party_id"]
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cu = create_controllable_unit.sync(
@@ -679,7 +679,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         cus = list_controllable_unit.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(cus, list)
         assert len(cus) == 0

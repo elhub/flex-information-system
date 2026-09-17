@@ -279,9 +279,11 @@ def generate_enum_translations(resources, base_schemas=None):
         for field, attr in resource["properties"].items():
             if "enum" in attr:
                 for enum_value in attr["enum"]:
-                    translations[f"{resource['id']}.{field}.{enum_value['id']}"] = (
-                        enum_value["x-intl"]
-                    )
+                    key = f"{resource['id']}.{field}.{enum_value['id']}"
+                    translations[key] = enum_value["x-intl"]
+                    description = enum_value.get("description")
+                    if description and "x-intl" in description:
+                        translations[f"{key}.description"] = description["x-intl"]
 
     # also process global enums from openapi-api-base.yml
     if base_schemas:
@@ -289,9 +291,11 @@ def generate_enum_translations(resources, base_schemas=None):
             if "enum" in schema_data and isinstance(schema_data["enum"], list):
                 if schema_data["enum"] and isinstance(schema_data["enum"][0], dict):
                     for enum_value in schema_data["enum"]:
-                        translations[f"{schema_name}.{enum_value['id']}"] = enum_value[
-                            "x-intl"
-                        ]
+                        key = f"{schema_name}.{enum_value['id']}"
+                        translations[key] = enum_value["x-intl"]
+                        description = enum_value.get("description")
+                        if description and "x-intl" in description:
+                            translations[f"{key}.description"] = description["x-intl"]
 
     transposed = transpose_enum_translations(translations)
 

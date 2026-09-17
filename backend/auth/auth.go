@@ -1259,6 +1259,40 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	_, clientID, _, err := models.GetEntityIdentityByExternalID(ctx, tx, entityToken.ExternalID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not get entity identity in token exchange handler",
+			err,
+		))
+
+		return
+	}
+
+	if clientID != nil {
+		entityClient, err := models.GetEntityClientByClientID(ctx, tx, *clientID)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+				http.StatusInternalServerError,
+				"could not get entity client in token exchange handler",
+				err,
+			))
+
+			return
+		}
+
+		// a client restricted to a specific party can only assume that party
+		if entityClient.PartyID != nil && *entityClient.PartyID != assumePartyID {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidClient,
+				ErrorDescription: "client is not allowed to assume the requested party",
+			})
+
+			return
+		}
+	}
+
 	eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -1418,12 +1452,12 @@ func (auth *API) jwtBearerHandler(
 	}
 	defer tx.Commit(ctx)
 
-	entityID, externalID, pubKeyPEM, entityScopes, err := models.GetEntityClientByUUID(
+	entityClient, err := models.GetEntityClientByClientID(
 		ctx,
 		tx,
 		grant.Issuer,
 	)
-	if err != nil || pubKeyPEM == "" {
+	if err != nil || entityClient.PublicKey == nil || *entityClient.PublicKey == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid or unknown client",
@@ -1434,7 +1468,11 @@ func (auth *API) jwtBearerHandler(
 
 	_ = tx.Commit(ctx)
 
-	block, _ := pem.Decode([]byte(pubKeyPEM))
+	entityID := entityClient.EntityID
+	externalID := entityClient.ExternalID
+	entityScopes := entityClient.Scopes
+
+	block, _ := pem.Decode([]byte(*entityClient.PublicKey))
 	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
 
 	pubKey, ok := pubInterface.(*rsa.PublicKey)
@@ -1494,6 +1532,16 @@ func (auth *API) jwtBearerHandler(
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,
 				ErrorDescription: "could not assume the requested party in sub",
+			})
+
+			return
+		}
+
+		// a client restricted to a specific party can only assume that party
+		if entityClient.PartyID != nil && *entityClient.PartyID != partyID {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidClient,
+				ErrorDescription: "client is not allowed to assume the requested party",
 			})
 
 			return

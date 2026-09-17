@@ -1,7 +1,7 @@
 # type: ignore[union-attr]
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
@@ -27,9 +27,9 @@ def sts():
 
 # RLS: CUSU-COM001
 def test_controllable_unit_summary_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     for client in [client_fiso, client_sp, client_so]:
         cus = list_controllable_unit.sync(client=client)
@@ -42,7 +42,7 @@ def test_controllable_unit_summary_common(sts):
 
 # test that aggregation values are correctly computed
 def test_controllable_unit_summary_aggregation(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # create a CU with no TR and check the summary exists but with zeros
 

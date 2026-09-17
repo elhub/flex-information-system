@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import ProductTypeResponse, ErrorMessage
 from flex.api.product_type import (
@@ -20,7 +20,7 @@ def sts():
 # RLS: PT-COM001
 def test_product_type_common(sts):
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # endpoint: GET /product_type
         pts = list_product_type.sync(client=client)
@@ -40,7 +40,7 @@ def test_product_type_anon(sts):
 
 
 def test_product_type_ent(sts):
-    client_ent = sts.get_client(TestEntity.TEST)
+    client_ent = sts.get_client(TestEntityClient.TEST)
 
     pts = list_product_type.sync(client=client_ent)
     assert isinstance(pts, ErrorMessage)

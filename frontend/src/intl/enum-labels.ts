@@ -109,11 +109,17 @@ export type EnumLabel =
   | "service_providing_group_product_application.ramping_capability.never"
   | "service_providing_group_product_application.ramping_capability.partial"
   | "service_providing_group_product_application.status.prequalification"
+  | "service_providing_group_product_application.status.prequalification.description"
   | "service_providing_group_product_application.status.prequalified"
+  | "service_providing_group_product_application.status.prequalified.description"
   | "service_providing_group_product_application.status.rejected"
+  | "service_providing_group_product_application.status.rejected.description"
   | "service_providing_group_product_application.status.requested"
+  | "service_providing_group_product_application.status.requested.description"
   | "service_providing_group_product_application.status.temporary_qualified"
+  | "service_providing_group_product_application.status.temporary_qualified.description"
   | "service_providing_group_product_application.status.verified"
+  | "service_providing_group_product_application.status.verified.description"
   | "service_providing_group_product_suspension.reason.failed_verification"
   | "service_providing_group_product_suspension.reason.other"
   | "substation.business_id_type.uuid"
@@ -280,14 +286,26 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Breach of conditions",
     "service_provider_product_suspension.reason.other": "Other",
     "service_providing_group_product_application.status.requested": "Requested",
+    "service_providing_group_product_application.status.requested.description":
+      "The application has been submitted and is awaiting assessment by the System operator.",
     "service_providing_group_product_application.status.prequalification":
-      "Prequalification",
+      "In Prequalification",
+    "service_providing_group_product_application.status.prequalification.description":
+      "The application is currently undergoing the prequalification process and is being assessed against qualification requirements.",
     "service_providing_group_product_application.status.temporary_qualified":
       "Temporary qualified",
+    "service_providing_group_product_application.status.temporary_qualified.description":
+      "The application has been accepted for verification without a full prequalification process and is awaiting final verification.",
     "service_providing_group_product_application.status.prequalified":
       "Prequalified",
+    "service_providing_group_product_application.status.prequalified.description":
+      "The application has successfully completed the prequalification process.",
     "service_providing_group_product_application.status.verified": "Verified",
+    "service_providing_group_product_application.status.verified.description":
+      "The application has successfully completed the verification process and is approved by the System Operator.",
     "service_providing_group_product_application.status.rejected": "Rejected",
+    "service_providing_group_product_application.status.rejected.description":
+      "The application was not approved and requires updates before it can be submitted again.",
     "service_providing_group_product_application.ramping_capability.always":
       "Always",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -462,14 +480,26 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Brudd på vilkår",
     "service_provider_product_suspension.reason.other": "Annet",
     "service_providing_group_product_application.status.requested": "Forespurt",
+    "service_providing_group_product_application.status.requested.description":
+      "Søknaden er sendt inn og venter på vurdering av systemoperatøren.",
     "service_providing_group_product_application.status.prequalification":
-      "Prekvalifisering",
+      "Prekvalifisering pågår",
+    "service_providing_group_product_application.status.prequalification.description":
+      "Søknaden gjennomgår for tiden prekvalifiseringsprosessen og blir vurdert opp mot kvalifikasjonskravene.",
     "service_providing_group_product_application.status.temporary_qualified":
       "Midlertidig kvalifisert",
+    "service_providing_group_product_application.status.temporary_qualified.description":
+      "Søknaden er godtatt for verifisering uten en fullstendig prekvalifiseringsprosess, og venter på endelig verifisering.",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
+    "service_providing_group_product_application.status.prequalified.description":
+      "Søknaden har fullført prekvalifiseringsprosessen.",
     "service_providing_group_product_application.status.verified": "Verifisert",
+    "service_providing_group_product_application.status.verified.description":
+      "Søknaden har fullført verifiseringsprosessen og er godkjent av systemoperatøren.",
     "service_providing_group_product_application.status.rejected": "Avvist",
+    "service_providing_group_product_application.status.rejected.description":
+      "Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -641,14 +671,26 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Brot på vilkår",
     "service_provider_product_suspension.reason.other": "Anna",
     "service_providing_group_product_application.status.requested": "Førespurt",
+    "service_providing_group_product_application.status.requested.description":
+      "Søknaden er sendt inn og ventar på vurdering av systemoperatøren.",
     "service_providing_group_product_application.status.prequalification":
-      "Prekvalifisering",
+      "Prekvalifisering pågår",
+    "service_providing_group_product_application.status.prequalification.description":
+      "Søknaden gjennomgår for tida prekvalifiseringsprosessen og vert vurdert opp mot kvalifikasjonskrava.",
     "service_providing_group_product_application.status.temporary_qualified":
       "Mellombels kvalifisert",
+    "service_providing_group_product_application.status.temporary_qualified.description":
+      "Søknaden er godteken for verifisering utan ein fullstendig prekvalifiseringsprosess, og ventar på endeleg verifisering.",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
+    "service_providing_group_product_application.status.prequalified.description":
+      "Søknaden har fullført prekvalifiseringsprosessen.",
     "service_providing_group_product_application.status.verified": "Verifisert",
+    "service_providing_group_product_application.status.verified.description":
+      "Søknaden har fullført verifiseringsprosessen og er godkjend av systemoperatøren.",
     "service_providing_group_product_application.status.rejected": "Avvist",
+    "service_providing_group_product_application.status.rejected.description":
+      "Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
