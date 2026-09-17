@@ -200,6 +200,47 @@ export type ControllableUnitLookupRequest = {
   accounting_point?: string;
 };
 
+export type ServiceProvidingGroupControllableUnitsApplications = {
+  /**
+   * The surrogate key of the controllable unit
+   */
+  id?: number;
+  /**
+   * The name of the controllable unit
+   */
+  name?: string;
+  /**
+   * The surrogate key of the service providing group
+   */
+  service_providing_group_id?: number;
+  /**
+   * Details about the grid prequalification for this controllable unit
+   */
+  grid_prequalification?: {
+    /**
+     * The surrogate key of the grid prequalification
+     */
+    id?: number;
+    /**
+     * When the prequalification was completed, null if not
+     */
+    prequalified_at?: string;
+  };
+  /**
+   * Details about the product applications for this controllable unit
+   */
+  product_applications?: Array<{
+    /**
+     * The surrogate key of the product application
+     */
+    id?: number;
+    /**
+     * When the prequalification was completed, null if not
+     */
+    prequalified_at?: string;
+  }>;
+};
+
 /**
  * Response schema for controllable unit lookup operations
  */
@@ -6953,6 +6994,46 @@ export type CallEntityLookupResponses = {
 
 export type CallEntityLookupResponse =
   CallEntityLookupResponses[keyof CallEntityLookupResponses];
+
+export type ReadSpgCuApplicationStatusData = {
+  body?: never;
+  path: {
+    /**
+     * ID of the service providing group
+     */
+    spg_id: number;
+  };
+  query?: never;
+  url: "/service_providing_group/{spg_id}/controllable_units/applications";
+};
+
+export type ReadSpgCuApplicationStatusErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadSpgCuApplicationStatusError =
+  ReadSpgCuApplicationStatusErrors[keyof ReadSpgCuApplicationStatusErrors];
+
+export type ReadSpgCuApplicationStatusResponses = {
+  /**
+   * OK
+   */
+  200: Array<ServiceProvidingGroupControllableUnitsApplications>;
+};
+
+export type ReadSpgCuApplicationStatusResponse =
+  ReadSpgCuApplicationStatusResponses[keyof ReadSpgCuApplicationStatusResponses];
 
 export type ListControllableUnitData = {
   body?: never;

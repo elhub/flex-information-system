@@ -91,6 +91,12 @@ func NewAPIHandler(
 		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:entity:lookup"}, http.HandlerFunc(data.entityLookupHandler)),
 	)
 
+	// reverse-proxied to the Kotlin backend
+	mux.HandleFunc(
+		"POST /service_providing_group/{spg_id}/controllable_units/application_status",
+		data.kbackendProxyHandler,
+	)
+
 	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
 		auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler)),
 	)

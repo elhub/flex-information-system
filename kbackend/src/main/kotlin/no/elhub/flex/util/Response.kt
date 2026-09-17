@@ -7,7 +7,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
-import kotlinx.serialization.json.Json
+import no.elhub.flex.config.flexJson
 import no.elhub.flex.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.InternalServerError
@@ -30,7 +30,7 @@ suspend inline fun <reified T> Either<AppError, T>.respondJson(
         ifLeft = { error -> handleError(call, error) },
         ifRight = { value ->
             call.respondText(
-                Json.encodeToString(value),
+                flexJson.encodeToString(value),
                 ContentType.Application.Json,
                 status,
             )
@@ -57,7 +57,7 @@ suspend fun handleError(
     }
 
     call.respondText(
-        Json.encodeToString(
+        flexJson.encodeToString(
             ErrorMessage(
                 code = "HTTP${error.code.value}",
                 message = error.message,

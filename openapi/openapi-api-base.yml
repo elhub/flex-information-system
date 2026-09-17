@@ -230,6 +230,56 @@ components:
           example: "709000000000000057"
       required:
         - end_user
+
+    service_providing_group_controllable_units_applications_response:
+      summary: A controllable units application statuses in a service providing group
+      type: object
+      properties:
+        id:
+          description: The surrogate key of the controllable unit
+          format: bigint
+          type: integer
+          example: 123
+        name:
+          description: The name of the controllable unit
+          format: text
+          type: string
+          example: Battery 101
+        service_providing_group_id:
+          description: The surrogate key of the service providing group
+          format: bigint
+          type: integer
+          example: 123
+        grid_prequalification:
+          description: Details about the grid prequalification for this controllable unit
+          type: object
+          properties:
+            id:
+              description: The surrogate key of the grid prequalification
+              format: bigint
+              type: integer
+              example: 123
+            prequalified_at:
+              description: When the prequalification was completed, null if not
+              type: string
+              format: date-time
+              example: "2023-01-01T00:00:00+00:00"
+        product_applications:
+          description: Details about the product applications for this controllable unit
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                description: The surrogate key of the product application
+                format: bigint
+                type: integer
+                example: 123
+              prequalified_at:
+                description: When the prequalification was completed, null if not
+                type: string
+                format: date-time
+                example: "2023-01-01T00:00:00+00:00"
     controllable_unit_lookup_response:
       summary: Controllable unit lookup
       description: Response schema for controllable unit lookup operations
@@ -658,6 +708,49 @@ paths:
               schema:
                 $ref: "#/components/schemas/entity_lookup_response"
           description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Internal Server Error
+  /service_providing_group/{spg_id}/controllable_units/applications:
+    get:
+      operationId: read_spg_cu_application_status
+      summary: Read applications for each controllable unit in a service providing group
+      security:
+        - bearerAuth: ["read:data"]
+      tags:
+        - controllable_unit
+        - service_providing_group
+      parameters:
+        - in: path
+          name: spg_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the service providing group
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/service_providing_group_controllable_units_applications_response"
+          description: OK
         "400":
           content:
             application/json:

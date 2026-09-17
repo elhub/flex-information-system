@@ -192,6 +192,26 @@ export const zControllableUnitLookupRequest = z.object({
     .optional(),
 });
 
+export const zServiceProvidingGroupControllableUnitsApplications = z.object({
+  id: z.coerce.number().optional(),
+  name: z.string().optional(),
+  service_providing_group_id: z.coerce.number().optional(),
+  grid_prequalification: z
+    .object({
+      id: z.coerce.number().optional(),
+      prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    })
+    .optional(),
+  product_applications: z
+    .array(
+      z.object({
+        id: z.coerce.number().optional(),
+        prequalified_at: z.iso.datetime({ offset: true }).optional(),
+      }),
+    )
+    .optional(),
+});
+
 /**
  * Response schema for controllable unit lookup operations
  */
@@ -3691,6 +3711,17 @@ export const zCallEntityLookupBody = zEntityLookupRequest;
  * OK
  */
 export const zCallEntityLookupResponse = zEntityLookup;
+
+export const zReadSpgCuApplicationStatusPath = z.object({
+  spg_id: z.coerce.number(),
+});
+
+/**
+ * OK
+ */
+export const zReadSpgCuApplicationStatusResponse = z.array(
+  zServiceProvidingGroupControllableUnitsApplications,
+);
 
 export const zDeleteControllableUnitSuspensionBody = zEmptyObjectWritable;
 

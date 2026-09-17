@@ -483,6 +483,9 @@ import type {
   ReadServiceProvidingGroupSummaryData,
   ReadServiceProvidingGroupSummaryErrors,
   ReadServiceProvidingGroupSummaryResponses,
+  ReadSpgCuApplicationStatusData,
+  ReadSpgCuApplicationStatusErrors,
+  ReadSpgCuApplicationStatusResponses,
   ReadSystemOperatorProductTypeData,
   ReadSystemOperatorProductTypeErrors,
   ReadSystemOperatorProductTypeHistoryData,
@@ -667,6 +670,28 @@ export const callEntityLookup = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+
+/**
+ * Read applications for each controllable unit in a service providing group
+ */
+export const readSpgCuApplicationStatus = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadSpgCuApplicationStatusData, ThrowOnError>,
+): RequestResult<
+  ReadSpgCuApplicationStatusResponses,
+  ReadSpgCuApplicationStatusErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).get<
+    ReadSpgCuApplicationStatusResponses,
+    ReadSpgCuApplicationStatusErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group/{spg_id}/controllable_units/applications",
+    ...options,
   });
 
 /**
