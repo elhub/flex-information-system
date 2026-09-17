@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"flex/auth"
 	"flex/internal/embed"
-	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"fmt"
 	"io"
@@ -53,9 +52,7 @@ func NewAPIHandler(baseURL string, postgRESTUpstream string) (http.Handler, erro
 		"Flex Grid API",
 	))
 
-	listPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("grid", http.HandlerFunc(grid.postgRESTHandler)),
-	)
+	listPostgRESTHandler := auth.CheckScopeForRequest("grid", http.HandlerFunc(grid.postgRESTHandler))
 	postgRESTHandler := auth.CheckScopeForRequest(
 		"grid", http.HandlerFunc(grid.postgRESTHandler),
 	)

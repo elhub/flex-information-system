@@ -47,7 +47,6 @@ const fetchSnapshot = async (
     valid_at: asOf,
     embed: "controllable_unit_history!",
     "controllable_unit_history.as_of": asOf,
-    limit: "99999",
   };
 
   const memberships = await listServiceProvidingGroupMembershipHistory({
