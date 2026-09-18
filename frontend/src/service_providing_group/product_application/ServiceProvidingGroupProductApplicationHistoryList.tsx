@@ -17,7 +17,11 @@ import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { FunctionField } from "react-admin";
 import { useTranslateField } from "../../intl/intl";
 
-export const ServiceProvidingGroupProductApplicationHistoryList = () => {
+export const ServiceProvidingGroupProductApplicationHistoryList = ({
+  applicationId,
+}: {
+  applicationId?: number;
+}) => {
   const { service_providing_group_product_application_id } = useParams();
   const t = useTranslateField();
 
@@ -30,7 +34,10 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   return (
     <List
       resource="service_providing_group_product_application_history"
-      filter={{ service_providing_group_product_application_id }}
+      filter={{
+        service_providing_group_product_application_id:
+          applicationId ?? service_providing_group_product_application_id,
+      }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}

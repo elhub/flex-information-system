@@ -1,5 +1,5 @@
-import { Badge, Loader } from "../../components/ui";
-import { useParams } from "react-router-dom";
+import { Badge, Button, Dropdown, Loader } from "../../components/ui";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
@@ -8,8 +8,9 @@ import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
-import { ShowPageLayout } from "../../components/ShowPageLayout";
+import { ShowPageResourceLayout } from "../../components/ShowPageResourceLayout";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
+import { IconDots, IconPencil } from "@elhub/ds-icons";
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,35 +38,81 @@ export const ControllableUnitShow = () => {
     return null;
   }
 
+  const eventsFilter = encodeURIComponent(
+    JSON.stringify({ "source@eq": `/controllable_unit/${cu.id}` }),
+  );
   const canActivateControllableUnit =
     !!permissions?.allow("controllable_unit", "update") &&
     (viewModel.technicalResources?.length ?? 0) > 0;
+  const canEdit = permissions?.allow("controllable_unit", "update");
+  const canReadEvents = permissions?.allow("event", "read");
 
   return (
-    <ShowPageLayout
-      title={`Controllable Unit - ${cu.name}`}
+    <ShowPageResourceLayout
+      resourceType={`Controllable unit #${cu.id}`}
+      resourceName={cu.name}
       alerts={<ControllableUnitAlerts controllableUnitViewModel={viewModel} />}
-      badge={
-        <>
-          <Badge
-            size="small"
-            status={cuStatusVariantMap[cu.status].status}
-            variant="block"
-            icon={cuStatusVariantMap[cu.status].icon}
-          >
-            {translateEnum(`controllable_unit.status.${cu.status}`)}
-          </Badge>
-          {cu.status === "new" && (
-            <ActivateControllableUnitButton
-              controllableUnitId={cu.id}
-              disabled={!canActivateControllableUnit}
-            />
-          )}
-        </>
+      status={
+        <Badge
+          size="small"
+          status={cuStatusVariantMap[cu.status].status}
+          variant="block"
+          icon={cuStatusVariantMap[cu.status].icon}
+        >
+          {translateEnum(`controllable_unit.status.${cu.status}`)}
+        </Badge>
       }
-    >
-      <ControllableUnitShowSummary viewModel={viewModel} />
-      <ControllableUnitShowTabs cuId={cu.id} />
-    </ShowPageLayout>
+      utilityActions={
+        canEdit || canReadEvents ? (
+          <Dropdown>
+            <Button
+              as={Dropdown.Toggle}
+              variant="tertiary"
+              icon={IconDots}
+              aria-label="More actions"
+              title="More actions"
+            />
+            <Dropdown.Menu arrow placement="bottom-start">
+              {canEdit && (
+                <Dropdown.Menu.GroupedList>
+                  <Dropdown.Menu.GroupedList.Item
+                    as={RouterLink}
+                    to={`/controllable_unit/${cu.id}/edit`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <IconPencil />
+                      Edit
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                </Dropdown.Menu.GroupedList>
+              )}
+              {canReadEvents && (
+                <>
+                  {canEdit && <Dropdown.Menu.Divider />}
+                  <Dropdown.Menu.GroupedList>
+                    <Dropdown.Menu.GroupedList.Item
+                      as={RouterLink}
+                      to={`/event?filter=${eventsFilter}`}
+                    >
+                      Events
+                    </Dropdown.Menu.GroupedList.Item>
+                  </Dropdown.Menu.GroupedList>
+                </>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : undefined
+      }
+      workflowActions={
+        cu.status === "new" ? (
+          <ActivateControllableUnitButton
+            controllableUnitId={cu.id}
+            disabled={!canActivateControllableUnit}
+          />
+        ) : undefined
+      }
+      summary={<ControllableUnitShowSummary viewModel={viewModel} />}
+      content={<ControllableUnitShowTabs cuId={cu.id} viewModel={viewModel} />}
+    />
   );
 };

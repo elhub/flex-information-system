@@ -51,14 +51,20 @@ const CULookupButton = ({
   </Button>
 );
 
-export const ControllableUnitServiceProviderList = () => {
+export const ControllableUnitServiceProviderList = ({
+  controllableUnitId,
+}: {
+  controllableUnitId?: number;
+}) => {
   const { controllable_unit_id } = useParams<{
     controllable_unit_id: string;
   }>();
+  const effectiveControllableUnitId =
+    controllableUnitId ?? Number(controllable_unit_id);
   const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
     "controllable_unit",
-    { id: Number(controllable_unit_id) },
-    { enabled: !!controllable_unit_id },
+    { id: effectiveControllableUnitId },
+    { enabled: Number.isFinite(effectiveControllableUnitId) },
   );
   const { permissions } = usePermissions<Permissions>();
 
