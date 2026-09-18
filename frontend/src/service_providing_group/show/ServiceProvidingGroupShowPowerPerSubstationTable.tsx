@@ -6,7 +6,7 @@ import {
 } from "./useSpgPowerPerSubstation";
 import {
   SpgControllableUnitRow,
-  useSpgControllableUnits,
+  useSpgControllableUnitsMap,
 } from "./useSpgControllableUnits";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
@@ -27,12 +27,12 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
-  const [expandedSubstationId, setExpandedSubstationId] = useState<
-    string | undefined
-  >(undefined);
-  const { data: cus } = useSpgControllableUnits(
-    expandedSubstationId ? spgId : undefined,
-    expandedSubstationId,
+  const [expandedSubstationIds, setExpandedSubstationIds] = useState<
+    Set<string>
+  >(new Set());
+  const cuMap = useSpgControllableUnitsMap(
+    spgId,
+    Array.from(expandedSubstationIds),
   );
   const translate = useTranslate();
   const t = useTranslateField();
@@ -174,19 +174,29 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
 
   return (
     <SimpleTable
-      expandPanel={(_) => {
-        return (
-          <SimpleTable
-            columns={controllableUnitColumns}
-            data={cus ? cus : []}
-            className="w-full p-0"
-          />
-        );
-      }}
+      expandPanel={(row) => (
+        <SimpleTable
+          columns={controllableUnitColumns}
+          data={
+            (row.substationBusinessId
+              ? cuMap.get(row.substationBusinessId)
+              : undefined) ?? []
+          }
+          className="w-full p-0"
+        />
+      )}
       onExpand={(row, isOpen) => {
-        if (isOpen && row.substationBusinessId) {
-          setExpandedSubstationId(row.substationBusinessId);
-        }
+        if (!row.substationBusinessId) return;
+        const substationBusinessId = row.substationBusinessId;
+        setExpandedSubstationIds((prev) => {
+          const next = new Set(prev);
+          if (isOpen) {
+            next.add(substationBusinessId);
+          } else {
+            next.delete(substationBusinessId);
+          }
+          return next;
+        });
       }}
       data={data ?? []}
       columns={columns}

@@ -3,7 +3,7 @@ import {
   throwOnError,
   toDateString,
 } from "../../util";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { listServiceProvidingGroupMembership } from "../../generated-client";
 
 export type SpgControllableUnitRow = {
@@ -62,13 +62,28 @@ const fetchSpgControllableUnits = async (
     });
 };
 
-export const useSpgControllableUnits = (
+const spgControllableUnitsQueryKey = (
   spgId: number | undefined,
-  substationBusinessId: string | undefined,
-) =>
-  useQuery({
-    queryKey: ["spg_cu", spgId, substationBusinessId],
-    queryFn: () =>
-      fetchSpgControllableUnits(spgId ?? 0, substationBusinessId ?? ""),
-    enabled: !!spgId && !!substationBusinessId,
+  substationBusinessId: string,
+) => ["spg_cu", spgId, substationBusinessId];
+
+export const useSpgControllableUnitsMap = (
+  spgId: number | undefined,
+  substationBusinessIds: string[],
+): Map<string, SpgControllableUnitRow[] | undefined> => {
+  const results = useQueries({
+    queries: substationBusinessIds.map((substationBusinessId) => ({
+      queryKey: spgControllableUnitsQueryKey(spgId, substationBusinessId),
+      queryFn: () =>
+        fetchSpgControllableUnits(spgId ?? 0, substationBusinessId),
+      enabled: !!spgId,
+    })),
   });
+
+  return new Map(
+    substationBusinessIds.map((substationBusinessId, index) => [
+      substationBusinessId,
+      results[index]?.data,
+    ]),
+  );
+};
