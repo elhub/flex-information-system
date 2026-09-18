@@ -1,4 +1,8 @@
-import { throwOnError, toDateString } from "../../util";
+import {
+  findCurrentlyValidRecord,
+  throwOnError,
+  toDateString,
+} from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { listServiceProvidingGroupMembership } from "../../generated-client";
 
@@ -9,8 +13,12 @@ export type SpgControllableUnitRow = {
   validFrom: string;
   validTo: string;
   maximum_active_power: number;
+  rated_power: number | undefined;
   regulation_direction: string;
-  accountingPointId?: string;
+  accountingPointId?: number;
+  location?: string;
+  mpid?: string;
+  brpName: string;
   substationBusinessId: string | null;
 };
 
@@ -19,7 +27,8 @@ const fetchSpgControllableUnits = async (
   substationBusinessId: string,
 ): Promise<SpgControllableUnitRow[]> => {
   const query: Record<string, string> = {
-    embed: "controllable_unit!(accounting_point!(grid_location!))",
+    embed:
+      "controllable_unit!(summary,accounting_point!(grid_location!,balance_responsible_party!(balance_responsible_party!)))",
     valid_at: new Date().toISOString(),
     service_providing_group_id: `eq.${spgId}`,
     "controllable_unit.accounting_point.grid_location.business_id": `eq.${substationBusinessId}`,
@@ -33,6 +42,8 @@ const fetchSpgControllableUnits = async (
     .filter((m) => m.controllable_unit)
     .map((m) => {
       const cu = m.controllable_unit!;
+      const ap = cu.accounting_point;
+      const brp = findCurrentlyValidRecord(ap?.balance_responsible_party ?? []);
       return {
         id: cu.id,
         membershipId: m.id,
@@ -40,10 +51,13 @@ const fetchSpgControllableUnits = async (
         validFrom: toDateString(m.valid_from),
         validTo: toDateString(m.valid_to),
         maximum_active_power: cu.maximum_active_power,
+        rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
         regulation_direction: cu.regulation_direction,
-        accountingPointId: cu?.accounting_point?.business_id,
-        substationBusinessId:
-          cu.accounting_point?.grid_location?.business_id ?? null,
+        accountingPointId: cu.accounting_point_id,
+        location: ap?.business_id,
+        mpid: ap?.business_id,
+        brpName: brp?.balance_responsible_party?.name ?? "-",
+        substationBusinessId: ap?.grid_location?.business_id ?? null,
       };
     });
 };
