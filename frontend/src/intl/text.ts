@@ -14,6 +14,8 @@ export type TextKey =
   | "table.header.aggregated_rated_power"
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
+  | "table.header.grid_prequalification"
+  | "table.header.product_application"
   | "table.header.valid_from"
   | "table.header.valid_to"
   | "table.header.substation"
@@ -58,6 +60,7 @@ export type TextKey =
   | "spgpa_draft_status_tooltip"
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
+  | "spgpa_hide_prequalified"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -167,6 +170,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
+    "table.header.grid_prequalification": "Grid prequalification",
+    "table.header.product_application": "Product application",
     "table.header.valid_from": "Valid from",
     "table.header.valid_to": "Valid to",
     "table.header.substation": "Substation",
@@ -272,6 +277,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
       "Filter by name, id or accounting point id",
+    spgpa_hide_prequalified: "Hide prequalified",
     spg_changes_since_label: "Compare changes since",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
@@ -366,6 +372,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
+    "table.header.grid_prequalification": "Nettprekvalifisering",
+    "table.header.product_application": "Produktprekvalifisering",
     "table.header.valid_from": "Gyldig fra",
     "table.header.valid_to": "Gyldig til",
     "table.header.substation": "Substasjon",
@@ -468,6 +476,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id eller avregningspunkt",
+    spgpa_hide_prequalified: "Skjul prekvalifiserte",
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",

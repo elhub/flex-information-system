@@ -63,6 +63,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       <SpgpaShowTabs
         spgId={spgpa.service_providing_group_id}
         spgpaId={spgpa.id}
+        spgpa={spgpa}
         spg={spg.data}
         powerScale={powerScale}
       />
