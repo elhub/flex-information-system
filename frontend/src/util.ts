@@ -123,6 +123,14 @@ export const findCurrentlyValidRecord = <
   });
 };
 
+// Whether timestamp `a` is at or before timestamp `b`. Returns `false` if
+// either timestamp is missing.
+export const isAtOrBefore = (
+  a: string | undefined,
+  b: string | undefined,
+): boolean =>
+  a != null && b != null && new Date(a).getTime() <= new Date(b).getTime();
+
 // TODO: replace all occurrences with calls to a generated API client
 export const fetchJSON = async <T>(url: string): Promise<T[]> => {
   const response = await fetch(url, {
