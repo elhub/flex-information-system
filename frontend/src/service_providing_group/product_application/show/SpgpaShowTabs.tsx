@@ -10,6 +10,7 @@ import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
 import { SpgInfoTab } from "./SpgInfoTab";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
+import { useTranslate } from "ra-core";
 
 type Props = {
   spgId: number;
@@ -27,14 +28,21 @@ export const SpgpaShowTabs = ({
   powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("spg_info");
+  const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="SPG info" value="spg_info" />
-        <Tabs.Tab label="Controllable units" value="controllable_units" />
-        <Tabs.Tab label="Comments" value="comments" />
+        <Tabs.Tab label={translate("text.tab.spg_info")} value="spg_info" />
+        <Tabs.Tab
+          label={translate("text.tab.controllable_units")}
+          value="controllable_units"
+        />
+        <Tabs.Tab label={translate("text.tab.comments")} value="comments" />
         {attachmentsEnabled && (
-          <Tabs.Tab label="Attachments" value="attachments" />
+          <Tabs.Tab
+            label={translate("text.tab.attachments")}
+            value="attachments"
+          />
         )}
       </Tabs.List>
       <Tabs.Panel value="spg_info">

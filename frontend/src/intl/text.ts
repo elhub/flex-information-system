@@ -8,6 +8,9 @@ export type TextKey =
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
   | "tab.changes"
+  | "tab.spg_info"
+  | "tab.comments"
+  | "tab.attachments"
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
@@ -166,6 +169,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
+    "tab.spg_info": "SPG info",
+    "tab.comments": "Comments",
+    "tab.attachments": "Attachments",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
@@ -366,6 +372,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
+    "tab.spg_info": "SPG-info",
+    "tab.comments": "Kommentarer",
+    "tab.attachments": "Vedlegg",
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
