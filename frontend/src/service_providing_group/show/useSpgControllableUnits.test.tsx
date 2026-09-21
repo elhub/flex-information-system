@@ -70,7 +70,7 @@ beforeEach(() => {
 });
 
 it(
-  "builds a correct map as more substations with CUs loads," +
+  "builds a correct map as more substations with CUs load," +
     " without losing or mixing up earlier data",
   async () => {
     mockedList.mockImplementation(async (options) => {
