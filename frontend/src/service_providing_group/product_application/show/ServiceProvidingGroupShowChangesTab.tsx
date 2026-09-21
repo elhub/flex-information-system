@@ -11,10 +11,10 @@ import {
   Loader,
   Switch,
   Table,
-} from "../../components/ui";
+} from "../../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
-import { formatScaled, KILO, Scale } from "../../utils/scales";
-import { cn, toDateTimeString } from "../../util";
+import { formatScaled, KILO, Scale } from "../../../utils/scales";
+import { cn, toDateTimeString } from "../../../util";
 
 type Props = {
   spgId: number;

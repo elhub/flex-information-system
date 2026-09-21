@@ -3,8 +3,8 @@ import {
   listServiceProvidingGroupMembershipHistory,
   ListServiceProvidingGroupMembershipHistoryData,
   ServiceProvidingGroupMembershipHistory,
-} from "../../generated-client";
-import { throwOnError } from "../../util";
+} from "../../../generated-client";
+import { throwOnError } from "../../../util";
 
 export type SpgChangeStatus = "added" | "removed" | "changed" | "unchanged";
 

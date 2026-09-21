@@ -10,6 +10,7 @@ import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
 import { SpgInfoTab } from "./SpgInfoTab";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
+import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
 import { useTranslate } from "ra-core";
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
   spgpaId: number;
   spgpa: ServiceProvidingGroupProductApplication;
   spg: ServiceProvidingGroup | undefined;
+  showChanges?: boolean;
   powerScale: Scale;
 };
 
@@ -25,6 +27,7 @@ export const SpgpaShowTabs = ({
   spgpaId,
   spgpa,
   spg,
+  showChanges,
   powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("spg_info");
@@ -43,6 +46,9 @@ export const SpgpaShowTabs = ({
             label={translate("text.tab.attachments")}
             value="attachments"
           />
+        )}
+        {showChanges && (
+          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
         )}
       </Tabs.List>
       <Tabs.Panel value="spg_info">
@@ -63,6 +69,16 @@ export const SpgpaShowTabs = ({
           <AttachmentList
             resource="service_providing_group_product_application"
             parentId={spgpaId}
+          />
+        </Tabs.Panel>
+      )}
+      {showChanges && (
+        <Tabs.Panel value="changes">
+          <ServiceProvidingGroupShowChangesTab
+            key={`${spgId}-${spg?.created_at ?? "unknown"}`}
+            spgId={spgId}
+            spgCreatedAt={spg?.created_at}
+            powerScale={powerScale}
           />
         </Tabs.Panel>
       )}
