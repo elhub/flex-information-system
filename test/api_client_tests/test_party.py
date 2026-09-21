@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     PartyResponse,
@@ -113,7 +113,7 @@ def sts():
 
 # RLS: PTY-FISO001
 def test_party_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     ent = create_entity.sync(
         client=client_fiso,
@@ -197,10 +197,10 @@ def test_party_fiso(sts):
 
 
 def test_party_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # RLS: PTY-COM001
         # can read history on parties they can read
@@ -237,7 +237,7 @@ def test_party_common(sts):
 # RLS: PTY-COM003
 def test_party_ent(sts):
     for role in sts.COMMON_ROLES + ["ENT"]:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
         # can read parties they belong to
 
         pms_visible = list_party_membership.sync(
@@ -253,8 +253,8 @@ def test_party_ent(sts):
 
 # RLS: PTY-ENT002
 def test_party_ent002(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_ent = sts.get_client(TestEntity.TEST, "ENT")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_ent = sts.get_client(TestEntityClient.TEST, "ENT")
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
     parties_owned_by_ent = list_party.sync(
@@ -276,7 +276,7 @@ def test_rla_absence(sts):
             for p in cast(
                 list,
                 list_party.sync(
-                    client=sts.get_client(TestEntity.TEST, "FISO"),
+                    client=sts.get_client(TestEntityClient.TEST, "FISO"),
                     limit="10000",
                 ),
             )
@@ -288,7 +288,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         ps = list_party.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
             limit="10000",
         )
         assert isinstance(ps, list)

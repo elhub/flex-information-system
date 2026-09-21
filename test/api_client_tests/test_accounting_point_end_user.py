@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import AccountingPointEndUserResponse
 from flex.api.accounting_point_end_user import (
@@ -17,7 +17,7 @@ def sts():
 
 # RLS: APEU-FISO001
 def test_accounting_point_end_user_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /accounting_point_end_user
     apeu = list_accounting_point_end_user.sync(
@@ -34,7 +34,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         apeu = list_accounting_point_end_user.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(apeu, list)
         assert len(apeu) == 0

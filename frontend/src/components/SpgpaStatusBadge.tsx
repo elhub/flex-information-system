@@ -45,5 +45,9 @@ export const SpgpaStatusBadge = ({ status }: Props) => {
     );
   }
 
-  return badge;
+  const description = te(
+    `service_providing_group_product_application.status.${status}.description` as EnumLabel,
+  );
+
+  return <Tooltip content={description}>{badge}</Tooltip>;
 };

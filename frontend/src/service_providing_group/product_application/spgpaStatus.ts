@@ -6,7 +6,7 @@ import {
   IconWarningCircle,
 } from "@elhub/ds-icons";
 import { ServiceProvidingGroupProductApplicationStatus } from "../../generated-client";
-import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../../components/EDS-ra";
 
 export const DRAFT_STATUS = "draft";
 

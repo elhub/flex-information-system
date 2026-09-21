@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
@@ -83,30 +83,30 @@ def data():
 
     client_fiso = cast(
         AuthenticatedClient,
-        sts.get_client(TestEntity.TEST, "FISO"),
+        sts.get_client(TestEntityClient.TEST, "FISO"),
     )
 
     client_sp = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.TEST, "SP"),
+        sts.fresh_client(TestEntityClient.TEST, "SP"),
     )
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     client_so = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.TEST, "SO"),
+        sts.fresh_client(TestEntityClient.TEST, "SO"),
     )
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     client_other_so = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.COMMON, "SO"),
+        sts.fresh_client(TestEntityClient.COMMON, "SO"),
     )
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     client_eu = cast(
         AuthenticatedClient,
-        sts.get_client(TestEntity.TEST, "EU"),
+        sts.get_client(TestEntityClient.TEST, "EU"),
     )
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
@@ -257,7 +257,7 @@ def data():
 def test_spgpa_fiso_sp_so(data):
     (sts, spg_ids, spgm_ids, client_sp, so_clients, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     client_so = so_clients[0]
     so_id = so_ids[0]
@@ -635,7 +635,7 @@ def test_spgpa_fiso_sp_so(data):
 def test_spgpa_product_type_ids_not_empty(data):
     (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     so_id = so_ids[0]
 
     # insert with empty product_type_ids must fail
@@ -679,7 +679,7 @@ def test_spgpa_product_type_ids_not_empty(data):
 def test_spgpa_val011_complete_at_required(data):
     (sts, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     so_id = so_ids[0]
 
     spgpa = create_service_providing_group_product_application.sync(
@@ -722,7 +722,7 @@ def test_spgpa_val011_complete_at_required(data):
 def test_spgpa_no_duplicate_product_types(data):
     (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     so_id = so_ids[0]
 
     # create a first application for spg[0] / so[0] with pt_ids[0]
@@ -843,7 +843,7 @@ def test_spgpa_common(data):
     (sts, _, _, _, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         spgpa_visible = list_service_providing_group_product_application.sync(
             client=client,

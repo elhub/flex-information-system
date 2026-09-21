@@ -1,7 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     AuthenticatedClient,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
@@ -54,15 +54,17 @@ import pytest
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
+    client_so = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cu = create_controllable_unit.sync(
@@ -139,7 +141,7 @@ def check_history(client, cusc_id):
 def test_cus_fiso(data):
     (sts, cu_id, (_, so_id), _) = data
 
-    client_fiso = sts.fresh_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.fresh_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: POST /service_providing_group_grid_suspension
     cus = create_controllable_unit_suspension.sync(

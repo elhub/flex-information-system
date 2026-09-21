@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { BodyText, Table } from "./ui";
 
 export type ColumnOf<TList extends unknown[] | undefined> = Column<
@@ -18,6 +18,8 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
   rowActions?: (row: T) => ReactNode;
+  expandPanel?: (row: T) => ReactNode;
+  onExpand?: (row: T, isOpen: boolean) => void;
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
   rowKey?: (row: T) => string | number;
   className?: string;
@@ -31,11 +33,14 @@ export const SimpleTable = <T extends { id?: string | number }>({
   empty = "No results",
   action,
   rowActions,
+  expandPanel,
+  onExpand,
   checkbox,
   className,
   rowKey,
   rowClick,
 }: SimpleTableProps<T>) => {
+  const hasRowClick = rowClick !== undefined;
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
     record: T,
@@ -65,6 +70,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
     <Table className={className} size={size}>
       <Table.Header>
         <Table.Row>
+          {expandPanel && <Table.ColumnHeader style={{ width: "1px" }} />}
           {checkbox && (
             <Table.ColumnHeader scope="col">
               {checkbox.header ?? ""}
@@ -89,28 +95,52 @@ export const SimpleTable = <T extends { id?: string | number }>({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {data.map((row, i) => (
-          <Table.Row
-            key={rowKey ? rowKey(row) : String(row.id ?? i)}
-            onClick={(e) => handleRowClick(e, row)}
-            className={rowClick ? "cursor-pointer" : undefined}
-          >
-            {checkbox && (
-              <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
-            )}
-            {columns.map((col) => (
-              <Table.DataCell key={String(col.key)}>
-                {col.render
-                  ? col.render(row[col.key], row)
-                  : String(row[col.key] ?? "")}
-              </Table.DataCell>
-            ))}
-            {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
-            {hasAnyAction && (
-              <Table.DataCell>{rowActions!(row)}</Table.DataCell>
-            )}
-          </Table.Row>
-        ))}
+        {data.map((row, i) =>
+          expandPanel ? (
+            <Table.ExpandableRow
+              key={rowKey ? rowKey(row) : String(row.id ?? i)}
+              style={hasRowClick ? { cursor: "pointer" } : undefined}
+              content={expandPanel(row)}
+              onOpenChange={(isOpen: boolean) => onExpand?.(row, isOpen)}
+            >
+              {checkbox && (
+                <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
+              )}
+              {columns.map((col) => (
+                <Table.DataCell key={String(col.key)}>
+                  {col.render
+                    ? col.render(row[col.key], row)
+                    : String(row[col.key] ?? "")}
+                </Table.DataCell>
+              ))}
+              {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
+              {hasAnyAction && (
+                <Table.DataCell>{rowActions!(row)}</Table.DataCell>
+              )}
+            </Table.ExpandableRow>
+          ) : (
+            <Table.Row
+              key={rowKey ? rowKey(row) : String(row.id ?? i)}
+              onClick={(e) => handleRowClick(e, row)}
+              className={rowClick ? "cursor-pointer" : undefined}
+            >
+              {checkbox && (
+                <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
+              )}
+              {columns.map((col) => (
+                <Table.DataCell key={String(col.key)}>
+                  {col.render
+                    ? col.render(row[col.key], row)
+                    : String(row[col.key] ?? "")}
+                </Table.DataCell>
+              ))}
+              {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
+              {hasAnyAction && (
+                <Table.DataCell>{rowActions!(row)}</Table.DataCell>
+              )}
+            </Table.Row>
+          ),
+        )}
       </Table.Body>
     </Table>
   );

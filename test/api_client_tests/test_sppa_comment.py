@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
     AuthenticatedClient,
 )
 from flex.models import (
@@ -39,7 +39,9 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
     pts = list_product_type.sync(client=client_fiso)
     assert isinstance(pts, list)
@@ -47,7 +49,7 @@ def data():
     # setup : create a SPPA
 
     # get fresh SO and ask for a product type
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     sopt = create_system_operator_product_type.sync(
@@ -60,7 +62,7 @@ def data():
     assert not isinstance(sopt, ErrorMessage)
 
     # get fresh SP and create a SPPA for this SO
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     sppa = create_service_provider_product_application.sync(
@@ -103,7 +105,7 @@ def check_history(clt, sppsc_id):
 def test_sppac_fiso(data):
     (sts, client_so, _, sppa_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # both parties create a comment
     # (minimal visibility so the test is even more powerful)
@@ -260,7 +262,7 @@ def test_sppa_common(data):
     (sts, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         sppac_visible = list_service_provider_product_application_comment.sync(
             client=client,

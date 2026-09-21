@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     AuthScope,
@@ -66,13 +66,13 @@ def random_pid():
 # RLS: ENT-FISO001
 # RLS: ENT-FISO002
 def test_entity_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /entity
     entities = list_entity.sync(client=client_fiso)
     assert isinstance(entities, list)
 
-    ent_id = sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"]
+    ent_id = sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"]
 
     # endpoint: GET /entity/{id}
     e = read_entity.sync(client=client_fiso, id=ent_id)
@@ -266,8 +266,8 @@ def test_entity_fiso(sts):
 
 
 def test_entity_org(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_org = sts.get_client(TestEntity.TEST, "ORG")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_org = sts.get_client(TestEntityClient.TEST, "ORG")
 
     pty_org = read_party.sync(
         client=client_org,
@@ -326,7 +326,7 @@ def test_entity_org(sts):
 
 
 def test_entity_com(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     entities = list_entity.sync(client=client_fiso)
     assert isinstance(entities, list)
     n_organisations = len(
@@ -340,7 +340,7 @@ def test_entity_com(sts):
 
     # RLS: ENT-COM001
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         visible_entities = list_entity.sync(client=client)
         assert isinstance(visible_entities, list)
@@ -348,9 +348,11 @@ def test_entity_com(sts):
 
     # RLS: ENT-COM002
     # add COMMON entity to TEST SO so they are 2 entities in the party
-    common_ent_id = sts.get_userinfo(sts.get_client(TestEntity.COMMON))["entity_id"]
+    common_ent_id = sts.get_userinfo(sts.get_client(TestEntityClient.COMMON))[
+        "entity_id"
+    ]
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     pm = create_party_membership.sync(
@@ -391,7 +393,7 @@ def test_entity_com(sts):
 
 # RLS: ENT-ENT001
 def test_entity_ent(sts):
-    client_ent = sts.get_client(TestEntity.TEST)
+    client_ent = sts.get_client(TestEntityClient.TEST)
 
     entities_ent = list_entity.sync(client=client_ent)
     assert isinstance(entities_ent, list)
@@ -407,7 +409,7 @@ def test_rla_absence(sts):
             for ent in cast(
                 list,
                 list_entity.sync(
-                    client=sts.get_client(TestEntity.TEST, "FISO"),
+                    client=sts.get_client(TestEntityClient.TEST, "FISO"),
                 ),
             )
             if ent.type_ == EntityType.ORGANISATION
@@ -418,7 +420,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         ents = list_entity.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(ents, list)
         # ENT-ENT001 grants one more entity : the user itself

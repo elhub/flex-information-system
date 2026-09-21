@@ -1,12 +1,21 @@
-import { Loader } from "../../components/ui";
+import { Button, Loader } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   SubstationRow,
   useSpgPowerPerSubstation,
 } from "./useSpgPowerPerSubstation";
+import {
+  SpgControllableUnitRow,
+  useSpgControllableUnitsMap,
+} from "./useSpgControllableUnits";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
 import { useTranslate } from "ra-core";
+import { useTranslateField } from "../../intl/intl";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
+import { ControllableUnitRegulationDirection } from "../../generated-client/index";
 
 type Props = {
   spgId: number;
@@ -18,30 +27,105 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
+  const [expandedSubstationIds, setExpandedSubstationIds] = useState<
+    Set<string>
+  >(new Set());
+  const cuMap = useSpgControllableUnitsMap(
+    spgId,
+    Array.from(expandedSubstationIds),
+  );
   const translate = useTranslate();
+  const t = useTranslateField();
+  const navigate = useNavigate();
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
 
+  const controllableUnitColumns: Column<SpgControllableUnitRow>[] = [
+    {
+      key: "name",
+      header: t("controllable_unit.name"),
+    },
+    {
+      key: "validFrom",
+      header: t("service_providing_group_membership.valid_from"),
+    },
+    {
+      key: "validTo",
+      header: t("service_providing_group_membership.valid_to"),
+    },
+    {
+      key: "rated_power",
+      header: t("technical_resource.maximum_active_power"),
+      render: (value) => (
+        <div className="text-right">
+          {formatPower(value as number | undefined)}
+        </div>
+      ),
+    },
+    {
+      key: "maximum_active_power",
+      header: t("controllable_unit.maximum_active_power"),
+      render: (value) => (
+        <div className="text-right">
+          {formatPower(value as number | undefined)}
+        </div>
+      ),
+    },
+    {
+      key: "location",
+      header: translate("text.technical_resources_show_label"),
+      render: (_, row) => (
+        <Button
+          variant="secondary"
+          onClick={() =>
+            navigate(`/accounting_point/${row.accountingPointId}/show`)
+          }
+        >
+          {translate("text.technical_resources_show_location")}
+        </Button>
+      ),
+    },
+    {
+      key: "mpid",
+      header: t("controllable_unit.accounting_point_id"),
+    },
+    {
+      key: "brpName",
+      header: t(
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      ),
+    },
+    {
+      key: "regulation_direction",
+      header: t("controllable_unit.regulation_direction"),
+      render: (value) => (
+        <RegulationDirectionIcon
+          value={value as ControllableUnitRegulationDirection}
+        />
+      ),
+    },
+  ];
+
   const columns: Column<SubstationRow>[] = [
     {
       key: "substationName",
-      header: "Substation",
+      header: translate("text.table.header.substation"),
       render: (v, row) =>
         v
           ? String(v)
           : row.substationBusinessId
             ? String(row.substationBusinessId)
-            : "(unassigned)",
+            : translate("text.table.cell.unassigned"),
     },
     {
       key: "substationBusinessId",
-      header: "Business ID",
+      header: translate("text.table.header.business_id"),
       render: (v) => (v ? String(v) : "-"),
     },
     {
       key: "controllableUnitCount",
-      header: "Controllable units",
+      header: translate("text.table.header.controllable_units"),
       render: (v) => <div className="text-right">{String(v)}</div>,
     },
     {
@@ -90,7 +174,30 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
 
   return (
     <SimpleTable
-      size="small"
+      expandPanel={(row) => (
+        <SimpleTable
+          columns={controllableUnitColumns}
+          data={
+            (row.substationBusinessId
+              ? cuMap.get(row.substationBusinessId)
+              : undefined) ?? []
+          }
+          className="w-full p-0"
+        />
+      )}
+      onExpand={(row, isOpen) => {
+        if (!row.substationBusinessId) return;
+        const substationBusinessId = row.substationBusinessId;
+        setExpandedSubstationIds((prev) => {
+          const next = new Set(prev);
+          if (isOpen) {
+            next.add(substationBusinessId);
+          } else {
+            next.delete(substationBusinessId);
+          }
+          return next;
+        });
+      }}
       data={data ?? []}
       columns={columns}
       className="w-full"

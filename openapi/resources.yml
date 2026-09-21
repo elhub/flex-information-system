@@ -4027,31 +4027,61 @@ resources:
               en: Requested
               nb: Forespurt
               nn: Førespurt
+            description:
+              x-intl:
+                en: The application has been submitted and is awaiting assessment by the System operator.
+                nb: Søknaden er sendt inn og venter på vurdering av systemoperatøren.
+                nn: Søknaden er sendt inn og ventar på vurdering av systemoperatøren.
           - id: prequalification
             x-intl:
-              en: Prequalification
-              nb: Prekvalifisering
-              nn: Prekvalifisering
+              en: In Prequalification
+              nb: Prekvalifisering pågår
+              nn: Prekvalifisering pågår
+            description:
+              x-intl:
+                en: The application is currently undergoing the prequalification process and is being assessed against qualification requirements.
+                nb: Søknaden gjennomgår for tiden prekvalifiseringsprosessen og blir vurdert opp mot kvalifikasjonskravene.
+                nn: Søknaden gjennomgår for tida prekvalifiseringsprosessen og vert vurdert opp mot kvalifikasjonskrava.
           - id: temporary_qualified
             x-intl:
               en: Temporary qualified
               nb: Midlertidig kvalifisert
               nn: Mellombels kvalifisert
+            description:
+              x-intl:
+                en: The application has been accepted for verification without a full prequalification process and is awaiting final verification.
+                nb: Søknaden er godtatt for verifisering uten en fullstendig prekvalifiseringsprosess, og venter på endelig verifisering.
+                nn: Søknaden er godteken for verifisering utan ein fullstendig prekvalifiseringsprosess, og ventar på endeleg verifisering.
           - id: prequalified
             x-intl:
               en: Prequalified
               nb: Prekvalifisert
               nn: Prekvalifisert
+            description:
+              x-intl:
+                en: The application has successfully completed the prequalification process.
+                nb: Søknaden har fullført prekvalifiseringsprosessen.
+                nn: Søknaden har fullført prekvalifiseringsprosessen.
           - id: verified
             x-intl:
               en: Verified
               nb: Verifisert
               nn: Verifisert
+            description:
+              x-intl:
+                en: The application has successfully completed the verification process and is approved by the System Operator.
+                nb: Søknaden har fullført verifiseringsprosessen og er godkjent av systemoperatøren.
+                nn: Søknaden har fullført verifiseringsprosessen og er godkjend av systemoperatøren.
           - id: rejected
             x-intl:
               en: Rejected
               nb: Avvist
               nn: Avvist
+            description:
+              x-intl:
+                en: The application was not approved and requires updates before it can be submitted again.
+                nb: Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.
+                nn: Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.
         example: prequalification
         x-intl:
           en: Status

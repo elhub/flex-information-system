@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitLookupRequest,
@@ -46,11 +46,11 @@ def sts():
 
 
 def test_cu_lookup_params(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 
@@ -241,11 +241,11 @@ def test_cu_lookup_params(sts):
 
 # test what happens when the accounting point exists only remotely
 def test_cu_lookup_remote(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 
@@ -284,9 +284,9 @@ def test_cu_lookup_remote(sts):
 
 
 def test_cu_lookup_flow(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    eu_userinfo = sts.get_userinfo(sts.get_client(TestEntity.TEST, "EU"))
+    eu_userinfo = sts.get_userinfo(sts.get_client(TestEntityClient.TEST, "EU"))
 
     eu_entity = read_entity.sync(
         client=client_fiso,
@@ -307,7 +307,7 @@ def test_cu_lookup_flow(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     e = read_controllable_unit.sync(
         client=client_sp,
@@ -349,11 +349,11 @@ def test_cu_lookup_flow(sts):
 
 
 def test_cu_lookup_terminated_cu_excluded(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 

@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     AuthScope,
@@ -44,16 +44,16 @@ def sts():
 
 # RLS: PTYM-FISO001
 def test_ptym_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /party_membership
     pms = list_party_membership.sync(client=client_fiso)
     assert isinstance(pms, list)
     assert len(pms) > 0
 
-    client_ent = sts.get_client(TestEntity.COMMON)
+    client_ent = sts.get_client(TestEntityClient.COMMON)
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
     pty_id = sts.get_userinfo(client_so)["party_id"]
     # delete party membership if it already exists
     for pm in pms:
@@ -110,8 +110,8 @@ def test_ptym_fiso(sts):
 
 
 def test_ptym_ent(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_ent = sts.get_client(TestEntity.TEST, "ENT")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_ent = sts.get_client(TestEntityClient.TEST, "ENT")
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
     # RLS: PTYM-ENT001
@@ -146,8 +146,8 @@ def test_ptym_ent(sts):
 
 # RLS: PTYM-ORG001
 def test_ptym_org(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_org = sts.get_client(TestEntity.TEST, "ORG")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_org = sts.get_client(TestEntityClient.TEST, "ORG")
     org_info = sts.get_userinfo(client_org)
     ent_id = org_info["entity_id"]
     org_pty_id = org_info["party_id"]
@@ -173,7 +173,7 @@ def test_ptym_org(sts):
 
     # add the other entity as a member
 
-    client_other_ent = sts.get_client(TestEntity.COMMON, "ENT")
+    client_other_ent = sts.get_client(TestEntityClient.COMMON, "ENT")
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
 
     pm = create_party_membership.sync(
@@ -208,7 +208,7 @@ def test_ptym_org(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
-    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
+    client_org = sts.get_client(TestEntityClient.TEST, "ORG", reset=True)
 
     # now the org party can read and change party memberships on the new party
 
@@ -265,7 +265,7 @@ def test_ptym_org(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
-    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
+    client_org = sts.get_client(TestEntityClient.TEST, "ORG", reset=True)
 
     # they can no longer do the operations
 
@@ -305,10 +305,10 @@ def test_ptym_org(sts):
 
 
 def test_ptym_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
         pty_id = sts.get_userinfo(client)["party_id"]
 
         # RLS: PTYM-COM001
@@ -358,7 +358,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         pms = list_party_membership.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(pms, list)
         # PTYM-COM002 gives access to one entry :
