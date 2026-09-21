@@ -1,6 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui";
+import { useTranslate } from "ra-core";
 
 type FormToolbarProps = {
   saveLabel?: string;
@@ -11,16 +12,21 @@ type FormToolbarProps = {
 };
 
 export const FormToolbar = ({
-  saveLabel = "Save",
-  cancelLabel = "Cancel",
+  saveLabel,
+  cancelLabel,
   saveAlwaysEnabled = false,
   onCancel,
   className,
 }: FormToolbarProps) => {
+  const translate = useTranslate();
   const navigate = useNavigate();
   const { formState } = useFormContext();
 
   const handleCancel = onCancel ?? (() => navigate(-1));
+
+  const resolvedSaveLabel = saveLabel ?? translate("text.form_toolbar.save");
+  const resolvedCancelLabel =
+    cancelLabel ?? translate("text.form_toolbar.cancel");
 
   const isDisabled =
     !saveAlwaysEnabled && (formState.isSubmitting || !formState.isDirty);
@@ -33,7 +39,7 @@ export const FormToolbar = ({
         type="submit"
         disabled={isDisabled}
       >
-        {saveLabel}
+        {resolvedSaveLabel}
       </Button>
       <Button
         variant="secondary"
@@ -41,7 +47,7 @@ export const FormToolbar = ({
         size="large"
         onClick={handleCancel}
       >
-        {cancelLabel}
+        {resolvedCancelLabel}
       </Button>
     </div>
   );
