@@ -730,6 +730,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// only persons authenticating in the browser are allowed to assume a party
+	// entity_clients should use token exchange
 	if clientID != nil {
 		w.WriteHeader(http.StatusBadRequest)
 
