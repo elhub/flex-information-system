@@ -61,7 +61,7 @@ const fetchSnapshot = async (
   return snapshot;
 };
 
-const fetchSpgChanges = async (
+export const fetchSpgChanges = async (
   spgId: number,
   asOf: string,
 ): Promise<SpgChangeRow[]> => {
