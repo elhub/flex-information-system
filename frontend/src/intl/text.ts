@@ -277,7 +277,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_cu_ineligible_status:
       "Cannot add: controllable unit is not active.",
     spg_manage_members_column_record_time:
-      "Record time (when CU was added in group)",
+      "Record time (when CU was added to the group)",
     spg_create_additional_information_override_description:
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
