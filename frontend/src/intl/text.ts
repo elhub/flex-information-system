@@ -108,6 +108,7 @@ export type TextKey =
   | "spg_manage_members_review_modal_close"
   | "spg_manage_members_cu_ineligible_flexible_power"
   | "spg_manage_members_cu_ineligible_status"
+  | "spg_manage_members_column_record_time"
   | "spg_create_additional_information_override_description"
   | "spg_create_additional_information_placeholder"
   | "user_dropdown_logout"
@@ -277,6 +278,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Cannot add: controllable unit is not active.",
+    spg_manage_members_column_record_time:
+      "Record time (when CU was added to the group)",
     spg_create_additional_information_override_description:
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
@@ -480,6 +483,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 100 % av merkeeffekt (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Kan ikke legge til: kontrollerbar enhet er ikke aktiv.",
+    spg_manage_members_column_record_time:
+      "Registreringstidspunkt (da den kontrollerbare enheten ble lagt til i gruppen)",
     spg_create_additional_information_override_description:
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
