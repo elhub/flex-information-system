@@ -19,5 +19,4 @@ spectral = "6.16.2"
 python.uv_venv_auto = "create|source"
 
 [env]
-GOEXPERIMENT = 'jsonv2'
 REQUESTS_CA_BUNDLE = '/etc/ssl/certs/ca-certificates.crt'
