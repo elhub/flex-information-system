@@ -1,6 +1,5 @@
 import {
   BodyText,
-  Button,
   FormItem,
   FormItemLabel,
   Loader,
@@ -23,6 +22,7 @@ import {
   ServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
+import { toDateTimeString } from "../../../util";
 
 type Props = {
   spgId: number;
@@ -81,40 +81,15 @@ export const SpgpaControllableUnitsTable = ({
       header: t("controllable_unit.name"),
     },
     {
-      key: "validFrom",
-      header: t("service_providing_group_membership.valid_from"),
+      key: "membershipRecordedAt",
+      header: translate("text.spg_manage_members_column_record_time"),
+      render: (value) => <BodyText>{toDateTimeString(String(value))}</BodyText>,
     },
-    {
-      key: "validTo",
-      header: t("service_providing_group_membership.valid_to"),
-    },
-    {
-      key: "rated_power",
-      header: t("technical_resource.maximum_active_power"),
-      render: (value) => (
-        <div className="text-right">
-          {value != null ? formatPower(value) : "—"}
-        </div>
-      ),
-    },
+
     {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
       render: (value) => <div className="text-right">{formatPower(value)}</div>,
-    },
-    {
-      key: "location",
-      header: translate("text.technical_resources_show_label"),
-      render: (value, row) => (
-        <Button
-          variant="secondary"
-          onClick={() =>
-            navigate(`/accounting_point/${row.accountingPointId}/show`)
-          }
-        >
-          {translate("text.technical_resources_show_location")}
-        </Button>
-      ),
     },
     {
       key: "mpid",
@@ -130,12 +105,6 @@ export const SpgpaControllableUnitsTable = ({
         ) : (
           <>{value}</>
         ),
-    },
-    {
-      key: "brpName",
-      header: t(
-        "accounting_point_balance_responsible_party.balance_responsible_party_id",
-      ),
     },
     {
       key: "regulation_direction",
