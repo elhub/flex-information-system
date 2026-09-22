@@ -4,6 +4,7 @@ import { tz } from "@date-fns/tz";
 import { useTranslate, type TranslateFunction } from "ra-core";
 import { useTranslateField } from "../../../intl/intl";
 import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
+import { BoltIcon } from "../../../components/icons/BoltIcon";
 import {
   BodyText,
   DateTimePicker,
@@ -11,9 +12,9 @@ import {
   FormItemLabel,
   Heading,
   Loader,
-  Switch,
   Table,
   TimelineRangeSlider,
+  ToggleGroup,
   mergeTimelineMarks,
   type TimelineMark,
 } from "../../../components/ui";
@@ -40,6 +41,38 @@ const formatValue = (date: Date | null) =>
 
 const formatPower = (value: number | undefined, powerScale: Scale) =>
   value != null ? formatScaled(value, "W", KILO, powerScale) : undefined;
+
+// Formats a power difference with an explicit "+"/"-" sign, e.g. "+1.5 kW".
+const formatSignedPower = (value: number, powerScale: Scale) => {
+  const formatted = formatScaled(value, "W", KILO, powerScale);
+  return value > 0 ? `+${formatted}` : formatted;
+};
+
+type ChangeSummary = {
+  added: number;
+  removed: number;
+  changed: number;
+  wattDiff: number;
+};
+
+// Aggregates counts and the total flexible power difference across *all*
+// rows, regardless of which statuses are currently visible in the table.
+const summarizeChanges = (rows: SpgChangeRow[] | undefined): ChangeSummary =>
+  (rows ?? []).reduce<ChangeSummary>(
+    (summary, row) => {
+      const oldPower =
+        row.old?.controllable_unit_history?.[0]?.maximum_active_power ?? 0;
+      const newPower =
+        row.new?.controllable_unit_history?.[0]?.maximum_active_power ?? 0;
+      return {
+        added: summary.added + (row.status === "added" ? 1 : 0),
+        removed: summary.removed + (row.status === "removed" ? 1 : 0),
+        changed: summary.changed + (row.status === "changed" ? 1 : 0),
+        wattDiff: summary.wattDiff + (newPower - oldPower),
+      };
+    },
+    { added: 0, removed: 0, changed: 0, wattDiff: 0 },
+  );
 
 const getStatusLabel = (
   status: SpgChangeRow["status"],
@@ -197,6 +230,38 @@ const DiffText = ({
   return <span>{newValue ?? oldValue}</span>;
 };
 
+// A read-only stat box showing an aggregate count/value for the current
+// comparison period, with a colored accent matching the status colors used
+// elsewhere on this tab.
+const ChangeSummaryBox = ({
+  label,
+  value,
+  icon,
+  accentClassName,
+}: {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
+  accentClassName: string;
+}) => (
+  <div
+    className={cn(
+      "flex flex-col gap-1 rounded-lg border-l-4 bg-semantic-background p-4",
+      accentClassName,
+    )}
+  >
+    <div className="flex items-center gap-2">
+      {icon}
+      <BodyText size="small" className="text-semantic-text-subtle">
+        {label}
+      </BodyText>
+    </div>
+    <Heading level={4} size="small">
+      {value}
+    </Heading>
+  </div>
+);
+
 // A labeled date/time field for the "from"/"to" endpoints of the changes
 // range, showing which milestone (if any) the current value matches.
 const ChangesDateField = ({
@@ -250,7 +315,11 @@ export const ServiceProvidingGroupShowChangesTab = ({
       : spgpa.created_at;
   });
   const [to, setTo] = useState<string | undefined>(now);
-  const [showUnchanged, setShowUnchanged] = useState(false);
+  const [visibleStatuses, setVisibleStatuses] = useState<string[]>([
+    "added",
+    "removed",
+    "changed",
+  ]);
 
   const {
     data: rows,
@@ -258,9 +327,10 @@ export const ServiceProvidingGroupShowChangesTab = ({
     isFetching,
     error,
   } = useSpgChangesViewModel(spgId, from, to);
-  const visibleRows = rows?.filter(
-    (row) => showUnchanged || row.status !== "unchanged",
+  const visibleRows = rows?.filter((row) =>
+    visibleStatuses.includes(row.status),
   );
+  const summary = useMemo(() => summarizeChanges(rows), [rows]);
   const showLoader = isLoading || isFetching;
 
   const handleRangeChange = ([newFrom, newTo]: [number, number]) => {
@@ -269,162 +339,214 @@ export const ServiceProvidingGroupShowChangesTab = ({
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4 rounded-lg border border-semantic-border bg-semantic-background p-6">
-        <div className="flex flex-col gap-2">
-          <Heading level={3} size="small">
-            {translate("text.spg_changes_period_heading")}
-          </Heading>
+    <div className="flex flex-col gap-[50px]">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 rounded-lg border border-semantic-border bg-semantic-background p-6">
+          <div className="flex flex-col gap-2">
+            <Heading level={3} size="small">
+              {translate("text.spg_changes_period_heading")}
+            </Heading>
 
-          <BodyText size="small" className="text-semantic-text-subtle">
-            {translate("text.spg_changes_period_hint")}
-          </BodyText>
-        </div>
-
-        <div className="flex items-end gap-4">
-          <ChangesDateField
-            id="spg-changes-from"
-            label={translate("text.spg_changes_from_label")}
-            milestoneLabel={findMilestoneLabel(from, marks, translate)}
-            selected={parseValue(from)}
-            maxDate={parseValue(to)}
-            onChange={(date) => setFrom(formatValue(date))}
-          />
-
-          {from && to && (
-            <BodyText
-              size="small"
-              className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
-            >
-              {formatDurationHM(from, to)}
+            <BodyText size="small" className="text-semantic-text-subtle">
+              {translate("text.spg_changes_period_hint")}
             </BodyText>
-          )}
+          </div>
 
-          <ChangesDateField
-            id="spg-changes-to"
-            label={translate("text.spg_changes_to_label")}
-            milestoneLabel={findMilestoneLabel(to, marks, translate)}
-            selected={parseValue(to)}
-            minDate={parseValue(from)}
-            onChange={(date) => setTo(formatValue(date))}
-          />
+          <div className="flex items-end gap-4">
+            <ChangesDateField
+              id="spg-changes-from"
+              label={translate("text.spg_changes_from_label")}
+              milestoneLabel={findMilestoneLabel(from, marks, translate)}
+              selected={parseValue(from)}
+              maxDate={parseValue(to)}
+              onChange={(date) => setFrom(formatValue(date))}
+            />
+
+            {from && to && (
+              <BodyText
+                size="small"
+                className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
+              >
+                {formatDurationHM(from, to)}
+              </BodyText>
+            )}
+
+            <ChangesDateField
+              id="spg-changes-to"
+              label={translate("text.spg_changes_to_label")}
+              milestoneLabel={findMilestoneLabel(to, marks, translate)}
+              selected={parseValue(to)}
+              minDate={parseValue(from)}
+              onChange={(date) => setTo(formatValue(date))}
+            />
+          </div>
+
+          {marks.length > 0 && (
+            <TimelineRangeSlider
+              marks={marks}
+              value={[
+                from ? new Date(from).getTime() : marks[0].value,
+                to ? new Date(to).getTime() : marks[marks.length - 1].value,
+              ]}
+              onValueChange={handleRangeChange}
+              fromLabel={translate("text.spg_changes_from_label")}
+              toLabel={translate("text.spg_changes_to_label")}
+              formatValueForA11y={(value) =>
+                toDateTimeString(new Date(value).toISOString())
+              }
+            />
+          )}
         </div>
 
-        {marks.length > 0 && (
-          <TimelineRangeSlider
-            marks={marks}
-            value={[
-              from ? new Date(from).getTime() : marks[0].value,
-              to ? new Date(to).getTime() : marks[marks.length - 1].value,
-            ]}
-            onValueChange={handleRangeChange}
-            fromLabel={translate("text.spg_changes_from_label")}
-            toLabel={translate("text.spg_changes_to_label")}
-            formatValueForA11y={(value) =>
-              toDateTimeString(new Date(value).toISOString())
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <ChangeSummaryBox
+            label={translate("text.spg_changes_status_added")}
+            value={String(summary.added)}
+            icon={
+              <IconPlus className="text-semantic-text-success" aria-hidden />
             }
+            accentClassName="border-semantic-border-success"
           />
-        )}
+          <ChangeSummaryBox
+            label={translate("text.spg_changes_status_removed")}
+            value={String(summary.removed)}
+            icon={
+              <IconMinus className="text-semantic-text-error" aria-hidden />
+            }
+            accentClassName="border-semantic-border-error"
+          />
+          <ChangeSummaryBox
+            label={translate("text.spg_changes_status_changed")}
+            value={String(summary.changed)}
+            icon={
+              <IconPencil
+                className="text-semantic-text-information"
+                aria-hidden
+              />
+            }
+            accentClassName="border-semantic-border-information"
+          />
+          <ChangeSummaryBox
+            label={translate("text.spg_changes_summary_power_diff")}
+            value={formatSignedPower(summary.wattDiff, powerScale)}
+            icon={<BoltIcon className="h-4 w-4 text-semantic-text-subtle" />}
+            accentClassName="border-semantic-border"
+          />
+        </div>
       </div>
 
-      <FormItem id="show-unchanged">
-        <FormItemLabel>
-          {translate("text.spg_changes_show_unchanged")}
-        </FormItemLabel>
-        <Switch
-          checked={showUnchanged}
-          onChange={(e) => setShowUnchanged(e.target.checked)}
-        />
-      </FormItem>
+      <div className="flex flex-col gap-4">
+        <ToggleGroup
+          type="multiple"
+          value={visibleStatuses}
+          defaultValue={visibleStatuses}
+          onChange={(value) => setVisibleStatuses(value ?? [])}
+        >
+          <ToggleGroup.Item value="added">
+            {translate("text.spg_changes_status_added")}
+          </ToggleGroup.Item>
+          <ToggleGroup.Item value="removed">
+            {translate("text.spg_changes_status_removed")}
+          </ToggleGroup.Item>
+          <ToggleGroup.Item value="changed">
+            {translate("text.spg_changes_status_changed")}
+          </ToggleGroup.Item>
+          <ToggleGroup.Item value="unchanged">
+            {translate("text.spg_changes_status_unchanged")}
+          </ToggleGroup.Item>
+        </ToggleGroup>
 
-      {showLoader && (
-        <div className="flex w-full justify-center py-8">
-          <Loader size="medium" />
-        </div>
-      )}
-      {error ? (
-        <BodyText className="text-semantic-background-action-danger">
-          {translate("text.spg_changes_error")}
-        </BodyText>
-      ) : null}
+        {showLoader && (
+          <div className="flex w-full justify-center py-8">
+            <Loader size="medium" />
+          </div>
+        )}
+        {error ? (
+          <BodyText className="text-semantic-background-action-danger">
+            {translate("text.spg_changes_error")}
+          </BodyText>
+        ) : null}
 
-      {!showLoader && !error && (!visibleRows || visibleRows.length === 0) && (
-        <BodyText>{translate("text.spg_changes_empty")}</BodyText>
-      )}
+        {!showLoader &&
+          !error &&
+          (!visibleRows || visibleRows.length === 0) && (
+            <BodyText>{translate("text.spg_changes_empty")}</BodyText>
+          )}
 
-      {!showLoader && !error && visibleRows && visibleRows.length > 0 && (
-        <Table size="small" className="w-full">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader
-                scope="col"
-                aria-label={translate("text.spg_changes_column_status")}
-              />
-              <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_id")}
-              </Table.ColumnHeader>
-              <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_name")}
-              </Table.ColumnHeader>
-              <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_map")}
-              </Table.ColumnHeader>
-              <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_first_change")}
-              </Table.ColumnHeader>
-              <Table.ColumnHeader scope="col">
-                {translate("text.spg_changes_column_last_change")}
-              </Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {visibleRows.map((row) => {
-              const oldCu = row.old?.controllable_unit_history?.[0];
-              const newCu = row.new?.controllable_unit_history?.[0];
-              return (
-                <Table.Row
-                  key={row.id}
-                  className={cn(rowClassName(row.status))}
-                >
-                  <Table.DataCell>
-                    <StatusMarker
-                      status={row.status}
-                      label={getStatusLabel(row.status, translate)}
-                    />
-                  </Table.DataCell>
-                  <Table.DataCell>{row.id}</Table.DataCell>
-                  <Table.DataCell>
-                    <DiffText
-                      oldValue={oldCu?.name}
-                      newValue={newCu?.name}
-                      status={row.status}
-                    />
-                  </Table.DataCell>
-                  <Table.DataCell>
-                    <DiffText
-                      oldValue={formatPower(
-                        oldCu?.maximum_active_power,
-                        powerScale,
-                      )}
-                      newValue={formatPower(
-                        newCu?.maximum_active_power,
-                        powerScale,
-                      )}
-                      status={row.status}
-                    />
-                  </Table.DataCell>
-                  <Table.DataCell>
-                    {toDateTimeString(row.firstChange)}
-                  </Table.DataCell>
-                  <Table.DataCell>
-                    {toDateTimeString(row.lastChange)}
-                  </Table.DataCell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
-      )}
+        {!showLoader && !error && visibleRows && visibleRows.length > 0 && (
+          <Table size="small" className="w-full">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader
+                  scope="col"
+                  aria-label={translate("text.spg_changes_column_status")}
+                />
+                <Table.ColumnHeader scope="col">
+                  {translate("text.spg_changes_column_id")}
+                </Table.ColumnHeader>
+                <Table.ColumnHeader scope="col">
+                  {translate("text.spg_changes_column_name")}
+                </Table.ColumnHeader>
+                <Table.ColumnHeader scope="col">
+                  {translate("text.spg_changes_column_map")}
+                </Table.ColumnHeader>
+                <Table.ColumnHeader scope="col">
+                  {translate("text.spg_changes_column_first_change")}
+                </Table.ColumnHeader>
+                <Table.ColumnHeader scope="col">
+                  {translate("text.spg_changes_column_last_change")}
+                </Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {visibleRows.map((row) => {
+                const oldCu = row.old?.controllable_unit_history?.[0];
+                const newCu = row.new?.controllable_unit_history?.[0];
+                return (
+                  <Table.Row
+                    key={row.id}
+                    className={cn(rowClassName(row.status))}
+                  >
+                    <Table.DataCell>
+                      <StatusMarker
+                        status={row.status}
+                        label={getStatusLabel(row.status, translate)}
+                      />
+                    </Table.DataCell>
+                    <Table.DataCell>{row.id}</Table.DataCell>
+                    <Table.DataCell>
+                      <DiffText
+                        oldValue={oldCu?.name}
+                        newValue={newCu?.name}
+                        status={row.status}
+                      />
+                    </Table.DataCell>
+                    <Table.DataCell>
+                      <DiffText
+                        oldValue={formatPower(
+                          oldCu?.maximum_active_power,
+                          powerScale,
+                        )}
+                        newValue={formatPower(
+                          newCu?.maximum_active_power,
+                          powerScale,
+                        )}
+                        status={row.status}
+                      />
+                    </Table.DataCell>
+                    <Table.DataCell>
+                      {toDateTimeString(row.firstChange)}
+                    </Table.DataCell>
+                    <Table.DataCell>
+                      {toDateTimeString(row.lastChange)}
+                    </Table.DataCell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        )}
+      </div>
     </div>
   );
 };

@@ -84,11 +84,11 @@ export type TextKey =
   | "spg_changes_column_status"
   | "spg_changes_empty"
   | "spg_changes_error"
-  | "spg_changes_show_unchanged"
   | "spg_changes_status_added"
   | "spg_changes_status_removed"
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
+  | "spg_changes_summary_power_diff"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -303,11 +303,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_column_status: "Change",
     spg_changes_empty: "No changes found for the selected time range.",
     spg_changes_error: "Failed to load changes.",
-    spg_changes_show_unchanged: "Show unchanged controllable units",
     spg_changes_status_added: "Added",
     spg_changes_status_removed: "Removed",
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
+    spg_changes_summary_power_diff: "Flexible power diff",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -510,11 +510,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_column_status: "Endring",
     spg_changes_empty: "Ingen endringer funnet for det valgte tidsrommet.",
     spg_changes_error: "Kunne ikke laste endringer.",
-    spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
     spg_changes_status_added: "Lagt til",
     spg_changes_status_removed: "Fjernet",
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
+    spg_changes_summary_power_diff: "Fleksibel effekt diff",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",

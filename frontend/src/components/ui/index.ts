@@ -42,6 +42,7 @@ import {
   Tag,
   Textarea,
   TextField,
+  ToggleGroup,
   Tooltip,
   VerticalSpace,
 } from "@elhub/ds-components";
@@ -108,4 +109,5 @@ export {
   TimelineRangeSlider,
   mergeTimelineMarks,
   type TimelineMark,
+  ToggleGroup,
 };
