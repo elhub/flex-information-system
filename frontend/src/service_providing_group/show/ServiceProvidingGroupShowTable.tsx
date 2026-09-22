@@ -1,10 +1,10 @@
 import { BodyText, Button, Loader, Search } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
+import { useRemoveMembershipFromShow } from "./useSpgShowViewModel";
 import {
-  type SpgMembershipRow,
-  useRemoveMembershipFromShow,
-  useSpgShowViewModel,
-} from "./useSpgShowViewModel";
+  type SpgMemberControllableUnitRow,
+  useSpgMemberControllableUnits,
+} from "../shared/useSpgMemberControllableUnits";
 import { usePermissions, useTranslate } from "ra-core";
 import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -59,7 +59,7 @@ export const ServiceProvidingGroupShowTable = ({
   spgId,
   powerScale,
 }: Props) => {
-  const { data, isLoading, error } = useSpgShowViewModel(spgId);
+  const { data, isLoading, error } = useSpgMemberControllableUnits(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
   const translate = useTranslate();
@@ -116,7 +116,7 @@ export const ServiceProvidingGroupShowTable = ({
     );
   }
 
-  const columns: Column<SpgMembershipRow>[] = [
+  const columns: Column<SpgMemberControllableUnitRow>[] = [
     {
       key: "name",
       header: t("controllable_unit.name"),
