@@ -59,7 +59,7 @@ ALTER TABLE flex.controllable_unit_service_provider
 ADD CONSTRAINT controllable_unit_service_provider_end_user_fkey
 FOREIGN KEY (
     end_user_id, end_user_party_type
-) REFERENCES flex.party (id, type);
+) REFERENCES flex.party (id, type) NOT VALID;
 
 ALTER TABLE flex.controllable_unit_service_provider
 ENABLE TRIGGER USER;
@@ -69,3 +69,8 @@ ENABLE TRIGGER USER;
 --precondition-sql-check expectedResult:'ALWAYS' SELECT is_generated FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit_service_provider_history' AND column_name = 'end_user_party_type';
 ALTER TABLE flex.controllable_unit_service_provider_history
 ALTER COLUMN end_user_party_type DROP EXPRESSION;
+
+-- changeset flex:controllable-unit-service-provider-valid-time-freeze-delete runOnChange:true endDelimiter:;
+-- TODO remove once rollout is complete
+DROP TRIGGER IF EXISTS controllable_unit_service_provider_valid_time_freeze
+ON flex.controllable_unit_service_provider;
