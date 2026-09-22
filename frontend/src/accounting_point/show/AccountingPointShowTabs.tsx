@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Tabs } from "../../components/ui";
 import {
   AccountingPoint,
   AccountingPointGridLocation,
 } from "../../generated-client";
-import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
 import {
   AccountingPointLocationMap,
   Substation,
@@ -18,15 +16,21 @@ const userCanViewGrid = (identity: UserIdentity | undefined) =>
   identity?.role === "flex_system_operator";
 
 type Props = {
-  accountingPoint: AccountingPoint;
   gridLocation: AccountingPointGridLocation | undefined;
   location: AccountingPoint["location"];
+  selectedSubstation: Substation | null;
+  onSelectSubstation: (substation: Substation) => void;
+  popupSubstation: Substation | null;
+  onClosePopup: () => void;
 };
 
 export const AccountingPointShowTabs = ({
-  accountingPoint,
   gridLocation,
   location,
+  selectedSubstation,
+  onSelectSubstation,
+  popupSubstation,
+  onClosePopup,
 }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -34,57 +38,41 @@ export const AccountingPointShowTabs = ({
     "accounting_point.location",
     "read",
   );
-  const canViewGridLocation = !!permissions?.allow(
-    "accounting_point_grid_location",
-    "read",
-  );
+
   const canEditGridLocation = !!permissions?.allow(
     "accounting_point_grid_location",
     "update",
   );
   const [tab, setTab] = useTabSearchParam("location");
-  const [selectedSubstation, setSelectedSubstation] =
-    useState<Substation | null>(null);
 
   const highlightedBusinessId =
     selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
 
   const handleSubstationClick = canEditGridLocation
     ? (substation: Substation) => {
-        setSelectedSubstation(substation);
+        onSelectSubstation(substation);
       }
     : undefined;
 
-  const handleClearSelection = () => {
-    setSelectedSubstation(null);
-  };
-
-  const handleCancelSelection = () => {
-    setSelectedSubstation(null);
-  };
-
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs
+      value={tab}
+      onChange={setTab}
+      className="relative top-[-24px] h-full flex flex-col"
+    >
       <Tabs.List>
         <Tabs.Tab label="Location" value="location" />
       </Tabs.List>
-      <Tabs.Panel value="location">
+      <Tabs.Panel value="location" className="flex-1 min-h-0">
         {canViewLocation && (
           <AccountingPointLocationMap
             location={location}
             canViewGrid={userCanViewGrid(identity)}
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
-          />
-        )}
-        {canViewGridLocation && (
-          <AccountingPointGridLocationPanel
-            apId={accountingPoint.id}
-            gridLocation={gridLocation}
-            userCanEdit={canEditGridLocation}
             selectedSubstation={selectedSubstation}
-            onClearSelection={handleClearSelection}
-            onCancelSelection={handleCancelSelection}
+            popupSubstation={popupSubstation}
+            onClosePopup={onClosePopup}
           />
         )}
       </Tabs.Panel>

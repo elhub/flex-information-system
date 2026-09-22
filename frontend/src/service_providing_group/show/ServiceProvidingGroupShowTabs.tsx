@@ -4,6 +4,7 @@ import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProv
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
 import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
+import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
 import {
   ServiceProvidingGroupStatus,
   ServiceProvidingGroupSummary,
@@ -11,19 +12,26 @@ import {
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
 import { useTranslate } from "ra-core";
+import { Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
+  spgCreatedAt?: string;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
+  showChanges?: boolean;
+  powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgStatus,
+  spgCreatedAt,
   summary,
   showPowerPerSubstation,
+  showChanges,
+  powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("summary");
   const translate = useTranslate();
@@ -53,24 +61,31 @@ export const ServiceProvidingGroupShowTabs = ({
             value="power_per_substation"
           />
         )}
+        {showChanges && (
+          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
+        )}
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
-          <ServiceProvidingGroupShowSPGSummarySection summary={summary} />
+          <ServiceProvidingGroupShowSPGSummarySection
+            summary={summary}
+            powerScale={powerScale}
+          />
         ) : (
           "No summary available"
         )}
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
-        <ServiceProvidingGroupShowTable spgId={spgId} />
+        <ServiceProvidingGroupShowTable spgId={spgId} powerScale={powerScale} />
       </Tabs.Panel>
       <Tabs.Panel value="technical_resources">
-        <SpgTechnicalResourceList spgId={spgId} />
+        <SpgTechnicalResourceList spgId={spgId} powerScale={powerScale} />
       </Tabs.Panel>
       <Tabs.Panel value="product_applications">
         <ServiceProvidingGroupShowProductApplicationsTable
           spgId={spgId}
           spgStatus={spgStatus}
+          powerScale={powerScale}
         />
       </Tabs.Panel>
       <Tabs.Panel value="grid_prequalifications">
@@ -78,7 +93,20 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.Panel>
       {showPowerPerSubstation && (
         <Tabs.Panel value="power_per_substation">
-          <ServiceProvidingGroupShowPowerPerSubstationTable spgId={spgId} />
+          <ServiceProvidingGroupShowPowerPerSubstationTable
+            spgId={spgId}
+            powerScale={powerScale}
+          />
+        </Tabs.Panel>
+      )}
+      {showChanges && (
+        <Tabs.Panel value="changes">
+          <ServiceProvidingGroupShowChangesTab
+            key={`${spgId}-${spgCreatedAt ?? "unknown"}`}
+            spgId={spgId}
+            spgCreatedAt={spgCreatedAt}
+            powerScale={powerScale}
+          />
         </Tabs.Panel>
       )}
     </Tabs>

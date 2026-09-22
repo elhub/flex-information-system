@@ -81,6 +81,16 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("ramping_description")
   public val rampingDescription: String? = null,
   /**
+   * When the application was first created.
+   */
+  @SerialName("created_at")
+  public val createdAt: Instant? = null,
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  @SerialName("complete_at")
+  public val completeAt: Instant? = null,
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   @SerialName("recorded_at")

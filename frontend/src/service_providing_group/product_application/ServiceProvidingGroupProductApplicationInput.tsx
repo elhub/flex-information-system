@@ -1,7 +1,7 @@
-import { Form, useRecordContext, useTranslate } from "ra-core";
-import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Form, useGetIdentity, useRecordContext, useTranslate } from "ra-core";
+import { FieldValues, useFormContext } from "react-hook-form";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
@@ -13,12 +13,9 @@ import {
   Alert,
   FormContainer,
   Heading,
+  Loader,
   VerticalSpace,
 } from "../../components/ui";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../../productApplicationBlock";
 import {
   TextAreaInput,
   EnumInput,
@@ -26,10 +23,12 @@ import {
   PartyReferenceInput,
   FormToolbarWithConfirmation,
   UnitInput,
-  type BaseInputProps,
   DateTimeInput,
+  FormToolbar,
 } from "../../components/EDS-ra/inputs";
-import { ProductTypeArrayInput } from "../../product_type/components";
+import { SystemOperatorProductTypesInput } from "../../product_type/components";
+import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
+import { DraftAutosaveWatcher } from "./DraftAutosaveWatcher";
 
 // ramping_capability and ramping_description are required in the frontend even
 // though the API allows null (the API-level constraint only enforces non-null
@@ -41,36 +40,6 @@ const spgpaFormSchema =
       zServiceProvidingGroupProductApplicationRampingCapability,
     ramping_description: z.string(),
   });
-
-// component restricting the selectable product types based on the
-// already selected procuring system operator
-const ProductTypesInput = (
-  props: Pick<
-    BaseInputProps,
-    "source" | "required" | "description" | "tooltip"
-  >,
-) => {
-  const { setValue, watch } = useFormContext();
-  const {
-    formState: { dirtyFields },
-  } = useFormContext();
-  const productTypeIdsDirty = dirtyFields.product_type_ids;
-  const systemOperatorID = watch("procuring_system_operator_id");
-
-  useEffect(() => {
-    if (systemOperatorID && productTypeIdsDirty) {
-      setValue("product_type_ids", []);
-    }
-  }, [productTypeIdsDirty, systemOperatorID, setValue]);
-
-  return (
-    <ProductTypeArrayInput
-      systemOperatorId={systemOperatorID}
-      {...props}
-      status={"active"}
-    />
-  );
-};
 
 const RampingNotice = () => {
   const translate = useTranslate();
@@ -107,27 +76,40 @@ const AdditionalInformationNotice = () => {
 // common layout to create and edit pages
 export const ServiceProvidingGroupProductApplicationInput = () => {
   const translate = useTranslate();
+  const navigate = useNavigate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+
+  // Read the draft ID from location state when restoring a saved draft.
+  // This must be extracted before Zod parses the state, as Zod strips unknown keys.
+  const restoredDraftId = overrideRecord?.__draftId as string | undefined;
+
   const parsedOverrideRecord = spgpaFormSchema
     .partial()
     .parse(overrideRecord ?? {});
 
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
-  if (createOrUpdate === "create" && isProductApplicationBlocked()) {
-    return (
-      <FormContainer>
-        <Alert variant="warning">
-          Product applications cannot be created before{" "}
-          {getProductApplicationBlockDate()}.
-        </Alert>
-      </FormContainer>
-    );
-  }
+  const [draftId] = useState(() => restoredDraftId ?? crypto.randomUUID());
 
   const fields = getFields(spgpaFormSchema.shape);
+
+  const recordSpgId = record?.service_providing_group_id as number | undefined;
+  const isServiceProvider = identity?.role === "flex_service_provider";
+
+  const handleCreateSuccess = (values: FieldValues) => {
+    const spgId = values.service_providing_group_id as number | undefined;
+
+    if (spgId !== undefined) {
+      localStorage.removeItem(draftStorageKey(spgId, draftId));
+    }
+
+    navigate(-1);
+  };
+
+  if (identityLoading) return <Loader />;
 
   return (
     <Form
@@ -135,6 +117,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
       resolver={unTypedZodResolver(spgpaFormSchema)}
       sanitizeEmptyValues
     >
+      {createOrUpdate === "create" && (
+        <DraftAutosaveWatcher spgId={recordSpgId} draftId={draftId} />
+      )}
       <FormContainer>
         <Heading level={3} size="medium">
           {createOrUpdate === "create"
@@ -167,8 +152,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <ProductTypesInput
+        <SystemOperatorProductTypesInput
           {...fields.product_type_ids}
+          systemOperatorSource="procuring_system_operator_id"
           description
           tooltip={false}
         />
@@ -225,12 +211,20 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           tooltip={false}
         />
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
-        <FormToolbarWithConfirmation
-          confirmTitle={translate("ra.action.save")}
-          confirmContent={
-            <p>{translate("text.spga_save_confirmation_text")}</p>
-          }
-        />
+        <DateTimeInput {...fields.complete_at} description tooltip={false} />
+        {isServiceProvider ? (
+          <FormToolbarWithConfirmation
+            confirmTitle={translate("ra.action.save")}
+            confirmContent={
+              <p>{translate("text.spga_save_confirmation_text")}</p>
+            }
+            onSuccess={
+              createOrUpdate === "create" ? handleCreateSuccess : undefined
+            }
+          />
+        ) : (
+          <FormToolbar />
+        )}
       </FormContainer>
     </Form>
   );

@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,9 +17,7 @@ public data class ServiceProvidingGroupMembershipHistoryResponse(
   @SerialName("id")
   public val id: Long? = null,
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The
-   * controllable unit's flexible power must not exceed 100% of the combined maximum active power of
-   * all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   @SerialName("controllable_unit_id")
   public val controllableUnitId: Long,
@@ -64,4 +63,14 @@ public data class ServiceProvidingGroupMembershipHistoryResponse(
    */
   @SerialName("replaced_at")
   public val replacedAt: Instant? = null,
+  /**
+   * Embedded controllable_unit_history
+   */
+  @SerialName("controllable_unit_history")
+  public val controllableUnitHistory: List<ControllableUnitHistoryResponse>? = null,
+  /**
+   * Embedded service_providing_group_history
+   */
+  @SerialName("service_providing_group_history")
+  public val serviceProvidingGroupHistory: List<ServiceProvidingGroupHistoryResponse>? = null,
 )

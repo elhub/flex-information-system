@@ -107,6 +107,11 @@ PYEOF
 # Path relative to topdir for Docker (workspace is mounted at /workspace)
 tmp_rel="${tmp_spec#"$topdir/"}"
 
+# Delete directory first in order to avoid stale models
+generated_dir="$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated"
+rm -rf "$generated_dir"
+mkdir -p "$generated_dir"
+
 docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabrikt-io/fabrikt:latest \
 	--output-directory 'kbackend' \
 	--base-package "no.elhub.flex.model.dto.generated" \

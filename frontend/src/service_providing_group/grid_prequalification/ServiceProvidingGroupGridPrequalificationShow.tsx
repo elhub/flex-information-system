@@ -32,10 +32,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
 
   return (
     <ShowPageLayout
-      backTo={{
-        pathname: "/service_providing_group_grid_prequalification",
-        label: "Grid prequalifications",
-      }}
       title={`Grid Prequalification #${spgpq.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
       badge={<SpgpqStatusBadge status={spgpq.status} />}
       actionBar={

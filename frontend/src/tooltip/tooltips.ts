@@ -163,7 +163,7 @@ export const tooltips = {
   "service_providing_group_power_per_substation.service_providing_group_id":
     "The ID of the service providing group this resource is a breakdown of.",
   "service_providing_group_power_per_substation.substations":
-    "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+    "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
   "service_providing_group_summary.id":
     "Unique surrogate key (service providing group ID).",
   "service_providing_group_summary.service_providing_group_id":
@@ -182,6 +182,8 @@ export const tooltips = {
   "service_providing_group.status": "The status of the group.",
   "service_providing_group.additional_information":
     "Free text field for extra information about the service providing group if needed.",
+  "service_providing_group.created_at":
+    "When the service providing group was first created.",
   "service_providing_group.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group.recorded_by":
@@ -196,6 +198,8 @@ export const tooltips = {
   "service_providing_group_history.status": "The status of the group.",
   "service_providing_group_history.additional_information":
     "Free text field for extra information about the service providing group if needed.",
+  "service_providing_group_history.created_at":
+    "When the service providing group was first created.",
   "service_providing_group_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_history.recorded_by":
@@ -208,7 +212,7 @@ export const tooltips = {
     "The identity that replaced the resource.",
   "service_providing_group_membership.id": "Unique surrogate key.",
   "service_providing_group_membership.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership.valid_from":
@@ -222,7 +226,7 @@ export const tooltips = {
   "service_providing_group_membership_history.id":
     "Unique surrogate identifier.",
   "service_providing_group_membership_history.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership_history.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership_history.valid_from":
@@ -645,7 +649,7 @@ export const tooltips = {
   "accounting_point_grid_location.object_type":
     "The type of object in the common grid model that the accounting point is at.",
   "accounting_point_grid_location.business_id":
-    "Business identifier (mRID) referencing the object in the common grid model.",
+    "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
   "accounting_point_grid_location.name":
     "Name of the grid model object at the location.",
   "accounting_point_grid_location.nominal_voltage":
@@ -655,7 +659,7 @@ export const tooltips = {
   "accounting_point_grid_location.source":
     "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
   "accounting_point_grid_location.quality":
-    "The quality of the grid location registration.",
+    "Indicates how the grid location was determined. Guessed means that Flexibility Information System has estimated the location, while confirmed means that someone has verified it.",
   "accounting_point_grid_location.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "accounting_point_grid_location.recorded_by":
@@ -666,7 +670,7 @@ export const tooltips = {
   "accounting_point_grid_location_history.object_type":
     "The type of object in the common grid model that the accounting point is at.",
   "accounting_point_grid_location_history.business_id":
-    "Business identifier (mRID) referencing the object in the common grid model.",
+    "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
   "accounting_point_grid_location_history.name":
     "Name of the grid model object at the location.",
   "accounting_point_grid_location_history.nominal_voltage":
@@ -676,7 +680,7 @@ export const tooltips = {
   "accounting_point_grid_location_history.source":
     "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
   "accounting_point_grid_location_history.quality":
-    "The quality of the grid location registration.",
+    "Indicates how the grid location was determined. Guessed means that Flexibility Information System has estimated the location, while confirmed means that someone has verified it.",
   "accounting_point_grid_location_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "accounting_point_grid_location_history.recorded_by":
@@ -889,6 +893,10 @@ export const tooltips = {
     "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+  "service_providing_group_product_application.created_at":
+    "When the application was first created.",
+  "service_providing_group_product_application.complete_at":
+    "When the application was last marked complete by the procuring system operator.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -917,6 +925,10 @@ export const tooltips = {
     "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application_history.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+  "service_providing_group_product_application_history.created_at":
+    "When the application was first created.",
+  "service_providing_group_product_application_history.complete_at":
+    "When the application was last marked complete by the procuring system operator.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

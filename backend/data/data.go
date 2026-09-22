@@ -8,7 +8,6 @@ import (
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
-	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
 	"flex/pgpool"
@@ -31,12 +30,11 @@ var openapiInput []byte
 
 // api gathers handlers for all endpoints of the data API.
 type api struct {
-	postgRESTURL                  *url.URL
-	kbackendURL                   *url.URL
-	db                            *pgpool.Pool
-	ctxKey                        string
-	mux                           *http.ServeMux
-	productApplicationBlockBefore *time.Time
+	postgRESTURL *url.URL
+	kbackendURL  *url.URL
+	db           *pgpool.Pool
+	ctxKey       string
+	mux          *http.ServeMux
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -50,7 +48,6 @@ func NewAPIHandler(
 	kbackendUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-	productApplicationBlockBefore *time.Time,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -65,12 +62,11 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL:                  postgRESTURL,
-		kbackendURL:                   kbackendURL,
-		db:                            db,
-		mux:                           mux,
-		ctxKey:                        ctxKey,
-		productApplicationBlockBefore: productApplicationBlockBefore,
+		postgRESTURL: postgRESTURL,
+		kbackendURL:  kbackendURL,
+		db:           db,
+		mux:          mux,
+		ctxKey:       ctxKey,
 	}
 
 	// OpenAPI documentation handlers
@@ -94,9 +90,9 @@ func NewAPIHandler(
 		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:entity:lookup"}, http.HandlerFunc(data.entityLookupHandler)),
 	)
 
-	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler)),
-	)
+	dataListPostgRESTHandler := auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler))
+	eventListPostgRESTHandler := auth.CheckScopeForRequest("data", http.HandlerFunc(data.eventHandler))
+
 	dataPostgRESTHandler := auth.CheckScopeForRequest(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
@@ -111,11 +107,9 @@ func NewAPIHandler(
 		scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
 		attachmentPostgRESTHandler,
 	)
-	attachmentListHandler := middleware.DefaultQueryLimit(
-		auth.CheckScope(
-			scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
-			attachmentPostgRESTHandler,
-		),
+	attachmentListHandler := auth.CheckScope(
+		scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
+		attachmentPostgRESTHandler,
 	)
 	mux.Handle(
 		"GET /service_providing_group_product_application_attachment",
@@ -205,7 +199,7 @@ func NewAPIHandler(
 	mux.Handle("PATCH /entity_client/{id}", dataPostgRESTHandler)
 	mux.Handle("DELETE /entity_client/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /event", dataListPostgRESTHandler)
+	mux.Handle("GET /event", eventListPostgRESTHandler)
 	mux.Handle("GET /event/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /identity", dataListPostgRESTHandler)
@@ -241,10 +235,7 @@ func NewAPIHandler(
 	mux.Handle("GET /product_type/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_provider_product_application", dataListPostgRESTHandler)
-	mux.Handle("POST /service_provider_product_application", blockBeforeDate(
-		data.productApplicationBlockBefore, "SPPA-VAL002",
-		"Service provider product applications", dataPostgRESTHandler,
-	))
+	mux.Handle("POST /service_provider_product_application", dataPostgRESTHandler)
 	mux.Handle("GET /service_provider_product_application/{id}", dataPostgRESTHandler)
 	mux.Handle("PATCH /service_provider_product_application/{id}", dataPostgRESTHandler)
 
@@ -331,10 +322,7 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_membership_history/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_providing_group_product_application", dataListPostgRESTHandler)
-	mux.Handle("POST /service_providing_group_product_application", blockBeforeDate(
-		data.productApplicationBlockBefore, "SPGPA-VAL007",
-		"Service providing group product applications", dataPostgRESTHandler,
-	))
+	mux.Handle("POST /service_providing_group_product_application", dataPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_product_application/{id}", dataPostgRESTHandler)
 	mux.Handle("PATCH /service_providing_group_product_application/{id}", dataPostgRESTHandler)
 
@@ -433,24 +421,6 @@ func requireQueryParameter(name string, next http.Handler) http.Handler {
 			})
 			return
 		}
-		next.ServeHTTP(w, req)
-	})
-}
-
-// blockBeforeDate returns a handler that rejects requests with a 403 error
-// if the current time is before the configured block date.
-// If blockBefore is nil, the handler passes through to next.
-func blockBeforeDate(blockBefore *time.Time, code string, resourceName string, next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if blockBefore != nil && time.Now().Before(*blockBefore) {
-			writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
-				Code:    code,
-				Message: fmt.Sprintf("%s cannot be created before %s", resourceName, blockBefore.Format("2006-01-02 15:04 MST")),
-			})
-
-			return
-		}
-
 		next.ServeHTTP(w, req)
 	})
 }
@@ -624,8 +594,9 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
-// errInvalidValidAt is returned when valid_at does not match an accepted datetime format.
-var errInvalidValidAt = errors.New("invalid valid_at format")
+// errInvalidTimeRangeParam is returned when a time-range shorthand query parameter
+// (e.g. valid_at, as_of) does not match an accepted datetime format.
+var errInvalidTimeRangeParam = errors.New("invalid datetime format")
 
 // isValidDatetime reports whether value matches one of the accepted datetime input formats.
 func isValidDatetime(value string) bool {
@@ -652,27 +623,82 @@ func isValidDatetime(value string) bool {
 	return false
 }
 
-// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
-// Returns an error if the valid_at value does not match the expected datetime format.
-func validAtQueryRewrite(query url.Values) error {
+// timeRangeQueryRewrite rewrites a shorthand query parameter (e.g. "valid_at", or
+// prefixed as "<relation>.valid_at") into and and-filter with "<fromCol>" and an "or" filter on
+// "<toCol>". Returns an error if the parameter value does not match the expected
+// datetime format.
+func timeRangeQueryRewrite(query url.Values, paramName, fromCol, toCol string) error {
 	for key := range query {
-		if key == "valid_at" || strings.HasSuffix(key, ".valid_at") {
-			keyFrom := key[:len(key)-len("valid_at")] + "valid_from"
-			keyOr := key[:len(key)-len("valid_at")] + "or"
-			query.Del(keyFrom)
-			query.Del(keyOr)
-			if validAt := query.Get(key); validAt != "" {
-				if !isValidDatetime(validAt) {
-					return errInvalidValidAt
+		if key == paramName || strings.HasSuffix(key, "."+paramName) {
+			prefix := key[:len(key)-len(paramName)]
+			keyAnd := prefix + "and"
+			if value := query.Get(key); value != "" {
+				if !isValidDatetime(value) {
+					return fmt.Errorf("%w: %s", errInvalidTimeRangeParam, paramName)
 				}
 				query.Del(key)
-				query.Set(keyFrom, "lte."+validAt)
-				query.Add(keyOr, "(valid_to.gt."+validAt+",valid_to.is.null)")
+				query.Add(keyAnd, "("+fromCol+".lte."+value+",or("+toCol+".gt."+value+","+toCol+".is.null))")
 			}
 		}
 	}
 
 	return nil
+}
+
+// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
+// Returns an error if the valid_at value does not match the expected datetime format.
+func validAtQueryRewrite(query url.Values) error {
+	return timeRangeQueryRewrite(query, "valid_at", "valid_from", "valid_to")
+}
+
+// asOfQueryRewrite rewrites the "as_of" query parameter into "recorded_at" and "replaced_at".
+// Returns an error if the as_of value does not match the expected datetime format.
+func asOfQueryRewrite(query url.Values) error {
+	return timeRangeQueryRewrite(query, "as_of", "recorded_at", "replaced_at")
+}
+
+func (data *api) eventHandler(w http.ResponseWriter, req *http.Request) {
+	query := req.URL.Query()
+
+	regexResource := regexp.MustCompile(`^eq\./([a-z_]+)/([0-9]+)$`)
+
+	rewritten := false
+
+	if match := regexResource.FindStringSubmatch(query.Get("source")); match != nil {
+		query.Del("source")
+		resource := match[1]
+		resourceID := match[2]
+
+		query.Set("source_resource", resource)
+		query.Set("source_id", resourceID)
+
+		// target the function instead of the table, so we can use the event source
+		// filtering mechanism
+		req.URL.Path = "/rpc/event_source"
+
+		rewritten = true
+	}
+
+	if match := regexResource.FindStringSubmatch(query.Get("subject")); match != nil {
+		query.Del("subject")
+		resource := match[1]
+		resourceID := match[2]
+
+		query.Set("subject_resource", resource)
+		query.Set("subject_id", resourceID)
+
+		// target the function instead of the table, so we can use the event subject
+		// filtering mechanism
+		req.URL.Path = "/rpc/event_subject"
+
+		rewritten = true
+	}
+
+	if rewritten {
+		req.URL.RawQuery = query.Encode()
+	}
+
+	data.postgRESTHandler(w, req)
 }
 
 // postgRESTHandler forwards the request to the PostgREST API.
@@ -721,6 +747,14 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err := validAtQueryRewrite(query); err != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	if err := asOfQueryRewrite(query); err != nil {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: err.Error(),
 		})

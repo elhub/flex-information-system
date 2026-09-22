@@ -103,6 +103,7 @@ resources:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       regulation_direction:
         description: >-
           The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to
@@ -575,10 +576,9 @@ resources:
         description: >-
           List of per-substation aggregates for the controllable units currently
           in the service providing group. Each element contains the substation
-          identifier and name, plus count and maximum active power statistics
-          for the controllable units connected to that substation. An element
-          with null substation fields groups controllable units whose grid
-          location has not yet been assigned.
+          identifier and name, plus controllable unit and technical resource
+          aggregates. An element with null substation fields groups controllable units
+          whose grid location has not yet been assigned.
         type: array
         readOnly: true
         x-intl:
@@ -601,11 +601,25 @@ resources:
                   type: integer
                 maximum_active_power:
                   $ref: "#/components/schemas/numeric_aggregation"
+            technical_resource:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
         example:
           - substation_business_id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
             substation_name: "Substation A"
             controllable_unit:
               count: 3
+              maximum_active_power:
+                sum: 120
+                average: 40
+                min: 20
+                max: 60
+            technical_resource:
+              count: 5
               maximum_active_power:
                 sum: 150
                 average: 50
@@ -920,6 +934,16 @@ resources:
           en: Additional information
           nb: Tilleggsinformasjon
           nn: Tilleggsinformasjon
+      created_at:
+        description: When the service providing group was first created.
+        format: date-time
+        type: string
+        readOnly: true
+        example: "2022-01-08T12:00:00+02"
+        x-intl:
+          en: Created at
+          nb: Opprettet
+          nn: Oppretta
 
   - id: service_providing_group_membership
     acronym: SPGM
@@ -960,10 +984,7 @@ resources:
           nn: ID
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a service
-          providing group. The controllable unit's flexible power must not exceed
-          100% of the combined maximum active power of all its technical resources
-          (SPGM-VAL003).
+          Reference to the controllable unit this relation links to a service providing group.
         format: bigint
         type: integer
         x-no-update: true
@@ -2208,8 +2229,10 @@ resources:
           nn: Emne
       data:
         description: The data of the event.
-        format: text
-        type: string
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/event_data"
+          - type: "null"
         readOnly: true
         nullable: true
         x-intl:
@@ -3391,7 +3414,7 @@ resources:
       business_id:
         description: >-
           Business identifier (mRID) referencing the object in the common
-          grid model.
+          grid model (NEMO).
         format: text
         type: string
         nullable:
@@ -3471,7 +3494,9 @@ resources:
           nb: Kilde
           nn: Kjelde
       quality:
-        description: The quality of the grid location registration.
+        description: >-
+          Indicates how the grid location was determined. Guessed means that Flexibility Information
+          System has estimated the location, while confirmed means that someone has verified it.
         format: text
         type: string
         enum:
@@ -4002,31 +4027,61 @@ resources:
               en: Requested
               nb: Forespurt
               nn: Førespurt
+            description:
+              x-intl:
+                en: The application has been submitted and is awaiting assessment by the System operator.
+                nb: Søknaden er sendt inn og venter på vurdering av systemoperatøren.
+                nn: Søknaden er sendt inn og ventar på vurdering av systemoperatøren.
           - id: prequalification
             x-intl:
-              en: Prequalification
-              nb: Prekvalifisering
-              nn: Prekvalifisering
+              en: In Prequalification
+              nb: Prekvalifisering pågår
+              nn: Prekvalifisering pågår
+            description:
+              x-intl:
+                en: The application is currently undergoing the prequalification process and is being assessed against qualification requirements.
+                nb: Søknaden gjennomgår for tiden prekvalifiseringsprosessen og blir vurdert opp mot kvalifikasjonskravene.
+                nn: Søknaden gjennomgår for tida prekvalifiseringsprosessen og vert vurdert opp mot kvalifikasjonskrava.
           - id: temporary_qualified
             x-intl:
               en: Temporary qualified
               nb: Midlertidig kvalifisert
               nn: Mellombels kvalifisert
+            description:
+              x-intl:
+                en: The application has been accepted for verification without a full prequalification process and is awaiting final verification.
+                nb: Søknaden er godtatt for verifisering uten en fullstendig prekvalifiseringsprosess, og venter på endelig verifisering.
+                nn: Søknaden er godteken for verifisering utan ein fullstendig prekvalifiseringsprosess, og ventar på endeleg verifisering.
           - id: prequalified
             x-intl:
               en: Prequalified
               nb: Prekvalifisert
               nn: Prekvalifisert
+            description:
+              x-intl:
+                en: The application has successfully completed the prequalification process.
+                nb: Søknaden har fullført prekvalifiseringsprosessen.
+                nn: Søknaden har fullført prekvalifiseringsprosessen.
           - id: verified
             x-intl:
               en: Verified
               nb: Verifisert
               nn: Verifisert
+            description:
+              x-intl:
+                en: The application has successfully completed the verification process and is approved by the System Operator.
+                nb: Søknaden har fullført verifiseringsprosessen og er godkjent av systemoperatøren.
+                nn: Søknaden har fullført verifiseringsprosessen og er godkjend av systemoperatøren.
           - id: rejected
             x-intl:
               en: Rejected
               nb: Avvist
               nn: Avvist
+            description:
+              x-intl:
+                en: The application was not approved and requires updates before it can be submitted again.
+                nb: Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.
+                nn: Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.
         example: prequalification
         x-intl:
           en: Status
@@ -4127,6 +4182,27 @@ resources:
           en: Ramping description
           nb: Rampingbeskrivelse
           nn: Rampingbeskriving
+      created_at:
+        description: When the application was first created.
+        format: date-time
+        type: string
+        readOnly: true
+        example: "2022-01-08T12:00:00+02"
+        x-intl:
+          en: Created at
+          nb: Opprettet
+          nn: Oppretta
+      complete_at:
+        description: >-
+          When the application was last marked complete by the procuring system operator.
+        format: date-time
+        type: string
+        nullable: true
+        example: "2022-08-08T12:00:00+02"
+        x-intl:
+          en: Completed at
+          nb: Fullført
+          nn: Fullført
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

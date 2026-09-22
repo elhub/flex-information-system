@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -18,10 +19,12 @@ def _get_kwargs(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -37,6 +40,11 @@ def _get_kwargs(
 
     params["name"] = name
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -44,6 +52,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["party_id"] = party_id
 
@@ -157,10 +167,12 @@ def sync_detailed(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]:
     """List Party - history
@@ -173,10 +185,12 @@ def sync_detailed(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         party_id (str | Unset):
 
     Raises:
@@ -193,10 +207,12 @@ def sync_detailed(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         party_id=party_id,
     )
 
@@ -215,10 +231,12 @@ def sync(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse] | None:
     """List Party - history
@@ -231,10 +249,12 @@ def sync(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         party_id (str | Unset):
 
     Raises:
@@ -252,10 +272,12 @@ def sync(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         party_id=party_id,
     ).parsed
 
@@ -268,10 +290,12 @@ async def asyncio_detailed(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]:
     """List Party - history
@@ -284,10 +308,12 @@ async def asyncio_detailed(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         party_id (str | Unset):
 
     Raises:
@@ -304,10 +330,12 @@ async def asyncio_detailed(
         business_id_type=business_id_type,
         entity_id=entity_id,
         name=name,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         party_id=party_id,
     )
 
@@ -324,10 +352,12 @@ async def asyncio(
     business_id_type: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse] | None:
     """List Party - history
@@ -340,10 +370,12 @@ async def asyncio(
         business_id_type (str | Unset):
         entity_id (str | Unset):
         name (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         party_id (str | Unset):
 
     Raises:
@@ -362,10 +394,12 @@ async def asyncio(
             business_id_type=business_id_type,
             entity_id=entity_id,
             name=name,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             party_id=party_id,
         )
     ).parsed

@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -16,10 +17,12 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -31,6 +34,11 @@ def _get_kwargs(
 
     params["controllable_unit_id"] = controllable_unit_id
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -38,6 +46,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["technical_resource_id"] = technical_resource_id
 
@@ -149,10 +159,12 @@ def sync_detailed(
     id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse]]:
     """List Technical Resource - history
@@ -164,10 +176,12 @@ def sync_detailed(
         id (str | Unset):
         name (str | Unset):
         controllable_unit_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -182,10 +196,12 @@ def sync_detailed(
         id=id,
         name=name,
         controllable_unit_id=controllable_unit_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     )
 
@@ -202,10 +218,12 @@ def sync(
     id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse] | None:
     """List Technical Resource - history
@@ -217,10 +235,12 @@ def sync(
         id (str | Unset):
         name (str | Unset):
         controllable_unit_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -236,10 +256,12 @@ def sync(
         id=id,
         name=name,
         controllable_unit_id=controllable_unit_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     ).parsed
 
@@ -250,10 +272,12 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse]]:
     """List Technical Resource - history
@@ -265,10 +289,12 @@ async def asyncio_detailed(
         id (str | Unset):
         name (str | Unset):
         controllable_unit_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -283,10 +309,12 @@ async def asyncio_detailed(
         id=id,
         name=name,
         controllable_unit_id=controllable_unit_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         technical_resource_id=technical_resource_id,
     )
 
@@ -301,10 +329,12 @@ async def asyncio(
     id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     technical_resource_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceHistoryResponse] | None:
     """List Technical Resource - history
@@ -316,10 +346,12 @@ async def asyncio(
         id (str | Unset):
         name (str | Unset):
         controllable_unit_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         technical_resource_id (str | Unset):
 
     Raises:
@@ -336,10 +368,12 @@ async def asyncio(
             id=id,
             name=name,
             controllable_unit_id=controllable_unit_id,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             technical_resource_id=technical_resource_id,
         )
     ).parsed

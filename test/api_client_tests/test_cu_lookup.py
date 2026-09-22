@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitLookupRequest,
@@ -12,9 +12,6 @@ from flex.models import (
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
     ControllableUnitStatus,
-    EntityCreateRequest,
-    EntityBusinessIdType,
-    EntityType,
     EntityResponse,
     ErrorMessage,
 )
@@ -29,11 +26,6 @@ from flex.api.controllable_unit_service_provider import (
 )
 from flex.api.entity import (
     read_entity,
-    list_entity,
-    create_entity,
-)
-from flex.api.party import (
-    list_party,
 )
 from flex.api.accounting_point import (
     list_accounting_point,
@@ -41,7 +33,7 @@ from flex.api.accounting_point import (
 from typing import cast
 import pytest
 from datetime import date, datetime, timedelta, time, timezone
-from test_entity import random_number, random_pid, random_org
+from test_entity import random_number
 
 
 def birth_date_from_pid(pid: str) -> str:
@@ -54,11 +46,11 @@ def sts():
 
 
 def test_cu_lookup_params(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 
@@ -249,11 +241,11 @@ def test_cu_lookup_params(sts):
 
 # test what happens when the accounting point exists only remotely
 def test_cu_lookup_remote(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 
@@ -270,11 +262,6 @@ def test_cu_lookup_remote(sts):
         # zeros in the middle to catch one of the test container's MGAs
         partial = "9" + random_number(10) + "000" + random_number(3)
         return partial + gs1_check_digit(partial)
-
-    # TODO: remove when sync (AP creation) is implemented in kbackend
-    return
-
-    # end user entity and party exist
 
     ap_business_id = random_valid_gsrn()
 
@@ -295,92 +282,11 @@ def test_cu_lookup_remote(sts):
     assert isinstance(ap, list)
     assert len(ap) == 1
 
-    # end user entity exists but not the party
-
-    ap_business_id = random_valid_gsrn()
-
-    e = create_entity.sync(
-        client=client_fiso,
-        body=EntityCreateRequest(
-            name="TEST-CU-LOOKUP-REMOTE",
-            business_id=random_pid(),
-            business_id_type=EntityBusinessIdType.PID,
-            type_=EntityType.PERSON,
-        ),
-    )
-    assert isinstance(e, EntityResponse)
-
-    cul = call_controllable_unit_lookup.sync(
-        client=client_fiso,
-        body=ControllableUnitLookupRequest(
-            end_user=birth_date_from_pid(e.business_id),
-            accounting_point=ap_business_id,
-        ),
-    )
-    assert isinstance(cul, ControllableUnitLookupResponse)
-
-    # the AP has been created
-    ap = list_accounting_point.sync(
-        client=client_fiso,
-        business_id=f"eq.{ap_business_id}",
-    )
-    assert isinstance(ap, list)
-    assert len(ap) == 1
-
-    # the end user party has been created under the existing entity
-    ps = list_party.sync(
-        client=client_fiso,
-        entity_id=f"eq.{e.id}",
-    )
-    assert isinstance(ps, list)
-    assert len(ps) == 1
-    assert ap_business_id in cast(str, ps[0].name) and ps[0].type_ == "end_user"
-
-    # end user does not exist at all
-
-    ap_business_id = random_valid_gsrn()
-    org_number = random_org()
-
-    cul = call_controllable_unit_lookup.sync(
-        client=client_fiso,
-        body=ControllableUnitLookupRequest(
-            end_user=org_number,
-            accounting_point=ap_business_id,
-        ),
-    )
-    assert isinstance(cul, ControllableUnitLookupResponse)
-
-    # the AP has been created
-    ap = list_accounting_point.sync(
-        client=client_fiso,
-        business_id=f"eq.{ap_business_id}",
-    )
-    assert isinstance(ap, list)
-    assert len(ap) == 1
-
-    # the end user party has been created, entity + party
-    es = list_entity.sync(
-        client=client_fiso,
-        business_id=f"eq.{org_number}",
-    )
-    assert isinstance(es, list)
-    assert len(es) == 1
-    e = es[0]
-    assert ap_business_id in cast(str, e.name) and e.type_ == "organisation"
-
-    ps = list_party.sync(
-        client=client_fiso,
-        entity_id=f"eq.{e.id}",
-    )
-    assert isinstance(ps, list)
-    assert len(ps) == 1
-    assert ap_business_id in cast(str, ps[0].name) and ps[0].type_ == "end_user"
-
 
 def test_cu_lookup_flow(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    eu_userinfo = sts.get_userinfo(sts.get_client(TestEntity.TEST, "EU"))
+    eu_userinfo = sts.get_userinfo(sts.get_client(TestEntityClient.TEST, "EU"))
 
     eu_entity = read_entity.sync(
         client=client_fiso,
@@ -401,7 +307,7 @@ def test_cu_lookup_flow(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     e = read_controllable_unit.sync(
         client=client_sp,
@@ -443,11 +349,11 @@ def test_cu_lookup_flow(sts):
 
 
 def test_cu_lookup_terminated_cu_excluded(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntityClient.TEST))["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 

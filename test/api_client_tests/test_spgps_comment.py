@@ -1,9 +1,11 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -42,6 +44,7 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
@@ -135,6 +138,15 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
     )
     assert isinstance(tr, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
@@ -206,6 +218,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             prequalified_at=datetime.datetime.fromisoformat(
                 "2024-01-01T00:00:00+01:00"
             ),
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -228,15 +241,17 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SO"))
+    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntityClient.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # create a suspension
@@ -248,11 +263,11 @@ def data():
     # create a totally unrelated suspension
 
     client_common_so = cast(
-        AuthenticatedClient, sts.fresh_client(TestEntity.COMMON, "SO")
+        AuthenticatedClient, sts.fresh_client(TestEntityClient.COMMON, "SO")
     )
     common_so_id = sts.get_userinfo(client_common_so)["party_id"]
 
-    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
+    client_other_sp = sts.fresh_client(TestEntityClient.COMMON, "SP")
     other_sp_id = sts.get_userinfo(client_other_sp)["party_id"]
 
     unrelated_spgps_id = create_spgps(
@@ -293,7 +308,7 @@ def check_history(clt, spggsc_id):
 def test_spgpsc_fiso(data):
     (sts, client_so, _, spgps_id, _) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # both parties create a comment
     # (minimal visibility so the test is even more powerful)
@@ -483,7 +498,7 @@ def test_spgpsc_so_sp(data):
     assert check_history(client_sp, spgpsc_so.id)
 
     # delete the SPPS so that comments disappear
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     d = delete_service_providing_group_product_suspension.sync(
         client=client_fiso,
         id=spgps_id,

@@ -2,7 +2,10 @@ from io import BytesIO
 from typing import cast
 
 import pytest
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -30,6 +33,8 @@ from flex.api.service_providing_group_product_application_attachment import (
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -63,7 +68,7 @@ from flex.models.service_providing_group_product_application_attachment_response
 )
 from flex.types import File
 from flex import AuthenticatedClient
-from security_token_service import SecurityTokenService, TestEntity
+from security_token_service import SecurityTokenService, TestEntityClient
 import datetime
 
 
@@ -244,6 +249,15 @@ def _create_spgpa(
     )
     assert isinstance(tr, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
@@ -302,26 +316,30 @@ def _create_spgpa(
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
     # SP1 owns the primary SPGPA used in most tests
-    client_sp = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SP"))
+    client_sp = cast(AuthenticatedClient, sts.fresh_client(TestEntityClient.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # SP2 owns a second SPGPA used in SP-isolation tests
-    client_sp2 = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SP"))
+    client_sp2 = cast(
+        AuthenticatedClient, sts.fresh_client(TestEntityClient.TEST, "SP")
+    )
     sp2_id = sts.get_userinfo(client_sp2)["party_id"]
 
     # SO is the procuring system operator (involved party for both SPGPAs)
-    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SO"))
+    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntityClient.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     # Unrelated SO, not involved in any SPGPA we create
     client_other_so = cast(
-        AuthenticatedClient, sts.fresh_client(TestEntity.COMMON, "SO")
+        AuthenticatedClient, sts.fresh_client(TestEntityClient.COMMON, "SO")
     )
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     pt_id = 5  # manual_congestion product type

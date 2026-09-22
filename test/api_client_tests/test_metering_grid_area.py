@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import MeteringGridAreaResponse, ErrorMessage
 from flex.api.metering_grid_area import (
@@ -20,7 +20,7 @@ def sts():
 # RLS: MGA-COM001
 def test_metering_grid_area_common(sts):
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # endpoint: GET /metering_grid_area
         mga = list_metering_grid_area.sync(client=client)

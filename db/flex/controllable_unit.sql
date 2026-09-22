@@ -1,5 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:controllable-unit-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS controllable_unit (
@@ -99,3 +101,8 @@ AFTER UPDATE ON controllable_unit
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status AND NEW.status = 'active') -- noqa
 EXECUTE FUNCTION controllable_unit_check_technical_resources_on_activation();
+
+-- changeset flex:controllable-unit-accounting-point-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+controllable_unit_accounting_point_idx
+ON controllable_unit (accounting_point_id);

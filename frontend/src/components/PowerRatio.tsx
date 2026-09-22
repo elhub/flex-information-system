@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslate } from "ra-core";
 import { Tag, Tooltip } from "./ui";
 
 type TagVariant = "success" | "warning" | "error";
@@ -24,6 +25,7 @@ export const PowerRatio = ({
   flexiblePower: number | undefined;
   ratedPower: number | undefined;
 }): ReactNode => {
+  const translate = useTranslate();
   if (ratedPower == null || ratedPower <= 0 || flexiblePower == null) {
     return "—";
   }
@@ -31,9 +33,7 @@ export const PowerRatio = ({
   const percentage = (ratio * 100).toFixed(1);
   const variant = getPowerRatioVariant(flexiblePower, ratedPower);
   return (
-    <Tooltip
-      content={`The flexible power represents ${percentage}% of the rated power. This ratio should ideally be held under 80% to ensure delivery capability.`}
-    >
+    <Tooltip content={translate("text.power_ratio_tooltip", { percentage })}>
       <Tag size="small" variant={variant}>
         {percentage}%
       </Tag>

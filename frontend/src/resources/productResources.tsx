@@ -4,7 +4,6 @@ import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { displayProductType } from "../product_type/components";
-import { ProductTypeList } from "../product_type/ProductTypeList";
 import { ProductTypeShow } from "../product_type/ProductTypeShow";
 import { SystemOperatorProductTypeList } from "../system_operator_product_type/SystemOperatorProductTypeList";
 import { SystemOperatorProductTypeShow } from "../system_operator_product_type/SystemOperatorProductTypeShow";
@@ -31,7 +30,6 @@ export const createProductResources = (permissions: Permissions) => {
       <Resource
         key="product_type"
         name="product_type"
-        list={ProductTypeList}
         show={ProductTypeShow}
         recordRepresentation={displayProductType}
       />,

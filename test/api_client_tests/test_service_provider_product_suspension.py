@@ -1,7 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     AuthenticatedClient,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
@@ -43,17 +43,19 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
     # 2 new SO, 1 new SP
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_so2 = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so2 = sts.fresh_client(TestEntityClient.TEST, "SO")
     so2_id = sts.get_userinfo(client_so2)["party_id"]
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # chain of dependency to be able to create SP product suspensions:
@@ -138,7 +140,7 @@ def check_history(client, spps_id):
 def test_spps_fiso(data):
     sts, (_, so_id, _), _, product_type_ids, _, _, sp_id = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: POST /service_provider_product_suspension
     spps = create_service_provider_product_suspension.sync(
@@ -189,7 +191,7 @@ def test_spps_fiso(data):
 def test_spps_sp(data):
     sts, (_, so_id, _), _, product_type_ids, _, client_sp, sp_id = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     spps = create_service_provider_product_suspension.sync(
         client=client_fiso,
@@ -293,7 +295,7 @@ def test_spps_so(data):
     # RLS: SPPS-SO004
     # history still readable after SPPS deletion / SPPA unqualification
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     u = update_service_provider_product_application.sync(
         client=client_fiso,
         id=cast(int, sppa_id),
@@ -312,15 +314,17 @@ def test_spps_so(data):
 def test_spps_so_003_negative(data):
     (sts, _, _, _, _, _, _) = data
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_so2 = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so2 = sts.fresh_client(TestEntityClient.TEST, "SO")
     so2_id = sts.get_userinfo(client_so2)["party_id"]
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # activate product 1 for SO1 and product 2 for SO2

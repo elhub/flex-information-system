@@ -3,6 +3,16 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 2026-09-17
+
+* **Removed default limit on list endpoint**
+  This was previously transparently set to 2000.
+
+## 2026-09-07
+
+* **Added `created_at` field to the _Service Providing Group_ resource.**
+* **Added `created_at` and `complete_at` fields to the _Service Providing Group Product Application_ resource.**
+
 ## 2026-06-08 · Initial release
 
 * **Initial public release of the Flexibility Information System API.**

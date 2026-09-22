@@ -512,6 +512,10 @@ flex.controllable_unit_service_provider
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.controllable_unit_service_provider
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider_history
 TO flex_balance_responsible_party;
 
@@ -546,6 +550,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+flex.controllable_unit_service_provider_history
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.controllable_unit_suspension
@@ -1863,6 +1871,18 @@ GRANT SELECT ON TABLE
 flex.accounting_point_grid_location
 TO flex_internal_event_notification;
 
+GRANT INSERT ON TABLE
+flex.accounting_point_grid_location
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location
+TO flex_internal_data;
+
+GRANT UPDATE ON TABLE
+flex.accounting_point_grid_location
+TO flex_internal_data;
+
 GRANT SELECT ON TABLE
 flex.accounting_point_grid_location_history
 TO flex_flexibility_information_system_operator;
@@ -1874,6 +1894,10 @@ TO flex_system_operator;
 GRANT SELECT ON TABLE
 flex.accounting_point_grid_location_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location_history
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.product_type
@@ -2846,6 +2870,10 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT ON TABLE
 flex.substation
 TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.substation
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.line

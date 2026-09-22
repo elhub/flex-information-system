@@ -1,5 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:technical-resource-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS technical_resource (
@@ -75,3 +77,8 @@ CREATE OR REPLACE TRIGGER technical_resource_event
 AFTER INSERT OR UPDATE OR DELETE ON technical_resource
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit');
+
+-- changeset flex:technical-resource-controllable-unit-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+technical_resource_controllable_unit_idx
+ON technical_resource (controllable_unit_id);

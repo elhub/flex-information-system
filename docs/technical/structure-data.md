@@ -28,6 +28,7 @@ The structure data that must be synchronised is summarised in the table below.
 | Price Area                             | NO1-5 in Norway                                                     | ~5                   | Statnett       | Automatic |
 | Metering Grid Area (MGA)               | Grid areas used in settlement, including SO and price area relation | ~500                 | Statnett       | Automatic |
 | Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k                | eSett          | Automatic |
+| Grid Model                             | Substations, clusters, and lines, to locate accounting points       | ~8200                | Elbits Nemo    | Automatic |
 
 As you can see from the last column in the table, there are two different
 strategies for _doing updates_: notice and automatic. These will be

@@ -1,5 +1,6 @@
 import { Heading } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
+import { KILO } from "../../../utils/scales";
 import type { ServiceProvidingGroupSummary } from "../../../generated-client";
 
 type Props = {
@@ -21,22 +22,26 @@ export const SpgpaPrintCuSummary = ({ summary }: Props) => {
         <LabelValue
           label="Aggregated rated power"
           value={summary.technical_resource.maximum_active_power?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
         />
         <LabelValue
           label="Aggregated flexible power"
           value={cu.maximum_active_power?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
         />
         <LabelValue
           label="Aggregated flexible power (down)"
           value={cu.maximum_active_power_down?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
         />
         <LabelValue
           label="Aggregated flexible power (up)"
           value={cu.maximum_active_power_up?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
         />
       </div>
     </div>

@@ -1,9 +1,11 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -38,7 +40,10 @@ from flex.api.service_providing_group_membership import (
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -54,9 +59,9 @@ def sts():
 
 
 def test_spg_fiso_sp(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # RLS: SPG-FISO001
@@ -66,7 +71,7 @@ def test_spg_fiso_sp(sts):
     spgs = list_service_providing_group.sync(client=client_fiso)
     assert isinstance(spgs, list)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     spgs_sp = list_service_providing_group.sync(client=client_sp)
     assert isinstance(spgs_sp, list)
@@ -136,6 +141,15 @@ def test_spg_fiso_sp(sts):
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    # Activate the CU so that it can be added to the SPG
+    update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
 
     # cannot activate SPG as it is still empty
     u = update_service_providing_group.sync(
@@ -209,12 +223,12 @@ def test_spg_fiso_sp(sts):
 
 # RLS: SPG-SO001
 def test_spg_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -252,7 +266,7 @@ def test_spg_so(sts):
 # RLS: SPG-COM001
 def test_spg_common(sts):
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # can read history on SPG they can read
         spg_visible = list_service_providing_group.sync(
@@ -282,7 +296,7 @@ def test_rla_absence(sts):
 
     for role in roles_without_rla:
         spgs = list_service_providing_group.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(spgs, list)
         assert len(spgs) == 0

@@ -14,8 +14,6 @@ type SimpleShowLayoutProps = {
   children: ReactNode;
   /** Extra actions rendered alongside the default buttons (non-history view only) */
   extraActions?: ReactNode;
-  /** Actions rendered only when viewing a history record (e.g. RestoreButton) */
-  historyOnlyActions?: ReactNode;
   /** Override the default EditButton (e.g. for nested-route resources) */
   editButton?: ReactNode;
   /**
@@ -34,7 +32,6 @@ type SimpleShowLayoutProps = {
 const SimpleShowLayout = ({
   children,
   extraActions,
-  historyOnlyActions,
   editButton,
   historyButton,
   eventButton = <EventButton />,
@@ -49,7 +46,7 @@ const SimpleShowLayout = ({
 
   return (
     <>
-      {!isHistory ? (
+      {!isHistory && (
         <div className="flex justify-end gap-2">
           {canEdit && (editButton ?? <EditButton />)}
           {extraActions}
@@ -58,9 +55,7 @@ const SimpleShowLayout = ({
             : (historyButton ?? <ResourceHistoryButton />)}
           {eventButton}
         </div>
-      ) : historyOnlyActions ? (
-        <div className="flex justify-end gap-2">{historyOnlyActions}</div>
-      ) : null}
+      )}
       <Panel border>
         <Content>{children}</Content>
       </Panel>
@@ -74,7 +69,6 @@ export const Show = <RecordType extends RaRecord = any>(
   const {
     children,
     extraActions,
-    historyOnlyActions,
     editButton,
     historyButton,
     eventButton,
@@ -89,7 +83,6 @@ export const Show = <RecordType extends RaRecord = any>(
     >
       <SimpleShowLayout
         extraActions={extraActions}
-        historyOnlyActions={historyOnlyActions}
         editButton={editButton}
         historyButton={historyButton}
         eventButton={eventButton}

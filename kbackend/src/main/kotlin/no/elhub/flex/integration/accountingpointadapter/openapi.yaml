@@ -205,6 +205,12 @@ components:
           maximum: 180
           nullable: true
           example: 10.7522
+        substation:
+          description: >-
+            Substation this accounting point is related to in the grid model.
+          type: string
+          format: uuid
+          example: "67878d70-9e32-47b6-aa29-53fedfab1358"
 
 paths:
   /accounting_point/{gsrn}:
@@ -280,6 +286,7 @@ paths:
             text/plain:
               schema:
                 type: string
+
 servers:
   - url: http://accounting-point-adapter:8080
     description: Development

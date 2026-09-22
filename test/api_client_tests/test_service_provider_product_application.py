@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
@@ -42,12 +42,12 @@ def sts():
 # RLS: SPPA-FISO001
 # FISO can read and update
 def test_sppa_fiso(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     pts = list_product_type.sync(client=client_fiso)
@@ -102,12 +102,12 @@ def test_sppa_fiso(sts):
 # RLS: SPPA-SP001
 # SP can read, create and update SPPA concerning themselves
 def test_sppa_sp(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_other_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_other_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     pts = list_product_type.sync(client=client_fiso)
@@ -201,7 +201,7 @@ def test_sppa_sp(sts):
 
     # --------------------------------------------------------------------------
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     # SO is linked to no product type so it is impossible to apply for anything
@@ -227,7 +227,7 @@ def test_sppa_sp(sts):
         assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     # not allowed to create for another SP
-    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
+    client_other_sp = sts.fresh_client(TestEntityClient.COMMON, "SP")
     sppa = create_service_provider_product_application.sync(
         client=client_other_sp,
         body=ServiceProviderProductApplicationCreateRequest(
@@ -281,12 +281,12 @@ def test_sppa_sp(sts):
 
 
 def test_sppa_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     pts = list_product_type.sync(client=client_fiso)
@@ -352,12 +352,12 @@ def test_sppa_so(sts):
 
 # SPPA-VAL004
 def test_sppa_product_type_ids_not_empty(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.fresh_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     pts = list_product_type.sync(client=client_fiso)
@@ -407,7 +407,7 @@ def test_sppa_product_type_ids_not_empty(sts):
 
 def test_sppa_common(sts):
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         sppa_visible = list_service_provider_product_application.sync(
             client=client,

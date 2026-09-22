@@ -20,6 +20,7 @@ import {
   Card,
   CardContent,
   Tag,
+  Loader,
 } from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
@@ -123,7 +124,11 @@ export const TechnicalResourceList = () => {
   const canDelete = permissions?.allow("technical_resource", "delete");
   const canCreate = permissions?.allow("technical_resource", "create");
 
-  const { data } = useTechnicalResources(Number(id));
+  const { data, isLoading } = useTechnicalResources(Number(id));
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   const selectedRecord = data?.find((r) => r.id === selectedTrId) ?? null;
 
@@ -133,6 +138,7 @@ export const TechnicalResourceList = () => {
     {
       key: "maximum_active_power",
       header: translate("field.technical_resource.maximum_active_power"),
+      render: (v) => `${String(v)} kW`,
     },
     {
       key: "device_type",

@@ -14,7 +14,7 @@ export const ENUM_KEY_PREFIX: Record<DashboardItemKind, string> = {
     "service_providing_group_grid_prequalification.status",
 };
 
-export const fallbackVariant: BadgeVariant = {
+const fallbackVariant: BadgeVariant = {
   status: "ongoing",
   icon: IconStopWatch15,
 };

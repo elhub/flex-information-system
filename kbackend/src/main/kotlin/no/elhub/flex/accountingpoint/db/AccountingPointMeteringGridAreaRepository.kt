@@ -46,6 +46,29 @@ class AccountingPointMeteringGridAreaRepositoryImpl : AccountingPointMeteringGri
         if (accountingPointMeteringGridAreas.isEmpty()) return Unit.right()
         return flexTransaction { conn ->
             Either.catch {
+                val params = mapOf(
+                    "accountingPointId" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.accountingPointId }),
+                    "meteringGridAreaId" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.meteringGridAreaId }),
+                    "validFrom" to conn.createTimestampArray(accountingPointMeteringGridAreas.map { it.validFrom }),
+                    "validTo" to conn.createNullableTimestampArray(accountingPointMeteringGridAreas.map { it.validTo }),
+                    "accountingPointIds" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.accountingPointId }.distinct()),
+                )
+
+                conn.prepareNamed(
+                    """
+                    DELETE FROM flex.accounting_point_metering_grid_area AS apmga
+                    WHERE apmga.accounting_point_id = ANY(:accountingPointIds::bigint[])
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM unnest(:accountingPointId::bigint[], :validFrom::timestamptz[])
+                            AS src(accounting_point_id, valid_from)
+                        WHERE src.accounting_point_id = apmga.accounting_point_id
+                        AND src.valid_from = lower(apmga.valid_time_range)
+                    )
+                    """,
+                    params,
+                ).use { stmt -> stmt.execute() }
+
                 conn.prepareNamed(
                     """
                     MERGE INTO flex.accounting_point_metering_grid_area AS apmga
@@ -69,17 +92,8 @@ class AccountingPointMeteringGridAreaRepositoryImpl : AccountingPointMeteringGri
                     WHEN NOT MATCHED BY TARGET
                         THEN INSERT (accounting_point_id, metering_grid_area_id, valid_time_range)
                         VALUES (src.accounting_point_id, src.metering_grid_area_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                    WHEN NOT MATCHED BY SOURCE
-                        AND apmga.accounting_point_id = ANY(:accountingPointIds::bigint[])
-                        THEN DELETE
                     """,
-                    mapOf(
-                        "accountingPointId" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.accountingPointId }),
-                        "meteringGridAreaId" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.meteringGridAreaId }),
-                        "validFrom" to conn.createTimestampArray(accountingPointMeteringGridAreas.map { it.validFrom }),
-                        "validTo" to conn.createNullableTimestampArray(accountingPointMeteringGridAreas.map { it.validTo }),
-                        "accountingPointIds" to conn.createBigintArray(accountingPointMeteringGridAreas.map { it.accountingPointId }.distinct()),
-                    ),
+                    params,
                 ).use { stmt -> stmt.execute() }
                 Unit
             }.mapLeft { e ->

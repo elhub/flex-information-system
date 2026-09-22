@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import { Combobox } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
@@ -12,7 +11,7 @@ type AutocompleteInputProps = BaseInputProps & {
   choices: AutocompleteInputChoice[];
   defaultValue?: string;
   placeholder?: string;
-  style?: CSSProperties;
+  inputClassName?: string;
 };
 
 export const AutocompleteInput = ({
@@ -24,7 +23,7 @@ export const AutocompleteInput = ({
   disabled,
   defaultValue,
   placeholder,
-  style,
+  inputClassName,
   ...rest
 }: AutocompleteInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -54,7 +53,7 @@ export const AutocompleteInput = ({
       error={fieldState.error?.message}
     >
       <Combobox
-        style={style}
+        inputClassName={inputClassName}
         options={options}
         selectedOptions={selectedOption ? [selectedOption] : []}
         onToggleSelected={handleToggle}

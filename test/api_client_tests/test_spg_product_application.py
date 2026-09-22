@@ -1,9 +1,10 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -33,9 +34,11 @@ from flex.models import (
     ServiceProvidingGroupProductApplicationRampingCapability,
     ErrorMessage,
     EmptyObject,
+    ControllableUnitStatus,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
@@ -80,30 +83,30 @@ def data():
 
     client_fiso = cast(
         AuthenticatedClient,
-        sts.get_client(TestEntity.TEST, "FISO"),
+        sts.get_client(TestEntityClient.TEST, "FISO"),
     )
 
     client_sp = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.TEST, "SP"),
+        sts.fresh_client(TestEntityClient.TEST, "SP"),
     )
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     client_so = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.TEST, "SO"),
+        sts.fresh_client(TestEntityClient.TEST, "SO"),
     )
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     client_other_so = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.COMMON, "SO"),
+        sts.fresh_client(TestEntityClient.COMMON, "SO"),
     )
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     client_eu = cast(
         AuthenticatedClient,
-        sts.get_client(TestEntity.TEST, "EU"),
+        sts.get_client(TestEntityClient.TEST, "EU"),
     )
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
@@ -142,6 +145,15 @@ def data():
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -245,7 +257,7 @@ def data():
 def test_spgpa_fiso_sp_so(data):
     (sts, spg_ids, spgm_ids, client_sp, so_clients, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     client_so = so_clients[0]
     so_id = so_ids[0]
@@ -355,6 +367,16 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert isinstance(spggps_before, list)
 
+    # SP cannot update when the resulting status would not be requested
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
     # RLS: SPGPA-SO002
     # also they cannot update the ones they can read but that do not target them
 
@@ -378,21 +400,12 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
             prequalified_at=datetime.datetime.fromisoformat(
-                "2024-01-01T00:00:00+01:00"
+                "2020-01-01T00:00:00+01:00"
             ),
+            complete_at=datetime.datetime.fromisoformat("2020-01-01T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
-
-    # SP cannot update when the status is not rejected
-    u = update_service_providing_group_product_application.sync(
-        client=client_sp,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
 
     # FISO can read and update
     # RLS: SPGPA-FISO001
@@ -544,9 +557,18 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # last part of SPGPA-SP001 : SP can reset a rejected application
+    # RLS: SPGPA-SP002
+    # SP cannot update resource fields when status is not requested
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            maximum_active_power_up=2.0,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
-    # (cannot update to anything else than requested)
+    # SP cannot update status to anything other than requested
     u = update_service_providing_group_product_application.sync(
         client=client_sp,
         id=cast(int, spgpa.id),
@@ -555,6 +577,15 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     # SPGPA-VAL007 - ramping for manual congestion(product type 1)
     u = update_service_providing_group_product_application.sync(
@@ -590,18 +621,6 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # rejected -> requested : ok
-    # TODO - this test is disabled since we have remove the
-    # SPs permission (FLA) to update the status (for the time being)
-    # u = update_service_providing_group_product_application.sync(
-    #     client=client_sp,
-    #     id=cast(int, spgpa.id),
-    #     body=ServiceProvidingGroupProductApplicationUpdateRequest(
-    #         status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
-    #     ),
-    # )
-    # assert not isinstance(u, ErrorMessage)
-
     # just to trigger notification to SO
     for spgm_id in spgm_ids:
         d = delete_service_providing_group_membership.sync(
@@ -616,7 +635,7 @@ def test_spgpa_fiso_sp_so(data):
 def test_spgpa_product_type_ids_not_empty(data):
     (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     so_id = so_ids[0]
 
     # insert with empty product_type_ids must fail
@@ -656,11 +675,175 @@ def test_spgpa_product_type_ids_not_empty(data):
     assert isinstance(u, ErrorMessage)
 
 
+# SPGPA-VAL011
+def test_spgpa_val011_complete_at_required(data):
+    (sts, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    so_id = so_ids[0]
+
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert spgpa.complete_at is None
+
+    # trying to start prequalification without setting complete_at must fail
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # setting complete_at together with the status change is fine
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert u.complete_at is not None
+
+
+# SPGPA-VAL010
+def test_spgpa_no_duplicate_product_types(data):
+    (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    so_id = so_ids[0]
+
+    # create a first application for spg[0] / so[0] with pt_ids[0]
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+
+    # creating a second application for the same SPG/SO with an overlapping
+    # product type must fail
+    e = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # overlapping subset also fails
+    e = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0], pt_ids[1]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # a non-overlapping product type for the same SPG/SO is fine
+    spgpa2 = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[1]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
+
+    # updating SPGPA 2 to overlap with spgpa must also fail
+    e = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa2.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[pt_ids[0]],
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # but updating it to a different non-overlapping product type is fine
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa2.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[pt_ids[2]],
+            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
+            ramping_description="test ramping description",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # same product type for a different SO is fine (no overlap)
+    other_so_id = so_ids[1]
+    spgpa3 = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=other_so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
+
+    # same product type for a different SPG with the same SO is also fine
+    spgpa4 = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[1],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa4, ServiceProvidingGroupProductApplicationResponse)
+
+    # updating SPGPA's own product_type_ids to the same value must not
+    # raise a false duplicate
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[pt_ids[0]],
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+
 def test_spgpa_common(data):
     (sts, _, _, _, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         spgpa_visible = list_service_providing_group_product_application.sync(
             client=client,

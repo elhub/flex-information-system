@@ -1,5 +1,5 @@
 import { useRecordContext, useTranslate } from "ra-core";
-import { IconArrowUp, IconArrowDown } from "@elhub/ds-icons";
+import { IconArrowDown, IconArrowUp } from "@elhub/ds-icons";
 import { Tooltip } from "../components/ui";
 import { ControllableUnitRegulationDirection } from "../generated-client";
 

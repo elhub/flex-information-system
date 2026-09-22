@@ -6,7 +6,7 @@ const noticeTypes = [
     description:
       "The grid location of this accounting point is guessed by the system. Due to the size of the connected controllable unit(s), its grid location must come from a reliable source (DSO or grid model). The grid location thus needs to be verified and confirmed.",
     action:
-      "Check the grid location information on the accounting point (the link under Source on the left hand side here). If correct: set the voltage level and confirm. If incorrect: choose the correct grid location, set the voltage level and confirm.",
+      "Check the grid location information on the accounting point. If correct: set the voltage level and confirm. If incorrect: choose the correct grid location, set the voltage level and confirm.",
   },
   {
     id: "no.elhub.flex.accounting_point_grid_location.missing",
@@ -14,6 +14,14 @@ const noticeTypes = [
     label: "Grid Location Missing",
     description: "Accounting point has no grid location registered.",
     action: "Register a grid location for the accounting point.",
+  },
+  {
+    id: "no.elhub.flex.controllable_unit.maximum_active_power.ratio",
+    shortId: "controllable_unit.maximum_active_power.ratio",
+    label: "Inconsistency: Flexible power exceeds rated power",
+    description:
+      "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources.",
+    action: "Update the flexible power or add technical resources.",
   },
   {
     id: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
@@ -153,6 +161,13 @@ const noticeTypes = [
       "Inactivity: nothing has happened on the suspension in 2 weeks.",
     action:
       "Suspension is a temporary procedure. Consider reinstating the SPG or removing their qualification.",
+  },
+  {
+    id: "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch",
+    shortId: "service_providing_group_membership.bidding_zone_mismatch",
+    label: "Inconsistency: mismatch between CU bidding Zone and SPG",
+    description: "The CUs bidding zone does not match the one on the SPG",
+    action: "End or update the valid time on the SPG membership",
   },
 ];
 

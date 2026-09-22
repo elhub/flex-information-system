@@ -28,22 +28,40 @@ WITH (security_invoker = false) AS (
                                 'min', per_substation_details.cu_min_map,
                                 'max', per_substation_details.cu_max_map
                             )
+                        ),
+                        'technical_resource', JSONB_BUILD_OBJECT(
+                            'count', per_substation_details.tr_count,
+                            'maximum_active_power', JSONB_BUILD_OBJECT(
+                                'sum', per_substation_details.tr_sum_map,
+                                'average', per_substation_details.tr_avg_map,
+                                'min', per_substation_details.tr_min_map,
+                                'max', per_substation_details.tr_max_map
+                            )
                         )
                     )
                 )
                 FROM (
                     -- current memberships, grouped by location, then for each
-                    -- location we compute the rated effect (sum of TR MAP)
+                    -- location we aggregate maximum active power on both CU and TR level.
                     -- (CUs without location end up in a common row with null as
                     -- substation so that we do not show partial information)
                     SELECT
                         apgl.business_id AS substation_business_id,
                         apgl.name AS substation_name,
                         COUNT(spgm.controllable_unit_id) AS cu_count,
-                        SUM(cu_details.cu_map) AS cu_sum_map,
-                        AVG(cu_details.cu_map) AS cu_avg_map,
-                        MIN(cu_details.cu_map) AS cu_min_map,
-                        MAX(cu_details.cu_map) AS cu_max_map
+                        SUM(cu.maximum_active_power) AS cu_sum_map,
+                        AVG(cu.maximum_active_power) AS cu_avg_map,
+                        MIN(cu.maximum_active_power) AS cu_min_map,
+                        MAX(cu.maximum_active_power) AS cu_max_map,
+                        SUM(cu_details.tr_count) AS tr_count,
+                        SUM(cu_details.maximum_active_power)
+                            AS tr_sum_map,
+                        AVG(cu_details.maximum_active_power)
+                            AS tr_avg_map,
+                        MIN(cu_details.maximum_active_power)
+                            AS tr_min_map,
+                        MAX(cu_details.maximum_active_power)
+                            AS tr_max_map
                     FROM flex.service_providing_group_membership AS spgm
                         INNER JOIN flex.controllable_unit AS cu
                             ON spgm.controllable_unit_id = cu.id
@@ -53,8 +71,10 @@ WITH (security_invoker = false) AS (
                             ON ap.id = apgl.accounting_point_id
                         LEFT JOIN LATERAL (
                             -- NB (COALESCE): a CU can have 0 TR
-                            SELECT COALESCE(SUM(tr.maximum_active_power), 0)
-                                AS cu_map
+                            SELECT
+                                COUNT(tr.id) AS tr_count,
+                                COALESCE(SUM(tr.maximum_active_power), 0)
+                                    AS maximum_active_power
                             FROM flex.technical_resource AS tr
                             WHERE tr.controllable_unit_id
                                 = spgm.controllable_unit_id

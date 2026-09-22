@@ -58,4 +58,13 @@ your device.
             This is necessary to provide a good user experience.
         </td>
     </tr>
+    <tr>
+        <td>Flex.spgpa_draft.*</td>
+        <td>localStorage</td>
+        <td>7 days</td>
+        <td>
+            Stores autosaved drafts of service providing group product
+            applications. Removed after successful submission or manual deletion.
+        </td>
+    </tr>
 </table>

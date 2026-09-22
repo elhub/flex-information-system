@@ -89,11 +89,6 @@ const ROUTE_LABELS: RouteLabel[] = [
     label: (m) => `Product application ${m[1]}`,
   },
   {
-    pattern:
-      /^\/service_providing_group\/\d+\/product_application_history\/(\d+)\/show$/,
-    label: (m) => `Product application history ${m[1]}`,
-  },
-  {
     pattern: /^\/service_providing_group\/\d+\/grid_suspension\/(\d+)\/show$/,
     label: (m) => `Grid suspension ${m[1]}`,
   },

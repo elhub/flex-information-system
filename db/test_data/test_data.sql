@@ -61,6 +61,15 @@ BEGIN
     '{manage:data, read:grid, manage:auth, manage:attachment}'
   );
 
+  IF party_type IN ('service_provider', 'system_operator') THEN
+    INSERT INTO flex.entity_client (entity_id, party_id, name, scopes)
+    VALUES (
+      parent_entity_id,
+      party_id,
+      party_name || ' Client',
+      '{manage:data, read:grid, manage:auth, manage:attachment}'
+    );
+  END IF;
 
   RETURN party_id;
 END;
@@ -647,8 +656,8 @@ BEGIN
 
   INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
-  (entity_id_person, 'PC #1', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
-  (entity_id_org, 'Laptop #4', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
+  (entity_id_person, entity_first_name || ' Person Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
+  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
 
   -- end user parties
 
@@ -960,6 +969,10 @@ BEGIN
       technology_name || ' 2000'
     );
 
+    UPDATE flex.controllable_unit
+    SET status = 'active'
+    WHERE id = cu_id;
+
     INSERT INTO flex.service_providing_group_membership (
       controllable_unit_id, service_providing_group_id, valid_time_range
     ) VALUES (
@@ -1032,7 +1045,7 @@ BEGIN
   ) RETURNING id INTO spgpa_id;
 
   UPDATE flex.service_providing_group_product_application
-  SET status = 'prequalification'
+  SET status = 'prequalification', complete_at = CURRENT_TIMESTAMP
   WHERE service_providing_group_id = spg_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;

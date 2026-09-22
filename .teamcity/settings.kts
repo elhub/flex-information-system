@@ -29,8 +29,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         sonarProjectSources = "backend"
                         workingDir = "backend"
                     }
-                    uploadSbom = true
-                    goModPath = "." // relative to workingDir
                     dependencyTrackProjectName = "flex-information-system-backend"
                 }
 
@@ -97,7 +95,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     }
                     buildArtifactRules = listOf(ArtifactRule.include("frontend/dist", "frontend/dist.zip"))
                     outputArtifactRules = listOf(ArtifactRule.include("frontend/dist.zip!**", "frontend/dist"))
-                    analyzeDependencies = false // will be solved by TDX-587
+                    dependencyTrackProjectName = "flex-information-system-frontend"
                 }
 
                 dockerBuild {
@@ -135,7 +133,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
             sequential {
                 gradleVerify {
                     workingDir = "kbackend"
-                    enablePublishMetrics = true
+                    enablePublishMetrics = false
                     dependencyTrackProjectName = "flex-information-system-kbackend"
                 }.buildType.triggerOnVcsChange {
                     triggerRules = """

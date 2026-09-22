@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     accounting_point_id bigint NOT NULL,
     object_type text NOT NULL,
     business_id text NOT NULL,
-    name text NOT NULL,
+    name text NOT NULL, -- noqa
     nominal_voltage decimal(9, 3) NOT NULL,
     additional_information text,
     source text NOT NULL,
@@ -60,7 +60,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF coalesce((SELECT current_party()),0) = 0 THEN
+    IF coalesce((SELECT flex.current_party()),0) = 0 THEN
         RETURN NEW;
     END IF;
 
@@ -68,7 +68,7 @@ BEGIN
         SELECT 1
         FROM accounting_point_system_operator AS ap_so
         WHERE ap_so.accounting_point_id = NEW.accounting_point_id
-            AND ap_so.system_operator_id = (SELECT current_party())
+            AND ap_so.system_operator_id = (SELECT flex.current_party())
             AND ap_so.valid_time_range @> current_timestamp
     ) THEN
         NEW.source := 'cso';
@@ -94,6 +94,27 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
+    -- TODO: remove this block when grid model sync includes voltage level
+    IF OLD.source = 'grid_model' AND NEW.source = 'cso' THEN
+        IF (
+            -- only voltage and additional information can change
+            -- other fields not listed here are immutable
+            NEW.object_type IS DISTINCT FROM OLD.object_type
+            OR NEW.business_id IS DISTINCT FROM OLD.business_id
+            OR NEW.name IS DISTINCT FROM OLD.name
+            OR NEW.quality IS DISTINCT FROM OLD.quality
+        ) THEN
+            RAISE EXCEPTION
+                'CSO can only change the voltage and additional information'
+                ' on a location set by the grid model.';
+        END IF;
+
+        -- CSO just fills information, but it remains a grid-model set location
+        NEW.source := 'grid_model';
+
+        RETURN NEW;
+    END IF;
+
     IF OLD.source IS DISTINCT FROM NEW.source THEN
         IF NOT (
             CASE OLD.source
@@ -157,7 +178,7 @@ BEGIN
     END IF;
 
     IF NOT EXISTS (
-        SELECT 1 FROM substation WHERE business_id = NEW.business_id
+        SELECT 1 FROM flex.substation WHERE business_id = NEW.business_id
     ) THEN
         RAISE EXCEPTION
             '% is not a valid %', NEW.business_id, NEW.object_type;
@@ -181,7 +202,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF NEW.nominal_voltage = 0 THEN
+    IF NEW.source != 'grid_model' AND NEW.nominal_voltage = 0 THEN
         RAISE EXCEPTION
             'nominal voltage must be greater than zero when confirming the location';
     END IF;

@@ -13,33 +13,13 @@ import {
   EnumArrayInput,
   PartyReferenceInput,
 } from "../components/EDS-ra/inputs";
-import { Button, Tooltip } from "../components/ui";
-import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
+import { Button } from "../components/ui";
+import { IconPlus } from "@elhub/ds-icons";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../productApplicationBlock";
 import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
-
-const BlockedCreateButton = () => (
-  <div className="flex items-center gap-1">
-    <Button variant="primary" icon={IconPlus} iconPosition="left" disabled>
-      Create
-    </Button>
-    <Tooltip
-      content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
-      className="max-w-2xl"
-    >
-      <IconQuestionCircleOutlined
-        size="small"
-        className="text-semantic-text-subtle cursor-help"
-      />
-    </Tooltip>
-  </div>
-);
+import { useTranslateField } from "../intl/intl";
 
 const CreateButton = () => (
   <Button
@@ -54,8 +34,8 @@ const CreateButton = () => (
 
 export const ServiceProviderProductApplicationList = () => {
   const fields = getFields(zServiceProviderProductApplication.shape);
-  const blocked = isProductApplicationBlocked();
   const { permissions } = usePermissions<Permissions>();
+  const t = useTranslateField();
   const canCreate = !!permissions?.allow(
     "service_provider_product_application",
     "create",
@@ -79,11 +59,7 @@ export const ServiceProviderProductApplicationList = () => {
     />,
   ];
 
-  const actions = !canCreate
-    ? []
-    : blocked
-      ? [<BlockedCreateButton key="create" />]
-      : [<CreateButton key="create" />];
+  const actions = !canCreate ? [] : [<CreateButton key="create" />];
 
   return (
     <List
@@ -100,12 +76,16 @@ export const ServiceProviderProductApplicationList = () => {
         <ReferenceField
           source={fields.service_provider_id.source}
           reference="party"
+          label={t("service_provider_product_application.service_provider_id")}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
           source={fields.system_operator_id.source}
           reference="party"
+          label={t("service_provider_product_application.system_operator_id")}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>

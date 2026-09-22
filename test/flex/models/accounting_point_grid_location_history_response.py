@@ -24,14 +24,16 @@ class AccountingPointGridLocationHistoryResponse:
         accounting_point_id (int): The accounting point this grid location belongs to. Example: 45.
         object_type (AccountingPointGridLocationObjectType): The type of object in the common grid model that the
             accounting point is at. Example: substation.
-        business_id (str): Business identifier (mRID) referencing the object in the common grid model. Example:
+        business_id (str): Business identifier (mRID) referencing the object in the common grid model (NEMO). Example:
             53919b79-876f-4dad-8bde-b29368367604.
         name (str): Name of the grid model object at the location. Example: Snilldal 1 KRA.
         nominal_voltage (float): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
         source (AccountingPointGridLocationSource): How the grid location was determined. When a system operator creates
             or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator,
             `so` otherwise. Example: cso.
-        quality (AccountingPointGridLocationQuality): The quality of the grid location registration. Example: confirmed.
+        quality (AccountingPointGridLocationQuality): Indicates how the grid location was determined. Guessed means that
+            Flexibility Information System has estimated the location, while confirmed means that someone has verified it.
+            Example: confirmed.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.

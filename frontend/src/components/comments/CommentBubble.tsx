@@ -2,6 +2,7 @@
 import { useState } from "react";
 import {
   Button,
+  FormItem,
   Select,
   SelectContent,
   SelectItem,
@@ -156,62 +157,66 @@ export function CommentBubble({
       {/* Body */}
       {isEditing ? (
         <div className="flex flex-col gap-2 border-b px-3 py-2 bg-semantic-background-action-selected">
-          <Textarea
-            value={draftContent}
-            onChange={(e) => setDraftContent(e.target.value)}
-            rows={3}
-          />
+          <FormItem>
+            <Textarea
+              value={draftContent}
+              onChange={(e) => setDraftContent(e.target.value)}
+              rows={3}
+            />
+          </FormItem>
           {saveError && (
             <p className="text-sm text-red-600">
               Failed to save comment. Please try again.
             </p>
           )}
           <div className="flex justify-end items-center gap-2">
-            <Select
-              className="w-80"
-              value={draftVisibility}
-              onValueChange={(v) => setDraftVisibility(v as Visibility)}
-              placeholder="Visibility"
-            >
-              <SelectContent>
-                <SelectItem value="same_party">
-                  <span className="flex items-start gap-2">
-                    <span className="shrink-0 mt-0.5">
-                      <IconViewOff size="small" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span>
-                        {enumTranslation("comment.visibility.same_party")}
+            <FormItem>
+              <Select
+                className="w-80"
+                value={draftVisibility}
+                onValueChange={(v) => setDraftVisibility(v as Visibility)}
+                placeholder="Visibility"
+              >
+                <SelectContent>
+                  <SelectItem value="same_party">
+                    <span className="flex items-start gap-2">
+                      <span className="shrink-0 mt-0.5">
+                        <IconViewOff size="small" />
                       </span>
-                      <span className="text-xs text-gray-500">
-                        {translate(
-                          "text.comment.visibility.same_party.description",
-                        )}
-                      </span>
-                    </span>
-                  </span>
-                </SelectItem>
-                <SelectItem value="any_involved_party">
-                  <span className="flex items-start gap-2">
-                    <span className="shrink-0 mt-0.5">
-                      <IconViewOn size="small" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span>
-                        {enumTranslation(
-                          "comment.visibility.any_involved_party",
-                        )}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {translate(
-                          "text.comment.visibility.any_involved_party.description",
-                        )}
+                      <span className="flex flex-col">
+                        <span>
+                          {enumTranslation("comment.visibility.same_party")}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {translate(
+                            "text.comment.visibility.same_party.description",
+                          )}
+                        </span>
                       </span>
                     </span>
-                  </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+                  </SelectItem>
+                  <SelectItem value="any_involved_party">
+                    <span className="flex items-start gap-2">
+                      <span className="shrink-0 mt-0.5">
+                        <IconViewOn size="small" />
+                      </span>
+                      <span className="flex flex-col">
+                        <span>
+                          {enumTranslation(
+                            "comment.visibility.any_involved_party",
+                          )}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {translate(
+                            "text.comment.visibility.any_involved_party.description",
+                          )}
+                        </span>
+                      </span>
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </FormItem>
             <Button
               variant="secondary"
               onClick={handleCancel}

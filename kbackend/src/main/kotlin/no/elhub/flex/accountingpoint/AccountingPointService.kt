@@ -5,15 +5,23 @@ import arrow.core.flatMap
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import no.elhub.flex.accountingpoint.db.AccountingPointGridLocationRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
+import no.elhub.flex.accountingpoint.db.SubstationRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointGridLocation
+import no.elhub.flex.model.domain.AccountingPointGridLocationObjectType
+import no.elhub.flex.model.domain.AccountingPointGridLocationQuality
+import no.elhub.flex.model.domain.AccountingPointGridLocationSource
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -80,14 +88,32 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
+
+    // NB: nullable results here because we want to decide at the call site what we do if no data is there
+
+    /**
+     * Gets the earliest date from which we have active data about the given accounting points in the system.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
+
+    /**
+     * Gets the earliest date from which we have active data about an accounting point in the system.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?>
 }
 
+@Suppress("TooManyFunctions")
 @Single(createdAtStart = true)
 class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
     private val meteringGridAreaRepository: MeteringGridAreaRepository,
     private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
+    private val accountingPointGridLocationRepository: AccountingPointGridLocationRepository,
+    private val substationRepository: SubstationRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
+    private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -120,6 +146,7 @@ class AccountingPointServiceImpl(
 
                         val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
                         val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+                        val gridModelSubstation = adapterAccountingPoint.substation
 
                         val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
                         val mgaMap = meteringGridAreaRepository
@@ -145,6 +172,50 @@ class AccountingPointServiceImpl(
 
                         accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
                             .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
+
+                        gridModelSubstation?.let { substationBusinessId ->
+                            either {
+                                val substationName = substationRepository.getNameByBusinessId(substationBusinessId).bind()
+
+                                val mustUpdateGridLocation = accountingPointGridLocationRepository
+                                    .getByAccountingPointId(accountingPointId)
+                                    .bind()
+                                    ?.let { currentGridLocation ->
+                                        // grid model always takes priority over other sources
+                                        currentGridLocation.source != AccountingPointGridLocationSource.GRID_MODEL ||
+                                            // a grid model location can be updated if the substation is different
+                                            substationBusinessId != currentGridLocation.businessId ||
+                                            // or if its currently stored voltage is zero
+                                            // (we possibly got something from the API)
+                                            currentGridLocation.nominalVoltage == 0.0
+                                    }
+                                    ?: true // if no grid location present, always update
+
+                                if (mustUpdateGridLocation) {
+                                    accountingPointGridLocationRepository.upsert(
+                                        AccountingPointGridLocation(
+                                            accountingPointId = accountingPointId,
+                                            objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                                            businessId = substationBusinessId,
+                                            name = substationName,
+                                            nominalVoltage = 0.0, // TODO: update when grid model API provides voltage
+                                            additionalInformation = null,
+                                            source = AccountingPointGridLocationSource.GRID_MODEL,
+                                            quality = AccountingPointGridLocationQuality.CONFIRMED,
+                                        )
+                                    ).bind()
+                                }
+                            }.fold(
+                                // substation update can fail if the substation has not been synced yet: we just log the issue
+                                { err ->
+                                    logger.warn {
+                                        "grid location upsert failed for accounting point " +
+                                            "$accountingPointId, substation $substationBusinessId: $err"
+                                    }
+                                },
+                                { },
+                            )
+                        }
 
                         accountingPointRepository.markSyncComplete(accountingPointId)
                             .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
@@ -214,6 +285,23 @@ class AccountingPointServiceImpl(
     override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
         accountingPointRepository.getByIds(accountingPointIds)
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
+        controllableUnitRepository.getAccountingPointStartDates(accountingPointIds)
+            .map { apStarts ->
+                apStarts.mapValues {
+                    logger.debug { "Accounting point ${it.key.value} has CU start ${it.value.controllableUnitStartTime} and CUSP start ${it.value.controllableUnitServiceProviderValidTimeStart}" }
+                    // earliest of both dates, or null if none exists
+                    listOfNotNull(it.value.controllableUnitStartTime, it.value.controllableUnitServiceProviderValidTimeStart)
+                        .minOrNull()
+                }
+            }
+            .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?> =
+        getAccountingPointStartDates(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

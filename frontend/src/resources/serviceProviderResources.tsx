@@ -6,8 +6,6 @@ import { Permissions } from "../auth/permissions";
 import { ServiceProviderProductApplicationList } from "../service_provider_product_application/ServiceProviderProductApplicationList";
 import { ServiceProviderProductApplicationShow } from "../service_provider_product_application/ServiceProviderProductApplicationShow";
 import { ServiceProviderProductApplicationInput } from "../service_provider_product_application/ServiceProviderProductApplicationInput";
-import { ServiceProviderProductApplicationHistoryList } from "../service_provider_product_application/ServiceProviderProductApplicationHistoryList";
-import { ServiceProviderProductSuspensionList } from "../service_provider_product_suspension/ServiceProviderProductSuspensionList";
 import { ServiceProviderProductSuspensionShow } from "../service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "../service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "../service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
@@ -54,21 +52,7 @@ export const createServiceProviderResources = (permissions: Permissions) => {
             (null as any)
           )
         }
-      >
-        {/* history */}
-        <Route
-          path=":service_provider_product_application_id/history"
-          element={<ServiceProviderProductApplicationHistoryList />}
-        />
-        <Route
-          path=":service_provider_product_application_id/history/:id/show"
-          element={
-            <ResourceContextProvider value="service_provider_product_application_history">
-              <ServiceProviderProductApplicationShow />
-            </ResourceContextProvider>
-          }
-        />
-      </Resource>,
+      />,
     );
   }
 
@@ -91,7 +75,6 @@ export const createServiceProviderResources = (permissions: Permissions) => {
       <Resource
         key="service_provider_product_suspension"
         name="service_provider_product_suspension"
-        list={ServiceProviderProductSuspensionList}
         show={ServiceProviderProductSuspensionShow}
         edit={
           canUpdateSuspension ? (

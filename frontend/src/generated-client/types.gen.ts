@@ -382,6 +382,42 @@ export type NoticeData =
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified);
 
+/**
+ * Common format of the data field in events concerning update operations.
+ */
+export type EventDataUpdatedFields = {
+  /**
+   * Identifies the event data schema for discriminated union deserialization.
+   */
+  kind: "event.data.updated_fields";
+  /**
+   * Names of the fields that were modified by the update.
+   */
+  updated_fields: Array<string>;
+};
+
+/**
+ * Format of the data field in a controllable_unit.lookup event.
+ */
+export type EventDataControllableUnitLookup = {
+  /**
+   * Identifies the event data schema for discriminated union deserialization.
+   */
+  kind: "event.data.controllable_unit.lookup";
+  /**
+   * The party that performed the controllable unit lookup.
+   */
+  requesting_party_id: number;
+};
+
+export type EventData =
+  | ({
+      kind: "event.data.updated_fields";
+    } & EventDataUpdatedFields)
+  | ({
+      kind: "event.data.controllable_unit.lookup";
+    } & EventDataControllableUnitLookup);
+
 export type NumericAggregation = {
   sum?: number;
   average?: number;
@@ -555,7 +591,7 @@ export type AccountingPointGridLocationSource =
   "cso" | "so" | "grid_model" | "system";
 
 /**
- * The quality of the grid location registration.
+ * Indicates how the grid location was determined. Guessed means that Flexibility Information System has estimated the location, while confirmed means that someone has verified it.
  */
 export type AccountingPointGridLocationQuality = "confirmed" | "guessed";
 
@@ -1045,12 +1081,16 @@ export type ServiceProvidingGroupPowerPerSubstation = {
    */
   readonly service_providing_group_id: number;
   /**
-   * List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.
+   * List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.
    */
   readonly substations: Array<{
     substation_business_id?: string;
     substation_name?: string;
     controllable_unit?: {
+      count?: number;
+      maximum_active_power?: NumericAggregation;
+    };
+    technical_resource?: {
       count?: number;
       maximum_active_power?: NumericAggregation;
     };
@@ -1172,6 +1212,10 @@ export type ServiceProvidingGroup = {
    */
   additional_information?: string;
   /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -1232,7 +1276,7 @@ export type ServiceProvidingGroupMembershipUpdateRequest = {
  */
 export type ServiceProvidingGroupMembershipCreateRequest = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -1258,7 +1302,7 @@ export type ServiceProvidingGroupMembership = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -2133,7 +2177,7 @@ export type Event = {
   /**
    * The data of the event.
    */
-  readonly data?: string;
+  readonly data?: EventData | null;
   /**
    * Embedded notification
    */
@@ -2424,7 +2468,7 @@ export type AccountingPointMeteringGridArea = {
 export type AccountingPointGridLocationUpdateRequest = {
   object_type?: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id?: string;
   /**
@@ -2452,7 +2496,7 @@ export type AccountingPointGridLocationCreateRequest = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -2484,7 +2528,7 @@ export type AccountingPointGridLocation = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -2924,6 +2968,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -2968,6 +3016,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
 };
 
 /**
@@ -3016,6 +3068,14 @@ export type ServiceProvidingGroupProductApplication = {
    * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
    */
   ramping_description?: string;
+  /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3385,6 +3445,22 @@ export type ControllableUnitHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
+  /**
+   * Embedded controllable_unit_service_provider_history
+   */
+  service_provider_history?: Array<ControllableUnitServiceProviderHistory> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
+  /**
+   * Embedded technical_resource_history
+   */
+  technical_resource_history?: Array<TechnicalResourceHistory> | null;
 };
 
 /**
@@ -3424,6 +3500,18 @@ export type ControllableUnitSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded controllable_unit_suspension_comment_history
+   */
+  comment_history?: Array<ControllableUnitSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3471,6 +3559,10 @@ export type ControllableUnitSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistory> | null;
 };
 
 /**
@@ -3525,6 +3617,18 @@ export type ControllableUnitServiceProviderHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  end_user_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -3550,6 +3654,10 @@ export type ServiceProvidingGroupHistory = {
    */
   additional_information?: string;
   /**
+   * When the service providing group was first created.
+   */
+  readonly created_at: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -3569,6 +3677,30 @@ export type ServiceProvidingGroupHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  membership_history?: Array<ServiceProvidingGroupMembershipHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -3580,7 +3712,7 @@ export type ServiceProvidingGroupMembershipHistory = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -3615,6 +3747,14 @@ export type ServiceProvidingGroupMembershipHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
 };
 
 /**
@@ -3658,6 +3798,18 @@ export type ServiceProvidingGroupGridPrequalificationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistory> | null;
 };
 
 /**
@@ -3705,6 +3857,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistory> | null;
 };
 
 /**
@@ -3744,6 +3900,18 @@ export type ServiceProvidingGroupGridSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistory> | null;
 };
 
 /**
@@ -3791,6 +3959,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistory> | null;
 };
 
 /**
@@ -3879,6 +4051,10 @@ export type PartyMembershipHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  party_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -3950,6 +4126,10 @@ export type TechnicalResourceHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistory> | null;
 };
 
 /**
@@ -3966,7 +4146,7 @@ export type AccountingPointGridLocationHistory = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -4042,6 +4222,10 @@ export type SystemOperatorProductTypeHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistory> | null;
 };
 
 /**
@@ -4089,6 +4273,18 @@ export type ServiceProviderProductApplicationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_provider_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -4136,6 +4332,10 @@ export type ServiceProviderProductApplicationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_application_history
+   */
+  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistory> | null;
 };
 
 /**
@@ -4179,6 +4379,18 @@ export type ServiceProviderProductSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_provider_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -4226,6 +4438,10 @@ export type ServiceProviderProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_suspension_history
+   */
+  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistory> | null;
 };
 
 /**
@@ -4275,6 +4491,14 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   ramping_description?: string;
   /**
+   * When the application was first created.
+   */
+  readonly created_at: string;
+  /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -4294,6 +4518,22 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_attachment_history
+   */
+  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistory> | null;
+  /**
+   * Embedded service_providing_group_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistory> | null;
 };
 
 /**
@@ -4345,6 +4585,10 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -4392,6 +4636,10 @@ export type ServiceProvidingGroupProductApplicationCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistory> | null;
 };
 
 /**
@@ -4435,6 +4683,18 @@ export type ServiceProvidingGroupProductSuspensionHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistory> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistory> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistory> | null;
 };
 
 /**
@@ -4482,6 +4742,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistory> | null;
 };
 
 /**
@@ -4768,7 +5032,7 @@ export type ServiceProvidingGroupWritable = {
  */
 export type ServiceProvidingGroupMembershipWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -5249,7 +5513,7 @@ export type AccountingPointGridLocationWritable = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -5451,6 +5715,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   ramping_description?: string;
   /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
@@ -5617,6 +5885,22 @@ export type ControllableUnitHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
+  /**
+   * Embedded controllable_unit_service_provider_history
+   */
+  service_provider_history?: Array<ControllableUnitServiceProviderHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  service_providing_group_membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
+  /**
+   * Embedded technical_resource_history
+   */
+  technical_resource_history?: Array<TechnicalResourceHistoryWritable> | null;
 };
 
 /**
@@ -5644,6 +5928,18 @@ export type ControllableUnitSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded controllable_unit_suspension_comment_history
+   */
+  comment_history?: Array<ControllableUnitSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5671,6 +5967,10 @@ export type ControllableUnitSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_suspension_history
+   */
+  controllable_unit_suspension_history?: Array<ControllableUnitSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5713,6 +6013,18 @@ export type ControllableUnitServiceProviderHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  end_user_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -5745,6 +6057,30 @@ export type ServiceProvidingGroupHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_membership_history
+   */
+  membership_history?: Array<ServiceProvidingGroupMembershipHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5752,7 +6088,7 @@ export type ServiceProvidingGroupHistoryWritable = {
  */
 export type ServiceProvidingGroupMembershipHistoryWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -5779,6 +6115,14 @@ export type ServiceProvidingGroupMembershipHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
 };
 
 /**
@@ -5810,6 +6154,18 @@ export type ServiceProvidingGroupGridPrequalificationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryWritable> | null;
 };
 
 /**
@@ -5837,6 +6193,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_history
+   */
+  service_providing_group_grid_prequalification_history?: Array<ServiceProvidingGroupGridPrequalificationHistoryWritable> | null;
 };
 
 /**
@@ -5864,6 +6224,18 @@ export type ServiceProvidingGroupGridSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  impacted_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupGridSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -5891,6 +6263,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_grid_suspension_history
+   */
+  service_providing_group_grid_suspension_history?: Array<ServiceProvidingGroupGridSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -5955,6 +6331,10 @@ export type PartyMembershipHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  party_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6010,6 +6390,10 @@ export type TechnicalResourceHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded controllable_unit_history
+   */
+  controllable_unit_history?: Array<ControllableUnitHistoryWritable> | null;
 };
 
 /**
@@ -6022,7 +6406,7 @@ export type AccountingPointGridLocationHistoryWritable = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -6077,6 +6461,10 @@ export type SystemOperatorProductTypeHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistoryWritable> | null;
 };
 
 /**
@@ -6112,6 +6500,18 @@ export type ServiceProviderProductApplicationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_provider_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6139,6 +6539,10 @@ export type ServiceProviderProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_application_history
+   */
+  service_provider_product_application_history?: Array<ServiceProviderProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6170,6 +6574,18 @@ export type ServiceProviderProductSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  service_provider_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_provider_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProviderProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6197,6 +6613,10 @@ export type ServiceProviderProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_provider_product_suspension_history
+   */
+  service_provider_product_suspension_history?: Array<ServiceProviderProductSuspensionHistoryWritable> | null;
 };
 
 /**
@@ -6242,6 +6662,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    */
   ramping_description?: string;
   /**
+   * When the application was last marked complete by the procuring system operator.
+   */
+  complete_at?: string;
+  /**
    * Reference to the resource that was updated.
    */
   service_providing_group_product_application_id: number;
@@ -6253,6 +6677,22 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_attachment_history
+   */
+  attachment_history?: Array<ServiceProvidingGroupProductApplicationAttachmentHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductApplicationCommentHistoryWritable> | null;
 };
 
 /**
@@ -6292,6 +6732,10 @@ export type ServiceProvidingGroupProductApplicationAttachmentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6319,6 +6763,10 @@ export type ServiceProvidingGroupProductApplicationCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_application_history
+   */
+  service_providing_group_product_application_history?: Array<ServiceProvidingGroupProductApplicationHistoryWritable> | null;
 };
 
 /**
@@ -6350,6 +6798,18 @@ export type ServiceProvidingGroupProductSuspensionHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded party_history
+   */
+  procuring_system_operator_history?: Array<PartyHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_history
+   */
+  service_providing_group_history?: Array<ServiceProvidingGroupHistoryWritable> | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment_history
+   */
+  comment_history?: Array<ServiceProvidingGroupProductSuspensionCommentHistoryWritable> | null;
 };
 
 /**
@@ -6377,6 +6837,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable = {
    * When the resource was replaced in the system.
    */
   replaced_at?: string;
+  /**
+   * Embedded service_providing_group_product_suspension_history
+   */
+  service_providing_group_product_suspension_history?: Array<ServiceProvidingGroupProductSuspensionHistoryWritable> | null;
 };
 
 export type ReadOpenapiJsonData = {
@@ -6506,6 +6970,7 @@ export type ListControllableUnitData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */
@@ -6766,10 +7231,15 @@ export type ListControllableUnitHistoryData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */
     accounting_point_id?: string;
+    /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
     /**
      * Filtering Columns
      */
@@ -6786,6 +7256,10 @@ export type ListControllableUnitHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_history";
 };
@@ -6846,7 +7320,12 @@ export type ReadControllableUnitHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_history/{id}";
 };
 
@@ -7208,6 +7687,10 @@ export type ListControllableUnitSuspensionHistoryData = {
      */
     impacted_system_operator_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -7223,6 +7706,10 @@ export type ListControllableUnitSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_history";
 };
@@ -7283,7 +7770,12 @@ export type ReadControllableUnitSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_history/{id}";
 };
 
@@ -7592,6 +8084,10 @@ export type ListControllableUnitSuspensionCommentHistoryData = {
      */
     controllable_unit_suspension_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -7607,6 +8103,10 @@ export type ListControllableUnitSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_comment_history";
 };
@@ -7667,7 +8167,12 @@ export type ReadControllableUnitSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_comment_history/{id}";
 };
 
@@ -8061,6 +8566,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      */
     valid_to?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -8076,6 +8585,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_service_provider_history";
 };
@@ -8136,7 +8649,12 @@ export type ReadControllableUnitServiceProviderHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_service_provider_history/{id}";
 };
 
@@ -8615,6 +9133,10 @@ export type ListServiceProvidingGroupHistoryData = {
      */
     service_provider_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -8630,6 +9152,10 @@ export type ListServiceProvidingGroupHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_history";
 };
@@ -8690,7 +9216,12 @@ export type ReadServiceProvidingGroupHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_history/{id}";
 };
 
@@ -8743,7 +9274,7 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+     * Reference to the controllable unit this relation links to a service providing group.
      */
     controllable_unit_id?: string;
     /**
@@ -9056,7 +9587,7 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      */
     service_providing_group_membership_id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+     * Reference to the controllable unit this relation links to a service providing group.
      */
     controllable_unit_id?: string;
     /**
@@ -9076,6 +9607,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      */
     valid_to?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -9091,6 +9626,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_membership_history";
 };
@@ -9151,7 +9690,12 @@ export type ReadServiceProvidingGroupMembershipHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_membership_history/{id}";
 };
 
@@ -9468,6 +10012,10 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      */
     impacted_system_operator_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -9483,6 +10031,10 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_history";
 };
@@ -9543,7 +10095,12 @@ export type ReadServiceProvidingGroupGridPrequalificationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_history/{id}";
 };
 
@@ -9852,6 +10409,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      */
     service_providing_group_grid_prequalification_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -9867,6 +10428,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_comment_history";
 };
@@ -9929,7 +10494,12 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_comment_history/{id}";
 };
 
@@ -10293,6 +10863,10 @@ export type ListServiceProvidingGroupGridSuspensionHistoryData = {
      */
     service_providing_group_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10308,6 +10882,10 @@ export type ListServiceProvidingGroupGridSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_history";
 };
@@ -10368,7 +10946,12 @@ export type ReadServiceProvidingGroupGridSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_history/{id}";
 };
 
@@ -10677,6 +11260,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
      */
     service_providing_group_grid_suspension_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10692,6 +11279,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_comment_history";
 };
@@ -10752,7 +11343,12 @@ export type ReadServiceProvidingGroupGridSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_comment_history/{id}";
 };
 
@@ -11624,6 +12220,10 @@ export type ListPartyHistoryData = {
      */
     name?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -11639,6 +12239,10 @@ export type ListPartyHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_history";
 };
@@ -11699,7 +12303,12 @@ export type ReadPartyHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_history/{id}";
 };
 
@@ -12061,6 +12670,10 @@ export type ListPartyMembershipHistoryData = {
      */
     entity_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -12076,6 +12689,10 @@ export type ListPartyMembershipHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_membership_history";
 };
@@ -12136,7 +12753,12 @@ export type ReadPartyMembershipHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_membership_history/{id}";
 };
 
@@ -12646,6 +13268,10 @@ export type ListTechnicalResourceHistoryData = {
      */
     controllable_unit_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -12661,6 +13287,10 @@ export type ListTechnicalResourceHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/technical_resource_history";
 };
@@ -12721,7 +13351,12 @@ export type ReadTechnicalResourceHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/technical_resource_history/{id}";
 };
 
@@ -14119,6 +14754,10 @@ export type ListAccountingPointGridLocationHistoryData = {
      */
     accounting_point_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -14655,6 +15294,10 @@ export type ListSystemOperatorProductTypeHistoryData = {
     product_type_id?: string;
     status?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -14670,6 +15313,10 @@ export type ListSystemOperatorProductTypeHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/system_operator_product_type_history";
 };
@@ -14730,7 +15377,12 @@ export type ReadSystemOperatorProductTypeHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/system_operator_product_type_history/{id}";
 };
 
@@ -15057,6 +15709,10 @@ export type ListServiceProviderProductApplicationHistoryData = {
     product_type_ids?: string;
     status?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -15072,6 +15728,10 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_history";
 };
@@ -15132,7 +15792,12 @@ export type ReadServiceProviderProductApplicationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_history/{id}";
 };
 
@@ -15441,6 +16106,10 @@ export type ListServiceProviderProductApplicationCommentHistoryData = {
      */
     service_provider_product_application_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -15456,6 +16125,10 @@ export type ListServiceProviderProductApplicationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_comment_history";
 };
@@ -15516,7 +16189,12 @@ export type ReadServiceProviderProductApplicationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_comment_history/{id}";
 };
 
@@ -15886,6 +16564,10 @@ export type ListServiceProviderProductSuspensionHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -15901,6 +16583,10 @@ export type ListServiceProviderProductSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_history";
 };
@@ -15961,7 +16647,12 @@ export type ReadServiceProviderProductSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_history/{id}";
 };
 
@@ -16270,6 +16961,10 @@ export type ListServiceProviderProductSuspensionCommentHistoryData = {
      */
     service_provider_product_suspension_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -16285,6 +16980,10 @@ export type ListServiceProviderProductSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_comment_history";
 };
@@ -16345,7 +17044,12 @@ export type ReadServiceProviderProductSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_comment_history/{id}";
 };
 
@@ -16670,6 +17374,10 @@ export type ListServiceProvidingGroupProductApplicationHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -16685,6 +17393,10 @@ export type ListServiceProvidingGroupProductApplicationHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_history";
 };
@@ -16745,7 +17457,12 @@ export type ReadServiceProvidingGroupProductApplicationHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_history/{id}";
 };
 
@@ -17049,6 +17766,10 @@ export type ListServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      */
     service_providing_group_product_application_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -17064,6 +17785,10 @@ export type ListServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_attachment_history";
 };
@@ -17126,7 +17851,12 @@ export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_attachment_history/{id}";
 };
 
@@ -17437,6 +18167,10 @@ export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
      */
     service_providing_group_product_application_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -17452,6 +18186,10 @@ export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_comment_history";
 };
@@ -17513,7 +18251,12 @@ export type ReadServiceProvidingGroupProductApplicationCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_comment_history/{id}";
 };
 
@@ -17884,6 +18627,10 @@ export type ListServiceProvidingGroupProductSuspensionHistoryData = {
      */
     product_type_ids?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -17899,6 +18646,10 @@ export type ListServiceProvidingGroupProductSuspensionHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_history";
 };
@@ -17959,7 +18710,12 @@ export type ReadServiceProvidingGroupProductSuspensionHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_history/{id}";
 };
 
@@ -18268,6 +19024,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
      */
     service_providing_group_product_suspension_id?: string;
     /**
+     * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
+     */
+    as_of?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -18283,6 +19043,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_comment_history";
 };
@@ -18344,7 +19108,12 @@ export type ReadServiceProvidingGroupProductSuspensionCommentHistoryData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_comment_history/{id}";
 };
 

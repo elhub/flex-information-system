@@ -41,6 +41,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
                 Manual Frequency Restoration (mFRR). Example: Units are (dis)connected one by one to achieve a stepwise profile.
                 We ensure linearity on a minute resolution..
+            complete_at (datetime.datetime | None | Unset): When the application was last marked complete by the procuring
+                system operator. Example: 2022-08-08T12:00:00+02.
     """
 
     service_providing_group_id: int
@@ -54,6 +56,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
     verified_at: datetime.datetime | None | Unset = UNSET
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
+    complete_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -107,6 +110,14 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         else:
             ramping_description = self.ramping_description
 
+        complete_at: None | str | Unset
+        if isinstance(self.complete_at, Unset):
+            complete_at = UNSET
+        elif isinstance(self.complete_at, datetime.datetime):
+            complete_at = self.complete_at.isoformat()
+        else:
+            complete_at = self.complete_at
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -130,6 +141,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             field_dict["ramping_capability"] = ramping_capability
         if ramping_description is not UNSET:
             field_dict["ramping_description"] = ramping_description
+        if complete_at is not UNSET:
+            field_dict["complete_at"] = complete_at
 
         return field_dict
 
@@ -224,6 +237,23 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         ramping_description = _parse_ramping_description(d.pop("ramping_description", UNSET))
 
+        def _parse_complete_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                complete_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return complete_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        complete_at = _parse_complete_at(d.pop("complete_at", UNSET))
+
         service_providing_group_product_application_create_request = cls(
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
@@ -236,6 +266,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             verified_at=verified_at,
             ramping_capability=ramping_capability,
             ramping_description=ramping_description,
+            complete_at=complete_at,
         )
 
         service_providing_group_product_application_create_request.additional_properties = d

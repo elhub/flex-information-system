@@ -19,3 +19,10 @@ CREATE POLICY "SS_SO001" ON substation
 FOR SELECT
 TO flex_system_operator
 USING (true);
+
+GRANT SELECT ON substation TO flex_internal_data;
+DROP POLICY IF EXISTS "SS_INTERNAL_DATA" ON substation;
+CREATE POLICY "SS_INTERNAL_DATA" ON substation
+FOR SELECT
+TO flex_internal_data
+USING (true);

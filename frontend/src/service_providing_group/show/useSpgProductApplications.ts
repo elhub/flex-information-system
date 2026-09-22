@@ -5,6 +5,7 @@ import {
   ServiceProvidingGroupProductApplicationStatus,
 } from "../../generated-client";
 import { throwOnError } from "../../util";
+import { DRAFT_STATUS } from "../product_application/spgpaStatus";
 
 export type SpgProductApplicationRow = {
   id: number;
@@ -12,7 +13,7 @@ export type SpgProductApplicationRow = {
   productTypeIds: number[];
   maximumActivePowerUp: number;
   maximumActivePowerDown: number;
-  status: ServiceProvidingGroupProductApplicationStatus;
+  status: ServiceProvidingGroupProductApplicationStatus | typeof DRAFT_STATUS;
 };
 
 const fetchSpgProductApplications = async (

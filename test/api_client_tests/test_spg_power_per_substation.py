@@ -1,7 +1,7 @@
 # type: ignore[union-attr]
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     AccountingPointGridLocationCreateRequest,
@@ -9,6 +9,8 @@ from flex.models import (
     AccountingPointGridLocationQuality,
     AccountingPointGridLocationResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -23,6 +25,7 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     Technology,
+    ErrorMessage,
 )
 from flex.api.accounting_point_grid_location import (
     create_accounting_point_grid_location,
@@ -37,7 +40,10 @@ from flex.api.service_providing_group_power_per_substation import (
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -54,12 +60,12 @@ def sts():
 
 
 def test_service_providing_group_power_per_substation_aggregation(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # test case:
@@ -207,6 +213,18 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     )
     assert isinstance(tr5, TechnicalResourceResponse)
 
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2, cu3, cu4, cu5]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
+
     # assign CUs to SP and put them in the SPG
 
     for cu in [cu1, cu2, cu3, cu4, cu5]:
@@ -308,41 +326,58 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         None,
     }
 
-    # substation A: CU1 + CU2 + CU3 (TR: 10, 20, 30)
+    # substation A: CU MAP 8, 16, 24; rated power 10, 20, 30
     sub_a = by_sub[sub_a_business_id]
     assert sub_a.substation_name == "Bor 132 kV"
     assert sub_a.controllable_unit.count == 3
-    assert sub_a.controllable_unit.maximum_active_power.sum_ == pytest.approx(60.0)
-    assert sub_a.controllable_unit.maximum_active_power.average == pytest.approx(20.0)
-    assert sub_a.controllable_unit.maximum_active_power.min_ == pytest.approx(10.0)
-    assert sub_a.controllable_unit.maximum_active_power.max_ == pytest.approx(30.0)
+    assert sub_a.controllable_unit.maximum_active_power.sum_ == pytest.approx(48.0)
+    assert sub_a.controllable_unit.maximum_active_power.average == pytest.approx(16.0)
+    assert sub_a.controllable_unit.maximum_active_power.min_ == pytest.approx(8.0)
+    assert sub_a.controllable_unit.maximum_active_power.max_ == pytest.approx(24.0)
+    assert sub_a.technical_resource.count == 3
+    assert sub_a.technical_resource.maximum_active_power.sum_ == pytest.approx(60.0)
+    assert sub_a.technical_resource.maximum_active_power.average == pytest.approx(20.0)
+    assert sub_a.technical_resource.maximum_active_power.min_ == pytest.approx(10.0)
+    assert sub_a.technical_resource.maximum_active_power.max_ == pytest.approx(30.0)
 
-    # substation B: CU4 (TR: 40)
+    # substation B: CU MAP 32; rated power 40
     sub_b = by_sub[sub_b_business_id]
     assert sub_b.substation_name == "Sol transformatorstasjon"
     assert sub_b.controllable_unit.count == 1
-    assert sub_b.controllable_unit.maximum_active_power.sum_ == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.average == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.min_ == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.max_ == pytest.approx(40.0)
+    assert sub_b.controllable_unit.maximum_active_power.sum_ == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.average == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.min_ == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.max_ == pytest.approx(32.0)
+    assert sub_b.technical_resource.count == 1
+    assert sub_b.technical_resource.maximum_active_power.sum_ == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.average == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.min_ == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.max_ == pytest.approx(40.0)
 
-    # null substation: CU5 (TR: 50)
+    # null substation: CU MAP 40; rated power 50
     null_sub = by_sub[None]
     assert null_sub.substation_name is None
     assert null_sub.controllable_unit.count == 1
-    assert null_sub.controllable_unit.maximum_active_power.sum_ == pytest.approx(50.0)
+    assert null_sub.controllable_unit.maximum_active_power.sum_ == pytest.approx(40.0)
     assert null_sub.controllable_unit.maximum_active_power.average == pytest.approx(
+        40.0
+    )
+    assert null_sub.controllable_unit.maximum_active_power.min_ == pytest.approx(40.0)
+    assert null_sub.controllable_unit.maximum_active_power.max_ == pytest.approx(40.0)
+    assert null_sub.technical_resource.count == 1
+    assert null_sub.technical_resource.maximum_active_power.sum_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.average == pytest.approx(
         50.0
     )
-    assert null_sub.controllable_unit.maximum_active_power.min_ == pytest.approx(50.0)
-    assert null_sub.controllable_unit.maximum_active_power.max_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.min_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.max_ == pytest.approx(50.0)
 
 
 # RLS: SPGPPS-FISO001
 # RLS: SPGPPS-SO001
 def test_service_providing_group_power_per_substation_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     for client in [client_fiso, client_so]:
         spgs = list_service_providing_group.sync(client=client)

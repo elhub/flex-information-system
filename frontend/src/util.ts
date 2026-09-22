@@ -3,6 +3,7 @@ import { ErrorMessage } from "./generated-client";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 import { formatDate } from "date-fns";
+import { API_VERSION } from "./httpConfig";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -16,10 +17,6 @@ export function chunksOf(size: number, t: any[]): any[][] {
 // remove suffix from a string
 export const removeSuffix = (suffix: string, str: string): string =>
   str.endsWith(suffix) ? str.slice(0, -suffix.length) : str;
-
-// capitalize the first letter of a string
-export const capitaliseFirstLetter = (str: string) =>
-  str.charAt(0).toUpperCase() + str.slice(1);
 
 // count number of fields that are _not_ undefined in an object
 // useful for checking if any overrides were provided in input forms
@@ -85,6 +82,22 @@ export const toDateString = (value: string | undefined): string => {
   return formatDate(value, "dd.MM.yyyy");
 };
 
+// Format a date-time string (ISO) to a local date (and, optionally, time)
+// string, or "-" if absent. To be used in all places needing to display a
+// date-time value (e.g., EDS-ra DateField).
+export const toDateTimeString = (
+  value: string | undefined | null,
+  { showTime = true }: { showTime?: boolean } = {},
+): string => {
+  if (!value) return "-";
+  return new Date(value).toLocaleString(
+    "no-NO",
+    showTime
+      ? { dateStyle: "medium", timeStyle: "short", hour12: false }
+      : { dateStyle: "medium" },
+  );
+};
+
 // Find the currently valid record from a list of time-ranged records
 export const findCurrentlyValidRecord = <
   T extends { valid_from?: string; valid_to?: string },
@@ -110,10 +123,18 @@ export const findCurrentlyValidRecord = <
   });
 };
 
+// Whether timestamp `a` is at or before timestamp `b`. Returns `false` if
+// either timestamp is missing.
+export const isAtOrBefore = (
+  a: string | undefined,
+  b: string | undefined,
+): boolean =>
+  a != null && b != null && new Date(a).getTime() <= new Date(b).getTime();
+
 // TODO: replace all occurrences with calls to a generated API client
 export const fetchJSON = async <T>(url: string): Promise<T[]> => {
   const response = await fetch(url, {
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", "Api-Version": API_VERSION },
     credentials: "include",
   });
 

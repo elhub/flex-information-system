@@ -1,6 +1,6 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 import datetime
 import pytest
@@ -12,7 +12,7 @@ def sts():
 
 
 def test_embed_accounting_point_bidding_zone_is_list(sts):
-    client = sts.get_client(TestEntity.TEST, "FISO")
+    client = sts.get_client(TestEntityClient.TEST, "FISO")
 
     today = datetime.datetime.now(datetime.timezone.utc).isoformat()
 

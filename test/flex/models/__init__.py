@@ -81,6 +81,8 @@ from .entity_response import EntityResponse
 from .entity_type import EntityType
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
+from .event_data_controllable_unit_lookup import EventDataControllableUnitLookup
+from .event_data_updated_fields import EventDataUpdatedFields
 from .event_response import EventResponse
 from .geojson_point import GeojsonPoint
 from .geojson_point_type import GeojsonPointType
@@ -200,6 +202,9 @@ from .service_providing_group_power_per_substation_response_substations_item imp
 )
 from .service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
     ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
+)
+from .service_providing_group_power_per_substation_response_substations_item_technical_resource import (
+    ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource,
 )
 from .service_providing_group_product_application_attachment_content_type import (
     ServiceProvidingGroupProductApplicationAttachmentContentType,
@@ -366,6 +371,8 @@ __all__ = (
     "EntityType",
     "EntityUpdateRequest",
     "ErrorMessage",
+    "EventDataControllableUnitLookup",
+    "EventDataUpdatedFields",
     "EventResponse",
     "GeojsonPoint",
     "GeojsonPointType",
@@ -446,6 +453,7 @@ __all__ = (
     "ServiceProvidingGroupPowerPerSubstationResponse",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit",
+    "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource",
     "ServiceProvidingGroupProductApplicationAttachmentContentType",
     "ServiceProvidingGroupProductApplicationAttachmentHistoryResponse",
     "ServiceProvidingGroupProductApplicationAttachmentResponse",

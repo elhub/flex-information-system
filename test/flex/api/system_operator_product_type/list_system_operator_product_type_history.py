@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -17,10 +18,12 @@ def _get_kwargs(
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     system_operator_product_type_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -34,6 +37,11 @@ def _get_kwargs(
 
     params["status"] = status
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -41,6 +49,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["system_operator_product_type_id"] = system_operator_product_type_id
 
@@ -153,10 +163,12 @@ def sync_detailed(
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     system_operator_product_type_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeHistoryResponse]]:
     """List System Operator Product Type - history
@@ -169,10 +181,12 @@ def sync_detailed(
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         system_operator_product_type_id (str | Unset):
 
     Raises:
@@ -188,10 +202,12 @@ def sync_detailed(
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         system_operator_product_type_id=system_operator_product_type_id,
     )
 
@@ -209,10 +225,12 @@ def sync(
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     system_operator_product_type_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeHistoryResponse] | None:
     """List System Operator Product Type - history
@@ -225,10 +243,12 @@ def sync(
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         system_operator_product_type_id (str | Unset):
 
     Raises:
@@ -245,10 +265,12 @@ def sync(
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         system_operator_product_type_id=system_operator_product_type_id,
     ).parsed
 
@@ -260,10 +282,12 @@ async def asyncio_detailed(
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     system_operator_product_type_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeHistoryResponse]]:
     """List System Operator Product Type - history
@@ -276,10 +300,12 @@ async def asyncio_detailed(
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         system_operator_product_type_id (str | Unset):
 
     Raises:
@@ -295,10 +321,12 @@ async def asyncio_detailed(
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
         status=status,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         system_operator_product_type_id=system_operator_product_type_id,
     )
 
@@ -314,10 +342,12 @@ async def asyncio(
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
     status: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     system_operator_product_type_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeHistoryResponse] | None:
     """List System Operator Product Type - history
@@ -330,10 +360,12 @@ async def asyncio(
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
         status (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         system_operator_product_type_id (str | Unset):
 
     Raises:
@@ -351,10 +383,12 @@ async def asyncio(
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
             status=status,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             system_operator_product_type_id=system_operator_product_type_id,
         )
     ).parsed

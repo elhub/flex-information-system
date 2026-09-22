@@ -290,6 +290,55 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             rows.first().validFrom shouldBe secondValidFrom
         }
 
+        test("replaces two adjacent periods with a single overlapping period without violating the exclusion constraint") {
+            // given — two adjacent existing periods: [validFrom, secondValidFrom) and [secondValidFrom, null)
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val mga = insertMeteringGridArea("MGA Shifted Boundary")
+            val secondValidFrom = Instant.parse("2024-02-01T00:00:00Z").atLocalMidnight(timezone)
+            val newStart = Instant.parse("2024-01-15T00:00:00Z").atLocalMidnight(timezone)
+
+            with(principal) {
+                repo.replaceAllFor(
+                    listOf(
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = apId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = validFrom,
+                            validTo = secondValidFrom,
+                        ),
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = apId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = secondValidFrom,
+                            validTo = null,
+                        ),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(principal) {
+                repo.replaceAllFor(
+                    listOf(
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = apId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = newStart,
+                            validTo = null,
+                        ),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryMgaRows(apId)
+            rows shouldHaveSize 1
+            rows.first() shouldBe MgaRow(meteringGridAreaId = mga.id, validFrom = newStart, validTo = null)
+        }
+
         test("does not delete rows for accounting points absent from the input when deletion is triggered") {
             // given
             val apId = insertAccountingPoint(uniqueGsrn())

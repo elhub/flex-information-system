@@ -12,6 +12,7 @@ export type BaseFieldProps = {
   unit?: string;
   labelDirection?: "row" | "column";
   textSize?: "small" | "medium" | "large";
+  skipPermissionCheck?: boolean;
 };
 
 type BaseFieldPropsWithChildren = BaseFieldProps & {
@@ -26,6 +27,7 @@ export const BaseField = ({
   children,
   labelDirection = "row",
   textSize = "small",
+  skipPermissionCheck = false,
 }: BaseFieldPropsWithChildren) => {
   const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
@@ -34,6 +36,7 @@ export const BaseField = ({
   const allowed =
     !resource ||
     !source ||
+    skipPermissionCheck ||
     permissions?.allow(`${resource}.${source}` as PermissionTarget, "read") !==
       false;
 

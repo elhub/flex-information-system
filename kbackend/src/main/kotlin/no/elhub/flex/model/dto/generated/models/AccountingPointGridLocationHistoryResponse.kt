@@ -29,7 +29,7 @@ public data class AccountingPointGridLocationHistoryResponse(
   @SerialName("object_type")
   public val objectType: AccountingPointGridLocationObjectType,
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   @SerialName("business_id")
   public val businessId: String,
@@ -57,7 +57,8 @@ public data class AccountingPointGridLocationHistoryResponse(
   @SerialName("source")
   public val source: AccountingPointGridLocationSource? = null,
   /**
-   * The quality of the grid location registration.
+   * Indicates how the grid location was determined. Guessed means that Flexibility Information
+   * System has estimated the location, while confirmed means that someone has verified it.
    */
   @SerialName("quality")
   public val quality: AccountingPointGridLocationQuality,

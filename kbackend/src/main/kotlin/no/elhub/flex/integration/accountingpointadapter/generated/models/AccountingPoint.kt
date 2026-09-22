@@ -1,8 +1,10 @@
 package no.elhub.flex.integration.accountingpointadapter.generated.models
 
+import java.util.UUID
 import kotlin.Double
 import kotlin.String
 import kotlin.collections.List
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -43,4 +45,10 @@ public data class AccountingPoint(
    */
   @SerialName("longitude")
   public val longitude: Double? = null,
+  /**
+   * Substation this accounting point is related to in the grid model.
+   */
+  @Contextual
+  @SerialName("substation")
+  public val substation: UUID? = null,
 )

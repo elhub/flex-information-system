@@ -315,6 +315,7 @@ export type FieldLabel =
   | "service_provider_product_suspension_history.service_provider_product_suspension_id"
   | "service_providing_group.additional_information"
   | "service_providing_group.bidding_zone"
+  | "service_providing_group.created_at"
   | "service_providing_group.id"
   | "service_providing_group.name"
   | "service_providing_group.recorded_at"
@@ -393,6 +394,7 @@ export type FieldLabel =
   | "service_providing_group_grid_suspension_history.service_providing_group_id"
   | "service_providing_group_history.additional_information"
   | "service_providing_group_history.bidding_zone"
+  | "service_providing_group_history.created_at"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
   | "service_providing_group_history.recorded_at"
@@ -423,6 +425,8 @@ export type FieldLabel =
   | "service_providing_group_power_per_substation.service_providing_group_id"
   | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application.additional_information"
+  | "service_providing_group_product_application.complete_at"
+  | "service_providing_group_product_application.created_at"
   | "service_providing_group_product_application.id"
   | "service_providing_group_product_application.maximum_active_power_down"
   | "service_providing_group_product_application.maximum_active_power_up"
@@ -456,6 +460,8 @@ export type FieldLabel =
   | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
+  | "service_providing_group_product_application_history.complete_at"
+  | "service_providing_group_product_application_history.created_at"
   | "service_providing_group_product_application_history.id"
   | "service_providing_group_product_application_history.maximum_active_power_down"
   | "service_providing_group_product_application_history.maximum_active_power_up"
@@ -701,6 +707,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.bidding_zone": "Bidding zone",
     "service_providing_group.status": "Status",
     "service_providing_group.additional_information": "Additional information",
+    "service_providing_group.created_at": "Created at",
     "service_providing_group.recorded_at": "Recorded at",
     "service_providing_group.recorded_by": "Recorded by",
     "service_providing_group_history.id": "ID",
@@ -710,6 +717,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.status": "Status",
     "service_providing_group_history.additional_information":
       "Additional information",
+    "service_providing_group_history.created_at": "Created at",
     "service_providing_group_history.recorded_at": "Recorded at",
     "service_providing_group_history.recorded_by": "Recorded by",
     "service_providing_group_history.service_providing_group_id":
@@ -1208,6 +1216,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping capability",
     "service_providing_group_product_application.ramping_description":
       "Ramping description",
+    "service_providing_group_product_application.created_at": "Created at",
+    "service_providing_group_product_application.complete_at": "Completed at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1232,6 +1242,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping capability",
     "service_providing_group_product_application_history.ramping_description":
       "Ramping description",
+    "service_providing_group_product_application_history.created_at":
+      "Created at",
+    "service_providing_group_product_application_history.complete_at":
+      "Completed at",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1468,6 +1482,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
     "service_providing_group.additional_information": "Tilleggsinformasjon",
+    "service_providing_group.created_at": "Opprettet",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -1477,6 +1492,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.status": "Status",
     "service_providing_group_history.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_history.created_at": "Opprettet",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":
@@ -1971,6 +1987,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingevne",
     "service_providing_group_product_application.ramping_description":
       "Rampingbeskrivelse",
+    "service_providing_group_product_application.created_at": "Opprettet",
+    "service_providing_group_product_application.complete_at": "Fullført",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -1995,6 +2013,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingevne",
     "service_providing_group_product_application_history.ramping_description":
       "Rampingbeskrivelse",
+    "service_providing_group_product_application_history.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_history.complete_at":
+      "Fullført",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2231,6 +2253,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
     "service_providing_group.additional_information": "Tilleggsinformasjon",
+    "service_providing_group.created_at": "Oppretta",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -2240,6 +2263,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.status": "Status",
     "service_providing_group_history.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_history.created_at": "Oppretta",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":
@@ -2733,6 +2757,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingevne",
     "service_providing_group_product_application.ramping_description":
       "Rampingbeskriving",
+    "service_providing_group_product_application.created_at": "Oppretta",
+    "service_providing_group_product_application.complete_at": "Fullført",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2757,6 +2783,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingevne",
     "service_providing_group_product_application_history.ramping_description":
       "Rampingbeskriving",
+    "service_providing_group_product_application_history.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_history.complete_at":
+      "Fullført",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

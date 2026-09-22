@@ -226,7 +226,7 @@ type ApiEvent struct {
 	Type        string
 	Source      string
 	Subject     *string
-	Data        *string
+	Data        []byte
 }
 
 type ApiIdentity struct {
@@ -428,6 +428,7 @@ type ApiServiceProvidingGroup struct {
 	BiddingZone           string
 	Status                string
 	AdditionalInformation *string
+	CreatedAt             pgtype.Timestamptz
 	RecordedBy            int
 	RecordedAt            pgtype.Timestamptz
 }
@@ -534,6 +535,7 @@ type ApiServiceProvidingGroupHistory struct {
 	BiddingZone             string
 	Status                  string
 	AdditionalInformation   *string
+	CreatedAt               pgtype.Timestamptz
 	RecordedBy              int
 	RecordedAt              pgtype.Timestamptz
 	ReplacedBy              *int
@@ -582,6 +584,8 @@ type ApiServiceProvidingGroupProductApplication struct {
 	VerifiedAt                pgtype.Timestamptz
 	RampingCapability         *string
 	RampingDescription        *string
+	CreatedAt                 pgtype.Timestamptz
+	CompleteAt                pgtype.Timestamptz
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
 }
@@ -652,6 +656,8 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	VerifiedAt                                pgtype.Timestamptz
 	RampingCapability                         *string
 	RampingDescription                        *string
+	CreatedAt                                 pgtype.Timestamptz
+	CompleteAt                                pgtype.Timestamptz
 	RecordedBy                                int
 	RecordedAt                                pgtype.Timestamptz
 	ReplacedBy                                *int

@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -19,10 +20,12 @@ def _get_kwargs(
     procuring_system_operator_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -36,6 +39,11 @@ def _get_kwargs(
 
     params["product_type_ids"] = product_type_ids
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -43,6 +51,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["service_providing_group_product_suspension_id"] = service_providing_group_product_suspension_id
 
@@ -155,10 +165,12 @@ def sync_detailed(
     procuring_system_operator_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse]]:
     """List Service Providing Group Product Suspension - history
@@ -171,10 +183,12 @@ def sync_detailed(
         procuring_system_operator_id (str | Unset):
         service_providing_group_id (str | Unset):
         product_type_ids (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
 
     Raises:
@@ -190,10 +204,12 @@ def sync_detailed(
         procuring_system_operator_id=procuring_system_operator_id,
         service_providing_group_id=service_providing_group_id,
         product_type_ids=product_type_ids,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_product_suspension_id=service_providing_group_product_suspension_id,
     )
 
@@ -211,10 +227,12 @@ def sync(
     procuring_system_operator_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None:
     """List Service Providing Group Product Suspension - history
@@ -227,10 +245,12 @@ def sync(
         procuring_system_operator_id (str | Unset):
         service_providing_group_id (str | Unset):
         product_type_ids (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
 
     Raises:
@@ -247,10 +267,12 @@ def sync(
         procuring_system_operator_id=procuring_system_operator_id,
         service_providing_group_id=service_providing_group_id,
         product_type_ids=product_type_ids,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_product_suspension_id=service_providing_group_product_suspension_id,
     ).parsed
 
@@ -262,10 +284,12 @@ async def asyncio_detailed(
     procuring_system_operator_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse]]:
     """List Service Providing Group Product Suspension - history
@@ -278,10 +302,12 @@ async def asyncio_detailed(
         procuring_system_operator_id (str | Unset):
         service_providing_group_id (str | Unset):
         product_type_ids (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
 
     Raises:
@@ -297,10 +323,12 @@ async def asyncio_detailed(
         procuring_system_operator_id=procuring_system_operator_id,
         service_providing_group_id=service_providing_group_id,
         product_type_ids=product_type_ids,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_product_suspension_id=service_providing_group_product_suspension_id,
     )
 
@@ -316,10 +344,12 @@ async def asyncio(
     procuring_system_operator_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None:
     """List Service Providing Group Product Suspension - history
@@ -332,10 +362,12 @@ async def asyncio(
         procuring_system_operator_id (str | Unset):
         service_providing_group_id (str | Unset):
         product_type_ids (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
 
     Raises:
@@ -353,10 +385,12 @@ async def asyncio(
             procuring_system_operator_id=procuring_system_operator_id,
             service_providing_group_id=service_providing_group_id,
             product_type_ids=product_type_ids,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             service_providing_group_product_suspension_id=service_providing_group_product_suspension_id,
         )
     ).parsed

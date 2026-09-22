@@ -150,7 +150,6 @@ const PartyShowContent = ({
 
   return (
     <ShowPageLayout
-      backTo={{ pathname: "/party", label: "Parties" }}
       title={party?.name ? `Party - ${party.name}` : "Party"}
       badge={
         party?.status ? (

@@ -23,6 +23,7 @@ grant_type_bearer = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 
 client_ids = {
     "test": "3733e21b-5def-400d-8133-06bcda02465e",
+    "test_sp": "85f46ccc-1b07-4591-b830-d2cf4e206e5d",
     "common": "df8bee5f-6e60-4a21-8927-e5bcdd4ce768",
 }
 
@@ -84,6 +85,22 @@ def test_entity(keys, key, client_id, expected_status, error):
             200,
             "",
         ),  # Test ENT - Test SP
+        (
+            "test",
+            "1337000100058",
+            "service_provider",
+            client_ids["test_sp"],
+            200,
+            "",
+        ),  # Test SP Client - Assuming SP
+        (
+            "test",
+            "1337000100041",
+            "system_operator",
+            client_ids["test_sp"],
+            400,
+            "invalid_client",
+        ),  # Test SP Client - Assuming SO
         (
             "common",
             "1337000000051",

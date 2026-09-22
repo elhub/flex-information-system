@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -16,10 +17,12 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -31,6 +34,11 @@ def _get_kwargs(
 
     params["impacted_system_operator_id"] = impacted_system_operator_id
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -38,6 +46,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["controllable_unit_suspension_id"] = controllable_unit_suspension_id
 
@@ -149,10 +159,12 @@ def sync_detailed(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse]]:
     """List Controllable Unit Suspension - history
@@ -164,10 +176,12 @@ def sync_detailed(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_suspension_id (str | Unset):
 
     Raises:
@@ -182,10 +196,12 @@ def sync_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_suspension_id=controllable_unit_suspension_id,
     )
 
@@ -202,10 +218,12 @@ def sync(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse] | None:
     """List Controllable Unit Suspension - history
@@ -217,10 +235,12 @@ def sync(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_suspension_id (str | Unset):
 
     Raises:
@@ -236,10 +256,12 @@ def sync(
         id=id,
         controllable_unit_id=controllable_unit_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_suspension_id=controllable_unit_suspension_id,
     ).parsed
 
@@ -250,10 +272,12 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse]]:
     """List Controllable Unit Suspension - history
@@ -265,10 +289,12 @@ async def asyncio_detailed(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_suspension_id (str | Unset):
 
     Raises:
@@ -283,10 +309,12 @@ async def asyncio_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_suspension_id=controllable_unit_suspension_id,
     )
 
@@ -301,10 +329,12 @@ async def asyncio(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse] | None:
     """List Controllable Unit Suspension - history
@@ -316,10 +346,12 @@ async def asyncio(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_suspension_id (str | Unset):
 
     Raises:
@@ -336,10 +368,12 @@ async def asyncio(
             id=id,
             controllable_unit_id=controllable_unit_id,
             impacted_system_operator_id=impacted_system_operator_id,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             controllable_unit_suspension_id=controllable_unit_suspension_id,
         )
     ).parsed

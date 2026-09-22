@@ -70,28 +70,25 @@ load: liquibase
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
 
     # set fixed client IDs so we can use them in the tests
-    UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
-    UUID_COMMON='df8bee5f-6e60-4a21-8927-e5bcdd4ce768'
+    # each entry is "client name|uuid|key entity" (key entity defaults to test)
+    CLIENTS=(
+        "Test Person Client|3733e21b-5def-400d-8133-06bcda02465e|test"
+        "Common Person Client|df8bee5f-6e60-4a21-8927-e5bcdd4ce768|common"
+        "Test SO Client|0191f286-2405-4c79-896c-cef7a6e42456|test"
+        "Test SP Client|85f46ccc-1b07-4591-b830-d2cf4e206e5d|test"
+        "Test Organisation Client|eed86ad4-9d5c-4d83-a93a-e7675e13a977|test"
+    )
 
-    for entity in test common;
+    for client in "${CLIENTS[@]}";
     do
-        PUBKEY=$(cat "./test/keys/.${entity}.pub.pem")
-        UUID_VAR_NAME="UUID_${entity^^}"
-        UUID=${!UUID_VAR_NAME}
+        IFS='|' read -r NAME UUID KEY_ENTITY <<< "${client}"
+        PUBKEY=$(cat "./test/keys/.${KEY_ENTITY}.pub.pem")
         psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
             -c "BEGIN" \
             -c "SELECT set_config('flex.current_identity', '0', true);" \
-            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE entity_id = (SELECT e.id FROM flex.entity AS e WHERE name ilike '${entity}%' AND NOT name ilike '%AS');" \
+            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE name = '${NAME}';" \
             -c "COMMIT"
     done
-
-    # set fixed client ID but no key for the organisation (not needed)
-    UUID_TESTAS='eed86ad4-9d5c-4d83-a93a-e7675e13a977'
-    psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
-        -c "BEGIN" \
-        -c "SELECT set_config('flex.current_identity', '0', true);" \
-        -c "UPDATE flex.entity_client SET client_id = '${UUID_TESTAS}', client_secret='87h87hijhulO', recorded_by = 0 WHERE entity_id = (SELECT e.id FROM flex.entity AS e WHERE name = 'Test Suite AS');" \
-        -c "COMMIT"
 
     docker compose kill -s SIGUSR1 postgrest
     docker compose restart backend

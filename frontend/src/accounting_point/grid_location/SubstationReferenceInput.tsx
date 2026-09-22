@@ -1,5 +1,5 @@
 import React, { useId, useState } from "react";
-import { useInput } from "ra-core";
+import { useInput, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { BaseInput } from "../../components/EDS-ra/inputs/BaseInput";
 import { Combobox } from "../../components/ui";
@@ -25,6 +25,7 @@ export const SubstationReferenceInput = ({
   onSelect,
   knownSubstation,
 }: Props) => {
+  const translate = useTranslate();
   const { id: inputId, field, fieldState } = useInput({ source });
   const fallbackId = useId();
   const id = inputId || fallbackId;
@@ -43,7 +44,6 @@ export const SubstationReferenceInput = ({
     queryKey: ["grid", "substation_search", search],
     queryFn: () =>
       fetchJSON<Substation>(`${gridURL}/substation?${queryParams.toString()}`),
-    enabled: search.length >= 2,
     placeholderData: (prev) => prev,
   });
 
@@ -86,6 +86,9 @@ export const SubstationReferenceInput = ({
   return (
     <BaseInput
       source={source}
+      descriptionOverride={translate(
+        "text.substation_reference_input.search_for_substation",
+      )}
       required={required}
       tooltip={tooltip}
       id={id}
@@ -93,7 +96,7 @@ export const SubstationReferenceInput = ({
       resource="accounting_point_grid_location"
     >
       <Combobox
-        options={[]}
+        options={options}
         filteredOptions={options}
         selectedOptions={selectedOption ? [selectedOption] : []}
         onToggleSelected={handleToggle}

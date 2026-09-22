@@ -21,10 +21,12 @@ def _get_kwargs(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -47,6 +49,11 @@ def _get_kwargs(
 
     params["valid_to"] = valid_to
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -54,6 +61,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["controllable_unit_service_provider_id"] = controllable_unit_service_provider_id
 
@@ -169,10 +178,12 @@ def sync_detailed(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse]]:
     """List Relation between controllable unit and service provider - history
@@ -189,10 +200,12 @@ def sync_detailed(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_service_provider_id (str | Unset):
 
     Raises:
@@ -211,10 +224,12 @@ def sync_detailed(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_service_provider_id=controllable_unit_service_provider_id,
     )
 
@@ -235,10 +250,12 @@ def sync(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse] | None:
     """List Relation between controllable unit and service provider - history
@@ -255,10 +272,12 @@ def sync(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_service_provider_id (str | Unset):
 
     Raises:
@@ -278,10 +297,12 @@ def sync(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_service_provider_id=controllable_unit_service_provider_id,
     ).parsed
 
@@ -296,10 +317,12 @@ async def asyncio_detailed(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse]]:
     """List Relation between controllable unit and service provider - history
@@ -316,10 +339,12 @@ async def asyncio_detailed(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_service_provider_id (str | Unset):
 
     Raises:
@@ -338,10 +363,12 @@ async def asyncio_detailed(
         valid_from=valid_from,
         valid_at=valid_at,
         valid_to=valid_to,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         controllable_unit_service_provider_id=controllable_unit_service_provider_id,
     )
 
@@ -360,10 +387,12 @@ async def asyncio(
     valid_from: str | Unset = UNSET,
     valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse] | None:
     """List Relation between controllable unit and service provider - history
@@ -380,10 +409,12 @@ async def asyncio(
         valid_from (str | Unset):
         valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         controllable_unit_service_provider_id (str | Unset):
 
     Raises:
@@ -404,10 +435,12 @@ async def asyncio(
             valid_from=valid_from,
             valid_at=valid_at,
             valid_to=valid_to,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             controllable_unit_service_provider_id=controllable_unit_service_provider_id,
         )
     ).parsed

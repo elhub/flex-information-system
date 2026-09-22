@@ -1,7 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     AuthenticatedClient,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ServiceProvidingGroupGridSuspensionHistoryResponse,
@@ -27,6 +27,8 @@ from flex.models import (
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -52,6 +54,7 @@ from flex.api.service_providing_group_membership import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
@@ -86,15 +89,17 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
+    client_so = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # chain of dependency to be able to create SPG grid suspensions:
@@ -144,6 +149,15 @@ def data():
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -220,7 +234,7 @@ def check_history(client, spggs_id):
 def test_spggs_fiso(data):
     (sts, spg_id, so_id, _, _) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: POST /service_providing_group_grid_suspension
     spggs = create_service_providing_group_grid_suspension.sync(
@@ -269,7 +283,7 @@ def test_spggs_fiso(data):
 def test_spggs_sp(data):
     (sts, spg_id, so_id, client_sp, _) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     spggs = create_service_providing_group_grid_suspension.sync(
         client=client_fiso,
@@ -307,7 +321,7 @@ def test_spggs_so(data):
     # RLS: SPGGS-SO001
     # SO can do everything on their own SPGGS
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     s = create_service_providing_group_grid_suspension.sync(
         client=client_so,
@@ -354,9 +368,9 @@ def test_spggs_so(data):
     # RLS: SPGGS-SO003
     # (see SPG by being ISO through grid prequalification)
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_other_iso = sts.fresh_client(TestEntity.TEST, "SO")
+    client_other_iso = sts.fresh_client(TestEntityClient.TEST, "SO")
     other_iso_id = sts.get_userinfo(client_other_iso)["party_id"]
 
     spggp = create_service_providing_group_grid_prequalification.sync(
@@ -391,7 +405,7 @@ def test_spggs_so(data):
     # (see SPG by being PSO through product application)
     # dependencies: SOPT -> SPPA -> SPGPA
 
-    client_pso = sts.fresh_client(TestEntity.TEST, "SO")
+    client_pso = sts.fresh_client(TestEntityClient.TEST, "SO")
     pso_id = sts.get_userinfo(client_pso)["party_id"]
 
     sopt = create_system_operator_product_type.sync(

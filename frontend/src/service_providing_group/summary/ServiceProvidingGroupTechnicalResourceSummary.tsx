@@ -10,13 +10,12 @@ import type { PieSectorShapeProps } from "recharts/types/polar/Pie";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { Heading, Panel, Tabs } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
-
-const formatKw = (value: number | undefined) =>
-  value !== undefined ? `${Math.round(value * 100) / 100} kW` : "-";
+import { KILO, Scale, formatScaled } from "../../utils/scales";
 
 type Props = {
   summary: ServiceProvidingGroupSummary;
   showDetails?: boolean;
+  displayScale?: Scale;
 };
 
 type TechnologyRow = {
@@ -41,6 +40,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 export const ServiceProvidingGroupTechnicalResourceSummary = ({
   summary,
   showDetails = false,
+  displayScale,
 }: Props) => {
   const { technical_resource: tr } = summary;
 
@@ -56,7 +56,9 @@ export const ServiceProvidingGroupTechnicalResourceSummary = ({
         <LabelValue
           label="Aggregated rated power"
           value={tr.maximum_active_power?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Average rated power"
@@ -65,22 +67,29 @@ export const ServiceProvidingGroupTechnicalResourceSummary = ({
               ? Math.round(tr.maximum_active_power.average * 100) / 100
               : 0
           }
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Minimum rated power"
           value={tr.maximum_active_power?.min ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Maximum rated power"
           value={tr.maximum_active_power?.max ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
       </div>
       {showDetails && (
         <ServiceProvidingGroupTechnicalResourceSummaryDetails
           summary={summary}
+          displayScale={displayScale}
         />
       )}
     </Panel>
@@ -89,11 +98,17 @@ export const ServiceProvidingGroupTechnicalResourceSummary = ({
 
 const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
   summary,
+  displayScale,
 }: {
   summary: ServiceProvidingGroupSummary;
+  displayScale?: Scale;
 }) => {
   const translateEnum = useTranslateEnum();
   const { technical_resource: tr } = summary;
+
+  const effectiveScale = displayScale ?? KILO;
+  const formatValue = (value: number | undefined) =>
+    formatScaled(value, "W", KILO, effectiveScale);
 
   // technology table
 
@@ -120,25 +135,29 @@ const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
     {
       key: "sum",
       header: "Aggregated rated power",
-      render: (v) => <div className="text-right">{formatKw(v as number)}</div>,
+      render: (v) => (
+        <div className="text-right">{formatValue(v as number)}</div>
+      ),
     },
     {
       key: "average",
       header: "Average rated power",
-      render: (v) => <div className="text-right">{formatKw(v as number)}</div>,
+      render: (v) => (
+        <div className="text-right">{formatValue(v as number)}</div>
+      ),
     },
     {
       key: "min",
       header: "Minimum rated power",
       render: (v) => (
-        <div className="text-right">{formatKw(v as number | undefined)}</div>
+        <div className="text-right">{formatValue(v as number | undefined)}</div>
       ),
     },
     {
       key: "max",
       header: "Maximum rated power",
       render: (v) => (
-        <div className="text-right">{formatKw(v as number | undefined)}</div>
+        <div className="text-right">{formatValue(v as number | undefined)}</div>
       ),
     },
   ];
@@ -190,7 +209,7 @@ const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
                       innerRadius={50}
                       outerRadius={150}
                       label={({ name, value }: PieLabelRenderProps) =>
-                        `${name}: ${formatKw(value as number | undefined)}`
+                        `${name}: ${formatValue(value as number | undefined)}`
                       }
                       shape={(props: PieSectorShapeProps) => (
                         <Sector

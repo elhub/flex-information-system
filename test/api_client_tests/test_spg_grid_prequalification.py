@@ -1,4 +1,4 @@
-from security_token_service import SecurityTokenService, TestEntity
+from security_token_service import SecurityTokenService, TestEntityClient
 from flex import AuthenticatedClient
 from flex.models import (
     ControllableUnitResponse,
@@ -33,9 +33,12 @@ from flex.models import (
     ServiceProviderProductApplicationStatus,
     ServiceProviderProductApplicationResponse,
     ErrorMessage,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
@@ -76,15 +79,19 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
+    client_so = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
+    client_sp = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_other_so = cast(AuthenticatedClient, sts.get_client(TestEntity.COMMON, "SO"))
+    client_other_so = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.COMMON, "SO")
+    )
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
     # create a test SPG
@@ -140,7 +147,7 @@ def data():
 
     # relate the CUs to the SP in charge of the test SPG
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cu_sp1 = create_controllable_unit_service_provider.sync(
@@ -168,7 +175,7 @@ def data():
     assert isinstance(cu_sp2, ControllableUnitServiceProviderResponse)
 
     client_common_eu = cast(
-        AuthenticatedClient, sts.get_client(TestEntity.COMMON, "EU")
+        AuthenticatedClient, sts.get_client(TestEntityClient.COMMON, "EU")
     )
     common_eu_id = sts.get_userinfo(client_common_eu)["party_id"]
 
@@ -222,6 +229,18 @@ def data():
         ),
     )
     assert isinstance(tr3, TechnicalResourceResponse)
+
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2, cu3]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
     spgm1 = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -311,7 +330,7 @@ def data():
 def test_spggp_fiso(data):
     (sts, spg_id, _, so2_id, _, _, _) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # RLS: SPGGP-FISO001
 
@@ -431,8 +450,8 @@ def test_spggp_fiso(data):
 
 def test_spggp_sp(data):
     (sts, spg_id, _, so2_id, _, _, _) = data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     # RLS: SPGGP-SP001
     # SP can read SPGGP on their SPG
@@ -467,8 +486,8 @@ def test_spggp_sp(data):
 
 def test_spggp_so(data):
     (sts, spg_id, so_id, other_so_id, client_sp, sp_id, pt_ids) = data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     spggps_so = list_service_providing_group_grid_prequalification.sync(
         client=client_so,
@@ -496,6 +515,7 @@ def test_spggp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -587,7 +607,7 @@ def test_spggp_common(data):
     (sts, _, _, _, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+        client = sts.get_client(TestEntityClient.TEST, role)
 
         # can read history on SPGGP they can read
         spggp_visible = list_service_providing_group_grid_prequalification.sync(
@@ -623,7 +643,7 @@ def test_rla_absence(data):
 
     for role in roles_without_rla:
         spggps = list_service_providing_group_grid_prequalification.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(spggps, list)
         assert len(spggps) == 0

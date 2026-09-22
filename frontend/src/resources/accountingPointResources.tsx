@@ -1,6 +1,5 @@
 import { JSX } from "react";
 import { Resource } from "react-admin";
-import { AccountingPointList } from "../accounting_point/AccountingPointList";
 import { AccountingPointShow } from "../accounting_point/show/AccountingPointShow";
 import { Permissions } from "../auth/permissions";
 
@@ -31,7 +30,6 @@ export const createAccountingPointResources = (permissions: Permissions) => {
       <Resource
         key="accounting_point"
         name="accounting_point"
-        list={AccountingPointList}
         show={AccountingPointShow}
         recordRepresentation="business_id"
       />,

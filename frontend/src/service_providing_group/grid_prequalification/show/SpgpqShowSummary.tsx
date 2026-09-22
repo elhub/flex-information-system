@@ -11,8 +11,9 @@ import {
 import { useParty } from "../../../hooks/party";
 import {
   EventButton,
-  NestedResourceHistoryButton,
+  ResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
+import { toDateTimeString } from "../../../util";
 
 type Props = {
   spgpq: ServiceProvidingGroupGridPrequalification;
@@ -79,13 +80,13 @@ export const SpgpqShowSummary = ({ spgpq, spg, isHistory }: Props) => {
           <LabelValue
             size="small"
             label="Prequalified at"
-            value={spgpq.prequalified_at}
+            value={toDateTimeString(spgpq.prequalified_at)}
           />
         </div>
       </Panel>
       {!isHistory && (
         <div className="flex gap-4 mt-2">
-          <NestedResourceHistoryButton child="grid_prequalification" />
+          <ResourceHistoryButton id={String(spgpq.id)} />
           <EventButton filterOnSubject recordId={String(spgpq.id)} />
         </div>
       )}

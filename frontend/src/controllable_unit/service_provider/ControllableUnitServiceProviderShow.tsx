@@ -10,7 +10,6 @@ import {
   TextField,
 } from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
-import { RestoreButton } from "../../components/history";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProvider } from "../../generated-client";
 import { getFields } from "../../zod";
@@ -83,9 +82,6 @@ export const ControllableUnitServiceProviderShow = () => {
       editButton={<EditButton />}
       historyButton={<HistoryButton />}
       eventButton={<EventButton filterOnSubject />}
-      historyOnlyActions={
-        <RestoreButton parent="controllable_unit" child="service_provider" />
-      }
     >
       <Heading level={2} size="small" spacing>
         Basic information

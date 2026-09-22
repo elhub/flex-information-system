@@ -16,7 +16,8 @@ WITH (security_invoker = true) AS (
         service_provider_id,
         bidding_zone,
         status,
-        additional_information
+        additional_information,
+        created_at
     FROM flex.service_providing_group
 );
 -- changeset flex:api-service-providing-group-history-create endDelimiter:-- runOnChange:true
@@ -36,7 +37,8 @@ WITH (
         service_provider_id,
         bidding_zone,
         status,
-        additional_information
+        additional_information,
+        created_at
     FROM flex.service_providing_group
     UNION ALL
     SELECT
@@ -50,6 +52,7 @@ WITH (
         service_provider_id,
         bidding_zone,
         status,
-        additional_information
+        additional_information,
+        created_at
     FROM flex.service_providing_group_history
 );

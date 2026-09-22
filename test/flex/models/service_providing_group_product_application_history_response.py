@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,6 +12,17 @@ from ..models.service_providing_group_product_application_ramping_capability imp
 )
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.party_history_response import PartyHistoryResponse
+    from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
+    from ..models.service_providing_group_product_application_attachment_history_response import (
+        ServiceProvidingGroupProductApplicationAttachmentHistoryResponse,
+    )
+    from ..models.service_providing_group_product_application_comment_history_response import (
+        ServiceProvidingGroupProductApplicationCommentHistoryResponse,
+    )
+
 
 T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationHistoryResponse")
 
@@ -31,6 +42,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             kilowatts. Example: 150.5.
         maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
             kilowatts. Example: 150.5.
+        created_at (datetime.datetime): When the application was first created. Example: 2022-01-08T12:00:00+02.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
@@ -45,9 +57,18 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
             Manual Frequency Restoration (mFRR). Example: Units are (dis)connected one by one to achieve a stepwise profile.
             We ensure linearity on a minute resolution..
+        complete_at (datetime.datetime | None | Unset): When the application was last marked complete by the procuring
+            system operator. Example: 2022-08-08T12:00:00+02.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
+        service_providing_group_history (list[ServiceProvidingGroupHistoryResponse] | None | Unset): Embedded
+            service_providing_group_history
+        procuring_system_operator_history (list[PartyHistoryResponse] | None | Unset): Embedded party_history
+        attachment_history (list[ServiceProvidingGroupProductApplicationAttachmentHistoryResponse] | None | Unset):
+            Embedded service_providing_group_product_application_attachment_history
+        comment_history (list[ServiceProvidingGroupProductApplicationCommentHistoryResponse] | None | Unset): Embedded
+            service_providing_group_product_application_comment_history
     """
 
     id: int
@@ -57,6 +78,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     status: ServiceProvidingGroupProductApplicationStatus
     maximum_active_power_up: float
     maximum_active_power_down: float
+    created_at: datetime.datetime
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_product_application_id: int
@@ -65,8 +87,13 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     verified_at: datetime.datetime | None | Unset = UNSET
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
+    complete_at: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
+    service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
+    procuring_system_operator_history: list[PartyHistoryResponse] | None | Unset = UNSET
+    attachment_history: list[ServiceProvidingGroupProductApplicationAttachmentHistoryResponse] | None | Unset = UNSET
+    comment_history: list[ServiceProvidingGroupProductApplicationCommentHistoryResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -83,6 +110,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         maximum_active_power_up = self.maximum_active_power_up
 
         maximum_active_power_down = self.maximum_active_power_down
+
+        created_at = self.created_at.isoformat()
 
         recorded_at = self.recorded_at.isoformat()
 
@@ -126,6 +155,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         else:
             ramping_description = self.ramping_description
 
+        complete_at: None | str | Unset
+        if isinstance(self.complete_at, Unset):
+            complete_at = UNSET
+        elif isinstance(self.complete_at, datetime.datetime):
+            complete_at = self.complete_at.isoformat()
+        else:
+            complete_at = self.complete_at
+
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
@@ -140,6 +177,56 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
+        service_providing_group_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_providing_group_history, Unset):
+            service_providing_group_history = UNSET
+        elif isinstance(self.service_providing_group_history, list):
+            service_providing_group_history = []
+            for service_providing_group_history_type_0_item_data in self.service_providing_group_history:
+                service_providing_group_history_type_0_item = service_providing_group_history_type_0_item_data.to_dict()
+                service_providing_group_history.append(service_providing_group_history_type_0_item)
+
+        else:
+            service_providing_group_history = self.service_providing_group_history
+
+        procuring_system_operator_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.procuring_system_operator_history, Unset):
+            procuring_system_operator_history = UNSET
+        elif isinstance(self.procuring_system_operator_history, list):
+            procuring_system_operator_history = []
+            for procuring_system_operator_history_type_0_item_data in self.procuring_system_operator_history:
+                procuring_system_operator_history_type_0_item = (
+                    procuring_system_operator_history_type_0_item_data.to_dict()
+                )
+                procuring_system_operator_history.append(procuring_system_operator_history_type_0_item)
+
+        else:
+            procuring_system_operator_history = self.procuring_system_operator_history
+
+        attachment_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.attachment_history, Unset):
+            attachment_history = UNSET
+        elif isinstance(self.attachment_history, list):
+            attachment_history = []
+            for attachment_history_type_0_item_data in self.attachment_history:
+                attachment_history_type_0_item = attachment_history_type_0_item_data.to_dict()
+                attachment_history.append(attachment_history_type_0_item)
+
+        else:
+            attachment_history = self.attachment_history
+
+        comment_history: list[dict[str, Any]] | None | Unset
+        if isinstance(self.comment_history, Unset):
+            comment_history = UNSET
+        elif isinstance(self.comment_history, list):
+            comment_history = []
+            for comment_history_type_0_item_data in self.comment_history:
+                comment_history_type_0_item = comment_history_type_0_item_data.to_dict()
+                comment_history.append(comment_history_type_0_item)
+
+        else:
+            comment_history = self.comment_history
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -151,6 +238,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
                 "status": status,
                 "maximum_active_power_up": maximum_active_power_up,
                 "maximum_active_power_down": maximum_active_power_down,
+                "created_at": created_at,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
                 "service_providing_group_product_application_id": service_providing_group_product_application_id,
@@ -166,15 +254,34 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             field_dict["ramping_capability"] = ramping_capability
         if ramping_description is not UNSET:
             field_dict["ramping_description"] = ramping_description
+        if complete_at is not UNSET:
+            field_dict["complete_at"] = complete_at
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
             field_dict["replaced_at"] = replaced_at
+        if service_providing_group_history is not UNSET:
+            field_dict["service_providing_group_history"] = service_providing_group_history
+        if procuring_system_operator_history is not UNSET:
+            field_dict["procuring_system_operator_history"] = procuring_system_operator_history
+        if attachment_history is not UNSET:
+            field_dict["attachment_history"] = attachment_history
+        if comment_history is not UNSET:
+            field_dict["comment_history"] = comment_history
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.party_history_response import PartyHistoryResponse
+        from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
+        from ..models.service_providing_group_product_application_attachment_history_response import (
+            ServiceProvidingGroupProductApplicationAttachmentHistoryResponse,
+        )
+        from ..models.service_providing_group_product_application_comment_history_response import (
+            ServiceProvidingGroupProductApplicationCommentHistoryResponse,
+        )
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -189,6 +296,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         maximum_active_power_up = d.pop("maximum_active_power_up")
 
         maximum_active_power_down = d.pop("maximum_active_power_down")
+
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
         recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
@@ -267,6 +376,23 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         ramping_description = _parse_ramping_description(d.pop("ramping_description", UNSET))
 
+        def _parse_complete_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                complete_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return complete_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        complete_at = _parse_complete_at(d.pop("complete_at", UNSET))
+
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -293,6 +419,116 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
+        def _parse_service_providing_group_history(
+            data: object,
+        ) -> list[ServiceProvidingGroupHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_providing_group_history_type_0 = []
+                _service_providing_group_history_type_0 = data
+                for service_providing_group_history_type_0_item_data in _service_providing_group_history_type_0:
+                    service_providing_group_history_type_0_item = ServiceProvidingGroupHistoryResponse.from_dict(
+                        service_providing_group_history_type_0_item_data
+                    )
+
+                    service_providing_group_history_type_0.append(service_providing_group_history_type_0_item)
+
+                return service_providing_group_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupHistoryResponse] | None | Unset, data)
+
+        service_providing_group_history = _parse_service_providing_group_history(
+            d.pop("service_providing_group_history", UNSET)
+        )
+
+        def _parse_procuring_system_operator_history(data: object) -> list[PartyHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                procuring_system_operator_history_type_0 = []
+                _procuring_system_operator_history_type_0 = data
+                for procuring_system_operator_history_type_0_item_data in _procuring_system_operator_history_type_0:
+                    procuring_system_operator_history_type_0_item = PartyHistoryResponse.from_dict(
+                        procuring_system_operator_history_type_0_item_data
+                    )
+
+                    procuring_system_operator_history_type_0.append(procuring_system_operator_history_type_0_item)
+
+                return procuring_system_operator_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[PartyHistoryResponse] | None | Unset, data)
+
+        procuring_system_operator_history = _parse_procuring_system_operator_history(
+            d.pop("procuring_system_operator_history", UNSET)
+        )
+
+        def _parse_attachment_history(
+            data: object,
+        ) -> list[ServiceProvidingGroupProductApplicationAttachmentHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                attachment_history_type_0 = []
+                _attachment_history_type_0 = data
+                for attachment_history_type_0_item_data in _attachment_history_type_0:
+                    attachment_history_type_0_item = (
+                        ServiceProvidingGroupProductApplicationAttachmentHistoryResponse.from_dict(
+                            attachment_history_type_0_item_data
+                        )
+                    )
+
+                    attachment_history_type_0.append(attachment_history_type_0_item)
+
+                return attachment_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupProductApplicationAttachmentHistoryResponse] | None | Unset, data)
+
+        attachment_history = _parse_attachment_history(d.pop("attachment_history", UNSET))
+
+        def _parse_comment_history(
+            data: object,
+        ) -> list[ServiceProvidingGroupProductApplicationCommentHistoryResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                comment_history_type_0 = []
+                _comment_history_type_0 = data
+                for comment_history_type_0_item_data in _comment_history_type_0:
+                    comment_history_type_0_item = (
+                        ServiceProvidingGroupProductApplicationCommentHistoryResponse.from_dict(
+                            comment_history_type_0_item_data
+                        )
+                    )
+
+                    comment_history_type_0.append(comment_history_type_0_item)
+
+                return comment_history_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupProductApplicationCommentHistoryResponse] | None | Unset, data)
+
+        comment_history = _parse_comment_history(d.pop("comment_history", UNSET))
+
         service_providing_group_product_application_history_response = cls(
             id=id,
             service_providing_group_id=service_providing_group_id,
@@ -301,6 +537,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             status=status,
             maximum_active_power_up=maximum_active_power_up,
             maximum_active_power_down=maximum_active_power_down,
+            created_at=created_at,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
@@ -309,8 +546,13 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             verified_at=verified_at,
             ramping_capability=ramping_capability,
             ramping_description=ramping_description,
+            complete_at=complete_at,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
+            service_providing_group_history=service_providing_group_history,
+            procuring_system_operator_history=procuring_system_operator_history,
+            attachment_history=attachment_history,
+            comment_history=comment_history,
         )
 
         service_providing_group_product_application_history_response.additional_properties = d

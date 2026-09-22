@@ -729,6 +729,72 @@
                     }
                 }
             },
+            "event_data_updated_fields": {
+                "type": "object",
+                "description": "Common format of the data field in events concerning update operations.",
+                "required": [
+                    "kind",
+                    "updated_fields"
+                ],
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the event data schema for discriminated union deserialization.",
+                        "type": "string",
+                        "const": "event.data.updated_fields"
+                    },
+                    "updated_fields": {
+                        "description": "Names of the fields that were modified by the update.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "text"
+                        },
+                        "example": [
+                            "status"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            },
+            "event_data_controllable_unit_lookup": {
+                "type": "object",
+                "description": "Format of the data field in a controllable_unit.lookup event.",
+                "required": [
+                    "kind",
+                    "requesting_party_id"
+                ],
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the event data schema for discriminated union deserialization.",
+                        "type": "string",
+                        "const": "event.data.controllable_unit.lookup"
+                    },
+                    "requesting_party_id": {
+                        "description": "The party that performed the controllable unit lookup.",
+                        "type": "integer",
+                        "format": "bigint",
+                        "example": 42
+                    }
+                },
+                "additionalProperties": false
+            },
+            "event_data": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/event_data_updated_fields"
+                    },
+                    {
+                        "$ref": "#/components/schemas/event_data_controllable_unit_lookup"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                        "event.data.updated_fields": "#/components/schemas/event_data_updated_fields",
+                        "event.data.controllable_unit.lookup": "#/components/schemas/event_data_controllable_unit_lookup"
+                    }
+                }
+            },
             "numeric_aggregation": {
                 "type": "object",
                 "properties": {
@@ -1057,7 +1123,7 @@
                 "example": "cso"
             },
             "accounting_point_grid_location_quality": {
-                "description": "The quality of the grid location registration.",
+                "description": "Indicates how the grid location was determined. Guessed means that Flexibility Information System has estimated the location, while confirmed means that someone has verified it.",
                 "format": "text",
                 "type": "string",
                 "enum": [
@@ -2091,7 +2157,7 @@
                         "example": 4
                     },
                     "substations": {
-                        "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+                        "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
                         "type": "array",
                         "readOnly": true,
                         "items": {
@@ -2115,6 +2181,17 @@
                                             "$ref": "#/components/schemas/numeric_aggregation"
                                         }
                                     }
+                                },
+                                "technical_resource": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -2124,6 +2201,15 @@
                                 "substation_name": "Substation A",
                                 "controllable_unit": {
                                     "count": 3,
+                                    "maximum_active_power": {
+                                        "sum": 120,
+                                        "average": 40,
+                                        "min": 20,
+                                        "max": 60
+                                    }
+                                },
+                                "technical_resource": {
+                                    "count": 5,
                                     "maximum_active_power": {
                                         "sum": 150,
                                         "average": 50,
@@ -2433,6 +2519,13 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "created_at": {
+                        "description": "When the service providing group was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -2565,6 +2658,7 @@
                     "service_provider_id",
                     "bidding_zone",
                     "status",
+                    "created_at",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -2594,7 +2688,7 @@
                 "type": "object",
                 "properties": {
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -2637,7 +2731,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -4360,8 +4454,15 @@
                     },
                     "data": {
                         "description": "The data of the event.",
-                        "format": "text",
-                        "type": "string",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/event_data"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "readOnly": true,
                         "nullable": true
                     },
@@ -5041,7 +5142,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -5090,7 +5191,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -5154,7 +5255,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -6096,6 +6197,13 @@
                         "type": "string",
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -6189,6 +6297,13 @@
                         "type": "string",
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 },
                 "required": [
@@ -6297,6 +6412,20 @@
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
+                    "created_at": {
+                        "description": "When the application was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -6374,6 +6503,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "created_at",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -7072,6 +7202,66 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "suspension_history": {
+                        "description": "Embedded controllable_unit_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded controllable_unit_service_provider_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_service_provider_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_membership_history": {
+                        "description": "Embedded service_providing_group_membership_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "technical_resource_history": {
+                        "description": "Embedded technical_resource_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/technical_resource_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7147,6 +7337,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded controllable_unit_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7234,6 +7469,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_suspension_history": {
+                        "description": "Embedded controllable_unit_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7331,6 +7581,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "end_user_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7381,6 +7676,13 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "created_at": {
+                        "description": "When the service providing group was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -7414,6 +7716,96 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "membership_history": {
+                        "description": "Embedded service_providing_group_membership_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_prequalification_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_suspension_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_suspension_history": {
+                        "description": "Embedded service_providing_group_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7422,6 +7814,7 @@
                     "service_provider_id",
                     "bidding_zone",
                     "status",
+                    "created_at",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_id"
@@ -7439,7 +7832,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -7495,6 +7888,36 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7574,6 +7997,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7661,6 +8129,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_grid_prequalification_history": {
+                        "description": "Embedded service_providing_group_grid_prequalification_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7734,6 +8217,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "impacted_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7821,6 +8349,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_grid_suspension_history": {
+                        "description": "Embedded service_providing_group_grid_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -7994,6 +8537,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "party_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8147,6 +8705,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "controllable_unit_history": {
+                        "description": "Embedded controllable_unit_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8183,7 +8756,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -8328,6 +8901,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8420,6 +9008,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_provider_product_application_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8508,6 +9141,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_product_application_history": {
+                        "description": "Embedded service_provider_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8593,6 +9241,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_provider_product_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8681,6 +9374,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_provider_product_suspension_history": {
+                        "description": "Embedded service_provider_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8792,6 +9500,20 @@
                         "nullable": true,
                         "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
+                    "created_at": {
+                        "description": "When the application was first created.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2022-01-08T12:00:00+02"
+                    },
+                    "complete_at": {
+                        "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -8825,6 +9547,66 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "attachment_history": {
+                        "description": "Embedded service_providing_group_product_application_attachment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_product_application_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -8835,6 +9617,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "created_at",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"
@@ -8917,6 +9700,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9007,6 +9805,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_application_history": {
+                        "description": "Embedded service_providing_group_product_application_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9092,6 +9905,51 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "procuring_system_operator_history": {
+                        "description": "Embedded party_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_history": {
+                        "description": "Embedded service_providing_group_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment_history": {
+                        "description": "Embedded service_providing_group_product_suspension_comment_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9180,6 +10038,21 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2024-07-07T10:00:00+00:00"
+                    },
+                    "service_providing_group_product_suspension_history": {
+                        "description": "Embedded service_providing_group_product_suspension_history",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -9453,6 +10326,14 @@
                         },
                         "example": "eq.somename",
                         "description": "Free text name of the controllable unit."
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "in": "query",
@@ -10053,6 +10934,14 @@
                     },
                     {
                         "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -10060,6 +10949,16 @@
                         "example": "eq.55",
                         "description": "Reference to the accounting point that the controllable unit is connected to.",
                         "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
                     },
                     {
                         "description": "Filtering Columns",
@@ -10092,6 +10991,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -10323,6 +11230,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -11059,6 +11974,16 @@
                         "name": "impacted_system_operator_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -11089,6 +12014,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -11320,6 +12253,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -11937,6 +12878,16 @@
                         "name": "controllable_unit_suspension_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -11967,6 +12918,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -12198,6 +13157,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -13017,6 +13984,16 @@
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -13047,6 +14024,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -13278,6 +14263,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -14312,6 +15305,16 @@
                         "name": "service_provider_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -14342,6 +15345,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -14574,6 +15585,14 @@
                 ],
                 "parameters": [
                     {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
@@ -14607,7 +15626,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "name": "controllable_unit_id"
                     },
                     {
@@ -15323,7 +16342,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "name": "controllable_unit_id"
                     },
                     {
@@ -15365,6 +16384,16 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -15395,6 +16424,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -15626,6 +16663,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -16270,6 +17315,16 @@
                         "name": "impacted_system_operator_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -16300,6 +17355,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -16531,6 +17594,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -17148,6 +18219,16 @@
                         "name": "service_providing_group_grid_prequalification_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -17178,6 +18259,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -17409,6 +18498,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -18145,6 +19242,16 @@
                         "name": "service_providing_group_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -18175,6 +19282,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -18406,6 +19521,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -19023,6 +20146,16 @@
                         "name": "service_providing_group_grid_suspension_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -19053,6 +20186,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -19284,6 +20425,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -21192,6 +22341,16 @@
                         "description": "Name of the party. Maximum 128 characters."
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -21222,6 +22381,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -21453,6 +22620,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -22189,6 +23364,16 @@
                         "name": "entity_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -22219,6 +23404,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -22450,6 +23643,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -23551,6 +24752,16 @@
                         "name": "controllable_unit_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -23581,6 +24792,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -23812,6 +25031,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -26929,6 +28156,16 @@
                         "name": "accounting_point_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -28172,6 +29409,16 @@
                         "example": "eq.somestatus"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -28202,6 +29449,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -28433,6 +29688,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -29120,6 +30383,16 @@
                         "example": "eq.somestatus"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -29150,6 +30423,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -29381,6 +30662,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -29998,6 +31287,16 @@
                         "name": "service_provider_product_application_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -30028,6 +31327,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -30259,6 +31566,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -31022,6 +32337,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -31052,6 +32377,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -31283,6 +32616,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -31900,6 +33241,16 @@
                         "name": "service_provider_product_suspension_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -31930,6 +33281,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -32161,6 +33520,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -32832,6 +34199,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -32862,6 +34239,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -33093,6 +34478,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -33704,6 +35097,16 @@
                         "name": "service_providing_group_product_application_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -33734,6 +35137,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -33965,6 +35376,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -34582,6 +36001,16 @@
                         "name": "service_providing_group_product_application_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -34612,6 +36041,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -34843,6 +36280,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -35606,6 +37051,16 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -35636,6 +37091,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -35867,6 +37330,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
@@ -36484,6 +37955,16 @@
                         "name": "service_providing_group_product_suspension_id"
                     },
                     {
+                        "in": "query",
+                        "name": "as_of",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on record time. Alternative to using recorded_at and replaced_at filters together."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -36514,6 +37995,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
@@ -36745,6 +38234,14 @@
                     {}
                 ],
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }

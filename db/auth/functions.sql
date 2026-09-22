@@ -110,6 +110,40 @@ REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
 -- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
 
+-- changeset flex:auth-entity-client-by-client-id runOnChange:true endDelimiter:--
+-- Gets the full entity client record identified by its client id
+CREATE OR REPLACE FUNCTION auth.entity_client_by_client_id(in_client_id text)
+RETURNS TABLE (
+    id bigint,
+    entity_id bigint,
+    external_id uuid,
+    client_id uuid,
+    party_id bigint,
+    scopes text [],
+    name text,
+    public_key text
+) SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        clt.id,
+        clt.entity_id,
+        flex.identity_external_id(clt.entity_id, null, clt.id) as external_id,
+        clt.client_id,
+        clt.party_id,
+        clt.scopes,
+        clt.name,
+        clt.public_key
+    FROM flex.entity_client as clt
+    WHERE clt.client_id::text = in_client_id
+$$;
+
+-- changeset flex:auth-entity-client-by-client-id-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.entity_client_by_client_id(text) FROM public;
+
+-- changeset flex:auth-entity-client-by-client-id-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.entity_client_by_client_id(text) TO flex_anonymous;
+
 -- changeset flex:entity-identity-of-external-id runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
     in_external_id text
@@ -134,7 +168,8 @@ $$;
 REVOKE EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) FROM public;
 
 -- changeset flex:auth-entity-identity-of-external-id-grant runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common;
+GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common,
+flex_entity;
 
 -- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.assume_party(in_party_id bigint)

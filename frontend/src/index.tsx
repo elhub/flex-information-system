@@ -12,6 +12,7 @@ setWorkerUrl(workerUrl);
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
+import { Modal } from "./components/ui";
 import { client } from "./generated-client/client.gen";
 import { apiURL, API_VERSION } from "./httpConfig";
 
@@ -21,7 +22,6 @@ declare global {
       PRIMARY_COLOR?: string;
       VITE_FLEX_URL?: string;
       VITE_FLEX_COLOR_DARK?: string;
-      VITE_FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE?: string;
       VITE_FLEX_USER_GUIDE_URL?: string;
       VITE_FLEX_USER_GUIDE_CREATE_USERS_URL?: string;
       VITE_FLEX_DISABLE_ATTACHMENTS?: string;
@@ -39,6 +39,8 @@ client.interceptors.request.use((request) => {
   }
   return request;
 });
+
+Modal.setAppElement?.("#root");
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

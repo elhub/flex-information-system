@@ -1,10 +1,12 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     AccountingPointResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -38,7 +40,10 @@ from flex.api.accounting_point import (
     read_accounting_point,
 )
 from flex.api.system_operator_product_type import create_system_operator_product_type
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -65,6 +70,9 @@ import datetime
 
 import pytest
 
+# run before other test modules creating APs (CU lookup)
+pytestmark = pytest.mark.run(order=1)
+
 
 @pytest.fixture
 def sts():
@@ -81,7 +89,7 @@ def test_accounting_point_anon(sts):
 # RLS: AP-FISO001
 def test_ap_fiso(sts):
     # FISO can read all accounting points in test data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # endpoint: GET /accounting_point
     aps = list_accounting_point.sync(client=client_fiso, limit="10000")
@@ -91,10 +99,10 @@ def test_ap_fiso(sts):
 
 # RLS: AP-SO001
 def test_ap_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # CSO path: Test SO is CSO for APs 1001-2000 (via its MGA in test data)
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     # SO can see an AP in its MGA
     # endpoint: GET /accounting_point/{id}
@@ -106,7 +114,7 @@ def test_ap_so(sts):
     assert isinstance(ap, ErrorMessage)
 
     # ISO path: this fresh SO will be the ISO
-    client_iso = sts.fresh_client(TestEntity.TEST, "SO")
+    client_iso = sts.fresh_client(TestEntityClient.TEST, "SO")
     iso_id = sts.get_userinfo(client_iso)["party_id"]
 
     # Set up a CU on AP 1004 and add it to an SPG, then create a grid
@@ -122,7 +130,7 @@ def test_ap_so(sts):
     )
     assert isinstance(cu_iso, ControllableUnitResponse)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
     spg_iso = create_service_providing_group.sync(
         client=client_fiso,
@@ -134,7 +142,7 @@ def test_ap_so(sts):
     )
     assert isinstance(spg_iso, ServiceProvidingGroupResponse)
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
     cu_sp_iso = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -160,6 +168,15 @@ def test_ap_so(sts):
     )
     assert isinstance(tr_iso, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu_iso.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     spgm_iso = create_service_providing_group_membership.sync(
         client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
@@ -184,7 +201,7 @@ def test_ap_so(sts):
     assert isinstance(ap, AccountingPointResponse)
 
     # PSO path: this fresh SO will be the PSO
-    client_pso = sts.fresh_client(TestEntity.TEST, "SO")
+    client_pso = sts.fresh_client(TestEntityClient.TEST, "SO")
     pso_id = sts.get_userinfo(client_pso)["party_id"]
 
     # Set up a CU on AP 1005, add it to an SPG, and create a product application
@@ -233,6 +250,15 @@ def test_ap_so(sts):
         ),
     )
     assert isinstance(tr_pso, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu_pso.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     spgm_pso = create_service_providing_group_membership.sync(
         client=client_sp,
@@ -306,21 +332,21 @@ def test_ap_so(sts):
 def test_ap_sp(sts):
     # in test data, SP manages CUs on APs 1001-1003
     # SP should be able to see those APs
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     # SP can read the AP by ID
     ap = read_accounting_point.sync(client=client_sp, id=1001)
     assert isinstance(ap, AccountingPointResponse)
 
     # a fresh SP cannot read it
-    client_fresh_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    client_fresh_sp = sts.fresh_client(TestEntityClient.TEST, "SP")
     fresh_sp_id = sts.get_userinfo(client_fresh_sp)["party_id"]
 
     ap = read_accounting_point.sync(client=client_fresh_sp, id=1001)
     assert isinstance(ap, ErrorMessage)
 
     # After granting a CUSP contract to the SP on an AP, they should see it
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -332,7 +358,7 @@ def test_ap_sp(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     cu_sp = create_controllable_unit_service_provider.sync(

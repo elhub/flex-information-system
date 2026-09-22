@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -17,10 +18,12 @@ def _get_kwargs(
     *,
     id: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
@@ -30,6 +33,11 @@ def _get_kwargs(
 
     params["service_providing_group_grid_suspension_id"] = service_providing_group_grid_suspension_id
 
+    json_as_of: str | Unset = UNSET
+    if not isinstance(as_of, Unset):
+        json_as_of = as_of.isoformat()
+    params["as_of"] = json_as_of
+
     params["select"] = select
 
     params["order"] = order
@@ -37,6 +45,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params["service_providing_group_grid_suspension_comment_id"] = service_providing_group_grid_suspension_comment_id
 
@@ -153,10 +163,12 @@ def sync_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> Response[
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
@@ -169,10 +181,12 @@ def sync_detailed(
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -186,10 +200,12 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     )
 
@@ -205,10 +221,12 @@ def sync(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
@@ -219,10 +237,12 @@ def sync(
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -237,10 +257,12 @@ def sync(
         client=client,
         id=id,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     ).parsed
 
@@ -250,10 +272,12 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> Response[
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
@@ -266,10 +290,12 @@ async def asyncio_detailed(
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -283,10 +309,12 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
+        as_of=as_of,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
         service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
     )
 
@@ -300,10 +328,12 @@ async def asyncio(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
+    as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
@@ -314,10 +344,12 @@ async def asyncio(
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
+        as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
         service_providing_group_grid_suspension_comment_id (str | Unset):
 
     Raises:
@@ -333,10 +365,12 @@ async def asyncio(
             client=client,
             id=id,
             service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
+            as_of=as_of,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
             service_providing_group_grid_suspension_comment_id=service_providing_group_grid_suspension_comment_id,
         )
     ).parsed

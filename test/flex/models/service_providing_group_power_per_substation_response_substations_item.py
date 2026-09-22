@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
         ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
     )
+    from ..models.service_providing_group_power_per_substation_response_substations_item_technical_resource import (
+        ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource,
+    )
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem")
@@ -24,11 +27,13 @@ class ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem:
         substation_business_id (None | str | Unset):
         substation_name (None | str | Unset):
         controllable_unit (ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit | Unset):
+        technical_resource (ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource | Unset):
     """
 
     substation_business_id: None | str | Unset = UNSET
     substation_name: None | str | Unset = UNSET
     controllable_unit: ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit | Unset = UNSET
+    technical_resource: ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,6 +53,10 @@ class ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem:
         if not isinstance(self.controllable_unit, Unset):
             controllable_unit = self.controllable_unit.to_dict()
 
+        technical_resource: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.technical_resource, Unset):
+            technical_resource = self.technical_resource.to_dict()
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -57,6 +66,8 @@ class ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem:
             field_dict["substation_name"] = substation_name
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
+        if technical_resource is not UNSET:
+            field_dict["technical_resource"] = technical_resource
 
         return field_dict
 
@@ -64,6 +75,9 @@ class ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
             ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
+        )
+        from ..models.service_providing_group_power_per_substation_response_substations_item_technical_resource import (
+            ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource,
         )
 
         d = dict(src_dict)
@@ -97,10 +111,22 @@ class ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem:
                 )
             )
 
+        _technical_resource = d.pop("technical_resource", UNSET)
+        technical_resource: ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource | Unset
+        if isinstance(_technical_resource, Unset):
+            technical_resource = UNSET
+        else:
+            technical_resource = (
+                ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource.from_dict(
+                    _technical_resource
+                )
+            )
+
         service_providing_group_power_per_substation_response_substations_item = cls(
             substation_business_id=substation_business_id,
             substation_name=substation_name,
             controllable_unit=controllable_unit,
+            technical_resource=technical_resource,
         )
 
         service_providing_group_power_per_substation_response_substations_item.additional_properties = d

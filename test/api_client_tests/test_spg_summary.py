@@ -1,10 +1,12 @@
 # type: ignore[union-attr]
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -19,6 +21,7 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     Technology,
+    ErrorMessage,
 )
 from flex.api.service_providing_group import (
     create_service_providing_group,
@@ -30,7 +33,10 @@ from flex.api.service_providing_group_summary import (
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -48,9 +54,9 @@ def sts():
 
 # RLS: SPGSU-COM001
 def test_service_providing_group_summary_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
 
     for client in [client_fiso, client_sp, client_so]:
         spgs = list_service_providing_group.sync(client=client)
@@ -62,12 +68,12 @@ def test_service_providing_group_summary_common(sts):
 
 
 def test_service_providing_group_summary_aggregation(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # create an SPG with no memberships and check the summary exists with zeros
@@ -180,6 +186,18 @@ def test_service_providing_group_summary_aggregation(sts):
         ),
     )
     assert isinstance(tr5, TechnicalResourceResponse)
+
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
     cusp1 = create_controllable_unit_service_provider.sync(
         client=client_fiso,

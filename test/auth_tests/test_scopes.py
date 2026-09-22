@@ -8,7 +8,7 @@ import jwt
 
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
     AuthenticatedClient,
     API_VERSION,
 )
@@ -60,10 +60,14 @@ def jwt_keys():
 def data(request, jwt_keys):
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST))
-    client_other_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.COMMON))
+    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST))
+    client_other_ent = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.COMMON)
+    )
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
@@ -430,8 +434,10 @@ def test_scopes_embedding(jwt_keys):
 
     sts = SecurityTokenService()
 
-    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST))
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
@@ -516,7 +522,7 @@ def test_scopes_embedding(jwt_keys):
 
 def test_scopes_grid_read_grid_required():
     sts = SecurityTokenService()
-    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST))
+    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST))
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 

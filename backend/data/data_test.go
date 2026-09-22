@@ -1,12 +1,11 @@
 package data //nolint:testpackage
 
 import (
-	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"testing"
-	"time"
 )
+
+const andKey = "and"
 
 func TestIsValidDatetime(t *testing.T) {
 	t.Parallel()
@@ -46,53 +45,6 @@ func TestIsValidDatetime(t *testing.T) {
 	}
 }
 
-func TestBlockBeforeDate(t *testing.T) {
-	t.Parallel()
-
-	passthrough := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
-	})
-
-	testCases := []struct {
-		name           string
-		blockBefore    *time.Time
-		expectedStatus int
-	}{
-		{
-			name:           "nil blockBefore passes through",
-			blockBefore:    nil,
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name:           "date in the past passes through",
-			blockBefore:    new(time.Now().Add(-24 * time.Hour)),
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name:           "date in the future blocks",
-			blockBefore:    new(time.Now().Add(24 * time.Hour)),
-			expectedStatus: http.StatusForbidden,
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-
-			handler := blockBeforeDate(tc.blockBefore, "SPPA-VAL002", "Service provider product applications", passthrough)
-			req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/service_provider_product_application", nil)
-			rec := httptest.NewRecorder()
-
-			handler.ServeHTTP(rec, req)
-
-			if rec.Code != tc.expectedStatus {
-				t.Errorf("status = %d, want %d", rec.Code, tc.expectedStatus)
-			}
-		})
-	}
-}
-
 // assertQueryValues checks that got contains exactly the key/value pairs in want.
 func assertQueryValues(t *testing.T, got, want url.Values) {
 	t.Helper()
@@ -126,8 +78,15 @@ func assertQueryValues(t *testing.T, got, want url.Values) {
 }
 
 //nolint:funlen
-func TestValidAtQueryRewrite(t *testing.T) {
+func TestTimeRangeQueryRewrite(t *testing.T) {
 	t.Parallel()
+
+	// generic param/column names, distinct from any real resource fields, to
+	// keep this test focused on the rewrite mechanism rather than valid_at/as_of semantics
+	const (
+		paramName, fromCol, toCol = "ts_at", "ts_from", "ts_to"
+		utcTimestamp              = "2024-01-15T10:30:00Z"
+	)
 
 	testCases := []struct {
 		name          string
@@ -136,97 +95,99 @@ func TestValidAtQueryRewrite(t *testing.T) {
 		expectedError bool
 	}{
 		{
-			name:          "no valid_at parameter",
+			name:          "no " + paramName + " parameter",
 			input:         url.Values{"status": {"eq.active"}},
 			expected:      url.Values{"status": {"eq.active"}},
 			expectedError: false,
 		},
 		{
-			name:  "valid_at RFC 3339 with offset rewrites to valid_from and or",
-			input: url.Values{"valid_at": {"2024-01-15T10:30:00+01:00"}},
+			name:  paramName + " RFC 3339 with offset rewrites to a single and-filter",
+			input: url.Values{paramName: {"2024-01-15T10:30:00+01:00"}},
 			expected: url.Values{
-				"valid_from": {"lte.2024-01-15T10:30:00+01:00"},
-				"or":         {"(valid_to.gt.2024-01-15T10:30:00+01:00,valid_to.is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15T10:30:00+01:00,or(" + toCol + ".gt.2024-01-15T10:30:00+01:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:  "valid_at RFC 3339 with milliseconds rewrites to valid_from and or",
-			input: url.Values{"valid_at": {"2024-01-15T10:30:00.123+00:00"}},
+			name:  paramName + " RFC 3339 with milliseconds rewrites to a single and-filter",
+			input: url.Values{paramName: {"2024-01-15T10:30:00.123+00:00"}},
 			expected: url.Values{
-				"valid_from": {"lte.2024-01-15T10:30:00.123+00:00"},
-				"or":         {"(valid_to.gt.2024-01-15T10:30:00.123+00:00,valid_to.is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15T10:30:00.123+00:00,or(" + toCol + ".gt.2024-01-15T10:30:00.123+00:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:  "valid_at extended format with UTC abbreviation rewrites to valid_from and or",
-			input: url.Values{"valid_at": {"2024-01-15 10:30:00 UTC"}},
+			name:  paramName + " extended format with UTC abbreviation rewrites to a single and-filter",
+			input: url.Values{paramName: {"2024-01-15 10:30:00 UTC"}},
 			expected: url.Values{
-				"valid_from": {"lte.2024-01-15 10:30:00 UTC"},
-				"or":         {"(valid_to.gt.2024-01-15 10:30:00 UTC,valid_to.is.null)"},
+				andKey: {"(" + fromCol + ".lte.2024-01-15 10:30:00 UTC,or(" + toCol + ".gt.2024-01-15 10:30:00 UTC," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:          "valid_at with empty value clears existing valid_from and or",
-			input:         url.Values{"valid_at": {""}, "valid_from": {"lte.2023-01-01T00:00Z"}, "or": {"(valid_to.gt.2023-01-01T00:00Z,valid_to.is.null)"}},
-			expected:      url.Values{"valid_at": {""}},
-			expectedError: false,
-		},
-		{
-			name:  "prefixed valid_at rewrites prefixed keys",
-			input: url.Values{"some_table.valid_at": {"2024-06-01T12:00:00+00:00"}},
-			expected: url.Values{
-				"some_table.valid_from": {"lte.2024-06-01T12:00:00+00:00"},
-				"some_table.or":         {"(valid_to.gt.2024-06-01T12:00:00+00:00,valid_to.is.null)"},
-			},
-			expectedError: false,
-		},
-		{
-			name: "valid_at replaces pre-existing valid_from and or",
+			name: paramName + " with empty value leaves query unchanged",
 			input: url.Values{
-				"valid_at":   {"2024-03-10T08:00:00Z"},
-				"valid_from": {"lte.2020-01-01T00:00Z"},
-				"or":         {"(valid_to.gt.2020-01-01T00:00Z,valid_to.is.null)"},
+				paramName: {""},
+				andKey:    {"(some_other_filter)"},
 			},
 			expected: url.Values{
-				"valid_from": {"lte.2024-03-10T08:00:00Z"},
-				"or":         {"(valid_to.gt.2024-03-10T08:00:00Z,valid_to.is.null)"},
+				paramName: {""},
+				andKey:    {"(some_other_filter)"},
 			},
 			expectedError: false,
 		},
 		{
-			name:  "unrelated parameters are preserved alongside valid_at rewrite",
-			input: url.Values{"valid_at": {"2024-01-15T10:30:00Z"}, "status": {"eq.active"}},
+			name:  "prefixed " + paramName + " rewrites prefixed keys",
+			input: url.Values{"some_table." + paramName: {"2024-06-01T12:00:00+00:00"}},
 			expected: url.Values{
-				"valid_from": {"lte.2024-01-15T10:30:00Z"},
-				"or":         {"(valid_to.gt.2024-01-15T10:30:00Z,valid_to.is.null)"},
-				"status":     {"eq.active"},
+				"some_table.and": {"(" + fromCol + ".lte.2024-06-01T12:00:00+00:00,or(" + toCol + ".gt.2024-06-01T12:00:00+00:00," + toCol + ".is.null))"},
 			},
 			expectedError: false,
 		},
 		{
-			name:          "valid_at with date-only is invalid",
-			input:         url.Values{"valid_at": {"2024-01-15"}},
+			name: paramName + " adds to pre-existing and-filter",
+			input: url.Values{
+				paramName: {"2024-03-10T08:00:00Z"},
+				andKey:    {"(some_old_filter)"},
+			},
+			expected: url.Values{
+				andKey: {
+					"(some_old_filter)",
+					"(" + fromCol + ".lte.2024-03-10T08:00:00Z,or(" + toCol + ".gt.2024-03-10T08:00:00Z," + toCol + ".is.null))",
+				},
+			},
+			expectedError: false,
+		},
+		{
+			name:  "unrelated parameters are preserved alongside " + paramName + " rewrite",
+			input: url.Values{paramName: {utcTimestamp}, "status": {"eq.active"}},
+			expected: url.Values{
+				andKey:   {"(" + fromCol + ".lte." + utcTimestamp + ",or(" + toCol + ".gt." + utcTimestamp + "," + toCol + ".is.null))"},
+				"status": {"eq.active"},
+			},
+			expectedError: false,
+		},
+		{
+			name:          paramName + " with date-only is invalid",
+			input:         url.Values{paramName: {"2024-01-15"}},
 			expected:      nil,
 			expectedError: true,
 		},
 		{
-			name:          "valid_at with arbitrary string is invalid",
-			input:         url.Values{"valid_at": {"not-a-date"}},
+			name:          paramName + " with arbitrary string is invalid",
+			input:         url.Values{paramName: {"not-a-date"}},
 			expected:      nil,
 			expectedError: true,
 		},
 		{
-			name:          "valid_at with datetime but no timezone is invalid",
-			input:         url.Values{"valid_at": {"2024-01-15T10:30:00"}},
+			name:          paramName + " with datetime but no timezone is invalid",
+			input:         url.Values{paramName: {"2024-01-15T10:30:00"}},
 			expected:      nil,
 			expectedError: true,
 		},
 		{
-			name:          "prefixed valid_at with invalid format returns error",
-			input:         url.Values{"some_table.valid_at": {"2024-06-01"}},
+			name:          "prefixed " + paramName + " with invalid format returns error",
+			input:         url.Values{"some_table." + paramName: {"2024-06-01"}},
 			expected:      nil,
 			expectedError: true,
 		},
@@ -235,7 +196,7 @@ func TestValidAtQueryRewrite(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			err := validAtQueryRewrite(tc.input)
+			err := timeRangeQueryRewrite(tc.input, paramName, fromCol, toCol)
 			if tc.expectedError {
 				if err == nil {
 					t.Errorf("expected error but got none; input=%v", tc.input)
@@ -250,4 +211,36 @@ func TestValidAtQueryRewrite(t *testing.T) {
 			assertQueryValues(t, tc.input, tc.expected)
 		})
 	}
+}
+
+// TestValidAtQueryRewrite checks that validAtQueryRewrite wires "valid_at" to the
+// "valid_from"/"valid_to" columns; the rewrite mechanism itself is covered by
+// TestTimeRangeQueryRewrite.
+func TestValidAtQueryRewrite(t *testing.T) {
+	t.Parallel()
+
+	input := url.Values{"valid_at": {"2024-01-15T10:30:00Z"}}
+	if err := validAtQueryRewrite(input); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	assertQueryValues(t, input, url.Values{
+		andKey: {"(valid_from.lte.2024-01-15T10:30:00Z,or(valid_to.gt.2024-01-15T10:30:00Z,valid_to.is.null))"},
+	})
+}
+
+// TestAsOfQueryRewrite checks that asOfQueryRewrite wires "as_of" to the
+// "recorded_at"/"replaced_at" columns; the rewrite mechanism itself is covered by
+// TestTimeRangeQueryRewrite.
+func TestAsOfQueryRewrite(t *testing.T) {
+	t.Parallel()
+
+	input := url.Values{"as_of": {"2024-01-15T10:30:00Z"}}
+	if err := asOfQueryRewrite(input); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	assertQueryValues(t, input, url.Values{
+		andKey: {"(recorded_at.lte.2024-01-15T10:30:00Z,or(replaced_at.gt.2024-01-15T10:30:00Z,replaced_at.is.null))"},
+	})
 }

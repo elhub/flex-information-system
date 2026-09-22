@@ -1,11 +1,13 @@
 from security_token_service import (
     SecurityTokenService,
-    TestEntity,
+    TestEntityClient,
     AuthenticatedClient,
 )
 from flex.models import (
     ControllableUnitResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
@@ -27,6 +29,7 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import (
     create_technical_resource,
@@ -58,12 +61,14 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
 
-    client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
+    client_sp = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
     # Create new controllable unit and spg to play with
@@ -90,6 +95,15 @@ def data():
     )
     assert isinstance(tr, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     # NB: the AP there is linked to Test SO in the test data
 
     spg = create_service_providing_group.sync(
@@ -111,9 +125,9 @@ def data():
 def test_cusp_spgm_consistency_not_ok(data):
     (sts, cu_id, spg_id, eu_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create a contract
@@ -163,8 +177,8 @@ def test_cusp_spgm_consistency_not_ok(data):
 def test_spgm_val003_flexible_power_exceeded(data):
     (sts, _, spg_id, eu_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create a CU where flexible power (11 kW) > 100% of TR sum (10 kW)
@@ -190,6 +204,15 @@ def test_spgm_val003_flexible_power_exceeded(data):
         ),
     )
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
@@ -214,11 +237,65 @@ def test_spgm_val003_flexible_power_exceeded(data):
     assert isinstance(spgm, ErrorMessage)
 
 
+# SPGM-VAL004
+def test_spgm_val004_cu_must_be_active(data):
+    (sts, _, spg_id, eu_id) = data
+
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="VAL004 CU",
+            accounting_point_id=1002,
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_active_power=3.5,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="VAL004 CU TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+
+    cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="VAL004-CONTRACT",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    # SPGM-VAL004: a CU must be active before it can be added to an SPG
+    spgm = create_service_providing_group_membership.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_providing_group_id=spg_id,
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(spgm, ErrorMessage)
+
+
 # RLS: SPGM-SP002
 def test_spgm_sp002(data):
     (sts, cu_id, spg_id, eu_id) = data
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
 
     # try before the CU-SP link
     spgm = create_service_providing_group_membership.sync(
@@ -233,7 +310,7 @@ def test_spgm_sp002(data):
     # should fail
     assert isinstance(spgm, ErrorMessage)
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create a contract
@@ -268,7 +345,7 @@ def test_spgm_sp002(data):
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     # try to update as another SP
-    client_sp2 = sts.get_client(TestEntity.COMMON, "SP")
+    client_sp2 = sts.get_client(TestEntityClient.COMMON, "SP")
     u = update_service_providing_group_membership.sync(
         client=client_sp2,
         id=cast(int, spgm.id),
@@ -292,9 +369,9 @@ def test_spgm_sp002(data):
 def test_spgm(data):
     (sts, cu_id, spg_id, eu_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create a contract
@@ -425,10 +502,10 @@ def test_spgm(data):
 
 def test_spgm_so(data):
     (sts, cu_id, spg_id, eu_id) = data
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
     # add a contract between CU and SP, add CU to the SPG
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -463,7 +540,7 @@ def test_spgm_so(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     # RLS: SPGM-SO001
@@ -529,7 +606,7 @@ def test_rla_absence(data):
 
     for role in roles_without_rla:
         spgms = list_service_providing_group_membership.sync(
-            client=sts.get_client(TestEntity.TEST, role),
+            client=sts.get_client(TestEntityClient.TEST, role),
         )
         assert isinstance(spgms, list)
         assert len(spgms) == 0

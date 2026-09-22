@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { FunctionField } from "react-admin";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
   DateField,
@@ -8,32 +7,21 @@ import {
   ReferenceField,
   TextField,
 } from "../../components/EDS-ra/fields";
-import { TextInput } from "../../components/EDS-ra/inputs";
-import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
-import { ListServiceProvidingGroupProductApplicationHistoryData } from "../../generated-client";
-import { getFields } from "../../zod";
 import {
   zParty,
   zServiceProvidingGroupProductApplication,
   zServiceProvidingGroupProductApplicationHistory,
 } from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
+import { FunctionField } from "react-admin";
+import { useTranslateField } from "../../intl/intl";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
-  const params = useParams();
-  const filter: ListServiceProvidingGroupProductApplicationHistoryData["query"] =
-    {
-      service_providing_group_id: params.service_providing_group_id,
-    };
+  const { service_providing_group_product_application_id } = useParams();
+  const t = useTranslateField();
 
-  const filters = [
-    <TextInput
-      key="service_providing_group_product_application_id"
-      type="number"
-      source="service_providing_group_product_application_id"
-    />,
-  ];
   const spgpaFields = getFields(zServiceProvidingGroupProductApplication.shape);
-  // Since history is an intersection of spgpa and a few other fields, we need to get the fields for the right side of the intersection.
   const historyFields = getFields(
     zServiceProvidingGroupProductApplicationHistory.shape,
   );
@@ -42,24 +30,30 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   return (
     <List
       resource="service_providing_group_product_application_history"
-      filter={filter}
-      filters={filters}
+      filter={{ service_providing_group_product_application_id }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
       <Datagrid rowClick={false}>
         <TextField {...spgpaFields.id} />
+        <TextField
+          {...historyFields.service_providing_group_product_application_id}
+        />
         <ReferenceField
           {...spgpaFields.procuring_system_operator_id}
           reference="party"
+          label={t(
+            "service_providing_group_product_application_history.procuring_system_operator_id",
+          )}
+          hideLabel={true}
         >
           <TextField {...procuringSystemOperatorIdFields.name} />
         </ReferenceField>
         <FunctionField
           source="product_type_ids"
           sortable={false}
-          render={(record) => (
+          render={(record: { product_type_ids: number[] }) => (
             <ProductTypeArrayField productTypeIds={record.product_type_ids} />
           )}
         />

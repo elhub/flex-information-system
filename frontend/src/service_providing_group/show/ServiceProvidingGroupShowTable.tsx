@@ -1,22 +1,24 @@
-import { BodyText, Button, Link, Loader } from "../../components/ui";
+import { BodyText, Button, Loader, Search } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
+import { useRemoveMembershipFromShow } from "./useSpgShowViewModel";
 import {
-  useSpgShowViewModel,
-  type SpgMembershipRow,
-  useRemoveMembershipFromShow,
-} from "./useSpgShowViewModel";
+  type SpgMemberControllableUnitRow,
+  useSpgMemberControllableUnits,
+} from "../shared/useSpgMemberControllableUnits";
+import { usePermissions, useTranslate } from "ra-core";
+import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
-import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { PowerRatio } from "../../components/PowerRatio";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
 import { ControllableUnitRegulationDirection } from "../../generated-client";
+import { formatScaled, KILO, Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
+  powerScale: Scale;
 };
 
 const DeleteButton = ({
@@ -53,11 +55,29 @@ const DeleteButton = ({
   );
 };
 
-export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
-  const { data, isLoading, error } = useSpgShowViewModel(spgId);
+export const ServiceProvidingGroupShowTable = ({
+  spgId,
+  powerScale,
+}: Props) => {
+  const { data, isLoading, error } = useSpgMemberControllableUnits(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredCUs = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    let result = data?.rows;
+    if (q) {
+      result = result?.filter(
+        (cu) =>
+          cu.name?.toLowerCase().includes(q) ||
+          (cu.id != null && String(cu.id).includes(q)) ||
+          (cu.mpid != null && String(cu.mpid).includes(q)),
+      );
+    }
+    return result;
+  }, [searchQuery, data?.rows]);
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
@@ -66,6 +86,9 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     "service_providing_group_membership",
     "delete",
   );
+
+  const formatPower = (value: unknown) =>
+    formatScaled(Number(value), "W", KILO, powerScale);
 
   if (isLoading) {
     return <Loader />;
@@ -93,7 +116,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     );
   }
 
-  const columns: Column<SpgMembershipRow>[] = [
+  const columns: Column<SpgMemberControllableUnitRow>[] = [
     {
       key: "name",
       header: t("controllable_unit.name"),
@@ -111,21 +134,48 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("technical_resource.maximum_active_power"),
       render: (value) => (
         <div className="text-right">
-          {value != null ? `${String(value)} kW` : "—"}
+          {value != null ? formatPower(value) : "—"}
         </div>
       ),
     },
     {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
+      render: (value) => <div className="text-right">{formatPower(value)}</div>,
+    },
+    {
+      key: "location",
+      header: translate("text.technical_resources_show_label"),
       render: (value, row) => (
-        <div className="flex items-center justify-end gap-3">
-          <span>{String(value)} kW</span>
-          <PowerRatio
-            flexiblePower={row.maximum_active_power}
-            ratedPower={row.rated_power}
-          />
-        </div>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            navigate(`/accounting_point/${row.accountingPointId}/show`)
+          }
+        >
+          {translate("text.technical_resources_show_location")}
+        </Button>
+      ),
+    },
+    {
+      key: "mpid",
+      header: t("controllable_unit.accounting_point_id"),
+      render: (value) =>
+        value !== "-" ? (
+          <BodyText
+            size={"small"}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            {String(value)}
+          </BodyText>
+        ) : (
+          <>{value}</>
+        ),
+    },
+    {
+      key: "brpName",
+      header: t(
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
       ),
     },
     {
@@ -138,33 +188,22 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
           />
         ) : null,
     },
-    {
-      key: "mpid",
-      header: t("controllable_unit.accounting_point_id"),
-      render: (value, row) =>
-        value !== "-" ? (
-          <Link
-            as={RouterLink}
-            to={`/accounting_point/${row.accountingPointId}/show`}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            {String(value)}
-          </Link>
-        ) : (
-          <>{value}</>
-        ),
-    },
-    {
-      key: "brpName",
-      header: t(
-        "accounting_point_balance_responsible_party.balance_responsible_party_id",
-      ),
-    },
   ];
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
+        <div className="flex-1 mr-4">
+          <Search
+            label={translate("text.spg_show_table_search_label")}
+            hideLabel
+            clearButtonLabel={translate("text.spg_show_table_search_clear")}
+            placeholder={translate("text.spg_show_table_search_placeholder")}
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
+            onClear={() => setSearchQuery("")}
+          />
+        </div>
         {canManageMembers && (
           <Button
             as={RouterLink}
@@ -179,7 +218,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       <SimpleTable
         rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
         size="small"
-        data={data?.rows ?? []}
+        data={filteredCUs ?? []}
         columns={columns}
         className="w-full"
         action={

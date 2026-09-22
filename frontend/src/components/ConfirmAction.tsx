@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { useNotify } from "ra-core";
+import { useNotify, useTranslate } from "ra-core";
 import { Button, Modal } from "./ui";
 
 type BaseOptions = {
@@ -8,6 +8,7 @@ type BaseOptions = {
   content?: ReactNode;
   confirmText?: string;
   cancelText?: string;
+  confirmDisabled?: boolean;
 };
 
 type MutationOptions = BaseOptions & {
@@ -34,12 +35,14 @@ callback) depending on whether the confirmed action is async or not.
 export const useConfirmAction = ({
   title,
   content,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
+  confirmDisabled = false,
   ...rest
 }: UseConfirmActionOptions) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
+  const translate = useTranslate();
 
   const { mutate, isPending } = useMutation(
     "onConfirmMutation" in rest && rest.onConfirmMutation
@@ -80,10 +83,10 @@ export const useConfirmAction = ({
           disabled={isPending}
           onClick={() => setOpen(false)}
         >
-          {cancelText}
+          {cancelText ?? translate("text.form_toolbar.cancel")}
         </Button>
-        <Button disabled={isPending} onClick={confirm}>
-          {confirmText}
+        <Button disabled={isPending || confirmDisabled} onClick={confirm}>
+          {confirmText ?? translate("text.form_toolbar.confirm")}
         </Button>
       </Modal.Footer>
     </Modal>

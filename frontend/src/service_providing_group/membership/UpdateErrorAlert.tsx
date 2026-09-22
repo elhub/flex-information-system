@@ -8,7 +8,7 @@ const isApiErrorMessage = (error: unknown): error is ErrorMessage =>
   "message" in error &&
   typeof (error as Record<string, unknown>).message === "string";
 
-export type FailedCU = { cuId: number; error: unknown };
+type FailedCU = { cuId: number; error: unknown };
 
 type Props = {
   failedCUs: FailedCU[];

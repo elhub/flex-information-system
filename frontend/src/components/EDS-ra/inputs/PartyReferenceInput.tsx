@@ -12,6 +12,7 @@ type PartyReferenceInputProps = Omit<
   BaseInputProps & {
     noTypeFilter?: boolean;
     optionText?: (record: RaRecord) => string;
+    inputClassName?: string;
   };
 
 // Specialized version of AutocompleteReferenceInput for party fields

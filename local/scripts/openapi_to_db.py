@@ -14,6 +14,7 @@ risk of making a copy-paste mistake.
 DB_DIR = "./db"
 output_file_backend_schema = "backend/api.sql"
 output_file_embedding_api = f"{DB_DIR}/api/embedding/embedding.sql"
+output_file_embedding_api_history = f"{DB_DIR}/api/embedding/embedding_history.sql"
 output_file_embedding_grid = f"{DB_DIR}/grid/embedding/embedding.sql"
 # ------------------------------------------------------------------------------
 
@@ -251,9 +252,15 @@ if __name__ == "__main__":
         # generate embedding functions for all FK relationships with cardinality
         api_rels = relationship.collect(resources, module="api")
         j2.template(
-            {"module": "api", "rels": api_rels},
+            {"module": "api", "rels": [rel for rel in api_rels if not rel.history]},
             "embedding.j2.sql",
             output_file_embedding_api,
+        )
+
+        j2.template(
+            {"module": "api", "rels": [rel for rel in api_rels if rel.history]},
+            "embedding.j2.sql",
+            output_file_embedding_api_history,
         )
 
         grid_rels = relationship.collect(resources, module="grid")

@@ -82,6 +82,10 @@ For example, on `controllable_unit`:
 | `service_provider` | `controllable_unit_service_provider` |
 | `suspension`       | `controllable_unit_suspension`       |
 
+History resources can be embedded as well. Whenever a resource has a history
+endpoint, every embedding relation it is involved in also exists in a history
+version.
+
 ### Scope enforcement
 
 The proxy checks that the caller's OAuth2 token contains a `read:data:<resource>`
