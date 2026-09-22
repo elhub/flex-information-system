@@ -335,12 +335,14 @@ def test_cusp_sp(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
+    # they cannot delete contracts
+
     d = delete_controllable_unit_service_provider.sync(
         client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
     )
-    assert not (isinstance(d, ErrorMessage))
+    assert isinstance(d, ErrorMessage)
 
-    # but they cannot touch the old records
+    # they cannot touch the old records
 
     cusp = cusps_sp[0]
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)

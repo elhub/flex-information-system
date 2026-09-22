@@ -95,7 +95,7 @@ No policies.
 
 | Policy key | Policy                                                  | Status |
 |------------|---------------------------------------------------------|--------|
-| CUSP-SP001 | Create, read, update and delete CUSP where they are SP. | DONE   |
+| CUSP-SP001 | Create, read and update CUSP where they are SP. | DONE   |
 | CUSP-SP002 | Read history on CUSP that they can read.                | DONE   |
 
 #### Third Party
