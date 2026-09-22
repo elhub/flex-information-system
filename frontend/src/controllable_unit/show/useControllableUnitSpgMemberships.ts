@@ -41,7 +41,7 @@ const fetchSpgMembershipHistoryForControllableUnit = async (
     ListServiceProvidingGroupMembershipHistoryData["query"]
   > = {
     controllable_unit_id: "eq." + controllableUnitId,
-    order: "service_providing_group_membership_id.asc,recorded_at.desc",
+    order: "service_providing_group_id.asc,recorded_at.desc",
     embed: "service_providing_group_history!",
     "service_providing_group_history.as_of": new Date().toISOString(),
   };
