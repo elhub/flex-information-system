@@ -1,5 +1,5 @@
 [tools]
-"python" = "3.14.6"
+"python" = "3.14.7"
 "go" = "1.27.1"
 "uv" = "0.12.15"
 "golangci-lint" = "2.13.2"
@@ -19,5 +19,4 @@ spectral = "6.16.2"
 python.uv_venv_auto = "create|source"
 
 [env]
-GOEXPERIMENT = 'jsonv2'
 REQUESTS_CA_BUNDLE = '/etc/ssl/certs/ca-certificates.crt'
