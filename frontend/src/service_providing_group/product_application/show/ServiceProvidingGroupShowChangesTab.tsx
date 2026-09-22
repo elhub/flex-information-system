@@ -2,12 +2,14 @@ import { useMemo, useState } from "react";
 import { format, formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useTranslate, type TranslateFunction } from "ra-core";
+import { useTranslateField } from "../../../intl/intl";
 import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
 import {
   BodyText,
   DateTimePicker,
   FormItem,
   FormItemLabel,
+  Heading,
   Loader,
   Switch,
   Table,
@@ -23,7 +25,6 @@ import { cn, formatDurationHM, toDateTimeString } from "../../../util";
 type Props = {
   spgId: number;
   spgpa: ServiceProvidingGroupProductApplication;
-  spgCreatedAt: string | undefined;
   powerScale: Scale;
 };
 
@@ -73,32 +74,36 @@ const findMilestoneLabel = (
 // any that are unset) plus "now", each labeled and formatted for display.
 const useChangesTimelineMarks = (
   spgpa: ServiceProvidingGroupProductApplication,
-  spgCreatedAt: string | undefined,
   now: string,
 ): TimelineMark[] => {
   const translate = useTranslate();
+  const translateField = useTranslateField();
 
   return useMemo(() => {
     const milestones: { at: string | undefined; label: string }[] = [
       {
-        at: spgCreatedAt,
-        label: translate("text.spg_changes_milestone_group_created"),
-      },
-      {
         at: spgpa.created_at,
-        label: translate("text.spg_changes_milestone_created"),
+        label: translateField(
+          "service_providing_group_product_application.created_at",
+        ),
       },
       {
         at: spgpa.prequalified_at,
-        label: translate("text.spg_changes_milestone_prequalified"),
+        label: translateField(
+          "service_providing_group_product_application.prequalified_at",
+        ),
       },
       {
         at: spgpa.verified_at,
-        label: translate("text.spg_changes_milestone_verified"),
+        label: translateField(
+          "service_providing_group_product_application.verified_at",
+        ),
       },
       {
         at: spgpa.complete_at,
-        label: translate("text.spg_changes_milestone_completed"),
+        label: translateField(
+          "service_providing_group_product_application.complete_at",
+        ),
       },
       { at: now, label: translate("text.spg_changes_milestone_now") },
     ];
@@ -118,7 +123,7 @@ const useChangesTimelineMarks = (
         in: tz(OSLO_TIMEZONE),
       }),
     }));
-  }, [spgpa, spgCreatedAt, now, translate]);
+  }, [spgpa, now, translate, translateField]);
 };
 
 const rowClassName = (status: SpgChangeRow["status"]) => {
@@ -232,12 +237,11 @@ const ChangesDateField = ({
 export const ServiceProvidingGroupShowChangesTab = ({
   spgId,
   spgpa,
-  spgCreatedAt,
   powerScale,
 }: Props) => {
   const translate = useTranslate();
   const [now] = useState(() => new Date().toISOString());
-  const marks = useChangesTimelineMarks(spgpa, spgCreatedAt, now);
+  const marks = useChangesTimelineMarks(spgpa, now);
 
   const [from, setFrom] = useState<string | undefined>(() => {
     const secondToLast = marks[marks.length - 2];
@@ -266,58 +270,72 @@ export const ServiceProvidingGroupShowChangesTab = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {marks.length > 0 && (
-        <TimelineRangeSlider
-          marks={marks}
-          value={[
-            from ? new Date(from).getTime() : marks[0].value,
-            to ? new Date(to).getTime() : marks[marks.length - 1].value,
-          ]}
-          onValueChange={handleRangeChange}
-          formatValueForA11y={(value) =>
-            toDateTimeString(new Date(value).toISOString())
-          }
-        />
-      )}
+      <div className="flex flex-col gap-4 rounded-lg border border-semantic-border bg-semantic-background p-6">
+        <div className="flex flex-col gap-2">
+          <Heading level={3} size="small">
+            {translate("text.spg_changes_period_heading")}
+          </Heading>
 
-      <div className="flex items-end gap-4">
-        <ChangesDateField
-          id="spg-changes-from"
-          label={translate("text.spg_changes_from_label")}
-          milestoneLabel={findMilestoneLabel(from, marks, translate)}
-          selected={parseValue(from)}
-          maxDate={parseValue(to)}
-          onChange={(date) => setFrom(formatValue(date))}
-        />
-
-        {from && to && (
-          <BodyText
-            size="small"
-            className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
-          >
-            {formatDurationHM(from, to)}
+          <BodyText size="small" className="text-semantic-text-subtle">
+            {translate("text.spg_changes_period_hint")}
           </BodyText>
-        )}
+        </div>
 
-        <ChangesDateField
-          id="spg-changes-to"
-          label={translate("text.spg_changes_to_label")}
-          milestoneLabel={findMilestoneLabel(to, marks, translate)}
-          selected={parseValue(to)}
-          minDate={parseValue(from)}
-          onChange={(date) => setTo(formatValue(date))}
-        />
-
-        <FormItem id="show-unchanged" className="mb-2">
-          <FormItemLabel>
-            {translate("text.spg_changes_show_unchanged")}
-          </FormItemLabel>
-          <Switch
-            checked={showUnchanged}
-            onChange={(e) => setShowUnchanged(e.target.checked)}
+        <div className="flex items-end gap-4">
+          <ChangesDateField
+            id="spg-changes-from"
+            label={translate("text.spg_changes_from_label")}
+            milestoneLabel={findMilestoneLabel(from, marks, translate)}
+            selected={parseValue(from)}
+            maxDate={parseValue(to)}
+            onChange={(date) => setFrom(formatValue(date))}
           />
-        </FormItem>
+
+          {from && to && (
+            <BodyText
+              size="small"
+              className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
+            >
+              {formatDurationHM(from, to)}
+            </BodyText>
+          )}
+
+          <ChangesDateField
+            id="spg-changes-to"
+            label={translate("text.spg_changes_to_label")}
+            milestoneLabel={findMilestoneLabel(to, marks, translate)}
+            selected={parseValue(to)}
+            minDate={parseValue(from)}
+            onChange={(date) => setTo(formatValue(date))}
+          />
+        </div>
+
+        {marks.length > 0 && (
+          <TimelineRangeSlider
+            marks={marks}
+            value={[
+              from ? new Date(from).getTime() : marks[0].value,
+              to ? new Date(to).getTime() : marks[marks.length - 1].value,
+            ]}
+            onValueChange={handleRangeChange}
+            fromLabel={translate("text.spg_changes_from_label")}
+            toLabel={translate("text.spg_changes_to_label")}
+            formatValueForA11y={(value) =>
+              toDateTimeString(new Date(value).toISOString())
+            }
+          />
+        )}
       </div>
+
+      <FormItem id="show-unchanged">
+        <FormItemLabel>
+          {translate("text.spg_changes_show_unchanged")}
+        </FormItemLabel>
+        <Switch
+          checked={showUnchanged}
+          onChange={(e) => setShowUnchanged(e.target.checked)}
+        />
+      </FormItem>
 
       {showLoader && (
         <div className="flex w-full justify-center py-8">

@@ -293,12 +293,7 @@ export const TimelineRangeSlider = ({
   const startDrag = useHandleDrag(trackRef, marksRef, applyChange);
 
   return (
-    <div
-      className={cn(
-        "w-full rounded-lg border border-semantic-border bg-semantic-background px-6 pt-8 pb-4",
-        className,
-      )}
-    >
+    <div className={cn("w-full pt-2", className)}>
       <div ref={trackRef} className="relative h-8 w-full touch-none">
         {/* Base track */}
         <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 rounded-full bg-semantic-border" />

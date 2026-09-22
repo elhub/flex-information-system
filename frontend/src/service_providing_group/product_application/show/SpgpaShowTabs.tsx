@@ -78,7 +78,6 @@ export const SpgpaShowTabs = ({
             key={`${spgId}-${spgpa.id}-${spgpa.created_at}`}
             spgId={spgId}
             spgpa={spgpa}
-            spgCreatedAt={spg?.created_at}
             powerScale={powerScale}
           />
         </Tabs.Panel>
