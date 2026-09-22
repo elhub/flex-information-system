@@ -49,6 +49,11 @@ import FormContainer from "./formContainer";
 import { Datepicker } from "./datepicker/Datepicker";
 import { DateTimePicker } from "./datetimepicker/DateTimePicker";
 import { Stepper } from "./stepper/Stepper";
+import {
+  TimelineRangeSlider,
+  mergeTimelineMarks,
+  type TimelineMark,
+} from "./timelineRangeSlider/TimelineRangeSlider";
 
 export {
   Alert,
@@ -100,4 +105,7 @@ export {
   VerticalSpace,
   FormContainer,
   Textarea,
+  TimelineRangeSlider,
+  mergeTimelineMarks,
+  type TimelineMark,
 };

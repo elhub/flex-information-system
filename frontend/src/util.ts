@@ -98,6 +98,26 @@ export const toDateTimeString = (
   );
 };
 
+// Format the elapsed time between two ISO date-time strings as e.g.
+// "+1d 12h 4m" (days omitted for durations under 24h, e.g. "+3h 20m").
+export const formatDurationHM = (
+  from: string | undefined,
+  to: string | undefined,
+): string | undefined => {
+  if (!from || !to) return undefined;
+  const totalMinutes = Math.round(
+    (new Date(to).getTime() - new Date(from).getTime()) / 60_000,
+  );
+  const sign = totalMinutes < 0 ? "-" : "+";
+  const absMinutes = Math.abs(totalMinutes);
+  const totalHours = Math.floor(absMinutes / 60);
+  const minutes = absMinutes % 60;
+  const days = Math.floor(totalHours / 24);
+  const hours = totalHours % 24;
+  const daysPart = days > 0 ? `${days}d ` : "";
+  return `${sign}${daysPart}${hours}h ${minutes}m`;
+};
+
 // Find the currently valid record from a list of time-ranged records
 export const findCurrentlyValidRecord = <
   T extends { valid_from?: string; valid_to?: string },

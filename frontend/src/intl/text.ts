@@ -70,7 +70,15 @@ export type TextKey =
   | "spg_show_table_search_label"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
-  | "spg_changes_since_label"
+  | "spg_changes_from_label"
+  | "spg_changes_to_label"
+  | "spg_changes_custom_milestone"
+  | "spg_changes_milestone_group_created"
+  | "spg_changes_milestone_created"
+  | "spg_changes_milestone_prequalified"
+  | "spg_changes_milestone_verified"
+  | "spg_changes_milestone_completed"
+  | "spg_changes_milestone_now"
   | "spg_changes_column_id"
   | "spg_changes_column_name"
   | "spg_changes_column_map"
@@ -284,14 +292,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filter by name, id or accounting point id",
     spgpa_hide_prequalified: "Hide prequalified",
-    spg_changes_since_label: "Compare changes since",
+    spg_changes_from_label: "Compare changes since",
+    spg_changes_to_label: "Target date",
+    spg_changes_custom_milestone: "Custom",
+    spg_changes_milestone_group_created: "Group created at",
+    spg_changes_milestone_created: "Created at",
+    spg_changes_milestone_prequalified: "Prequalified at",
+    spg_changes_milestone_verified: "Verified at",
+    spg_changes_milestone_completed: "Completed at",
+    spg_changes_milestone_now: "Current (Now)",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
     spg_changes_column_map: "Flexible power",
     spg_changes_column_first_change: "First change",
     spg_changes_column_last_change: "Last change",
     spg_changes_column_status: "Change",
-    spg_changes_empty: "No controllable units to compare.",
+    spg_changes_empty: "No changes found for the selected time range.",
     spg_changes_error: "Failed to load changes.",
     spg_changes_show_unchanged: "Show unchanged controllable units",
     spg_changes_status_added: "Added",
@@ -486,14 +502,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id eller avregningspunkt",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
-    spg_changes_since_label: "Sammenlign endringer siden",
+    spg_changes_from_label: "Sammenlign endringer siden",
+    spg_changes_to_label: "Måldato",
+    spg_changes_custom_milestone: "Egendefinert",
+    spg_changes_milestone_group_created: "Gruppe opprettet",
+    spg_changes_milestone_created: "Opprettet",
+    spg_changes_milestone_prequalified: "Prekvalifisert",
+    spg_changes_milestone_verified: "Verifisert",
+    spg_changes_milestone_completed: "Fullført",
+    spg_changes_milestone_now: "Nå",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",
     spg_changes_column_map: "Fleksibel effekt",
     spg_changes_column_first_change: "Første endring",
     spg_changes_column_last_change: "Siste endring",
     spg_changes_column_status: "Endring",
-    spg_changes_empty: "Ingen kontrollerbare enheter å sammenligne.",
+    spg_changes_empty: "Ingen endringer funnet for det valgte tidsrommet.",
     spg_changes_error: "Kunne ikke laste endringer.",
     spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
     spg_changes_status_added: "Lagt til",

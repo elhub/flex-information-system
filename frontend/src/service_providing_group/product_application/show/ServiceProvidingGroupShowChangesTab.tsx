@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { formatISO, parseISO } from "date-fns";
+import { useMemo, useState } from "react";
+import { format, formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
-import { useTranslate } from "ra-core";
+import { useTranslate, type TranslateFunction } from "ra-core";
 import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
 import {
   BodyText,
@@ -11,18 +11,115 @@ import {
   Loader,
   Switch,
   Table,
+  TimelineRangeSlider,
+  mergeTimelineMarks,
+  type TimelineMark,
 } from "../../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
+import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
-import { cn, toDateTimeString } from "../../../util";
+import { cn, formatDurationHM, toDateTimeString } from "../../../util";
 
 type Props = {
   spgId: number;
+  spgpa: ServiceProvidingGroupProductApplication;
   spgCreatedAt: string | undefined;
   powerScale: Scale;
 };
 
 const OSLO_TIMEZONE = "Europe/Oslo";
+
+const parseValue = (value: string | undefined) =>
+  value ? parseISO(value, { in: tz(OSLO_TIMEZONE) }) : undefined;
+
+const formatValue = (date: Date | null) =>
+  date
+    ? formatISO(date, { representation: "complete", in: tz(OSLO_TIMEZONE) })
+    : undefined;
+
+const formatPower = (value: number | undefined, powerScale: Scale) =>
+  value != null ? formatScaled(value, "W", KILO, powerScale) : undefined;
+
+const getStatusLabel = (
+  status: SpgChangeRow["status"],
+  translate: TranslateFunction,
+): string => {
+  switch (status) {
+    case "added":
+      return translate("text.spg_changes_status_added");
+    case "removed":
+      return translate("text.spg_changes_status_removed");
+    case "changed":
+      return translate("text.spg_changes_status_changed");
+    default:
+      return translate("text.spg_changes_status_unchanged");
+  }
+};
+
+// Label of the mark matching `value` exactly, or a "Custom" label if the
+// value was set via a manual date/time input rather than picked from the
+// timeline (e.g. by dragging the slider to a milestone).
+const findMilestoneLabel = (
+  value: string | undefined,
+  marks: TimelineMark[],
+  translate: TranslateFunction,
+): string | undefined => {
+  if (!value) return undefined;
+  const match = marks.find((mark) => mark.value === new Date(value).getTime());
+  return match?.label ?? translate("text.spg_changes_custom_milestone");
+};
+
+// Builds the timeline marks for the SPGPA's lifecycle milestones (skipping
+// any that are unset) plus "now", each labeled and formatted for display.
+const useChangesTimelineMarks = (
+  spgpa: ServiceProvidingGroupProductApplication,
+  spgCreatedAt: string | undefined,
+  now: string,
+): TimelineMark[] => {
+  const translate = useTranslate();
+
+  return useMemo(() => {
+    const milestones: { at: string | undefined; label: string }[] = [
+      {
+        at: spgCreatedAt,
+        label: translate("text.spg_changes_milestone_group_created"),
+      },
+      {
+        at: spgpa.created_at,
+        label: translate("text.spg_changes_milestone_created"),
+      },
+      {
+        at: spgpa.prequalified_at,
+        label: translate("text.spg_changes_milestone_prequalified"),
+      },
+      {
+        at: spgpa.verified_at,
+        label: translate("text.spg_changes_milestone_verified"),
+      },
+      {
+        at: spgpa.complete_at,
+        label: translate("text.spg_changes_milestone_completed"),
+      },
+      { at: now, label: translate("text.spg_changes_milestone_now") },
+    ];
+
+    const mappedMilestones = milestones
+      .filter((milestone): milestone is { at: string; label: string } =>
+        Boolean(milestone.at),
+      )
+      .map((milestone) => ({
+        value: new Date(milestone.at).getTime(),
+        label: milestone.label,
+      }));
+
+    return mergeTimelineMarks(mappedMilestones).map((mark) => ({
+      ...mark,
+      sublabel: format(new Date(mark.value), "dd.MM.yyyy HH:mm", {
+        in: tz(OSLO_TIMEZONE),
+      }),
+    }));
+  }, [spgpa, spgCreatedAt, now, translate]);
+};
 
 const rowClassName = (status: SpgChangeRow["status"]) => {
   switch (status) {
@@ -33,7 +130,7 @@ const rowClassName = (status: SpgChangeRow["status"]) => {
     case "changed":
       return "bg-semantic-background-information";
     default:
-      return "bg-white";
+      return "bg-semantic-background";
   }
 };
 
@@ -95,86 +192,149 @@ const DiffText = ({
   return <span>{newValue ?? oldValue}</span>;
 };
 
+// A labeled date/time field for the "from"/"to" endpoints of the changes
+// range, showing which milestone (if any) the current value matches.
+const ChangesDateField = ({
+  id,
+  label,
+  milestoneLabel,
+  selected,
+  minDate,
+  maxDate,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  milestoneLabel: string | undefined;
+  selected: Date | undefined;
+  minDate?: Date;
+  maxDate?: Date;
+  onChange: (date: Date | null) => void;
+}) => (
+  <FormItem id={id} size="large">
+    <FormItemLabel htmlFor={id}>{label}</FormItemLabel>
+    <span className="text-xs font-semibold text-semantic-text-success">
+      {milestoneLabel}
+    </span>
+    <DateTimePicker
+      id={id}
+      selected={selected}
+      minDate={minDate}
+      maxDate={maxDate}
+      onChange={onChange}
+      size="large"
+      navigateButtons={false}
+      fixedPopperPosition
+    />
+  </FormItem>
+);
+
 export const ServiceProvidingGroupShowChangesTab = ({
   spgId,
+  spgpa,
   spgCreatedAt,
   powerScale,
 }: Props) => {
   const translate = useTranslate();
-  const [asOf, setAsOf] = useState<string | undefined>(spgCreatedAt);
+  const [now] = useState(() => new Date().toISOString());
+  const marks = useChangesTimelineMarks(spgpa, spgCreatedAt, now);
+
+  const [from, setFrom] = useState<string | undefined>(() => {
+    const secondToLast = marks[marks.length - 2];
+    return secondToLast
+      ? new Date(secondToLast.value).toISOString()
+      : spgpa.created_at;
+  });
+  const [to, setTo] = useState<string | undefined>(now);
   const [showUnchanged, setShowUnchanged] = useState(false);
 
-  const { data: rows, isLoading, error } = useSpgChangesViewModel(spgId, asOf);
+  const {
+    data: rows,
+    isLoading,
+    isFetching,
+    error,
+  } = useSpgChangesViewModel(spgId, from, to);
   const visibleRows = rows?.filter(
     (row) => showUnchanged || row.status !== "unchanged",
   );
+  const showLoader = isLoading || isFetching;
 
-  const formatPower = (value: number | undefined) =>
-    value != null ? formatScaled(value, "W", KILO, powerScale) : undefined;
-
-  const statusLabel = (status: SpgChangeRow["status"]) => {
-    switch (status) {
-      case "added":
-        return translate("text.spg_changes_status_added");
-      case "removed":
-        return translate("text.spg_changes_status_removed");
-      case "changed":
-        return translate("text.spg_changes_status_changed");
-      default:
-        return translate("text.spg_changes_status_unchanged");
-    }
+  const handleRangeChange = ([newFrom, newTo]: [number, number]) => {
+    setFrom(new Date(newFrom).toISOString());
+    setTo(new Date(newTo).toISOString());
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1 w-fit">
-        <BodyText size="small" id="spg-changes-since-label">
-          {translate("text.spg_changes_since_label")}
-        </BodyText>
-        <DateTimePicker
-          id="spg-changes-since"
-          ariaLabelledBy="spg-changes-since-label"
-          selected={
-            asOf ? parseISO(asOf, { in: tz(OSLO_TIMEZONE) }) : undefined
+      {marks.length > 0 && (
+        <TimelineRangeSlider
+          marks={marks}
+          value={[
+            from ? new Date(from).getTime() : marks[0].value,
+            to ? new Date(to).getTime() : marks[marks.length - 1].value,
+          ]}
+          onValueChange={handleRangeChange}
+          formatValueForA11y={(value) =>
+            toDateTimeString(new Date(value).toISOString())
           }
-          onChange={(date) =>
-            setAsOf(
-              date
-                ? formatISO(date, {
-                    representation: "complete",
-                    in: tz(OSLO_TIMEZONE),
-                  })
-                : undefined,
-            )
-          }
-          size="large"
-          navigateButtons={false}
-          fixedPopperPosition
         />
+      )}
+
+      <div className="flex items-end gap-4">
+        <ChangesDateField
+          id="spg-changes-from"
+          label={translate("text.spg_changes_from_label")}
+          milestoneLabel={findMilestoneLabel(from, marks, translate)}
+          selected={parseValue(from)}
+          maxDate={parseValue(to)}
+          onChange={(date) => setFrom(formatValue(date))}
+        />
+
+        {from && to && (
+          <BodyText
+            size="small"
+            className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
+          >
+            {formatDurationHM(from, to)}
+          </BodyText>
+        )}
+
+        <ChangesDateField
+          id="spg-changes-to"
+          label={translate("text.spg_changes_to_label")}
+          milestoneLabel={findMilestoneLabel(to, marks, translate)}
+          selected={parseValue(to)}
+          minDate={parseValue(from)}
+          onChange={(date) => setTo(formatValue(date))}
+        />
+
+        <FormItem id="show-unchanged" className="mb-2">
+          <FormItemLabel>
+            {translate("text.spg_changes_show_unchanged")}
+          </FormItemLabel>
+          <Switch
+            checked={showUnchanged}
+            onChange={(e) => setShowUnchanged(e.target.checked)}
+          />
+        </FormItem>
       </div>
 
-      <FormItem id="show-unchanged">
-        <FormItemLabel>
-          {translate("text.spg_changes_show_unchanged")}
-        </FormItemLabel>
-        <Switch
-          checked={showUnchanged}
-          onChange={(e) => setShowUnchanged(e.target.checked)}
-        />
-      </FormItem>
-
-      {isLoading && <Loader />}
+      {showLoader && (
+        <div className="flex w-full justify-center py-8">
+          <Loader size="medium" />
+        </div>
+      )}
       {error ? (
         <BodyText className="text-semantic-background-action-danger">
           {translate("text.spg_changes_error")}
         </BodyText>
       ) : null}
 
-      {!isLoading && !error && (!visibleRows || visibleRows.length === 0) && (
+      {!showLoader && !error && (!visibleRows || visibleRows.length === 0) && (
         <BodyText>{translate("text.spg_changes_empty")}</BodyText>
       )}
 
-      {!isLoading && !error && visibleRows && visibleRows.length > 0 && (
+      {!showLoader && !error && visibleRows && visibleRows.length > 0 && (
         <Table size="small" className="w-full">
           <Table.Header>
             <Table.Row>
@@ -211,7 +371,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
                   <Table.DataCell>
                     <StatusMarker
                       status={row.status}
-                      label={statusLabel(row.status)}
+                      label={getStatusLabel(row.status, translate)}
                     />
                   </Table.DataCell>
                   <Table.DataCell>{row.id}</Table.DataCell>
@@ -224,8 +384,14 @@ export const ServiceProvidingGroupShowChangesTab = ({
                   </Table.DataCell>
                   <Table.DataCell>
                     <DiffText
-                      oldValue={formatPower(oldCu?.maximum_active_power)}
-                      newValue={formatPower(newCu?.maximum_active_power)}
+                      oldValue={formatPower(
+                        oldCu?.maximum_active_power,
+                        powerScale,
+                      )}
+                      newValue={formatPower(
+                        newCu?.maximum_active_power,
+                        powerScale,
+                      )}
                       status={row.status}
                     />
                   </Table.DataCell>

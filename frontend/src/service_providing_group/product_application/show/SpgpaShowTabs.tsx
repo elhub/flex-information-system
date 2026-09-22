@@ -75,8 +75,9 @@ export const SpgpaShowTabs = ({
       {showChanges && (
         <Tabs.Panel value="changes">
           <ServiceProvidingGroupShowChangesTab
-            key={`${spgId}-${spg?.created_at ?? "unknown"}`}
+            key={`${spgId}-${spgpa.id}-${spgpa.created_at}`}
             spgId={spgId}
+            spgpa={spgpa}
             spgCreatedAt={spg?.created_at}
             powerScale={powerScale}
           />
