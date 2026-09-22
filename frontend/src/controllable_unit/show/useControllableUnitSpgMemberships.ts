@@ -10,7 +10,9 @@ type WithNestedFilter<Query> = Query & Record<string, string>;
 
 const SPG_MEMBERSHIP_EMBED = "service_providing_group";
 
-const fetchSpgMembershipsForControllableUnit = (controllableUnitId: number) =>
+export const fetchSpgMembershipsForControllableUnit = (
+  controllableUnitId: number,
+) =>
   listServiceProvidingGroupMembership({
     query: {
       controllable_unit_id: "eq." + controllableUnitId,
@@ -34,7 +36,7 @@ export const useControllableUnitSpgMemberships = (
     enabled: !!controllableUnitId && (options?.enabled ?? true),
   });
 
-const fetchSpgMembershipHistoryForControllableUnit = async (
+export const fetchSpgMembershipHistoryForControllableUnit = async (
   controllableUnitId: number,
 ) => {
   const query: WithNestedFilter<
