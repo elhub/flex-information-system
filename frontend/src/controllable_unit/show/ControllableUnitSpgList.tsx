@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { usePermissions, RecordContextProvider, useTranslate } from "ra-core";
+import {
+  usePermissions,
+  RecordContextProvider,
+  ResourceContextProvider,
+  useTranslate,
+} from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { FormItem, FormItemLabel, Loader, Switch } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
@@ -22,13 +27,13 @@ type Props = {
 
 type SpgMembershipRow = {
   id: number;
-  spgId: number;
-  membershipId: number;
+  spg_id: number;
+  membership_id: number;
   name: string;
   status: string;
-  validFrom: string;
-  validTo: string;
-  historyId?: number;
+  valid_from: string;
+  valid_to: string;
+  history_id?: number;
   recorded_at?: string;
   recorded_by?: number;
   replaced_at?: string;
@@ -70,13 +75,13 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
   const rows: SpgMembershipRow[] = showHistory
     ? (history ?? []).map((membership) => ({
         id: membership.id,
-        spgId: membership.service_providing_group_id,
-        membershipId: membership.service_providing_group_membership_id,
+        spg_id: membership.service_providing_group_id,
+        membership_id: membership.service_providing_group_membership_id,
         name: membership.service_providing_group?.name ?? "-",
         status: membership.service_providing_group?.status ?? "",
-        validFrom: toDateString(membership.valid_from),
-        validTo: toDateString(membership.valid_to),
-        historyId: membership.id,
+        valid_from: toDateString(membership.valid_from),
+        valid_to: toDateString(membership.valid_to),
+        history_id: membership.id,
         recorded_at: membership.recorded_at,
         recorded_by: membership.recorded_by,
         replaced_at: membership.replaced_at,
@@ -84,17 +89,17 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
       }))
     : (memberships ?? []).map((membership) => ({
         id: membership.id,
-        spgId: membership.service_providing_group_id,
-        membershipId: membership.id,
+        spg_id: membership.service_providing_group_id,
+        membership_id: membership.id,
         name: membership.service_providing_group?.name ?? "-",
         status: membership.service_providing_group?.status ?? "",
-        validFrom: toDateString(membership.valid_from),
-        validTo: toDateString(membership.valid_to),
+        valid_from: toDateString(membership.valid_from),
+        valid_to: toDateString(membership.valid_to),
       }));
 
   const columns: Column<SpgMembershipRow>[] = [
     {
-      key: "spgId",
+      key: "spg_id",
       header: translate("text.cu_spg_id"),
     },
     {
@@ -115,11 +120,11 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
       ),
     },
     {
-      key: "validFrom",
+      key: "valid_from",
       header: translate("field.service_providing_group_membership.valid_from"),
     },
     {
-      key: "validTo",
+      key: "valid_to",
       header: translate("field.service_providing_group_membership.valid_to"),
     },
   ];
@@ -127,7 +132,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
   if (showHistory) {
     columns.push(
       {
-        key: "historyId",
+        key: "history_id",
         header: translate("text.table.header.history_id"),
       },
       {
@@ -136,9 +141,11 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
           "field.service_providing_group_membership_history.recorded_at",
         ),
         render: (value, row) => (
-          <RecordContextProvider value={row}>
-            <DateField source="recorded_at" showTime />
-          </RecordContextProvider>
+          <ResourceContextProvider value="service_providing_group_membership_history">
+            <RecordContextProvider value={row}>
+              <DateField source="recorded_at" showTime />
+            </RecordContextProvider>
+          </ResourceContextProvider>
         ),
       },
       {
@@ -147,9 +154,11 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
           "field.service_providing_group_membership_history.recorded_by",
         ),
         render: (value, row) => (
-          <RecordContextProvider value={row}>
-            <IdentityField source="recorded_by" />
-          </RecordContextProvider>
+          <ResourceContextProvider value="service_providing_group_membership_history">
+            <RecordContextProvider value={row}>
+              <IdentityField source="recorded_by" />
+            </RecordContextProvider>
+          </ResourceContextProvider>
         ),
       },
       {
@@ -158,9 +167,11 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
           "field.service_providing_group_membership_history.replaced_at",
         ),
         render: (value, row) => (
-          <RecordContextProvider value={row}>
-            <DateField source="replaced_at" showTime />
-          </RecordContextProvider>
+          <ResourceContextProvider value="service_providing_group_membership_history">
+            <RecordContextProvider value={row}>
+              <DateField source="replaced_at" showTime />
+            </RecordContextProvider>
+          </ResourceContextProvider>
         ),
       },
       {
@@ -169,9 +180,11 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
           "field.service_providing_group_membership_history.replaced_by",
         ),
         render: (value, row) => (
-          <RecordContextProvider value={row}>
-            <IdentityField source="replaced_by" />
-          </RecordContextProvider>
+          <ResourceContextProvider value="service_providing_group_membership_history">
+            <RecordContextProvider value={row}>
+              <IdentityField source="replaced_by" />
+            </RecordContextProvider>
+          </ResourceContextProvider>
         ),
       },
     );
@@ -190,7 +203,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
       )}
       <SimpleTable
         rowClick={(row) =>
-          navigate(`/service_providing_group/${row.spgId}/show`)
+          navigate(`/service_providing_group/${row.spg_id}/show`)
         }
         size="small"
         data={rows}
