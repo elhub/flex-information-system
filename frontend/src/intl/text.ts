@@ -8,9 +8,14 @@ export type TextKey =
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
   | "tab.changes"
+  | "tab.service_providing_groups"
   | "tab.spg_info"
   | "tab.comments"
   | "tab.attachments"
+  | "cu_spg_show_history"
+  | "table.header.history_id"
+  | "cu_spg_id"
+  | "cu_spg_empty"
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
@@ -170,9 +175,14 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
+    "tab.service_providing_groups": "Service providing groups",
     "tab.spg_info": "SPG info",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
+    cu_spg_show_history: "Show history",
+    "table.header.history_id": "History ID",
+    cu_spg_id: "SPG ID",
+    cu_spg_empty: "No service providing groups for this controllable unit.",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
@@ -375,9 +385,15 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
+    "tab.service_providing_groups": "Fleksibilitetsgrupper",
     "tab.spg_info": "SPG-info",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
+    cu_spg_show_history: "Vis historikk",
+    "table.header.history_id": "Historikk-ID",
+    cu_spg_id: "SPG-ID",
+    cu_spg_empty:
+      "Ingen fleksibilitetsgrupper for denne kontrollerbare enheten.",
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",

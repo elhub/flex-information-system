@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useTranslate } from "ra-core";
@@ -101,6 +102,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
   powerScale,
 }: Props) => {
   const translate = useTranslate();
+  const navigate = useNavigate();
   const [asOf, setAsOf] = useState<string | undefined>(spgCreatedAt);
   const [showUnchanged, setShowUnchanged] = useState(false);
 
@@ -206,7 +208,8 @@ export const ServiceProvidingGroupShowChangesTab = ({
               return (
                 <Table.Row
                   key={row.id}
-                  className={cn(rowClassName(row.status))}
+                  className={cn(rowClassName(row.status), "cursor-pointer")}
+                  onClick={() => navigate(`/controllable_unit/${row.id}/show`)}
                 >
                   <Table.DataCell>
                     <StatusMarker
