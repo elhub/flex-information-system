@@ -722,7 +722,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
-			ErrorDescription: "could not get entity identity in token exchange handler",
+ErrorDescription: "could not get entity identity in assume handler",
 		})
 		w.Write(body)
 
