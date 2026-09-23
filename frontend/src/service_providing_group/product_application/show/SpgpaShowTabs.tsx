@@ -40,15 +40,15 @@ export const SpgpaShowTabs = ({
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
         />
+        {showChanges && (
+          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
+        )}
         <Tabs.Tab label={translate("text.tab.comments")} value="comments" />
         {attachmentsEnabled && (
           <Tabs.Tab
             label={translate("text.tab.attachments")}
             value="attachments"
           />
-        )}
-        {showChanges && (
-          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
         )}
       </Tabs.List>
       <Tabs.Panel value="spg_info">
@@ -61,6 +61,18 @@ export const SpgpaShowTabs = ({
           powerScale={powerScale}
         />
       </Tabs.Panel>
+
+      {showChanges && (
+        <Tabs.Panel value="changes">
+          <ServiceProvidingGroupShowChangesTab
+            key={`${spgId}-${spgpa.id}-${spgpa.created_at}`}
+            spgId={spgId}
+            spgpa={spgpa}
+            powerScale={powerScale}
+          />
+        </Tabs.Panel>
+      )}
+
       <Tabs.Panel value="comments">
         <SpgpaCommentFeed spgpaId={spgpaId} />
       </Tabs.Panel>
@@ -69,16 +81,6 @@ export const SpgpaShowTabs = ({
           <AttachmentList
             resource="service_providing_group_product_application"
             parentId={spgpaId}
-          />
-        </Tabs.Panel>
-      )}
-      {showChanges && (
-        <Tabs.Panel value="changes">
-          <ServiceProvidingGroupShowChangesTab
-            key={`${spgId}-${spgpa.id}-${spgpa.created_at}`}
-            spgId={spgId}
-            spgpa={spgpa}
-            powerScale={powerScale}
           />
         </Tabs.Panel>
       )}

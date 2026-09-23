@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { format, formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
+import { useNavigate } from "react-router-dom";
 import { useTranslate, type TranslateFunction } from "ra-core";
 import { useTranslateField } from "../../../intl/intl";
 import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
@@ -305,6 +306,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
   powerScale,
 }: Props) => {
   const translate = useTranslate();
+  const navigate = useNavigate();
   const [now] = useState(() => new Date().toISOString());
   const marks = useChangesTimelineMarks(spgpa, now);
 
@@ -505,7 +507,14 @@ export const ServiceProvidingGroupShowChangesTab = ({
                 return (
                   <Table.Row
                     key={row.id}
-                    className={cn(rowClassName(row.status))}
+                    className={cn(rowClassName(row.status), "cursor-pointer")}
+                    onClick={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (target.closest("button, a, .eds-modal__overlay")) {
+                        return;
+                      }
+                      navigate(`/controllable_unit/${row.id}/show`);
+                    }}
                   >
                     <Table.DataCell>
                       <StatusMarker
