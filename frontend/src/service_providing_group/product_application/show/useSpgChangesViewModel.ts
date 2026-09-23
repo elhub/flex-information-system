@@ -3,8 +3,8 @@ import {
   listServiceProvidingGroupMembershipHistory,
   ListServiceProvidingGroupMembershipHistoryData,
   ServiceProvidingGroupMembershipHistory,
-} from "../../generated-client";
-import { throwOnError } from "../../util";
+} from "../../../generated-client";
+import { throwOnError } from "../../../util";
 
 export type SpgChangeStatus = "added" | "removed" | "changed" | "unchanged";
 
@@ -63,11 +63,12 @@ const fetchSnapshot = async (
 
 export const fetchSpgChanges = async (
   spgId: number,
-  asOf: string,
+  from: string,
+  to: string,
 ): Promise<SpgChangeRow[]> => {
   const [oldSnapshot, currentSnapshot] = await Promise.all([
-    fetchSnapshot(spgId, asOf),
-    fetchSnapshot(spgId, new Date().toISOString()),
+    fetchSnapshot(spgId, from),
+    fetchSnapshot(spgId, to),
   ]);
 
   const allIds = new Set([...oldSnapshot.keys(), ...currentSnapshot.keys()]);
@@ -134,16 +135,18 @@ export const fetchSpgChanges = async (
 
 export const spgChangesQueryKey = (
   spgId: number | undefined,
-  asOf: string | undefined,
-) => ["serviceProvidingGroupChanges", spgId, asOf];
+  from: string | undefined,
+  to: string | undefined,
+) => ["serviceProvidingGroupChanges", spgId, from, to];
 
 export const useSpgChangesViewModel = (
   spgId: number | undefined,
-  asOf: string | undefined,
+  from: string | undefined,
+  to: string | undefined,
 ) => {
   return useQuery({
-    queryKey: spgChangesQueryKey(spgId, asOf),
-    queryFn: () => fetchSpgChanges(spgId ?? 0, asOf ?? ""),
-    enabled: !!spgId && !!asOf,
+    queryKey: spgChangesQueryKey(spgId, from, to),
+    queryFn: () => fetchSpgChanges(spgId ?? 0, from ?? "", to ?? ""),
+    enabled: !!spgId && !!from && !!to,
   });
 };

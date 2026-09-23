@@ -3,7 +3,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useConfirmAction } from "../../../components/ConfirmAction";
-import { BodyText, Button, DateTimePicker } from "../../../components/ui";
+import {
+  BodyText,
+  Button,
+  DateTimePicker,
+  FormItem,
+  FormItemLabel,
+} from "../../../components/ui";
 import {
   ServiceProvidingGroupProductApplication,
   ServiceProvidingGroupProductApplicationUpdateRequest,
@@ -77,12 +83,14 @@ const CompleteAtInput = ({
   value: string | null;
   onChange: (value: string | null) => void;
 }) => (
-  <div className="flex flex-col gap-1">
+  <FormItem id="spgpa-complete-at" size="large">
     <BodyText>
       In order to confirm this action, you must provide the time from which the
       application can be considered complete.
     </BodyText>
+    <FormItemLabel htmlFor="spgpa-complete-at">Complete at</FormItemLabel>
     <DateTimePicker
+      id="spgpa-complete-at"
       selected={value ? parseISO(value, { in: tz("Europe/Oslo") }) : undefined}
       onChange={(date) =>
         onChange(
@@ -98,7 +106,7 @@ const CompleteAtInput = ({
       navigateButtons={false}
       fixedPopperPosition
     />
-  </div>
+  </FormItem>
 );
 
 const ActionButton = ({
