@@ -1217,7 +1217,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.ramping_description":
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
-    "service_providing_group_product_application.complete_at": "Completed at",
+    "service_providing_group_product_application.complete_at": "Complete at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",

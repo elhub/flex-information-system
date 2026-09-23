@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
+  IdentityField,
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
@@ -58,6 +59,7 @@ export const ControllableUnitHistoryList = () => {
         <TextField {...fields.name} weight="semibold" />
         <DateField {...fields.start_date} />
         <RegulationDirectionField source={fields.regulation_direction.source} />
+        <TextField {...fields.maximum_active_power} unit="kW" />
         <IsSmallField source={fields.is_small.source} />
         <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <StatusBadgeField
@@ -65,8 +67,11 @@ export const ControllableUnitHistoryList = () => {
           enumKey="controllable_unit.status"
           variantMap={cuStatusVariantMap}
         />
+        <TextField {...fields.additional_information} />
         <DateField {...fields.recorded_at} showTime />
+        <IdentityField {...fields.recorded_by} />
         <DateField {...historyFields.replaced_at} showTime />
+        <IdentityField {...historyFields.replaced_by} />
       </Datagrid>
     </List>
   );
