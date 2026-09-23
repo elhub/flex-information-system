@@ -82,6 +82,7 @@ export type TextKey =
   | "spg_changes_period_hint"
   | "spg_changes_from_label"
   | "spg_changes_to_label"
+  | "spg_changes_since_label"
   | "spg_changes_custom_milestone"
   | "spg_changes_milestone_now"
   | "spg_changes_column_id"
@@ -295,7 +296,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Cannot add: controllable unit is not active.",
-    spg_manage_members_column_record_time: "Record time",
+    spg_manage_members_column_record_time: "Recorded at",
     spg_manage_members_column_record_time_tooltip:
       "When CU was added to the group",
     spg_create_additional_information_override_description:
