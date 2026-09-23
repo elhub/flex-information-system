@@ -21,7 +21,7 @@ import {
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
-import { cn, formatDurationHM, toDateTimeString } from "../../../util";
+import { cn, formatDurationDHM, toDateTimeString } from "../../../util";
 
 type Props = {
   spgId: number;
@@ -367,7 +367,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
                 size="small"
                 className="mb-2 rounded-full bg-semantic-background-success px-3 py-1 text-semantic-text-success"
               >
-                {formatDurationHM(from, to)}
+                {formatDurationDHM(from, to)}
               </BodyText>
             )}
 

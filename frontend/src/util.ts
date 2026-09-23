@@ -100,7 +100,7 @@ export const toDateTimeString = (
 
 // Format the elapsed time between two ISO date-time strings as e.g.
 // "+1d 12h 4m" (days omitted for durations under 24h, e.g. "+3h 20m").
-export const formatDurationHM = (
+export const formatDurationDHM = (
   from: string | undefined,
   to: string | undefined,
 ): string | undefined => {
