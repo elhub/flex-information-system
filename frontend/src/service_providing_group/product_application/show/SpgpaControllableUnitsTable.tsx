@@ -2,9 +2,12 @@ import {
   BodyText,
   FormItem,
   FormItemLabel,
+  Heading,
   Loader,
+  Panel,
   Search,
   Switch,
+  Tooltip,
 } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
@@ -23,6 +26,7 @@ import {
 } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import { toDateTimeString } from "../../../util";
+import { LabelValue } from "../../../components/LabelValue";
 
 type Props = {
   spgId: number;
@@ -63,6 +67,30 @@ export const SpgpaControllableUnitsTable = ({
   const formatPower = (value: unknown) =>
     formatScaled(Number(value), "W", KILO, powerScale);
 
+  const approvalSummary = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+    const approvedCus = data.rows.filter(
+      (cu) => cu.productApplicationPrequalifiedAt,
+    );
+    const unapprovedCus = data.rows.filter(
+      (cu) => !cu.productApplicationPrequalifiedAt,
+    );
+    return {
+      approvedCount: approvedCus.length,
+      unapprovedCount: unapprovedCus.length,
+      approvedPower: approvedCus.reduce(
+        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
+        0,
+      ),
+      unapprovedPower: unapprovedCus.reduce(
+        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
+        0,
+      ),
+    };
+  }, [data]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -83,7 +111,10 @@ export const SpgpaControllableUnitsTable = ({
     {
       key: "membershipRecordedAt",
       header: translate("text.spg_manage_members_column_record_time"),
-      render: (value) => <BodyText>{toDateTimeString(String(value))}</BodyText>,
+      headerTooltip: translate(
+        "text.spg_manage_members_column_record_time_tooltip",
+      ),
+      render: (value) => toDateTimeString(String(value)),
     },
 
     {
@@ -121,11 +152,13 @@ export const SpgpaControllableUnitsTable = ({
       header: translate("text.table.header.grid_prequalification"),
       render: (value) =>
         value ? (
-          <IconValidationCheck
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-success"
-            aria-hidden
-          />
+          <Tooltip content={value}>
+            <IconValidationCheck
+              style={{ width: 18, height: 18 }}
+              className="text-semantic-text-success"
+              aria-hidden
+            />
+          </Tooltip>
         ) : (
           <IconCross
             style={{ width: 18, height: 18 }}
@@ -139,11 +172,13 @@ export const SpgpaControllableUnitsTable = ({
       header: translate("text.table.header.product_application"),
       render: (value) =>
         value ? (
-          <IconValidationCheck
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-success"
-            aria-hidden
-          />
+          <Tooltip content={value}>
+            <IconValidationCheck
+              style={{ width: 18, height: 18 }}
+              className="text-semantic-text-success"
+              aria-hidden
+            />
+          </Tooltip>
         ) : (
           <IconCross
             style={{ width: 18, height: 18 }}
@@ -156,6 +191,31 @@ export const SpgpaControllableUnitsTable = ({
 
   return (
     <div className="flex flex-col gap-4">
+      {!!approvalSummary?.unapprovedCount && (
+        <Panel border className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4">
+          <Heading size="small">
+            {translate("text.spgpa_summary_heading")}
+          </Heading>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <LabelValue
+              label={translate("text.spgpa_summary_approved_flexible_power")}
+              value={approvalSummary.approvedPower}
+              unit="W"
+              storageScale={KILO}
+              displayScale={powerScale}
+            />
+            <LabelValue
+              label={translate(
+                "text.spgpa_summary_flexible_power_needing_approval",
+              )}
+              value={approvalSummary.unapprovedPower}
+              unit="W"
+              storageScale={KILO}
+              displayScale={powerScale}
+            />
+          </div>
+        </Panel>
+      )}
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-4">
           <div className="w-1/2">
