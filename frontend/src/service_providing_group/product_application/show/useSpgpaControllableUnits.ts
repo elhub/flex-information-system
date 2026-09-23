@@ -64,26 +64,32 @@ export const useSpgpaControllableUnits = (
 
   const rows: SpgpaControllableUnitRow[] | undefined =
     baseQuery.data && gridPrequalificationsQuery.data
-      ? baseQuery.data.rows.map((row) => {
-          const gridPrequalification = gridPrequalificationsQuery.data.find(
-            (gp) =>
-              gp.impacted_system_operator_id ===
-              row.accountingPointSystemOperatorId,
-          );
+      ? baseQuery.data.rows
+          .map((row) => {
+            const gridPrequalification = gridPrequalificationsQuery.data.find(
+              (gp) =>
+                gp.impacted_system_operator_id ===
+                row.accountingPointSystemOperatorId,
+            );
 
-          return {
-            ...row,
-            gridPrequalifiedAt: getGridPrequalifiedAt(
-              row.membershipRecordedAt,
-              gridPrequalification,
-            ),
-            productApplicationPrequalifiedAt:
-              getProductApplicationPrequalifiedAt(
+            return {
+              ...row,
+              gridPrequalifiedAt: getGridPrequalifiedAt(
                 row.membershipRecordedAt,
-                spgpa,
+                gridPrequalification,
               ),
-          };
-        })
+              productApplicationPrequalifiedAt:
+                getProductApplicationPrequalifiedAt(
+                  row.membershipRecordedAt,
+                  spgpa,
+                ),
+            };
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.membershipRecordedAt ?? 0).getTime() -
+              new Date(a.membershipRecordedAt ?? 0).getTime(),
+          )
       : undefined;
 
   return {

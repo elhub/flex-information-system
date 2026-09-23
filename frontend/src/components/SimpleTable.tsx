@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 import { BodyText, Table } from "./ui";
+import { Tooltip } from "../components/ui";
+import { IconInformationCircleOutlined } from "@elhub/ds-icons";
 
 export type ColumnOf<TList extends unknown[] | undefined> = Column<
   NonNullable<TList>[number]
@@ -8,6 +10,7 @@ export type ColumnOf<TList extends unknown[] | undefined> = Column<
 export type Column<T> = {
   key: keyof T;
   header: ReactNode;
+  headerTooltip?: string;
   render?: (value: T[keyof T], row: T) => ReactNode;
 };
 
@@ -78,7 +81,20 @@ export const SimpleTable = <T extends { id?: string | number }>({
           )}
           {columns.map((col) => (
             <Table.ColumnHeader key={String(col.key)} scope="col">
-              {col.header}
+              {col.headerTooltip ? (
+                <div className={"flex items-center gap-1"}>
+                  <BodyText size="small" weight="bold">
+                    {col.header}
+                  </BodyText>
+                  <Tooltip content={col.headerTooltip}>
+                    <span>
+                      <IconInformationCircleOutlined />
+                    </span>
+                  </Tooltip>
+                </div>
+              ) : (
+                <>{col.header}</>
+              )}
             </Table.ColumnHeader>
           ))}
           {action && (
