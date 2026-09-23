@@ -335,14 +335,7 @@ def test_cusp_sp(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    # they cannot delete contracts
-
-    d = delete_controllable_unit_service_provider.sync(
-        client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
-    )
-    assert isinstance(d, ErrorMessage)
-
-    # they cannot touch the old records
+    # also old records (2024)
 
     cusp = cusps_sp[0]
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
@@ -354,7 +347,14 @@ def test_cusp_sp(data):
             valid_to=midnight_n_days_diff(0),
         ),
     )
-    assert isinstance(u, ErrorMessage)
+    assert not (isinstance(u, ErrorMessage))
+
+    # they cannot delete contracts
+
+    d = delete_controllable_unit_service_provider.sync(
+        client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
+    )
+    assert isinstance(d, ErrorMessage)
 
 
 # RLS: CUSP-SO001
