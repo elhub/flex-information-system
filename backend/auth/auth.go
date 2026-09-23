@@ -722,7 +722,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
-ErrorDescription: "could not get entity identity in assume handler",
+			ErrorDescription: "could not get entity identity in assume handler",
 		})
 		w.Write(body)
 
@@ -784,10 +784,10 @@ ErrorDescription: "could not get entity identity in assume handler",
 		return
 	}
 
-	// assuming party is done, so we can "log in"
+	// assuming party is done, so we can "log in" with a new transaction
 	rd := &RequestDetails{role: role, externalID: eid, scope: scopes}
 	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
-
+	_ = tx.Commit(ctx)
 	tx, err = auth.db.Begin(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
