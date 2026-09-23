@@ -64,6 +64,9 @@ export type TextKey =
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
   | "spgpa_hide_prequalified"
+  | "spgpa_summary_heading"
+  | "spgpa_summary_approved_flexible_power"
+  | "spgpa_summary_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -108,6 +111,7 @@ export type TextKey =
   | "spg_manage_members_cu_ineligible_flexible_power"
   | "spg_manage_members_cu_ineligible_status"
   | "spg_manage_members_column_record_time"
+  | "spg_manage_members_column_record_time_tooltip"
   | "spg_create_additional_information_override_description"
   | "spg_create_additional_information_placeholder"
   | "user_dropdown_logout"
@@ -276,8 +280,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Cannot add: controllable unit is not active.",
-    spg_manage_members_column_record_time:
-      "Record time (when CU was added to the group)",
+    spg_manage_members_column_record_time: "Record time",
+    spg_manage_members_column_record_time_tooltip:
+      "When CU was added to the group",
     spg_create_additional_information_override_description:
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
@@ -287,6 +292,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filter by name, id or accounting point id",
     spgpa_hide_prequalified: "Hide prequalified",
+    spgpa_summary_heading: "Flexible power overview",
+    spgpa_summary_approved_flexible_power:
+      "Flexible power with approved status",
+    spgpa_summary_flexible_power_needing_approval:
+      "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
@@ -480,8 +490,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 100 % av merkeeffekt (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Kan ikke legge til: kontrollerbar enhet er ikke aktiv.",
-    spg_manage_members_column_record_time:
-      "Registreringstidspunkt (da den kontrollerbare enheten ble lagt til i gruppen)",
+    spg_manage_members_column_record_time: "Registreringstidspunkt",
+    spg_manage_members_column_record_time_tooltip:
+      "Tidspunktet den kontrollerbare enheten ble lagt til i gruppen",
     spg_create_additional_information_override_description:
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
@@ -491,6 +502,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id eller avregningspunkt",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
+    spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
+    spgpa_summary_approved_flexible_power:
+      "Fleksibel kapasitet som har status godkjent",
+    spgpa_summary_flexible_power_needing_approval:
+      "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",
