@@ -27,6 +27,9 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
+  const isFISOOrSO =
+    identity?.role === "flex_flexibility_information_system_operator" ||
+    identity?.role === "flex_system_operator";
   const translateEnum = useTranslateEnum();
 
   const [powerScale, setPowerScale] = useState<Scale>(KILO);
@@ -116,6 +119,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           spgpaId={spgpa.id}
           spgpa={spgpa}
           spg={spg.data}
+          showChanges={isFISOOrSO}
           powerScale={powerScale}
         />
       }

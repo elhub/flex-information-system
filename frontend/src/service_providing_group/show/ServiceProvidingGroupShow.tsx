@@ -95,10 +95,8 @@ export const ServiceProvidingGroupShow = () => {
       <ServiceProvidingGroupShowTabs
         spgId={spg.id}
         spgStatus={spg.status}
-        spgCreatedAt={spg.created_at}
         summary={spg.summary ?? undefined}
         showPowerPerSubstation={isFISOOrSO}
-        showChanges={isFISOOrSO}
         powerScale={powerScale}
       />
     </ShowPageLayout>
