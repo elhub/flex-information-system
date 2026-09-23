@@ -3,8 +3,9 @@ import { Link, Panel, Tabs } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
 import { ControllableUnitHistoryList } from "../ControllableUnitHistoryList";
-import { useGetIdentity, usePermissions, RecordContextProvider } from "ra-core";
+import { useGetIdentity, usePermissions, RecordContextProvider, useTranslate } from "ra-core";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { ControllableUnitSpgList } from "./ControllableUnitSpgList";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { ControllableUnitServiceProviderList } from "../service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
@@ -29,11 +30,18 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
     "read",
   );
   const [tab, setTab] = useTabSearchParam("technical_resources");
-
+  const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="Technical resources" value="technical_resources" />
+        <Tabs.Tab
+          label={translate("text.tab.technical_resources")}
+          value="technical_resources"
+        />
+        <Tabs.Tab
+          label={translate("text.tab.service_providing_groups")}
+          value="service_providing_groups"
+        />
         {canViewLocation && (
           <Tabs.Tab
             label="Accounting point location"
@@ -51,6 +59,9 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
         <RecordContextProvider value={{ id: cuId }}>
           <TechnicalResourceList />
         </RecordContextProvider>
+      </Tabs.Panel>
+      <Tabs.Panel value="service_providing_groups">
+        <ControllableUnitSpgList cuId={cuId} />
       </Tabs.Panel>
       {canViewLocation && (
         <Tabs.Panel value="accounting_point_location">
