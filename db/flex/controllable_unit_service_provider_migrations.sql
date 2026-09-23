@@ -59,7 +59,7 @@ ALTER TABLE flex.controllable_unit_service_provider
 ADD CONSTRAINT controllable_unit_service_provider_end_user_fkey
 FOREIGN KEY (
     end_user_id, end_user_party_type
-) REFERENCES flex.party (id, type) NOT VALID;
+) REFERENCES flex.party (id, type);
 
 ALTER TABLE flex.controllable_unit_service_provider
 ENABLE TRIGGER USER;
