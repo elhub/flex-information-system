@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Dropdown, Loader } from "../../../components/ui";
-import { Link as RouterLink } from "react-router-dom";
+import { Loader } from "../../../components/ui";
 import { ShowPageResourceLayout } from "../../../components/ShowPageResourceLayout";
-import { MoreActionsButton } from "../../../components/MoreActionsButton";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { SpgpaShowSummary } from "./SpgpaShowSummary";
@@ -57,8 +55,8 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ShowPageResourceLayout
-      resourceType={`Service providing group product application #${spgpa.id}`}
-      resourceName={spg.data ? spg.data.name : "Product application"}
+      secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
+      mainHeaderText={spg.data ? spg.data.name : "Product application"}
       status={<SpgpaStatusBadge status={spgpa.status} />}
       alerts={<SpgpaAlerts spgpa={spgpa} />}
       viewControls={
@@ -69,50 +67,35 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           onChange={setPowerScale}
         />
       }
-      utilityActions={
-        <Dropdown>
-          <MoreActionsButton />
-          <Dropdown.Menu arrow placement="bottom-start">
-            <Dropdown.Menu.GroupedList>
-              {canEdit && (
-                <Dropdown.Menu.GroupedList.Item
-                  as={RouterLink}
-                  to={`/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <IconPencil />
-                    Edit
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              )}
-              <Dropdown.Menu.GroupedList.Item
-                as={RouterLink}
-                to={`/service_providing_group_product_application/${spgpa.id}/print`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="flex items-center gap-2">
-                  <IconExternal />
-                  Print
-                </div>
-              </Dropdown.Menu.GroupedList.Item>
-            </Dropdown.Menu.GroupedList>
-            {canReadEvents && (
-              <>
-                <Dropdown.Menu.Divider />
-                <Dropdown.Menu.GroupedList>
-                  <Dropdown.Menu.GroupedList.Item
-                    as={RouterLink}
-                    to={`/event?filter=${eventsFilter}`}
-                  >
-                    Events
-                  </Dropdown.Menu.GroupedList.Item>
-                </Dropdown.Menu.GroupedList>
-              </>
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
-      }
+      utilityActions={[
+        {
+          label: "Actions",
+          actions: [
+            {
+              to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
+              title: "Edit",
+              icon: <IconPencil />,
+              shouldShow: canEdit,
+            },
+            {
+              to: `/service_providing_group_product_application/${spgpa.id}/print`,
+              title: "Print",
+              icon: <IconExternal />,
+              external: true,
+            },
+          ],
+        },
+        {
+          label: "Navigate to",
+          actions: [
+            {
+              to: `/event?filter=${eventsFilter}`,
+              title: "Events",
+              shouldShow: canReadEvents,
+            },
+          ],
+        },
+      ]}
       workflowActions={
         canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined
       }

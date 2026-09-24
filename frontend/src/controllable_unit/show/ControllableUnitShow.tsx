@@ -1,5 +1,5 @@
-import { Badge, Dropdown, Loader } from "../../components/ui";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Badge, Loader } from "../../components/ui";
+import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
@@ -9,7 +9,6 @@ import { ActivateControllableUnitButton } from "./components/ActivateControllabl
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
 import { ShowPageResourceLayout } from "../../components/ShowPageResourceLayout";
-import { MoreActionsButton } from "../../components/MoreActionsButton";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
 import { IconPencil } from "@elhub/ds-icons";
 
@@ -50,8 +49,8 @@ export const ControllableUnitShow = () => {
 
   return (
     <ShowPageResourceLayout
-      resourceType={`Controllable unit #${cu.id}`}
-      resourceName={cu.name}
+      secondaryHeaderText={`Controllable unit #${cu.id}`}
+      mainHeaderText={cu.name}
       alerts={<ControllableUnitAlerts controllableUnitViewModel={viewModel} />}
       status={
         <Badge
@@ -63,41 +62,29 @@ export const ControllableUnitShow = () => {
           {translateEnum(`controllable_unit.status.${cu.status}`)}
         </Badge>
       }
-      utilityActions={
-        canEdit || canReadEvents ? (
-          <Dropdown>
-            <MoreActionsButton />
-            <Dropdown.Menu arrow placement="bottom-start">
-              {canEdit && (
-                <Dropdown.Menu.GroupedList>
-                  <Dropdown.Menu.GroupedList.Item
-                    as={RouterLink}
-                    to={`/controllable_unit/${cu.id}/edit`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <IconPencil />
-                      Edit
-                    </div>
-                  </Dropdown.Menu.GroupedList.Item>
-                </Dropdown.Menu.GroupedList>
-              )}
-              {canReadEvents && (
-                <>
-                  {canEdit && <Dropdown.Menu.Divider />}
-                  <Dropdown.Menu.GroupedList>
-                    <Dropdown.Menu.GroupedList.Item
-                      as={RouterLink}
-                      to={`/event?filter=${eventsFilter}`}
-                    >
-                      Events
-                    </Dropdown.Menu.GroupedList.Item>
-                  </Dropdown.Menu.GroupedList>
-                </>
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
-        ) : undefined
-      }
+      utilityActions={[
+        {
+          label: "Actions",
+          actions: [
+            {
+              to: `/controllable_unit/${cu.id}/edit`,
+              title: "Edit",
+              icon: <IconPencil />,
+              shouldShow: canEdit,
+            },
+          ],
+        },
+        {
+          label: "Navigate to",
+          actions: [
+            {
+              to: `/event?filter=${eventsFilter}`,
+              title: "Events",
+              shouldShow: canReadEvents,
+            },
+          ],
+        },
+      ]}
       workflowActions={
         cu.status === "new" ? (
           <ActivateControllableUnitButton

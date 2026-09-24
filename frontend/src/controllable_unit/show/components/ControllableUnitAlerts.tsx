@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { BodyText, Alert, Heading } from "../../../components/ui";
 import { useTranslate } from "ra-core";
@@ -60,7 +61,7 @@ export const ControllableUnitAlerts = ({
   controllableUnitViewModel,
 }: {
   controllableUnitViewModel: ControllableUnitShowViewModel;
-}) => {
+}): ReactElement<typeof Alert> | null => {
   const alert = useControllableUnitAlerts(controllableUnitViewModel);
   if (!alert) {
     return null;
