@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../../components/ui";
-import { ShowPageResourceLayout } from "../../../components/ShowPageResourceLayout";
+import { ResourceShowLayout } from "../../../components/ResourceShowLayout";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { SpgpaShowSummary } from "./SpgpaShowSummary";
@@ -70,7 +70,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   };
 
   return (
-    <ShowPageResourceLayout
+    <ResourceShowLayout
       secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
       mainHeaderText={spg.data ? spg.data.name : "Product application"}
       status={spgpaStatus}

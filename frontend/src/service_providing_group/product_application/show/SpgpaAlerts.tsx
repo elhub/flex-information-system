@@ -1,5 +1,5 @@
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
-import type { AlertType } from "../../../components/ShowPageResourceLayout";
+import type { AlertType } from "../../../components/ResourceShowLayout";
 import { useGetIdentity } from "react-admin";
 
 export const useSpgpaAlerts = (

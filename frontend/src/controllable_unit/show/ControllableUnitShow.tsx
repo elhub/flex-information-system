@@ -8,7 +8,7 @@ import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
-import { ShowPageResourceLayout } from "../../components/ShowPageResourceLayout";
+import { ResourceShowLayout } from "../../components/ResourceShowLayout";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
 import { IconPencil } from "@elhub/ds-icons";
 
@@ -49,7 +49,7 @@ export const ControllableUnitShow = () => {
   const canReadEvents = permissions?.allow("event", "read");
 
   return (
-    <ShowPageResourceLayout
+    <ResourceShowLayout
       secondaryHeaderText={`Controllable unit #${cu.id}`}
       mainHeaderText={cu.name}
       alerts={alert ?? undefined}

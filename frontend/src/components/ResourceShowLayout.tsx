@@ -29,7 +29,7 @@ type UtilityActionGroup = {
   actions: UtilityAction[];
 };
 
-type ShowPageResourceLayoutProps = {
+type ResourceShowLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
   status?: ResourceStatus;
@@ -218,7 +218,7 @@ const ResourceBody = ({
   </div>
 );
 
-export const ShowPageResourceLayout = ({
+export const ResourceShowLayout = ({
   secondaryHeaderText,
   mainHeaderText,
   status,
@@ -229,7 +229,7 @@ export const ShowPageResourceLayout = ({
   workflowActions,
   summary,
   content,
-}: ShowPageResourceLayoutProps) => {
+}: ResourceShowLayoutProps) => {
   return (
     <div className="flex flex-col gap-4 p-2">
       <ResourceHeader
