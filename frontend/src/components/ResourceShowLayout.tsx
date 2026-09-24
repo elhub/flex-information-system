@@ -62,7 +62,7 @@ export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
         {fields
           .filter((field) => field.shouldShow ?? true)
           .map(({ key, shouldShow: _shouldShow, ...labelValueProps }) => (
-            <LabelValue key={key} size="large" {...labelValueProps} />
+            <LabelValue key={key} {...labelValueProps} />
           ))}
       </div>
     </Panel>
