@@ -1,7 +1,8 @@
 import { Fragment, ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { BodyText, Heading, Badge, Alert, Dropdown, Tabs, Tooltip } from "./ui";
+import { BodyText, Heading, Alert, Dropdown, Tabs } from "./ui";
 import { MoreActionsButton } from "./MoreActionsButton";
+import { StatusBadge, StatusVariant } from "./StatusBadge";
 
 export type AlertType = {
   severity: "info" | "success" | "warning" | "error";
@@ -11,8 +12,8 @@ export type AlertType = {
 
 export type ResourceStatus = {
   label: string;
-  status: string;
-  icon?: ReactNode;
+  status: StatusVariant["status"];
+  icon?: StatusVariant["icon"];
   tooltip?: string;
 };
 
@@ -81,20 +82,6 @@ const ResourceAlert = ({ alert }: ResourceAlertProps) => (
     <BodyText>{alert.body}</BodyText>
   </Alert>
 );
-
-const StatusBadge = ({ label, status, icon, tooltip }: ResourceStatus) => {
-  const badge = (
-    <Badge
-      size="small"
-      status={status}
-      variant="block"
-      icon={icon ? () => <>{icon}</> : undefined}
-    >
-      {label}
-    </Badge>
-  );
-  return tooltip ? <Tooltip content={tooltip}>{badge}</Tooltip> : badge;
-};
 
 type ActionGroupProps = {
   group: UtilityActionGroup;

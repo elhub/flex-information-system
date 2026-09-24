@@ -47,7 +47,6 @@ export const ControllableUnitShow = () => {
     (viewModel.technicalResources?.length ?? 0) > 0;
   const canEdit = permissions?.allow("controllable_unit", "update");
   const canReadEvents = permissions?.allow("event", "read");
-  const CuStatusIcon = cuStatusVariantMap[cu.status].icon;
 
   return (
     <ShowPageResourceLayout
@@ -57,7 +56,7 @@ export const ControllableUnitShow = () => {
       status={{
         label: translateEnum(`controllable_unit.status.${cu.status}`),
         status: cuStatusVariantMap[cu.status].status,
-        icon: <CuStatusIcon />,
+        icon: cuStatusVariantMap[cu.status].icon,
       }}
       utilityActions={[
         {

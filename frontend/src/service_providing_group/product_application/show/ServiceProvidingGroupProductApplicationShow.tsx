@@ -58,13 +58,12 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   );
 
   const spgpaStatusVariant = spgpaStatusVariantMap[spgpa.status];
-  const SpgpaStatusIcon = spgpaStatusVariant.icon;
   const spgpaStatus = {
     label: translateEnum(
       `service_providing_group_product_application.status.${spgpa.status}` as EnumLabel,
     ),
     status: spgpaStatusVariant.status,
-    icon: <SpgpaStatusIcon />,
+    icon: spgpaStatusVariant.icon,
     tooltip: translateEnum(
       `service_providing_group_product_application.status.${spgpa.status}.description` as EnumLabel,
     ),
