@@ -1,4 +1,4 @@
-import { Badge, Loader } from "../../components/ui";
+import { Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
@@ -47,22 +47,18 @@ export const ControllableUnitShow = () => {
     (viewModel.technicalResources?.length ?? 0) > 0;
   const canEdit = permissions?.allow("controllable_unit", "update");
   const canReadEvents = permissions?.allow("event", "read");
+  const CuStatusIcon = cuStatusVariantMap[cu.status].icon;
 
   return (
     <ShowPageResourceLayout
       secondaryHeaderText={`Controllable unit #${cu.id}`}
       mainHeaderText={cu.name}
       alerts={alert ?? undefined}
-      status={
-        <Badge
-          size="small"
-          status={cuStatusVariantMap[cu.status].status}
-          variant="block"
-          icon={cuStatusVariantMap[cu.status].icon}
-        >
-          {translateEnum(`controllable_unit.status.${cu.status}`)}
-        </Badge>
-      }
+      status={{
+        label: translateEnum(`controllable_unit.status.${cu.status}`),
+        status: cuStatusVariantMap[cu.status].status,
+        icon: <CuStatusIcon />,
+      }}
       utilityActions={[
         {
           label: "Actions",

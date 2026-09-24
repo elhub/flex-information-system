@@ -10,10 +10,12 @@ import { SpgpaActionBar } from "./SpgpaActionBar";
 import { useSpgpaRecord } from "./useSpgpaShowViewModel";
 import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 import { useSpgpaAlerts } from "./SpgpaAlerts";
-import { SpgpaStatusBadge } from "../../../components/SpgpaStatusBadge";
+import { spgpaStatusVariantMap } from "../spgpaStatus";
 import { ScaleToggle } from "../../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../../utils/scales";
 import { IconExternal, IconPencil } from "@elhub/ds-icons";
+import { useTranslateEnum } from "../../../intl/intl";
+import { type EnumLabel } from "../../../intl/enum-labels";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -25,6 +27,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
+  const translateEnum = useTranslateEnum();
 
   const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
@@ -54,11 +57,24 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
     }),
   );
 
+  const spgpaStatusVariant = spgpaStatusVariantMap[spgpa.status];
+  const SpgpaStatusIcon = spgpaStatusVariant.icon;
+  const spgpaStatus = {
+    label: translateEnum(
+      `service_providing_group_product_application.status.${spgpa.status}` as EnumLabel,
+    ),
+    status: spgpaStatusVariant.status,
+    icon: <SpgpaStatusIcon />,
+    tooltip: translateEnum(
+      `service_providing_group_product_application.status.${spgpa.status}.description` as EnumLabel,
+    ),
+  };
+
   return (
     <ShowPageResourceLayout
       secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
       mainHeaderText={spg.data ? spg.data.name : "Product application"}
-      status={<SpgpaStatusBadge status={spgpa.status} />}
+      status={spgpaStatus}
       alerts={alert ?? undefined}
       viewControls={
         <ScaleToggle

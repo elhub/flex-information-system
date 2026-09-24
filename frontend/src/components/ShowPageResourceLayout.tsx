@@ -1,12 +1,19 @@
 import { Fragment, ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { BodyText, Heading, Badge, Alert, Dropdown } from "./ui";
+import { BodyText, Heading, Badge, Alert, Dropdown, Tabs, Tooltip } from "./ui";
 import { MoreActionsButton } from "./MoreActionsButton";
 
 export type AlertType = {
   severity: "info" | "success" | "warning" | "error";
   heading?: string;
   body: string;
+};
+
+export type ResourceStatus = {
+  label: string;
+  status: string;
+  icon?: ReactNode;
+  tooltip?: string;
 };
 
 export type UtilityAction = {
@@ -25,26 +32,26 @@ export type UtilityActionGroup = {
 type ShowPageResourceLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
-  status?: ReactElement<typeof Badge>;
+  status?: ResourceStatus;
   alerts?: AlertType;
   viewControls?: ReactNode;
   utilityActions?: UtilityActionGroup[];
   workflowActions?: ReactNode;
   summary: ReactNode;
-  content: ReactNode;
+  content: ReactElement<typeof Tabs>;
 };
 
-type ResourceHeaderProps = {
+type ResourceTitleProps = {
   secondaryText: string;
   mainText: string;
-  status?: ReactElement<typeof Badge>;
+  status?: ResourceStatus;
 };
 
-const ResourceHeader = ({
+const ResourceTitle = ({
   secondaryText,
   mainText,
   status,
-}: ResourceHeaderProps) => {
+}: ResourceTitleProps) => {
   return (
     <div className="min-w-0">
       <BodyText size="small" className="text-semantic-text-secondary">
@@ -54,7 +61,11 @@ const ResourceHeader = ({
         <Heading level={2} size="xlarge">
           {mainText}
         </Heading>
-        {status && <div className="flex items-center gap-1">{status}</div>}
+        {status && (
+          <div className="flex items-center gap-1">
+            <StatusBadge {...status} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -70,6 +81,20 @@ const ResourceAlert = ({ alert }: ResourceAlertProps) => (
     <BodyText>{alert.body}</BodyText>
   </Alert>
 );
+
+const StatusBadge = ({ label, status, icon, tooltip }: ResourceStatus) => {
+  const badge = (
+    <Badge
+      size="small"
+      status={status}
+      variant="block"
+      icon={icon ? () => <>{icon}</> : undefined}
+    >
+      {label}
+    </Badge>
+  );
+  return tooltip ? <Tooltip content={tooltip}>{badge}</Tooltip> : badge;
+};
 
 type ActionGroupProps = {
   group: UtilityActionGroup;
@@ -136,23 +161,23 @@ const UtilityActions = ({ utilityActionGroups }: UtilityActionsProps) => {
   );
 };
 
-type HeaderRowProps = {
+type ResourceHeaderProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
-  status?: ReactElement<typeof Badge>;
+  status?: ResourceStatus;
   workflowActions?: ReactNode;
   utilityActions?: UtilityActionGroup[];
 };
 
-const HeaderRow = ({
+const ResourceHeader = ({
   secondaryHeaderText,
   mainHeaderText,
   status,
   workflowActions,
   utilityActions,
-}: HeaderRowProps) => (
+}: ResourceHeaderProps) => (
   <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-    <ResourceHeader
+    <ResourceTitle
       secondaryText={secondaryHeaderText}
       mainText={mainHeaderText}
       status={status}
@@ -203,7 +228,7 @@ export const ShowPageResourceLayout = ({
 }: ShowPageResourceLayoutProps) => {
   return (
     <div className="flex flex-col gap-4 p-2">
-      <HeaderRow
+      <ResourceHeader
         secondaryHeaderText={secondaryHeaderText}
         mainHeaderText={mainHeaderText}
         status={status}
