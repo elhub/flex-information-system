@@ -9,6 +9,7 @@ export type TextKey =
   | "tab.power_per_substation"
   | "tab.changes"
   | "tab.spg_info"
+  | "tab.overview"
   | "tab.comments"
   | "tab.attachments"
   | "technical_resources_show_location"
@@ -170,6 +171,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
     "tab.spg_info": "SPG info",
+    "tab.overview": "Overview",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
@@ -373,6 +375,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.spg_info": "SPG-info",
+    "tab.overview": "Oversikt",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     technical_resources_show_location: "Vis",

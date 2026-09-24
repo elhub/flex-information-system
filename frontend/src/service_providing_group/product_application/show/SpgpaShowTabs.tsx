@@ -33,7 +33,7 @@ export const SpgpaShowTabs = ({
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.spg_info")} value="spg_info" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="spg_info" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"

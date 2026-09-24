@@ -40,6 +40,7 @@ export const SpgInfoTab = ({
                 as={RouterLink}
                 to={`/service_providing_group/${spgId}/show`}
                 className="inline-flex items-center gap-1"
+                title="View service providing group"
               >
                 {spg.name} (#{spg.id})
                 <IconRight size="small" />
@@ -54,6 +55,7 @@ export const SpgInfoTab = ({
                   as={RouterLink}
                   to={`/party/${spgProcuringSystemOperatorId}/show`}
                   className="inline-flex items-center gap-1"
+                  title="View system operator / PSO"
                 >
                   {procuringServiceProvider.data?.name}
                   <IconRight size="small" />

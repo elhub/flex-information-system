@@ -63,6 +63,7 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
                     as={RouterLink}
                     to={`/accounting_point/${viewModel.accountingPoint.id}/show`}
                     className="inline-flex items-center gap-1"
+                    title="View accounting point"
                   >
                     {viewModel.accountingPoint.business_id}
                     <IconRight size="small" />
