@@ -31,12 +31,12 @@ export const SpgpaShowTabs = ({
   showChanges,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("spg_info");
+  const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.overview")} value="spg_info" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
@@ -51,9 +51,9 @@ export const SpgpaShowTabs = ({
             value="attachments"
           />
         )}
-        <Tabs.Tab label="History" value="history" />
+        <Tabs.Tab label={translate("text.tab.history")} value="history" />
       </Tabs.List>
-      <Tabs.Panel value="spg_info">
+      <Tabs.Panel value="overview">
         <SpgInfoTab
           spgId={spgId}
           spgProcuringSystemOperatorId={spgpa.procuring_system_operator_id}

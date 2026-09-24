@@ -3,7 +3,12 @@ import { Link, Panel, Tabs } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
 import { ControllableUnitHistoryList } from "../ControllableUnitHistoryList";
-import { useGetIdentity, usePermissions, RecordContextProvider, useTranslate } from "ra-core";
+import {
+  useGetIdentity,
+  usePermissions,
+  RecordContextProvider,
+  useTranslate,
+} from "ra-core";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { ControllableUnitSpgList } from "./ControllableUnitSpgList";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
@@ -44,16 +49,16 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
         />
         {canViewLocation && (
           <Tabs.Tab
-            label="Accounting point location"
+            label={translate("text.tab.accounting_point")}
             value="accounting_point_location"
           />
         )}
         <Tabs.Tab label="Service provider contracts" value="service_provider" />
         <Tabs.Tab
-          label="Balance responsible parties"
+          label={translate("text.tab.balance_responsible_party")}
           value="balance_responsible_party"
         />
-        <Tabs.Tab label="History" value="history" />
+        <Tabs.Tab label={translate("text.tab.history")} value="history" />
       </Tabs.List>
       <Tabs.Panel value="technical_resources">
         <RecordContextProvider value={{ id: cuId }}>

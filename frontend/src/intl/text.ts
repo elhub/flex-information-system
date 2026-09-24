@@ -9,6 +9,9 @@ export type TextKey =
   | "tab.power_per_substation"
   | "tab.changes"
   | "tab.service_providing_groups"
+  | "tab.accounting_point"
+  | "tab.balance_responsible_party"
+  | "tab.history"
   | "tab.spg_info"
   | "tab.overview"
   | "tab.comments"
@@ -187,6 +190,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
     "tab.service_providing_groups": "Service providing groups",
+    "tab.accounting_point": "Accounting point",
+    "tab.balance_responsible_party": "Balance responsible parties",
+    "tab.history": "History",
     "tab.spg_info": "SPG info",
     "tab.overview": "Overview",
     "tab.comments": "Comments",
@@ -410,6 +416,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.service_providing_groups": "Fleksibilitetsgrupper",
+    "tab.accounting_point": "Målepunkt",
+    "tab.balance_responsible_party": "Balanseansvarlige",
+    "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
     "tab.overview": "Oversikt",
     "tab.comments": "Kommentarer",
