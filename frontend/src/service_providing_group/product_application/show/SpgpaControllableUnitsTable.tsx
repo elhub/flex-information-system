@@ -152,7 +152,7 @@ export const SpgpaControllableUnitsTable = ({
       header: translate("text.table.header.grid_prequalification"),
       render: (value) =>
         value ? (
-          <Tooltip content={value}>
+          <Tooltip content={toDateTimeString(String(value))}>
             <IconValidationCheck
               style={{ width: 18, height: 18 }}
               className="text-semantic-text-success"
