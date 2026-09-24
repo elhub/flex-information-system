@@ -306,7 +306,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "Search",
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
-      "Filter by name, id or accounting point id",
+      "Filter by name, id, accounting point id or system operator",
     spgpa_hide_prequalified: "Hide prequalified",
     spgpa_summary_heading: "Flexible power overview",
     spgpa_summary_approved_flexible_power:
@@ -528,7 +528,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "S\u00f8k",
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
-      "Filtrer p\u00e5 navn, id eller avregningspunkt",
+      "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
     spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
     spgpa_summary_approved_flexible_power:
