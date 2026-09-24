@@ -1,18 +1,16 @@
-import type { ReactElement } from "react";
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { BodyText, Alert, Heading } from "../../../components/ui";
+import type { AlertType } from "../../../components/ShowPageResourceLayout";
 import { useTranslate } from "ra-core";
 
-type AlertType = {
-  severity: "info" | "success" | "warning" | "error";
-  heading: string;
-  body: string;
-};
-
-const useControllableUnitAlerts = (
-  controllableUnitViewModel: ControllableUnitShowViewModel,
+export const useControllableUnitAlerts = (
+  controllableUnitViewModel: ControllableUnitShowViewModel | undefined,
 ): AlertType | null => {
   const translate = useTranslate();
+
+  if (!controllableUnitViewModel) {
+    return null;
+  }
+
   const { controllableUnit, suspensions, technicalResources } =
     controllableUnitViewModel;
 
@@ -55,21 +53,4 @@ const useControllableUnitAlerts = (
     };
   }
   return null;
-};
-
-export const ControllableUnitAlerts = ({
-  controllableUnitViewModel,
-}: {
-  controllableUnitViewModel: ControllableUnitShowViewModel;
-}): ReactElement<typeof Alert> | null => {
-  const alert = useControllableUnitAlerts(controllableUnitViewModel);
-  if (!alert) {
-    return null;
-  }
-  return (
-    <Alert variant={alert.severity} className="max-w-3xl">
-      <Heading size="xsmall">{alert.heading}</Heading>
-      <BodyText>{alert.body}</BodyText>
-    </Alert>
-  );
 };

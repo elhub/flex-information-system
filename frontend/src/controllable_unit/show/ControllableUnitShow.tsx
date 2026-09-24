@@ -2,7 +2,7 @@ import { Badge, Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
-import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
+import { useControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
@@ -25,6 +25,7 @@ export const ControllableUnitShow = () => {
   } = useControllableUnitViewModel(cuId);
 
   const cu = viewModel?.controllableUnit;
+  const alert = useControllableUnitAlerts(viewModel);
 
   if (viewModelError) {
     throw viewModelError;
@@ -51,7 +52,7 @@ export const ControllableUnitShow = () => {
     <ShowPageResourceLayout
       secondaryHeaderText={`Controllable unit #${cu.id}`}
       mainHeaderText={cu.name}
-      alerts={<ControllableUnitAlerts controllableUnitViewModel={viewModel} />}
+      alerts={alert ?? undefined}
       status={
         <Badge
           size="small"

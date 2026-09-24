@@ -9,7 +9,7 @@ import { SpgpaShowTabs } from "./SpgpaShowTabs";
 import { SpgpaActionBar } from "./SpgpaActionBar";
 import { useSpgpaRecord } from "./useSpgpaShowViewModel";
 import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
-import { SpgpaAlerts } from "./SpgpaAlerts";
+import { useSpgpaAlerts } from "./SpgpaAlerts";
 import { SpgpaStatusBadge } from "../../../components/SpgpaStatusBadge";
 import { ScaleToggle } from "../../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../../utils/scales";
@@ -30,6 +30,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   const { data: spgpa, isPending, error } = useSpgpaRecord(spgpaId);
   const spg = useServiceProvidingGroup(spgpa?.service_providing_group_id);
+  const alert = useSpgpaAlerts(spgpa);
 
   const canUpdateStatus =
     !!permissions?.allow(
@@ -58,7 +59,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
       mainHeaderText={spg.data ? spg.data.name : "Product application"}
       status={<SpgpaStatusBadge status={spgpa.status} />}
-      alerts={<SpgpaAlerts spgpa={spgpa} />}
+      alerts={alert ?? undefined}
       viewControls={
         <ScaleToggle
           unit="W"

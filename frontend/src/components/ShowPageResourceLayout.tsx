@@ -3,6 +3,12 @@ import { Link as RouterLink } from "react-router-dom";
 import { BodyText, Heading, Badge, Alert, Dropdown } from "./ui";
 import { MoreActionsButton } from "./MoreActionsButton";
 
+export type AlertType = {
+  severity: "info" | "success" | "warning" | "error";
+  heading?: string;
+  body: string;
+};
+
 export type UtilityAction = {
   to: string;
   title: string;
@@ -20,7 +26,7 @@ type ShowPageResourceLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
   status?: ReactElement<typeof Badge>;
-  alerts?: ReactElement<typeof Alert>;
+  alerts?: AlertType;
   viewControls?: ReactNode;
   utilityActions?: UtilityActionGroup[];
   workflowActions?: ReactNode;
@@ -53,6 +59,17 @@ const ResourceHeader = ({
     </div>
   );
 };
+
+type ResourceAlertProps = {
+  alert: AlertType;
+};
+
+const ResourceAlert = ({ alert }: ResourceAlertProps) => (
+  <Alert variant={alert.severity} className="max-w-3xl gap-4">
+    {alert.heading && <Heading size="xsmall">{alert.heading}</Heading>}
+    <BodyText>{alert.body}</BodyText>
+  </Alert>
+);
 
 type ActionGroupProps = {
   group: UtilityActionGroup;
@@ -193,7 +210,7 @@ export const ShowPageResourceLayout = ({
         workflowActions={workflowActions}
         utilityActions={utilityActions}
       />
-      {alerts}
+      {alerts && <ResourceAlert alert={alerts} />}
       <ResourceBody
         summary={summary}
         viewControls={viewControls}
