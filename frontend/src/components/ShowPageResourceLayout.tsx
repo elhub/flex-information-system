@@ -1,8 +1,8 @@
-import { Fragment, ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { BodyText, Heading, Alert, Dropdown, Tabs } from "./ui";
-import { MoreActionsButton } from "./MoreActionsButton";
+import { BodyText, Heading, Alert, Dropdown, Tabs, Button } from "./ui";
 import { StatusBadge, StatusVariant } from "./StatusBadge";
+import { IconChevronDown } from "@elhub/ds-icons";
 
 export type AlertType = {
   severity: "info" | "success" | "warning" | "error";
@@ -22,10 +22,9 @@ export type UtilityAction = {
   title: string;
   icon?: ReactNode;
   external?: boolean;
-  shouldShow?: boolean;
 };
 
-export type UtilityActionGroup = {
+type UtilityActionGroup = {
   label: string;
   actions: UtilityAction[];
 };
@@ -35,8 +34,9 @@ type ShowPageResourceLayoutProps = {
   mainHeaderText: string;
   status?: ResourceStatus;
   alerts?: AlertType;
-  viewControls?: ReactNode;
-  utilityActions?: UtilityActionGroup[];
+  displayControls?: ReactNode;
+  moreActions?: UtilityAction[];
+  moreNavigationActions?: UtilityAction[];
   workflowActions?: ReactNode;
   summary: ReactNode;
   content: ReactElement<typeof Tabs>;
@@ -83,16 +83,19 @@ const ResourceAlert = ({ alert }: ResourceAlertProps) => (
   </Alert>
 );
 
-type ActionGroupProps = {
+type ActionGroupSectionProps = {
   group: UtilityActionGroup;
   showDivider: boolean;
 };
 
-const ActionGroup = ({ group, showDivider }: ActionGroupProps) => (
-  <Fragment>
+const ActionGroupSection = ({
+  group,
+  showDivider,
+}: ActionGroupSectionProps) => (
+  <>
     {showDivider && <Dropdown.Menu.Divider />}
     <Dropdown.Menu.GroupedList.Heading>
-      <BodyText weight="bold">{group.label}</BodyText>
+      {group.label}
     </Dropdown.Menu.GroupedList.Heading>
     <Dropdown.Menu.GroupedList>
       {group.actions.map((action) => (
@@ -111,20 +114,22 @@ const ActionGroup = ({ group, showDivider }: ActionGroupProps) => (
         </Dropdown.Menu.GroupedList.Item>
       ))}
     </Dropdown.Menu.GroupedList>
-  </Fragment>
+  </>
 );
 
-type UtilityActionsProps = {
-  utilityActionGroups: UtilityActionGroup[];
+type MoreActionsMenuProps = {
+  actions?: UtilityAction[];
+  navigationActions?: UtilityAction[];
 };
 
-const UtilityActions = ({ utilityActionGroups }: UtilityActionsProps) => {
-  const visibleGroups = utilityActionGroups
-    .map((group) => ({
-      ...group,
-      actions: group.actions.filter((action) => action.shouldShow ?? true),
-    }))
-    .filter((group) => group.actions.length > 0);
+const MoreActionsMenu = ({
+  actions,
+  navigationActions,
+}: MoreActionsMenuProps) => {
+  const visibleGroups: UtilityActionGroup[] = [
+    { label: "Actions", actions: actions ?? [] },
+    { label: "Navigate to", actions: navigationActions ?? [] },
+  ].filter((group) => group.actions.length > 0);
 
   if (visibleGroups.length === 0) {
     return null;
@@ -133,10 +138,18 @@ const UtilityActions = ({ utilityActionGroups }: UtilityActionsProps) => {
   return (
     <div className="flex items-center lg:ml-2">
       <Dropdown>
-        <MoreActionsButton />
+        <Button
+          as={Dropdown.Toggle}
+          variant="tertiary"
+          icon={IconChevronDown}
+          iconPosition="right"
+          aria-label="More actions"
+        >
+          More
+        </Button>
         <Dropdown.Menu arrow placement="bottom-start">
           {visibleGroups.map((group, index) => (
-            <ActionGroup
+            <ActionGroupSection
               key={group.label}
               group={group}
               showDivider={index > 0}
@@ -153,7 +166,8 @@ type ResourceHeaderProps = {
   mainHeaderText: string;
   status?: ResourceStatus;
   workflowActions?: ReactNode;
-  utilityActions?: UtilityActionGroup[];
+  moreActions?: UtilityAction[];
+  moreNavigationActions?: UtilityAction[];
 };
 
 const ResourceHeader = ({
@@ -161,7 +175,8 @@ const ResourceHeader = ({
   mainHeaderText,
   status,
   workflowActions,
-  utilityActions,
+  moreActions,
+  moreNavigationActions,
 }: ResourceHeaderProps) => (
   <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
     <ResourceTitle
@@ -175,28 +190,29 @@ const ResourceHeader = ({
           {workflowActions}
         </div>
       )}
-      {utilityActions && (
-        <UtilityActions utilityActionGroups={utilityActions} />
-      )}
+      <MoreActionsMenu
+        actions={moreActions}
+        navigationActions={moreNavigationActions}
+      />
     </div>
   </div>
 );
 
 type ResourceBodyProps = {
   summary: ReactNode;
-  viewControls?: ReactNode;
+  displayControls?: ReactNode;
   content: ReactNode;
 };
 
 const ResourceBody = ({
   summary,
-  viewControls,
+  displayControls,
   content,
 }: ResourceBodyProps) => (
   <div className="flex flex-col gap-4 pt-4 xl:flex-row xl:items-start">
     <div className="flex flex-col gap-4 xl:w-1/4">
       {summary}
-      {viewControls}
+      {displayControls}
     </div>
     <div className="min-w-0 flex-1">{content}</div>
   </div>
@@ -207,8 +223,9 @@ export const ShowPageResourceLayout = ({
   mainHeaderText,
   status,
   alerts,
-  viewControls,
-  utilityActions,
+  displayControls,
+  moreActions,
+  moreNavigationActions,
   workflowActions,
   summary,
   content,
@@ -220,12 +237,13 @@ export const ShowPageResourceLayout = ({
         mainHeaderText={mainHeaderText}
         status={status}
         workflowActions={workflowActions}
-        utilityActions={utilityActions}
+        moreActions={moreActions}
+        moreNavigationActions={moreNavigationActions}
       />
       {alerts && <ResourceAlert alert={alerts} />}
       <ResourceBody
         summary={summary}
-        viewControls={viewControls}
+        displayControls={displayControls}
         content={content}
       />
     </div>

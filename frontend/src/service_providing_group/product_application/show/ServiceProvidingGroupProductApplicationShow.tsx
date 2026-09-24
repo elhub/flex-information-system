@@ -75,7 +75,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       mainHeaderText={spg.data ? spg.data.name : "Product application"}
       status={spgpaStatus}
       alerts={alert ?? undefined}
-      viewControls={
+      displayControls={
         <ScaleToggle
           unit="W"
           options={POWER_SCALE_OPTIONS}
@@ -83,35 +83,28 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           onChange={setPowerScale}
         />
       }
-      utilityActions={[
+      moreActions={[
+        ...(canEdit
+          ? [
+              {
+                to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
+                title: "Edit",
+                icon: <IconPencil />,
+              },
+            ]
+          : []),
         {
-          label: "Actions",
-          actions: [
-            {
-              to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
-              title: "Edit",
-              icon: <IconPencil />,
-              shouldShow: canEdit,
-            },
-            {
-              to: `/service_providing_group_product_application/${spgpa.id}/print`,
-              title: "Print",
-              icon: <IconExternal />,
-              external: true,
-            },
-          ],
-        },
-        {
-          label: "Navigate to",
-          actions: [
-            {
-              to: `/event?filter=${eventsFilter}`,
-              title: "Events",
-              shouldShow: canReadEvents,
-            },
-          ],
+          to: `/service_providing_group_product_application/${spgpa.id}/print`,
+          title: "Print",
+          icon: <IconExternal />,
+          external: true,
         },
       ]}
+      moreNavigationActions={
+        canReadEvents
+          ? [{ to: `/event?filter=${eventsFilter}`, title: "Events" }]
+          : []
+      }
       workflowActions={
         canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined
       }
