@@ -4,7 +4,7 @@ import { Loader } from "../../../components/ui";
 import { ResourceShowLayout } from "../../../components/ResourceShowLayout";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
-import { SpgpaShowSummary } from "./SpgpaShowSummary";
+import { useSpgpaShowSummary } from "./SpgpaShowSummary";
 import { SpgpaShowTabs } from "./SpgpaShowTabs";
 import { SpgpaActionBar } from "./SpgpaActionBar";
 import { useSpgpaRecord } from "./useSpgpaShowViewModel";
@@ -34,6 +34,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   const { data: spgpa, isPending, error } = useSpgpaRecord(spgpaId);
   const spg = useServiceProvidingGroup(spgpa?.service_providing_group_id);
   const alert = useSpgpaAlerts(spgpa);
+  const summary = useSpgpaShowSummary({ spgpa, spg: spg.data, powerScale });
 
   const canUpdateStatus =
     !!permissions?.allow(
@@ -108,13 +109,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       workflowActions={
         canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined
       }
-      summary={
-        <SpgpaShowSummary
-          spgpa={spgpa}
-          spg={spg.data}
-          powerScale={powerScale}
-        />
-      }
+      summary={summary}
       content={
         <SpgpaShowTabs
           spgId={spgpa.service_providing_group_id}

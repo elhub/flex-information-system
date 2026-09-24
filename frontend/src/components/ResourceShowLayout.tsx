@@ -1,7 +1,8 @@
 import { ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { BodyText, Heading, Alert, Dropdown, Tabs, Button } from "./ui";
+import { BodyText, Heading, Alert, Dropdown, Tabs, Button, Panel } from "./ui";
 import { StatusBadge, StatusVariant } from "./StatusBadge";
+import { LabelValue, LabelValueProps } from "./LabelValue";
 import { IconChevronDown } from "@elhub/ds-icons";
 
 export type AlertType = {
@@ -29,6 +30,11 @@ type UtilityActionGroup = {
   actions: UtilityAction[];
 };
 
+export type ResourceSummaryField = {
+  key: string;
+  shouldShow?: boolean;
+} & LabelValueProps;
+
 type ResourceShowLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
@@ -38,9 +44,30 @@ type ResourceShowLayoutProps = {
   moreActions?: UtilityAction[];
   moreNavigationActions?: UtilityAction[];
   workflowActions?: ReactNode;
-  summary: ReactNode;
+  summary: ResourceSummaryField[];
   content: ReactElement<typeof Tabs>;
 };
+
+export type ResourceSummaryPanelProps = {
+  fields: ResourceSummaryField[];
+};
+
+export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
+  <div className="flex flex-col gap-4">
+    <Panel
+      border
+      className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+    >
+      <div className="flex flex-col gap-4">
+        {fields
+          .filter((field) => field.shouldShow ?? true)
+          .map(({ key, shouldShow: _shouldShow, ...labelValueProps }) => (
+            <LabelValue key={key} size="large" {...labelValueProps} />
+          ))}
+      </div>
+    </Panel>
+  </div>
+);
 
 type ResourceTitleProps = {
   secondaryText: string;
@@ -199,7 +226,7 @@ const ResourceHeader = ({
 );
 
 type ResourceBodyProps = {
-  summary: ReactNode;
+  summary: ResourceSummaryField[];
   displayControls?: ReactNode;
   content: ReactNode;
 };
@@ -211,7 +238,7 @@ const ResourceBody = ({
 }: ResourceBodyProps) => (
   <div className="flex flex-col gap-4 pt-4 xl:flex-row xl:items-start">
     <div className="flex flex-col gap-4 xl:w-1/4">
-      {summary}
+      <ResourceSummaryPanel fields={summary} />
       {displayControls}
     </div>
     <div className="min-w-0 flex-1">{content}</div>

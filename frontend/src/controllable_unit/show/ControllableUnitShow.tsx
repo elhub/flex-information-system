@@ -1,6 +1,6 @@
 import { Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
-import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
+import { useControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { useControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
@@ -26,6 +26,7 @@ export const ControllableUnitShow = () => {
 
   const cu = viewModel?.controllableUnit;
   const alert = useControllableUnitAlerts(viewModel);
+  const summary = useControllableUnitShowSummary({ viewModel });
 
   if (viewModelError) {
     throw viewModelError;
@@ -82,7 +83,7 @@ export const ControllableUnitShow = () => {
           />
         ) : undefined
       }
-      summary={<ControllableUnitShowSummary viewModel={viewModel} />}
+      summary={summary}
       content={<ControllableUnitShowTabs cuId={cu.id} viewModel={viewModel} />}
     />
   );
