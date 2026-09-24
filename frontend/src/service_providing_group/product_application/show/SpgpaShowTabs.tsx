@@ -10,7 +10,6 @@ import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
 import { SpgInfoTab } from "./SpgInfoTab";
 import { ServiceProvidingGroupProductApplicationHistoryList } from "../ServiceProvidingGroupProductApplicationHistoryList";
-import { SpgpaOverview } from "./SpgpaOverview";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
 import { useTranslate } from "ra-core";
 
@@ -29,12 +28,11 @@ export const SpgpaShowTabs = ({
   spg,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("overview");
+  const [tab, setTab] = useTabSearchParam("spg_info");
   const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="Overview" value="overview" />
         <Tabs.Tab label={translate("text.tab.spg_info")} value="spg_info" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
@@ -49,11 +47,13 @@ export const SpgpaShowTabs = ({
         )}
         <Tabs.Tab label="History" value="history" />
       </Tabs.List>
-      <Tabs.Panel value="overview">
-        <SpgpaOverview spgpa={spgpa} spg={spg} />
-      </Tabs.Panel>
       <Tabs.Panel value="spg_info">
-        <SpgInfoTab spgId={spgId} spg={spg} powerScale={powerScale} />
+        <SpgInfoTab
+          spgId={spgId}
+          spgProcuringSystemOperatorId={spgpa.procuring_system_operator_id}
+          spg={spg}
+          powerScale={powerScale}
+        />
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
         <SpgpaControllableUnitsTable

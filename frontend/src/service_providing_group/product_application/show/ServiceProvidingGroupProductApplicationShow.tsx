@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Dropdown, Loader } from "../../../components/ui";
+import { Dropdown, Loader } from "../../../components/ui";
 import { Link as RouterLink } from "react-router-dom";
 import { ShowPageResourceLayout } from "../../../components/ShowPageResourceLayout";
+import { MoreActionsButton } from "../../../components/MoreActionsButton";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { SpgpaShowSummary } from "./SpgpaShowSummary";
@@ -14,7 +15,7 @@ import { SpgpaAlerts } from "./SpgpaAlerts";
 import { SpgpaStatusBadge } from "../../../components/SpgpaStatusBadge";
 import { ScaleToggle } from "../../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../../utils/scales";
-import { IconDots, IconExternal, IconPencil } from "@elhub/ds-icons";
+import { IconExternal, IconPencil } from "@elhub/ds-icons";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -56,30 +57,21 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ShowPageResourceLayout
-      resourceType={`Product application #${spgpa.id}`}
+      resourceType={`Service providing group product application #${spgpa.id}`}
       resourceName={spg.data ? spg.data.name : "Product application"}
       status={<SpgpaStatusBadge status={spgpa.status} />}
       alerts={<SpgpaAlerts spgpa={spgpa} />}
       viewControls={
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Display unit:</span>
-          <ScaleToggle
-            unit="W"
-            options={POWER_SCALE_OPTIONS}
-            value={powerScale}
-            onChange={setPowerScale}
-          />
-        </div>
+        <ScaleToggle
+          unit="W"
+          options={POWER_SCALE_OPTIONS}
+          value={powerScale}
+          onChange={setPowerScale}
+        />
       }
       utilityActions={
         <Dropdown>
-          <Button
-            as={Dropdown.Toggle}
-            variant="tertiary"
-            icon={IconDots}
-            aria-label="More actions"
-            title="More actions"
-          />
+          <MoreActionsButton />
           <Dropdown.Menu arrow placement="bottom-start">
             <Dropdown.Menu.GroupedList>
               {canEdit && (

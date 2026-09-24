@@ -26,7 +26,6 @@ export const ShowPageResourceLayout = ({
 }: ShowPageResourceLayoutProps) => {
   return (
     <div className="flex flex-col gap-4 p-2">
-      {alerts}
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
           <BodyText size="small" className="text-semantic-text-secondary">
@@ -39,8 +38,7 @@ export const ShowPageResourceLayout = ({
             {status && <div className="flex items-center gap-1">{status}</div>}
           </div>
         </div>
-        <div className="flex flex-wrap self-end items-center gap-2 lg:justify-end">
-          {viewControls}
+        <div className="flex flex-wrap self-end items-center gap-2 pr-[var(--eds-size-4)] lg:justify-end">
           {workflowActions && (
             <div className="flex flex-wrap items-center gap-2">
               {workflowActions}
@@ -51,9 +49,13 @@ export const ShowPageResourceLayout = ({
           )}
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">
-        {summary}
-        {content}
+      {alerts}
+      <div className="flex flex-col gap-4 pt-4 xl:flex-row xl:items-start">
+        <div className="flex flex-col gap-4 xl:w-1/4">
+          {summary}
+          {viewControls}
+        </div>
+        <div className="min-w-0 flex-1">{content}</div>
       </div>
     </div>
   );

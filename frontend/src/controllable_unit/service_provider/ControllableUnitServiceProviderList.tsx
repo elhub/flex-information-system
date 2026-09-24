@@ -10,7 +10,7 @@ import {
   DeleteButton,
   NestedResourceHistoryButton,
 } from "../../components/EDS-ra/buttons";
-import { Button, Heading, Loader } from "../../components/ui";
+import { Button, Loader } from "../../components/ui";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
@@ -98,9 +98,6 @@ export const ControllableUnitServiceProviderList = ({
   return (
     <ResourceContextProvider value="controllable_unit_service_provider">
       <div className="flex flex-col gap-4">
-        <Heading level={2} size="small">
-          Service provider relations
-        </Heading>
         <List
           perPage={10}
           actions={actions}

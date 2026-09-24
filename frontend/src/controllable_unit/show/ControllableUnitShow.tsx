@@ -1,4 +1,4 @@
-import { Badge, Button, Dropdown, Loader } from "../../components/ui";
+import { Badge, Dropdown, Loader } from "../../components/ui";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
@@ -9,8 +9,9 @@ import { ActivateControllableUnitButton } from "./components/ActivateControllabl
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
 import { ShowPageResourceLayout } from "../../components/ShowPageResourceLayout";
+import { MoreActionsButton } from "../../components/MoreActionsButton";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
-import { IconDots, IconPencil } from "@elhub/ds-icons";
+import { IconPencil } from "@elhub/ds-icons";
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -65,13 +66,7 @@ export const ControllableUnitShow = () => {
       utilityActions={
         canEdit || canReadEvents ? (
           <Dropdown>
-            <Button
-              as={Dropdown.Toggle}
-              variant="tertiary"
-              icon={IconDots}
-              aria-label="More actions"
-              title="More actions"
-            />
+            <MoreActionsButton />
             <Dropdown.Menu arrow placement="bottom-start">
               {canEdit && (
                 <Dropdown.Menu.GroupedList>
