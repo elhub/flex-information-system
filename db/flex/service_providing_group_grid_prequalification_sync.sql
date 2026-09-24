@@ -66,9 +66,18 @@ BEGIN
 END;
 $$;
 
--- changeset flex:service-providing-group-grid-prequalification-sync-job runOnChange:true endDelimiter:;
+-- changeset flex:service-providing-group-grid-prequalification-sync-job runOnChange:false endDelimiter:;
 SELECT cron.schedule(
     'service-providing-group-grid-prequalification-sync',
     '47 2 * * *', -- every night at 02:47
     $$SELECT flex.service_providing_group_grid_prequalification_sync()$$
+);
+
+-- changeset flex:service-providing-group-grid-prequalification-sync-job-alter runOnChange:true endDelimiter:;
+SELECT cron.alter_job(
+    (
+        SELECT jobid FROM cron.job
+        WHERE jobname = 'service-providing-group-grid-prequalification-sync'
+    ),
+    '47 * * * *' -- every hour at minute 47
 );
