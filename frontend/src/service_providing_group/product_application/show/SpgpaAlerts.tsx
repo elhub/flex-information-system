@@ -5,13 +5,13 @@ import { useTranslate } from "ra-core";
 
 export const useSpgpaAlerts = (
   spgpa: ServiceProvidingGroupProductApplication | undefined,
-): AlertType | null => {
+): AlertType | undefined => {
   const { data: identity } = useGetIdentity();
   const translate = useTranslate();
   const isSystemOperator = identity?.role === "flex_system_operator";
 
   if (!spgpa || !isSystemOperator || spgpa.status !== "requested") {
-    return null;
+    return undefined;
   }
 
   return {

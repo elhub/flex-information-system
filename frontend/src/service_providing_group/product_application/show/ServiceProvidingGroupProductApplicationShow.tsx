@@ -5,8 +5,8 @@ import { ResourceShowLayout } from "../../../components/ResourceShowLayout";
 import {
   useGetIdentity,
   usePermissions,
-  useTranslate,
   UserIdentity,
+  useTranslate,
 } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { useSpgpaShowSummary } from "./SpgpaShowSummary";
@@ -90,7 +90,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           : translate("text.table.header.product_application")
       }
       status={spgpaStatus}
-      alerts={alert ?? undefined}
+      alert={alert ?? undefined}
       displayControls={
         <ScaleToggle
           unit="W"

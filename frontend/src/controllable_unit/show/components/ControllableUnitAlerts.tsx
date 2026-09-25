@@ -4,11 +4,11 @@ import { useTranslate } from "ra-core";
 
 export const useControllableUnitAlerts = (
   controllableUnitViewModel: ControllableUnitShowViewModel | undefined,
-): AlertType | null => {
+): AlertType | undefined => {
   const translate = useTranslate();
 
   if (!controllableUnitViewModel) {
-    return null;
+    return undefined;
   }
 
   const { controllableUnit, suspensions, technicalResources } =
@@ -54,5 +54,5 @@ export const useControllableUnitAlerts = (
       body: translate("text.cu_show_not_active_body"),
     };
   }
-  return null;
+  return undefined;
 };

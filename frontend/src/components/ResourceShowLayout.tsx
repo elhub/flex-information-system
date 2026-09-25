@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslate } from "ra-core";
-import { BodyText, Heading, Alert, Dropdown, Tabs, Button, Panel } from "./ui";
+import { Alert, BodyText, Button, Dropdown, Heading, Panel, Tabs } from "./ui";
 import { StatusBadge, StatusVariant } from "./StatusBadge";
 import { LabelValue, LabelValueProps } from "./LabelValue";
 import { IconChevronDown } from "@elhub/ds-icons";
@@ -42,7 +42,7 @@ type ResourceShowLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
   status?: ResourceStatus;
-  alerts?: AlertType;
+  alert?: AlertType;
   displayControls?: ReactNode;
   moreActions?: UtilityAction[];
   moreNavigationActions?: UtilityAction[];
@@ -273,7 +273,7 @@ export const ResourceShowLayout = ({
   secondaryHeaderText,
   mainHeaderText,
   status,
-  alerts,
+  alert,
   displayControls,
   moreActions,
   moreNavigationActions,
@@ -291,7 +291,7 @@ export const ResourceShowLayout = ({
         moreActions={moreActions}
         moreNavigationActions={moreNavigationActions}
       />
-      {alerts && <ResourceAlert alert={alerts} />}
+      {alert && <ResourceAlert alert={alert} />}
       <ResourceBody
         summary={summary}
         displayControls={displayControls}
