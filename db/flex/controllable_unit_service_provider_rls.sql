@@ -62,7 +62,7 @@ USING (
 );
 
 -- RLS: CUSP-SP001
-GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
+GRANT SELECT, INSERT, UPDATE ON controllable_unit_service_provider
 TO flex_service_provider;
 DROP POLICY IF EXISTS controllable_unit_service_provider_sp
 ON controllable_unit_service_provider;

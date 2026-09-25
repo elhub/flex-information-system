@@ -329,29 +329,13 @@ def test_cusp_sp(data):
         client=sp1_client,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_from=midnight_n_days_diff(-10),
+            valid_from=midnight_n_days_diff(-17),
             valid_to=midnight_n_days_diff(-7),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
 
-    # updates in the past limited to a 2-week window
-
-    u = update_controllable_unit_service_provider.sync(
-        client=sp1_client,
-        id=cast(int, cusp.id),
-        body=ControllableUnitServiceProviderUpdateRequest(
-            valid_from=midnight_n_days_diff(-17),
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
-
-    d = delete_controllable_unit_service_provider.sync(
-        client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
-    )
-    assert not (isinstance(d, ErrorMessage))
-
-    # but they cannot touch the old records
+    # also old records (2024)
 
     cusp = cusps_sp[0]
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
@@ -363,7 +347,14 @@ def test_cusp_sp(data):
             valid_to=midnight_n_days_diff(0),
         ),
     )
-    assert isinstance(u, ErrorMessage)
+    assert not (isinstance(u, ErrorMessage))
+
+    # they cannot delete contracts
+
+    d = delete_controllable_unit_service_provider.sync(
+        client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
+    )
+    assert isinstance(d, ErrorMessage)
 
 
 # RLS: CUSP-SO001

@@ -1579,10 +1579,6 @@ GRANT UPDATE (
 api.controllable_unit_service_provider
 TO flex_service_provider;
 
-GRANT DELETE ON TABLE
-api.controllable_unit_service_provider
-TO flex_service_provider;
-
 GRANT SELECT (
     id,
     controllable_unit_id,

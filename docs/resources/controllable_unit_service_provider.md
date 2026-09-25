@@ -27,7 +27,6 @@ of one service provider per activation period.
 
 | Validation rule key | Validation rule                                                                                                                         | Status |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------|--------|
-| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                                              | DONE   |
 | CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract.                         | DONE   |
 | CUSP-VAL003         | For the sake of data quality, new contracts added by SP and directly taking place after another contract cannot have the same end user. | DONE   |
 | CUSP-VAL004         | The end user of a new CUSP must match the end user owning the accounting point the CU is connected to.                                  | DONE   |
@@ -96,7 +95,7 @@ No policies.
 
 | Policy key | Policy                                                  | Status |
 |------------|---------------------------------------------------------|--------|
-| CUSP-SP001 | Create, read, update and delete CUSP where they are SP. | DONE   |
+| CUSP-SP001 | Create, read and update CUSP where they are SP. | DONE   |
 | CUSP-SP002 | Read history on CUSP that they can read.                | DONE   |
 
 #### Third Party
