@@ -77,6 +77,7 @@ export const useSpgpaShowSummary = ({
         ),
     },
     {
+      shouldShow: !!spgpa.ramping_description,
       labelKey:
         "service_providing_group_product_application.ramping_description",
       value: (
