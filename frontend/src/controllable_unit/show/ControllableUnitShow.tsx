@@ -59,22 +59,21 @@ export const ControllableUnitShow = () => {
         status: cuStatusVariantMap[cu.status].status,
         icon: cuStatusVariantMap[cu.status].icon,
       }}
-      moreActions={
-        canEdit
-          ? [
-              {
-                to: `/controllable_unit/${cu.id}/edit`,
-                title: "Edit",
-                icon: <IconPencil />,
-              },
-            ]
-          : []
-      }
-      moreNavigationActions={
-        canReadEvents
-          ? [{ to: `/event?filter=${eventsFilter}`, title: "Events" }]
-          : []
-      }
+      moreActions={[
+        {
+          to: `/controllable_unit/${cu.id}/edit`,
+          title: "Edit",
+          icon: <IconPencil />,
+          canClick: canEdit ?? true,
+        },
+      ]}
+      moreNavigationActions={[
+        {
+          to: `/event?filter=${eventsFilter}`,
+          title: "Events",
+          canClick: canReadEvents ?? true,
+        },
+      ]}
       workflowActions={
         cu.status === "new" ? (
           <ActivateControllableUnitButton

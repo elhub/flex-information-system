@@ -23,6 +23,7 @@ export type UtilityAction = {
   title: string;
   icon?: ReactNode;
   external?: boolean;
+  canClick?: boolean;
 };
 
 type UtilityActionGroup = {
@@ -128,21 +129,37 @@ const ActionGroupSection = ({
       {group.label}
     </Dropdown.Menu.GroupedList.Heading>
     <Dropdown.Menu.GroupedList>
-      {group.actions.map((action) => (
-        <Dropdown.Menu.GroupedList.Item
-          key={action.to}
-          as={RouterLink}
-          to={action.to}
-          {...(action.external
-            ? { target: "_blank", rel: "noopener noreferrer" }
-            : {})}
-        >
-          <div className="flex items-center gap-2">
-            {action.icon}
-            {action.title}
-          </div>
-        </Dropdown.Menu.GroupedList.Item>
-      ))}
+      {group.actions.map((action) => {
+        const canClick = action.canClick ?? true;
+
+        return canClick ? (
+          <Dropdown.Menu.GroupedList.Item
+            key={action.to}
+            as={RouterLink}
+            to={action.to}
+            {...(action.external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+          >
+            <div className="flex items-center gap-2">
+              {action.icon}
+              {action.title}
+            </div>
+          </Dropdown.Menu.GroupedList.Item>
+        ) : (
+          <Dropdown.Menu.GroupedList.Item
+            key={action.to}
+            disabled
+            aria-disabled="true"
+            className="cursor-not-allowed opacity-50"
+          >
+            <div className="flex items-center gap-2">
+              {action.icon}
+              {action.title}
+            </div>
+          </Dropdown.Menu.GroupedList.Item>
+        );
+      })}
     </Dropdown.Menu.GroupedList>
   </>
 );

@@ -88,15 +88,12 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         />
       }
       moreActions={[
-        ...(canEdit
-          ? [
-              {
-                to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
-                title: "Edit",
-                icon: <IconPencil />,
-              },
-            ]
-          : []),
+        {
+          to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
+          title: "Edit",
+          icon: <IconPencil />,
+          canClick: canEdit ?? true,
+        },
         {
           to: `/service_providing_group_product_application/${spgpa.id}/print`,
           title: "Print",
@@ -104,11 +101,13 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           external: true,
         },
       ]}
-      moreNavigationActions={
-        canReadEvents
-          ? [{ to: `/event?filter=${eventsFilter}`, title: "Events" }]
-          : []
-      }
+      moreNavigationActions={[
+        {
+          to: `/event?filter=${eventsFilter}`,
+          title: "Events",
+          canClick: canReadEvents ?? true,
+        },
+      ]}
       workflowActions={
         canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined
       }
