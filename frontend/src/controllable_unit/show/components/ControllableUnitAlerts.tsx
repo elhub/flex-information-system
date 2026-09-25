@@ -18,8 +18,10 @@ export const useControllableUnitAlerts = (
     const suspension = suspensions[0];
     return {
       severity: "error",
-      heading: "Controllable unit is suspended",
-      body: `Reason: ${suspension.reason}`,
+      heading: translate("text.cu_show_suspended_heading"),
+      body: translate("text.cu_show_suspended_body", {
+        reason: suspension.reason,
+      }),
     };
   }
 
@@ -40,16 +42,16 @@ export const useControllableUnitAlerts = (
   if (technicalResources?.length === 0) {
     return {
       severity: "info",
-      heading: "Add technical resources",
-      body: "To set the controllable unit as active, at least one technical resource is required.",
+      heading: translate("text.cu_show_add_technical_resources_heading"),
+      body: translate("text.cu_show_add_technical_resources_body"),
     };
   }
 
   if (controllableUnit.status === "new") {
     return {
       severity: "info",
-      heading: "Controllable unit is not active",
-      body: "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
+      heading: translate("text.cu_show_not_active_heading"),
+      body: translate("text.cu_show_not_active_body"),
     };
   }
   return null;

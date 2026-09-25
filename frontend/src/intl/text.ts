@@ -1,6 +1,12 @@
 export type TextKey =
   | "entity_role"
   | "edit"
+  | "print"
+  | "service_providing_group_product_application"
+  | "resource_show_layout.actions_group_label"
+  | "resource_show_layout.navigate_group_label"
+  | "resource_show_layout.more_button"
+  | "resource_show_layout.more_actions_aria_label"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -42,8 +48,17 @@ export type TextKey =
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
   | "controllable_unit.is_small.false.label"
+  | "cu_show_no_service_provider"
+  | "cu_show_no_balance_responsible_party"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
+  | "cu_show_suspended_heading"
+  | "cu_show_suspended_body"
+  | "cu_show_add_technical_resources_heading"
+  | "cu_show_add_technical_resources_body"
+  | "cu_show_not_active_heading"
+  | "cu_show_not_active_body"
+  | "spgpa_show_requested_alert_body"
   | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
@@ -182,6 +197,13 @@ export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
     edit: "Edit",
+    print: "Print",
+    service_providing_group_product_application:
+      "Service providing group product application",
+    "resource_show_layout.actions_group_label": "Actions",
+    "resource_show_layout.navigate_group_label": "Navigate to",
+    "resource_show_layout.more_button": "More",
+    "resource_show_layout.more_actions_aria_label": "More actions",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -222,10 +244,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "No (Not small, > 50 kW of flexible power)",
     "controllable_unit.is_small.false.label": "No",
+    cu_show_no_service_provider: "No service provider",
+    cu_show_no_balance_responsible_party: "No balance responsible party",
     cu_flexible_power_exceeds_rated_power_heading:
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
+    cu_show_suspended_heading: "Controllable unit is suspended",
+    cu_show_suspended_body: "Reason: %{reason}",
+    cu_show_add_technical_resources_heading: "Add technical resources",
+    cu_show_add_technical_resources_body:
+      "To set the controllable unit as active, at least one technical resource is required.",
+    cu_show_not_active_heading: "Controllable unit is not active",
+    cu_show_not_active_body:
+      "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
+    spgpa_show_requested_alert_body:
+      "The procuring system operator must now shortly start prequalification or verification on this application.",
     power_ratio_tooltip:
       "The flexible power represents %{percentage}% of the rated power",
     "lookup.input.accounting_point": "Accounting point",
@@ -408,6 +442,13 @@ export const text: Record<string, Record<TextKey, string>> = {
   nb: {
     entity_role: "Entitet",
     edit: "Endre",
+    print: "Skriv ut",
+    service_providing_group_product_application:
+      "Fleksibilitetsgruppens produktsøknad",
+    "resource_show_layout.actions_group_label": "Handlinger",
+    "resource_show_layout.navigate_group_label": "Naviger til",
+    "resource_show_layout.more_button": "Mer",
+    "resource_show_layout.more_actions_aria_label": "Flere handlinger",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
@@ -451,10 +492,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
+    cu_show_no_service_provider: "Ingen tjenesteleverandør",
+    cu_show_no_balance_responsible_party: "Ingen balanseansvarlig",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
+    cu_show_suspended_body: "Årsak: %{reason}",
+    cu_show_add_technical_resources_heading: "Legg til tekniske ressurser",
+    cu_show_add_technical_resources_body:
+      "For å sette den kontrollerbare enheten som aktiv kreves minst én teknisk ressurs.",
+    cu_show_not_active_heading: "Kontrollerbar enhet er ikke aktiv",
+    cu_show_not_active_body:
+      "Kontrollerbar enhet må være aktiv for å bli lagt til en fleksibilitetsgruppe. Legg til alle tekniske ressurser og sørg for at dataene er korrekte før aktivering.",
+    spgpa_show_requested_alert_body:
+      "Den innkjøpende systemoperatøren må nå snart starte prekvalifisering eller verifisering av denne søknaden.",
     power_ratio_tooltip:
       "Den fleksible effekten utgjør %{percentage}% av merkeeffekten",
     "lookup.input.accounting_point": "Avregningspunkt",

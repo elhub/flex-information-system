@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../../components/ui";
 import { ResourceShowLayout } from "../../../components/ResourceShowLayout";
-import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
+import {
+  useGetIdentity,
+  usePermissions,
+  useTranslate,
+  UserIdentity,
+} from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { useSpgpaShowSummary } from "./SpgpaShowSummary";
 import { SpgpaShowTabs } from "./SpgpaShowTabs";
@@ -31,6 +36,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
     identity?.role === "flex_flexibility_information_system_operator" ||
     identity?.role === "flex_system_operator";
   const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
 
   const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
@@ -75,8 +81,14 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
-      mainHeaderText={spg.data ? spg.data.name : "Product application"}
+      secondaryHeaderText={`${translate(
+        "text.service_providing_group_product_application",
+      )} #${spgpa.id}`}
+      mainHeaderText={
+        spg.data
+          ? spg.data.name
+          : translate("text.table.header.product_application")
+      }
       status={spgpaStatus}
       alerts={alert ?? undefined}
       displayControls={
@@ -90,13 +102,13 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       moreActions={[
         {
           to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
-          title: "Edit",
+          title: translate("text.edit"),
           icon: <IconPencil />,
           shouldShow: canEdit ?? true,
         },
         {
           to: `/service_providing_group_product_application/${spgpa.id}/print`,
-          title: "Print",
+          title: translate("text.print"),
           icon: <IconExternal />,
           external: true,
           shouldShow: true,
@@ -105,7 +117,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       moreNavigationActions={[
         {
           to: `/event?filter=${eventsFilter}`,
-          title: "Events",
+          title: translate("text.header_nav_events"),
           shouldShow: canReadEvents ?? true,
         },
       ]}

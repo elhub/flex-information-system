@@ -45,7 +45,7 @@ export const useControllableUnitShowSummary = ({
       value: controllableUnit.business_id,
     },
     {
-      label: "Accounting point",
+      labelKey: "accounting_point_bidding_zone.accounting_point_id",
       value: accountingPoint
         ? systemOperator
           ? `${accountingPoint.business_id} (${systemOperator.name})`
@@ -53,11 +53,11 @@ export const useControllableUnitShowSummary = ({
         : undefined,
     },
     {
-      label: "Metering grid area",
+      labelKey: "accounting_point_metering_grid_area.metering_grid_area_id",
       value: meteringGridArea?.name,
     },
     {
-      label: "Bidding zone",
+      labelKey: "accounting_point_bidding_zone.bidding_zone",
       value: biddingZone
         ? translate(
             `enum.accounting_point_bidding_zone.bidding_zone.${biddingZone}`,
@@ -65,23 +65,24 @@ export const useControllableUnitShowSummary = ({
         : "-",
     },
     {
-      label: "Service provider",
+      labelKey: "controllable_unit_service_provider.service_provider_id",
       value: serviceProvider
         ? serviceProviderRange
           ? `${serviceProvider.name} (${serviceProviderRange})`
           : serviceProvider.name
-        : "No service provider",
+        : translate("text.cu_show_no_service_provider"),
     },
     {
-      label: "Balance responsible party",
+      labelKey:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
       value: balanceResponsibleParty
         ? balanceResponsiblePartyRange
           ? `${balanceResponsibleParty.name} (${balanceResponsiblePartyRange})`
           : balanceResponsibleParty.name
-        : "No balance responsible party",
+        : translate("text.cu_show_no_balance_responsible_party"),
     },
     {
-      label: "Energy supplier",
+      labelKey: "accounting_point_energy_supplier.energy_supplier_id",
       value: energySupplier?.name,
     },
     {
