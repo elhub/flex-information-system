@@ -12,7 +12,8 @@ import { SpgInfoTab } from "./SpgInfoTab";
 import { ServiceProvidingGroupProductApplicationHistoryList } from "../ServiceProvidingGroupProductApplicationHistoryList";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
 import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
-import { useTranslate } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
+import { Permissions } from "../../../auth/permissions";
 
 type Props = {
   spgId: number;
@@ -31,6 +32,11 @@ export const SpgpaShowTabs = ({
   showChanges,
   powerScale,
 }: Props) => {
+  const { permissions } = usePermissions<Permissions>();
+  const canViewHistory = !!permissions?.allow(
+    "service_providing_group_product_application_history",
+    "read",
+  );
   const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
   return (
@@ -51,7 +57,9 @@ export const SpgpaShowTabs = ({
             value="attachments"
           />
         )}
-        <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        {canViewHistory && (
+          <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        )}
       </Tabs.List>
       <Tabs.Panel value="overview">
         <SpgInfoTab
@@ -91,11 +99,13 @@ export const SpgpaShowTabs = ({
           />
         </Tabs.Panel>
       )}
-      <Tabs.Panel value="history">
-        <ServiceProvidingGroupProductApplicationHistoryList
-          applicationId={spgpaId}
-        />
-      </Tabs.Panel>
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <ServiceProvidingGroupProductApplicationHistoryList
+            applicationId={spgpaId}
+          />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };

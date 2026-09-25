@@ -34,6 +34,10 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
     "accounting_point.location",
     "read",
   );
+  const canViewHistory = !!permissions?.allow(
+    "controllable_unit_history",
+    "read",
+  );
   const [tab, setTab] = useTabSearchParam("technical_resources");
   const translate = useTranslate();
   return (
@@ -58,7 +62,9 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
           label={translate("text.tab.balance_responsible_party")}
           value="balance_responsible_party"
         />
-        <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        {canViewHistory && (
+          <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        )}
       </Tabs.List>
       <Tabs.Panel value="technical_resources">
         <RecordContextProvider value={{ id: cuId }}>
@@ -105,9 +111,11 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
           controllableUnitId={cuId}
         />
       </Tabs.Panel>
-      <Tabs.Panel value="history">
-        <ControllableUnitHistoryList controllableUnitId={cuId} />
-      </Tabs.Panel>
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <ControllableUnitHistoryList controllableUnitId={cuId} />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };
