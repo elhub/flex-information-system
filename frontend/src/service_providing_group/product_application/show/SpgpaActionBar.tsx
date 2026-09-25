@@ -185,22 +185,16 @@ export const SpgpaActionBar = ({ spgpa }: Props) => {
   }
 
   return (
-    <div
-      className="flex items-center justify-end rounded-md border
-      border-semantic-border-default bg-global-color-white
-      px-4 py-3"
-    >
-      <div className="flex gap-2">
-        {actions.map((config) => (
-          <ActionButton
-            key={config.label}
-            config={config}
-            spgpaId={spgpa.id}
-            spgId={spgpa.service_providing_group_id}
-            defaultCompleteAt={spgpa.created_at}
-          />
-        ))}
-      </div>
+    <div className="flex flex-wrap items-center gap-2">
+      {actions.map((config) => (
+        <ActionButton
+          key={config.label}
+          config={config}
+          spgpaId={spgpa.id}
+          spgId={spgpa.service_providing_group_id}
+          defaultCompleteAt={spgpa.created_at}
+        />
+      ))}
     </div>
   );
 };

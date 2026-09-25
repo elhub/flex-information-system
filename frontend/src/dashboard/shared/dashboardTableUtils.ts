@@ -1,6 +1,6 @@
 import { IconStopWatch15 } from "@elhub/ds-icons";
 import { sppaStatusVariantMap } from "../../service_provider_product_application/show/sppaStatus";
-import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../../components/StatusBadge";
 import { spgpaStatusVariantMap } from "../../service_providing_group/product_application/spgpaStatus";
 import { DashboardItemKind } from "../hooks/useDashboardApplications";
 import { spgpqStatusVariantMap } from "../../service_providing_group/grid_prequalification/spgpqStatus";

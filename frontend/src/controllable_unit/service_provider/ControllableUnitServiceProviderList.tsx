@@ -10,7 +10,7 @@ import {
   DeleteButton,
   NestedResourceHistoryButton,
 } from "../../components/EDS-ra/buttons";
-import { Button, Heading, Loader } from "../../components/ui";
+import { Button, Loader } from "../../components/ui";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
@@ -51,14 +51,20 @@ const CULookupButton = ({
   </Button>
 );
 
-export const ControllableUnitServiceProviderList = () => {
+export const ControllableUnitServiceProviderList = ({
+  controllableUnitId,
+}: {
+  controllableUnitId?: number;
+}) => {
   const { controllable_unit_id } = useParams<{
     controllable_unit_id: string;
   }>();
+  const effectiveControllableUnitId =
+    controllableUnitId ?? Number(controllable_unit_id);
   const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
     "controllable_unit",
-    { id: Number(controllable_unit_id) },
-    { enabled: !!controllable_unit_id },
+    { id: effectiveControllableUnitId },
+    { enabled: Number.isFinite(effectiveControllableUnitId) },
   );
   const { permissions } = usePermissions<Permissions>();
 
@@ -92,9 +98,6 @@ export const ControllableUnitServiceProviderList = () => {
   return (
     <ResourceContextProvider value="controllable_unit_service_provider">
       <div className="flex flex-col gap-4">
-        <Heading level={2} size="small">
-          Service provider relations
-        </Heading>
         <List
           perPage={10}
           actions={actions}

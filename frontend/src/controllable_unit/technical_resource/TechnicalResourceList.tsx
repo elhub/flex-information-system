@@ -47,6 +47,7 @@ const CreateButton = ({
       state={locationState}
       variant="primary"
       icon={IconPlus}
+      size="small"
     >
       Create technical resource
     </Button>

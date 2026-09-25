@@ -1,6 +1,6 @@
 import { IconCross, IconQualitiesCircle } from "@elhub/ds-icons";
 import { SystemOperatorProductTypeStatus } from "../generated-client";
-import { StatusVariant } from "../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../components/StatusBadge";
 
 export const soProductTypeStatusVariantMap: Record<
   SystemOperatorProductTypeStatus,

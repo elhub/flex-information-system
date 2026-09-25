@@ -65,15 +65,12 @@ export const ServiceProvidingGroupShow = () => {
       title={`Group Details - ${spg.name}`}
       alerts={<ServiceProvidingGroupAlerts spg={spg} />}
       titleExtra={
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Display unit:</span>
-          <ScaleToggle
-            unit="W"
-            options={POWER_SCALE_OPTIONS}
-            value={powerScale}
-            onChange={setPowerScale}
-          />
-        </div>
+        <ScaleToggle
+          unit="W"
+          options={POWER_SCALE_OPTIONS}
+          value={powerScale}
+          onChange={setPowerScale}
+        />
       }
       badge={
         <>

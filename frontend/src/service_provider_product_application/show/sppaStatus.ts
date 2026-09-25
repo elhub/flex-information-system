@@ -5,7 +5,7 @@ import {
   IconWarningCircle,
 } from "@elhub/ds-icons";
 import { ServiceProviderProductApplicationStatus } from "../../generated-client";
-import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../../components/StatusBadge";
 
 export const sppaStatusVariantMap: Record<
   ServiceProviderProductApplicationStatus,

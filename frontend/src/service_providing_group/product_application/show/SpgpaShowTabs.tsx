@@ -9,9 +9,11 @@ import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
 import { SpgInfoTab } from "./SpgInfoTab";
+import { ServiceProvidingGroupProductApplicationHistoryList } from "../ServiceProvidingGroupProductApplicationHistoryList";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
 import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
-import { useTranslate } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
+import { Permissions } from "../../../auth/permissions";
 
 type Props = {
   spgId: number;
@@ -30,12 +32,17 @@ export const SpgpaShowTabs = ({
   showChanges,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("spg_info");
+  const { permissions } = usePermissions<Permissions>();
+  const canViewHistory = !!permissions?.allow(
+    "service_providing_group_product_application_history",
+    "read",
+  );
+  const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.spg_info")} value="spg_info" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
@@ -50,9 +57,17 @@ export const SpgpaShowTabs = ({
             value="attachments"
           />
         )}
+        {canViewHistory && (
+          <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        )}
       </Tabs.List>
-      <Tabs.Panel value="spg_info">
-        <SpgInfoTab spgId={spgId} spg={spg} powerScale={powerScale} />
+      <Tabs.Panel value="overview">
+        <SpgInfoTab
+          spgId={spgId}
+          spgProcuringSystemOperatorId={spgpa.procuring_system_operator_id}
+          spg={spg}
+          powerScale={powerScale}
+        />
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
         <SpgpaControllableUnitsTable
@@ -81,6 +96,13 @@ export const SpgpaShowTabs = ({
           <AttachmentList
             resource="service_providing_group_product_application"
             parentId={spgpaId}
+          />
+        </Tabs.Panel>
+      )}
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <ServiceProvidingGroupProductApplicationHistoryList
+            applicationId={spgpaId}
           />
         </Tabs.Panel>
       )}
