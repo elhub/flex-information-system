@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslate } from "ra-core";
-import { BodyText, Heading, Alert, Dropdown, Tabs, Button, Panel } from "./ui";
+import { Alert, BodyText, Button, Dropdown, Heading, Panel, Tabs } from "./ui";
 import { StatusBadge, StatusVariant } from "./StatusBadge";
 import { LabelValue, LabelValueProps } from "./LabelValue";
 import { IconChevronDown } from "@elhub/ds-icons";
@@ -28,7 +28,9 @@ export type UtilityAction = {
 };
 
 type UtilityActionGroup = {
-  label: string;
+  labelKey:
+    | "resource_show_layout.actions_group_label"
+    | "resource_show_layout.navigate_group_label";
   actions: UtilityAction[];
 };
 
@@ -123,33 +125,36 @@ type ActionGroupSectionProps = {
 const ActionGroupSection = ({
   group,
   showDivider,
-}: ActionGroupSectionProps) => (
-  <>
-    {showDivider && <Dropdown.Menu.Divider />}
-    <Dropdown.Menu.GroupedList.Heading>
-      {group.label}
-    </Dropdown.Menu.GroupedList.Heading>
-    <Dropdown.Menu.GroupedList>
-      {group.actions
-        .filter((action) => action.shouldShow ?? false)
-        .map((action) => (
-          <Dropdown.Menu.GroupedList.Item
-            key={action.to}
-            as={RouterLink}
-            to={action.to}
-            {...(action.external
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-          >
-            <div className="flex items-center gap-2">
-              {action.icon}
-              {action.title}
-            </div>
-          </Dropdown.Menu.GroupedList.Item>
-        ))}
-    </Dropdown.Menu.GroupedList>
-  </>
-);
+}: ActionGroupSectionProps) => {
+  const translate = useTranslate();
+  return (
+    <>
+      {showDivider && <Dropdown.Menu.Divider />}
+      <Dropdown.Menu.GroupedList.Heading>
+        {translate(`text.${group.labelKey}`)}
+      </Dropdown.Menu.GroupedList.Heading>
+      <Dropdown.Menu.GroupedList>
+        {group.actions
+          .filter((action) => action.shouldShow ?? false)
+          .map((action) => (
+            <Dropdown.Menu.GroupedList.Item
+              key={action.to}
+              as={RouterLink}
+              to={action.to}
+              {...(action.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              <div className="flex items-center gap-2">
+                {action.icon}
+                {action.title}
+              </div>
+            </Dropdown.Menu.GroupedList.Item>
+          ))}
+      </Dropdown.Menu.GroupedList>
+    </>
+  );
+};
 
 type MoreActionsMenuProps = {
   actions?: UtilityAction[];
@@ -166,11 +171,11 @@ const MoreActionsMenu = ({
 
   const visibleGroups: UtilityActionGroup[] = [
     {
-      label: translate("text.resource_show_layout.more_actions"),
+      labelKey: "resource_show_layout.actions_group_label" as const,
       actions: actions ?? [],
     },
     {
-      label: translate("text.resource_show_layout.navigate_to"),
+      labelKey: "resource_show_layout.navigate_group_label" as const,
       actions: navigationActions ?? [],
     },
   ].filter((group) => visibleActionCount(group) > 0);
@@ -187,14 +192,16 @@ const MoreActionsMenu = ({
           variant="tertiary"
           icon={IconChevronDown}
           iconPosition="right"
-          aria-label="More actions"
+          aria-label={translate(
+            "text.resource_show_layout.more_actions_aria_label",
+          )}
         >
-          More
+          {translate("text.resource_show_layout.more_button")}
         </Button>
         <Dropdown.Menu arrow placement="bottom-start">
           {visibleGroups.map((group, index) => (
             <ActionGroupSection
-              key={group.label}
+              key={group.labelKey}
               group={group}
               showDivider={index > 0}
             />
