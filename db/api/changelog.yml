@@ -21,9 +21,6 @@ databaseChangeLog:
       path: ./grants/
       relativeToChangelogFile: true
       endsWithFilter: .sql
-  - include:
-      file: ./migrations/controllable_unit_service_provider.sql
-      relativeToChangelogFile: true
   - includeAll:
       path: ./embedding/
       relativeToChangelogFile: true

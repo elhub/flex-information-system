@@ -75,7 +75,7 @@ ALTER COLUMN end_user_party_type DROP EXPRESSION;
 DROP TRIGGER IF EXISTS controllable_unit_service_provider_valid_time_freeze
 ON flex.controllable_unit_service_provider;
 
--- changeset flex:controllable-unit-service-provider-delete-revoke runOnChange:false endDelimiter:;
+-- changeset flex:controllable-unit-service-provider-delete-revoke runOnChange:true endDelimiter:;
 REVOKE DELETE ON TABLE
 flex.controllable_unit_service_provider
 FROM flex_service_provider;
