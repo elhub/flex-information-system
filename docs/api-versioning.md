@@ -17,7 +17,7 @@ is _always needed_ at some point. In order to keep a stable API while allowing
 ourselves to introduce breaking changes, we introduced two mechanisms: path
 versioning and rolling versions.
 
-### Path versioning (major changes)
+### Path versioning
 
 This consists in including a version segment (_e.g._, `/v1/`) in all URLs of the
 API. Incrementing this API version conceptually means using a substantially
@@ -28,20 +28,18 @@ As this API was started in the context of a fast-moving research project, we
 learnt a lot while building it. As the system is used, we will progressively get
 more insights into its limitations and have all the ingredients in our control
 to build a general `/v2/`. The timeline for such a change will be communicated
-well in advance, and users will be able to run major versions in parallel for a
-period.
+well in advance, and we will strive to run major versions in parallel for a
+period, if possible.
 
-!!! example
+Examples of possible upcoming changes:
 
-    Major logical changes, like several resources becoming related in different
-    ways than before, or time-dependent information being stored in completely
-    different resources, require substantial logic to be _translated_ to the old
-    concepts implemented in the existing API.
+* Moving from our current PostgREST-backed API to a custom implementation
+  based on [JSON:API](https://jsonapi.org/). This is the spec that Elhub in
+  general is trying to follow.
+* Major restructure the data model - due to changes or discoveries in
+  "functional" requirements or query semantics
 
-    Any such changes requiring an advanced "bridge" between the old and new
-    logic would belong to a major version bump.
-
-### Rolling versions (minor changes)
+### Rolling versions
 
 Path versioning is a rather heavy change management strategy, as it forces us to
 handle a new set of endpoints everytime we update the major version, and set up
@@ -66,7 +64,7 @@ for each version.
     For instance, moving a field from a resource to one of its subresources can
     be considered as a minor change, as it does not fundamentally break the
     logic of the existing API.
-    
+
     Indeed, after having implemented the change in our data layout and added the
     field to the subresource in the new minor version, support for the old minor
     version can always be implemented by fetching the field from the subresource
