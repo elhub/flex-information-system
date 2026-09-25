@@ -4,12 +4,12 @@ import { useGetIdentity } from "react-admin";
 
 export const useSpgpaAlerts = (
   spgpa: ServiceProvidingGroupProductApplication | undefined,
-): AlertType | null => {
+): AlertType | undefined => {
   const { data: identity } = useGetIdentity();
   const isSystemOperator = identity?.role === "flex_system_operator";
 
   if (!spgpa || !isSystemOperator || spgpa.status !== "requested") {
-    return null;
+    return undefined;
   }
 
   return {

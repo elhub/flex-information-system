@@ -7,7 +7,7 @@ import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
-import { usePermissions } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { ResourceShowLayout } from "../../components/ResourceShowLayout";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
 import { IconPencil } from "@elhub/ds-icons";
@@ -18,6 +18,7 @@ export const ControllableUnitShow = () => {
   const { permissions } = usePermissions<Permissions>();
 
   const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
   const {
     data: viewModel,
     isPending: isViewModelPending,
@@ -53,7 +54,7 @@ export const ControllableUnitShow = () => {
     <ResourceShowLayout
       secondaryHeaderText={`Controllable unit #${cu.id}`}
       mainHeaderText={cu.name}
-      alerts={alert ?? undefined}
+      alert={alert}
       status={{
         label: translateEnum(`controllable_unit.status.${cu.status}`),
         status: cuStatusVariantMap[cu.status].status,
@@ -62,16 +63,16 @@ export const ControllableUnitShow = () => {
       moreActions={[
         {
           to: `/controllable_unit/${cu.id}/edit`,
-          title: "Edit",
+          title: translate("text.edit"),
           icon: <IconPencil />,
-          shouldShow: canEdit ?? true,
+          shouldShow: canEdit ?? false,
         },
       ]}
       moreNavigationActions={[
         {
           to: `/event?filter=${eventsFilter}`,
-          title: "Events",
-          shouldShow: canReadEvents ?? true,
+          title: translate("text.events"),
+          shouldShow: canReadEvents ?? false,
         },
       ]}
       workflowActions={

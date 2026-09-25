@@ -4,11 +4,11 @@ import { useTranslate } from "ra-core";
 
 export const useControllableUnitAlerts = (
   controllableUnitViewModel: ControllableUnitShowViewModel | undefined,
-): AlertType | null => {
+): AlertType | undefined => {
   const translate = useTranslate();
 
   if (!controllableUnitViewModel) {
-    return null;
+    return undefined;
   }
 
   const { controllableUnit, suspensions, technicalResources } =
@@ -52,5 +52,5 @@ export const useControllableUnitAlerts = (
       body: "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
     };
   }
-  return null;
+  return undefined;
 };

@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslate } from "ra-core";
 import { BodyText, Heading, Alert, Dropdown, Tabs, Button, Panel } from "./ui";
 import { StatusBadge, StatusVariant } from "./StatusBadge";
 import { LabelValue, LabelValueProps } from "./LabelValue";
@@ -39,7 +40,7 @@ type ResourceShowLayoutProps = {
   secondaryHeaderText: string;
   mainHeaderText: string;
   status?: ResourceStatus;
-  alerts?: AlertType;
+  alert?: AlertType;
   displayControls?: ReactNode;
   moreActions?: UtilityAction[];
   moreNavigationActions?: UtilityAction[];
@@ -159,12 +160,19 @@ const MoreActionsMenu = ({
   actions,
   navigationActions,
 }: MoreActionsMenuProps) => {
+  const translate = useTranslate();
   const visibleActionCount = (group: UtilityActionGroup) =>
     group.actions.filter((action) => action.shouldShow ?? false).length;
 
   const visibleGroups: UtilityActionGroup[] = [
-    { label: "Actions", actions: actions ?? [] },
-    { label: "Navigate to", actions: navigationActions ?? [] },
+    {
+      label: translate("text.resource_show_layout.more_actions"),
+      actions: actions ?? [],
+    },
+    {
+      label: translate("text.resource_show_layout.navigate_to"),
+      actions: navigationActions ?? [],
+    },
   ].filter((group) => visibleActionCount(group) > 0);
 
   if (visibleGroups.length === 0) {
@@ -258,7 +266,7 @@ export const ResourceShowLayout = ({
   secondaryHeaderText,
   mainHeaderText,
   status,
-  alerts,
+  alert,
   displayControls,
   moreActions,
   moreNavigationActions,
@@ -276,7 +284,7 @@ export const ResourceShowLayout = ({
         moreActions={moreActions}
         moreNavigationActions={moreNavigationActions}
       />
-      {alerts && <ResourceAlert alert={alerts} />}
+      {alert && <ResourceAlert alert={alert} />}
       <ResourceBody
         summary={summary}
         displayControls={displayControls}
