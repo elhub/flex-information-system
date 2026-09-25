@@ -53,7 +53,8 @@ export const useControllableUnitShowSummary = ({
         : undefined,
     },
     {
-      labelKey: "accounting_point_metering_grid_area.metering_grid_area_id",
+      label: "Metering grid area",
+      value: meteringGridArea?.name,
     },
     {
       label: "Bidding zone",
