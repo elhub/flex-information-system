@@ -3,6 +3,7 @@ import {
   IconBean,
   IconBuilding,
   IconChevronDown,
+  IconExternal,
   IconQuestionCircle,
   IconUser,
   IconViewOff,
@@ -43,14 +44,6 @@ const UserDropdown = () => {
 
   const handleMe = () => {
     redirect(`/entity/${identity?.entityID}/show`);
-  };
-
-  const handleUserGuide = () => {
-    redirect(`${userGuideURL}`);
-  };
-
-  const handlerCreateUserGuide = () => {
-    redirect(`${userGuideCreateUsersURL}`);
   };
 
   const handleParty = async () => {
@@ -112,7 +105,7 @@ const UserDropdown = () => {
           {
             label: translate("text.user_dropdown_user_guide"),
             icon: IconQuestionCircle,
-            onClick: handleUserGuide,
+            href: userGuideURL,
           },
         ]
       : []),
@@ -121,7 +114,7 @@ const UserDropdown = () => {
           {
             label: translate("text.user_dropdown_create_user_guide"),
             icon: IconQuestionCircle,
-            onClick: handlerCreateUserGuide,
+            href: userGuideCreateUsersURL,
           },
         ]
       : []),
@@ -189,11 +182,15 @@ const UserDropdown = () => {
                 return (
                   <Dropdown.Menu.GroupedList.Item
                     key={index}
-                    className="flex gap-2 center"
-                    onClick={item.onClick}
+                    as="a"
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex gap-2 center no-underline"
                   >
                     <Icon />
                     <BodyText>{item.label}</BodyText>
+                    <IconExternal size="small" />
                   </Dropdown.Menu.GroupedList.Item>
                 );
               })}
