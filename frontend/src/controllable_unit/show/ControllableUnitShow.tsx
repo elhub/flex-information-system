@@ -64,14 +64,14 @@ export const ControllableUnitShow = () => {
           to: `/controllable_unit/${cu.id}/edit`,
           title: "Edit",
           icon: <IconPencil />,
-          canClick: canEdit ?? true,
+          shouldShow: canEdit ?? true,
         },
       ]}
       moreNavigationActions={[
         {
           to: `/event?filter=${eventsFilter}`,
           title: "Events",
-          canClick: canReadEvents ?? true,
+          shouldShow: canReadEvents ?? true,
         },
       ]}
       workflowActions={

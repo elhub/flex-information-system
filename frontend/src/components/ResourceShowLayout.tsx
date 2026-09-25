@@ -23,7 +23,7 @@ export type UtilityAction = {
   title: string;
   icon?: ReactNode;
   external?: boolean;
-  canClick?: boolean;
+  shouldShow?: boolean;
 };
 
 type UtilityActionGroup = {
@@ -129,10 +129,9 @@ const ActionGroupSection = ({
       {group.label}
     </Dropdown.Menu.GroupedList.Heading>
     <Dropdown.Menu.GroupedList>
-      {group.actions.map((action) => {
-        const canClick = action.canClick ?? true;
-
-        return canClick ? (
+      {group.actions
+        .filter((action) => action.shouldShow ?? false)
+        .map((action) => (
           <Dropdown.Menu.GroupedList.Item
             key={action.to}
             as={RouterLink}
@@ -146,20 +145,7 @@ const ActionGroupSection = ({
               {action.title}
             </div>
           </Dropdown.Menu.GroupedList.Item>
-        ) : (
-          <Dropdown.Menu.GroupedList.Item
-            key={action.to}
-            disabled
-            aria-disabled="true"
-            className="cursor-not-allowed opacity-50"
-          >
-            <div className="flex items-center gap-2">
-              {action.icon}
-              {action.title}
-            </div>
-          </Dropdown.Menu.GroupedList.Item>
-        );
-      })}
+        ))}
     </Dropdown.Menu.GroupedList>
   </>
 );
@@ -173,10 +159,13 @@ const MoreActionsMenu = ({
   actions,
   navigationActions,
 }: MoreActionsMenuProps) => {
+  const visibleActionCount = (group: UtilityActionGroup) =>
+    group.actions.filter((action) => action.shouldShow ?? false).length;
+
   const visibleGroups: UtilityActionGroup[] = [
     { label: "Actions", actions: actions ?? [] },
     { label: "Navigate to", actions: navigationActions ?? [] },
-  ].filter((group) => group.actions.length > 0);
+  ].filter((group) => visibleActionCount(group) > 0);
 
   if (visibleGroups.length === 0) {
     return null;

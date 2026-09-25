@@ -92,20 +92,21 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
           title: "Edit",
           icon: <IconPencil />,
-          canClick: canEdit ?? true,
+          shouldShow: canEdit ?? true,
         },
         {
           to: `/service_providing_group_product_application/${spgpa.id}/print`,
           title: "Print",
           icon: <IconExternal />,
           external: true,
+          shouldShow: true,
         },
       ]}
       moreNavigationActions={[
         {
           to: `/event?filter=${eventsFilter}`,
           title: "Events",
-          canClick: canReadEvents ?? true,
+          shouldShow: canReadEvents ?? true,
         },
       ]}
       workflowActions={
