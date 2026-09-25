@@ -31,7 +31,6 @@ type UtilityActionGroup = {
 };
 
 export type ResourceSummaryField = {
-  key: string;
   shouldShow?: boolean;
 } & LabelValueProps;
 
@@ -61,8 +60,12 @@ export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
       <div className="flex flex-col gap-4">
         {fields
           .filter((field) => field.shouldShow ?? true)
-          .map(({ key, shouldShow: _shouldShow, ...labelValueProps }) => (
-            <LabelValue key={key} {...labelValueProps} />
+          .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
+            <LabelValue
+              key={labelValueProps.label ?? labelValueProps.labelKey ?? index}
+              size="large"
+              {...labelValueProps}
+            />
           ))}
       </div>
     </Panel>

@@ -41,12 +41,10 @@ export const useControllableUnitShowSummary = ({
 
   return [
     {
-      key: "business_id",
       labelKey: "controllable_unit.business_id",
       value: controllableUnit.business_id,
     },
     {
-      key: "accounting_point",
       label: "Accounting point",
       value: accountingPoint
         ? systemOperator
@@ -55,12 +53,10 @@ export const useControllableUnitShowSummary = ({
         : undefined,
     },
     {
-      key: "metering_grid_area",
       label: "Metering grid area",
       value: meteringGridArea?.name,
     },
     {
-      key: "bidding_zone",
       label: "Bidding zone",
       value: biddingZone
         ? translate(
@@ -69,7 +65,6 @@ export const useControllableUnitShowSummary = ({
         : "-",
     },
     {
-      key: "service_provider",
       label: "Service provider",
       value: serviceProvider
         ? serviceProviderRange
@@ -78,7 +73,6 @@ export const useControllableUnitShowSummary = ({
         : "No service provider",
     },
     {
-      key: "balance_responsible_party",
       label: "Balance responsible party",
       value: balanceResponsibleParty
         ? balanceResponsiblePartyRange
@@ -87,24 +81,20 @@ export const useControllableUnitShowSummary = ({
         : "No balance responsible party",
     },
     {
-      key: "energy_supplier",
       label: "Energy supplier",
       value: energySupplier?.name,
     },
     {
-      key: "maximum_active_power",
       tooltip: true,
       labelKey: "controllable_unit.maximum_active_power",
       value: `${controllableUnit.maximum_active_power} kW`,
     },
     {
-      key: "regulation_direction",
       tooltip: true,
       labelKey: "controllable_unit.regulation_direction",
       value: controllableUnit.regulation_direction,
     },
     {
-      key: "additional_information",
       tooltip: true,
       labelKey: "controllable_unit.additional_information",
       value: controllableUnit.additional_information ? (
@@ -114,7 +104,6 @@ export const useControllableUnitShowSummary = ({
       ) : undefined,
     },
     {
-      key: "recorded_at",
       labelKey: "controllable_unit.recorded_at",
       value: controllableUnit.recorded_at
         ? formatDate(controllableUnit.recorded_at, "dd.MM.yyyy HH:mm")

@@ -37,27 +37,22 @@ export const useSpgpaShowSummary = ({
 
   return [
     {
-      key: "service_providing_group",
       label: "Service providing group",
       value: spg ? `${spg.name} (#${spg.id})` : undefined,
     },
     {
-      key: "system_operator",
       label: "System operator / PSO",
       value: procuringServiceProvider.data?.name,
     },
     {
-      key: "product_types",
       label: "Product types",
       value: productTypeNames,
     },
     {
-      key: "bidding_zone",
       label: "Bidding Zone",
       value: spg?.bidding_zone,
     },
     {
-      key: "maximum_active_power_up",
       label: "Max active power (up)",
       value: spgpa.maximum_active_power_up,
       unit: "W",
@@ -65,7 +60,6 @@ export const useSpgpaShowSummary = ({
       displayScale: powerScale,
     },
     {
-      key: "maximum_active_power_down",
       label: "Max active power (down)",
       value: spgpa.maximum_active_power_down,
       unit: "W",
@@ -73,7 +67,6 @@ export const useSpgpaShowSummary = ({
       displayScale: powerScale,
     },
     {
-      key: "ramping_capability",
       shouldShow: !!spgpa.ramping_capability,
       labelKey:
         "service_providing_group_product_application.ramping_capability",
@@ -84,7 +77,6 @@ export const useSpgpaShowSummary = ({
         ),
     },
     {
-      key: "ramping_description",
       labelKey:
         "service_providing_group_product_application.ramping_description",
       value: (
@@ -92,7 +84,6 @@ export const useSpgpaShowSummary = ({
       ),
     },
     {
-      key: "additional_information",
       shouldShow: !!spgpa.additional_information,
       label: "Additional information",
       value: (
@@ -102,24 +93,20 @@ export const useSpgpaShowSummary = ({
       ),
     },
     {
-      key: "created_at",
       label: "Created at",
       value: toDateTimeString(spgpa.created_at),
     },
     {
-      key: "prequalified_at",
       shouldShow: !!spgpa.prequalified_at,
       label: "Prequalified at",
       value: toDateTimeString(spgpa.prequalified_at),
     },
     {
-      key: "verified_at",
       shouldShow: !!spgpa.verified_at,
       label: "Verified at",
       value: toDateTimeString(spgpa.verified_at),
     },
     {
-      key: "complete_at",
       shouldShow: !!spgpa.complete_at,
       label: "Complete at",
       value: toDateTimeString(spgpa.complete_at),
