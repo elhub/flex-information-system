@@ -8,7 +8,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { cn } from "../util";
 import { convertScale, IDENTITY, Scale } from "../utils/scales";
 
-type LabelValueProps = {
+export type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
   label?: string;
   value: string | number | ReactNode | undefined;

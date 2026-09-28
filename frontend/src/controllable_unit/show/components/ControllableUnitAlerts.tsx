@@ -1,17 +1,16 @@
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { BodyText, Alert, Heading } from "../../../components/ui";
+import type { AlertType } from "../../../components/ResourceShowLayout";
 import { useTranslate } from "ra-core";
 
-type AlertType = {
-  severity: "info" | "success" | "warning" | "error";
-  heading: string;
-  body: string;
-};
-
-const useControllableUnitAlerts = (
-  controllableUnitViewModel: ControllableUnitShowViewModel,
-): AlertType | null => {
+export const useControllableUnitAlerts = (
+  controllableUnitViewModel: ControllableUnitShowViewModel | undefined,
+): AlertType | undefined => {
   const translate = useTranslate();
+
+  if (!controllableUnitViewModel) {
+    return undefined;
+  }
+
   const { controllableUnit, suspensions, technicalResources } =
     controllableUnitViewModel;
 
@@ -53,22 +52,5 @@ const useControllableUnitAlerts = (
       body: "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
     };
   }
-  return null;
-};
-
-export const ControllableUnitAlerts = ({
-  controllableUnitViewModel,
-}: {
-  controllableUnitViewModel: ControllableUnitShowViewModel;
-}) => {
-  const alert = useControllableUnitAlerts(controllableUnitViewModel);
-  if (!alert) {
-    return null;
-  }
-  return (
-    <Alert variant={alert.severity} className="max-w-3xl">
-      <Heading size="xsmall">{alert.heading}</Heading>
-      <BodyText>{alert.body}</BodyText>
-    </Alert>
-  );
+  return undefined;
 };

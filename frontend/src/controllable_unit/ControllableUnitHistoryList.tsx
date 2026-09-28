@@ -40,7 +40,11 @@ const IsSmallField = ({ source: _source }: { source: string }) => {
   );
 };
 
-export const ControllableUnitHistoryList = () => {
+export const ControllableUnitHistoryList = ({
+  controllableUnitId,
+}: {
+  controllableUnitId?: number;
+}) => {
   const { controllable_unit_id } = useParams();
 
   const fields = getFields(zControllableUnit.shape);
@@ -49,7 +53,9 @@ export const ControllableUnitHistoryList = () => {
   return (
     <List
       resource="controllable_unit_history"
-      filter={{ controllable_unit_id }}
+      filter={{
+        controllable_unit_id: controllableUnitId ?? controllable_unit_id,
+      }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}

@@ -6,7 +6,7 @@ import {
   IconWarningCircle,
 } from "@elhub/ds-icons";
 import { PartyStatus } from "../generated-client";
-import { StatusVariant } from "../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../components/StatusBadge";
 
 export const partyStatusVariantMap: Record<PartyStatus, StatusVariant> = {
   new: { status: "ongoing", icon: IconStopWatch15 },

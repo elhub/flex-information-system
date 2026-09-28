@@ -1,6 +1,8 @@
 export type TextKey =
   | "entity_role"
   | "edit"
+  | "events"
+  | "print"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -9,7 +11,11 @@ export type TextKey =
   | "tab.power_per_substation"
   | "tab.changes"
   | "tab.service_providing_groups"
+  | "tab.accounting_point"
+  | "tab.balance_responsible_party"
+  | "tab.history"
   | "tab.spg_info"
+  | "tab.overview"
   | "tab.comments"
   | "tab.attachments"
   | "cu_spg_show_history"
@@ -62,6 +68,7 @@ export type TextKey =
   | "spgpa_ramping_rate"
   | "spgpa_add_attachment"
   | "spgpa_spg_override_description"
+  | "spgpa_show_default_title"
   | "spga_additional_information_description"
   | "spga_save_confirmation_text"
   | "spgpa_draft_status_label"
@@ -172,12 +179,16 @@ export type TextKey =
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
   | "accounting_point_grid_location_panel.empty.no_grid_location_set"
-  | "substation_reference_input.search_for_substation";
+  | "substation_reference_input.search_for_substation"
+  | "resource_show_layout.more_actions"
+  | "resource_show_layout.navigate_to";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
     edit: "Edit",
+    events: "Events",
+    print: "Print",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -186,7 +197,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
     "tab.service_providing_groups": "Service providing groups",
+    "tab.accounting_point": "Accounting point",
+    "tab.balance_responsible_party": "Balance responsible parties",
+    "tab.history": "History",
     "tab.spg_info": "SPG info",
+    "tab.overview": "Overview",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     cu_spg_show_history: "Show history",
@@ -250,6 +265,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "If possible, please attach a ramping profile illustrating the deviation. Files can be attached after the application has been saved.",
     spgpa_spg_override_description:
       "Reference to the service providing group. The list ONLY show active service providing groups.",
+    spgpa_show_default_title: "Product application",
     spga_additional_information_description:
       "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
     spga_save_confirmation_text:
@@ -396,10 +412,14 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
     "substation_reference_input.search_for_substation": "Search for substation",
+    "resource_show_layout.more_actions": "Actions",
+    "resource_show_layout.navigate_to": "Navigate to",
   },
   nb: {
     entity_role: "Entitet",
     edit: "Endre",
+    events: "Hendelser",
+    print: "Skriv ut",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
@@ -408,7 +428,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.service_providing_groups": "Fleksibilitetsgrupper",
+    "tab.accounting_point": "Målepunkt",
+    "tab.balance_responsible_party": "Balanseansvarlige",
+    "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
+    "tab.overview": "Oversikt",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     cu_spg_show_history: "Vis historikk",
@@ -473,6 +497,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg om mulig ved en ramping-profil som illustrerer avviket. Filer kan legges ved etter at søknaden er lagret.",
     spgpa_spg_override_description:
       "Referanse til fleksibilitetsgruppen. Listen viser KUN aktive fleksibilitetsgrupper.",
+    spgpa_show_default_title: "Produktprekvalifisering",
     spga_additional_information_description:
       "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
     spga_save_confirmation_text:
@@ -618,5 +643,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
+    "resource_show_layout.more_actions": "Handlinger",
+    "resource_show_layout.navigate_to": "Naviger til",
   },
 };
