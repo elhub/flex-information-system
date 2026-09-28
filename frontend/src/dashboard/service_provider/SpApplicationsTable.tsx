@@ -24,14 +24,14 @@ export const SpApplicationsTable = ({
 
   const columns: Column<DashboardItem>[] = [
     {
-      key: "typeLabel",
-      header: "Type",
+      key: "label",
+      header: "Application",
       render: (_, row) => (
         <div>
-          <div className="font-medium text-semantic-text">{row.typeLabel}</div>
-          {row.byline && (
+          <div className="font-medium text-semantic-text">{row.label}</div>
+          {row.secondaryLabel && (
             <div className="text-xs text-semantic-text-subtle mt-0.5">
-              {row.byline}
+              {row.secondaryLabel}
             </div>
           )}
         </div>

@@ -8,29 +8,34 @@ import {
   getStatusVariant,
 } from "../shared/dashboardTableUtils";
 import { DashboardItem } from "../hooks/useDashboardApplications";
+import { toDateTimeString } from "../../util";
 
 type Props = {
+  label?: string;
+  timestampLabel?: string;
   items: DashboardItem[];
   empty?: string;
 };
 
 export const SOApplicationsTable = ({
+  label = "Application",
+  timestampLabel,
   items,
-  empty = "No pending applications.",
+  empty = "No applications.",
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
 
   const columns: Column<DashboardItem>[] = [
     {
-      key: "typeLabel",
-      header: "Type",
+      key: "label",
+      header: label,
       render: (_, row) => (
         <div>
-          <div className="font-medium text-semantic-text">{row.typeLabel}</div>
-          {row.byline && (
+          <div className="font-medium text-semantic-text">{row.label}</div>
+          {row.secondaryLabel && (
             <div className="text-xs text-semantic-text-subtle mt-0.5">
-              {row.byline}
+              {row.secondaryLabel}
             </div>
           )}
         </div>
@@ -62,6 +67,15 @@ export const SOApplicationsTable = ({
         );
       },
     },
+    ...(timestampLabel
+      ? [
+          {
+            key: "timestamp" as const,
+            header: timestampLabel,
+            render: (value: string | undefined) => toDateTimeString(value),
+          },
+        ]
+      : []),
   ];
 
   return (
