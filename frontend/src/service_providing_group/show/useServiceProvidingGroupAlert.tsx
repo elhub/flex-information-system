@@ -1,5 +1,4 @@
 import { ServiceProvidingGroup } from "../../generated-client";
-import { Alert, BodyText, Heading } from "../../components/ui";
 import { useSpgProductApplications } from "./useSpgProductApplications";
 import { useGetIdentity, UserIdentity } from "react-admin";
 
@@ -9,16 +8,16 @@ type AlertType = {
   body: string;
 };
 
-const useServiceProvidingGroupAlerts = (
-  spg: ServiceProvidingGroup,
+export const useServiceProvidingGroupAlerts = (
+  spg?: ServiceProvidingGroup | undefined,
 ): AlertType | null => {
-  const { data: productApplications } = useSpgProductApplications(spg.id);
+  const { data: productApplications } = useSpgProductApplications(spg?.id);
   const { data: identity } = useGetIdentity();
 
   const isServiceProvider =
     (identity as UserIdentity | undefined)?.role === "flex_service_provider";
 
-  if (!isServiceProvider) {
+  if (!spg || !isServiceProvider) {
     return null;
   }
 
@@ -39,23 +38,4 @@ const useServiceProvidingGroupAlerts = (
   }
 
   return null;
-};
-
-type Props = {
-  spg: ServiceProvidingGroup;
-};
-
-export const ServiceProvidingGroupAlerts = (props: Props) => {
-  const alert = useServiceProvidingGroupAlerts(props.spg);
-
-  if (!alert) {
-    return null;
-  }
-
-  return (
-    <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <Heading size="xsmall">{alert.heading}</Heading>
-      <BodyText>{alert.body}</BodyText>
-    </Alert>
-  );
 };
