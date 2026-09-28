@@ -1,5 +1,12 @@
 const noticeTypes = [
   {
+    id: "no.elhub.flex.controllable_unit.service_providing_group.product_duplication",
+    shortId: "controllable_unit.service_providing_group.product_duplication",
+    label: "Duplicate Controllable Unit in same product type",
+    description:
+      "Controllable unit is used in two or more Service Providing Group within the same Product Type. It can only be part of one Service Providing Group within the same Product Type",
+  },
+  {
     id: "no.elhub.flex.accounting_point_grid_location.source_insufficient",
     shortId: "accounting_point_grid_location.source_insufficient",
     label: "Insufficient Grid Location Source",

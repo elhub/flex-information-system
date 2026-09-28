@@ -95,7 +95,32 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
   );
 };
 
+// component for showing which CUs are duplicate within the same Product Type
+// no.elhub.flex.controllable_unit.service_providing_group.product_duplication
+const NoticeSPGDuplicationOfCuWithinSameProductType = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  return (
+    <>
+      <Heading>
+        The following Controllable units are defined more than once within the
+        same product type:
+      </Heading>
+      <VerticalSpace />
+      <BodyText>
+        The following Controllable unit: {notice.source} for product_type{" "}
+        {notice.data.product_type_id} is defined in multiple Service Providing
+        groups: {notice.data.service_providing_group_ids}
+      </BodyText>
+    </>
+  );
+};
+
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
+  "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
+    (notice) => {
+      <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />;
+    },
   "no.elhub.flex.party.outdated": (notice) => (
     <NoticePartyOutdated source={notice.source} noticeData={notice.data} />
   ),
