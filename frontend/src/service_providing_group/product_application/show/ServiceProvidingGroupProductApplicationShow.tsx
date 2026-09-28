@@ -5,8 +5,8 @@ import { ResourceShowLayout } from "../../../components/ResourceShowLayout";
 import {
   useGetIdentity,
   usePermissions,
-  useTranslate,
   UserIdentity,
+  useTranslate,
 } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { useSpgpaShowSummary } from "./SpgpaShowSummary";
@@ -81,12 +81,16 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Service providing group product application #${spgpa.id}`}
+      secondaryHeaderText={`${translate(
+        "text.service_providing_group_product_application",
+      )} #${spgpa.id}`}
       mainHeaderText={
-        spg.data ? spg.data.name : translate("text.spgpa_show_default_title")
+        spg.data
+          ? spg.data.name
+          : translate("text.table.header.product_application")
       }
       status={spgpaStatus}
-      alert={alert}
+      alert={alert ?? undefined}
       displayControls={
         <ScaleToggle
           unit="W"
@@ -100,7 +104,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
           title: translate("text.edit"),
           icon: <IconPencil />,
-          shouldShow: canEdit ?? false,
+          shouldShow: canEdit ?? true,
         },
         {
           to: `/service_providing_group_product_application/${spgpa.id}/print`,
@@ -113,8 +117,8 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       moreNavigationActions={[
         {
           to: `/event?filter=${eventsFilter}`,
-          title: translate("text.events"),
-          shouldShow: canReadEvents ?? false,
+          title: translate("text.header_nav_events"),
+          shouldShow: canReadEvents ?? true,
         },
       ]}
       workflowActions={

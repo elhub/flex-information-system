@@ -37,30 +37,34 @@ export const useSpgpaShowSummary = ({
 
   return [
     {
-      label: "Service providing group",
+      labelKey:
+        "service_providing_group_product_application.service_providing_group_id",
       value: spg ? `${spg.name} (#${spg.id})` : undefined,
     },
     {
-      label: "System operator / PSO",
+      labelKey:
+        "service_providing_group_product_application.procuring_system_operator_id",
       value: procuringServiceProvider.data?.name,
     },
     {
-      label: "Product types",
+      labelKey: "service_providing_group_product_application.product_type_ids",
       value: productTypeNames,
     },
     {
-      label: "Bidding Zone",
+      labelKey: "service_providing_group.bidding_zone",
       value: spg?.bidding_zone,
     },
     {
-      label: "Max active power (up)",
+      labelKey:
+        "service_providing_group_product_application.maximum_active_power_up",
       value: spgpa.maximum_active_power_up,
       unit: "W",
       storageScale: KILO,
       displayScale: powerScale,
     },
     {
-      label: "Max active power (down)",
+      labelKey:
+        "service_providing_group_product_application.maximum_active_power_down",
       value: spgpa.maximum_active_power_down,
       unit: "W",
       storageScale: KILO,
@@ -86,7 +90,8 @@ export const useSpgpaShowSummary = ({
     },
     {
       shouldShow: !!spgpa.additional_information,
-      label: "Additional information",
+      labelKey:
+        "service_providing_group_product_application.additional_information",
       value: (
         <span className="whitespace-pre-wrap">
           {spgpa.additional_information}
@@ -94,22 +99,22 @@ export const useSpgpaShowSummary = ({
       ),
     },
     {
-      label: "Created at",
+      labelKey: "service_providing_group_product_application.created_at",
       value: toDateTimeString(spgpa.created_at),
     },
     {
       shouldShow: !!spgpa.prequalified_at,
-      label: "Prequalified at",
+      labelKey: "service_providing_group_product_application.prequalified_at",
       value: toDateTimeString(spgpa.prequalified_at),
     },
     {
       shouldShow: !!spgpa.verified_at,
-      label: "Verified at",
+      labelKey: "service_providing_group_product_application.verified_at",
       value: toDateTimeString(spgpa.verified_at),
     },
     {
       shouldShow: !!spgpa.complete_at,
-      label: "Complete at",
+      labelKey: "service_providing_group_product_application.complete_at",
       value: toDateTimeString(spgpa.complete_at),
     },
   ];

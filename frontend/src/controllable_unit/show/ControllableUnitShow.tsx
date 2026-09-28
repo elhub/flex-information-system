@@ -52,7 +52,7 @@ export const ControllableUnitShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Controllable unit #${cu.id}`}
+      secondaryHeaderText={`${translate("text.controllable_unit")} #${cu.id}`}
       mainHeaderText={cu.name}
       alert={alert}
       status={{
