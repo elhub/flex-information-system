@@ -53,7 +53,8 @@ export const SpgpaControllableUnitsTable = ({
         (cu) =>
           cu.name?.toLowerCase().includes(q) ||
           (cu.id != null && String(cu.id).includes(q)) ||
-          (cu.mpid != null && String(cu.mpid).includes(q)),
+          (cu.mpid != null && String(cu.mpid).includes(q)) ||
+          cu.soName?.toLowerCase().includes(q),
       );
     }
     if (hidePrequalified) {
@@ -136,6 +137,10 @@ export const SpgpaControllableUnitsTable = ({
         ) : (
           <>{value}</>
         ),
+    },
+    {
+      key: "soName",
+      header: t("accounting_point.system_operator_id"),
     },
     {
       key: "regulation_direction",

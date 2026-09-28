@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  listAccountingPoint,
-  listAccountingPointBalanceResponsibleParty,
   listControllableUnit,
   listServiceProvidingGroupMembership,
-  readParty,
 } from "../../generated-client";
+import type { AccountingPointBalanceResponsibleParty } from "../../generated-client";
 import {
   findCurrentlyValidRecord,
   throwOnError,
@@ -28,6 +26,7 @@ export type SpgMemberControllableUnitRow = {
   status: string;
   // The current system operator of the CU's accounting point
   accountingPointSystemOperatorId: number | undefined;
+  soName: string;
   membershipRecordedAt: string | undefined;
 };
 
@@ -58,53 +57,19 @@ const fetchSpgMemberControllableUnits = async (
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${controllableUnitIds.join(",")})`,
-      embed: "summary",
+      embed:
+        "summary,accounting_point!(system_operator, balance_responsible_party(balance_responsible_party))",
     },
   }).then(throwOnError);
-
-  const accountingPointIds = Array.from(
-    new Set(controllableUnits.map((cu) => cu.accounting_point_id)),
-  );
-
-  const accountingPoints = await listAccountingPoint({
-    query: {
-      id: `in.(${accountingPointIds.join(",")})`,
-    },
-  }).then(throwOnError);
-
-  const apMap = Object.fromEntries(accountingPoints.map((ap) => [ap.id, ap]));
-
-  const apBrpResults = await Promise.all(
-    accountingPointIds.map((apId) =>
-      listAccountingPointBalanceResponsibleParty({
-        query: { accounting_point_id: `eq.${apId}` },
-      }).then(throwOnError),
-    ),
-  );
-
-  const currentBrps = new Map<number, number | undefined>();
-  const brpPartyIds = new Set<number>();
-  accountingPointIds.forEach((apId, index) => {
-    const current = findCurrentlyValidRecord(apBrpResults[index]);
-    const brpId = current?.balance_responsible_party_id ?? undefined;
-    currentBrps.set(apId, brpId);
-    if (brpId) brpPartyIds.add(brpId);
-  });
-
-  const brpParties =
-    brpPartyIds.size > 0
-      ? await Promise.all(
-          Array.from(brpPartyIds).map((id) =>
-            readParty({ path: { id } }).then(throwOnError),
-          ),
-        )
-      : [];
-  const brpPartyMap = Object.fromEntries(brpParties.map((p) => [p.id, p]));
 
   const rows: SpgMemberControllableUnitRow[] = controllableUnits.map((cu) => {
-    const ap = apMap[cu.accounting_point_id];
+    const ap = cu.accounting_point;
     const membership = memberships.find(
       (m) => m.controllable_unit_id === cu.id,
+    );
+    const currentBrp = findCurrentlyValidRecord(
+      ap?.balance_responsible_party as
+        AccountingPointBalanceResponsibleParty[] | undefined,
     );
 
     return {
@@ -119,12 +84,10 @@ const fetchSpgMemberControllableUnits = async (
       location: ap?.business_id ?? "-",
       mpid: ap?.business_id ?? "-",
       accountingPointId: cu.accounting_point_id,
-      brpName: (() => {
-        const brpId = currentBrps.get(cu.accounting_point_id);
-        return brpId ? (brpPartyMap[brpId]?.name ?? "-") : "-";
-      })(),
+      brpName: currentBrp?.balance_responsible_party?.name ?? "-",
       status: cu.status,
       accountingPointSystemOperatorId: ap?.system_operator_id,
+      soName: ap?.system_operator?.name ?? "-",
       membershipRecordedAt: membership?.recorded_at,
     };
   });

@@ -65,6 +65,7 @@ export const ServiceProvidingGroupShowTable = ({
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const [searchQuery, setSearchQuery] = useState("");
+
   const filteredCUs = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     let result = data?.rows;
@@ -73,7 +74,8 @@ export const ServiceProvidingGroupShowTable = ({
         (cu) =>
           cu.name?.toLowerCase().includes(q) ||
           (cu.id != null && String(cu.id).includes(q)) ||
-          (cu.mpid != null && String(cu.mpid).includes(q)),
+          (cu.mpid != null && String(cu.mpid).includes(q)) ||
+          cu.soName?.toLowerCase().includes(q),
       );
     }
     return result;
@@ -171,6 +173,10 @@ export const ServiceProvidingGroupShowTable = ({
         ) : (
           <>{value}</>
         ),
+    },
+    {
+      key: "soName",
+      header: t("accounting_point.system_operator_id"),
     },
     {
       key: "brpName",
