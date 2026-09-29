@@ -12,6 +12,7 @@ type ServiceProvidingGroupSummaryFields = [
   serviceProvider: ResourceSummaryField,
   biddingZone: ResourceSummaryField,
   createdAt: ResourceSummaryField,
+  additionalInformation: ResourceSummaryField,
 ];
 
 export const useServiceProvidingGroupShowSummary = ({
@@ -38,6 +39,11 @@ export const useServiceProvidingGroupShowSummary = ({
     {
       labelKey: "service_providing_group.created_at",
       value: spg && toDateTimeString(spg.created_at),
+    },
+    {
+      labelKey: "service_providing_group.additional_information",
+      value: spg && spg.additional_information,
+      shouldShow: !!spg?.additional_information,
     },
   ];
 };

@@ -39,8 +39,8 @@ beforeEach(() => {
   mockedUseTranslateEnum.mockReturnValue((key: string) => `translated:${key}`);
 });
 
-it("returns the service provider, bidding zone and created at fields", () => {
-  const spg = spgWith({});
+it("returns the service provider, bidding zone, created at and additional information fields", () => {
+  const spg = spgWith({ additional_information: "Some extra details" });
 
   const { result } = renderHook(() =>
     useServiceProvidingGroupShowSummary({ spg }),
@@ -58,6 +58,39 @@ it("returns the service provider, bidding zone and created at fields", () => {
     {
       labelKey: "service_providing_group.created_at",
       value: toDateTimeString(spg.created_at),
+    },
+    {
+      labelKey: "service_providing_group.additional_information",
+      value: "Some extra details",
+      shouldShow: true,
+    },
+  ]);
+});
+
+it("hides the additional information field when it is not set", () => {
+  const spg = spgWith({ additional_information: undefined });
+
+  const { result } = renderHook(() =>
+    useServiceProvidingGroupShowSummary({ spg }),
+  );
+
+  expect(result.current).toEqual([
+    {
+      labelKey: "service_providing_group.service_provider_id",
+      value: "Acme Energy",
+    },
+    {
+      labelKey: "service_providing_group.bidding_zone",
+      value: "translated:service_providing_group.bidding_zone.NO1",
+    },
+    {
+      labelKey: "service_providing_group.created_at",
+      value: toDateTimeString(spg.created_at),
+    },
+    {
+      labelKey: "service_providing_group.additional_information",
+      value: undefined,
+      shouldShow: false,
     },
   ]);
 });
@@ -100,6 +133,11 @@ it("handles an undefined service providing group", () => {
     {
       labelKey: "service_providing_group.created_at",
       value: undefined,
+    },
+    {
+      labelKey: "service_providing_group.additional_information",
+      value: undefined,
+      shouldShow: false,
     },
   ]);
 });
