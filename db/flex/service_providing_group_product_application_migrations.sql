@@ -284,3 +284,22 @@ EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     '{prequalification,temporary_qualified,prequalified,verified}',
     '{}'
 );
+
+-- changeset flex:spgpa-add-terminated-status runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'spg_product_application_status_check' AND pg_get_constraintdef(oid) LIKE '%terminated%'
+ALTER TABLE flex.service_providing_group_product_application
+DROP CONSTRAINT IF EXISTS spg_product_application_status_check;
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_status_check
+CHECK (
+    status IN (
+        'requested',
+        'prequalification',
+        'temporary_qualified',
+        'prequalified',
+        'verified',
+        'rejected',
+        'terminated'
+    )
+);

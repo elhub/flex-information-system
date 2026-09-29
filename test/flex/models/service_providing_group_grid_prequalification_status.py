@@ -7,6 +7,7 @@ class ServiceProvidingGroupGridPrequalificationStatus(StrEnum):
     IN_PROGRESS = "in_progress"
     NOT_APPROVED = "not_approved"
     REQUESTED = "requested"
+    TERMINATED = "terminated"
 
     def __str__(self) -> str:
         return str(self.value)

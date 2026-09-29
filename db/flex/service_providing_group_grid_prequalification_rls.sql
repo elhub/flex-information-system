@@ -86,6 +86,7 @@ SELECT EXISTS (
     SELECT 1 FROM flex.service_providing_group_grid_prequalification
     WHERE service_providing_group_id = spg_id
     AND impacted_system_operator_id = (SELECT flex.current_party())
+    AND status != 'terminated'
 )
 $$;
 

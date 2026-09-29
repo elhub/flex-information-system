@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
             'temporary_qualified',
             'prequalified',
             'verified',
-            'rejected'
+            'rejected',
+            'terminated'
         )
     ),
     CONSTRAINT spg_product_application_maximum_active_power_up_check CHECK (
@@ -156,6 +157,15 @@ BEFORE INSERT ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('requested');
 
+-- changeset flex:service-providing-group-product-application-status-update-trigger runOnChange:true endDelimiter:--
+-- SPGPA-VAL012
+CREATE OR REPLACE TRIGGER
+service_providing_group_product_application_status_update
+BEFORE UPDATE OF status ON service_providing_group_product_application
+FOR EACH ROW
+WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+EXECUTE FUNCTION status.restrict_update();
+
 -- changeset flex:service-providing-group-product-application-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_event
 AFTER INSERT OR UPDATE ON service_providing_group_product_application
@@ -202,7 +212,10 @@ AFTER UPDATE OF status ON flex.service_providing_group_product_application
 FOR EACH ROW
 WHEN (
     NEW.status IS DISTINCT FROM OLD.status -- noqa
-    AND OLD.status = 'requested' AND NEW.status != 'rejected' -- noqa
+    AND (
+        (OLD.status = 'requested' AND NEW.status != 'rejected') -- noqa
+        OR NEW.status = 'terminated' -- noqa
+    )
 )
 EXECUTE FUNCTION spgpa_sync_grid_prequalifications();
 
@@ -236,6 +249,7 @@ BEGIN
         WHERE service_providing_group_id = NEW.service_providing_group_id
         AND procuring_system_operator_id = NEW.procuring_system_operator_id
         AND id <> NEW.id
+        AND status != 'terminated'
     ) pt;
 
     -- product types in the current application that are in the previous set

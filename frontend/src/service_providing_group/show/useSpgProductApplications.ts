@@ -22,6 +22,7 @@ const fetchSpgProductApplications = async (
   const applications = await listServiceProvidingGroupProductApplication({
     query: {
       service_providing_group_id: `eq.${spgId}`,
+      status: "neq.terminated",
       order: "id.desc",
     },
   }).then(throwOnError);

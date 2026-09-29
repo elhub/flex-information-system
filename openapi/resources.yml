@@ -1,4 +1,5 @@
 # $schema: ./schema.yml
+---
 resources:
   - id: controllable_unit
     acronym: CU
@@ -1110,6 +1111,10 @@ resources:
           The status of the grid prequalification for this service providing group.
         x-details: >-
           Always `requested` when created. Can then be updated to the other values.
+          Automatically set to `terminated` once the service providing group no
+          longer justifies this grid prequalification (e.g. it has no
+          controllable unit left). Once `terminated`, only editable by a FIS
+          operator.
         format: text
         type: string
         default: requested
@@ -1139,11 +1144,17 @@ resources:
               en: Not approved
               nb: Ikke godkjent
               nn: Ikkje godkjent
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
         example: in_progress
         x-intl:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: date-time
@@ -1254,7 +1265,7 @@ resources:
     acronym: ENT
     name: Entity
     summary: Entity
-      # yamllint disable rule:line-length
+    # yamllint disable rule:line-length
     description: |-
       Entity - Natural or legal person
 
@@ -1505,7 +1516,7 @@ resources:
     acronym: PTY
     name: Party
     summary: Party
-      # yamllint disable rule:line-length
+    # yamllint disable rule:line-length
     description: |-
       The body that interacts with the Flexibility Information System
 
@@ -4082,11 +4093,29 @@ resources:
                 en: The application was not approved and requires updates before it can be submitted again.
                 nb: Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.
                 nn: Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
+            description:
+              x-intl:
+                en: >-
+                  The application is no longer relevant, for example because the service providing
+                  group has no controllable unit left. Only a FIS operator can put it back into
+                  activity.
+                nb: >-
+                  Søknaden er ikke lenger relevant, for eksempel fordi gruppen ikke lenger har noen
+                  kontrollerbar enhet. Bare en FIS-operatør kan sette den tilbake i aktivitet.
+                nn: >-
+                  Søknaden er ikkje lenger relevant, til dømes fordi gruppa ikkje lenger har nokon
+                  kontrollerbar eining. Berre ein FIS-operatør kan setje henne tilbake i aktivitet.
         example: prequalification
         x-intl:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       maximum_active_power_up:
         description: >-
           The maximum active power applied for in regulation direction up. Stored in kilowatts.

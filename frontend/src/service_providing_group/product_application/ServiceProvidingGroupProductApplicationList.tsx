@@ -95,10 +95,12 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             ? {
                 service_providing_group_id: id,
                 embed: "procuring_system_operator",
+                "status@neq": "terminated",
               }
             : {
                 embed:
                   "service_providing_group(service_provider,summary),procuring_system_operator",
+                "status@neq": "terminated",
               }
         }
         sort={{ field: "id", order: "DESC" }}

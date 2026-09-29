@@ -30,7 +30,7 @@ WITH (security_invoker = false) AS (
                 cu.accounting_point_id = ap_so.accounting_point_id
                 AND spgm.valid_time_range && ap_so.valid_time_range
     -- the SPG-PA is being processed so the CSO should grid-prequalify the SPG
-    WHERE spgpa.status NOT IN ('requested', 'rejected')
+    WHERE spgpa.status NOT IN ('requested', 'rejected', 'terminated')
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-sync-function runOnChange:true endDelimiter:--
@@ -59,10 +59,10 @@ BEGIN
             expected_spggp.service_providing_group_id,
             expected_spggp.impacted_system_operator_id,
             0 -- system
-        );
-    -- TODO: missing in the view -> [soft-]delete the SPG-GP?
-    -- WHEN NOT MATCHED BY SOURCE THEN
-    --     DELETE;
+        )
+    -- missing in the view -> terminate the SPG-GP
+    WHEN NOT MATCHED BY SOURCE AND flex_spggp.status != 'terminated' THEN
+        UPDATE SET status = 'terminated';
 END;
 $$;
 

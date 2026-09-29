@@ -70,6 +70,7 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
+          status: "neq.terminated",
           ...(identity?.role === "flex_system_operator" && partyId
             ? { procuring_system_operator_id: `eq.${partyId}` }
             : {}),
@@ -87,6 +88,7 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
+          status: "neq.terminated",
           ...(identity?.role === "flex_system_operator" && partyId
             ? { impacted_system_operator_id: `eq.${partyId}` }
             : {}),

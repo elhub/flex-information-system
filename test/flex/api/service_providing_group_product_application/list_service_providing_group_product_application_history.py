@@ -20,6 +20,7 @@ def _get_kwargs(
     service_providing_group_id: str | Unset = UNSET,
     procuring_system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -38,6 +39,8 @@ def _get_kwargs(
     params["procuring_system_operator_id"] = procuring_system_operator_id
 
     params["product_type_ids"] = product_type_ids
+
+    params["status"] = status
 
     json_as_of: str | Unset = UNSET
     if not isinstance(as_of, Unset):
@@ -165,6 +168,7 @@ def sync_detailed(
     service_providing_group_id: str | Unset = UNSET,
     procuring_system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -183,6 +187,7 @@ def sync_detailed(
         service_providing_group_id (str | Unset):
         procuring_system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -204,6 +209,7 @@ def sync_detailed(
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         as_of=as_of,
         select=select,
         order=order,
@@ -227,6 +233,7 @@ def sync(
     service_providing_group_id: str | Unset = UNSET,
     procuring_system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -245,6 +252,7 @@ def sync(
         service_providing_group_id (str | Unset):
         procuring_system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -267,6 +275,7 @@ def sync(
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         as_of=as_of,
         select=select,
         order=order,
@@ -284,6 +293,7 @@ async def asyncio_detailed(
     service_providing_group_id: str | Unset = UNSET,
     procuring_system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -302,6 +312,7 @@ async def asyncio_detailed(
         service_providing_group_id (str | Unset):
         procuring_system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -323,6 +334,7 @@ async def asyncio_detailed(
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         as_of=as_of,
         select=select,
         order=order,
@@ -344,6 +356,7 @@ async def asyncio(
     service_providing_group_id: str | Unset = UNSET,
     procuring_system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     as_of: datetime.datetime | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -362,6 +375,7 @@ async def asyncio(
         service_providing_group_id (str | Unset):
         procuring_system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         as_of (datetime.datetime | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -385,6 +399,7 @@ async def asyncio(
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
+            status=status,
             as_of=as_of,
             select=select,
             order=order,
