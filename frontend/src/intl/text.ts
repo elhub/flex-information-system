@@ -2,6 +2,7 @@ export type TextKey =
   | "entity_role"
   | "edit"
   | "print"
+  | "service_providing_group"
   | "service_providing_group_product_application"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
@@ -204,6 +205,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Edit",
     print: "Print",
     events: "Events",
+    service_providing_group: "Service providing group",
     service_providing_group_product_application:
       "Service providing group product application",
     "resource_show_layout.actions_group_label": "Actions",
@@ -453,6 +455,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Endre",
     print: "Skriv ut",
     events: "Hendelser",
+    service_providing_group: "Fleksibilitetsgruppe",
     service_providing_group_product_application:
       "Fleksibilitetsgruppens produktsøknad",
     "resource_show_layout.actions_group_label": "Handlinger",
