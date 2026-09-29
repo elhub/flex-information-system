@@ -29,26 +29,30 @@ export const SoDashboard = () => {
     <DashboardLayout
       statCards={<SoStatCards />}
       activeTable={
-        <div className="flex flex-col gap-8">
-          <SOApplicationsTable
-            label="SP Product Application"
-            items={sppa}
-            empty="No active SP product applications."
-            timestampLabel="Recorded at"
-          />
-          <SOApplicationsTable
-            label="SPG Product Application"
-            items={spgpa}
-            empty="No active SPG product applications."
-            timestampLabel="Created at"
-          />
-          <SOApplicationsTable
-            label="SPG Grid Prequalification"
-            items={spggp}
-            empty="No active SPG grid prequalifications."
-            timestampLabel="Recorded at"
-          />
-        </div>
+        activeItems.length == 0 ? (
+          "No active applications."
+        ) : (
+          <div className="flex flex-col gap-8">
+            <SOApplicationsTable
+              label="SP Product Application"
+              items={sppa}
+              empty={null}
+              timestampLabel="Recorded at"
+            />
+            <SOApplicationsTable
+              label="SPG Product Application"
+              items={spgpa}
+              empty={null}
+              timestampLabel="Created at"
+            />
+            <SOApplicationsTable
+              label="SPG Grid Prequalification"
+              items={spggp}
+              empty={null}
+              timestampLabel="Recorded at"
+            />
+          </div>
+        )
       }
       resolvedTable={
         <SOApplicationsTable

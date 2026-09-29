@@ -14,14 +14,14 @@ type Props = {
   label?: string;
   timestampLabel?: string;
   items: DashboardItem[];
-  empty?: string;
+  empty?: string | null;
 };
 
 export const SOApplicationsTable = ({
   label = "Application",
   timestampLabel,
   items,
-  empty = "No applications.",
+  empty,
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
