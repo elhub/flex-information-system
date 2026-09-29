@@ -40,25 +40,27 @@ export const AccountingPointGridLocationPanel = ({
   };
 
   const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
-  const heading = !gridLocation
-    ? translate("text.accounting_point_grid_location_panel.heading.missing")
+  const status = !gridLocation
+    ? translate("text.accounting_point_grid_location_panel.status.missing")
     : isConfirmed
-      ? translate("text.accounting_point_grid_location_panel.heading.confirmed")
-      : translate(
-          "text.accounting_point_grid_location_panel.heading.suggested",
-        );
+      ? translate("text.accounting_point_grid_location_panel.status.confirmed")
+      : translate("text.accounting_point_grid_location_panel.status.suggested");
 
   return (
-    <Panel border className="bg-white h-fit p-4 mt-4">
+    <Panel border className="bg-white p-4 w-full flex flex-col overflow-y-auto">
       <div className="flex items-center justify-between">
-        <Heading level={3} size="medium" className="mb-4">
-          {heading}
-        </Heading>
+        <div className="mb-4">
+          <Heading level={3} size="medium">
+            {translate("text.accounting_point_grid_location_panel.heading")}
+          </Heading>
+          <BodyText size="small" className="text-gray-500">
+            {status}
+          </BodyText>
+        </div>
         {userCanEdit && !isEditing && gridLocation != null && (
           <Button
             variant={isConfirmed ? "secondary" : "primary"}
             onClick={() => setIsEditing(true)}
-            className="mt-[-16px]"
           >
             {isConfirmed
               ? translate(
