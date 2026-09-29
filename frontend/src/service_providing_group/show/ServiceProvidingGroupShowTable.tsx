@@ -107,6 +107,7 @@ export const ServiceProvidingGroupShowTable = ({
             as={RouterLink}
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="invisible"
+            size="small"
             icon={IconUser}
           >
             Manage members
@@ -210,6 +211,7 @@ export const ServiceProvidingGroupShowTable = ({
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="primary"
             icon={IconUser}
+            size="small"
           >
             Manage members
           </Button>
