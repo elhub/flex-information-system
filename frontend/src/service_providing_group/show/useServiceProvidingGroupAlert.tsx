@@ -10,7 +10,7 @@ type AlertType = {
 
 export const useServiceProvidingGroupAlerts = (
   spg?: ServiceProvidingGroup | undefined,
-): AlertType | null => {
+): AlertType | undefined => {
   const { data: productApplications } = useSpgProductApplications(spg?.id);
   const { data: identity } = useGetIdentity();
 
@@ -18,7 +18,7 @@ export const useServiceProvidingGroupAlerts = (
     (identity as UserIdentity | undefined)?.role === "flex_service_provider";
 
   if (!spg || !isServiceProvider) {
-    return null;
+    return undefined;
   }
 
   if (spg.status === "new") {
@@ -37,5 +37,5 @@ export const useServiceProvidingGroupAlerts = (
     };
   }
 
-  return null;
+  return undefined;
 };

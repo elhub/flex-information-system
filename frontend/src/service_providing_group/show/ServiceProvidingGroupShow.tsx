@@ -6,7 +6,7 @@ import { readServiceProvidingGroup } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslateEnum } from "../../intl/intl";
-import { useGetIdentity, usePermissions } from "ra-core";
+import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
@@ -15,6 +15,7 @@ import { useServiceProvidingGroupShowSummary } from "./useServiceProvidingGroupS
 import { ScaleToggle } from "../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../utils/scales";
 import { ResourceShowLayout } from "../../components/ResourceShowLayout";
+import { IconPencil } from "@elhub/ds-icons";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -22,6 +23,7 @@ export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const isFISOOrSO =
     identity?.role === "flex_flexibility_information_system_operator" ||
@@ -67,7 +69,7 @@ export const ServiceProvidingGroupShow = () => {
     <ResourceShowLayout
       secondaryHeaderText={`Service Providing Group #${spg.id}`}
       mainHeaderText={spg.name}
-      alert={alert ?? undefined}
+      alert={alert}
       status={{
         label: translateEnum(`service_providing_group.status.${spg.status}`),
         status: spgStatusVariantMap[spg.status].status,
@@ -89,6 +91,14 @@ export const ServiceProvidingGroupShow = () => {
           />
         ) : undefined
       }
+      moreActions={[
+        {
+          to: `/service_providing_group/${spg.id}/edit`,
+          title: translate("text.edit"),
+          icon: <IconPencil />,
+          shouldShow: canUpdateSpg,
+        },
+      ]}
       summary={summary}
       content={
         <ServiceProvidingGroupShowTabs
