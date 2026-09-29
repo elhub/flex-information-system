@@ -20,14 +20,14 @@ For instance, the pages for controllable units are under the
 
 Here are the possible pages for a resource:
 
-* a `List` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
-of entries of this resource
-* a `Show` page showing [details](https://marmelab.com/react-admin/ShowTutorial.html)
-about one record of this resource
-* an `Input` page presenting input fields for the fields of this resource that
-can be [created or updated](https://marmelab.com/react-admin/EditTutorial.html)
-* a `HistoryList` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
-of entries of the _history_ of this resource
+- a `List` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
+  of entries of this resource
+- a `Show` page showing [details](https://marmelab.com/react-admin/ShowTutorial.html)
+  about one record of this resource
+- an `Input` page presenting input fields for the fields of this resource that
+  can be [created or updated](https://marmelab.com/react-admin/EditTutorial.html)
+- a `HistoryList` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
+  of entries of the _history_ of this resource
 
 Resources can be [nested](https://marmelab.com/react-admin/Resource.html#nested-resources)
 in React Admin, meaning that the underlying URLs are composed of several
@@ -44,6 +44,35 @@ of `controllable_unit` in React-Admin, making it easier to handle it as a
 sub-component.
 
 Resources are listed in the main file of the front-end, `App.tsx`.
+
+## Show page layout
+
+Resource show pages use a consistent layout, provided by the
+`ResourceShowLayout` component, to make the most important information easy
+to find:
+
+- The header identifies the record. For a non-application resource, such as a
+  controllable unit or service providing group, it shows the resource name. For
+  an application resource, it shows who the application is for; for example,
+  an SPG product application is identified by the service providing group it
+  belongs to. A status badge can be shown next to it, for resources that have
+  a status.
+- Actions are placed at the top right of the page. Primary, workflow-changing
+  actions (such as activating a controllable unit) are shown directly as
+  buttons, while secondary actions (such as editing the record) and
+  navigation shortcuts to related resources (such as its events) are grouped
+  in a single "More" dropdown menu, split in an actions and a navigation
+  section.
+- An optional alert banner can be shown below the header, for example to warn
+  about a missing prerequisite.
+- The summary card is placed to the left of the page content, listing the
+  record's most important fields as label/value pairs. Extra controls, such
+  as display unit, can be placed below the summary card.
+- Tabs are placed to the right of the summary and contain the page's related
+  information.
+
+`ResourceShowLayout` is progressively replacing the older `ShowPageLayout`
+component; new resources should use `ResourceShowLayout`.
 
 ## Code factoring
 
