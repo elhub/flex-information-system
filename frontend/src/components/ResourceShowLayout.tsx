@@ -63,7 +63,7 @@ export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
     >
       <div className="flex flex-col gap-4">
         {fields
-          .filter((field) => field.shouldShow ?? false)
+          .filter((field) => field.shouldShow ?? true)
           .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
             <LabelValue
               key={labelValueProps.label ?? labelValueProps.labelKey ?? index}

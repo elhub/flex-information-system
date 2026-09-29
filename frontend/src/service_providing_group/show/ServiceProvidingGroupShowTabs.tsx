@@ -28,12 +28,12 @@ export const ServiceProvidingGroupShowTabs = ({
   showPowerPerSubstation,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("summary");
+  const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.summary")} value="summary" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
@@ -57,14 +57,14 @@ export const ServiceProvidingGroupShowTabs = ({
           />
         )}
       </Tabs.List>
-      <Tabs.Panel value="summary">
+      <Tabs.Panel value="overview">
         {summary ? (
           <ServiceProvidingGroupShowSPGSummarySection
             summary={summary}
             powerScale={powerScale}
           />
         ) : (
-          "No summary available"
+          "No overview available"
         )}
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">

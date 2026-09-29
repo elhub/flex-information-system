@@ -46,7 +46,7 @@ export const ServiceProvidingGroupShow = () => {
   });
 
   const alert = useServiceProvidingGroupAlerts(spg);
-  const summary = useServiceProvidingGroupShowSummary({ spg, powerScale });
+  const summary = useServiceProvidingGroupShowSummary({ spg });
 
   if (isSPGPending) {
     return <Loader />;
