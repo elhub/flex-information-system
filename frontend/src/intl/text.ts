@@ -121,6 +121,20 @@ export type TextKey =
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
   | "spg_changes_summary_power_diff"
+  | "spg_changes_comparison_scope"
+  | "spg_changes_log_changed_by_label"
+  | "spg_changes_log_property_category"
+  | "spg_changes_log_property_previous_label"
+  | "spg_changes_log_property_new_label"
+  | "spg_changes_log_membershipAdded_category"
+  | "spg_changes_log_membershipRemoved_category"
+  | "spg_changes_log_membershipAdded_previous_label"
+  | "spg_changes_log_membershipAdded_new_label"
+  | "spg_changes_log_membershipRemoved_previous_label"
+  | "spg_changes_log_membershipRemoved_new_label"
+  | "spg_changes_log_membershipValidity_category"
+  | "spg_changes_log_membershipValidity_previous_label"
+  | "spg_changes_log_membershipValidity_new_label"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -384,6 +398,20 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
     spg_changes_summary_power_diff: "Flexible power diff",
+    spg_changes_comparison_scope: "Comparison scope",
+    spg_changes_log_changed_by_label: "Changed by",
+    spg_changes_log_property_category: "Property: %{property}",
+    spg_changes_log_property_previous_label: "Previous value",
+    spg_changes_log_property_new_label: "New value",
+    spg_changes_log_membershipAdded_category: "Added to group",
+    spg_changes_log_membershipRemoved_category: "Removed from group",
+    spg_changes_log_membershipAdded_previous_label: "Old validity",
+    spg_changes_log_membershipAdded_new_label: "New validity",
+    spg_changes_log_membershipRemoved_previous_label: "Old validity",
+    spg_changes_log_membershipRemoved_new_label: "New validity",
+    spg_changes_log_membershipValidity_category: "Membership validity window",
+    spg_changes_log_membershipValidity_previous_label: "Previous validity",
+    spg_changes_log_membershipValidity_new_label: "New validity",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -634,6 +662,21 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
     spg_changes_summary_power_diff: "Fleksibel effekt diff",
+    spg_changes_comparison_scope: "Sammenligningsomfang",
+    spg_changes_log_changed_by_label: "Endret av",
+    spg_changes_log_property_category: "Egenskap: Fleksibel effekt",
+    spg_changes_log_property_previous_label: "Forrige grunnlinjeverdi",
+    spg_changes_log_property_new_label: "Ny tilstandsverdi",
+    spg_changes_log_membershipAdded_category: "Lagt til i gruppe",
+    spg_changes_log_membershipRemoved_category: "Fjernet fra gruppe",
+    spg_changes_log_membershipAdded_previous_label: "Gammelt gyldighetsvindu",
+    spg_changes_log_membershipAdded_new_label: "Nytt gyldighetsvindu",
+    spg_changes_log_membershipRemoved_previous_label: "Gammelt gyldighetsvindu",
+    spg_changes_log_membershipRemoved_new_label: "Nytt gyldighetsvindu",
+    spg_changes_log_membershipValidity_category:
+      "Gyldighetsvindu for medlemskap",
+    spg_changes_log_membershipValidity_previous_label: "Forrige utløp",
+    spg_changes_log_membershipValidity_new_label: "Forlenget utløp",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
