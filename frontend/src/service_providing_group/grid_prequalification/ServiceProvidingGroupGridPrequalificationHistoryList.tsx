@@ -16,7 +16,7 @@ import { useTranslateField } from "../../intl/intl";
 
 export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
   const t = useTranslateField();
-  const { service_providing_group_grid_prequalification_id } = useParams();
+  const spgpqId = Number(useParams<{ id: string }>().id);
 
   const fields = getFields(zServiceProvidingGroupGridPrequalification.shape);
   const historyFields = getFields(
@@ -26,7 +26,7 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
   return (
     <List
       resource="service_providing_group_grid_prequalification_history"
-      filter={{ service_providing_group_grid_prequalification_id }}
+      filter={{ service_providing_group_grid_prequalification_id: spgpqId }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
