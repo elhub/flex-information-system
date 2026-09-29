@@ -67,7 +67,7 @@ export const ServiceProvidingGroupShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Service Providing Group #${spg.id}`}
+      secondaryHeaderText={`${translate("text.service_providing_group")} #${spg.id}`}
       mainHeaderText={spg.name}
       alert={alert}
       status={{
