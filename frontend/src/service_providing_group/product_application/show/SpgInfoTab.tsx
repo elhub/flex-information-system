@@ -11,6 +11,7 @@ import { IconRight } from "@elhub/ds-icons";
 type Props = {
   spgId: number;
   spgProcuringSystemOperatorId?: number;
+  impactedSystemOperatorId?: number;
   spg: ServiceProvidingGroup | undefined;
   powerScale?: Scale;
 };
@@ -18,12 +19,15 @@ type Props = {
 export const SpgInfoTab = ({
   spgId,
   spgProcuringSystemOperatorId,
+  impactedSystemOperatorId,
   spg,
   powerScale = KILO,
 }: Props) => {
   const procuringServiceProvider = useParty(spgProcuringSystemOperatorId);
+  const impactedServiceProvider = useParty(impactedSystemOperatorId);
 
   if (procuringServiceProvider.error) throw procuringServiceProvider.error;
+  if (impactedServiceProvider.error) throw impactedServiceProvider.error;
 
   if (!spg) {
     return <Loader size="small" />;
@@ -58,6 +62,22 @@ export const SpgInfoTab = ({
                   title="View system operator / PSO"
                 >
                   {procuringServiceProvider.data?.name}
+                  <IconRight size="small" />
+                </Link>
+              }
+            />
+          )}
+          {impactedSystemOperatorId && (
+            <LabelValue
+              label="Impacted system operator"
+              value={
+                <Link
+                  as={RouterLink}
+                  to={`/party/${impactedSystemOperatorId}/show`}
+                  className="inline-flex items-center gap-1"
+                  title="View impacted system operator"
+                >
+                  {impactedServiceProvider.data?.name}
                   <IconRight size="small" />
                 </Link>
               }
