@@ -71,7 +71,7 @@ of the input page will then be filled with the current values.
 
 ## Show page layout
 
-Resource show pages use a consistent layout, provided by the
+New and migrated resource show pages use a consistent layout, provided by the
 `ResourceShowLayout` component, to make the most important information easy
 to find:
 
