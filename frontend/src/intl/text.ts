@@ -191,7 +191,7 @@ export type TextKey =
   | "accounting_point_grid_location_panel.heading"
   | "accounting_point_grid_location_panel.status.missing"
   | "accounting_point_grid_location_panel.status.confirmed"
-  | "accounting_point_grid_location_panel.status.suggested"
+  | "accounting_point_grid_location_panel.status.guessed"
   | "accounting_point_grid_location_panel.button.edit_details"
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
@@ -437,7 +437,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.heading": "Grid location",
     "accounting_point_grid_location_panel.status.missing": "Missing",
     "accounting_point_grid_location_panel.status.confirmed": "Confirmed",
-    "accounting_point_grid_location_panel.status.suggested": "Suggested",
+    "accounting_point_grid_location_panel.status.guessed": "Guessed",
     "accounting_point_grid_location_panel.button.edit_details": "Edit details",
     "accounting_point_grid_location_panel.button.validate_grid_location":
       "Validate grid location",
@@ -684,7 +684,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.heading": "Nettlokasjon",
     "accounting_point_grid_location_panel.status.missing": "Mangler",
     "accounting_point_grid_location_panel.status.confirmed": "Bekreftet",
-    "accounting_point_grid_location_panel.status.suggested": "Foreslått",
+    "accounting_point_grid_location_panel.status.guessed": "Gjettet",
     "accounting_point_grid_location_panel.button.edit_details":
       "Rediger detaljer",
     "accounting_point_grid_location_panel.button.validate_grid_location":

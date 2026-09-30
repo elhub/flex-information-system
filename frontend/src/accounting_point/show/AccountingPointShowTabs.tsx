@@ -1,5 +1,11 @@
-import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
-import { Tabs } from "../../components/ui";
+import { useState } from "react";
+import {
+  useGetIdentity,
+  usePermissions,
+  UserIdentity,
+  useTranslate,
+} from "ra-core";
+import { Button, Tabs } from "../../components/ui";
 import {
   AccountingPoint,
   AccountingPointGridLocation,
@@ -11,6 +17,7 @@ import {
 import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
 import { Permissions } from "../../auth/permissions";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { AccountingPointControllableUnitsTable } from "./AccountingPointControllableUnitsTable";
 
 const userCanViewGrid = (identity: UserIdentity | undefined) =>
   identity?.role === "flex_flexibility_information_system_operator" ||
@@ -37,8 +44,10 @@ export const AccountingPointShowTabs = ({
   popupSubstation,
   onClosePopup,
 }: Props) => {
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
+  const [isGridLocationEditing, setIsGridLocationEditing] = useState(false);
   const location = ap.location;
   const canViewLocation = !!permissions?.allow(
     "accounting_point.location",
@@ -54,10 +63,15 @@ export const AccountingPointShowTabs = ({
     "accounting_point_grid_location",
     "update",
   );
+  const canViewControllableUnits = !!permissions?.allow(
+    "controllable_unit",
+    "read",
+  );
   const [tab, setTab] = useTabSearchParam("location");
 
   const highlightedBusinessId =
     selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
+  const isConfirmed = gridLocation?.quality?.toLowerCase() === "confirmed";
 
   const handleSubstationClick = canEditGridLocation
     ? (substation: Substation) => {
@@ -73,8 +87,33 @@ export const AccountingPointShowTabs = ({
     >
       <Tabs.List>
         <Tabs.Tab label="Location" value="location" />
+        {canViewControllableUnits && (
+          <Tabs.Tab
+            label={translate("text.tab.controllable_units")}
+            value="controllable_units"
+          />
+        )}
       </Tabs.List>
       <Tabs.Panel value="location" className="flex-1 min-h-0">
+        {canViewGridLocation &&
+          canEditGridLocation &&
+          !isGridLocationEditing &&
+          gridLocation != null && (
+            <div className="mb-4 flex justify-end">
+              <Button
+                variant={isConfirmed ? "secondary" : "primary"}
+                onClick={() => setIsGridLocationEditing(true)}
+              >
+                {isConfirmed
+                  ? translate(
+                      "text.accounting_point_grid_location_panel.button.edit_details",
+                    )
+                  : translate(
+                      "text.accounting_point_grid_location_panel.button.validate_grid_location",
+                    )}
+              </Button>
+            </div>
+          )}
         <div className="flex flex-col lg:flex-row gap-4 items-stretch">
           {canViewGridLocation && (
             <div className="w-full lg:w-[380px] shrink-0 flex">
@@ -82,6 +121,8 @@ export const AccountingPointShowTabs = ({
                 apId={ap.id}
                 gridLocation={gridLocation}
                 userCanEdit={canEditGridLocation}
+                isEditing={isGridLocationEditing}
+                onEditingChange={setIsGridLocationEditing}
                 isConnectingSystemOperator={
                   identity?.partyID !== undefined &&
                   identity.partyID === ap.system_operator_id
@@ -108,6 +149,11 @@ export const AccountingPointShowTabs = ({
           )}
         </div>
       </Tabs.Panel>
+      {canViewControllableUnits && (
+        <Tabs.Panel value="controllable_units" className="flex-1 min-h-0">
+          <AccountingPointControllableUnitsTable accountingPointId={ap.id} />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };
