@@ -43,7 +43,31 @@ unit, so we represent this relation as a `service_provider` nested resource
 of `controllable_unit` in React-Admin, making it easier to handle it as a
 sub-component.
 
-Resources are listed in the main file of the front-end, `App.tsx`.
+Resources are grouped by domain under the `resources` folder of the
+front-end (for instance, `resources/controllableUnitResources.tsx`), each
+exporting a function that builds the `Resource` elements for that domain
+based on the user's permissions. These are aggregated by `createAllResources`
+and passed to the `Admin` component in `App.tsx`.
+
+## Code factoring
+
+In order to automate as much work as possible, we factor code under custom
+components. For instance, the `Show` and `Input` pages of our components can
+in fact be used for several purposes, limiting the amount of code we have to
+maintain.
+
+Indeed, the `Show` page can be used to show details about a record for _both_ a
+resource and the history table of this resource. This is [made possible](https://marmelab.com/react-admin/Resource.html#resource-context)
+by wrapping the component of this page under a `ResourceContextProvider` to
+change the value of the `resource` property, and using `useResourceContext` in
+the component to check whether it is used for the history or the main table, and
+display or hide fields accordingly.
+
+The `Input` page component can be wrapped under the [`Create`](https://marmelab.com/react-admin/Create.html)
+or [`Edit`](https://marmelab.com/react-admin/Edit.html) components of
+React-Admin, according to whether the input page is used to create a fresh
+record or to edit an existing one. In the case of an edition, the various fields
+of the input page will then be filled with the current values.
 
 ## Show page layout
 
@@ -72,24 +96,10 @@ to find:
   information.
 
 `ResourceShowLayout` is progressively replacing the older `ShowPageLayout`
-component; new resources should use `ResourceShowLayout`.
-
-## Code factoring
-
-In order to automate as much work as possible, we factor code under custom
-components. For instance, the `Show` and `Input` pages of our components can
-in fact be used for several purposes, limiting the amount of code we have to
-maintain.
-
-Indeed, the `Show` page can be used to show details about a record for _both_ a
-resource and the history table of this resource. This is [made possible](https://marmelab.com/react-admin/Resource.html#resource-context)
-by wrapping the component of this page under a `ResourceContextProvider` to
-change the value of the `resource` property, and using `useResourceContext` in
-the component to check whether it is used for the history or the main table, and
-display or hide fields accordingly.
-
-The `Input` page component can be wrapped under the [`Create`](https://marmelab.com/react-admin/Create.html)
-or [`Edit`](https://marmelab.com/react-admin/Edit.html) components of
-React-Admin, according to whether the input page is used to create a fresh
-record or to edit an existing one. In the case of an edition, the various fields
-of the input page will then be filled with the current values.
+component; new resources should use `ResourceShowLayout`. Where
+`ShowPageLayout` only lays out freeform panels passed as children, leaving
+each page to reimplement its own badge, action bar and summary markup,
+`ResourceShowLayout` takes typed props (such as `ResourceStatus`, `AlertType`,
+`UtilityAction` and `ResourceSummaryField`) for these pieces, so that the
+header, actions menu, alert and summary card look and behave consistently
+across resources.
