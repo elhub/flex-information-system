@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "ra-core";
-import { BodyText, Loader } from "../../components/ui";
+import { Loader } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { useTranslateField } from "../../intl/intl";
 import { ControllableUnitRegulationDirection } from "../../generated-client";
@@ -104,19 +104,14 @@ export const AccountingPointControllableUnitsTable = ({
     throw error;
   }
 
-  if (!data || data.rows.length === 0) {
-    return (
-      <BodyText>{translate("text.ap_controllable_units_table.empty")}</BodyText>
-    );
-  }
-
   return (
     <SimpleTable
       rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
       size="small"
-      data={data.rows}
+      data={data?.rows ?? []}
       columns={columns}
       className="w-full"
+      empty={translate("text.ap_controllable_units_table.empty")}
     />
   );
 };
