@@ -732,7 +732,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette viser hvilken stasjon dette avregningspunktet tilhører.",
     "ap_show_overview.grid_location.guessed_help_before": "Hvis status er",
     "ap_show_overview.grid_location.guessed_help_after":
-      ", har systemet gjort et beste-gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig.",
+      ", har systemet gjort en best mulig gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig."
     "ap_show_overview.grid_location.with_selection":
       "En stasjon er valgt. Bekreft den hvis den er riktig, eller velg en annen.",
     "ap_show_overview.grid_location.without_selection":
