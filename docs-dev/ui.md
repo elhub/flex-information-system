@@ -98,7 +98,7 @@ to find:
 
 There is already a  `ShowPageLayout` - however, the challenges with this layout component is that it accepted the type `ReactNode` for `children, alerts, ationBar,  and badge` , this opened for flexibility which is sometimes needed. However, this approach gave us some UX/Design challenges, because with too much flexibility  the different pages started to diverge from each other. Diverge in terms of where primary and secondary actions were located, either in the summary section or in the actionbar section.
 
-The new layout component is made with UX in mind, to enforce consistency across pages. Therefore the layout component is more opinionated than the previous version.  It decides how to show alerts, actions, and summary.  Tabs are expected to be sent into the component, but the content within the tabs are freely decided by the implementation of the respective showPage
+The new layout component is made with UX in mind, to enforce consistency across pages. Therefore the layout component is more opinionated than the previous version.  It decides how to show alerts, actions, and summary are rendered.  Tabs are expected to be sent into the component, but the content within the tabs are freely decided by the implementation of the respective showPage.
 
 
 component; new resources should use `ResourceShowLayout`. Where
