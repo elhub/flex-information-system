@@ -56,7 +56,7 @@ export const useIdentityMap = (ids: number[]): Record<number, Identity> => {
   };
 };
 
-const fetchControllableUnitHistory = async (
+export const fetchControllableUnitHistory = async (
   controllableUnitId: number,
 ): Promise<ControllableUnitHistory[]> => {
   return await listControllableUnitHistory({

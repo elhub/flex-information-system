@@ -1,13 +1,33 @@
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { fetchSpgChanges } from "./useSpgChangesViewModel";
-import type { ServiceProvidingGroupMembershipHistory } from "../../../generated-client";
-import { listServiceProvidingGroupMembershipHistory } from "../../../generated-client";
+import { beforeEach, expect, it, vi } from "vitest";
+import { waitFor } from "@testing-library/react";
+import {
+  fetchSpgChanges,
+  useControllableUnitHistory,
+} from "./useSpgChangesViewModel";
+import type {
+  ControllableUnitHistory,
+  Identity,
+  ServiceProvidingGroupMembershipHistory,
+} from "../../../generated-client";
+import {
+  listControllableUnitHistory,
+  listIdentity,
+  listServiceProvidingGroupMembershipHistory,
+} from "../../../generated-client";
+import { renderHookWithQuery } from "../../../test/test-utils";
 
 vi.mock("../../../generated-client", () => ({
   listServiceProvidingGroupMembershipHistory: vi.fn(),
+  listControllableUnitHistory: vi.fn(),
+  listIdentity: vi.fn(),
 }));
 
-const mockedList = vi.mocked(listServiceProvidingGroupMembershipHistory);
+const mockedSpgHistoryList = vi.mocked(
+  listServiceProvidingGroupMembershipHistory,
+);
+
+const mockedListCuHistory = vi.mocked(listControllableUnitHistory);
+const mockedListIdentities = vi.mocked(listIdentity);
 
 const FROM = "2024-01-01T00:00:00.000Z";
 const NOW = "2024-06-01T00:00:00.000Z";
@@ -39,21 +59,29 @@ const mockSnapshots = (
   old: ServiceProvidingGroupMembershipHistory[],
   current: ServiceProvidingGroupMembershipHistory[],
 ) => {
-  mockedList.mockImplementation(async (options) => {
+  mockedSpgHistoryList.mockImplementation(async (options) => {
     const query = options?.query as Record<string, string> | undefined;
     const data = query?.as_of === FROM ? old : current;
     return { data, error: undefined };
   });
 };
 
-beforeEach(() => {
-  mockedList.mockReset();
-  vi.useFakeTimers();
-  vi.setSystemTime(new Date(NOW));
-});
+const mockCuHistory = (data: ControllableUnitHistory[]) => {
+  mockedListCuHistory.mockImplementation(async () => {
+    return { data, error: null } as never;
+  });
+};
 
-afterEach(() => {
-  vi.useRealTimers();
+const mockIdentities = (data: Identity[]) => {
+  mockedListIdentities.mockImplementation(async () => {
+    return { data, error: null } as never;
+  });
+};
+
+beforeEach(() => {
+  mockedSpgHistoryList.mockReset();
+  mockedListCuHistory.mockReset();
+  mockedListIdentities.mockReset();
 });
 
 it("marks a controllable unit only present in the current snapshot as added", async () => {
@@ -149,19 +177,107 @@ it("fetches the old snapshot as of the given date and the current snapshot as of
 
   await fetchSpgChanges(42, FROM, NOW);
 
-  expect(mockedList).toHaveBeenCalledTimes(2);
-  expect(mockedList).toHaveBeenCalledWith({
+  expect(mockedSpgHistoryList).toHaveBeenCalledTimes(2);
+  expect(mockedSpgHistoryList).toHaveBeenCalledWith({
     query: expect.objectContaining({
       service_providing_group_id: "eq.42",
       as_of: FROM,
       valid_at: FROM,
     }),
   });
-  expect(mockedList).toHaveBeenCalledWith({
+  expect(mockedSpgHistoryList).toHaveBeenCalledWith({
     query: expect.objectContaining({
       service_providing_group_id: "eq.42",
       as_of: NOW,
       valid_at: NOW,
     }),
   });
+});
+
+it("fetches expected cu history enriched with party name for recorded_by_name and replaced_by_name", async () => {
+  const expectedHistory = [
+    {
+      id: 1,
+      controllable_unit_id: 1,
+      accounting_point_id: 1001,
+      business_id: "ecd8b068-c9f9-487e-9f44-13a6c29fee2d",
+      maximum_active_power: 3.0,
+      is_small: true,
+      name: "Test Electric vehicle charger",
+      regulation_direction: "up",
+      start_date: "2020-01-01",
+      status: "inactive",
+      additional_information: null,
+      recorded_by: 2,
+      recorded_at: "2026-09-24T11:56:01.356224+00:00",
+      replaced_by: null,
+      replaced_at: null,
+    },
+    {
+      id: 2,
+      controllable_unit_id: 1,
+      accounting_point_id: 1001,
+      business_id: "ecd8b068-c9f9-487e-9f44-13a6c29fee2d",
+      maximum_active_power: 3.5,
+      is_small: true,
+      name: "Test Electric vehicle charger",
+      regulation_direction: "up",
+      start_date: "2020-01-01",
+      status: "active",
+      additional_information: null,
+      recorded_by: 3,
+      recorded_at: "2026-09-24T11:56:01.356224+00:00",
+      replaced_by: 3,
+      replaced_at: "2026-09-25T13:56:01.356224+00:00",
+    },
+  ];
+  mockCuHistory(expectedHistory as unknown as ControllableUnitHistory[]);
+
+  const expectedIdentities = [
+    {
+      id: 2,
+      entity_id: 3,
+      entity_name: "Test Suite",
+      party_id: 17,
+      party_name: "Test SP",
+    },
+    {
+      id: 3,
+      entity_id: 4,
+      entity_name: "Test Suite",
+      party_id: 17,
+      party_name: "Test FISO",
+    },
+  ];
+  mockIdentities(expectedIdentities);
+
+  const controllableUnitId = 1;
+
+  const historyResult = renderHookWithQuery(() =>
+    useControllableUnitHistory(controllableUnitId),
+  );
+  await waitFor(() => {
+    expect(historyResult.result.current.data[1]?.replaced_by_name).toBe(
+      "Test FISO",
+    );
+  });
+  const history = historyResult.result.current.data;
+
+  expect(listControllableUnitHistory).toHaveBeenCalledWith({
+    query: expect.objectContaining({
+      controllable_unit_id: "eq." + controllableUnitId,
+    }),
+  });
+
+  expect(listIdentity).toHaveBeenCalledWith({
+    query: expect.objectContaining({
+      id: "in.(2,3)",
+    }),
+  });
+
+  expect(history.length).toEqual(expectedHistory.length);
+  expect(history[0].recorded_by_name).toEqual("Test SP");
+  expect(history[0].replaced_by_name).toBeUndefined();
+  expect(history[1].recorded_by_name).toEqual("Test FISO");
+  expect(history[1].replaced_by_name).toEqual("Test FISO");
 });

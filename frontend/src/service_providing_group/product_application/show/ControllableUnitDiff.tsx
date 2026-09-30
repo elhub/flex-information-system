@@ -54,7 +54,6 @@ const formatPower = (value: number | undefined, powerScale: Scale) =>
 const createSpgMembershipChangeLogEntry = (
   spgChangeRow: SpgChangeRow,
 ): ChangeLogEntry[] => {
-  // TODO: changed by if deleted is currently not loaded if you compare against now() (membership not as_of now)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const identityMap = useIdentityMap(
     [spgChangeRow.new?.recorded_by, spgChangeRow.new?.replaced_by].filter(
