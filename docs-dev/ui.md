@@ -97,9 +97,9 @@ to find:
 
 `ResourceShowLayout` is progressively replacing the older `ShowPageLayout`
 component; new resources should use `ResourceShowLayout`. Where
-`ShowPageLayout` only lays out freeform panels passed as children, leaving
-each page to reimplement its own badge, action bar and summary markup,
-`ResourceShowLayout` takes typed props (such as `ResourceStatus`, `AlertType`,
-`UtilityAction` and `ResourceSummaryField`) for these pieces, so that the
-header, actions menu, alert and summary card look and behave consistently
-across resources.
+`ShowPageLayout` accepts generic React nodes for its badge, alerts, action bar,
+title extras and two content panels, requiring each page to assemble those
+pieces itself. `ResourceShowLayout` instead takes structured, typed props (such
+as `ResourceStatus`, `AlertType`, `UtilityAction` and `ResourceSummaryField`)
+for these pieces, so that the header, actions menu, alert and summary card look
+and behave consistently across resources.
