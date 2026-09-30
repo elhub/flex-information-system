@@ -62,7 +62,6 @@ const fetchControllableUnitHistory = async (
   return await listControllableUnitHistory({
     query: {
       controllable_unit_id: "eq." + controllableUnitId,
-      // embed: "entity",
     },
   }).then(throwOnError);
 };

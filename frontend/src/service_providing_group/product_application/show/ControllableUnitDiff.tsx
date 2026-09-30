@@ -191,7 +191,7 @@ const ChangeLogCard = ({ entry }: { entry: ChangeLogEntry }) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 rounded-lg border-l-4 bg-semantic-background p-4",
+        "flex flex-col gap-3 rounded-lg border-l-4 bg-semantic-background pt-4 px-4",
         accentClassByKind[entry.kind],
       )}
     >
@@ -271,7 +271,7 @@ export const ControllableUnitDiff = ({
   ];
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4 p-1">
       <div className="flex flex-col gap-1">
         <BodyText size="small" className="text-semantic-text-subtle">
           {translate("text.spg_changes_comparison_scope")}:{" "}
