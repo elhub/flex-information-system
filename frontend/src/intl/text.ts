@@ -23,6 +23,7 @@ export type TextKey =
   | "tab.history"
   | "tab.spg_info"
   | "tab.overview"
+  | "tab.grid_location"
   | "tab.comments"
   | "tab.attachments"
   | "cu_spg_show_history"
@@ -210,6 +211,7 @@ export type TextKey =
   | "ap_show_overview.cu_summary.total_flexible_power"
   | "ap_show_overview.cu_summary.total_rated_power"
   | "ap_show_overview.common.not_available"
+  | "ap_controllable_units_table.empty"
   | "substation_reference_input.search_for_substation"
   | "resource_show_layout.more_actions"
   | "resource_show_layout.navigate_to";
@@ -240,6 +242,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.history": "History",
     "tab.spg_info": "SPG info",
     "tab.overview": "Overview",
+    "tab.grid_location": "Grid location",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     cu_spg_show_history: "Show history",
@@ -479,6 +482,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "ap_show_overview.cu_summary.total_flexible_power": "Total flexible power",
     "ap_show_overview.cu_summary.total_rated_power": "Total rated power",
     "ap_show_overview.common.not_available": "Not available",
+    "ap_controllable_units_table.empty":
+      "No controllable units tied to this accounting point.",
     "substation_reference_input.search_for_substation": "Search for substation",
     "resource_show_layout.more_actions": "Actions",
     "resource_show_layout.navigate_to": "Navigate to",
@@ -508,6 +513,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
     "tab.overview": "Oversikt",
+    "tab.grid_location": "Nettlokasjon",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     cu_spg_show_history: "Vis historikk",
@@ -732,7 +738,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette viser hvilken stasjon dette avregningspunktet tilhører.",
     "ap_show_overview.grid_location.guessed_help_before": "Hvis status er",
     "ap_show_overview.grid_location.guessed_help_after":
-      ", har systemet gjort en best mulig gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig."
+      ", har systemet gjort en best mulig gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig.",
     "ap_show_overview.grid_location.with_selection":
       "En stasjon er valgt. Bekreft den hvis den er riktig, eller velg en annen.",
     "ap_show_overview.grid_location.without_selection":
@@ -749,6 +755,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Total fleksibel effekt",
     "ap_show_overview.cu_summary.total_rated_power": "Total merkeeffekt",
     "ap_show_overview.common.not_available": "Ikke tilgjengelig",
+    "ap_controllable_units_table.empty":
+      "Ingen kontrollerbare enheter er knyttet til dette avregningspunktet.",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
     "resource_show_layout.more_actions": "Handlinger",
     "resource_show_layout.navigate_to": "Naviger til",

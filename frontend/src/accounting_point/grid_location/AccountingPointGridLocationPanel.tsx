@@ -54,11 +54,6 @@ export const AccountingPointGridLocationPanel = ({
     setInternalIsEditing(nextIsEditing);
   };
 
-  // when a substation is clicked on the map, open the edit form
-  if (!!selectedSubstation && userCanEdit && !editing) {
-    setEditing(true);
-  }
-
   const handleDone = () => {
     setEditing(false);
     onClearSelection?.();

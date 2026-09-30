@@ -106,7 +106,7 @@ export const AccountingPointControllableUnitsTable = ({
 
   if (!data || data.rows.length === 0) {
     return (
-      <BodyText>No controllable units tied to this accounting point.</BodyText>
+      <BodyText>{translate("text.ap_controllable_units_table.empty")}</BodyText>
     );
   }
 

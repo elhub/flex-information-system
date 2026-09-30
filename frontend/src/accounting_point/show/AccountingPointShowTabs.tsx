@@ -73,10 +73,11 @@ export const AccountingPointShowTabs = ({
   const highlightedBusinessId =
     selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
   const isConfirmed = gridLocation?.quality?.toLowerCase() === "confirmed";
-  const canViewLocationTab = canViewLocation || canViewGridLocation;
 
   const handleSubstationClick = canEditGridLocation
     ? (substation: Substation) => {
+        // when a substation is clicked on the map, open the edit form
+        setIsGridLocationEditing(true);
         onSelectSubstation(substation);
       }
     : undefined;
@@ -89,7 +90,10 @@ export const AccountingPointShowTabs = ({
     >
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
-        <Tabs.Tab label="Grid location" value="location" />
+        <Tabs.Tab
+          label={translate("text.tab.grid_location")}
+          value="location"
+        />
         {canViewControllableUnits && (
           <Tabs.Tab
             label={translate("text.tab.controllable_units")}
@@ -102,7 +106,7 @@ export const AccountingPointShowTabs = ({
           accountingPointId={ap.id}
           gridLocation={gridLocation}
           canViewControllableUnits={canViewControllableUnits}
-          canViewGridLocation={canViewLocationTab}
+          canViewGridLocation={canViewGridLocation}
         />
       </Tabs.Panel>
       <Tabs.Panel value="location" className="flex-1 min-h-0">
