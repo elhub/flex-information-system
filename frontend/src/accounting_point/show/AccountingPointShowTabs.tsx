@@ -89,7 +89,7 @@ export const AccountingPointShowTabs = ({
     >
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
-        <Tabs.Tab label="Location" value="location" />
+        <Tabs.Tab label="Grid location" value="location" />
         {canViewControllableUnits && (
           <Tabs.Tab
             label={translate("text.tab.controllable_units")}
@@ -102,7 +102,7 @@ export const AccountingPointShowTabs = ({
           accountingPointId={ap.id}
           gridLocation={gridLocation}
           canViewControllableUnits={canViewControllableUnits}
-          canViewLocationTab={canViewLocationTab}
+          canViewGridLocation={canViewLocationTab}
         />
       </Tabs.Panel>
       <Tabs.Panel value="location" className="flex-1 min-h-0">

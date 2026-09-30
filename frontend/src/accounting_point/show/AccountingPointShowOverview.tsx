@@ -1,14 +1,6 @@
-import { Link as RouterLink } from "react-router-dom";
 import { IconCheckCircle, IconWarningCircle } from "@elhub/ds-icons";
 import { useTranslate } from "ra-core";
-import {
-  Badge,
-  BodyText,
-  Heading,
-  Link,
-  Loader,
-  Panel,
-} from "../../components/ui";
+import { Badge, BodyText, Heading, Loader, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { useAccountingPointControllableUnits } from "./useAccountingPointControllableUnits";
@@ -17,14 +9,14 @@ type Props = {
   accountingPointId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   canViewControllableUnits: boolean;
-  canViewLocationTab: boolean;
+  canViewGridLocation: boolean;
 };
 
 export const AccountingPointShowOverview = ({
   accountingPointId,
   gridLocation,
   canViewControllableUnits,
-  canViewLocationTab,
+  canViewGridLocation,
 }: Props) => {
   const translate = useTranslate();
   const { data, isLoading, error } = useAccountingPointControllableUnits(
@@ -61,63 +53,58 @@ export const AccountingPointShowOverview = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Panel border className="h-fit p-4 sm:p-5 flex flex-col gap-2">
-        <Heading size="small">
-          {translate("text.ap_show_overview.grid_location.heading")}
-        </Heading>
-        <BodyText>
-          {translate("text.ap_show_overview.grid_location.description")}
-        </BodyText>
-        <BodyText>
-          {translate("text.ap_show_overview.grid_location.guessed_help_before")}{" "}
-          <b>
-            {translate(
-              "text.accounting_point_grid_location_panel.status.guessed",
-            )}
-          </b>{" "}
-          {translate("text.ap_show_overview.grid_location.guessed_help_after")}
-        </BodyText>
-        <BodyText>
-          {hasGridLocation
-            ? translate("text.ap_show_overview.grid_location.with_selection")
-            : translate(
-                "text.ap_show_overview.grid_location.without_selection",
-              )}
-        </BodyText>
-        <div className="flex flex-col gap-2">
+      {canViewGridLocation && (
+        <Panel border className="h-fit p-4 sm:p-5 flex flex-col gap-2">
+          <Heading size="small">
+            {translate("text.ap_show_overview.grid_location.heading")}
+          </Heading>
           <BodyText>
-            <b>
-              {translate("text.ap_show_overview.grid_location.current_status")}:
-            </b>
+            {translate("text.ap_show_overview.grid_location.description")}
           </BodyText>
-          <div>
-            <Badge
-              size="small"
-              status={statusBadge.status}
-              variant="block"
-              icon={statusBadge.icon}
-              className="whitespace-nowrap"
-            >
-              {gridLocationStatus}
-            </Badge>
-          </div>
-        </div>
-        {canViewLocationTab ? (
-          <Link
-            as={RouterLink}
-            to={`/accounting_point/${accountingPointId}/show?tab=location`}
-          >
-            {translate("text.ap_show_overview.grid_location.open_location_tab")}
-          </Link>
-        ) : (
-          <BodyText className="text-semantic-text-secondary">
+          <BodyText>
             {translate(
-              "text.ap_show_overview.grid_location.no_location_access",
+              "text.ap_show_overview.grid_location.guessed_help_before",
+            )}{" "}
+            <b>
+              {translate(
+                "text.accounting_point_grid_location_panel.status.guessed",
+              )}
+            </b>{" "}
+            {translate(
+              "text.ap_show_overview.grid_location.guessed_help_after",
             )}
           </BodyText>
-        )}
-      </Panel>
+          <BodyText>
+            {hasGridLocation
+              ? translate("text.ap_show_overview.grid_location.with_selection")
+              : translate(
+                  "text.ap_show_overview.grid_location.without_selection",
+                )}
+          </BodyText>
 
+          <div className="flex flex-col gap-2">
+            <BodyText>
+              <b>
+                {translate(
+                  "text.ap_show_overview.grid_location.current_status",
+                )}
+                :
+              </b>
+            </BodyText>
+            <div>
+              <Badge
+                size="small"
+                status={statusBadge.status}
+                variant="block"
+                icon={statusBadge.icon}
+                className="whitespace-nowrap"
+              >
+                {gridLocationStatus}
+              </Badge>
+            </div>
+          </div>
+        </Panel>
+      )}
       <Panel border className="h-fit p-4 sm:p-5 flex flex-col gap-4">
         <Heading size="large">
           {translate("text.ap_show_overview.cu_summary.heading")}
