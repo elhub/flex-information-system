@@ -72,9 +72,12 @@ AS
 $$
 BEGIN
     RETURN (
-        spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
-        OR spgpa.prequalified_at IS NOT null
-        OR spgpa.verified_at IS NOT null
+        spgpa.status != 'terminated'
+        AND (
+            spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
+            OR spgpa.prequalified_at IS NOT null
+            OR spgpa.verified_at IS NOT null
+        )
     );
 END;
 $$;

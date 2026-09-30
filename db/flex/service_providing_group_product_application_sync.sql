@@ -19,10 +19,7 @@ BEGIN
         SELECT 1
         FROM flex.service_providing_group_membership AS spgm
         WHERE spgm.service_providing_group_id = spgpa.service_providing_group_id
-        AND (
-            upper(spgm.valid_time_range) IS null
-            OR upper(spgm.valid_time_range) > current_timestamp
-        )
+        AND spgm.valid_time_range @> current_timestamp
     );
 END;
 $$;

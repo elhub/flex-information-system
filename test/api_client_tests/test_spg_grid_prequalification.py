@@ -729,3 +729,49 @@ def test_spggp_terminated_on_last_cu_removed(data):
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
     assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.TERMINATED
+
+    # restore an active membership and reapply: the terminated SPGGP remains
+    # historical and the sync creates a new one for the same SPG-SO pair
+    spgm = create_service_providing_group_membership.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=active_spgms[0].controllable_unit_id,
+            service_providing_group_id=spg_id,
+            valid_from=datetime.datetime.now(datetime.timezone.utc),
+        ),
+    )
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+
+    new_spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_id,
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(new_spgpa, ServiceProvidingGroupProductApplicationResponse)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, new_spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.now(datetime.timezone.utc),
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    spggps = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_id}",
+        impacted_system_operator_id=f"eq.{so_id}",
+    )
+    assert isinstance(spggps, list)
+    assert len(spggps) == 2
+    assert {item.status for item in spggps} == {
+        ServiceProvidingGroupGridPrequalificationStatus.REQUESTED,
+        ServiceProvidingGroupGridPrequalificationStatus.TERMINATED,
+    }

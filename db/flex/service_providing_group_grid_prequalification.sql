@@ -31,9 +31,17 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     CONSTRAINT fk_service_providing_group_grid_prequalification_impacted_system_operator_id -- noqa
     FOREIGN KEY (
         impacted_system_operator_id, impacted_system_operator_party_type
-    ) REFERENCES party (id, type),
-    UNIQUE (service_providing_group_id, impacted_system_operator_id)
+    ) REFERENCES party (id, type)
 );
+
+-- changeset flex:service-providing-group-grid-prequalification-spg-iso-uk runOnChange:true endDelimiter:--
+-- only one non-terminated SPG-ISO pair
+CREATE UNIQUE INDEX IF NOT EXISTS
+uk_service_providing_group_grid_prequalification_spg_iso
+ON service_providing_group_grid_prequalification (
+    service_providing_group_id, impacted_system_operator_id
+)
+WHERE status != 'terminated';
 
 -- changeset flex:service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION spg_grid_prequalification_ready_for_market_check(
@@ -47,8 +55,11 @@ AS
 $$
 BEGIN
     RETURN (
-        spggp.status IN ('approved', 'conditionally_approved')
-        OR spggp.prequalified_at IS NOT null
+        spggp.status != 'terminated'
+        AND (
+            spggp.status IN ('approved', 'conditionally_approved')
+            OR spggp.prequalified_at IS NOT null
+        )
     );
 END;
 $$;

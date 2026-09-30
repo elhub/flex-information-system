@@ -43,3 +43,12 @@ CHECK (
         'terminated'
     )
 );
+
+-- changeset flex:spggp-terminated-not-blocking-uk runOnChange:false endDelimiter:;
+-- remove the uniqueness constraint on SPG-ISO pairs to allow multiple
+-- terminated rows
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM pg_catalog.pg_constraint AS c INNER JOIN pg_catalog.pg_class AS t ON t.oid = c.conrelid INNER JOIN pg_catalog.pg_namespace AS n ON n.oid = t.relnamespace WHERE n.nspname = 'flex' AND t.relname = 'service_providing_group_grid_prequalification' AND c.conname = 'service_providing_group_grid__service_providing_group_id_im_key'
+ALTER TABLE flex.service_providing_group_grid_prequalification
+DROP CONSTRAINT IF EXISTS
+service_providing_group_grid__service_providing_group_id_im_key;

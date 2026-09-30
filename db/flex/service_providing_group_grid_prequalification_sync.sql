@@ -49,7 +49,11 @@ BEGIN
         = expected_spggp.service_providing_group_id
             AND flex_spggp.impacted_system_operator_id
             = expected_spggp.impacted_system_operator_id
-    -- missing in the table -> insert
+            -- no terminated rows: if the SPG-ISO pair becomes expected again,
+            -- a new row will be inserted instead (the partial unique index
+            -- allows it)
+            AND flex_spggp.status != 'terminated'
+    -- missing in the table (or only a terminated row is present) -> insert
     WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             service_providing_group_id,

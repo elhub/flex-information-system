@@ -13,6 +13,7 @@ WITH (security_invoker = false) AS (
     FROM flex.service_providing_group_membership AS spgm
         INNER JOIN flex.service_providing_group_product_application AS spgpa
             ON spgm.service_providing_group_id = spgpa.service_providing_group_id
+                AND spgpa.status != 'terminated'
 );
 
 -- changeset flex:controllable-unit-procuring-system-operator-grants runOnChange:true endDelimiter:;
