@@ -18,6 +18,7 @@ import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPoi
 import { Permissions } from "../../auth/permissions";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { AccountingPointControllableUnitsTable } from "./AccountingPointControllableUnitsTable";
+import { AccountingPointShowOverview } from "./AccountingPointShowOverview";
 
 const userCanViewGrid = (identity: UserIdentity | undefined) =>
   identity?.role === "flex_flexibility_information_system_operator" ||
@@ -67,11 +68,12 @@ export const AccountingPointShowTabs = ({
     "controllable_unit",
     "read",
   );
-  const [tab, setTab] = useTabSearchParam("location");
+  const [tab, setTab] = useTabSearchParam("overview");
 
   const highlightedBusinessId =
     selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
   const isConfirmed = gridLocation?.quality?.toLowerCase() === "confirmed";
+  const canViewLocationTab = canViewLocation || canViewGridLocation;
 
   const handleSubstationClick = canEditGridLocation
     ? (substation: Substation) => {
@@ -86,6 +88,7 @@ export const AccountingPointShowTabs = ({
       className="relative top-[-24px] h-full flex flex-col"
     >
       <Tabs.List>
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab label="Location" value="location" />
         {canViewControllableUnits && (
           <Tabs.Tab
@@ -94,6 +97,14 @@ export const AccountingPointShowTabs = ({
           />
         )}
       </Tabs.List>
+      <Tabs.Panel value="overview" className="flex-1 min-h-0">
+        <AccountingPointShowOverview
+          accountingPointId={ap.id}
+          gridLocation={gridLocation}
+          canViewControllableUnits={canViewControllableUnits}
+          canViewLocationTab={canViewLocationTab}
+        />
+      </Tabs.Panel>
       <Tabs.Panel value="location" className="flex-1 min-h-0">
         {canViewGridLocation &&
           canEditGridLocation &&

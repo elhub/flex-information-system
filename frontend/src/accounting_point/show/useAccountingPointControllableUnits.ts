@@ -9,6 +9,8 @@ export type AccountingPointControllableUnitRow = {
   rated_power: number | undefined;
   regulation_direction: string;
   status: string;
+  additional_information: string | undefined;
+  recorded_at: string;
 };
 
 type AccountingPointControllableUnitsResult = {
@@ -34,6 +36,8 @@ const fetchAccountingPointControllableUnits = async (
       rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
       regulation_direction: cu.regulation_direction,
       status: cu.status,
+      additional_information: cu.additional_information,
+      recorded_at: cu.recorded_at,
     })),
   };
 };

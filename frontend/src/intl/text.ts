@@ -196,6 +196,20 @@ export type TextKey =
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
   | "accounting_point_grid_location_panel.empty.no_grid_location_set"
+  | "ap_show_overview.grid_location.heading"
+  | "ap_show_overview.grid_location.description"
+  | "ap_show_overview.grid_location.guessed_help_before"
+  | "ap_show_overview.grid_location.guessed_help_after"
+  | "ap_show_overview.grid_location.with_selection"
+  | "ap_show_overview.grid_location.without_selection"
+  | "ap_show_overview.grid_location.current_status"
+  | "ap_show_overview.grid_location.open_location_tab"
+  | "ap_show_overview.grid_location.no_location_access"
+  | "ap_show_overview.cu_summary.heading"
+  | "ap_show_overview.cu_summary.description"
+  | "ap_show_overview.cu_summary.total_flexible_power"
+  | "ap_show_overview.cu_summary.total_rated_power"
+  | "ap_show_overview.common.not_available"
   | "substation_reference_input.search_for_substation"
   | "resource_show_layout.more_actions"
   | "resource_show_layout.navigate_to";
@@ -445,6 +459,26 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Add grid location",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
+    "ap_show_overview.grid_location.heading": "Grid location",
+    "ap_show_overview.grid_location.description":
+      "This tells you which substation this accounting point belongs to.",
+    "ap_show_overview.grid_location.guessed_help_before": "If status is",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", the system made a best guess. Open the Location tab and check that the selected substation is correct.",
+    "ap_show_overview.grid_location.with_selection":
+      "A substation is selected. Confirm it if correct, or choose a different one.",
+    "ap_show_overview.grid_location.without_selection":
+      "No substation is selected yet. Choose and save the correct one.",
+    "ap_show_overview.grid_location.current_status": "Current status",
+    "ap_show_overview.grid_location.open_location_tab": "Open Location tab",
+    "ap_show_overview.grid_location.no_location_access":
+      "You do not currently have access to the Location tab.",
+    "ap_show_overview.cu_summary.heading": "Controllable units summary",
+    "ap_show_overview.cu_summary.description":
+      "This accounting point contains %{count} controllable units. Here are key aggregates across those units:",
+    "ap_show_overview.cu_summary.total_flexible_power": "Total flexible power",
+    "ap_show_overview.cu_summary.total_rated_power": "Total rated power",
+    "ap_show_overview.common.not_available": "Not available",
     "substation_reference_input.search_for_substation": "Search for substation",
     "resource_show_layout.more_actions": "Actions",
     "resource_show_layout.navigate_to": "Navigate to",
@@ -693,6 +727,28 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg til nettlokasjon",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
+    "ap_show_overview.grid_location.heading": "Nettlokasjon",
+    "ap_show_overview.grid_location.description":
+      "Dette viser hvilken stasjon dette avregningspunktet tilhører.",
+    "ap_show_overview.grid_location.guessed_help_before": "Hvis status er",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", har systemet gjort et beste-gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig.",
+    "ap_show_overview.grid_location.with_selection":
+      "En stasjon er valgt. Bekreft den hvis den er riktig, eller velg en annen.",
+    "ap_show_overview.grid_location.without_selection":
+      "Ingen stasjon er valgt ennå. Velg og lagre riktig stasjon.",
+    "ap_show_overview.grid_location.current_status": "Nåværende status",
+    "ap_show_overview.grid_location.open_location_tab": "Åpne Lokasjon-fanen",
+    "ap_show_overview.grid_location.no_location_access":
+      "Du har ikke tilgang til Lokasjon-fanen.",
+    "ap_show_overview.cu_summary.heading":
+      "Oppsummering av kontrollerbare enheter",
+    "ap_show_overview.cu_summary.description":
+      "Dette avregningspunktet inneholder %{count} kontrollerbare enheter. Her er nøkkelaggregater på tvers av disse enhetene:",
+    "ap_show_overview.cu_summary.total_flexible_power":
+      "Total fleksibel effekt",
+    "ap_show_overview.cu_summary.total_rated_power": "Total merkeeffekt",
+    "ap_show_overview.common.not_available": "Ikke tilgjengelig",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
     "resource_show_layout.more_actions": "Handlinger",
     "resource_show_layout.navigate_to": "Naviger til",
