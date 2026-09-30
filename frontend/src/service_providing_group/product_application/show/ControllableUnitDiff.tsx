@@ -10,7 +10,7 @@ import {
   useControllableUnitHistory,
   useIdentityMap,
 } from "./useSpgChangesViewModel";
-import { ControllableUnitHistory } from "../../../generated-client";
+import { ControllableUnitHistory, Identity } from "../../../generated-client";
 
 type Props = {
   controllableUnitId: number;
@@ -53,13 +53,8 @@ const formatPower = (value: number | undefined, powerScale: Scale) =>
 
 const createSpgMembershipChangeLogEntry = (
   spgChangeRow: SpgChangeRow,
+  identityMap: Record<number, Identity>,
 ): ChangeLogEntry[] => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const identityMap = useIdentityMap(
-    [spgChangeRow.new?.recorded_by, spgChangeRow.new?.replaced_by].filter(
-      (id): id is number => id !== undefined && id !== null,
-    ),
-  );
   const oldValidFrom = spgChangeRow.old?.valid_from;
   const oldValidTo = spgChangeRow.old?.valid_to;
   const newValidFrom = spgChangeRow.new?.valid_from;
@@ -264,9 +259,15 @@ export const ControllableUnitDiff = ({
     error,
   } = useControllableUnitHistory(controllableUnitId);
 
+  const membershipIdentityMap = useIdentityMap(
+    [spgChangeRow.new?.recorded_by, spgChangeRow.new?.replaced_by].filter(
+      (id): id is number => id !== undefined && id !== null,
+    ),
+  );
+
   const entries = [
     ...createValueChangeLogEntries(spgChangeRow, history ?? [], powerScale),
-    ...createSpgMembershipChangeLogEntry(spgChangeRow),
+    ...createSpgMembershipChangeLogEntry(spgChangeRow, membershipIdentityMap),
   ];
 
   return (
