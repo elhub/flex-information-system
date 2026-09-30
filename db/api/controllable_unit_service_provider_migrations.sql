@@ -1,3 +1,6 @@
+--liquibase formatted sql
+-- Manually managed file
+
 -- changeset flex:api-controllable-unit-service-provider-delete-revoke runOnChange:false endDelimiter:;
 REVOKE DELETE ON TABLE
 api.controllable_unit_service_provider
