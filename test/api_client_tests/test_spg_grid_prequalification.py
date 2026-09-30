@@ -732,12 +732,15 @@ def test_spggp_terminated_on_last_cu_removed(data):
 
     # restore an active membership and reapply: the terminated SPGGP remains
     # historical and the sync creates a new one for the same SPG-SO pair
+    yesterday_midnight = datetime.datetime.combine(
+        datetime.date.today() - datetime.timedelta(days=1), datetime.time.min
+    ).astimezone(tz=datetime.timezone.utc)
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=active_spgms[0].controllable_unit_id,
             service_providing_group_id=spg_id,
-            valid_from=datetime.datetime.now(datetime.timezone.utc),
+            valid_from=yesterday_midnight,
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
