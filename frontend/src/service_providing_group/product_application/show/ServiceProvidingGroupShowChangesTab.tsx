@@ -20,6 +20,7 @@ import {
   type TimelineMark,
 } from "../../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
+import { ControllableUnitDiff } from "./ControllableUnitDiff";
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import { cn, formatDurationDHM, toDateTimeString } from "../../../util";
@@ -479,6 +480,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
           <Table size="small" className="w-full">
             <Table.Header>
               <Table.Row>
+                <Table.ColumnHeader style={{ width: "1px" }} />
                 <Table.ColumnHeader
                   scope="col"
                   aria-label={translate("text.spg_changes_column_status")}
@@ -492,12 +494,6 @@ export const ServiceProvidingGroupShowChangesTab = ({
                 <Table.ColumnHeader scope="col">
                   {translate("text.spg_changes_column_map")}
                 </Table.ColumnHeader>
-                <Table.ColumnHeader scope="col">
-                  {translate("text.spg_changes_column_first_change")}
-                </Table.ColumnHeader>
-                <Table.ColumnHeader scope="col">
-                  {translate("text.spg_changes_column_last_change")}
-                </Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -505,7 +501,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
                 const oldCu = row.old?.controllable_unit_history?.[0];
                 const newCu = row.new?.controllable_unit_history?.[0];
                 return (
-                  <Table.Row
+                  <Table.ExpandableRow
                     key={row.id}
                     className={cn(rowClassName(row.status), "cursor-pointer")}
                     onClick={(e) => {
@@ -515,6 +511,15 @@ export const ServiceProvidingGroupShowChangesTab = ({
                       }
                       navigate(`/controllable_unit/${row.id}/show`);
                     }}
+                    content={
+                      <ControllableUnitDiff
+                        controllableUnitId={row.id}
+                        spgChangeRow={row}
+                        from={from}
+                        to={to}
+                        powerScale={powerScale}
+                      />
+                    }
                   >
                     <Table.DataCell>
                       <StatusMarker
@@ -524,11 +529,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
                     </Table.DataCell>
                     <Table.DataCell>{row.id}</Table.DataCell>
                     <Table.DataCell>
-                      <DiffText
-                        oldValue={oldCu?.name}
-                        newValue={newCu?.name}
-                        status={row.status}
-                      />
+                      {newCu?.name ?? oldCu?.name}
                     </Table.DataCell>
                     <Table.DataCell>
                       <DiffText
@@ -543,13 +544,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
                         status={row.status}
                       />
                     </Table.DataCell>
-                    <Table.DataCell>
-                      {toDateTimeString(row.firstChange)}
-                    </Table.DataCell>
-                    <Table.DataCell>
-                      {toDateTimeString(row.lastChange)}
-                    </Table.DataCell>
-                  </Table.Row>
+                  </Table.ExpandableRow>
                 );
               })}
             </Table.Body>
