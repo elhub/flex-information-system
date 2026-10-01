@@ -1,22 +1,102 @@
-import { useGetOne, usePermissions, ResourceContextProvider } from "ra-core";
+import { ResourceContextProvider, useGetOne, usePermissions } from "ra-core";
 import { Link, useParams } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
-import {
-  DateField,
-  ReferenceField,
-  TextField,
-} from "../../components/EDS-ra/fields";
+import { DateField, TextField } from "../../components/EDS-ra/fields";
 import {
   DeleteButton,
   NestedResourceHistoryButton,
 } from "../../components/EDS-ra/buttons";
-import { Button, Loader } from "../../components/ui";
-import { IconPlus, IconSearch } from "@elhub/ds-icons";
+import { Button, Dropdown, Loader } from "../../components/ui";
+import { IconDots, IconPencil, IconPlus, IconSearch } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
 import { ControllableUnit } from "../../generated-client";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
+
+type CuspRow = { id: number; controllable_unit_id: number };
+
+const RowActionsMenu = ({ record }: { record: CuspRow }) => {
+  const { permissions } = usePermissions<Permissions>();
+  const canUpdate = permissions?.allow(
+    "controllable_unit_service_provider",
+    "update",
+  );
+  const canReadHistory = permissions?.allow(
+    "controllable_unit_service_provider_history",
+    "read",
+  );
+  const canReadEvent = permissions?.allow("event", "read");
+  const base = `/controllable_unit/${record.controllable_unit_id}`;
+  const historyFilter = encodeURIComponent(
+    `{ "controllable_unit_service_provider_id": ${record.id} }`,
+  );
+  const eventFilter = encodeURIComponent(
+    `{ "subject@eq": "/controllable_unit_service_provider/${record.id}" }`,
+  );
+
+  if (!canUpdate && !canReadHistory && !canReadEvent) return null;
+
+  return (
+    <Dropdown>
+      <Button
+        as={Dropdown.Toggle}
+        variant="invisible"
+        size="small"
+        icon={IconDots}
+        aria-label="Actions"
+      />
+      <Dropdown.Menu arrow placement="bottom-end">
+        {canUpdate && (
+          <>
+            <Dropdown.Menu.GroupedList.Heading>
+              Actions
+            </Dropdown.Menu.GroupedList.Heading>
+            <Dropdown.Menu.GroupedList>
+              {canUpdate && (
+                <Dropdown.Menu.GroupedList.Item
+                  as={Link}
+                  to={`${base}/service_provider/${record.id}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <IconPencil />
+                    Edit
+                  </div>
+                </Dropdown.Menu.GroupedList.Item>
+              )}
+            </Dropdown.Menu.GroupedList>
+          </>
+        )}
+        {(canReadHistory || canReadEvent) && (
+          <>
+            {canUpdate && <Dropdown.Menu.Divider />}
+            <Dropdown.Menu.GroupedList.Heading>
+              Navigation
+            </Dropdown.Menu.GroupedList.Heading>
+            <Dropdown.Menu.GroupedList>
+              {canReadHistory && (
+                <Dropdown.Menu.GroupedList.Item
+                  as={Link}
+                  to={`${base}/service_provider_history?filter=${historyFilter}`}
+                >
+                  <div className="flex items-center gap-2">History</div>
+                </Dropdown.Menu.GroupedList.Item>
+              )}
+              {canReadEvent && (
+                <Dropdown.Menu.GroupedList.Item
+                  as={Link}
+                  to={`/event?filter=${eventFilter}`}
+                >
+                  <div className="flex items-center gap-2">Events</div>
+                </Dropdown.Menu.GroupedList.Item>
+              )}
+            </Dropdown.Menu.GroupedList>
+          </>
+        )}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+};
 
 const CreateButton = ({ id }: { id: number | undefined }) => {
   const locationState: ControllableUnitServiceProviderLocationState = {
@@ -104,24 +184,31 @@ export const ControllableUnitServiceProviderList = ({
           empty={false}
           filter={
             cu
-              ? { controllable_unit_id: cu.id, "valid_from@not.is": null }
-              : { "valid_from@not.is": null }
+              ? {
+                  controllable_unit_id: cu.id,
+                  "valid_from@not.is": null,
+                  embed: "service_provider,end_user",
+                }
+              : {
+                  "valid_from@not.is": null,
+                  embed: "service_provider,end_user",
+                }
           }
           sort={{ field: "valid_from", order: "DESC" }}
           disableSyncWithLocation
         >
-          <Datagrid
+          <Datagrid<CuspRow>
+            rowActions={(r) => <RowActionsMenu record={r} />}
             rowClick={(r) =>
               `/controllable_unit/${r.controllable_unit_id}/service_provider/${r.id}/show`
             }
           >
             <TextField source={fields.id.source} />
-            <ReferenceField
-              source={fields.service_provider_id.source}
-              reference="party"
-            >
-              <TextField source="name" />
-            </ReferenceField>
+            <TextField
+              source="service_provider.name"
+              label="Service provider"
+            />
+            <TextField source="end_user.id" label="End user party id" />
             <TextField source={fields.contract_reference.source} />
             <DateField source={fields.valid_from.source} showTime />
             <DateField source={fields.valid_to.source} showTime />
