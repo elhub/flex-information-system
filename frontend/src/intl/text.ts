@@ -1,5 +1,7 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "delete"
+  | "delete_confirm"
   | "dashboard.application"
   | "dashboard.sp_product_application"
   | "dashboard.spg_product_application"
@@ -244,6 +246,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Edit",
     print: "Print",
     events: "Events",
+    delete: "Delete",
+    delete_confirm:
+      "Are you sure you want to delete this item? This action cannot be undone.",
     service_providing_group: "Service providing group",
     service_providing_group_product_application:
       "Service providing group product application",
@@ -529,6 +534,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Endre",
     print: "Skriv ut",
     events: "Hendelser",
+    delete: "Slett",
+    delete_confirm:
+      "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",
     service_providing_group_product_application:
       "Fleksibilitetsgruppens produktsøknad",

@@ -1,5 +1,6 @@
 import {
   ResourceContextProvider,
+  useDelete,
   useGetOne,
   usePermissions,
   useTranslate,
@@ -7,12 +8,16 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import { DateField, TextField } from "../../components/EDS-ra/fields";
-import {
-  DeleteButton,
-  NestedResourceHistoryButton,
-} from "../../components/EDS-ra/buttons";
+import { NestedResourceHistoryButton } from "../../components/EDS-ra/buttons";
+import { useConfirmAction } from "../../components/ConfirmAction";
 import { Button, Dropdown, Loader } from "../../components/ui";
-import { IconDots, IconPencil, IconPlus, IconSearch } from "@elhub/ds-icons";
+import {
+  IconDots,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+  IconSearch,
+} from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
 import { ControllableUnit } from "../../generated-client";
@@ -32,7 +37,21 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
     "controllable_unit_service_provider_history",
     "read",
   );
+  const canDelete = permissions?.allow(
+    "controllable_unit_service_provider",
+    "delete",
+  );
   const canReadEvent = permissions?.allow("event", "read");
+  const [deleteMutation] = useDelete(
+    "controllable_unit_service_provider",
+    { id: record.id },
+    { returnPromise: true },
+  );
+  const { buttonProps, dialog } = useConfirmAction({
+    title: translate("text.delete"),
+    content: translate("text.delete_confirm"),
+    onConfirmMutation: { mutationFn: async () => deleteMutation() },
+  });
   const base = `/controllable_unit/${record.controllable_unit_id}`;
   const historyFilter = encodeURIComponent(
     `{ "controllable_unit_service_provider_id": ${record.id} }`,
@@ -41,72 +60,86 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
     `{ "subject@eq": "/controllable_unit_service_provider/${record.id}" }`,
   );
 
-  if (!canUpdate && !canReadHistory && !canReadEvent) return null;
+  const hasActions = canUpdate || canDelete;
+  if (!hasActions && !canReadHistory && !canReadEvent) return null;
 
   return (
-    <Dropdown>
-      <Button
-        as={Dropdown.Toggle}
-        variant="invisible"
-        size="small"
-        icon={IconDots}
-        aria-label={translate(
-          "text.resource_show_layout.more_actions_aria_label",
-        )}
-      />
-      <Dropdown.Menu arrow placement="bottom-end">
-        {canUpdate && (
-          <>
-            <Dropdown.Menu.GroupedList.Heading>
-              {translate("text.resource_show_layout.actions_group_label")}
-            </Dropdown.Menu.GroupedList.Heading>
-            <Dropdown.Menu.GroupedList>
-              {canUpdate && (
-                <Dropdown.Menu.GroupedList.Item
-                  as={Link}
-                  to={`${base}/service_provider/${record.id}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <IconPencil />
-                    {translate("text.edit")}
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              )}
-            </Dropdown.Menu.GroupedList>
-          </>
-        )}
-        {(canReadHistory || canReadEvent) && (
-          <>
-            {canUpdate && <Dropdown.Menu.Divider />}
-            <Dropdown.Menu.GroupedList.Heading>
-              {translate("text.resource_show_layout.navigate_group_label")}
-            </Dropdown.Menu.GroupedList.Heading>
-            <Dropdown.Menu.GroupedList>
-              {canReadHistory && (
-                <Dropdown.Menu.GroupedList.Item
-                  as={Link}
-                  to={`${base}/service_provider_history?filter=${historyFilter}`}
-                >
-                  <div className="flex items-center gap-2">
-                    {translate("text.tab.history")}
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              )}
-              {canReadEvent && (
-                <Dropdown.Menu.GroupedList.Item
-                  as={Link}
-                  to={`/event?filter=${eventFilter}`}
-                >
-                  <div className="flex items-center gap-2">
-                    {translate("text.events")}
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              )}
-            </Dropdown.Menu.GroupedList>
-          </>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+    <>
+      <Dropdown>
+        <Button
+          as={Dropdown.Toggle}
+          variant="invisible"
+          size="small"
+          icon={IconDots}
+          aria-label={translate(
+            "text.resource_show_layout.more_actions_aria_label",
+          )}
+        />
+        <Dropdown.Menu arrow placement="bottom-end">
+          {hasActions && (
+            <>
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.actions_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                {canUpdate && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={Link}
+                    to={`${base}/service_provider/${record.id}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <IconPencil />
+                      {translate("text.edit")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+                {canDelete && (
+                  <Dropdown.Menu.GroupedList.Item
+                    onClick={() => buttonProps.onClick()}
+                  >
+                    <div className="flex items-center gap-2 text-semantic-background-action-danger">
+                      <IconTrash />
+                      {translate("text.delete")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
+          {(canReadHistory || canReadEvent) && (
+            <>
+              {hasActions && <Dropdown.Menu.Divider />}
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.navigate_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                {canReadHistory && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={Link}
+                    to={`${base}/service_provider_history?filter=${historyFilter}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {translate("text.tab.history")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+                {canReadEvent && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={Link}
+                    to={`/event?filter=${eventFilter}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {translate("text.events")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
+      {dialog}
+    </>
   );
 };
 
@@ -168,10 +201,6 @@ export const ControllableUnitServiceProviderList = ({
     "controllable_unit_service_provider",
     "create",
   );
-  const canDelete = permissions?.allow(
-    "controllable_unit_service_provider",
-    "delete",
-  );
   const canLookup = permissions?.allow("controllable_unit", "lookup");
 
   if (isLoading) return <Loader />;
@@ -219,12 +248,16 @@ export const ControllableUnitServiceProviderList = ({
             <TextField
               source="service_provider.name"
               label="Service provider"
+              hideLabel={true}
             />
-            <TextField source="end_user.id" label="End user party id" />
+            <TextField
+              source="end_user.id"
+              label="End user party id"
+              hideLabel={true}
+            />
             <TextField source={fields.contract_reference.source} />
             <DateField source={fields.valid_from.source} showTime />
             <DateField source={fields.valid_to.source} showTime />
-            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </div>

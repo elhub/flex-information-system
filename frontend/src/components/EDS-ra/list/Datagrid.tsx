@@ -70,17 +70,6 @@ type DataTableProps<T extends RaRecord = RaRecord> = {
   rowActions?: (record: T) => ReactNode;
 };
 
-// Column labels are shown in the header, so fields in a cell must not render
-// their own "label : value" prefix.
-const renderCell = (child: React.ReactElement) => {
-  const props = child.props as { source?: string; label?: unknown };
-  return props.source && props.label
-    ? cloneElement(child as React.ReactElement<{ label?: unknown }>, {
-        label: false,
-      })
-    : child;
-};
-
 export const DataTable = <T extends RaRecord>({
   children,
   empty,
@@ -197,7 +186,7 @@ export const DataTable = <T extends RaRecord>({
               >
                 {columns.map((child, index) => (
                   <Table.DataCell key={index}>
-                    {renderCell(child)}
+                    {cloneElement(child)}
                   </Table.DataCell>
                 ))}
                 {hasAnyAction && (
@@ -211,7 +200,7 @@ export const DataTable = <T extends RaRecord>({
               >
                 {columns.map((child, index) => (
                   <Table.DataCell key={index}>
-                    {renderCell(child)}
+                    {cloneElement(child)}
                   </Table.DataCell>
                 ))}
                 {hasAnyAction && (
@@ -235,7 +224,7 @@ export const DataTable = <T extends RaRecord>({
               >
                 {columns.map((child, index) => (
                   <Table.DataCell key={index}>
-                    {renderCell(child)}
+                    {cloneElement(child)}
                   </Table.DataCell>
                 ))}
                 {hasAnyAction && (
@@ -249,7 +238,7 @@ export const DataTable = <T extends RaRecord>({
               >
                 {columns.map((child, index) => (
                   <Table.DataCell key={index}>
-                    {renderCell(child)}
+                    {cloneElement(child)}
                   </Table.DataCell>
                 ))}
                 {hasAnyAction && (
