@@ -23,6 +23,7 @@ export type TextKey =
   | "tab.history"
   | "tab.spg_info"
   | "tab.overview"
+  | "tab.grid_location"
   | "tab.comments"
   | "tab.attachments"
   | "cu_spg_show_history"
@@ -181,6 +182,7 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
+  | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
   | "accounting_point_location_map.popup.status"
@@ -188,13 +190,29 @@ export type TextKey =
   | "accounting_point_location_map.popup.selected_as_grid_location"
   | "accounting_point_location_map.popup.select"
   | "accounting_point_location_map.no_location_set"
-  | "accounting_point_grid_location_panel.heading.missing"
-  | "accounting_point_grid_location_panel.heading.confirmed"
-  | "accounting_point_grid_location_panel.heading.suggested"
+  | "accounting_point_grid_location_panel.heading"
+  | "accounting_point_grid_location_panel.status.missing"
+  | "accounting_point_grid_location_panel.status.confirmed"
+  | "accounting_point_grid_location_panel.status.guessed"
   | "accounting_point_grid_location_panel.button.edit_details"
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
   | "accounting_point_grid_location_panel.empty.no_grid_location_set"
+  | "ap_show_overview.grid_location.heading"
+  | "ap_show_overview.grid_location.description"
+  | "ap_show_overview.grid_location.guessed_help_before"
+  | "ap_show_overview.grid_location.guessed_help_after"
+  | "ap_show_overview.grid_location.with_selection"
+  | "ap_show_overview.grid_location.without_selection"
+  | "ap_show_overview.grid_location.current_status"
+  | "ap_show_overview.grid_location.open_location_tab"
+  | "ap_show_overview.grid_location.no_location_access"
+  | "ap_show_overview.cu_summary.heading"
+  | "ap_show_overview.cu_summary.description"
+  | "ap_show_overview.cu_summary.total_flexible_power"
+  | "ap_show_overview.cu_summary.total_rated_power"
+  | "ap_show_overview.common.not_available"
+  | "ap_controllable_units_table.empty"
   | "substation_reference_input.search_for_substation"
   | "resource_show_layout.more_actions"
   | "resource_show_layout.navigate_to";
@@ -225,6 +243,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.history": "History",
     "tab.spg_info": "SPG info",
     "tab.overview": "Overview",
+    "tab.grid_location": "Grid location",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     cu_spg_show_history: "Show history",
@@ -433,12 +452,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Select",
     "accounting_point_location_map.no_location_set":
       "No location set for this accounting point.",
-    "accounting_point_grid_location_panel.heading.missing":
-      "Missing grid location",
-    "accounting_point_grid_location_panel.heading.confirmed":
-      "Confirmed grid location",
-    "accounting_point_grid_location_panel.heading.suggested":
-      "Suggested grid location",
+    "accounting_point_show.header": "Accounting Point",
+    "accounting_point_grid_location_panel.heading": "Grid location",
+    "accounting_point_grid_location_panel.status.missing": "Missing",
+    "accounting_point_grid_location_panel.status.confirmed": "Confirmed",
+    "accounting_point_grid_location_panel.status.guessed": "Guessed",
     "accounting_point_grid_location_panel.button.edit_details": "Edit details",
     "accounting_point_grid_location_panel.button.validate_grid_location":
       "Validate grid location",
@@ -446,6 +464,28 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Add grid location",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
+    "ap_show_overview.grid_location.heading": "Grid location",
+    "ap_show_overview.grid_location.description":
+      "This tells you which substation this accounting point belongs to.",
+    "ap_show_overview.grid_location.guessed_help_before": "If status is",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", the system made a best guess. Open the Location tab and check that the selected substation is correct.",
+    "ap_show_overview.grid_location.with_selection":
+      "A substation is selected. Confirm it if correct, or choose a different one.",
+    "ap_show_overview.grid_location.without_selection":
+      "No substation is selected yet. Choose and save the correct one.",
+    "ap_show_overview.grid_location.current_status": "Current status",
+    "ap_show_overview.grid_location.open_location_tab": "Open Location tab",
+    "ap_show_overview.grid_location.no_location_access":
+      "You do not currently have access to the Location tab.",
+    "ap_show_overview.cu_summary.heading": "Controllable units summary",
+    "ap_show_overview.cu_summary.description":
+      "This accounting point contains %{count} controllable units. Here are key aggregates across those units:",
+    "ap_show_overview.cu_summary.total_flexible_power": "Total flexible power",
+    "ap_show_overview.cu_summary.total_rated_power": "Total rated power",
+    "ap_show_overview.common.not_available": "Not available",
+    "ap_controllable_units_table.empty":
+      "No controllable units tied to this accounting point.",
     "substation_reference_input.search_for_substation": "Search for substation",
     "resource_show_layout.more_actions": "Actions",
     "resource_show_layout.navigate_to": "Navigate to",
@@ -470,11 +510,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.service_providing_groups": "Fleksibilitetsgrupper",
-    "tab.accounting_point": "Målepunkt",
+    "tab.accounting_point": "Avregningspunkt",
     "tab.balance_responsible_party": "Balanseansvarlige",
     "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
     "tab.overview": "Oversikt",
+    "tab.grid_location": "Nettlokasjon",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     cu_spg_show_history: "Vis historikk",
@@ -682,12 +723,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Velg",
     "accounting_point_location_map.no_location_set":
       "Ingen lokasjon er satt for dette avregningspunktet.",
-    "accounting_point_grid_location_panel.heading.missing":
-      "Mangler nettlokasjon",
-    "accounting_point_grid_location_panel.heading.confirmed":
-      "Bekreftet nettlokasjon",
-    "accounting_point_grid_location_panel.heading.suggested":
-      "Foreslått nettlokasjon",
+    "accounting_point_show.header": "Avregningspunkt",
+    "accounting_point_grid_location_panel.heading": "Nettlokasjon",
+    "accounting_point_grid_location_panel.status.missing": "Mangler",
+    "accounting_point_grid_location_panel.status.confirmed": "Bekreftet",
+    "accounting_point_grid_location_panel.status.guessed": "Gjettet",
     "accounting_point_grid_location_panel.button.edit_details":
       "Rediger detaljer",
     "accounting_point_grid_location_panel.button.validate_grid_location":
@@ -696,6 +736,30 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg til nettlokasjon",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
+    "ap_show_overview.grid_location.heading": "Nettlokasjon",
+    "ap_show_overview.grid_location.description":
+      "Dette viser hvilken stasjon dette avregningspunktet tilhører.",
+    "ap_show_overview.grid_location.guessed_help_before": "Hvis status er",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", har systemet gjort en best mulig gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig.",
+    "ap_show_overview.grid_location.with_selection":
+      "En stasjon er valgt. Bekreft den hvis den er riktig, eller velg en annen.",
+    "ap_show_overview.grid_location.without_selection":
+      "Ingen stasjon er valgt ennå. Velg og lagre riktig stasjon.",
+    "ap_show_overview.grid_location.current_status": "Nåværende status",
+    "ap_show_overview.grid_location.open_location_tab": "Åpne Lokasjon-fanen",
+    "ap_show_overview.grid_location.no_location_access":
+      "Du har ikke tilgang til Lokasjon-fanen.",
+    "ap_show_overview.cu_summary.heading":
+      "Oppsummering av kontrollerbare enheter",
+    "ap_show_overview.cu_summary.description":
+      "Dette avregningspunktet inneholder %{count} kontrollerbare enheter. Her er nøkkelaggregater på tvers av disse enhetene:",
+    "ap_show_overview.cu_summary.total_flexible_power":
+      "Total fleksibel effekt",
+    "ap_show_overview.cu_summary.total_rated_power": "Total merkeeffekt",
+    "ap_show_overview.common.not_available": "Ikke tilgjengelig",
+    "ap_controllable_units_table.empty":
+      "Ingen kontrollerbare enheter er knyttet til dette avregningspunktet.",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
     "resource_show_layout.more_actions": "Handlinger",
     "resource_show_layout.navigate_to": "Naviger til",
