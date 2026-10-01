@@ -90,41 +90,38 @@ const getAccountingPointData = async (
   const currentES = esData[0];
   const currentMGA = mgaData[0];
 
-  const [
-    balanceResponsibleParty,
-    endUser,
-    energySupplier,
-    systemOperator,
-    meteringGridArea,
-  ] = canReadConnections
-    ? await Promise.all([
-        currentBRP?.balance_responsible_party_id
-          ? readParty({
-              path: { id: currentBRP.balance_responsible_party_id },
-            }).then(throwOnError)
-          : Promise.resolve(undefined),
-        currentEU?.end_user_id
-          ? readParty({ path: { id: currentEU.end_user_id } }).then(
-              throwOnError,
-            )
-          : Promise.resolve(undefined),
-        currentES?.energy_supplier_id
-          ? readParty({ path: { id: currentES.energy_supplier_id } }).then(
-              throwOnError,
-            )
-          : Promise.resolve(undefined),
-        accountingPoint.system_operator_id
-          ? readParty({
-              path: { id: accountingPoint.system_operator_id },
-            }).then(throwOnError)
-          : Promise.resolve(undefined),
-        currentMGA?.metering_grid_area_id
-          ? readMeteringGridArea({
-              path: { id: currentMGA.metering_grid_area_id },
-            }).then(throwOnError)
-          : Promise.resolve(undefined),
-      ])
-    : [undefined, undefined, undefined, undefined, undefined];
+  const systemOperator = accountingPoint.system_operator_id
+    ? await readParty({
+        path: { id: accountingPoint.system_operator_id },
+      }).then(throwOnError)
+    : undefined;
+
+  const [balanceResponsibleParty, endUser, energySupplier, meteringGridArea] =
+    canReadConnections
+      ? await Promise.all([
+          currentBRP?.balance_responsible_party_id
+            ? readParty({
+                path: { id: currentBRP.balance_responsible_party_id },
+              }).then(throwOnError)
+            : Promise.resolve(undefined),
+          currentEU?.end_user_id
+            ? readParty({ path: { id: currentEU.end_user_id } }).then(
+                throwOnError,
+              )
+            : Promise.resolve(undefined),
+          currentES?.energy_supplier_id
+            ? readParty({ path: { id: currentES.energy_supplier_id } }).then(
+                throwOnError,
+              )
+            : Promise.resolve(undefined),
+
+          currentMGA?.metering_grid_area_id
+            ? readMeteringGridArea({
+                path: { id: currentMGA.metering_grid_area_id },
+              }).then(throwOnError)
+            : Promise.resolve(undefined),
+        ])
+      : [undefined, undefined, undefined, undefined];
 
   return {
     accountingPoint,

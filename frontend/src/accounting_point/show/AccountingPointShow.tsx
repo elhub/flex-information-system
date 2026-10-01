@@ -55,6 +55,10 @@ export const AccountingPointShow = () => {
   const ap = viewModel.accountingPoint;
   const summary = [
     {
+      labelKey: "accounting_point.system_operator_id" as const,
+      value: viewModel.systemOperator?.name,
+    },
+    {
       labelKey: "accounting_point_end_user.end_user_id" as const,
       value: viewModel.endUser?.name,
       shouldShow:
