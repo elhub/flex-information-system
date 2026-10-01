@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { Badge, Loader } from "../../components/ui";
+import { Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
-import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
 import { ServiceProvidingGroupShowTabs } from "./ServiceProvidingGroupShowTabs";
 import { readServiceProvidingGroup } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
-import { ShowPageLayout } from "../../components/ShowPageLayout";
 import { useTranslateEnum } from "../../intl/intl";
-import { useGetIdentity, usePermissions } from "ra-core";
+import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
-import { ServiceProvidingGroupAlerts } from "./ServiceProvidingGroupAlerts";
+import { useServiceProvidingGroupAlerts } from "./useServiceProvidingGroupAlert";
+import { useServiceProvidingGroupShowSummary } from "./useServiceProvidingGroupShowSummary";
 import { ScaleToggle } from "../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../utils/scales";
+import { ResourceShowLayout } from "../../components/ResourceShowLayout";
+import { IconPencil } from "@elhub/ds-icons";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -22,6 +23,7 @@ export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const isFISOOrSO =
     identity?.role === "flex_flexibility_information_system_operator" ||
@@ -43,6 +45,9 @@ export const ServiceProvidingGroupShow = () => {
     enabled: !!spgId,
   });
 
+  const alert = useServiceProvidingGroupAlerts(spg);
+  const summary = useServiceProvidingGroupShowSummary({ spg });
+
   if (isSPGPending) {
     return <Loader />;
   }
@@ -61,10 +66,16 @@ export const ServiceProvidingGroupShow = () => {
   );
 
   return (
-    <ShowPageLayout
-      title={`Group Details - ${spg.name}`}
-      alerts={<ServiceProvidingGroupAlerts spg={spg} />}
-      titleExtra={
+    <ResourceShowLayout
+      secondaryHeaderText={`${translate("text.service_providing_group")} #${spg.id}`}
+      mainHeaderText={spg.name}
+      alert={alert}
+      status={{
+        label: translateEnum(`service_providing_group.status.${spg.status}`),
+        status: spgStatusVariantMap[spg.status].status,
+        icon: spgStatusVariantMap[spg.status].icon,
+      }}
+      displayControls={
         <ScaleToggle
           unit="W"
           options={POWER_SCALE_OPTIONS}
@@ -72,33 +83,32 @@ export const ServiceProvidingGroupShow = () => {
           onChange={setPowerScale}
         />
       }
-      badge={
-        <>
-          <Badge
-            size="small"
-            status={spgStatusVariantMap[spg.status].status}
-            variant="block"
-            icon={spgStatusVariantMap[spg.status].icon}
-          >
-            {translateEnum(`service_providing_group.status.${spg.status}`)}
-          </Badge>
-          {spg.status === "new" && (
-            <ActivateServiceProvidingGroupButton
-              spgId={spg.id}
-              disabled={!canUpdateSpg}
-            />
-          )}
-        </>
+      workflowActions={
+        spg.status === "new" ? (
+          <ActivateServiceProvidingGroupButton
+            spgId={spg.id}
+            disabled={!canUpdateSpg}
+          />
+        ) : undefined
       }
-    >
-      <ServiceProvidingGroupShowSummary spg={spg} />
-      <ServiceProvidingGroupShowTabs
-        spgId={spg.id}
-        spgStatus={spg.status}
-        summary={spg.summary ?? undefined}
-        showPowerPerSubstation={isFISOOrSO}
-        powerScale={powerScale}
-      />
-    </ShowPageLayout>
+      moreActions={[
+        {
+          to: `/service_providing_group/${spg.id}/edit`,
+          title: translate("text.edit"),
+          icon: <IconPencil />,
+          shouldShow: canUpdateSpg,
+        },
+      ]}
+      summary={summary}
+      content={
+        <ServiceProvidingGroupShowTabs
+          spgId={spg.id}
+          spgStatus={spg.status}
+          summary={spg.summary ?? undefined}
+          showPowerPerSubstation={isFISOOrSO}
+          powerScale={powerScale}
+        />
+      }
+    />
   );
 };

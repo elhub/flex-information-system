@@ -104,7 +104,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           to: `/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`,
           title: translate("text.edit"),
           icon: <IconPencil />,
-          shouldShow: canEdit ?? true,
+          shouldShow: canEdit ?? false,
         },
         {
           to: `/service_providing_group_product_application/${spgpa.id}/print`,
@@ -118,7 +118,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         {
           to: `/event?filter=${eventsFilter}`,
           title: translate("text.header_nav_events"),
-          shouldShow: canReadEvents ?? true,
+          shouldShow: canReadEvents ?? false,
         },
       ]}
       workflowActions={
