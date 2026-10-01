@@ -2,11 +2,11 @@
 "python" = "3.14.7"
 "go" = "1.27.1"
 "uv" = "0.12.15"
-"golangci-lint" = "2.13.2"
+"golangci-lint" = "2.14.0"
 "pandoc" = "3.11"
 "ruff" = "0.16.8"
 "sqlc" = "1.31.1"
-jsonschema = "16.10.0"
+jsonschema = "16.12.0"
 spectral = "6.16.2"
 
 "go:github.com/google/go-licenses/v2" = "2.0.1"
