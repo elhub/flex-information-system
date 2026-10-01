@@ -32,7 +32,6 @@ export const ControllableUnitServiceProviderInput = () => {
     useLocationState<ControllableUnitServiceProviderLocationState>();
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
-  console.log("cusp", cusp);
 
   const overrideRecord = zControllableUnitServiceProvider.partial().parse({
     ...cusp,
