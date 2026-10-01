@@ -1,4 +1,4 @@
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import {
   listServiceProviderProductApplication,
@@ -46,6 +46,7 @@ export type DashboardItem = {
 };
 
 export const useDashboardApplications = () => {
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const partyId = identity?.partyID as number | undefined;
   const sppaQuery = useQuery({
@@ -119,7 +120,7 @@ export const useDashboardApplications = () => {
       id: `sp_product_application_${r.id}`,
       kind: "sp_product_application" as DashboardItemKind,
       label: getProductTypeNames(r.product_type_ids) || "",
-      secondaryLabel: "Product Application",
+      secondaryLabel: translate("text.dashboard.sp_product_application"),
       serviceProvider: r.service_provider?.name,
       systemOperator: r.system_operator?.name,
       status: r.status,
@@ -132,7 +133,7 @@ export const useDashboardApplications = () => {
       id: `spg_product_application_${r.id}`,
       kind: "spg_product_application" as DashboardItemKind,
       label: `${r.service_providing_group?.name} (${getProductTypeNames(r.product_type_ids)})`,
-      secondaryLabel: "SPG Product Application",
+      secondaryLabel: translate("text.dashboard.spg_product_application"),
       serviceProvider: r.service_providing_group?.service_provider?.name,
       systemOperator: r.procuring_system_operator?.name,
       status: r.status,
@@ -146,7 +147,7 @@ export const useDashboardApplications = () => {
         id: `spg_grid_prequalification_${r.id}`,
         kind: "spg_grid_prequalification" as DashboardItemKind,
         label: r.service_providing_group?.name || "",
-        secondaryLabel: "SPG Grid Prequalification",
+        secondaryLabel: translate("text.dashboard.spg_grid_prequalification"),
         serviceProvider: r.service_providing_group?.name,
         systemOperator: r.impacted_system_operator?.name,
         status: r.status,

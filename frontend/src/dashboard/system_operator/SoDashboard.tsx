@@ -1,3 +1,4 @@
+import { useTranslate } from "ra-core";
 import { Alert, Loader } from "../../components/ui";
 import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { DashboardLayout } from "../DashboardLayout";
@@ -5,6 +6,7 @@ import { SoStatCards } from "./SoStatCards";
 import { SOApplicationsTable } from "./SoApplicationsTable";
 
 export const SoDashboard = () => {
+  const translate = useTranslate();
   const { activeItems, resolvedItems, isLoading, error } =
     useDashboardApplications();
 
@@ -30,26 +32,26 @@ export const SoDashboard = () => {
       statCards={<SoStatCards />}
       activeTable={
         activeItems.length == 0 ? (
-          "No active applications."
+          translate("text.dashboard.no_active_applications")
         ) : (
           <div className="flex flex-col gap-8">
             <SOApplicationsTable
-              label="SP Product Application"
+              label={translate("text.dashboard.sp_product_application")}
               items={sppa}
               empty={null}
-              timestampLabel="Recorded at"
+              timestampLabel={translate("text.dashboard.recorded_at")}
             />
             <SOApplicationsTable
-              label="SPG Product Application"
+              label={translate("text.dashboard.spg_product_application")}
               items={spgpa}
               empty={null}
-              timestampLabel="Created at"
+              timestampLabel={translate("text.dashboard.created_at")}
             />
             <SOApplicationsTable
-              label="SPG Grid Prequalification"
+              label={translate("text.dashboard.spg_grid_prequalification")}
               items={spggp}
               empty={null}
-              timestampLabel="Recorded at"
+              timestampLabel={translate("text.dashboard.recorded_at")}
             />
           </div>
         )

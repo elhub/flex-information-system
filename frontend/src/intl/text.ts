@@ -1,4 +1,11 @@
 export type TextKey =
+  | "dashboard.application"
+  | "dashboard.sp_product_application"
+  | "dashboard.spg_product_application"
+  | "dashboard.spg_grid_prequalification"
+  | "dashboard.recorded_at"
+  | "dashboard.created_at"
+  | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
   | "print"
@@ -200,6 +207,13 @@ export type TextKey =
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
+    "dashboard.application": "Application",
+    "dashboard.sp_product_application": "SP Product Application",
+    "dashboard.spg_product_application": "SPG Product Application",
+    "dashboard.spg_grid_prequalification": "SPG Grid Prequalification",
+    "dashboard.recorded_at": "Recorded at",
+    "dashboard.created_at": "Created at",
+    "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
     edit: "Edit",
     print: "Print",
@@ -449,6 +463,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_to": "Navigate to",
   },
   nb: {
+    "dashboard.application": "Søknad",
+    "dashboard.sp_product_application": "SP-produktsøknad",
+    "dashboard.spg_product_application": "SPG-produktsøknad",
+    "dashboard.spg_grid_prequalification": "SPG-nettprekvalifisering",
+    "dashboard.recorded_at": "Registrert",
+    "dashboard.created_at": "Opprettet",
+    "dashboard.no_active_applications": "Ingen aktive søknader.",
     entity_role: "Entitet",
     edit: "Endre",
     print: "Skriv ut",

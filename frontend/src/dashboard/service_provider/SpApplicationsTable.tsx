@@ -1,5 +1,6 @@
 // frontend/src/dashboard/SpApplicationsTable.tsx
 import { useNavigate } from "react-router-dom";
+import { useTranslate } from "ra-core";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { SimpleTable, Column } from "../../components/SimpleTable";
@@ -21,11 +22,12 @@ export const SpApplicationsTable = ({
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
 
   const columns: Column<DashboardItem>[] = [
     {
       key: "label",
-      header: "Application",
+      header: translate("text.dashboard.application"),
       render: (_, row) => (
         <div>
           <div className="font-medium text-semantic-text">{row.label}</div>
