@@ -1,12 +1,14 @@
 import { formatDate } from "date-fns";
 import { Link as RouterLink } from "react-router-dom";
 import { ShowBase, useRecordContext } from "ra-core";
-import { LabelValue } from "../components/LabelValue";
-import { ShowPageLayout } from "../components/ShowPageLayout";
+import {
+  ResourceShowLayout,
+  ResourceSummaryField,
+} from "../components/ResourceShowLayout";
 import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { useParty } from "../hooks/party";
 import { useTranslateEnum } from "../intl/intl";
-import { Badge, BodyText, Link, Loader, Panel, Tabs } from "../components/ui";
+import { BodyText, Link, Loader, Tabs } from "../components/ui";
 import { Notice } from "../generated-client";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import { NoticeShowDetails } from "./NoticeShowDetails";
@@ -27,101 +29,67 @@ const NoticeShowTabs = () => {
   );
 };
 
-const NoticeShowSummary = () => {
-  const notice = useRecordContext<Notice>();
+const NoticeShowContent = () => {
   const translateEnum = useTranslateEnum();
+  const notice = useRecordContext<Notice>();
   const { data: party } = useParty(notice?.party_id);
 
   if (!notice) {
     return null;
   }
 
-  return (
-    <div className="flex flex-col gap-4">
-      <Panel
-        border
-        className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
-      >
-        <div className="flex flex-col gap-4">
-          <LabelValue size="small" labelKey="notice.id" value={notice.id} />
-          <LabelValue
-            size="small"
-            label="Receiver"
-            value={
-              <Link as={RouterLink} to={`/party/${notice.party_id}/show`}>
-                {party?.name ??
-                  notice.party?.name ??
-                  `Party ${notice.party_id}`}
-              </Link>
-            }
-          />
-          <LabelValue
-            size="small"
-            labelKey="notice.type"
-            value={<span className="break-all">{notice.type}</span>}
-            tooltip
-          />
-          <LabelValue
-            size="small"
-            labelKey="notice.source"
-            value={
-              notice.source ? (
-                <Link as={RouterLink} to={`${notice.source}/show`}>
-                  <span className="break-all">{notice.source}</span>
-                </Link>
-              ) : undefined
-            }
-            tooltip
-          />
-          <LabelValue
-            size="small"
-            labelKey="notice.status"
-            value={translateEnum(`notice.status.${notice.status}`)}
-            tooltip
-          />
-          <LabelValue
-            size="small"
-            labelKey="notice.recorded_at"
-            value={
-              notice.recorded_at
-                ? formatDate(notice.recorded_at, "dd.MM.yyyy HH:mm")
-                : undefined
-            }
-            tooltip
-          />
-        </div>
-      </Panel>
-    </div>
-  );
-};
-
-const NoticeShowContent = () => {
-  const translateEnum = useTranslateEnum();
-  const notice = useRecordContext<Notice>();
+  const summary: ResourceSummaryField[] = [
+    { labelKey: "notice.id", value: notice.id },
+    {
+      label: "Receiver",
+      value: (
+        <Link as={RouterLink} to={`/party/${notice.party_id}/show`}>
+          {party?.name ?? notice.party?.name ?? `Party ${notice.party_id}`}
+        </Link>
+      ),
+    },
+    {
+      labelKey: "notice.type",
+      value: <span className="break-all">{notice.type}</span>,
+      tooltip: true,
+    },
+    {
+      labelKey: "notice.source",
+      value: notice.source ? (
+        <Link as={RouterLink} to={`${notice.source}/show`}>
+          <span className="break-all">{notice.source}</span>
+        </Link>
+      ) : undefined,
+      tooltip: true,
+    },
+    {
+      labelKey: "notice.status",
+      value: translateEnum(`notice.status.${notice.status}`),
+      tooltip: true,
+    },
+    {
+      labelKey: "notice.recorded_at",
+      value: notice.recorded_at
+        ? formatDate(notice.recorded_at, "dd.MM.yyyy HH:mm")
+        : undefined,
+      tooltip: true,
+    },
+  ];
 
   return (
-    <ShowPageLayout
-      title={
-        notice?.id
-          ? `Notice - ${noticeTypes.find((nt) => nt.id === notice.type)?.label ?? notice.type}`
-          : "Notice"
+    <ResourceShowLayout
+      secondaryHeaderText={`Notice #${notice.id}`}
+      mainHeaderText={
+        noticeTypes.find((nt) => nt.id === notice.type)?.label ?? notice.type
       }
-      badge={
-        notice?.status ? (
-          <Badge
-            size="small"
-            status={noticeStatusVariantMap[notice.status].status}
-            variant="block"
-            icon={noticeStatusVariantMap[notice.status].icon}
-          >
-            {translateEnum(`notice.status.${notice.status}`)}
-          </Badge>
-        ) : undefined
-      }
-    >
-      <NoticeShowSummary />
-      <NoticeShowTabs />
-    </ShowPageLayout>
+      status={{
+        label: translateEnum(`notice.status.${notice.status}`),
+        status: noticeStatusVariantMap[notice.status].status,
+        icon: noticeStatusVariantMap[notice.status].icon,
+      }}
+      summary={summary}
+      content={<NoticeShowTabs />}
+    />
   );
 };
 
