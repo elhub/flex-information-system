@@ -90,38 +90,37 @@ const getAccountingPointData = async (
   const currentES = esData[0];
   const currentMGA = mgaData[0];
 
-  const systemOperator = accountingPoint.system_operator_id
-    ? await readParty({
+  const systemOperatorPromise = accountingPoint.system_operator_id
+    ? readParty({
         path: { id: accountingPoint.system_operator_id },
       }).then(throwOnError)
-    : undefined;
+    : Promise.resolve(undefined);
 
-  const [balanceResponsibleParty, endUser, energySupplier, meteringGridArea] =
-    canReadConnections
-      ? await Promise.all([
-          currentBRP?.balance_responsible_party_id
-            ? readParty({
-                path: { id: currentBRP.balance_responsible_party_id },
-              }).then(throwOnError)
-            : Promise.resolve(undefined),
-          currentEU?.end_user_id
-            ? readParty({ path: { id: currentEU.end_user_id } }).then(
-                throwOnError,
-              )
-            : Promise.resolve(undefined),
-          currentES?.energy_supplier_id
-            ? readParty({ path: { id: currentES.energy_supplier_id } }).then(
-                throwOnError,
-              )
-            : Promise.resolve(undefined),
+  const readConnectionParty = (partyId: number | undefined) =>
+    canReadConnections && partyId
+      ? readParty({ path: { id: partyId } }).then(throwOnError)
+      : Promise.resolve(undefined);
 
-          currentMGA?.metering_grid_area_id
-            ? readMeteringGridArea({
-                path: { id: currentMGA.metering_grid_area_id },
-              }).then(throwOnError)
-            : Promise.resolve(undefined),
-        ])
-      : [undefined, undefined, undefined, undefined];
+  const meteringGridAreaPromise =
+    canReadConnections && currentMGA?.metering_grid_area_id
+      ? readMeteringGridArea({
+          path: { id: currentMGA.metering_grid_area_id },
+        }).then(throwOnError)
+      : Promise.resolve(undefined);
+
+  const [
+    systemOperator,
+    balanceResponsibleParty,
+    endUser,
+    energySupplier,
+    meteringGridArea,
+  ] = await Promise.all([
+    systemOperatorPromise,
+    readConnectionParty(currentBRP?.balance_responsible_party_id),
+    readConnectionParty(currentEU?.end_user_id),
+    readConnectionParty(currentES?.energy_supplier_id),
+    meteringGridAreaPromise,
+  ]);
 
   return {
     accountingPoint,
