@@ -2,3 +2,14 @@
 @plugin "@tailwindcss/typography";
 @config "@elhub/ds-tokens/dist/tailwind.config.js";
 @import "@elhub/ds-css/dist/index.css" layer(components);
+
+/*
+  The design system sets `overflow: hidden` on body.ReactModal__Body--open.
+  react-modal adds that class when a modal opens and removes it on close, but
+  if the modal unmounts while open (e.g. navigation) the class can stay behind
+  and the page can't scroll until it is refreshed. We override it so the body
+  is never locked; the background may scroll while a modal is open.
+*/
+body.ReactModal__Body--open {
+  overflow: auto;
+}
