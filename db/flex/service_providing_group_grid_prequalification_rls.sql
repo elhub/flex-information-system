@@ -66,6 +66,7 @@ FOR ALL
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
+    AND status != 'terminated'
 );
 
 -- RLS: SPGGP-SO002
@@ -95,4 +96,7 @@ CREATE POLICY "SPGGP_SO002"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
-USING (current_party_impacted_in_spg(service_providing_group_id));
+USING (
+    status != 'terminated'
+    AND current_party_impacted_in_spg(service_providing_group_id)
+);

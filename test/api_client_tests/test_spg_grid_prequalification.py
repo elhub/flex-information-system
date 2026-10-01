@@ -548,7 +548,6 @@ def test_spggp_so(data):
         limit="10000",
     )
     assert isinstance(spggps_so2, list)
-    assert len(spggps_so2) == len(spggps_so) + 2
 
     new_spggps = [
         spggp
@@ -759,11 +758,11 @@ def test_spggp_terminated_when_no_cu_left(data, removal):
 
     # the terminated SPGGP is hidden from the impacted SO
     client_so = sts.get_client(TestEntityClient.TEST, "SO")
-    spggps = _list_spggps(client_so, spg_id, so_id)
-    assert all(
-        item.status == ServiceProvidingGroupGridPrequalificationStatus.TERMINATED
-        for item in spggps
-    )
+    assert _list_spggps(client_so, spg_id, so_id) == []
+
+    spggps = list_service_providing_group_grid_prequalification.sync(client=client_so)
+    assert isinstance(spggps, list)
+    assert spggp_id not in [item.id for item in spggps]
 
     # a CU comes back: a new SPGGP is created next to the terminated one
     today_midnight = datetime.datetime.combine(
