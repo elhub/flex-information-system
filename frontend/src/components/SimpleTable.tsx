@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { useTranslate } from "ra-core";
 import { BodyText, Table } from "./ui";
 import { Tooltip } from "../components/ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
@@ -43,6 +44,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   rowKey,
   rowClick,
 }: SimpleTableProps<T>) => {
+  const translate = useTranslate();
   const hasRowClick = rowClick !== undefined;
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
@@ -60,7 +62,8 @@ export const SimpleTable = <T extends { id?: string | number }>({
   };
 
   if (!data.length) {
-    if (empty === undefined) return <BodyText>No results</BodyText>;
+    if (empty === undefined)
+      return <BodyText>{translate("text.simple_table.no_results")}</BodyText>;
     if (empty === null) return null;
     return typeof empty === "string" ? (
       <BodyText>{empty}</BodyText>
