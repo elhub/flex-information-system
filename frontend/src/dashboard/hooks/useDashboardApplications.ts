@@ -1,4 +1,4 @@
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import {
   listServiceProviderProductApplication,
@@ -36,15 +36,17 @@ const RESOLVED_SPGGP = new Set([
 export type DashboardItem = {
   id: string;
   kind: DashboardItemKind;
-  typeLabel: string;
-  byline: string;
+  label: string;
+  secondaryLabel?: string;
   systemOperator?: string;
   serviceProvider?: string;
   status: string;
   route: string;
+  timestamp?: string; // the timestamp meaningful to show on the dashboard
 };
 
 export const useDashboardApplications = () => {
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const partyId = identity?.partyID as number | undefined;
   const sppaQuery = useQuery({
@@ -117,24 +119,26 @@ export const useDashboardApplications = () => {
     sppaQuery.data?.data.map((r) => ({
       id: `sp_product_application_${r.id}`,
       kind: "sp_product_application" as DashboardItemKind,
-      typeLabel: "Product Application",
-      byline: getProductTypeNames(r.product_type_ids) || "",
+      label: getProductTypeNames(r.product_type_ids) || "",
+      secondaryLabel: translate("text.dashboard.sp_product_application"),
       serviceProvider: r.service_provider?.name,
       systemOperator: r.system_operator?.name,
       status: r.status,
       route: `/service_provider_product_application/${r.id}/show`,
+      timestamp: r.recorded_at,
     })) || [];
 
   const spgpa =
     spgpaQuery.data?.data.map((r) => ({
       id: `spg_product_application_${r.id}`,
       kind: "spg_product_application" as DashboardItemKind,
-      typeLabel: "SPG Product Application",
-      byline: `${r.service_providing_group?.name} (${getProductTypeNames(r.product_type_ids)})`,
+      label: `${r.service_providing_group?.name} (${getProductTypeNames(r.product_type_ids)})`,
+      secondaryLabel: translate("text.dashboard.spg_product_application"),
       serviceProvider: r.service_providing_group?.service_provider?.name,
       systemOperator: r.procuring_system_operator?.name,
       status: r.status,
       route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
+      timestamp: r.created_at,
     })) || [];
 
   const gridPrequalifications =
@@ -142,12 +146,13 @@ export const useDashboardApplications = () => {
       return {
         id: `spg_grid_prequalification_${r.id}`,
         kind: "spg_grid_prequalification" as DashboardItemKind,
-        typeLabel: "SPG Grid Prequalification",
-        byline: r.service_providing_group?.name || "",
+        label: r.service_providing_group?.name || "",
+        secondaryLabel: translate("text.dashboard.spg_grid_prequalification"),
         serviceProvider: r.service_providing_group?.name,
         systemOperator: r.impacted_system_operator?.name,
         status: r.status,
         route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,
+        timestamp: r.recorded_at,
       };
     }) || [];
 
