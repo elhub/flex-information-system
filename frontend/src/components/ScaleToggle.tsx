@@ -10,19 +10,22 @@ type Props = {
 
 export const ScaleToggle = ({ unit, options, value, onChange }: Props) => {
   return (
-    <FilterPanel>
-      {options.map((scale) => {
-        const label = `${scale.prefix}${unit}`;
-        return (
-          <FilterPanel.Chip
-            key={label}
-            selected={scale.exponent === value.exponent}
-            onClick={() => onChange(scale)}
-          >
-            {label}
-          </FilterPanel.Chip>
-        );
-      })}
-    </FilterPanel>
+    <div className="flex items-center gap-2">
+      <span className="text-sm font-medium">Display unit:</span>
+      <FilterPanel>
+        {options.map((scale) => {
+          const label = `${scale.prefix}${unit}`;
+          return (
+            <FilterPanel.Chip
+              key={label}
+              selected={scale.exponent === value.exponent}
+              onClick={() => onChange(scale)}
+            >
+              {label}
+            </FilterPanel.Chip>
+          );
+        })}
+      </FilterPanel>
+    </div>
   );
 };

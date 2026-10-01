@@ -1,6 +1,6 @@
 import { IconCheckCircle, IconQualitiesCircle } from "@elhub/ds-icons";
 import { NoticeStatus } from "../generated-client";
-import { StatusVariant } from "../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../components/StatusBadge";
 
 export const noticeStatusVariantMap: Record<NoticeStatus, StatusVariant> = {
   active: { status: "approved", icon: IconQualitiesCircle },
