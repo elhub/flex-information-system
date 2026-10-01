@@ -14,6 +14,7 @@ import { ServiceProvidingGroup } from "../../../generated-client";
 import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
 import { KILO, Scale } from "../../../utils/scales";
+import { useTranslate } from "ra-core";
 import { useParty } from "../../../hooks/party";
 
 type Props = {
@@ -31,6 +32,7 @@ export const SpgInfoTab = ({
   spg,
   powerScale = KILO,
 }: Props) => {
+  const translate = useTranslate();
   const procuringSystemOperator = useParty(spgProcuringSystemOperatorId);
   const impactedSystemOperator = useParty(impactedSystemOperatorId);
 
@@ -47,13 +49,13 @@ export const SpgInfoTab = ({
         <Card>
           <CardHeader>
             <CardHeaderContent>
-              <CardTitle>Service providing group</CardTitle>
+              <CardTitle>{translate("text.service_providing_group")}</CardTitle>
             </CardHeaderContent>
           </CardHeader>
           <CardContent className="grid gap-4">
             <div>
               <BodyText weight="bold" size="small">
-                Name
+                {translate("text.spg_info_tab.name")}
               </BodyText>
               <BodyText size="small">{spg.name}</BodyText>
             </div>
@@ -65,7 +67,7 @@ export const SpgInfoTab = ({
               as={RouterLink}
               to={`/service_providing_group/${spgId}/show`}
             >
-              See group
+              {translate("text.spg_info_tab.see_group")}
             </Button>
           </CardFooter>
         </Card>
@@ -73,13 +75,15 @@ export const SpgInfoTab = ({
           <Card>
             <CardHeader>
               <CardHeaderContent>
-                <CardTitle>Procuring system operator</CardTitle>
+                <CardTitle>
+                  {translate("text.spg_info_tab.procuring_system_operator")}
+                </CardTitle>
               </CardHeaderContent>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div>
                 <BodyText weight="bold" size="small">
-                  Name
+                  {translate("text.spg_info_tab.name")}
                 </BodyText>
                 <BodyText size="small">
                   {procuringSystemOperator.data?.name}
@@ -93,7 +97,7 @@ export const SpgInfoTab = ({
                 as={RouterLink}
                 to={`/party/${spgProcuringSystemOperatorId}/show`}
               >
-                See SO
+                {translate("text.spg_info_tab.see_so")}
               </Button>
             </CardFooter>
           </Card>
@@ -102,13 +106,15 @@ export const SpgInfoTab = ({
           <Card>
             <CardHeader>
               <CardHeaderContent>
-                <CardTitle>Impacted system operator</CardTitle>
+                <CardTitle>
+                  {translate("text.spg_info_tab.impacted_system_operator")}
+                </CardTitle>
               </CardHeaderContent>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div>
                 <BodyText weight="bold" size="small">
-                  Name
+                  {translate("text.spg_info_tab.name")}
                 </BodyText>
                 <BodyText size="small">
                   {impactedSystemOperator.data?.name}
@@ -122,7 +128,7 @@ export const SpgInfoTab = ({
                 as={RouterLink}
                 to={`/party/${impactedSystemOperatorId}/show`}
               >
-                See SO
+                {translate("text.spg_info_tab.see_so")}
               </Button>
             </CardFooter>
           </Card>
