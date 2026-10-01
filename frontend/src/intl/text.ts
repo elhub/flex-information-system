@@ -56,6 +56,8 @@ export type TextKey =
   | "form_toolbar.cancel"
   | "form_toolbar.confirm"
   | "controllable_unit"
+  | "cu_show_view_accounting_point"
+  | "cu_show_view_system_operator"
   | "controllable_unit.is_small.true"
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
@@ -282,6 +284,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "form_toolbar.cancel": "Cancel",
     "form_toolbar.confirm": "Confirm",
     controllable_unit: "Controllable unit",
+    cu_show_view_accounting_point: "View accounting point",
+    cu_show_view_system_operator: "View system operator",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
     "controllable_unit.is_small.false":
@@ -565,6 +569,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "form_toolbar.cancel": "Avbryt",
     "form_toolbar.confirm": "Bekreft",
     controllable_unit: "Kontrollerbar enhet",
+    cu_show_view_accounting_point: "Vis avregningspunkt",
+    cu_show_view_system_operator: "Vis systemoperatør",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
     "controllable_unit.is_small.false":

@@ -79,14 +79,14 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
           <Panel border className="mb-4 p-4 sm:p-5">
             <div className="grid gap-5 sm:grid-cols-2">
               <LabelValue
-                label="Accounting point"
+                label={translate("text.tab.accounting_point")}
                 value={
                   viewModel.accountingPoint ? (
                     <Link
                       as={RouterLink}
                       to={`/accounting_point/${viewModel.accountingPoint.id}/show`}
                       className="inline-flex items-center gap-1"
-                      title="View accounting point"
+                      title={translate("text.cu_show_view_accounting_point")}
                     >
                       {viewModel.accountingPoint.business_id}
                       <IconRight size="small" />
@@ -95,14 +95,14 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
                 }
               />
               <LabelValue
-                label="System operator"
+                labelKey="accounting_point.system_operator_id"
                 value={
                   viewModel?.systemOperator ? (
                     <Link
                       as={RouterLink}
                       to={`/party/${viewModel.systemOperator.id}/show`}
                       className="inline-flex items-center gap-1"
-                      title="View system operator"
+                      title={translate("text.cu_show_view_system_operator")}
                     >
                       {viewModel.systemOperator.name}
                       <IconRight size="small" />
