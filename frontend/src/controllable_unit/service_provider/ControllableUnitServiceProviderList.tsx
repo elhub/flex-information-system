@@ -5,12 +5,13 @@ import {
   usePermissions,
   useTranslate,
 } from "ra-core";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { FunctionField } from "react-admin";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import { DateField, TextField } from "../../components/EDS-ra/fields";
 import { NestedResourceHistoryButton } from "../../components/EDS-ra/buttons";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { Button, Dropdown, Loader } from "../../components/ui";
+import { Button, Dropdown, Link, Loader } from "../../components/ui";
 import {
   IconDots,
   IconPencil,
@@ -84,7 +85,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
               <Dropdown.Menu.GroupedList>
                 {canUpdate && (
                   <Dropdown.Menu.GroupedList.Item
-                    as={Link}
+                    as={RouterLink}
                     to={`${base}/service_provider/${record.id}`}
                   >
                     <div className="flex items-center gap-2">
@@ -115,7 +116,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
               <Dropdown.Menu.GroupedList>
                 {canReadHistory && (
                   <Dropdown.Menu.GroupedList.Item
-                    as={Link}
+                    as={RouterLink}
                     to={`${base}/service_provider_history?filter=${historyFilter}`}
                   >
                     <div className="flex items-center gap-2">
@@ -125,7 +126,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
                 )}
                 {canReadEvent && (
                   <Dropdown.Menu.GroupedList.Item
-                    as={Link}
+                    as={RouterLink}
                     to={`/event?filter=${eventFilter}`}
                   >
                     <div className="flex items-center gap-2">
@@ -149,7 +150,7 @@ const CreateButton = ({ id }: { id: number | undefined }) => {
   };
   return (
     <Button
-      as={Link}
+      as={RouterLink}
       icon={IconPlus}
       to={`/controllable_unit/${id}/service_provider/create`}
       state={id ? locationState : undefined}
@@ -166,7 +167,7 @@ const CULookupButton = ({
   business_id: string | undefined;
 }) => (
   <Button
-    as={Link}
+    as={RouterLink}
     icon={IconSearch}
     to="/controllable_unit/lookup"
     state={business_id ? { controllable_unit: business_id } : undefined}
@@ -240,9 +241,7 @@ export const ControllableUnitServiceProviderList = ({
         >
           <Datagrid<CuspRow>
             rowActions={(r) => <RowActionsMenu record={r} />}
-            rowClick={(r) =>
-              `/controllable_unit/${r.controllable_unit_id}/service_provider/${r.id}/show`
-            }
+            rowClick={false}
           >
             <TextField source={fields.id.source} />
             <TextField
@@ -250,10 +249,17 @@ export const ControllableUnitServiceProviderList = ({
               label="Service provider"
               hideLabel={true}
             />
-            <TextField
-              source="end_user.id"
-              label="End user party id"
-              hideLabel={true}
+            <FunctionField
+              source="end_user_id"
+              label="End user"
+              render={(r: {
+                end_user_id: number;
+                end_user?: { name: string };
+              }) => (
+                <Link as={RouterLink} to={`/party/${r.end_user_id}/show`}>
+                  {r.end_user?.name ?? `Party ${r.end_user_id}`}
+                </Link>
+              )}
             />
             <TextField source={fields.contract_reference.source} />
             <DateField source={fields.valid_from.source} showTime />
