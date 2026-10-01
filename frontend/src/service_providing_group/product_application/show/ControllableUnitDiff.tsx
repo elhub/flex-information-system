@@ -7,6 +7,8 @@ import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import {
   ControllableUnitHistoryWithNames,
   SpgChangeRow,
+  changedCuProperties,
+  membershipValidityChanged,
   useControllableUnitHistory,
   useIdentityMap,
 } from "./useSpgChangesViewModel";
@@ -59,7 +61,7 @@ const createSpgMembershipChangeLogEntry = (
   const oldValidTo = spgChangeRow.old?.valid_to;
   const newValidFrom = spgChangeRow.new?.valid_from;
   const newValidTo = spgChangeRow.new?.valid_to;
-  if (oldValidFrom === newValidFrom && oldValidTo === newValidTo) return [];
+  if (!membershipValidityChanged(spgChangeRow.old, spgChangeRow.new)) return [];
 
   const hasOldValidity = oldValidFrom || oldValidTo;
   const hasNewValidity = newValidFrom || newValidTo;
@@ -123,46 +125,37 @@ const createValueChangeLogEntries = (
   const newCu = spgChangeRow.new?.controllable_unit_history?.[0];
   if (!oldCu || !newCu) return [];
 
-  const properties = [
-    "name",
-    "status",
-    "maximum_active_power",
-    "regulation_direction",
-  ].map((prop) => prop as keyof ControllableUnitHistory);
-
   const logEntries: ChangeLogEntry[] = [];
-  properties.forEach((prop) => {
-    if (oldCu[prop] !== newCu[prop]) {
-      const latestChangeToCurrentValue = findLatestChangeForPropertyWithValue(
-        prop,
-        newCu[prop],
-        history,
-      );
-      const oldValue =
-        prop === "maximum_active_power"
-          ? formatPower(oldCu[prop], powerScale)
-          : String(oldCu[prop]);
-      const newValue =
-        prop === "maximum_active_power"
-          ? formatPower(newCu[prop], powerScale)
-          : String(newCu[prop]);
-      logEntries.push({
-        id: "property-" + prop,
-        kind: "property",
-        timestamp: latestChangeToCurrentValue?.recorded_at ?? newCu.recorded_at,
-        changedBy: latestChangeToCurrentValue?.replaced_by_name
-          ? latestChangeToCurrentValue?.replaced_by_name
-          : (latestChangeToCurrentValue?.recorded_by_name ?? "-"),
-        property: prop.toString(),
-        previousValue: (
-          <span className="text-semantic-text-error line-through">
-            {oldValue}
-          </span>
-        ),
-        newValue: <span>{newValue}</span>,
-        newBadge: undefined,
-      });
-    }
+  changedCuProperties(spgChangeRow.old, spgChangeRow.new).forEach((prop) => {
+    const latestChangeToCurrentValue = findLatestChangeForPropertyWithValue(
+      prop,
+      newCu[prop],
+      history,
+    );
+    const oldValue =
+      prop === "maximum_active_power"
+        ? formatPower(oldCu[prop], powerScale)
+        : String(oldCu[prop]);
+    const newValue =
+      prop === "maximum_active_power"
+        ? formatPower(newCu[prop], powerScale)
+        : String(newCu[prop]);
+    logEntries.push({
+      id: "property-" + prop,
+      kind: "property",
+      timestamp: latestChangeToCurrentValue?.recorded_at ?? newCu.recorded_at,
+      changedBy: latestChangeToCurrentValue?.replaced_by_name
+        ? latestChangeToCurrentValue?.replaced_by_name
+        : (latestChangeToCurrentValue?.recorded_by_name ?? "-"),
+      property: prop.toString(),
+      previousValue: (
+        <span className="text-semantic-text-error line-through">
+          {oldValue}
+        </span>
+      ),
+      newValue: <span>{newValue}</span>,
+      newBadge: undefined,
+    });
   });
 
   return logEntries;

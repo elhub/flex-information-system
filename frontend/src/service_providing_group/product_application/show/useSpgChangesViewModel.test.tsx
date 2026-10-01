@@ -1,7 +1,9 @@
 import { beforeEach, expect, it, vi } from "vitest";
 import { waitFor } from "@testing-library/react";
 import {
+  changedCuProperties,
   fetchSpgChanges,
+  membershipValidityChanged,
   useControllableUnitHistory,
 } from "./useSpgChangesViewModel";
 import type {
@@ -37,13 +39,25 @@ const membershipFor = (
   cuId: number,
   name: string,
   maximumActivePower: number,
-  { replacedAt, recordedAt }: { replacedAt?: string; recordedAt?: string } = {},
+  {
+    replacedAt,
+    recordedAt,
+    validFrom,
+    validTo,
+  }: {
+    replacedAt?: string;
+    recordedAt?: string;
+    validFrom?: string;
+    validTo?: string;
+  } = {},
 ): ServiceProvidingGroupMembershipHistory =>
   ({
     id: cuId,
     controllable_unit_id: cuId,
     replaced_at: replacedAt,
     recorded_at: recordedAt,
+    valid_from: validFrom,
+    valid_to: validTo,
     controllable_unit_history: [
       {
         name,
@@ -117,6 +131,51 @@ it("marks a controllable unit as unchanged when name and power are identical", a
   const rows = await fetchSpgChanges(1, FROM, NOW);
 
   expect(rows[0].status).toBe("unchanged");
+});
+
+it("marks a controllable unit as changed when only valid_from differs", async () => {
+  mockSnapshots(
+    [membershipFor(1, "CU 1", 50, { validFrom: "2024-01-01T00:00:00Z" })],
+    [membershipFor(1, "CU 1", 50, { validFrom: "2024-02-01T00:00:00Z" })],
+  );
+
+  const rows = await fetchSpgChanges(1, FROM, NOW);
+
+  expect(rows[0].status).toBe("changed");
+});
+
+it("marks a controllable unit as changed when only valid_to differs", async () => {
+  mockSnapshots(
+    [membershipFor(1, "CU 1", 50, { validFrom: "2024-01-01T00:00:00Z" })],
+    [
+      membershipFor(1, "CU 1", 50, {
+        validFrom: "2024-01-01T00:00:00Z",
+        validTo: "2024-12-01T00:00:00Z",
+      }),
+    ],
+  );
+
+  const rows = await fetchSpgChanges(1, FROM, NOW);
+
+  expect(rows[0].status).toBe("changed");
+});
+
+it("treats null and undefined valid_to as equal", () => {
+  const a = membershipFor(1, "CU 1", 50, { validFrom: "2024-01-01T00:00:00Z" });
+  const b = {
+    ...membershipFor(1, "CU 1", 50, { validFrom: "2024-01-01T00:00:00Z" }),
+    valid_to: null,
+  } as unknown as ServiceProvidingGroupMembershipHistory;
+
+  expect(membershipValidityChanged(a, b)).toBe(false);
+});
+
+it("changedCuProperties returns the differing keys, and none if a CU is missing", () => {
+  const a = membershipFor(1, "CU 1", 50);
+  const b = membershipFor(1, "CU 2", 60);
+
+  expect(changedCuProperties(a, b)).toEqual(["name", "maximum_active_power"]);
+  expect(changedCuProperties(a, undefined)).toEqual([]);
 });
 
 it("computes firstChange/lastChange as the min/max of the relevant dates", async () => {

@@ -92,6 +92,34 @@ const fetchSnapshot = async (
   return snapshot;
 };
 
+export const CU_COMPARED_PROPERTIES: (keyof ControllableUnitHistory)[] = [
+  "name",
+  "status",
+  "maximum_active_power",
+  "regulation_direction",
+];
+
+type Membership = ServiceProvidingGroupMembershipHistory | undefined;
+
+/** CU properties whose values differ between the two snapshots. */
+export const changedCuProperties = (
+  oldMembership: Membership,
+  newMembership: Membership,
+): (keyof ControllableUnitHistory)[] => {
+  const oldCu = oldMembership?.controllable_unit_history?.[0];
+  const newCu = newMembership?.controllable_unit_history?.[0];
+  if (!oldCu || !newCu) return [];
+  return CU_COMPARED_PROPERTIES.filter((prop) => oldCu[prop] !== newCu[prop]);
+};
+
+/** True if the membership's valid_from/valid_to differ between snapshots. */
+export const membershipValidityChanged = (
+  oldMembership: Membership,
+  newMembership: Membership,
+): boolean =>
+  (oldMembership?.valid_from ?? null) !== (newMembership?.valid_from ?? null) ||
+  (oldMembership?.valid_to ?? null) !== (newMembership?.valid_to ?? null);
+
 export const fetchSpgChanges = async (
   spgId: number,
   from: string,
@@ -110,28 +138,16 @@ export const fetchSpgChanges = async (
     const oldCu = oldMembership?.controllable_unit_history?.[0];
     const newCu = newMembership?.controllable_unit_history?.[0];
 
-    const cuProperties = [
-      "name",
-      "status",
-      "maximum_active_power",
-      "regulation_direction",
-    ].map((prop) => prop as keyof ControllableUnitHistory);
-    const anyPropertyChanged = cuProperties
-      .map((prop) => oldCu?.[prop] !== newCu?.[prop])
-      .some((changed) => changed);
+    const hasChanges =
+      changedCuProperties(oldMembership, newMembership).length > 0 ||
+      membershipValidityChanged(oldMembership, newMembership);
 
     let status: SpgChangeStatus;
     if (!oldMembership && newMembership) {
       status = "added";
     } else if (oldMembership && !newMembership) {
       status = "removed";
-    } else if (
-      oldMembership &&
-      newMembership &&
-      oldCu &&
-      newCu &&
-      anyPropertyChanged
-    ) {
+    } else if (hasChanges) {
       status = "changed";
     } else {
       status = "unchanged";
