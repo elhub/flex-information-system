@@ -182,6 +182,7 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
+  | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
   | "accounting_point_location_map.popup.status"
@@ -451,6 +452,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Select",
     "accounting_point_location_map.no_location_set":
       "No location set for this accounting point.",
+    "accounting_point_show.header": "Accounting Point",
     "accounting_point_grid_location_panel.heading": "Grid location",
     "accounting_point_grid_location_panel.status.missing": "Missing",
     "accounting_point_grid_location_panel.status.confirmed": "Confirmed",
@@ -508,7 +510,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.service_providing_groups": "Fleksibilitetsgrupper",
-    "tab.accounting_point": "Målepunkt",
+    "tab.accounting_point": "Avregningspunkt",
     "tab.balance_responsible_party": "Balanseansvarlige",
     "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
@@ -721,6 +723,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Velg",
     "accounting_point_location_map.no_location_set":
       "Ingen lokasjon er satt for dette avregningspunktet.",
+    "accounting_point_show.header": "Avregningspunkt",
     "accounting_point_grid_location_panel.heading": "Nettlokasjon",
     "accounting_point_grid_location_panel.status.missing": "Mangler",
     "accounting_point_grid_location_panel.status.confirmed": "Bekreftet",

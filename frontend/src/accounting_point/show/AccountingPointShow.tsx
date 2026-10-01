@@ -1,7 +1,7 @@
 import { useAccountingPointViewModel } from "./useAccountingPointViewModel";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/ui";
-import { useGetIdentity } from "react-admin";
+import { useGetIdentity, useTranslate } from "react-admin";
 import { AccountingPointShowTabs } from "./AccountingPointShowTabs";
 import { useState } from "react";
 import { Substation } from "./AccountingPointLocationMap";
@@ -11,6 +11,7 @@ export const AccountingPointShow = () => {
   const { id } = useParams<{ id: string }>();
   const apId = Number(id);
   const { data: identity } = useGetIdentity();
+  const translate = useTranslate();
 
   const handleCancelSelection = () => {
     setSelectedSubstation(null);
@@ -70,7 +71,7 @@ export const AccountingPointShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Accounting Point`}
+      secondaryHeaderText={translate("text.accounting_point_show.header")}
       mainHeaderText={ap.business_id}
       summary={summary}
       content={
