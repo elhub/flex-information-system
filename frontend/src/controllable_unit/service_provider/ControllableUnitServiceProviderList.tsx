@@ -244,10 +244,20 @@ export const ControllableUnitServiceProviderList = ({
             rowClick={false}
           >
             <TextField source={fields.id.source} />
-            <TextField
-              source="service_provider.name"
+            <FunctionField
+              source="service_provider_id"
               label="Service provider"
-              hideLabel={true}
+              render={(r: {
+                service_provider_id: number;
+                service_provider?: { name: string };
+              }) => (
+                <Link
+                  as={RouterLink}
+                  to={`/party/${r.service_provider_id}/show`}
+                >
+                  {r.service_provider?.name ?? `Party ${r.service_provider_id}`}
+                </Link>
+              )}
             />
             <FunctionField
               source="end_user_id"
