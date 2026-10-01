@@ -161,7 +161,7 @@ export function CommentBubble({
             <Textarea
               value={draftContent}
               onChange={(e) => setDraftContent(e.target.value)}
-              rows={3}
+              rows={5}
             />
           </FormItem>
           {saveError && (

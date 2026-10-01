@@ -8,7 +8,9 @@ CREATE OR REPLACE FUNCTION
 flex.current_identity() RETURNS bigint
 LANGUAGE sql SECURITY DEFINER STABLE
 AS $$
-    SELECT nullif(current_setting('flex.current_identity', true),'')::bigint;
+    -- 0 is the "system" identity
+    -- typically used when the system itself is performing actions, e.g. in cron jobs
+    SELECT coalesce(nullif(current_setting('flex.current_identity', true),'')::bigint, 0::bigint);
 $$;
 
 -- changeset flex:current-party runOnChange:true endDelimiter:--

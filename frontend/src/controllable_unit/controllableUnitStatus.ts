@@ -5,7 +5,7 @@ import {
   IconStopWatch15,
 } from "@elhub/ds-icons";
 import { ControllableUnitStatus } from "../generated-client";
-import { StatusVariant } from "../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../components/StatusBadge";
 
 export const cuStatusVariantMap: Record<ControllableUnitStatus, StatusVariant> =
   {

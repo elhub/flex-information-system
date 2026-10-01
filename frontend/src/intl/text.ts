@@ -1,6 +1,15 @@
 export type TextKey =
   | "entity_role"
   | "edit"
+  | "print"
+  | "service_providing_group"
+  | "service_providing_group_product_application"
+  | "resource_show_layout.actions_group_label"
+  | "resource_show_layout.navigate_group_label"
+  | "resource_show_layout.more_button"
+  | "resource_show_layout.more_actions_aria_label"
+  | "events"
+  | "print"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -8,9 +17,18 @@ export type TextKey =
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
   | "tab.changes"
+  | "tab.service_providing_groups"
+  | "tab.accounting_point"
+  | "tab.balance_responsible_party"
+  | "tab.history"
   | "tab.spg_info"
+  | "tab.overview"
   | "tab.comments"
   | "tab.attachments"
+  | "cu_spg_show_history"
+  | "table.header.history_id"
+  | "cu_spg_id"
+  | "cu_spg_empty"
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
@@ -33,8 +51,17 @@ export type TextKey =
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
   | "controllable_unit.is_small.false.label"
+  | "cu_show_no_service_provider"
+  | "cu_show_no_balance_responsible_party"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
+  | "cu_show_suspended_heading"
+  | "cu_show_suspended_body"
+  | "cu_show_add_technical_resources_heading"
+  | "cu_show_add_technical_resources_body"
+  | "cu_show_not_active_heading"
+  | "cu_show_not_active_body"
+  | "spgpa_show_requested_alert_body"
   | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
@@ -57,6 +84,7 @@ export type TextKey =
   | "spgpa_ramping_rate"
   | "spgpa_add_attachment"
   | "spgpa_spg_override_description"
+  | "spgpa_show_default_title"
   | "spga_additional_information_description"
   | "spga_save_confirmation_text"
   | "spgpa_draft_status_label"
@@ -64,13 +92,22 @@ export type TextKey =
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
   | "spgpa_hide_prequalified"
+  | "spgpa_summary_heading"
+  | "spgpa_summary_approved_flexible_power"
+  | "spgpa_summary_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
   | "spg_show_table_search_label"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
+  | "spg_changes_period_heading"
+  | "spg_changes_period_hint"
+  | "spg_changes_from_label"
+  | "spg_changes_to_label"
   | "spg_changes_since_label"
+  | "spg_changes_custom_milestone"
+  | "spg_changes_milestone_now"
   | "spg_changes_column_id"
   | "spg_changes_column_name"
   | "spg_changes_column_map"
@@ -79,11 +116,11 @@ export type TextKey =
   | "spg_changes_column_status"
   | "spg_changes_empty"
   | "spg_changes_error"
-  | "spg_changes_show_unchanged"
   | "spg_changes_status_added"
   | "spg_changes_status_removed"
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
+  | "spg_changes_summary_power_diff"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -107,6 +144,8 @@ export type TextKey =
   | "spg_manage_members_review_modal_close"
   | "spg_manage_members_cu_ineligible_flexible_power"
   | "spg_manage_members_cu_ineligible_status"
+  | "spg_manage_members_column_record_time"
+  | "spg_manage_members_column_record_time_tooltip"
   | "spg_create_additional_information_override_description"
   | "spg_create_additional_information_placeholder"
   | "user_dropdown_logout"
@@ -156,12 +195,23 @@ export type TextKey =
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
   | "accounting_point_grid_location_panel.empty.no_grid_location_set"
-  | "substation_reference_input.search_for_substation";
+  | "substation_reference_input.search_for_substation"
+  | "resource_show_layout.more_actions"
+  | "resource_show_layout.navigate_to";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
     edit: "Edit",
+    print: "Print",
+    events: "Events",
+    service_providing_group: "Service providing group",
+    service_providing_group_product_application:
+      "Service providing group product application",
+    "resource_show_layout.actions_group_label": "Actions",
+    "resource_show_layout.navigate_group_label": "Navigate to",
+    "resource_show_layout.more_button": "More",
+    "resource_show_layout.more_actions_aria_label": "More actions",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -169,9 +219,18 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
+    "tab.service_providing_groups": "Service providing groups",
+    "tab.accounting_point": "Accounting point",
+    "tab.balance_responsible_party": "Balance responsible parties",
+    "tab.history": "History",
     "tab.spg_info": "SPG info",
+    "tab.overview": "Overview",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
+    cu_spg_show_history: "Show history",
+    "table.header.history_id": "History ID",
+    cu_spg_id: "SPG ID",
+    cu_spg_empty: "No service providing groups for this controllable unit.",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
@@ -193,10 +252,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "No (Not small, > 50 kW of flexible power)",
     "controllable_unit.is_small.false.label": "No",
+    cu_show_no_service_provider: "No service provider",
+    cu_show_no_balance_responsible_party: "No balance responsible party",
     cu_flexible_power_exceeds_rated_power_heading:
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
+    cu_show_suspended_heading: "Controllable unit is suspended",
+    cu_show_suspended_body: "Reason: %{reason}",
+    cu_show_add_technical_resources_heading: "Add technical resources",
+    cu_show_add_technical_resources_body:
+      "To set the controllable unit as active, at least one technical resource is required.",
+    cu_show_not_active_heading: "Controllable unit is not active",
+    cu_show_not_active_body:
+      "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
+    spgpa_show_requested_alert_body:
+      "The procuring system operator must now shortly start prequalification or verification on this application.",
     power_ratio_tooltip:
       "The flexible power represents %{percentage}% of the rated power",
     "lookup.input.accounting_point": "Accounting point",
@@ -229,6 +300,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "If possible, please attach a ramping profile illustrating the deviation. Files can be attached after the application has been saved.",
     spgpa_spg_override_description:
       "Reference to the service providing group. The list ONLY show active service providing groups.",
+    spgpa_show_default_title: "Product application",
     spga_additional_information_description:
       "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
     spga_save_confirmation_text:
@@ -275,6 +347,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Cannot add: controllable unit is not active.",
+    spg_manage_members_column_record_time: "Recorded at",
+    spg_manage_members_column_record_time_tooltip:
+      "When CU was added to the group",
     spg_create_additional_information_override_description:
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
@@ -282,22 +357,33 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "Search",
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
-      "Filter by name, id or accounting point id",
+      "Filter by name, id, accounting point id or system operator",
     spgpa_hide_prequalified: "Hide prequalified",
+    spgpa_summary_heading: "Flexible power overview",
+    spgpa_summary_approved_flexible_power:
+      "Flexible power with approved status",
+    spgpa_summary_flexible_power_needing_approval:
+      "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
+    spg_changes_period_heading: "Select comparison period",
+    spg_changes_period_hint: "Drag the handlers or edit the dates",
+    spg_changes_from_label: "From",
+    spg_changes_to_label: "To",
+    spg_changes_custom_milestone: "Custom",
+    spg_changes_milestone_now: "Current (Now)",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Name",
     spg_changes_column_map: "Flexible power",
     spg_changes_column_first_change: "First change",
     spg_changes_column_last_change: "Last change",
     spg_changes_column_status: "Change",
-    spg_changes_empty: "No controllable units to compare.",
+    spg_changes_empty: "No changes found for the selected time range.",
     spg_changes_error: "Failed to load changes.",
-    spg_changes_show_unchanged: "Show unchanged controllable units",
     spg_changes_status_added: "Added",
     spg_changes_status_removed: "Removed",
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
+    spg_changes_summary_power_diff: "Flexible power diff",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -361,10 +447,21 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
     "substation_reference_input.search_for_substation": "Search for substation",
+    "resource_show_layout.more_actions": "Actions",
+    "resource_show_layout.navigate_to": "Navigate to",
   },
   nb: {
     entity_role: "Entitet",
     edit: "Endre",
+    print: "Skriv ut",
+    events: "Hendelser",
+    service_providing_group: "Fleksibilitetsgruppe",
+    service_providing_group_product_application:
+      "Fleksibilitetsgruppens produktsøknad",
+    "resource_show_layout.actions_group_label": "Handlinger",
+    "resource_show_layout.navigate_group_label": "Naviger til",
+    "resource_show_layout.more_button": "Mer",
+    "resource_show_layout.more_actions_aria_label": "Flere handlinger",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
@@ -372,9 +469,19 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
+    "tab.service_providing_groups": "Fleksibilitetsgrupper",
+    "tab.accounting_point": "Målepunkt",
+    "tab.balance_responsible_party": "Balanseansvarlige",
+    "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
+    "tab.overview": "Oversikt",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
+    cu_spg_show_history: "Vis historikk",
+    "table.header.history_id": "Historikk-ID",
+    cu_spg_id: "SPG-ID",
+    cu_spg_empty:
+      "Ingen fleksibilitetsgrupper for denne kontrollerbare enheten.",
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
@@ -398,10 +505,22 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
+    cu_show_no_service_provider: "Ingen tjenesteleverandør",
+    cu_show_no_balance_responsible_party: "Ingen balanseansvarlig",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
+    cu_show_suspended_body: "Årsak: %{reason}",
+    cu_show_add_technical_resources_heading: "Legg til tekniske ressurser",
+    cu_show_add_technical_resources_body:
+      "For å sette den kontrollerbare enheten som aktiv kreves minst én teknisk ressurs.",
+    cu_show_not_active_heading: "Kontrollerbar enhet er ikke aktiv",
+    cu_show_not_active_body:
+      "Kontrollerbar enhet må være aktiv for å bli lagt til en fleksibilitetsgruppe. Legg til alle tekniske ressurser og sørg for at dataene er korrekte før aktivering.",
+    spgpa_show_requested_alert_body:
+      "Den innkjøpende systemoperatøren må nå snart starte prekvalifisering eller verifisering av denne søknaden.",
     power_ratio_tooltip:
       "Den fleksible effekten utgjør %{percentage}% av merkeeffekten",
     "lookup.input.accounting_point": "Avregningspunkt",
@@ -432,6 +551,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg om mulig ved en ramping-profil som illustrerer avviket. Filer kan legges ved etter at søknaden er lagret.",
     spgpa_spg_override_description:
       "Referanse til fleksibilitetsgruppen. Listen viser KUN aktive fleksibilitetsgrupper.",
+    spgpa_show_default_title: "Produktprekvalifisering",
     spga_additional_information_description:
       "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
     spga_save_confirmation_text:
@@ -477,6 +597,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 100 % av merkeeffekt (%{rated_power} kW).",
     spg_manage_members_cu_ineligible_status:
       "Kan ikke legge til: kontrollerbar enhet er ikke aktiv.",
+    spg_manage_members_column_record_time: "Registreringstidspunkt",
+    spg_manage_members_column_record_time_tooltip:
+      "Tidspunktet den kontrollerbare enheten ble lagt til i gruppen",
     spg_create_additional_information_override_description:
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
@@ -484,22 +607,33 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "S\u00f8k",
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
-      "Filtrer p\u00e5 navn, id eller avregningspunkt",
+      "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
+    spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
+    spgpa_summary_approved_flexible_power:
+      "Fleksibel kapasitet som har status godkjent",
+    spgpa_summary_flexible_power_needing_approval:
+      "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
+    spg_changes_period_heading: "Velg sammenligningsperiode",
+    spg_changes_period_hint: "Dra glidebryterne eller endre datoene",
+    spg_changes_from_label: "Fra",
+    spg_changes_to_label: "Til",
+    spg_changes_custom_milestone: "Egendefinert",
+    spg_changes_milestone_now: "Nå",
     spg_changes_column_id: "ID",
     spg_changes_column_name: "Navn",
     spg_changes_column_map: "Fleksibel effekt",
     spg_changes_column_first_change: "Første endring",
     spg_changes_column_last_change: "Siste endring",
     spg_changes_column_status: "Endring",
-    spg_changes_empty: "Ingen kontrollerbare enheter å sammenligne.",
+    spg_changes_empty: "Ingen endringer funnet for det valgte tidsrommet.",
     spg_changes_error: "Kunne ikke laste endringer.",
-    spg_changes_show_unchanged: "Vis uendrede kontrollerbare enheter",
     spg_changes_status_added: "Lagt til",
     spg_changes_status_removed: "Fjernet",
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
+    spg_changes_summary_power_diff: "Fleksibel effekt diff",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
@@ -563,5 +697,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
+    "resource_show_layout.more_actions": "Handlinger",
+    "resource_show_layout.navigate_to": "Naviger til",
   },
 };

@@ -4,41 +4,43 @@ import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProv
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
 import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
-import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
 import {
   ServiceProvidingGroupStatus,
   ServiceProvidingGroupSummary,
 } from "../../generated-client";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
-import { useTranslate } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { Scale } from "../../utils/scales";
+import { ServiceProvidingGroupHistoryList } from "./ServiceProvidingGroupHistory";
+import { Permissions } from "../../auth/permissions";
 
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
-  spgCreatedAt?: string;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
-  showChanges?: boolean;
   powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgStatus,
-  spgCreatedAt,
   summary,
   showPowerPerSubstation,
-  showChanges,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("summary");
+  const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
+  const { permissions } = usePermissions<Permissions>();
+  const canViewHistory = !!permissions?.allow(
+    "service_providing_group_history",
+    "read",
+  );
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.summary")} value="summary" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
@@ -61,18 +63,16 @@ export const ServiceProvidingGroupShowTabs = ({
             value="power_per_substation"
           />
         )}
-        {showChanges && (
-          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
-        )}
+        <Tabs.Tab label={translate("text.tab.history")} value="history" />
       </Tabs.List>
-      <Tabs.Panel value="summary">
+      <Tabs.Panel value="overview">
         {summary ? (
           <ServiceProvidingGroupShowSPGSummarySection
             summary={summary}
             powerScale={powerScale}
           />
         ) : (
-          "No summary available"
+          "No overview available"
         )}
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
@@ -99,14 +99,9 @@ export const ServiceProvidingGroupShowTabs = ({
           />
         </Tabs.Panel>
       )}
-      {showChanges && (
-        <Tabs.Panel value="changes">
-          <ServiceProvidingGroupShowChangesTab
-            key={`${spgId}-${spgCreatedAt ?? "unknown"}`}
-            spgId={spgId}
-            spgCreatedAt={spgCreatedAt}
-            powerScale={powerScale}
-          />
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <ServiceProvidingGroupHistoryList spgId={spgId} />
         </Tabs.Panel>
       )}
     </Tabs>

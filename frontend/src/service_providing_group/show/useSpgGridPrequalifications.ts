@@ -13,7 +13,7 @@ export type SpgGridPrequalificationRow = {
   prequalifiedAt: string;
 };
 
-const fetchSpgGridPrequalifications = async (
+export const fetchSpgGridPrequalifications = async (
   spgId: number,
 ): Promise<SpgGridPrequalificationRow[]> => {
   const prequalifications = await listServiceProvidingGroupGridPrequalification(

@@ -16,7 +16,7 @@ import { Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
 import { fetchJSON } from "../../util";
-import { BoltIcon } from "./BoltIcon";
+import { BoltIcon } from "../../components/icons/BoltIcon";
 
 const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 

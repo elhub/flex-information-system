@@ -626,6 +626,36 @@ type sessionInfo struct {
 //
 //nolint:funlen,cyclop
 func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
+	accessTokenCookie, err := r.Cookie(sessionCookieKey)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "missing session cookie",
+		})
+		w.Write(body)
+
+		return
+	}
+
+	entityToken := new(accessToken)
+
+	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid session cookie",
+		})
+		w.Write(body)
+
+		return
+	}
+
+	entityScopes := entityToken.Scope
+
 	w.Header().Set("Content-Type", "application/json")
 
 	if r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
@@ -683,10 +713,37 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+	defer tx.Commit(ctx)
+
+	_, clientID, _, err := models.GetEntityIdentityByExternalID(ctx, tx, entityToken.ExternalID)
+	if err != nil {
+		slog.WarnContext(ctx, "error in get entity identity by external ID in assume role handler", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not get entity identity in assume handler",
+		})
+		w.Write(body)
+
+		return
+	}
+
+	// only persons authenticating in the browser are allowed to assume a party
+	// entity_clients should use token exchange
+	if clientID != nil {
+		w.WriteHeader(http.StatusBadRequest)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "client is not allowed to assume a party",
+		})
+		w.Write(body)
+
+		return
+	}
 
 	eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
-	tx.Commit(ctx)
-
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 
@@ -703,35 +760,6 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		partyScopes = auth.defaultOwnedPartyScopes
 	}
 
-	accessTokenCookie, err := r.Cookie(sessionCookieKey)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-
-		body, _ := json.Marshal(oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "missing session cookie",
-		})
-		w.Write(body)
-
-		return
-	}
-
-	entityToken := new(accessToken)
-
-	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-
-		body, _ := json.Marshal(oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid session cookie",
-		})
-		w.Write(body)
-
-		return
-	}
-
-	entityScopes := entityToken.Scope
 	scopes := scope.ListIntersection(entityScopes, partyScopes)
 
 	partyToken := accessToken{
@@ -756,10 +784,10 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// assuming party is done, so we can "log in"
+	// assuming party is done, so we can "log in" with a new transaction
 	rd := &RequestDetails{role: role, externalID: eid, scope: scopes}
 	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
-
+	_ = tx.Commit(ctx)
 	tx, err = auth.db.Begin(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

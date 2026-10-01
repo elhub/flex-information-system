@@ -141,27 +141,6 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
         </div>
       ),
     },
-    {
-      key: "ratedPowerSum",
-      header: translate("text.table.header.aggregated_rated_power"),
-      render: (v) => (
-        <div className="text-right">{formatPower(v as number | undefined)}</div>
-      ),
-    },
-    {
-      key: "ratedPowerMin",
-      header: translate("text.table.header.minimum_rated_power"),
-      render: (v) => (
-        <div className="text-right">{formatPower(v as number | undefined)}</div>
-      ),
-    },
-    {
-      key: "ratedPowerMax",
-      header: translate("text.table.header.maximum_rated_power"),
-      render: (v) => (
-        <div className="text-right">{formatPower(v as number | undefined)}</div>
-      ),
-    },
   ];
 
   if (isLoading) {

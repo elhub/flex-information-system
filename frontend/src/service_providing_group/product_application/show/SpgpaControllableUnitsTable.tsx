@@ -1,11 +1,13 @@
 import {
   BodyText,
-  Button,
   FormItem,
   FormItemLabel,
+  Heading,
   Loader,
+  Panel,
   Search,
   Switch,
+  Tooltip,
 } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
@@ -23,6 +25,8 @@ import {
   ServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
+import { toDateTimeString } from "../../../util";
+import { LabelValue } from "../../../components/LabelValue";
 
 type Props = {
   spgId: number;
@@ -49,7 +53,8 @@ export const SpgpaControllableUnitsTable = ({
         (cu) =>
           cu.name?.toLowerCase().includes(q) ||
           (cu.id != null && String(cu.id).includes(q)) ||
-          (cu.mpid != null && String(cu.mpid).includes(q)),
+          (cu.mpid != null && String(cu.mpid).includes(q)) ||
+          cu.soName?.toLowerCase().includes(q),
       );
     }
     if (hidePrequalified) {
@@ -62,6 +67,30 @@ export const SpgpaControllableUnitsTable = ({
 
   const formatPower = (value: unknown) =>
     formatScaled(Number(value), "W", KILO, powerScale);
+
+  const approvalSummary = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+    const approvedCus = data.rows.filter(
+      (cu) => cu.productApplicationPrequalifiedAt,
+    );
+    const unapprovedCus = data.rows.filter(
+      (cu) => !cu.productApplicationPrequalifiedAt,
+    );
+    return {
+      approvedCount: approvedCus.length,
+      unapprovedCount: unapprovedCus.length,
+      approvedPower: approvedCus.reduce(
+        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
+        0,
+      ),
+      unapprovedPower: unapprovedCus.reduce(
+        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
+        0,
+      ),
+    };
+  }, [data]);
 
   if (isLoading) {
     return <Loader />;
@@ -81,40 +110,18 @@ export const SpgpaControllableUnitsTable = ({
       header: t("controllable_unit.name"),
     },
     {
-      key: "validFrom",
-      header: t("service_providing_group_membership.valid_from"),
-    },
-    {
-      key: "validTo",
-      header: t("service_providing_group_membership.valid_to"),
-    },
-    {
-      key: "rated_power",
-      header: t("technical_resource.maximum_active_power"),
-      render: (value) => (
-        <div className="text-right">
-          {value != null ? formatPower(value) : "—"}
-        </div>
+      key: "membershipRecordedAt",
+      header: translate("text.spg_manage_members_column_record_time"),
+      headerTooltip: translate(
+        "text.spg_manage_members_column_record_time_tooltip",
       ),
+      render: (value) => toDateTimeString(String(value)),
     },
+
     {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
       render: (value) => <div className="text-right">{formatPower(value)}</div>,
-    },
-    {
-      key: "location",
-      header: translate("text.technical_resources_show_label"),
-      render: (value, row) => (
-        <Button
-          variant="secondary"
-          onClick={() =>
-            navigate(`/accounting_point/${row.accountingPointId}/show`)
-          }
-        >
-          {translate("text.technical_resources_show_location")}
-        </Button>
-      ),
     },
     {
       key: "mpid",
@@ -132,10 +139,8 @@ export const SpgpaControllableUnitsTable = ({
         ),
     },
     {
-      key: "brpName",
-      header: t(
-        "accounting_point_balance_responsible_party.balance_responsible_party_id",
-      ),
+      key: "soName",
+      header: t("accounting_point.system_operator_id"),
     },
     {
       key: "regulation_direction",
@@ -152,11 +157,13 @@ export const SpgpaControllableUnitsTable = ({
       header: translate("text.table.header.grid_prequalification"),
       render: (value) =>
         value ? (
-          <IconValidationCheck
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-success"
-            aria-hidden
-          />
+          <Tooltip content={toDateTimeString(String(value))}>
+            <IconValidationCheck
+              style={{ width: 18, height: 18 }}
+              className="text-semantic-text-success"
+              aria-hidden
+            />
+          </Tooltip>
         ) : (
           <IconCross
             style={{ width: 18, height: 18 }}
@@ -170,11 +177,13 @@ export const SpgpaControllableUnitsTable = ({
       header: translate("text.table.header.product_application"),
       render: (value) =>
         value ? (
-          <IconValidationCheck
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-success"
-            aria-hidden
-          />
+          <Tooltip content={toDateTimeString(String(value))}>
+            <IconValidationCheck
+              style={{ width: 18, height: 18 }}
+              className="text-semantic-text-success"
+              aria-hidden
+            />
+          </Tooltip>
         ) : (
           <IconCross
             style={{ width: 18, height: 18 }}
@@ -187,6 +196,31 @@ export const SpgpaControllableUnitsTable = ({
 
   return (
     <div className="flex flex-col gap-4">
+      {approvalSummary && (
+        <Panel border className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4">
+          <Heading size="small">
+            {translate("text.spgpa_summary_heading")}
+          </Heading>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <LabelValue
+              label={translate("text.spgpa_summary_approved_flexible_power")}
+              value={approvalSummary.approvedPower}
+              unit="W"
+              storageScale={KILO}
+              displayScale={powerScale}
+            />
+            <LabelValue
+              label={translate(
+                "text.spgpa_summary_flexible_power_needing_approval",
+              )}
+              value={approvalSummary.unapprovedPower}
+              unit="W"
+              storageScale={KILO}
+              displayScale={powerScale}
+            />
+          </div>
+        </Panel>
+      )}
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-4">
           <div className="w-1/2">
