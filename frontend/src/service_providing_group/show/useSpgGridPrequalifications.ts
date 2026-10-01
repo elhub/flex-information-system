@@ -20,6 +20,7 @@ export const fetchSpgGridPrequalifications = async (
     {
       query: {
         service_providing_group_id: `eq.${spgId}`,
+        status: "neq.terminated",
         order: "id.desc",
       },
     },

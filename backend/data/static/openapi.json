@@ -924,7 +924,8 @@
                     "in_progress",
                     "conditionally_approved",
                     "approved",
-                    "not_approved"
+                    "not_approved",
+                    "terminated"
                 ],
                 "example": "in_progress"
             },
@@ -16719,6 +16720,14 @@
                         "name": "impacted_system_operator_id"
                     },
                     {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -17313,6 +17322,14 @@
                         "example": "eq.55",
                         "description": "Reference to the `party` that is the impacted system operator.",
                         "name": "impacted_system_operator_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "in": "query",

@@ -58,7 +58,14 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
           perPage={10}
           actions={canCreate ? [<CreateButton key="create" id={id} />] : []}
           empty={false}
-          filter={id ? { service_providing_group_id: id } : undefined}
+          filter={
+            id
+              ? {
+                  service_providing_group_id: id,
+                  "status@neq": "terminated",
+                }
+              : { "status@neq": "terminated" }
+          }
           sort={{ field: "id", order: "DESC" }}
           disableSyncWithLocation
         >

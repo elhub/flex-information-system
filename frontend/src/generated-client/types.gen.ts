@@ -483,7 +483,8 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
   | "in_progress"
   | "conditionally_approved"
   | "approved"
-  | "not_approved";
+  | "not_approved"
+  | "terminated";
 
 /**
  * The level of visibility of the comment.
@@ -9755,6 +9756,7 @@ export type ListServiceProvidingGroupGridPrequalificationData = {
      * Reference to the `party` that is the impacted system operator.
      */
     impacted_system_operator_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -10011,6 +10013,7 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      * Reference to the `party` that is the impacted system operator.
      */
     impacted_system_operator_id?: string;
+    status?: string;
     /**
      * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
      */
