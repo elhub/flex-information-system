@@ -4200,7 +4200,7 @@ resources:
         nullable: true
         example: "2022-08-08T12:00:00+02"
         x-intl:
-          en: Completed at
+          en: Complete at
           nb: Fullført
           nn: Fullført
 
