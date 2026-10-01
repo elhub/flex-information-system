@@ -50,7 +50,7 @@ export const SpgInfoTab = ({
               <CardTitle>Service providing group</CardTitle>
             </CardHeaderContent>
           </CardHeader>
-          <CardContent style={{ display: "grid", gap: 16 }}>
+          <CardContent className="grid gap-4">
             <div>
               <BodyText weight="bold" size="small">
                 Name
@@ -76,7 +76,7 @@ export const SpgInfoTab = ({
                 <CardTitle>Procuring system operator</CardTitle>
               </CardHeaderContent>
             </CardHeader>
-            <CardContent style={{ display: "grid", gap: 16 }}>
+            <CardContent className="grid gap-4">
               <div>
                 <BodyText weight="bold" size="small">
                   Name
@@ -105,7 +105,7 @@ export const SpgInfoTab = ({
                 <CardTitle>Impacted system operator</CardTitle>
               </CardHeaderContent>
             </CardHeader>
-            <CardContent style={{ display: "grid", gap: 16 }}>
+            <CardContent className="grid gap-4">
               <div>
                 <BodyText weight="bold" size="small">
                   Name
