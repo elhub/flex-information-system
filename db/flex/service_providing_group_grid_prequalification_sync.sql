@@ -64,8 +64,28 @@ BEGIN
             expected_spggp.impacted_system_operator_id,
             0 -- system
         )
-    -- missing in the view -> terminate the SPG-GP
-    WHEN NOT MATCHED BY SOURCE AND flex_spggp.status != 'terminated' THEN
+    -- soft delete the SPG-GP when no CU of the SPG is (or will be) under the
+    -- ISO as CSO anymore (CU removed from the SPG, membership ended, CSO changed)
+    WHEN NOT MATCHED BY SOURCE
+        AND flex_spggp.status != 'terminated'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_membership AS spgm
+                INNER JOIN flex.controllable_unit AS cu
+                    ON spgm.controllable_unit_id = cu.id
+                INNER JOIN flex.accounting_point_system_operator AS ap_so
+                    ON
+                        cu.accounting_point_id = ap_so.accounting_point_id
+                        AND spgm.valid_time_range && ap_so.valid_time_range
+            WHERE spgm.service_providing_group_id
+                = flex_spggp.service_providing_group_id
+                AND ap_so.system_operator_id
+                = flex_spggp.impacted_system_operator_id
+                AND (
+                    upper(spgm.valid_time_range) IS null
+                    OR upper(spgm.valid_time_range) > current_timestamp
+                )
+        ) THEN
         UPDATE SET status = 'terminated';
 END;
 $$;

@@ -559,7 +559,6 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "prequalified",
   "verified",
   "rejected",
-  "terminated",
 ]);
 
 /**
@@ -6380,7 +6379,6 @@ export const zListServiceProvidingGroupProductApplicationQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
-  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -6456,7 +6454,6 @@ export const zListServiceProvidingGroupProductApplicationHistoryQuery =
       .string()
       .regex(/^eq\.[0-9]+$/)
       .optional(),
-    status: z.string().optional(),
     as_of: z.iso.datetime({ offset: true }).optional(),
     select: z.string().optional(),
     order: z.string().optional(),

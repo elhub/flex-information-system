@@ -72,7 +72,6 @@ FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('requested');
 
 -- changeset flex:service-providing-group-grid-prequalification-status-update-trigger runOnChange:true endDelimiter:--
--- SPGGP-VAL003
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_update
 BEFORE UPDATE OF status ON service_providing_group_grid_prequalification

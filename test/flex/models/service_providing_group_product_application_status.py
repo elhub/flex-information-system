@@ -7,7 +7,6 @@ class ServiceProvidingGroupProductApplicationStatus(StrEnum):
     REJECTED = "rejected"
     REQUESTED = "requested"
     TEMPORARY_QUALIFIED = "temporary_qualified"
-    TERMINATED = "terminated"
     VERIFIED = "verified"
 
     def __str__(self) -> str:

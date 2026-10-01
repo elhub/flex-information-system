@@ -69,7 +69,6 @@ SELECT EXISTS (
     FROM flex.service_providing_group_product_application
     WHERE service_providing_group_id = in_spg_id
         AND procuring_system_operator_id = in_so_id
-        AND status != 'terminated'
 )
 $$;
 
@@ -110,7 +109,6 @@ SELECT EXISTS (
     FROM flex.service_providing_group_grid_prequalification AS spggp
     WHERE spggp.service_providing_group_id = in_spg_id
         AND spggp.impacted_system_operator_id = in_so_id
-        AND spggp.status != 'terminated'
 )
 $$;
 

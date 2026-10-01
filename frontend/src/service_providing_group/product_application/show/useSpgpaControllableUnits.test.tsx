@@ -104,7 +104,6 @@ it("sorts controllable units by membershipRecordedAt descending", async () => {
   expect(mockedListGridPrequalifications).toHaveBeenCalledWith({
     query: {
       service_providing_group_id: "eq.1",
-      status: "neq.terminated",
     },
   });
 });

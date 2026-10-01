@@ -53,7 +53,6 @@ USING (
     EXISTS (
         SELECT 1 FROM service_providing_group_grid_prequalification
         WHERE service_providing_group_grid_prequalification.service_providing_group_id = service_providing_group.id -- noqa
-        AND service_providing_group_grid_prequalification.status != 'terminated' -- noqa
     )
 );
 
@@ -67,6 +66,5 @@ USING (
         SELECT 1 FROM service_providing_group_product_application spgpa -- noqa
         WHERE spgpa.service_providing_group_id = service_providing_group.id -- noqa
         AND spgpa.procuring_system_operator_id = (SELECT current_party()) -- noqa
-        AND spgpa.status != 'terminated' -- noqa
     )
 );

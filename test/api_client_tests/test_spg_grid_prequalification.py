@@ -1,3 +1,4 @@
+import pytest
 from security_token_service import SecurityTokenService, TestEntityClient
 from flex import AuthenticatedClient
 from flex.models import (
@@ -17,6 +18,7 @@ from flex.models import (
     ServiceProvidingGroupGridPrequalificationHistoryResponse,
     ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupMembershipCreateRequest,
+    ServiceProvidingGroupMembershipUpdateRequest,
     ServiceProvidingGroupMembershipResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
@@ -53,6 +55,7 @@ from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
     list_service_providing_group_membership,
     delete_service_providing_group_membership,
+    update_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
@@ -65,7 +68,6 @@ from flex.api.service_providing_group_grid_prequalification import (
 from flex.api.service_providing_group_product_application import (
     create_service_providing_group_product_application,
     update_service_providing_group_product_application,
-    read_service_providing_group_product_application,
 )
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
@@ -75,7 +77,6 @@ from flex.api.service_provider_product_application import (
     update_service_provider_product_application,
 )
 import datetime
-import pytest
 from typing import cast
 
 
@@ -653,22 +654,14 @@ def test_rla_absence(data):
         assert len(spggps) == 0
 
 
-# SPGGP-VAL001 + SPGM trigger
-# a SPGGP created because of a SPGPA on a SPG must be terminated once the SPG
-# no longer has any currently active CU
-# (cascading from the SPGPA being soft-deleted first)
-def test_spggp_terminated_on_last_cu_removed(data):
-    (sts, spg_id, so_id, _, client_sp, _, pt_ids) = data
-    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
-
-    # open an application and push it out of `requested` so the system creates
-    # a SPGGP for the impacted SO (cf SPGPA/SPGGP sync)
+def _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_id):
+    """Create a SPGPA and move it out of `requested`, which runs the SPGGP sync."""
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_id,
             procuring_system_operator_id=so_id,
-            product_type_ids=[pt_ids[0]],
+            product_type_ids=[pt_id],
             maximum_active_power_up=3.5,
             maximum_active_power_down=3.5,
         ),
@@ -685,95 +678,110 @@ def test_spggp_terminated_on_last_cu_removed(data):
     )
     assert not isinstance(u, ErrorMessage)
 
+
+def _list_spggps(client, spg_id, so_id):
     spggps = list_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
+        client=client,
         service_providing_group_id=f"eq.{spg_id}",
         impacted_system_operator_id=f"eq.{so_id}",
     )
     assert isinstance(spggps, list)
-    assert len(spggps) == 1
-    spggp_id = cast(int, spggps[0].id)
-    assert spggps[0].status == ServiceProvidingGroupGridPrequalificationStatus.REQUESTED
+    return spggps
 
-    # remove every currently active membership of the SPG (the fixture has 2:
-    # cu1 and cu2, both open-ended; cu3's membership already ended in the past
-    # and is therefore not "currently active")
+
+def _active_memberships(client_fiso, spg_id):
     spgms = list_service_providing_group_membership.sync(
         client=client_fiso,
         service_providing_group_id=f"eq.{spg_id}",
     )
     assert isinstance(spgms, list)
-    active_spgms = [spgm for spgm in spgms if spgm.valid_to is None]
-    assert len(active_spgms) == 2
+    # the fixture has 2 open-ended memberships (cu1 and cu2); cu3's membership
+    # already ended in the past
+    active = [spgm for spgm in spgms if spgm.valid_to is None]
+    assert len(active) == 2
+    return active
 
-    for spgm in active_spgms:
-        d = delete_service_providing_group_membership.sync(
-            client=client_fiso,
-            id=cast(int, spgm.id),
-            body=EmptyObject(),
-        )
-        assert not isinstance(d, ErrorMessage)
 
-    # the SPGPA must have been cascade-terminated since the SPG has no CU left
-    spgpa = read_service_providing_group_product_application.sync(
-        client=client_fiso,
-        id=cast(int, spgpa.id),
-    )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
-    assert spgpa.status == ServiceProvidingGroupProductApplicationStatus.TERMINATED
+# the SPGGP sync job soft-deletes the SPGGP when the SPG has no CU left under
+# the ISO as CSO, then creates a new one if the pair is expected again
+@pytest.mark.parametrize("removal", ["delete", "expire"])
+def test_spggp_terminated_when_no_cu_left(data, removal):
+    (sts, spg_id, so_id, other_so_id, client_sp, _, pt_ids) = data
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    # and its dependent SPGGP must have been cascade-terminated too
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[0])
+
+    spggps = _list_spggps(client_fiso, spg_id, so_id)
+    assert len(spggps) == 1
+    spggp_id = cast(int, spggps[0].id)
+    assert spggps[0].status == ServiceProvidingGroupGridPrequalificationStatus.REQUESTED
+
+    active_spgms = _active_memberships(client_fiso, spg_id)
+
+    # remove the first CU only: the SPGGP must stay alive
+    # (a sync run is triggered by the next SPGPA change below)
+    def remove(spgm):
+        if removal == "delete":
+            d = delete_service_providing_group_membership.sync(
+                client=client_fiso,
+                id=cast(int, spgm.id),
+                body=EmptyObject(),
+            )
+            assert not isinstance(d, ErrorMessage)
+        else:
+            d = update_service_providing_group_membership.sync(
+                client=client_fiso,
+                id=cast(int, spgm.id),
+                body=ServiceProvidingGroupMembershipUpdateRequest(
+                    valid_to=datetime.datetime.combine(
+                        datetime.date.today(), datetime.time.min
+                    ).astimezone(tz=datetime.timezone.utc),
+                ),
+            )
+            assert not isinstance(d, ErrorMessage)
+
+    remove(active_spgms[0])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[0])
     spggp = read_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        id=spggp_id,
+        client=client_fiso, id=spggp_id
+    )
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.REQUESTED
+
+    # remove the last CU: the SPGGP is soft-deleted at the next sync
+    remove(active_spgms[1])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[1])
+    spggp = read_service_providing_group_grid_prequalification.sync(
+        client=client_fiso, id=spggp_id
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
     assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.TERMINATED
 
-    # restore an active membership and reapply: the terminated SPGGP remains
-    # historical and the sync creates a new one for the same SPG-SO pair
-    yesterday_midnight = datetime.datetime.combine(
-        datetime.date.today() - datetime.timedelta(days=1), datetime.time.min
+    # the terminated SPGGP is hidden from the impacted SO
+    client_so = sts.get_client(TestEntityClient.TEST, "SO")
+    spggps = _list_spggps(client_so, spg_id, so_id)
+    assert all(
+        item.status == ServiceProvidingGroupGridPrequalificationStatus.TERMINATED
+        for item in spggps
+    )
+
+    # a CU comes back: a new SPGGP is created next to the terminated one
+    today_midnight = datetime.datetime.combine(
+        datetime.date.today(), datetime.time.min
     ).astimezone(tz=datetime.timezone.utc)
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=active_spgms[0].controllable_unit_id,
             service_providing_group_id=spg_id,
-            valid_from=yesterday_midnight,
+            valid_from=today_midnight,
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
-    new_spgpa = create_service_providing_group_product_application.sync(
-        client=client_sp,
-        body=ServiceProvidingGroupProductApplicationCreateRequest(
-            service_providing_group_id=spg_id,
-            procuring_system_operator_id=so_id,
-            product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
-        ),
-    )
-    assert isinstance(new_spgpa, ServiceProvidingGroupProductApplicationResponse)
-
-    u = update_service_providing_group_product_application.sync(
-        client=client_fiso,
-        id=cast(int, new_spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
-            complete_at=datetime.datetime.now(datetime.timezone.utc),
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    spggps = list_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        service_providing_group_id=f"eq.{spg_id}",
-        impacted_system_operator_id=f"eq.{so_id}",
-    )
-    assert isinstance(spggps, list)
-    assert len(spggps) == 2
+    # trigger the sync through a new SPGPA on a fresh SPG-SO pair
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[1])
+    spggps = _list_spggps(client_fiso, spg_id, so_id)
     assert {item.status for item in spggps} == {
         ServiceProvidingGroupGridPrequalificationStatus.REQUESTED,
         ServiceProvidingGroupGridPrequalificationStatus.TERMINATED,

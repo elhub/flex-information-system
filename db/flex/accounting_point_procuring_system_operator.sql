@@ -16,7 +16,6 @@ WITH (security_invoker = false) AS (
             ON spgm.controllable_unit_id = cu.id
         INNER JOIN flex.service_providing_group_product_application AS spgpa
             ON spgm.service_providing_group_id = spgpa.service_providing_group_id
-                AND spgpa.status != 'terminated'
 );
 
 -- changeset flex:accounting-point-procuring-system-operator-grants runOnChange:true endDelimiter:;

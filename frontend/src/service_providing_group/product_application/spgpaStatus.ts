@@ -23,6 +23,5 @@ export const spgpaStatusVariantMap: Record<
   prequalified: { status: "approved", icon: IconQualitiesCircle },
   verified: { status: "approved", icon: IconQualitiesCircle },
   rejected: { status: "failed", icon: IconCrossCircle },
-  terminated: { status: "stopped", icon: IconCrossCircle },
   draft: { status: "stopped", icon: IconPencil },
 };

@@ -119,8 +119,6 @@ export type EnumLabel =
   | "service_providing_group_product_application.status.requested.description"
   | "service_providing_group_product_application.status.temporary_qualified"
   | "service_providing_group_product_application.status.temporary_qualified.description"
-  | "service_providing_group_product_application.status.terminated"
-  | "service_providing_group_product_application.status.terminated.description"
   | "service_providing_group_product_application.status.verified"
   | "service_providing_group_product_application.status.verified.description"
   | "service_providing_group_product_suspension.reason.failed_verification"
@@ -311,10 +309,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Rejected",
     "service_providing_group_product_application.status.rejected.description":
       "The application was not approved and requires updates before it can be submitted again.",
-    "service_providing_group_product_application.status.terminated":
-      "Terminated",
-    "service_providing_group_product_application.status.terminated.description":
-      "The application is no longer relevant, for example because the service providing group has no controllable unit left. Only a FIS operator can put it back into activity.",
     "service_providing_group_product_application.ramping_capability.always":
       "Always",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -511,10 +505,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.",
-    "service_providing_group_product_application.status.terminated":
-      "Terminert",
-    "service_providing_group_product_application.status.terminated.description":
-      "Søknaden er ikke lenger relevant, for eksempel fordi gruppen ikke lenger har noen kontrollerbar enhet. Bare en FIS-operatør kan sette den tilbake i aktivitet.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -708,10 +698,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.",
-    "service_providing_group_product_application.status.terminated":
-      "Terminert",
-    "service_providing_group_product_application.status.terminated.description":
-      "Søknaden er ikkje lenger relevant, til dømes fordi gruppa ikkje lenger har nokon kontrollerbar eining. Berre ein FIS-operatør kan setje henne tilbake i aktivitet.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
