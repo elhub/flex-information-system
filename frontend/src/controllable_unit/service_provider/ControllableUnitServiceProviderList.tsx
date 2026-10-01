@@ -1,4 +1,9 @@
-import { ResourceContextProvider, useGetOne, usePermissions } from "ra-core";
+import {
+  ResourceContextProvider,
+  useGetOne,
+  usePermissions,
+  useTranslate,
+} from "ra-core";
 import { Link, useParams } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import { DateField, TextField } from "../../components/EDS-ra/fields";
@@ -17,6 +22,7 @@ import { getFields } from "../../zod";
 type CuspRow = { id: number; controllable_unit_id: number };
 
 const RowActionsMenu = ({ record }: { record: CuspRow }) => {
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const canUpdate = permissions?.allow(
     "controllable_unit_service_provider",
@@ -44,13 +50,15 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
         variant="invisible"
         size="small"
         icon={IconDots}
-        aria-label="Actions"
+        aria-label={translate(
+          "text.resource_show_layout.more_actions_aria_label",
+        )}
       />
       <Dropdown.Menu arrow placement="bottom-end">
         {canUpdate && (
           <>
             <Dropdown.Menu.GroupedList.Heading>
-              Actions
+              {translate("text.resource_show_layout.actions_group_label")}
             </Dropdown.Menu.GroupedList.Heading>
             <Dropdown.Menu.GroupedList>
               {canUpdate && (
@@ -60,7 +68,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
                 >
                   <div className="flex items-center gap-2">
                     <IconPencil />
-                    Edit
+                    {translate("text.edit")}
                   </div>
                 </Dropdown.Menu.GroupedList.Item>
               )}
@@ -71,7 +79,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
           <>
             {canUpdate && <Dropdown.Menu.Divider />}
             <Dropdown.Menu.GroupedList.Heading>
-              Navigation
+              {translate("text.resource_show_layout.navigate_group_label")}
             </Dropdown.Menu.GroupedList.Heading>
             <Dropdown.Menu.GroupedList>
               {canReadHistory && (
@@ -79,7 +87,9 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
                   as={Link}
                   to={`${base}/service_provider_history?filter=${historyFilter}`}
                 >
-                  <div className="flex items-center gap-2">History</div>
+                  <div className="flex items-center gap-2">
+                    {translate("text.tab.history")}
+                  </div>
                 </Dropdown.Menu.GroupedList.Item>
               )}
               {canReadEvent && (
@@ -87,7 +97,9 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
                   as={Link}
                   to={`/event?filter=${eventFilter}`}
                 >
-                  <div className="flex items-center gap-2">Events</div>
+                  <div className="flex items-center gap-2">
+                    {translate("text.events")}
+                  </div>
                 </Dropdown.Menu.GroupedList.Item>
               )}
             </Dropdown.Menu.GroupedList>
