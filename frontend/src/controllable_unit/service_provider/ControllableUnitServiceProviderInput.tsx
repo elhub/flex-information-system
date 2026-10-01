@@ -32,14 +32,15 @@ export const ControllableUnitServiceProviderInput = () => {
     useLocationState<ControllableUnitServiceProviderLocationState>();
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
+  console.log("cusp", cusp);
 
   const overrideRecord = zControllableUnitServiceProvider.partial().parse({
     ...cusp,
     // if valid_from is given by CU create page, it will be a date (YYYY-MM-DD)
     // and needs to be converted to a locally midnight-aligned datetime
-    valid_from: cusp?.valid_from
-      ? formatISO(parse(cusp.valid_from, "yyyy-MM-dd", new Date()))
-      : undefined,
+    ...(cusp?.valid_from && {
+      valid_from: formatISO(parse(cusp.valid_from, "yyyy-MM-dd", new Date())),
+    }),
   });
 
   const hasOverride = countDefinedValues(overrideRecord) > 0;
