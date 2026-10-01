@@ -19,6 +19,11 @@ export type TextKey =
   | "events"
   | "print"
   | "tab.summary"
+  | "spg_info_tab.name"
+  | "spg_info_tab.see_group"
+  | "spg_info_tab.see_so"
+  | "spg_info_tab.procuring_system_operator"
+  | "spg_info_tab.impacted_system_operator"
   | "tab.controllable_units"
   | "tab.technical_resources"
   | "tab.product_applications"
@@ -247,6 +252,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.more_button": "More",
     "resource_show_layout.more_actions_aria_label": "More actions",
     "tab.summary": "Summary",
+    "spg_info_tab.name": "Name",
+    "spg_info_tab.see_group": "See group",
+    "spg_info_tab.see_so": "See SO",
+    "spg_info_tab.procuring_system_operator": "Procuring system operator",
+    "spg_info_tab.impacted_system_operator": "Impacted system operator",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
     "tab.product_applications": "Product applications",
@@ -527,6 +537,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.more_button": "Mer",
     "resource_show_layout.more_actions_aria_label": "Flere handlinger",
     "tab.summary": "Sammendrag",
+    "spg_info_tab.name": "Navn",
+    "spg_info_tab.see_group": "Se gruppe",
+    "spg_info_tab.see_so": "Se SO",
+    "spg_info_tab.procuring_system_operator": "Anskaffende systemoperatør",
+    "spg_info_tab.impacted_system_operator": "Berørt systemoperatør",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
     "tab.product_applications": "Produktprekvalifiseringer",
