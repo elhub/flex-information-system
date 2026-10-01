@@ -77,22 +77,40 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
       {canViewLocation && (
         <Tabs.Panel value="accounting_point_location">
           <Panel border className="mb-4 p-4 sm:p-5">
-            <LabelValue
-              label="Accounting point"
-              value={
-                viewModel.accountingPoint ? (
-                  <Link
-                    as={RouterLink}
-                    to={`/accounting_point/${viewModel.accountingPoint.id}/show`}
-                    className="inline-flex items-center gap-1"
-                    title="View accounting point"
-                  >
-                    {viewModel.accountingPoint.business_id}
-                    <IconRight size="small" />
-                  </Link>
-                ) : undefined
-              }
-            />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <LabelValue
+                label={translate("text.tab.accounting_point")}
+                value={
+                  viewModel.accountingPoint ? (
+                    <Link
+                      as={RouterLink}
+                      to={`/accounting_point/${viewModel.accountingPoint.id}/show`}
+                      className="inline-flex items-center gap-1"
+                      title={translate("text.cu_show_view_accounting_point")}
+                    >
+                      {viewModel.accountingPoint.business_id}
+                      <IconRight size="small" />
+                    </Link>
+                  ) : undefined
+                }
+              />
+              <LabelValue
+                labelKey="accounting_point.system_operator_id"
+                value={
+                  viewModel?.systemOperator ? (
+                    <Link
+                      as={RouterLink}
+                      to={`/party/${viewModel.systemOperator.id}/show`}
+                      className="inline-flex items-center gap-1"
+                      title={translate("text.cu_show_view_system_operator")}
+                    >
+                      {viewModel.systemOperator.name}
+                      <IconRight size="small" />
+                    </Link>
+                  ) : undefined
+                }
+              />
+            </div>
           </Panel>
           <AccountingPointLocationMap
             location={viewModel.accountingPoint?.location}
