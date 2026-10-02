@@ -2,7 +2,7 @@ const noticeTypes = [
   {
     id: "no.elhub.flex.controllable_unit.service_providing_group.product_duplication",
     shortId: "controllable_unit.service_providing_group.product_duplication",
-    label: "Duplicate Controllable Unit in same product type",
+    label: "CU in multiple SPGs for same product type",
     description:
       "Controllable unit is used in two or more Service Providing Group within the same Product Type. It can only be part of one Service Providing Group within the same Product Type",
   },
