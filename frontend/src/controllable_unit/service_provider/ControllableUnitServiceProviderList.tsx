@@ -16,8 +16,8 @@ import {
   IconDots,
   IconPencil,
   IconPlus,
-  IconTrash,
   IconSearch,
+  IconTrash,
 } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
@@ -229,11 +229,11 @@ export const ControllableUnitServiceProviderList = ({
               ? {
                   controllable_unit_id: cu.id,
                   "valid_from@not.is": null,
-                  embed: "service_provider,end_user",
+                  embed: "service_provider",
                 }
               : {
                   "valid_from@not.is": null,
-                  embed: "service_provider,end_user",
+                  embed: "service_provider",
                 }
           }
           sort={{ field: "valid_from", order: "DESC" }}
@@ -259,18 +259,7 @@ export const ControllableUnitServiceProviderList = ({
                 </Link>
               )}
             />
-            <FunctionField
-              source="end_user_id"
-              label="End user"
-              render={(r: {
-                end_user_id: number;
-                end_user?: { name: string };
-              }) => (
-                <Link as={RouterLink} to={`/party/${r.end_user_id}/show`}>
-                  {r.end_user?.name ?? `Party ${r.end_user_id}`}
-                </Link>
-              )}
-            />
+            <TextField source="end_user_id" />
             <TextField source={fields.contract_reference.source} />
             <DateField source={fields.valid_from.source} showTime />
             <DateField source={fields.valid_to.source} showTime />
