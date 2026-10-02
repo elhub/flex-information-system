@@ -153,7 +153,9 @@ export const ServiceProvidingGroupShowTable = ({
         <Button
           variant="secondary"
           onClick={() =>
-            navigate(`/accounting_point/${row.accountingPointId}/show`)
+            navigate(
+              `/accounting_point/${row.accountingPointId}/show?tab=location`,
+            )
           }
         >
           {translate("text.technical_resources_show_location")}
