@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import { homedir } from "os";
 import checker from "vite-plugin-checker";
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 
@@ -12,10 +12,11 @@ import tailwindcss from '@tailwindcss/vite';
 // If we don't do this, the CI worker will fail because it
 // cannot find the certificates.
 let httpsConfig = {};
+const isPlaywrightTest = process.env.PLAYWRIGHT_TEST === "1";
 const keyPath = homedir() + "/.ca/certificates/dev.flex.internal.key.pem";
 const certPath = homedir() + "/.ca/certificates/dev.flex.internal.cert.pem";
 
-if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+if (!isPlaywrightTest && fs.existsSync(keyPath) && fs.existsSync(certPath)) {
   httpsConfig = {
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
@@ -36,7 +37,7 @@ export default defineConfig({
     port: 5443,
     strictPort: true,
     allowedHosts: [".flex.internal"],
-    https: httpsConfig,
+    https: isPlaywrightTest ? undefined : httpsConfig,
     // Using the proxy instance
     proxy: {
       "/api": {
