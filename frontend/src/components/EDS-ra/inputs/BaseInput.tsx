@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import { FormItem, FormItemLabel, FlexDiv, Alert } from "../../ui";
 import { FormItemDescription } from "../../ui/types";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
@@ -6,6 +6,9 @@ import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../fields/FieldTooltip";
 import { useTooltipText } from "../fields/useTooltipText";
+
+// Inputs inside a list filter form are never required.
+export const FilterInputContext = createContext(false);
 
 export type BaseInputProps = {
   source: string;
@@ -45,6 +48,7 @@ export const BaseInput = ({
   resource: resourceProp,
   overrideLabel,
 }: BaseInputPropsWithChildren) => {
+  const isFilterInput = useContext(FilterInputContext);
   const resource = useResourceContext({ resource: resourceProp });
   const formattedSource = source.split("@")[0];
 
@@ -78,7 +82,10 @@ export const BaseInput = ({
     <FormItem
       id={id}
       error={error}
-      inputProps={{ required, disabled: isDisabled }}
+      inputProps={{
+        required: isFilterInput ? false : required,
+        disabled: isDisabled,
+      }}
       size="large"
       className={className}
     >

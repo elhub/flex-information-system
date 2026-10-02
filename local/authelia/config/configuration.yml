@@ -41,6 +41,8 @@ authentication_backend:
         parallelism: 4
         key_length: 32
         salt_length: 16
+ntp:
+  disable_startup_check: true
 
 # OIDC
 # https://www.authelia.com/configuration/identity-providers/openid-connect/provider/

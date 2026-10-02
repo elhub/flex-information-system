@@ -25,7 +25,6 @@ export const useControllableUnitShowSummary = ({
     balanceResponsibleParty,
     accountingPointBalanceResponsibleParty,
     accountingPoint,
-    systemOperator,
     biddingZone,
     meteringGridArea,
     energySupplier,
@@ -46,11 +45,7 @@ export const useControllableUnitShowSummary = ({
     },
     {
       labelKey: "accounting_point_bidding_zone.accounting_point_id",
-      value: accountingPoint
-        ? systemOperator
-          ? `${accountingPoint.business_id} (${systemOperator.name})`
-          : accountingPoint.business_id
-        : undefined,
+      value: accountingPoint ? accountingPoint.business_id : undefined,
     },
     {
       labelKey: "accounting_point_metering_grid_area.metering_grid_area_id",

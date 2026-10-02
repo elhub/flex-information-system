@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { useTranslate } from "ra-core";
 import { BodyText, Table } from "./ui";
 import { Tooltip } from "../components/ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
@@ -18,7 +19,7 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   columns: Column<T>[];
   data: T[];
   size?: "medium" | "small";
-  empty?: ReactNode;
+  empty?: ReactNode | null;
   action?: { render: (row: T) => ReactNode; header?: string };
   rowActions?: (row: T) => ReactNode;
   expandPanel?: (row: T) => ReactNode;
@@ -33,7 +34,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   columns,
   data,
   size,
-  empty = "No results",
+  empty,
   action,
   rowActions,
   expandPanel,
@@ -43,6 +44,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   rowKey,
   rowClick,
 }: SimpleTableProps<T>) => {
+  const translate = useTranslate();
   const hasRowClick = rowClick !== undefined;
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
@@ -59,12 +61,16 @@ export const SimpleTable = <T extends { id?: string | number }>({
     rowClick(record);
   };
 
-  if (!data.length)
+  if (!data.length) {
+    if (empty === undefined)
+      return <BodyText>{translate("text.simple_table.no_results")}</BodyText>;
+    if (empty === null) return null;
     return typeof empty === "string" ? (
       <BodyText>{empty}</BodyText>
     ) : (
       <>{empty}</>
     );
+  }
 
   const hasAnyAction =
     rowActions != null && data.some((r) => rowActions(r) != null);

@@ -196,7 +196,7 @@ export const SpgpaControllableUnitsTable = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {!!approvalSummary?.unapprovedCount && (
+      {approvalSummary && (
         <Panel border className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4">
           <Heading size="small">
             {translate("text.spgpa_summary_heading")}
