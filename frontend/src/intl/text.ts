@@ -1,7 +1,31 @@
 export type TextKey =
+  | "simple_table.no_results"
+  | "delete"
+  | "delete_confirm"
+  | "dashboard.application"
+  | "dashboard.sp_product_application"
+  | "dashboard.spg_product_application"
+  | "dashboard.spg_grid_prequalification"
+  | "dashboard.recorded_at"
+  | "dashboard.created_at"
+  | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "print"
+  | "service_providing_group"
+  | "service_providing_group_product_application"
+  | "resource_show_layout.actions_group_label"
+  | "resource_show_layout.navigate_group_label"
+  | "resource_show_layout.more_button"
+  | "resource_show_layout.more_actions_aria_label"
+  | "events"
+  | "print"
   | "tab.summary"
+  | "spg_info_tab.name"
+  | "spg_info_tab.see_group"
+  | "spg_info_tab.see_so"
+  | "spg_info_tab.procuring_system_operator"
+  | "spg_info_tab.impacted_system_operator"
   | "tab.controllable_units"
   | "tab.technical_resources"
   | "tab.product_applications"
@@ -9,7 +33,12 @@ export type TextKey =
   | "tab.power_per_substation"
   | "tab.changes"
   | "tab.service_providing_groups"
+  | "tab.accounting_point"
+  | "tab.balance_responsible_party"
+  | "tab.history"
   | "tab.spg_info"
+  | "tab.overview"
+  | "tab.grid_location"
   | "tab.comments"
   | "tab.attachments"
   | "cu_spg_show_history"
@@ -34,12 +63,23 @@ export type TextKey =
   | "form_toolbar.cancel"
   | "form_toolbar.confirm"
   | "controllable_unit"
+  | "cu_show_view_accounting_point"
+  | "cu_show_view_system_operator"
   | "controllable_unit.is_small.true"
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
   | "controllable_unit.is_small.false.label"
+  | "cu_show_no_service_provider"
+  | "cu_show_no_balance_responsible_party"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
+  | "cu_show_suspended_heading"
+  | "cu_show_suspended_body"
+  | "cu_show_add_technical_resources_heading"
+  | "cu_show_add_technical_resources_body"
+  | "cu_show_not_active_heading"
+  | "cu_show_not_active_body"
+  | "spgpa_show_requested_alert_body"
   | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
@@ -62,6 +102,7 @@ export type TextKey =
   | "spgpa_ramping_rate"
   | "spgpa_add_attachment"
   | "spgpa_spg_override_description"
+  | "spgpa_show_default_title"
   | "spga_additional_information_description"
   | "spga_save_confirmation_text"
   | "spgpa_draft_status_label"
@@ -98,6 +139,20 @@ export type TextKey =
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
   | "spg_changes_summary_power_diff"
+  | "spg_changes_comparison_scope"
+  | "spg_changes_log_changed_by_label"
+  | "spg_changes_log_property_category"
+  | "spg_changes_log_property_previous_label"
+  | "spg_changes_log_property_new_label"
+  | "spg_changes_log_membershipAdded_category"
+  | "spg_changes_log_membershipRemoved_category"
+  | "spg_changes_log_membershipAdded_previous_label"
+  | "spg_changes_log_membershipAdded_new_label"
+  | "spg_changes_log_membershipRemoved_previous_label"
+  | "spg_changes_log_membershipRemoved_new_label"
+  | "spg_changes_log_membershipValidity_category"
+  | "spg_changes_log_membershipValidity_previous_label"
+  | "spg_changes_log_membershipValidity_new_label"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -158,6 +213,7 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
+  | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
   | "accounting_point_location_map.popup.status"
@@ -165,20 +221,63 @@ export type TextKey =
   | "accounting_point_location_map.popup.selected_as_grid_location"
   | "accounting_point_location_map.popup.select"
   | "accounting_point_location_map.no_location_set"
-  | "accounting_point_grid_location_panel.heading.missing"
-  | "accounting_point_grid_location_panel.heading.confirmed"
-  | "accounting_point_grid_location_panel.heading.suggested"
+  | "accounting_point_grid_location_panel.heading"
+  | "accounting_point_grid_location_panel.status.missing"
+  | "accounting_point_grid_location_panel.status.confirmed"
+  | "accounting_point_grid_location_panel.status.guessed"
   | "accounting_point_grid_location_panel.button.edit_details"
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
   | "accounting_point_grid_location_panel.empty.no_grid_location_set"
-  | "substation_reference_input.search_for_substation";
+  | "ap_show_overview.grid_location.heading"
+  | "ap_show_overview.grid_location.description"
+  | "ap_show_overview.grid_location.guessed_help_before"
+  | "ap_show_overview.grid_location.guessed_help_after"
+  | "ap_show_overview.grid_location.with_selection"
+  | "ap_show_overview.grid_location.without_selection"
+  | "ap_show_overview.grid_location.current_status"
+  | "ap_show_overview.grid_location.open_location_tab"
+  | "ap_show_overview.grid_location.no_location_access"
+  | "ap_show_overview.cu_summary.heading"
+  | "ap_show_overview.cu_summary.description"
+  | "ap_show_overview.cu_summary.total_flexible_power"
+  | "ap_show_overview.cu_summary.total_rated_power"
+  | "ap_show_overview.common.not_available"
+  | "ap_controllable_units_table.empty"
+  | "substation_reference_input.search_for_substation"
+  | "resource_show_layout.more_actions"
+  | "resource_show_layout.navigate_to";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
+    "simple_table.no_results": "No results",
+    "dashboard.application": "Application",
+    "dashboard.sp_product_application": "SP Product Application",
+    "dashboard.spg_product_application": "SPG Product Application",
+    "dashboard.spg_grid_prequalification": "SPG Grid Prequalification",
+    "dashboard.recorded_at": "Recorded at",
+    "dashboard.created_at": "Created at",
+    "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
     edit: "Edit",
+    print: "Print",
+    events: "Events",
+    delete: "Delete",
+    delete_confirm:
+      "Are you sure you want to delete this item? This action cannot be undone.",
+    service_providing_group: "Service providing group",
+    service_providing_group_product_application:
+      "Service providing group product application",
+    "resource_show_layout.actions_group_label": "Actions",
+    "resource_show_layout.navigate_group_label": "Navigate to",
+    "resource_show_layout.more_button": "More",
+    "resource_show_layout.more_actions_aria_label": "More actions",
     "tab.summary": "Summary",
+    "spg_info_tab.name": "Name",
+    "spg_info_tab.see_group": "See group",
+    "spg_info_tab.see_so": "See SO",
+    "spg_info_tab.procuring_system_operator": "Procuring system operator",
+    "spg_info_tab.impacted_system_operator": "Impacted system operator",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
     "tab.product_applications": "Product applications",
@@ -186,7 +285,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Power per substation",
     "tab.changes": "Changes",
     "tab.service_providing_groups": "Service providing groups",
+    "tab.accounting_point": "Accounting point",
+    "tab.balance_responsible_party": "Balance responsible parties",
+    "tab.history": "History",
     "tab.spg_info": "SPG info",
+    "tab.overview": "Overview",
+    "tab.grid_location": "Grid location",
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     cu_spg_show_history: "Show history",
@@ -209,15 +313,29 @@ export const text: Record<string, Record<TextKey, string>> = {
     "form_toolbar.cancel": "Cancel",
     "form_toolbar.confirm": "Confirm",
     controllable_unit: "Controllable unit",
+    cu_show_view_accounting_point: "View accounting point",
+    cu_show_view_system_operator: "View system operator",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
     "controllable_unit.is_small.false":
       "No (Not small, > 50 kW of flexible power)",
     "controllable_unit.is_small.false.label": "No",
+    cu_show_no_service_provider: "No service provider",
+    cu_show_no_balance_responsible_party: "No balance responsible party",
     cu_flexible_power_exceeds_rated_power_heading:
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
+    cu_show_suspended_heading: "Controllable unit is suspended",
+    cu_show_suspended_body: "Reason: %{reason}",
+    cu_show_add_technical_resources_heading: "Add technical resources",
+    cu_show_add_technical_resources_body:
+      "To set the controllable unit as active, at least one technical resource is required.",
+    cu_show_not_active_heading: "Controllable unit is not active",
+    cu_show_not_active_body:
+      "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
+    spgpa_show_requested_alert_body:
+      "The procuring system operator must now shortly start prequalification or verification on this application.",
     power_ratio_tooltip:
       "The flexible power represents %{percentage}% of the rated power",
     "lookup.input.accounting_point": "Accounting point",
@@ -250,6 +368,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "If possible, please attach a ramping profile illustrating the deviation. Files can be attached after the application has been saved.",
     spgpa_spg_override_description:
       "Reference to the service providing group. The list ONLY show active service providing groups.",
+    spgpa_show_default_title: "Product application",
     spga_additional_information_description:
       "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
     spga_save_confirmation_text:
@@ -306,7 +425,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "Search",
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
-      "Filter by name, id or accounting point id",
+      "Filter by name, id, accounting point id or system operator",
     spgpa_hide_prequalified: "Hide prequalified",
     spgpa_summary_heading: "Flexible power overview",
     spgpa_summary_approved_flexible_power:
@@ -333,6 +452,20 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
     spg_changes_summary_power_diff: "Flexible power diff",
+    spg_changes_comparison_scope: "Comparison scope",
+    spg_changes_log_changed_by_label: "Changed by",
+    spg_changes_log_property_category: "Property: %{property}",
+    spg_changes_log_property_previous_label: "Previous value",
+    spg_changes_log_property_new_label: "New value",
+    spg_changes_log_membershipAdded_category: "Added to group",
+    spg_changes_log_membershipRemoved_category: "Removed from group",
+    spg_changes_log_membershipAdded_previous_label: "Old validity",
+    spg_changes_log_membershipAdded_new_label: "New validity",
+    spg_changes_log_membershipRemoved_previous_label: "Old validity",
+    spg_changes_log_membershipRemoved_new_label: "New validity",
+    spg_changes_log_membershipValidity_category: "Membership validity window",
+    spg_changes_log_membershipValidity_previous_label: "Previous validity",
+    spg_changes_log_membershipValidity_new_label: "New validity",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -382,12 +515,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Select",
     "accounting_point_location_map.no_location_set":
       "No location set for this accounting point.",
-    "accounting_point_grid_location_panel.heading.missing":
-      "Missing grid location",
-    "accounting_point_grid_location_panel.heading.confirmed":
-      "Confirmed grid location",
-    "accounting_point_grid_location_panel.heading.suggested":
-      "Suggested grid location",
+    "accounting_point_show.header": "Accounting Point",
+    "accounting_point_grid_location_panel.heading": "Grid location",
+    "accounting_point_grid_location_panel.status.missing": "Missing",
+    "accounting_point_grid_location_panel.status.confirmed": "Confirmed",
+    "accounting_point_grid_location_panel.status.guessed": "Guessed",
     "accounting_point_grid_location_panel.button.edit_details": "Edit details",
     "accounting_point_grid_location_panel.button.validate_grid_location":
       "Validate grid location",
@@ -395,12 +527,61 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Add grid location",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
+    "ap_show_overview.grid_location.heading": "Grid location",
+    "ap_show_overview.grid_location.description":
+      "This tells you which substation this accounting point belongs to.",
+    "ap_show_overview.grid_location.guessed_help_before": "If status is",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", the system made a best guess. Open the Location tab and check that the selected substation is correct.",
+    "ap_show_overview.grid_location.with_selection":
+      "A substation is selected. Confirm it if correct, or choose a different one.",
+    "ap_show_overview.grid_location.without_selection":
+      "No substation is selected yet. Choose and save the correct one.",
+    "ap_show_overview.grid_location.current_status": "Current status",
+    "ap_show_overview.grid_location.open_location_tab": "Open Location tab",
+    "ap_show_overview.grid_location.no_location_access":
+      "You do not currently have access to the Location tab.",
+    "ap_show_overview.cu_summary.heading": "Controllable units summary",
+    "ap_show_overview.cu_summary.description":
+      "This accounting point contains %{count} controllable units. Here are key aggregates across those units:",
+    "ap_show_overview.cu_summary.total_flexible_power": "Total flexible power",
+    "ap_show_overview.cu_summary.total_rated_power": "Total rated power",
+    "ap_show_overview.common.not_available": "Not available",
+    "ap_controllable_units_table.empty":
+      "No controllable units tied to this accounting point.",
     "substation_reference_input.search_for_substation": "Search for substation",
+    "resource_show_layout.more_actions": "Actions",
+    "resource_show_layout.navigate_to": "Navigate to",
   },
   nb: {
+    "simple_table.no_results": "Ingen resultater",
+    "dashboard.application": "Søknad",
+    "dashboard.sp_product_application": "SP-produktsøknad",
+    "dashboard.spg_product_application": "SPG-produktsøknad",
+    "dashboard.spg_grid_prequalification": "SPG-nettprekvalifisering",
+    "dashboard.recorded_at": "Registrert",
+    "dashboard.created_at": "Opprettet",
+    "dashboard.no_active_applications": "Ingen aktive søknader.",
     entity_role: "Entitet",
     edit: "Endre",
+    print: "Skriv ut",
+    events: "Hendelser",
+    delete: "Slett",
+    delete_confirm:
+      "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
+    service_providing_group: "Fleksibilitetsgruppe",
+    service_providing_group_product_application:
+      "Fleksibilitetsgruppens produktsøknad",
+    "resource_show_layout.actions_group_label": "Handlinger",
+    "resource_show_layout.navigate_group_label": "Naviger til",
+    "resource_show_layout.more_button": "Mer",
+    "resource_show_layout.more_actions_aria_label": "Flere handlinger",
     "tab.summary": "Sammendrag",
+    "spg_info_tab.name": "Navn",
+    "spg_info_tab.see_group": "Se gruppe",
+    "spg_info_tab.see_so": "Se SO",
+    "spg_info_tab.procuring_system_operator": "Anskaffende systemoperatør",
+    "spg_info_tab.impacted_system_operator": "Berørt systemoperatør",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
     "tab.product_applications": "Produktprekvalifiseringer",
@@ -408,7 +589,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.power_per_substation": "Kapasitet per substasjon",
     "tab.changes": "Endringer",
     "tab.service_providing_groups": "Fleksibilitetsgrupper",
+    "tab.accounting_point": "Avregningspunkt",
+    "tab.balance_responsible_party": "Balanseansvarlige",
+    "tab.history": "Historikk",
     "tab.spg_info": "SPG-info",
+    "tab.overview": "Oversikt",
+    "tab.grid_location": "Nettlokasjon",
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     cu_spg_show_history: "Vis historikk",
@@ -434,15 +620,29 @@ export const text: Record<string, Record<TextKey, string>> = {
     "form_toolbar.cancel": "Avbryt",
     "form_toolbar.confirm": "Bekreft",
     controllable_unit: "Kontrollerbar enhet",
+    cu_show_view_accounting_point: "Vis avregningspunkt",
+    cu_show_view_system_operator: "Vis systemoperatør",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
+    cu_show_no_service_provider: "Ingen tjenesteleverandør",
+    cu_show_no_balance_responsible_party: "Ingen balanseansvarlig",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
+    cu_show_suspended_body: "Årsak: %{reason}",
+    cu_show_add_technical_resources_heading: "Legg til tekniske ressurser",
+    cu_show_add_technical_resources_body:
+      "For å sette den kontrollerbare enheten som aktiv kreves minst én teknisk ressurs.",
+    cu_show_not_active_heading: "Kontrollerbar enhet er ikke aktiv",
+    cu_show_not_active_body:
+      "Kontrollerbar enhet må være aktiv for å bli lagt til en fleksibilitetsgruppe. Legg til alle tekniske ressurser og sørg for at dataene er korrekte før aktivering.",
+    spgpa_show_requested_alert_body:
+      "Den innkjøpende systemoperatøren må nå snart starte prekvalifisering eller verifisering av denne søknaden.",
     power_ratio_tooltip:
       "Den fleksible effekten utgjør %{percentage}% av merkeeffekten",
     "lookup.input.accounting_point": "Avregningspunkt",
@@ -473,6 +673,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg om mulig ved en ramping-profil som illustrerer avviket. Filer kan legges ved etter at søknaden er lagret.",
     spgpa_spg_override_description:
       "Referanse til fleksibilitetsgruppen. Listen viser KUN aktive fleksibilitetsgrupper.",
+    spgpa_show_default_title: "Produktprekvalifisering",
     spga_additional_information_description:
       "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
     spga_save_confirmation_text:
@@ -528,7 +729,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_label: "S\u00f8k",
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
-      "Filtrer p\u00e5 navn, id eller avregningspunkt",
+      "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
     spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
     spgpa_summary_approved_flexible_power:
@@ -555,6 +756,21 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
     spg_changes_summary_power_diff: "Fleksibel effekt diff",
+    spg_changes_comparison_scope: "Sammenligningsomfang",
+    spg_changes_log_changed_by_label: "Endret av",
+    spg_changes_log_property_category: "Egenskap: %{property}",
+    spg_changes_log_property_previous_label: "Forrige verdi",
+    spg_changes_log_property_new_label: "Ny verdi",
+    spg_changes_log_membershipAdded_category: "Lagt til i gruppe",
+    spg_changes_log_membershipRemoved_category: "Fjernet fra gruppe",
+    spg_changes_log_membershipAdded_previous_label: "Gammelt gyldighetsvindu",
+    spg_changes_log_membershipAdded_new_label: "Nytt gyldighetsvindu",
+    spg_changes_log_membershipRemoved_previous_label: "Gammelt gyldighetsvindu",
+    spg_changes_log_membershipRemoved_new_label: "Nytt gyldighetsvindu",
+    spg_changes_log_membershipValidity_category:
+      "Gyldighetsvindu for medlemskap",
+    spg_changes_log_membershipValidity_previous_label: "Forrige utløp",
+    spg_changes_log_membershipValidity_new_label: "Forlenget utløp",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
@@ -603,12 +819,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "accounting_point_location_map.popup.select": "Velg",
     "accounting_point_location_map.no_location_set":
       "Ingen lokasjon er satt for dette avregningspunktet.",
-    "accounting_point_grid_location_panel.heading.missing":
-      "Mangler nettlokasjon",
-    "accounting_point_grid_location_panel.heading.confirmed":
-      "Bekreftet nettlokasjon",
-    "accounting_point_grid_location_panel.heading.suggested":
-      "Foreslått nettlokasjon",
+    "accounting_point_show.header": "Avregningspunkt",
+    "accounting_point_grid_location_panel.heading": "Nettlokasjon",
+    "accounting_point_grid_location_panel.status.missing": "Mangler",
+    "accounting_point_grid_location_panel.status.confirmed": "Bekreftet",
+    "accounting_point_grid_location_panel.status.guessed": "Gjettet",
     "accounting_point_grid_location_panel.button.edit_details":
       "Rediger detaljer",
     "accounting_point_grid_location_panel.button.validate_grid_location":
@@ -617,6 +832,32 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg til nettlokasjon",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
+    "ap_show_overview.grid_location.heading": "Nettlokasjon",
+    "ap_show_overview.grid_location.description":
+      "Dette viser hvilken stasjon dette avregningspunktet tilhører.",
+    "ap_show_overview.grid_location.guessed_help_before": "Hvis status er",
+    "ap_show_overview.grid_location.guessed_help_after":
+      ", har systemet gjort en best mulig gjetning. Åpne fanen Lokasjon og sjekk at valgt stasjon er riktig.",
+    "ap_show_overview.grid_location.with_selection":
+      "En stasjon er valgt. Bekreft den hvis den er riktig, eller velg en annen.",
+    "ap_show_overview.grid_location.without_selection":
+      "Ingen stasjon er valgt ennå. Velg og lagre riktig stasjon.",
+    "ap_show_overview.grid_location.current_status": "Nåværende status",
+    "ap_show_overview.grid_location.open_location_tab": "Åpne Lokasjon-fanen",
+    "ap_show_overview.grid_location.no_location_access":
+      "Du har ikke tilgang til Lokasjon-fanen.",
+    "ap_show_overview.cu_summary.heading":
+      "Oppsummering av kontrollerbare enheter",
+    "ap_show_overview.cu_summary.description":
+      "Dette avregningspunktet inneholder %{count} kontrollerbare enheter. Her er nøkkelaggregater på tvers av disse enhetene:",
+    "ap_show_overview.cu_summary.total_flexible_power":
+      "Total fleksibel effekt",
+    "ap_show_overview.cu_summary.total_rated_power": "Total merkeeffekt",
+    "ap_show_overview.common.not_available": "Ikke tilgjengelig",
+    "ap_controllable_units_table.empty":
+      "Ingen kontrollerbare enheter er knyttet til dette avregningspunktet.",
     "substation_reference_input.search_for_substation": "Søk etter stasjon",
+    "resource_show_layout.more_actions": "Handlinger",
+    "resource_show_layout.navigate_to": "Naviger til",
   },
 };

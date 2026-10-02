@@ -65,6 +65,7 @@ export const ServiceProvidingGroupShowTable = ({
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const [searchQuery, setSearchQuery] = useState("");
+
   const filteredCUs = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     let result = data?.rows;
@@ -73,7 +74,8 @@ export const ServiceProvidingGroupShowTable = ({
         (cu) =>
           cu.name?.toLowerCase().includes(q) ||
           (cu.id != null && String(cu.id).includes(q)) ||
-          (cu.mpid != null && String(cu.mpid).includes(q)),
+          (cu.mpid != null && String(cu.mpid).includes(q)) ||
+          cu.soName?.toLowerCase().includes(q),
       );
     }
     return result;
@@ -107,6 +109,7 @@ export const ServiceProvidingGroupShowTable = ({
             as={RouterLink}
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="invisible"
+            size="small"
             icon={IconUser}
           >
             Manage members
@@ -150,7 +153,9 @@ export const ServiceProvidingGroupShowTable = ({
         <Button
           variant="secondary"
           onClick={() =>
-            navigate(`/accounting_point/${row.accountingPointId}/show`)
+            navigate(
+              `/accounting_point/${row.accountingPointId}/show?tab=location`,
+            )
           }
         >
           {translate("text.technical_resources_show_location")}
@@ -171,6 +176,10 @@ export const ServiceProvidingGroupShowTable = ({
         ) : (
           <>{value}</>
         ),
+    },
+    {
+      key: "soName",
+      header: t("accounting_point.system_operator_id"),
     },
     {
       key: "brpName",
@@ -210,6 +219,7 @@ export const ServiceProvidingGroupShowTable = ({
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="primary"
             icon={IconUser}
+            size="small"
           >
             Manage members
           </Button>

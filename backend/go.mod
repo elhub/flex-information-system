@@ -4,8 +4,8 @@ go 1.27.1
 
 require (
 	github.com/cenkalti/backoff/v7 v7.0.0
-	github.com/gin-contrib/cors v1.7.8
-	github.com/gin-contrib/graceful v1.2.2
+	github.com/gin-contrib/cors v1.7.9
+	github.com/gin-contrib/graceful v1.2.3
 	github.com/gin-gonic/gin v1.12.0
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.11.0
@@ -15,7 +15,7 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/samber/slog-gin v1.21.1
 	go.opentelemetry.io/otel v1.46.0
-	go.opentelemetry.io/otel/sdk v1.45.0
+	go.opentelemetry.io/otel/sdk v1.46.0
 	go.opentelemetry.io/otel/trace v1.46.0
 	golang.org/x/oauth2 v0.37.0
 )

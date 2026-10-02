@@ -10,8 +10,10 @@ import {
 } from "../../generated-client";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
-import { useTranslate } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { Scale } from "../../utils/scales";
+import { ServiceProvidingGroupHistoryList } from "./ServiceProvidingGroupHistory";
+import { Permissions } from "../../auth/permissions";
 
 type Props = {
   spgId: number;
@@ -28,12 +30,17 @@ export const ServiceProvidingGroupShowTabs = ({
   showPowerPerSubstation,
   powerScale,
 }: Props) => {
-  const [tab, setTab] = useTabSearchParam("summary");
+  const [tab, setTab] = useTabSearchParam("overview");
   const translate = useTranslate();
+  const { permissions } = usePermissions<Permissions>();
+  const canViewHistory = !!permissions?.allow(
+    "service_providing_group_history",
+    "read",
+  );
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label={translate("text.tab.summary")} value="summary" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab
           label={translate("text.tab.controllable_units")}
           value="controllable_units"
@@ -56,15 +63,16 @@ export const ServiceProvidingGroupShowTabs = ({
             value="power_per_substation"
           />
         )}
+        <Tabs.Tab label={translate("text.tab.history")} value="history" />
       </Tabs.List>
-      <Tabs.Panel value="summary">
+      <Tabs.Panel value="overview">
         {summary ? (
           <ServiceProvidingGroupShowSPGSummarySection
             summary={summary}
             powerScale={powerScale}
           />
         ) : (
-          "No summary available"
+          "No overview available"
         )}
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
@@ -89,6 +97,11 @@ export const ServiceProvidingGroupShowTabs = ({
             spgId={spgId}
             powerScale={powerScale}
           />
+        </Tabs.Panel>
+      )}
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <ServiceProvidingGroupHistoryList spgId={spgId} />
         </Tabs.Panel>
       )}
     </Tabs>

@@ -44,7 +44,8 @@ export const useNestedResourceHistory = (
   const filter = childID
     ? `?filter=` +
       encodeURIComponent(`{ "${childAPIResource}_id": ${childID} }`)
-    : "";
+    : // Explicit empty filter overrides any filter stored by react-admin
+      `?filter=${encodeURIComponent("{}")}`;
 
   const to = `${parentPathS}/${props.child}_history${filter}`;
 
