@@ -368,6 +368,24 @@ export type NoticeDataProductTypeNotQualified = {
   product_type_ids?: Array<number>;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.controllable_unit.product_duplication
+ */
+export type NoticeDataControllableUnitProductDuplication = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.controllable_unit.product_duplication";
+  /**
+   * The product type for which the controllable unit is registered in multiple service providing groups with active applications.
+   */
+  product_type_id?: number;
+  /**
+   * The service providing groups the controllable unit is a member of that have active applications for the product type.
+   */
+  service_providing_group_ids?: Array<number>;
+};
+
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -380,7 +398,10 @@ export type NoticeData =
     } & NoticeDataPartyOutdated)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.controllable_unit.product_duplication";
+    } & NoticeDataControllableUnitProductDuplication);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -4796,7 +4817,10 @@ export type NoticeDataWritable =
     } & NoticeDataPartyOutdatedWritable)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.controllable_unit.product_duplication";
+    } & NoticeDataControllableUnitProductDuplication);
 
 /**
  * An empty object
