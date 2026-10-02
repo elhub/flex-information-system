@@ -704,6 +704,35 @@
                     }
                 }
             },
+            "notice_data_controllable_unit_product_duplication": {
+                "type": "object",
+                "description": "Format of the data field in a notice with data.kind = notice.data.controllable_unit.product_duplication",
+                "required": [
+                    "kind"
+                ],
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the notice data schema for discriminated union deserialization.",
+                        "type": "string",
+                        "const": "notice.data.controllable_unit.product_duplication"
+                    },
+                    "product_type_id": {
+                        "description": "The product type for which the controllable unit is registered in multiple service providing groups with active applications.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "service_providing_group_ids": {
+                        "description": "The service providing groups the controllable unit is a member of that have active applications for the product type.",
+                        "type": "array",
+                        "items": {
+                            "format": "bigint",
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                }
+            },
             "notice_data": {
                 "oneOf": [
                     {
@@ -717,6 +746,9 @@
                     },
                     {
                         "$ref": "#/components/schemas/notice_data_product_type_not_qualified"
+                    },
+                    {
+                        "$ref": "#/components/schemas/notice_data_controllable_unit_product_duplication"
                     }
                 ],
                 "discriminator": {
@@ -725,7 +757,8 @@
                         "notice.data.valid_time.outside_contract": "#/components/schemas/notice_data_valid_time_outside_contract",
                         "notice.data.party.missing": "#/components/schemas/notice_data_party_missing",
                         "notice.data.party.outdated": "#/components/schemas/notice_data_party_outdated",
-                        "notice.data.product_type.not_qualified": "#/components/schemas/notice_data_product_type_not_qualified"
+                        "notice.data.product_type.not_qualified": "#/components/schemas/notice_data_product_type_not_qualified",
+                        "notice.data.controllable_unit.product_duplication": "#/components/schemas/notice_data_controllable_unit_product_duplication"
                     }
                 }
             },
