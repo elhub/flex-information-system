@@ -32,7 +32,8 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
     !!permissions?.allow(
       "service_providing_group_grid_prequalification.status",
       "update",
-    ) && isImpactedSystemOperator;
+    ) &&
+    (isImpactedSystemOperator || isFiso);
   const canEdit =
     permissions?.allow(
       "service_providing_group_grid_prequalification",

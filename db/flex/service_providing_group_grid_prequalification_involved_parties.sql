@@ -17,13 +17,6 @@ AS (
             ON spggp.service_providing_group_id = spg.id
     UNION
     SELECT
-        spggp.id,
-        spgpa.procuring_system_operator_id
-    FROM flex.service_providing_group_grid_prequalification AS spggp
-        INNER JOIN flex.service_providing_group_product_application AS spgpa
-            ON spggp.service_providing_group_id = spgpa.service_providing_group_id
-    UNION
-    SELECT
         spggph.id,
         unnest(ARRAY[
             spggph.impacted_system_operator_id,
@@ -32,13 +25,6 @@ AS (
     FROM flex.service_providing_group_grid_prequalification_history AS spggph
         INNER JOIN flex.service_providing_group AS spg
             ON spggph.service_providing_group_id = spg.id
-    UNION
-    SELECT
-        spggph.id,
-        spgpa.procuring_system_operator_id
-    FROM flex.service_providing_group_grid_prequalification_history AS spggph
-        INNER JOIN flex.service_providing_group_product_application AS spgpa
-            ON spggph.service_providing_group_id = spgpa.service_providing_group_id
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-involved-parties-grants runOnChange:true endDelimiter:;
