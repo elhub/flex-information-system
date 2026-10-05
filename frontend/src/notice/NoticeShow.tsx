@@ -7,7 +7,7 @@ import {
 } from "../components/ResourceShowLayout";
 import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { useParty } from "../hooks/party";
-import { useTranslateEnum } from "../intl/intl";
+import { useTranslateEnum, useTranslateField } from "../intl/intl";
 import {
   BodyText,
   Button,
@@ -51,7 +51,7 @@ const PartyCard = ({
         </CardHeaderContent>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <LabelValue label="Name" value={party?.name ?? "-"} />
+        <LabelValue labelKey="party.name" value={party?.name ?? "-"} />
       </CardContent>
       <CardFooter>
         <Button
@@ -60,7 +60,7 @@ const PartyCard = ({
           as={RouterLink}
           to={`/party/${partyId}/show`}
         >
-          {translate("notice_see_party_button")}
+          {translate("text.notice_see_party_button")}
         </Button>
       </CardFooter>
     </Card>
@@ -69,16 +69,17 @@ const PartyCard = ({
 
 const SourceCard = ({ source }: { source: string }) => {
   const translate = useTranslate();
+  const translateField = useTranslateField();
 
   return (
     <Card>
       <CardHeader>
         <CardHeaderContent>
-          <CardTitle>Source</CardTitle>
+          <CardTitle>{translateField("notice.source")}</CardTitle>
         </CardHeaderContent>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <LabelValue label="Source" value={source ?? "-"} />
+        <LabelValue labelKey="notice.source" value={source ?? "-"} />
       </CardContent>
       <CardFooter>
         <Button
@@ -87,7 +88,7 @@ const SourceCard = ({ source }: { source: string }) => {
           as={RouterLink}
           to={source + "/show"}
         >
-          {translate("notice_see_source_button")}
+          {translate("text.notice_see_source_button")}
         </Button>
       </CardFooter>
     </Card>
@@ -112,18 +113,19 @@ const NoticeLinkedCards = ({ notice }: { notice: Notice }) => {
 
 const NoticeShowTabs = ({ notice }: { notice: Notice }) => {
   const [tab, setTab] = useTabSearchParam("overview");
+  const translate = useTranslate();
 
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="Overview" value="overview" />
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
       </Tabs.List>
       <Tabs.Panel value="overview">
         <div className="flex flex-col gap-4">
           <Card>
             <CardHeader>
               <CardHeaderContent>
-                <CardTitle>Notice details</CardTitle>
+                <CardTitle>{translate("text.notice_details")}</CardTitle>
               </CardHeaderContent>
             </CardHeader>
             <CardContent>
