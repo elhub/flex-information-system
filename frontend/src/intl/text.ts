@@ -214,6 +214,8 @@ export type TextKey =
   | "notice_see_party_button"
   | "notice_see_source_button"
   | "notice_details"
+  | "notice_description"
+  | "notice_action"
   | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
@@ -507,6 +509,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_see_party_button: "See party",
     notice_see_source_button: "See source",
     notice_details: "Notice details",
+    notice_description: "Description",
+    notice_action: "Action",
     "accounting_point_location_map.popup.business_id": "Business ID",
     "accounting_point_location_map.popup.kind": "Kind",
     "accounting_point_location_map.popup.status": "Status",
@@ -811,6 +815,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_see_party_button: "Gå til parten",
     notice_see_source_button: "Gå til kilden",
     notice_details: "Merknadsdetaljer",
+    notice_description: "Beskrivelse",
+    notice_action: "Handling",
     "accounting_point_location_map.popup.business_id": "Forretnings-ID",
     "accounting_point_location_map.popup.kind": "Type",
     "accounting_point_location_map.popup.status": "Status",

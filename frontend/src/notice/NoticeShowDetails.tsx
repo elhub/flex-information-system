@@ -2,6 +2,7 @@ import {
   RecordContextProvider,
   ResourceContextProvider,
   useRecordContext,
+  useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { BodyText, Heading, VerticalSpace } from "../components/ui";
@@ -149,6 +150,7 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
 };
 
 export const NoticeShowDetails = () => {
+  const translate = useTranslate();
   const record = useRecordContext<Notice>();
   const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
   const typeSpecificDetails = record
@@ -159,13 +161,19 @@ export const NoticeShowDetails = () => {
     <>
       {noticeType?.description && (
         <>
-          <LabelValue label="Description" value={noticeType.description} />
+          <LabelValue
+            label={translate("text.notice_description")}
+            value={noticeType.description}
+          />
           <VerticalSpace />
         </>
       )}
       {noticeType?.action && (
         <>
-          <LabelValue label="Action" value={noticeType.action} />
+          <LabelValue
+            label={translate("text.notice_action")}
+            value={noticeType.action}
+          />
           <VerticalSpace />
         </>
       )}
