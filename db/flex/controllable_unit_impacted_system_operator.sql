@@ -13,6 +13,7 @@ WITH (security_invoker = false) AS (
     FROM flex.service_providing_group_membership AS spgm
         INNER JOIN flex.service_providing_group_grid_prequalification AS spggp
             ON spgm.service_providing_group_id = spggp.service_providing_group_id
+                AND spggp.status != 'terminated'
 );
 
 -- changeset flex:controllable-unit-bidding-zone-grants runOnChange:true endDelimiter:;

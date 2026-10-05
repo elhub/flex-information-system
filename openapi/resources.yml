@@ -1110,6 +1110,9 @@ resources:
           The status of the grid prequalification for this service providing group.
         x-details: >-
           Always `requested` when created. Can then be updated to the other values.
+          Automatically set to `terminated` (soft delete) when none of the controllable
+          units of the service providing group has the impacted system operator as
+          CSO anymore.
         format: text
         type: string
         default: requested
@@ -1139,11 +1142,17 @@ resources:
               en: Not approved
               nb: Ikke godkjent
               nn: Ikkje godkjent
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
         example: in_progress
         x-intl:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: date-time

@@ -16,6 +16,7 @@ WITH (security_invoker = false) AS (
             ON spgm.controllable_unit_id = cu.id
         INNER JOIN flex.service_providing_group_grid_prequalification AS spggp
             ON spgm.service_providing_group_id = spggp.service_providing_group_id
+                AND spggp.status != 'terminated'
 );
 
 -- changeset flex:accounting-point-impacted-system-operator-grants runOnChange:true endDelimiter:;
