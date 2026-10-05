@@ -123,7 +123,7 @@ koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plu
 [versions]
 arrow = "2.2.3"
 cohort = "2.9.11"
-elhub-gradle = "0.12.3"
+elhub-gradle = "1.0.0"
 elhub-jsonapi-wrapper = "0.6.5"
 exposed = "1.5.0"
 gradle-docker = "0.17.21"
