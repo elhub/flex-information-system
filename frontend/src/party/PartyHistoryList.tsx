@@ -9,8 +9,15 @@ import {
 import { zParty, zPartyHistory } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 
-export const PartyHistoryList = () => {
-  const { party_id } = useParams();
+type Props = {
+  partyId?: string;
+};
+
+export const PartyHistoryList = ({ partyId }: Props) => {
+  let { party_id } = useParams();
+  if (!party_id && partyId) {
+    party_id = partyId;
+  }
 
   const fields = getFields(zParty.shape);
   const historyFields = getFields(zPartyHistory.shape);
