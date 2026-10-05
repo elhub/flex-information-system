@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
 import { formatDate } from "date-fns";
 import { Link as RouterLink } from "react-router-dom";
-import { ShowBase, useRecordContext } from "ra-core";
-import { IconExternal } from "@elhub/ds-icons";
+import { ShowBase, useRecordContext, useTranslate } from "ra-core";
 import {
   ResourceShowLayout,
   ResourceSummaryField,
@@ -11,44 +9,22 @@ import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { useParty } from "../hooks/party";
 import { useTranslateEnum } from "../intl/intl";
 import {
-  Badge,
   BodyText,
+  Button,
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardHeaderContent,
   CardTitle,
-  Link,
   Loader,
   Tabs,
 } from "../components/ui";
 import { Notice } from "../generated-client";
-import { partyStatusVariantMap } from "../party/partyStatus";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import { NoticeShowDetails } from "./NoticeShowDetails";
 import noticeTypes from "./noticeTypes";
-
-const Field = ({ label, children }: { label: string; children: ReactNode }) => (
-  <div className="flex flex-col gap-1">
-    <span className="text-xs font-semibold uppercase">{label}</span>
-    <BodyText as="div" size="small">
-      {children}
-    </BodyText>
-  </div>
-);
-
-const NewPageLink = ({ to, children }: { to: string; children: ReactNode }) => (
-  <Link
-    as={RouterLink}
-    to={to}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-1 font-semibold"
-  >
-    {children}
-    <IconExternal fontSize="small" />
-  </Link>
-);
+import { LabelValue } from "../components/LabelValue";
 
 const parsePartyId = (source?: string | null) => {
   const [, resource, id] = source?.split("/") ?? [];
@@ -64,11 +40,8 @@ const PartyCard = ({
   title: string;
   partyId: number | undefined;
 }) => {
-  const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
   const { data: party } = useParty(partyId);
-  const statusVariant = party?.status
-    ? partyStatusVariantMap[party.status]
-    : undefined;
 
   return (
     <Card>
@@ -77,76 +50,62 @@ const PartyCard = ({
           <CardTitle>{title}</CardTitle>
         </CardHeaderContent>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
-          <Field label="Name">
-            <NewPageLink to={`/party/${partyId}/show`}>
-              {party?.name ?? `Party ${partyId}`}
-            </NewPageLink>
-          </Field>
-          <Field label="Type">
-            {party?.type ? translateEnum(`party.type.${party.type}`) : "-"}
-          </Field>
-          <Field
-            label={
-              party?.business_id_type
-                ? translateEnum(
-                    `party.business_id_type.${party.business_id_type}`,
-                  )
-                : "Business ID"
-            }
-          >
-            {party?.business_id ?? "-"}
-          </Field>
-          <Field label="Status">
-            {party?.status && statusVariant ? (
-              <Badge
-                size="small"
-                status={statusVariant.status}
-                variant="block"
-                icon={statusVariant.icon}
-              >
-                {translateEnum(`party.status.${party.status}`)}
-              </Badge>
-            ) : (
-              "-"
-            )}
-          </Field>
-        </div>
+      <CardContent className="grid gap-4">
+        <LabelValue label="Name" value={party?.name ?? "-"} />
       </CardContent>
+      <CardFooter>
+        <Button
+          variant="tertiary"
+          size="medium"
+          as={RouterLink}
+          to={`/party/${partyId}/show`}
+        >
+          {translate("notice_see_party_button")}
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
 
-const SourceCard = ({ source }: { source: string }) => (
-  <Card>
-    <CardHeader>
-      <CardHeaderContent>
-        <CardTitle>Source</CardTitle>
-      </CardHeaderContent>
-    </CardHeader>
-    <CardContent>
-      <Field label="Resource">
-        <NewPageLink to={`${source}/show`}>
-          <span className="break-all">{source}</span>
-        </NewPageLink>
-      </Field>
-    </CardContent>
-  </Card>
-);
+const SourceCard = ({ source }: { source: string }) => {
+  const translate = useTranslate();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardHeaderContent>
+          <CardTitle>Source</CardTitle>
+        </CardHeaderContent>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        <LabelValue label="Source" value={source ?? "-"} />
+      </CardContent>
+      <CardFooter>
+        <Button
+          variant="tertiary"
+          size="medium"
+          as={RouterLink}
+          to={source + "/show"}
+        >
+          {translate("notice_see_source_button")}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 const NoticeLinkedCards = ({ notice }: { notice: Notice }) => {
   const sourcePartyId = parsePartyId(notice.source);
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <PartyCard title="Receiver" partyId={notice.party_id} />
       {notice.source &&
         (sourcePartyId ? (
-          <PartyCard title="Source party" partyId={sourcePartyId} />
+          <PartyCard title="Source" partyId={sourcePartyId} />
         ) : (
           <SourceCard source={notice.source} />
         ))}
+      <PartyCard title="Receiver" partyId={notice.party_id} />
     </div>
   );
 };
@@ -187,7 +146,6 @@ const NoticeShowContent = () => {
   }
 
   const summary: ResourceSummaryField[] = [
-    { labelKey: "notice.id", value: notice.id },
     {
       labelKey: "notice.type",
       value: <span className="break-all">{notice.type}</span>,

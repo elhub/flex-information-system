@@ -21,6 +21,7 @@ import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeC
 import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
 import { NoticeActionButton } from "./details/NoticeActionButton";
+import { LabelValue } from "../components/LabelValue";
 
 type Notice = GNotice & {
   data: any;
@@ -158,19 +159,13 @@ export const NoticeShowDetails = () => {
     <>
       {noticeType?.description && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Description
-          </Heading>
-          <BodyText>{noticeType.description}</BodyText>
+          <LabelValue label="Description" value={noticeType.description} />
           <VerticalSpace />
         </>
       )}
       {noticeType?.action && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Action
-          </Heading>
-          <BodyText>{noticeType.action}</BodyText>
+          <LabelValue label="Action" value={noticeType.action} />
           <VerticalSpace />
         </>
       )}
