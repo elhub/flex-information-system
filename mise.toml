@@ -1,10 +1,10 @@
 [tools]
-"python" = "3.14.7"
+"python" = "3.14.8"
 "go" = "1.27.1"
-"uv" = "0.12.18"
+"uv" = "0.12.21"
 "golangci-lint" = "2.14.0"
+"ruff" = "0.16.10"
 "pandoc" = "3.12"
-"ruff" = "0.16.9"
 "sqlc" = "1.31.1"
 "spectral" = "6.17.0"
 "jsonschema" = "17.0.0"
