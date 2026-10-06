@@ -66,7 +66,7 @@ export const EntityShow = ({ entityId }: Props) => {
           as={RouterLink}
           to={`/entity/${data?.id}/show`}
         >
-          {translateEnum("entity.see_more")}
+          {translate("text.entity.see_more")}
         </Button>
       </CardFooter>
     </Card>

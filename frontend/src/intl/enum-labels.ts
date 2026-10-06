@@ -42,7 +42,6 @@ export type EnumLabel =
   | "entity.business_id_type.pid"
   | "entity.type.organisation"
   | "entity.type.person"
-  | "entity.see_more"
   | "line.business_id_type.uuid"
   | "line.status.active"
   | "line.status.inactive"
@@ -201,7 +200,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "entity.business_id_type.email": "Email",
     "entity.type.person": "Person",
     "entity.type.organisation": "Organisation",
-    "entity.see_more": "See entity",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x":
@@ -394,7 +392,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "entity.business_id_type.email": "E-post",
     "entity.type.person": "Person",
     "entity.type.organisation": "Organisasjon",
-    "entity.see_more": "Se Entitet",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x":
@@ -587,7 +584,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "entity.business_id_type.email": "E-post",
     "entity.type.person": "Person",
     "entity.type.organisation": "Organisasjon",
-    "entity.see_more": "Se entitet",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x":

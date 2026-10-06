@@ -5,20 +5,20 @@ import {
   useRecordContext,
   useTranslate,
 } from "ra-core";
-import { BodyText, Loader, Tabs } from "../components/ui";
-import { PartyMembershipList } from "./membership/PartyMembershipList";
-import { useTabSearchParam } from "../hooks/useTabSearchParam";
-import { Permissions } from "../auth/permissions";
-import { Party } from "../generated-client";
-import { useTranslateEnum } from "../intl/intl";
-import { partyStatusVariantMap } from "./partyStatus";
+import { BodyText, Loader, Tabs } from "../../components/ui/index";
+import { PartyMembershipList } from "../membership/PartyMembershipList";
+import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { Permissions } from "../../auth/permissions";
+import { Party } from "../../generated-client/index";
+import { useTranslateEnum } from "../../intl/intl";
+import { partyStatusVariantMap } from "../partyStatus";
 import {
   ResourceShowLayout,
   ResourceSummaryField,
-} from "../components/ResourceShowLayout";
+} from "../../components/ResourceShowLayout";
 import { IconPencil } from "@elhub/ds-icons";
-import { PartyHistoryList } from "./PartyHistoryList";
-import { EntityShow } from "./entity/EntityShow";
+import { PartyHistoryList } from "../PartyHistoryList";
+import { EntityShow } from "./EntityShow";
 
 const PartyShowTabs = ({
   partyId,
@@ -63,14 +63,6 @@ const PartySummary = (): ResourceSummaryField[] => {
   }
 
   return [
-    {
-      labelKey: "party.id",
-      value: party.id,
-    },
-    {
-      labelKey: "party.name",
-      value: party.name,
-    },
     {
       labelKey: "party.business_id",
       value: party.business_id,

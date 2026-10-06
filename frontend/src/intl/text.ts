@@ -11,6 +11,7 @@ export type TextKey =
   | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "entity.see_more"
   | "print"
   | "service_providing_group"
   | "service_providing_group_product_application"
@@ -259,6 +260,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.created_at": "Created at",
     "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
+    "entity.see_more": "See Entity",
     edit: "Edit",
     print: "Print",
     events: "Events",
@@ -633,6 +635,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    "entity.see_more": "Se Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
     cu_show_add_technical_resources_heading: "Legg til tekniske ressurser",
