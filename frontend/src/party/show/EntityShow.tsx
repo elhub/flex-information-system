@@ -56,7 +56,7 @@ export const EntityShow = ({ entityId }: Props) => {
           <BodyText weight="bold" size="small">
             Business ID:
           </BodyText>
-          <BodyText size="small">{data?.id}</BodyText>
+          <BodyText size="small">{data?.business_id}</BodyText>
         </div>
       </CardContent>
       <CardFooter>

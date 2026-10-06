@@ -28,13 +28,15 @@ const PartyShowTabs = ({
   entityId: number;
 }) => {
   const [tab, setTab] = useTabSearchParam("party_memberships");
+  const { permissions } = usePermissions<Permissions>();
+  const canViewHistory = !!permissions?.allow("party_history", "read");
 
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
         <Tabs.Tab label="Party memberships" value="party_memberships" />
         <Tabs.Tab label="Entity" value="entity" />
-        <Tabs.Tab label="History" value="history" />
+        {canViewHistory && <Tabs.Tab label="History" value="history" />}
       </Tabs.List>
       <Tabs.Panel value="party_memberships">
         <BodyText>
@@ -47,9 +49,11 @@ const PartyShowTabs = ({
       <Tabs.Panel value="entity">
         <EntityShow entityId={entityId} />
       </Tabs.Panel>
-      <Tabs.Panel value="history">
-        <PartyHistoryList partyId={"" + partyId} />
-      </Tabs.Panel>
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <PartyHistoryList partyId={"" + partyId} />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };
