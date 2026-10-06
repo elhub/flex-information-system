@@ -5,7 +5,7 @@ const USER = process.env.E2E_USER ?? "13370000001"; // Test Suite
 const PASSWORD = process.env.E2E_PASSWORD ?? "welcome";
 const PARTY = process.env.E2E_PARTY ?? "Test FISO";
 
-setup("log in and assume party", async ({ page }) => {
+setup("log in and assume party", async ({ page, baseURL }) => {
   await page.goto("/#/login");
   await page.getByRole("button", { name: "Sign in" }).click();
 
@@ -23,7 +23,7 @@ setup("log in and assume party", async ({ page }) => {
   const accept = page.getByRole("button", { name: /accept/i });
   await accept.click({ timeout: 5000 }).catch(() => {});
 
-  await page.waitForURL(/test\.flex\.internal|127\.0\.0\.1/);
+  await page.waitForURL((url) => url.origin === new URL(baseURL!).origin);
   await expect
     .poll(async () => (await page.request.get("/auth/v1/session")).status())
     .toBe(200);
