@@ -4,6 +4,7 @@ import {
   useGetMany,
   useGetOne,
   useRecordContext,
+  useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { BodyText, Heading, VerticalSpace } from "../components/ui";
@@ -24,6 +25,7 @@ import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeC
 import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
 import { NoticeActionButton } from "./details/NoticeActionButton";
+import { LabelValue } from "../components/LabelValue";
 
 type Notice = GNotice & {
   data: any;
@@ -229,6 +231,7 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
 };
 
 export const NoticeShowDetails = () => {
+  const translate = useTranslate();
   const record = useRecordContext<Notice>();
   const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
   const typeSpecificDetails = record
@@ -239,19 +242,19 @@ export const NoticeShowDetails = () => {
     <>
       {noticeType?.description && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Description
-          </Heading>
-          <BodyText>{noticeType.description}</BodyText>
+          <LabelValue
+            label={translate("text.notice_description")}
+            value={noticeType.description}
+          />
           <VerticalSpace />
         </>
       )}
       {noticeType?.action && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Action
-          </Heading>
-          <BodyText>{noticeType.action}</BodyText>
+          <LabelValue
+            label={translate("text.notice_action")}
+            value={noticeType.action}
+          />
           <VerticalSpace />
         </>
       )}
