@@ -148,7 +148,7 @@ export const useDashboardApplications = () => {
         kind: "spg_grid_prequalification" as DashboardItemKind,
         label: r.service_providing_group?.name || "",
         secondaryLabel: translate("text.dashboard.spg_grid_prequalification"),
-        serviceProvider: r.service_providing_group?.name,
+        serviceProvider: r.service_providing_group?.service_provider?.name,
         systemOperator: r.impacted_system_operator?.name,
         status: r.status,
         route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,

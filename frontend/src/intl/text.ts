@@ -15,10 +15,16 @@ export type TextKey =
   | "print"
   | "service_providing_group"
   | "service_providing_group_product_application"
+  | "service_provider_product_application"
+  | "service_provider"
+  | "system_operator"
+  | "sppa_overview.see_service_provider"
+  | "sppa_overview.see_system_operator"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
   | "resource_show_layout.more_actions_aria_label"
+  | "resource_card.resource_name"
   | "events"
   | "print"
   | "tab.summary"
@@ -214,6 +220,11 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
+  | "notice_see_party_button"
+  | "notice_see_source_button"
+  | "notice_details"
+  | "notice_description"
+  | "notice_action"
   | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
@@ -264,6 +275,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Edit",
     print: "Print",
     events: "Events",
+    service_provider_product_application:
+      "Service provider product application",
+    service_provider: "Service provider",
+    system_operator: "System operator",
+    "sppa_overview.see_service_provider": "See service provider",
+    "sppa_overview.see_system_operator": "See system operator",
     delete: "Delete",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
@@ -274,6 +291,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Navigate to",
     "resource_show_layout.more_button": "More",
     "resource_show_layout.more_actions_aria_label": "More actions",
+    "resource_card.resource_name": "Name",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
     "spg_info_tab.see_group": "See group",
@@ -508,6 +526,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_insufficient_grid_location_source_button: "Go to accounting point",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
+    notice_see_party_button: "See party",
+    notice_see_source_button: "See source",
+    notice_details: "Notice details",
+    notice_description: "Description",
+    notice_action: "Action",
     "accounting_point_location_map.popup.business_id": "Business ID",
     "accounting_point_location_map.popup.kind": "Kind",
     "accounting_point_location_map.popup.status": "Status",
@@ -568,6 +591,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Endre",
     print: "Skriv ut",
     events: "Hendelser",
+    service_provider_product_application:
+      "Produktprekvalifisering for tjenesteleverandør",
+    service_provider: "Tjenesteleverandør",
+    system_operator: "Systemoperatør",
+    "sppa_overview.see_service_provider": "Se tjenesteleverandør",
+    "sppa_overview.see_system_operator": "Se systemoperatør",
     delete: "Slett",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
@@ -578,6 +607,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Naviger til",
     "resource_show_layout.more_button": "Mer",
     "resource_show_layout.more_actions_aria_label": "Flere handlinger",
+    "resource_card.resource_name": "Navn",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
     "spg_info_tab.see_group": "Se gruppe",
@@ -813,6 +843,11 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
+    notice_see_party_button: "Gå til parten",
+    notice_see_source_button: "Gå til kilden",
+    notice_details: "Merknadsdetaljer",
+    notice_description: "Beskrivelse",
+    notice_action: "Handling",
     "accounting_point_location_map.popup.business_id": "Forretnings-ID",
     "accounting_point_location_map.popup.kind": "Type",
     "accounting_point_location_map.popup.status": "Status",
