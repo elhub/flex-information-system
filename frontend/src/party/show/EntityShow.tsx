@@ -1,19 +1,15 @@
-import {
-  Loader,
-} from "../../components/ui/index";
+import { Loader } from "../../components/ui/index";
 import { readEntity } from "../../generated-client/index";
 import { useQuery } from "@tanstack/react-query";
 import { throwOnError } from "../../util";
-import { useTranslateEnum } from "../../intl/intl";
 import { useTranslate } from "ra-core";
-import {ResourceCard} from "../../components/ResourceCard";
+import { ResourceCard } from "../../components/ResourceCard";
 
 type Props = {
   entityId: number;
 };
 
 export const EntityShow = ({ entityId }: Props) => {
-  const translateEnum = useTranslateEnum();
   const translate = useTranslate();
   const { data, isLoading } = useQuery({
     queryKey: ["entity", entityId],
