@@ -1,21 +1,11 @@
-import { Link as RouterLink } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardHeaderContent,
-  CardTitle,
-  CardContent,
-  CardFooter,
-  Loader,
-  Button,
-  BodyText,
-} from "../../../components/ui";
+import { Loader } from "../../../components/ui";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
 import { KILO, Scale } from "../../../utils/scales";
 import { useTranslate } from "ra-core";
 import { useParty } from "../../../hooks/party";
+import { ResourceCard } from "../../../components/ResourceCard";
 
 type Props = {
   spgId: number;
@@ -46,92 +36,42 @@ export const SpgInfoTab = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-5 sm:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardHeaderContent>
-              <CardTitle>{translate("text.service_providing_group")}</CardTitle>
-            </CardHeaderContent>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div>
-              <BodyText weight="bold" size="small">
-                {translate("text.spg_info_tab.name")}
-              </BodyText>
-              <BodyText size="small">{spg.name}</BodyText>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button
-              variant="tertiary"
-              size="medium"
-              as={RouterLink}
-              to={`/service_providing_group/${spgId}/show`}
-            >
-              {translate("text.spg_info_tab.see_group")}
-            </Button>
-          </CardFooter>
-        </Card>
+        <ResourceCard
+          title={translate("text.service_providing_group")}
+          content={[
+            {
+              label: translate("text.resource_card.resource_name"),
+              value: spg.name,
+            },
+          ]}
+          to={`/service_providing_group/${spgId}/show`}
+          linkText={translate("text.spg_info_tab.see_group")}
+        />
         {spgProcuringSystemOperatorId && (
-          <Card>
-            <CardHeader>
-              <CardHeaderContent>
-                <CardTitle>
-                  {translate("text.spg_info_tab.procuring_system_operator")}
-                </CardTitle>
-              </CardHeaderContent>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div>
-                <BodyText weight="bold" size="small">
-                  {translate("text.spg_info_tab.name")}
-                </BodyText>
-                <BodyText size="small">
-                  {procuringSystemOperator.data?.name}
-                </BodyText>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button
-                variant="tertiary"
-                size="medium"
-                as={RouterLink}
-                to={`/party/${spgProcuringSystemOperatorId}/show`}
-              >
-                {translate("text.spg_info_tab.see_so")}
-              </Button>
-            </CardFooter>
-          </Card>
+          <ResourceCard
+            title={translate("text.spg_info_tab.procuring_system_operator")}
+            content={[
+              {
+                label: translate("text.resource_card.resource_name"),
+                value: procuringSystemOperator.data?.name,
+              },
+            ]}
+            to={`/party/${spgProcuringSystemOperatorId}/show`}
+            linkText={translate("text.spg_info_tab.see_so")}
+          />
         )}
         {impactedSystemOperatorId && (
-          <Card>
-            <CardHeader>
-              <CardHeaderContent>
-                <CardTitle>
-                  {translate("text.spg_info_tab.impacted_system_operator")}
-                </CardTitle>
-              </CardHeaderContent>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div>
-                <BodyText weight="bold" size="small">
-                  {translate("text.spg_info_tab.name")}
-                </BodyText>
-                <BodyText size="small">
-                  {impactedSystemOperator.data?.name}
-                </BodyText>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button
-                variant="tertiary"
-                size="medium"
-                as={RouterLink}
-                to={`/party/${impactedSystemOperatorId}/show`}
-              >
-                {translate("text.spg_info_tab.see_so")}
-              </Button>
-            </CardFooter>
-          </Card>
+          <ResourceCard
+            title={translate("text.spg_info_tab.impacted_system_operator")}
+            content={[
+              {
+                label: translate("text.resource_card.resource_name"),
+                value: impactedSystemOperator.data?.name,
+              },
+            ]}
+            to={`/party/${impactedSystemOperatorId}/show`}
+            linkText={translate("text.spg_info_tab.see_so")}
+          />
         )}
       </div>
       {spg.summary && (
