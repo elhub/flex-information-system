@@ -1,18 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
 import {
   ShowBase,
   usePermissions,
   useRecordContext,
-  useResourceContext,
   useTranslate,
 } from "ra-core";
 import { BodyText, Loader, Tabs } from "../components/ui";
 import { PartyMembershipList } from "./membership/PartyMembershipList";
 import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { Permissions } from "../auth/permissions";
-import { Party, readEntity } from "../generated-client";
-import { throwOnError } from "../util";
+import { Party } from "../generated-client";
 import { useTranslateEnum } from "../intl/intl";
 import { partyStatusVariantMap } from "./partyStatus";
 import {
@@ -21,13 +18,14 @@ import {
 } from "../components/ResourceShowLayout";
 import { IconPencil } from "@elhub/ds-icons";
 import { PartyHistoryList } from "./PartyHistoryList";
+import { EntityShow } from "./entity/EntityShow";
 
 const PartyShowTabs = ({
-  isHistory,
   partyId,
+  entityId,
 }: {
-  isHistory: boolean;
   partyId: number;
+  entityId: number;
 }) => {
   const [tab, setTab] = useTabSearchParam("party_memberships");
 
@@ -35,7 +33,8 @@ const PartyShowTabs = ({
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
         <Tabs.Tab label="Party memberships" value="party_memberships" />
-        {isHistory && <Tabs.Tab label="History" value="history" />}
+        <Tabs.Tab label="Entity" value="entity" />
+        <Tabs.Tab label="History" value="history" />
       </Tabs.List>
       <Tabs.Panel value="party_memberships">
         <BodyText>
@@ -45,8 +44,11 @@ const PartyShowTabs = ({
         </BodyText>
         <PartyMembershipList borderless />
       </Tabs.Panel>
+      <Tabs.Panel value="entity">
+        <EntityShow entityId={entityId} />
+      </Tabs.Panel>
       <Tabs.Panel value="history">
-        {isHistory && <PartyHistoryList partyId={"" + partyId} />}
+        <PartyHistoryList partyId={"" + partyId} />
       </Tabs.Panel>
     </Tabs>
   );
@@ -56,19 +58,8 @@ const PartySummary = (): ResourceSummaryField[] => {
   const party = useRecordContext<Party>();
   const translateEnum = useTranslateEnum();
 
-  const entity = useQuery({
-    queryKey: ["entity", party?.entity_id],
-    queryFn: () =>
-      readEntity({ path: { id: party!.entity_id } }).then(throwOnError),
-    enabled: !!party?.entity_id,
-  });
-
   if (!party) {
     return [];
-  }
-
-  if (entity.error) {
-    throw entity.error;
   }
 
   return [
@@ -108,13 +99,7 @@ const PartySummary = (): ResourceSummaryField[] => {
   ];
 };
 
-const PartyShowContent = ({
-  isHistory,
-  canEdit,
-}: {
-  isHistory: boolean;
-  canEdit: boolean;
-}) => {
+const PartyShowContent = ({ canEdit }: { canEdit: boolean }) => {
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
   const party = useRecordContext<Party>();
@@ -154,14 +139,12 @@ const PartyShowContent = ({
         },
       ]}
       summary={summary}
-      content={<PartyShowTabs isHistory={isHistory} partyId={party.id} />}
+      content={<PartyShowTabs partyId={party.id} entityId={party.entity_id} />}
     />
   );
 };
 
 export const PartyShow = () => {
-  const resource = useResourceContext();
-  const isHistory = !!resource?.endsWith("_history");
   const { permissions } = usePermissions<Permissions>();
   const canEdit = !!permissions?.allow("party", "update");
 
@@ -170,7 +153,7 @@ export const PartyShow = () => {
       loading={<Loader />}
       error={<BodyText>Something went wrong</BodyText>}
     >
-      <PartyShowContent isHistory={isHistory} canEdit={canEdit} />
+      <PartyShowContent canEdit={canEdit} />
     </ShowBase>
   );
 };
