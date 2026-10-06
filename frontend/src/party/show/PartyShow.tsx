@@ -104,7 +104,7 @@ const PartyShowContent = ({ canEdit }: { canEdit: boolean }) => {
   const canReadEvents = permissions?.allow("event", "read");
 
   const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/event/${party!.id}` }),
+    JSON.stringify({ "source@eq": `/party/${party!.id}` }),
   );
   if (!party) {
     return null;
