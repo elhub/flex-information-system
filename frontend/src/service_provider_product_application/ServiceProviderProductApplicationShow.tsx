@@ -1,13 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Loader } from "../components/ui";
 import { ResourceShowLayout } from "../components/ResourceShowLayout";
-import {
-  useGetIdentity,
-  usePermissions,
-  UserIdentity,
-  useTranslate,
-} from "ra-core";
-import type { ServiceProviderProductApplication } from "../generated-client";
+import { usePermissions, useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
 import { Permissions } from "../auth/permissions";
 import { useSppaShowSummary } from "./show/SppaShowSummary";
@@ -21,7 +15,6 @@ import { useParty } from "../hooks/party";
 export const ServiceProviderProductApplicationShow = () => {
   const sppaId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
-  const { data: identity } = useGetIdentity();
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
 
@@ -34,28 +27,14 @@ export const ServiceProviderProductApplicationShow = () => {
     systemOperatorName: systemOperator.data?.name,
   });
 
-  /**
-   * A system operator may only modify applications targeting them (RLS: SPPA-SO002)
-   */
-  const isSppaModifiableByIdentity = (
-    identity: UserIdentity | undefined,
-    sppa: Pick<ServiceProviderProductApplication, "system_operator_id">,
-  ) =>
-    identity?.role !== "flex_system_operator" ||
-    identity.partyID === sppa.system_operator_id;
-
-  const isModifiable = sppa
-    ? isSppaModifiableByIdentity(identity, sppa)
-    : false;
-  const canUpdateStatus =
-    isModifiable &&
-    !!permissions?.allow(
-      "service_provider_product_application.status",
-      "update",
-    );
-  const canEdit =
-    isModifiable &&
-    !!permissions?.allow("service_provider_product_application", "update");
+  const canUpdateStatus = !!permissions?.allow(
+    "service_provider_product_application.status",
+    "update",
+  );
+  const canEdit = !!permissions?.allow(
+    "service_provider_product_application",
+    "update",
+  );
   const canReadEvents = permissions?.allow("event", "read") ?? false;
 
   if (isPending) return <Loader />;

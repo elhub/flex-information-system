@@ -1,49 +1,6 @@
-import { Link as RouterLink } from "react-router-dom";
 import { useTranslate } from "ra-core";
-import {
-  BodyText,
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardHeaderContent,
-  CardTitle,
-} from "../../components/ui";
 import { useParty } from "../../hooks/party";
-
-type PartyCardProps = {
-  title: string;
-  name: string | undefined;
-  to: string;
-  linkText: string;
-};
-
-const PartyCard = ({ title, name, to, linkText }: PartyCardProps) => {
-  const translate = useTranslate();
-  return (
-    <Card>
-      <CardHeader>
-        <CardHeaderContent>
-          <CardTitle>{title}</CardTitle>
-        </CardHeaderContent>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div>
-          <BodyText weight="bold" size="small">
-            {translate("text.spg_info_tab.name")}
-          </BodyText>
-          <BodyText size="small">{name}</BodyText>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button variant="tertiary" size="medium" as={RouterLink} to={to}>
-          {linkText}
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-};
+import { ResourceCard } from "../../components/ResourceCard";
 
 type Props = {
   serviceProviderId: number;
@@ -63,15 +20,25 @@ export const SppaOverviewTab = ({
 
   return (
     <div className="grid gap-5 sm:grid-cols-2">
-      <PartyCard
+      <ResourceCard
         title={translate("text.service_provider")}
-        name={serviceProvider.data?.name}
+        content={[
+          {
+            label: translate("text.resource_card.resource_name"),
+            value: serviceProvider.data?.name,
+          },
+        ]}
         to={`/party/${serviceProviderId}/show`}
         linkText={translate("text.sppa_overview.see_service_provider")}
       />
-      <PartyCard
+      <ResourceCard
         title={translate("text.system_operator")}
-        name={systemOperator.data?.name}
+        content={[
+          {
+            label: translate("text.resource_card.resource_name"),
+            value: systemOperator.data?.name,
+          },
+        ]}
         to={`/party/${systemOperatorId}/show`}
         linkText={translate("text.sppa_overview.see_system_operator")}
       />

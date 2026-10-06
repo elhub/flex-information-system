@@ -23,6 +23,7 @@ export type TextKey =
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
   | "resource_show_layout.more_actions_aria_label"
+  | "resource_card.resource_name"
   | "events"
   | "print"
   | "tab.summary"
@@ -283,6 +284,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Navigate to",
     "resource_show_layout.more_button": "More",
     "resource_show_layout.more_actions_aria_label": "More actions",
+    "resource_card.resource_name": "Name",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
     "spg_info_tab.see_group": "See group",
@@ -593,6 +595,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Naviger til",
     "resource_show_layout.more_button": "Mer",
     "resource_show_layout.more_actions_aria_label": "Flere handlinger",
+    "resource_card.resource_name": "Navn",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
     "spg_info_tab.see_group": "Se gruppe",
