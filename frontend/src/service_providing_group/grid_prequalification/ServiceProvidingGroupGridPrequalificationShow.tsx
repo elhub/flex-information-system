@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { usePermissions, useTranslate } from "ra-core";
+import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { Loader } from "../../components/ui";
 import type { Permissions } from "../../auth/permissions";
 import { useSpgpqShowSummary } from "./show/useSpgpqShowSummary";
@@ -18,19 +18,28 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
+  const { data: identity } = useGetIdentity();
 
   const { data: spgpq, isPending, error } = useSpgpqRecord(spgpqId);
   const spg = useServiceProvidingGroup(spgpq?.service_providing_group_id);
   const summary = useSpgpqShowSummary({ spgpq, spg: spg.data });
 
-  const canUpdateStatus = !!permissions?.allow(
-    "service_providing_group_grid_prequalification.status",
-    "update",
-  );
-  const canEdit = permissions?.allow(
-    "service_providing_group_grid_prequalification",
-    "update",
-  );
+  const isImpactedSystemOperator =
+    spgpq?.impacted_system_operator_id === identity?.partyID;
+  const isFiso =
+    identity?.role === "flex_flexibility_information_system_operator";
+  const canUpdateStatus =
+    !!permissions?.allow(
+      "service_providing_group_grid_prequalification.status",
+      "update",
+    ) &&
+    (isImpactedSystemOperator || isFiso);
+  const canEdit =
+    permissions?.allow(
+      "service_providing_group_grid_prequalification",
+      "update",
+    ) &&
+    (isImpactedSystemOperator || isFiso);
   const canReadEvents = permissions?.allow("event", "read");
 
   if (isPending) return <Loader />;
