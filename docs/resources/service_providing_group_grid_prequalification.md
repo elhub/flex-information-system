@@ -89,6 +89,7 @@ No policies.
 |-------------|-------------------------------------------------------------------------|--------|
 | SPGGP-SO001 | Read and update SPGGP for which the SO is the impacted system operator. | DONE   |
 | SPGGP-SO002 | Read SPGGP related to SPG they can see.                                 | DONE   |
+| SPGGP-SO003 | Read SPGGP of SPGs for which the SO is the procuring SO                 | DONE   |
 
 #### Service Provider
 
