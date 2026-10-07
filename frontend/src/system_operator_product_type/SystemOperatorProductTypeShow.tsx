@@ -37,7 +37,7 @@ const SystemOperatorProductTypeShowTabs = () => {
     { enabled: !!record?.system_operator_id },
   );
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         {canViewHistory && (
@@ -113,13 +113,13 @@ const SystemOperatorProductTypeShowContent = () => {
       shouldShow: !!productType,
     },
     {
-      labelKey: "product_type.service",
-      value: productType?.service,
+      labelKey: "product_type.products",
+      value: productType?.products,
       shouldShow: !!productType,
     },
     {
-      labelKey: "product_type.products",
-      value: productType?.products,
+      labelKey: "product_type.service",
+      value: productType?.service,
       shouldShow: !!productType,
     },
   ];
