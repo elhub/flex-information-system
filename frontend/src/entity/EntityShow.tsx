@@ -14,7 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 
 const EntityTabs = ({ id }: { id: string }) => {
   const [tab, setTab] = useTabSearchParam("client");
-  console.log(id);
   return (
     <Tabs value={tab} onChange={setTab}>
       <Tabs.List>

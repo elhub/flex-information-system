@@ -34,7 +34,6 @@ export const EntityClientList = ({ entityId }: Props) => {
   if (!id && entityId) {
     id = entityId;
   }
-  console.log(id);
   const { permissions } = usePermissions<Permissions>();
   const canRead = permissions?.allow("entity_client", "read");
   const canCreate = permissions?.allow("entity_client", "create");
