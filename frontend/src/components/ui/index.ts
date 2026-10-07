@@ -55,6 +55,7 @@ import {
   type TimelineMark,
   mergeTimelineMarks,
 } from "./timelineSlider/timelineMark";
+import { SummaryCard } from "./summaryCard/SummaryCard";
 import { TimelineRangeSlider } from "./timelineSlider/TimelineRangeSlider";
 import { TimelineSlider } from "./timelineSlider/TimelineSlider";
 
@@ -109,6 +110,7 @@ export {
   VerticalSpace,
   FormContainer,
   Textarea,
+  SummaryCard,
   TimelineRangeSlider,
   TimelineSlider,
   mergeTimelineMarks,

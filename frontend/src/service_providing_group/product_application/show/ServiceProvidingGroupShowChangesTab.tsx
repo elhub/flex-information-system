@@ -5,8 +5,8 @@ import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
 import { BoltIcon } from "../../../components/icons/BoltIcon";
 import {
   BodyText,
-  Heading,
   Loader,
+  SummaryCard,
   Table,
   TimelineRangeSlider,
   ToggleGroup,
@@ -152,38 +152,6 @@ const DiffText = ({
   return <span>{newValue ?? oldValue}</span>;
 };
 
-// A read-only stat box showing an aggregate count/value for the current
-// comparison period, with a colored accent matching the status colors used
-// elsewhere on this tab.
-const ChangeSummaryBox = ({
-  label,
-  value,
-  icon,
-  accentClassName,
-}: {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-  accentClassName: string;
-}) => (
-  <div
-    className={cn(
-      "flex flex-col gap-1 rounded-lg border-l-4 bg-semantic-background p-4",
-      accentClassName,
-    )}
-  >
-    <div className="flex items-center gap-2">
-      {icon}
-      <BodyText size="small" className="text-semantic-text-subtle">
-        {label}
-      </BodyText>
-    </div>
-    <Heading level={4} size="small">
-      {value}
-    </Heading>
-  </div>
-);
-
 export const ServiceProvidingGroupShowChangesTab = ({
   spgId,
   spgpa,
@@ -279,7 +247,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
         </TimelineCard>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <ChangeSummaryBox
+          <SummaryCard
             label={translate("text.spg_changes_status_added")}
             value={String(summary.added)}
             icon={
@@ -287,7 +255,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
             }
             accentClassName="border-semantic-border-success"
           />
-          <ChangeSummaryBox
+          <SummaryCard
             label={translate("text.spg_changes_status_removed")}
             value={String(summary.removed)}
             icon={
@@ -295,7 +263,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
             }
             accentClassName="border-semantic-border-error"
           />
-          <ChangeSummaryBox
+          <SummaryCard
             label={translate("text.spg_changes_status_changed")}
             value={String(summary.changed)}
             icon={
@@ -306,7 +274,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
             }
             accentClassName="border-semantic-border-information"
           />
-          <ChangeSummaryBox
+          <SummaryCard
             label={translate("text.spg_changes_summary_power_diff")}
             value={formatSignedPower(summary.wattDiff, powerScale)}
             icon={<BoltIcon className="h-4 w-4 text-semantic-text-subtle" />}

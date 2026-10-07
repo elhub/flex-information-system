@@ -117,9 +117,13 @@ export type TextKey =
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
   | "spgpa_hide_prequalified"
-  | "spgpa_summary_heading"
-  | "spgpa_summary_approved_flexible_power"
-  | "spgpa_summary_flexible_power_needing_approval"
+  | "spgpa_snapshot_total_capacity"
+  | "spgpa_snapshot_approved_units"
+  | "spgpa_snapshot_pending_units"
+  | "spgpa_snapshot_total_units"
+  | "spgpa_snapshot_pending_badge"
+  | "spgpa_snapshot_approved_flexible_power"
+  | "spgpa_snapshot_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -454,10 +458,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filter by name, id, accounting point id or system operator",
     spgpa_hide_prequalified: "Hide prequalified",
-    spgpa_summary_heading: "Flexible power overview",
-    spgpa_summary_approved_flexible_power:
+    spgpa_snapshot_total_capacity: "Total flexible power",
+    spgpa_snapshot_approved_units:
+      "%{approved} of %{total} controllable units approved",
+    spgpa_snapshot_pending_units:
+      "%{count} controllable units awaiting approval",
+    spgpa_snapshot_total_units: "%{count} controllable units in the group",
+    spgpa_snapshot_pending_badge: "%{count} units",
+    spgpa_snapshot_approved_flexible_power:
       "Flexible power with approved status",
-    spgpa_summary_flexible_power_needing_approval:
+    spgpa_snapshot_flexible_power_needing_approval:
       "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
     spg_changes_period_heading: "Select comparison period",
@@ -781,10 +791,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
-    spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
-    spgpa_summary_approved_flexible_power:
+    spgpa_snapshot_total_capacity: "Total fleksibel kapasitet",
+    spgpa_snapshot_approved_units:
+      "%{approved} av %{total} styrbare enheter godkjent",
+    spgpa_snapshot_pending_units:
+      "%{count} styrbare enheter venter på godkjenning",
+    spgpa_snapshot_total_units: "%{count} styrbare enheter i gruppen",
+    spgpa_snapshot_pending_badge: "%{count} enheter",
+    spgpa_snapshot_approved_flexible_power:
       "Fleksibel kapasitet som har status godkjent",
-    spgpa_summary_flexible_power_needing_approval:
+    spgpa_snapshot_flexible_power_needing_approval:
       "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_period_heading: "Velg sammenligningsperiode",

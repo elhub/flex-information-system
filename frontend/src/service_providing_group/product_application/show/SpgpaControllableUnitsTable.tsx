@@ -2,9 +2,9 @@ import {
   BodyText,
   FormItem,
   FormItemLabel,
-  Heading,
   Loader,
-  Panel,
+  SummaryCard,
+  Badge,
   Search,
   Switch,
   Tooltip,
@@ -19,7 +19,11 @@ import { useTranslate } from "ra-core";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../../intl/intl";
-import { IconCross, IconValidationCheck } from "@elhub/ds-icons";
+import {
+  IconClockCircle,
+  IconCross,
+  IconValidationCheck,
+} from "@elhub/ds-icons";
 import { RegulationDirectionIcon } from "../../../controllable_unit/RegulationDirectionField";
 import {
   ControllableUnitRegulationDirection,
@@ -27,7 +31,7 @@ import {
 } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import { cn, toDateTimeString } from "../../../util";
-import { LabelValue } from "../../../components/LabelValue";
+import { BoltIcon } from "../../../components/icons/BoltIcon";
 import { TimelineCard, TimelineDateField } from "./TimelineCard";
 import {
   findMilestoneLabel,
@@ -80,27 +84,29 @@ export const SpgpaControllableUnitsTable = ({
   const formatPower = (value: unknown) =>
     formatScaled(Number(value), "W", KILO, powerScale);
 
+  // A unit counts as approved once both its grid prequalification and the
+  // product application have been approved.
   const approvalSummary = useMemo(() => {
     if (!data) {
       return undefined;
     }
-    const approvedCus = data.rows.filter(
-      (cu) => cu.productApplicationPrequalifiedAt,
-    );
-    const unapprovedCus = data.rows.filter(
-      (cu) => !cu.productApplicationPrequalifiedAt,
-    );
+    const isApproved = (cu: SpgpaControllableUnitRow) =>
+      Boolean(cu.gridPrequalifiedAt && cu.productApplicationPrequalifiedAt);
+    const power = (cus: SpgpaControllableUnitRow[]) =>
+      cus.reduce((sum, cu) => sum + (cu.maximum_active_power ?? 0), 0);
+    const approvedCus = data.rows.filter(isApproved);
+    const pendingCus = data.rows.filter((cu) => !isApproved(cu));
+    const approvedPower = power(approvedCus);
+    const pendingPower = power(pendingCus);
+    const totalPower = approvedPower + pendingPower;
     return {
       approvedCount: approvedCus.length,
-      unapprovedCount: unapprovedCus.length,
-      approvedPower: approvedCus.reduce(
-        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
-        0,
-      ),
-      unapprovedPower: unapprovedCus.reduce(
-        (sum, cu) => sum + (cu.maximum_active_power ?? 0),
-        0,
-      ),
+      pendingCount: pendingCus.length,
+      totalCount: data.rows.length,
+      approvedPower,
+      pendingPower,
+      totalPower,
+      approvedShare: totalPower > 0 ? approvedPower / totalPower : 0,
     };
   }, [data]);
 
@@ -239,42 +245,59 @@ export const SpgpaControllableUnitsTable = ({
           )}
         </TimelineCard>
         {approvalSummary && (
-          <Panel
-            border
-            className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4"
+          <div
+            className={cn(
+              "grid grid-cols-1 gap-4 transition-opacity sm:grid-cols-3",
+              isLoading ? "opacity-50" : undefined,
+            )}
             aria-busy={isLoading || undefined}
           >
-            <Heading size="small">
-              {translate("text.spgpa_summary_heading")}
-            </Heading>
-            <BodyText size="small" className="text-semantic-text-subtle">
-              {translate("text.spgpa_snapshot_as_of")}{" "}
-              {toDateTimeString(data?.asOf ?? selectedDate)}
-            </BodyText>
-            <div
-              className={cn(
-                "grid grid-cols-2 sm:grid-cols-4 gap-4 transition-opacity",
-                isLoading ? "opacity-50" : undefined,
+            <SummaryCard
+              label={translate("text.spgpa_snapshot_approved_flexible_power")}
+              value={formatPower(approvalSummary.approvedPower)}
+              icon={
+                <IconValidationCheck
+                  className="text-semantic-text-success"
+                  aria-hidden
+                />
+              }
+              accentClassName="border-semantic-border-success"
+              trailing={
+                <Badge size="small" variant="block" status="approved">
+                  {`${Math.round(approvalSummary.approvedShare * 100)}%`}
+                </Badge>
+              }
+              subtitle={translate("text.spgpa_snapshot_approved_units", {
+                approved: approvalSummary.approvedCount,
+                total: approvalSummary.totalCount,
+              })}
+            />
+            <SummaryCard
+              label={translate(
+                "text.spgpa_snapshot_flexible_power_needing_approval",
               )}
-            >
-              <LabelValue
-                label={translate("text.spgpa_summary_approved_flexible_power")}
-                value={approvalSummary.approvedPower}
-                unit="W"
-                storageScale={KILO}
-                displayScale={powerScale}
-              />
-              <LabelValue
-                label={translate(
-                  "text.spgpa_summary_flexible_power_needing_approval",
-                )}
-                value={approvalSummary.unapprovedPower}
-                unit="W"
-                storageScale={KILO}
-                displayScale={powerScale}
-              />
-            </div>
-          </Panel>
+              value={formatPower(approvalSummary.pendingPower)}
+              icon={
+                <IconClockCircle
+                  className="text-semantic-text-information"
+                  aria-hidden
+                />
+              }
+              accentClassName="border-semantic-border-information"
+              subtitle={translate("text.spgpa_snapshot_pending_units", {
+                count: approvalSummary.pendingCount,
+              })}
+            />
+            <SummaryCard
+              label={translate("text.spgpa_snapshot_total_capacity")}
+              value={formatPower(approvalSummary.totalPower)}
+              icon={<BoltIcon className="h-4 w-4 text-semantic-text-subtle" />}
+              accentClassName="border-semantic-border"
+              subtitle={translate("text.spgpa_snapshot_total_units", {
+                count: approvalSummary.totalCount,
+              })}
+            />
+          </div>
         )}
       </div>
       <div className="flex flex-col gap-4">
