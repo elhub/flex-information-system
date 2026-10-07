@@ -80,6 +80,7 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
   const { permissions } = usePermissions<Permissions>();
   const canUpdate = permissions?.allow("entity_client", "update");
   const canDelete = permissions?.allow("entity_client", "delete");
+  const canReadEvent = permissions?.allow("event", "read");
   const [deleteMutation] = useDelete(
     "entity_client",
     { id: record.id },
@@ -91,7 +92,12 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
     onConfirmMutation: { mutationFn: async () => deleteMutation() },
   });
 
-  if (!canUpdate && !canDelete) return null;
+  const eventsFilter = encodeURIComponent(
+    JSON.stringify({ "source@eq": `/entity_client/${record.id}` }),
+  );
+
+  const hasActions = canUpdate || canDelete;
+  if (!hasActions && !canReadEvent) return null;
 
   return (
     <>
@@ -106,32 +112,54 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
           )}
         />
         <Dropdown.Menu arrow placement="bottom-end">
-          <Dropdown.Menu.GroupedList.Heading>
-            {translate("text.resource_show_layout.actions_group_label")}
-          </Dropdown.Menu.GroupedList.Heading>
-          <Dropdown.Menu.GroupedList>
-            {canUpdate && (
-              <Dropdown.Menu.GroupedList.Item
-                as={RouterLink}
-                to={`/entity/${record.entity_id}/client/${record.id}`}
-              >
-                <div className="flex items-center gap-2">
-                  <IconPencil />
-                  {translate("text.edit")}
-                </div>
-              </Dropdown.Menu.GroupedList.Item>
-            )}
-            {canDelete && (
-              <Dropdown.Menu.GroupedList.Item
-                onClick={() => buttonProps.onClick()}
-              >
-                <div className="flex items-center gap-2 text-semantic-background-action-danger">
-                  <IconTrash />
-                  {translate("text.delete")}
-                </div>
-              </Dropdown.Menu.GroupedList.Item>
-            )}
-          </Dropdown.Menu.GroupedList>
+          {hasActions && (
+            <>
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.actions_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                {canUpdate && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={RouterLink}
+                    to={`/entity/${record.entity_id}/client/${record.id}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <IconPencil />
+                      {translate("text.edit")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+                {canDelete && (
+                  <Dropdown.Menu.GroupedList.Item
+                    onClick={() => buttonProps.onClick()}
+                  >
+                    <div className="flex items-center gap-2 text-semantic-background-action-danger">
+                      <IconTrash />
+                      {translate("text.delete")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
+          {canReadEvent && (
+            <>
+              {hasActions && <Dropdown.Menu.Divider />}
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.navigate_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                <Dropdown.Menu.GroupedList.Item
+                  as={RouterLink}
+                  to={`/event?filter=${eventsFilter}`}
+                >
+                  <div className="flex items-center gap-2">
+                    {translate("text.events")}
+                  </div>
+                </Dropdown.Menu.GroupedList.Item>
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
         </Dropdown.Menu>
       </Dropdown>
       {dialog}
@@ -142,6 +170,7 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
 const CreateEntityClientButton = ({ entityId }: { entityId: any }) => (
   <Button
     as={RouterLink}
+    size="small"
     to={`/entity/${entityId}/client/create`}
     state={{ entity_id: entityId }}
     variant="primary"

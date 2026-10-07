@@ -14,10 +14,11 @@ import { useQuery } from "@tanstack/react-query";
 
 const EntityTabs = ({ id }: { id: string }) => {
   const [tab, setTab] = useTabSearchParam("client");
+  const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
-        <Tabs.Tab label="Clients" value="client" />
+        <Tabs.Tab label={translate("text.entity.client")} value="client" />
       </Tabs.List>
       <Tabs.Panel value="client">
         <EntityClientList entityId={id} />
