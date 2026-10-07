@@ -1,52 +1,168 @@
-import { Content, Heading, VerticalSpace } from "../components/ui";
+import { IconPencil } from "@elhub/ds-icons";
 import {
-  Show,
-  TextField,
-  ReferenceField,
-  DateField,
-  IdentityField,
-  EnumField,
-} from "../components/EDS-ra";
-import { ProductTypeField } from "../product_type/components";
-import { getFields } from "../zod";
-import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
+  ShowBase,
+  useGetOne,
+  usePermissions,
+  useRecordContext,
+  useTranslate,
+} from "ra-core";
+import { useTabSearchParam } from "../hooks/useTabSearchParam";
+import { Permissions } from "../auth/permissions";
+import { SystemOperatorProductTypeHistoryList } from "./SystemOperatorProductTypeHistoryList";
+import { ResourceCard } from "../components/ResourceCard";
+import { BodyText, Loader, Tabs } from "../components/ui";
+import {
+  ResourceShowLayout,
+  ResourceSummaryField,
+} from "../components/ResourceShowLayout";
+import { SystemOperatorProductTypeHistory } from "../generated-client";
+import { useTranslateEnum } from "../intl/intl";
+import { partyStatusVariantMap } from "../party/partyStatus";
 
-const fields = getFields(zSystemOperatorProductTypeHistory.shape);
+type SystemOperatorProductTypeRecord = SystemOperatorProductTypeHistory;
 
-export const SystemOperatorProductTypeShow = () => {
+const SystemOperatorProductTypeShowTabs = () => {
+  const record = useRecordContext<SystemOperatorProductTypeRecord>();
+  const translate = useTranslate();
+  const [tab, setTab] = useTabSearchParam("overview");
+  const { permissions } = usePermissions<Permissions>();
+  const soptId = record?.system_operator_product_type_id ?? record?.id;
+  const canViewHistory = !!permissions?.allow(
+    "system_operator_product_type_history",
+    "read",
+  );
+  const { data: party } = useGetOne(
+    "party",
+    { id: record?.system_operator_id },
+    { enabled: !!record?.system_operator_id },
+  );
   return (
-    <Show>
-      <Heading level={2} size="small" spacing>
-        Basic information
-      </Heading>
-      <Content>
-        <TextField source={fields.id.source} label />
-        <TextField
-          source={fields.system_operator_product_type_id.source}
-          label
-        />
-        <ReferenceField
-          source={fields.system_operator_id.source}
-          reference="party"
-          label
-        />
-        <ProductTypeField source={fields.product_type_id.source} />
-        <EnumField
-          source={fields.status.source}
-          enumKey="system_operator_product_type.status"
-          label
-        />
-      </Content>
-      <VerticalSpace />
-      <Heading level={2} size="small" spacing>
-        Registration
-      </Heading>
-      <Content>
-        <DateField source={fields.recorded_at.source} showTime label />
-        <IdentityField source={fields.recorded_by.source} label />
-        <DateField source={fields.replaced_at.source} showTime label />
-        <IdentityField source={fields.replaced_by.source} label />
-      </Content>
-    </Show>
+    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+      <Tabs.List>
+        <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
+        {canViewHistory && (
+          <Tabs.Tab label={translate("text.tab.history")} value="history" />
+        )}
+      </Tabs.List>
+      <Tabs.Panel value="overview">
+        <div>
+          <ResourceCard
+            title={translate(
+              "field.system_operator_product_type.system_operator_id",
+            )}
+            content={[
+              { labelKey: "party.name", value: party?.name },
+              { labelKey: "party.business_id", value: party?.business_id },
+            ]}
+            to={`/party/${record?.system_operator_id}/show`}
+            linkText={translate("text.resource_card.see_system_operator")}
+          />
+        </div>
+      </Tabs.Panel>
+      {canViewHistory && (
+        <Tabs.Panel value="history">
+          <SystemOperatorProductTypeHistoryList
+            systemOperatorProductTypeId={"" + soptId}
+          />
+        </Tabs.Panel>
+      )}
+    </Tabs>
   );
 };
+
+const SystemOperatorProductTypeShowContent = () => {
+  const record = useRecordContext<SystemOperatorProductTypeRecord>();
+  const translateEnum = useTranslateEnum();
+  const translate = useTranslate();
+  const { data: systemOperator } = useGetOne(
+    "party",
+    { id: record?.system_operator_id },
+    { enabled: !!record?.system_operator_id },
+  );
+  const { data: productType } = useGetOne(
+    "product_type",
+    { id: record?.product_type_id },
+    { enabled: !!record?.product_type_id },
+  );
+  const { permissions } = usePermissions<Permissions>();
+  const canEdit = !!permissions?.allow(
+    "system_operator_product_type",
+    "update",
+  );
+  const canReadEvents = !!permissions?.allow("event", "read");
+
+  if (!record) {
+    return null;
+  }
+
+  const statusLabel = translateEnum(
+    `system_operator_product_type.status.${record.status}`,
+  );
+  const statusVariant =
+    partyStatusVariantMap[record.status as keyof typeof partyStatusVariantMap];
+
+  const soptId = record.system_operator_product_type_id ?? record.id;
+  const eventsFilter = encodeURIComponent(
+    JSON.stringify({ "source@eq": `/system_operator_product_type/${soptId}` }),
+  );
+
+  const summary: ResourceSummaryField[] = [
+    {
+      labelKey: "product_type.name",
+      value: productType?.name,
+      shouldShow: !!productType,
+    },
+    {
+      labelKey: "product_type.service",
+      value: productType?.service,
+      shouldShow: !!productType,
+    },
+    {
+      labelKey: "product_type.products",
+      value: productType?.products,
+      shouldShow: !!productType,
+    },
+  ];
+
+  return (
+    <ResourceShowLayout
+      mainHeaderText={systemOperator?.name ?? translate("text.system_operator")}
+      secondaryHeaderText={`System operator product type #${record.system_operator_product_type_id ?? record.id}`}
+      status={
+        statusVariant
+          ? {
+              status: statusVariant.status,
+              icon: statusVariant.icon,
+              label: statusLabel,
+            }
+          : undefined
+      }
+      moreActions={[
+        {
+          to: `/system_operator_product_type/${soptId}/edit`,
+          title: translate("text.edit"),
+          icon: <IconPencil />,
+          shouldShow: canEdit && record.system_operator_product_type_id == null,
+        },
+      ]}
+      moreNavigationActions={[
+        {
+          to: `/event?filter=${eventsFilter}`,
+          title: translate("text.events"),
+          shouldShow: canReadEvents,
+        },
+      ]}
+      summary={summary}
+      content={<SystemOperatorProductTypeShowTabs />}
+    />
+  );
+};
+
+export const SystemOperatorProductTypeShow = () => (
+  <ShowBase
+    loading={<Loader />}
+    error={<BodyText>Something went wrong</BodyText>}
+  >
+    <SystemOperatorProductTypeShowContent />
+  </ShowBase>
+);

@@ -20,19 +20,18 @@ export type TextKey =
   | "service_provider_product_application"
   | "service_provider"
   | "system_operator"
-  | "sppa_overview.see_service_provider"
-  | "sppa_overview.see_system_operator"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
   | "resource_show_layout.more_actions_aria_label"
   | "resource_card.resource_name"
+  | "resource_card.see_system_operator"
+  | "resource_card.see_service_provider"
+  | "resource_card.see_group"
   | "events"
   | "print"
   | "tab.summary"
   | "spg_info_tab.name"
-  | "spg_info_tab.see_group"
-  | "spg_info_tab.see_so"
   | "spg_info_tab.procuring_system_operator"
   | "spg_info_tab.impacted_system_operator"
   | "tab.controllable_units"
@@ -273,7 +272,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.created_at": "Created at",
     "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
-    "entity.see_more": "See Entity",
+    "entity.see_more": "See entity",
     "entity.client": "Clients",
     "entity.name": "Entity",
     edit: "Edit",
@@ -283,8 +282,6 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Service provider product application",
     service_provider: "Service provider",
     system_operator: "System operator",
-    "sppa_overview.see_service_provider": "See service provider",
-    "sppa_overview.see_system_operator": "See system operator",
     delete: "Delete",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
@@ -296,10 +293,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.more_button": "More",
     "resource_show_layout.more_actions_aria_label": "More actions",
     "resource_card.resource_name": "Name",
+    "resource_card.see_system_operator": "See system operator",
+    "resource_card.see_service_provider": "See service provider",
+    "resource_card.see_group": "See group",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
-    "spg_info_tab.see_group": "See group",
-    "spg_info_tab.see_so": "See SO",
     "spg_info_tab.procuring_system_operator": "Procuring system operator",
     "spg_info_tab.impacted_system_operator": "Impacted system operator",
     "tab.controllable_units": "Controllable units",
@@ -599,8 +597,6 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Produktprekvalifisering for tjenesteleverandør",
     service_provider: "Tjenesteleverandør",
     system_operator: "Systemoperatør",
-    "sppa_overview.see_service_provider": "Se tjenesteleverandør",
-    "sppa_overview.see_system_operator": "Se systemoperatør",
     delete: "Slett",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
@@ -612,10 +608,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.more_button": "Mer",
     "resource_show_layout.more_actions_aria_label": "Flere handlinger",
     "resource_card.resource_name": "Navn",
+    "resource_card.see_system_operator": "Se systemoperatør",
+    "resource_card.see_service_provider": "Se tjenesteleverandør",
+    "resource_card.see_group": "Se gruppe",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
-    "spg_info_tab.see_group": "Se gruppe",
-    "spg_info_tab.see_so": "Se SO",
     "spg_info_tab.procuring_system_operator": "Anskaffende systemoperatør",
     "spg_info_tab.impacted_system_operator": "Berørt systemoperatør",
     "tab.controllable_units": "Kontrollerbare enheter",

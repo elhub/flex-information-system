@@ -12,8 +12,16 @@ import {
 } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 
-export const SystemOperatorProductTypeHistoryList = () => {
-  const { system_operator_product_type_id } = useParams();
+type Props = {
+  systemOperatorProductTypeId?: string;
+};
+
+export const SystemOperatorProductTypeHistoryList = ({
+  systemOperatorProductTypeId,
+}: Props) => {
+  const params = useParams();
+  const system_operator_product_type_id =
+    params.system_operator_product_type_id ?? systemOperatorProductTypeId;
 
   const fields = getFields(zSystemOperatorProductType.shape);
   const historyFields = getFields(zSystemOperatorProductTypeHistory.shape);
@@ -28,7 +36,6 @@ export const SystemOperatorProductTypeHistoryList = () => {
     >
       <Datagrid rowClick={false}>
         <TextField {...fields.id} />
-        <TextField {...historyFields.system_operator_product_type_id} />
         <ReferenceField {...fields.system_operator_id} reference="party">
           <TextField source="name" />
         </ReferenceField>
