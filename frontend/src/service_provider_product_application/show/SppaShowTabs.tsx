@@ -20,7 +20,7 @@ export const SppaShowTabs = ({ sppa }: Props) => {
     "read",
   );
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         <Tabs.Tab label={translate("text.tab.comments")} value="comments" />

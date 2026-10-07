@@ -2,12 +2,13 @@ import { BodyText, Loader } from "../../ui";
 import { ReferenceFieldBase, useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 
-type IdentityFieldProps = BaseFieldProps;
+type IdentityFieldProps = BaseFieldProps & { hideLabel?: boolean };
 
 export const IdentityField = (props: IdentityFieldProps) => {
   const {
     source,
     label,
+    hideLabel,
     tooltip,
     textSize = "small",
     labelDirection = "row",
@@ -22,7 +23,7 @@ export const IdentityField = (props: IdentityFieldProps) => {
         textSize={textSize}
         labelDirection={labelDirection}
         source={source}
-        label={label}
+        label={hideLabel ? false : label}
         tooltip={tooltip}
       >
         <BodyText size={textSize}>System</BodyText>
@@ -35,7 +36,7 @@ export const IdentityField = (props: IdentityFieldProps) => {
       textSize={textSize}
       labelDirection={labelDirection}
       source={source}
-      label={label}
+      label={hideLabel ? false : label}
       tooltip={tooltip}
     >
       <ReferenceFieldBase

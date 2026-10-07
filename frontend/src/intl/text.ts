@@ -12,6 +12,8 @@ export type TextKey =
   | "entity_role"
   | "edit"
   | "entity.see_more"
+  | "entity.client"
+  | "entity.name"
   | "system_operator_product_type.see_system_operator"
   | "system_operator_product_type.see_product_type"
   | "print"
@@ -274,6 +276,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
     "entity.see_more": "See Entity",
+    "entity.client": "Clients",
+    "entity.name": "Entity",
     "system_operator_product_type.see_system_operator": "See System Operator",
     "system_operator_product_type.see_product_type": "See Product Type",
     edit: "Edit",
@@ -670,6 +674,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "entity.see_more": "Se Entitet",
+    "entity.client": "Klienter",
+    "entity.name": "Entitet",
     "system_operator_product_type.see_system_operator": "Se Systemoperatør",
     "system_operator_product_type.see_product_type": "Se Produkttype",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
