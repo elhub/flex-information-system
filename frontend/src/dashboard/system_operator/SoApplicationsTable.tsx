@@ -3,13 +3,14 @@ import { useTranslate } from "ra-core";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { SimpleTable, Column } from "../../components/SimpleTable";
-import { Badge } from "../../components/ui";
 import {
   ENUM_KEY_PREFIX,
+  getDescriptionEnumLabel,
   getStatusVariant,
 } from "../shared/dashboardTableUtils";
 import { DashboardItem } from "../hooks/useDashboardApplications";
 import { toDateTimeString } from "../../util";
+import { StatusBadge } from "../../components/StatusBadge";
 
 type Props = {
   label?: string;
@@ -55,18 +56,16 @@ export const SOApplicationsTable = ({
       header: "Status",
       render: (_, row) => {
         const variant = getStatusVariant(row.kind, row.status);
-        return (
-          <Badge
-            size="small"
-            variant="block"
-            status={variant.status}
-            icon={variant.icon}
-          >
-            {translateEnum(
-              `${ENUM_KEY_PREFIX[row.kind]}.${row.status}` as EnumLabel,
-            )}
-          </Badge>
-        );
+        const tooltipLabel = getDescriptionEnumLabel(row.kind, row.status);
+        const statusBadgeProperties = {
+          label: translateEnum(
+            `${ENUM_KEY_PREFIX[row.kind]}.${row.status}` as EnumLabel,
+          ),
+          status: variant.status,
+          icon: variant.icon,
+          tooltip: tooltipLabel ? translateEnum(tooltipLabel) : undefined,
+        };
+        return <StatusBadge {...statusBadgeProperties}></StatusBadge>;
       },
     },
     ...(timestampLabel
