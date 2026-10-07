@@ -45,7 +45,7 @@ export const SpgInfoTab = ({
             },
           ]}
           to={`/service_providing_group/${spgId}/show`}
-          linkText={translate("text.spg_info_tab.see_group")}
+          linkText={translate("text.resource_card.see_group")}
         />
         {spgProcuringSystemOperatorId && (
           <ResourceCard
@@ -57,7 +57,7 @@ export const SpgInfoTab = ({
               },
             ]}
             to={`/party/${spgProcuringSystemOperatorId}/show`}
-            linkText={translate("text.spg_info_tab.see_so")}
+            linkText={translate("text.resource_card.see_system_operator")}
           />
         )}
         {impactedSystemOperatorId && (
@@ -70,7 +70,7 @@ export const SpgInfoTab = ({
               },
             ]}
             to={`/party/${impactedSystemOperatorId}/show`}
-            linkText={translate("text.spg_info_tab.see_so")}
+            linkText={translate("text.resource_card.see_system_operator")}
           />
         )}
       </div>
