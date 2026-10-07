@@ -116,7 +116,7 @@ const NoticeShowTabs = ({ notice }: { notice: Notice }) => {
   const translate = useTranslate();
 
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
       </Tabs.List>

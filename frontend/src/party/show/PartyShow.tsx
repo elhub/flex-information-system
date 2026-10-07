@@ -32,7 +32,7 @@ const PartyShowTabs = ({
   const canViewHistory = !!permissions?.allow("party_history", "read");
 
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label="Party memberships" value="party_memberships" />
         <Tabs.Tab label="Entity" value="entity" />
