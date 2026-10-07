@@ -1,5 +1,4 @@
 import { IconPencil } from "@elhub/ds-icons";
-import { formatDate } from "date-fns";
 import {
   ShowBase,
   useGetOne,
@@ -12,20 +11,15 @@ import { Permissions } from "../auth/permissions";
 import { SystemOperatorProductTypeHistoryList } from "./SystemOperatorProductTypeHistoryList";
 import { ResourceCard } from "../components/ResourceCard";
 import { BodyText, Loader, Tabs } from "../components/ui";
-import { IdentityField } from "../components/EDS-ra";
 import {
   ResourceShowLayout,
   ResourceSummaryField,
 } from "../components/ResourceShowLayout";
 import { SystemOperatorProductTypeHistory } from "../generated-client";
-import { getFields } from "../zod";
-import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
 import { useTranslateEnum } from "../intl/intl";
 import { partyStatusVariantMap } from "../party/partyStatus";
 
 type SystemOperatorProductTypeRecord = SystemOperatorProductTypeHistory;
-
-const fields = getFields(zSystemOperatorProductTypeHistory.shape);
 
 const SystemOperatorProductTypeShowTabs = () => {
   const record = useRecordContext<SystemOperatorProductTypeRecord>();
@@ -107,9 +101,6 @@ const SystemOperatorProductTypeShowContent = () => {
   const statusVariant =
     partyStatusVariantMap[record.status as keyof typeof partyStatusVariantMap];
 
-  const fmt = (d?: string | null) =>
-    d ? formatDate(d, "dd.MM.yyyy HH:mm") : undefined;
-
   const soptId = record.system_operator_product_type_id ?? record.id;
   const eventsFilter = encodeURIComponent(
     JSON.stringify({ "source@eq": `/system_operator_product_type/${soptId}` }),
@@ -130,17 +121,6 @@ const SystemOperatorProductTypeShowContent = () => {
       labelKey: "product_type.products",
       value: productType?.products,
       shouldShow: !!productType,
-    },
-    {
-      labelKey: "system_operator_product_type_history.replaced_at",
-      value: fmt(record.replaced_at),
-      shouldShow: !!record.replaced_at,
-    },
-    {
-      labelKey: "system_operator_product_type_history.replaced_by",
-      value: <IdentityField source={fields.replaced_by.source} />,
-      valueAs: "div",
-      shouldShow: record.replaced_by != null,
     },
   ];
 
