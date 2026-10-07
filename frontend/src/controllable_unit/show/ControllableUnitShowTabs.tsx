@@ -41,7 +41,7 @@ export const ControllableUnitShowTabs = ({ cuId, viewModel }: Props) => {
   const [tab, setTab] = useTabSearchParam("technical_resources");
   const translate = useTranslate();
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab
           label={translate("text.tab.technical_resources")}
