@@ -36,7 +36,6 @@ export const SystemOperatorProductTypeHistoryList = ({
     >
       <Datagrid rowClick={false}>
         <TextField {...fields.id} />
-        <TextField {...historyFields.system_operator_product_type_id} />
         <ReferenceField {...fields.system_operator_id} reference="party">
           <TextField source="name" />
         </ReferenceField>

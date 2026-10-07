@@ -29,7 +29,7 @@ export const SppaOverviewTab = ({
           },
         ]}
         to={`/party/${serviceProviderId}/show`}
-        linkText={translate("text.sppa_overview.see_service_provider")}
+        linkText={translate("text.resource_card.see_service_provider")}
       />
       <ResourceCard
         title={translate("text.system_operator")}
@@ -40,7 +40,7 @@ export const SppaOverviewTab = ({
           },
         ]}
         to={`/party/${systemOperatorId}/show`}
-        linkText={translate("text.sppa_overview.see_system_operator")}
+        linkText={translate("text.resource_card.see_system_operator")}
       />
     </div>
   );

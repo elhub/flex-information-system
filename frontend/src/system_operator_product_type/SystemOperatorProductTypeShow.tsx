@@ -42,12 +42,6 @@ const SystemOperatorProductTypeShowTabs = () => {
     { id: record?.system_operator_id },
     { enabled: !!record?.system_operator_id },
   );
-  const { data: productType } = useGetOne(
-    "product_type",
-    { id: record?.product_type_id },
-    { enabled: !!record?.product_type_id },
-  );
-
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
@@ -57,7 +51,7 @@ const SystemOperatorProductTypeShowTabs = () => {
         )}
       </Tabs.List>
       <Tabs.Panel value="overview">
-        <div className="grid gap-4 md:grid-cols-2">
+        <div>
           <ResourceCard
             title={translate(
               "field.system_operator_product_type.system_operator_id",
@@ -67,25 +61,7 @@ const SystemOperatorProductTypeShowTabs = () => {
               { labelKey: "party.business_id", value: party?.business_id },
             ]}
             to={`/party/${record?.system_operator_id}/show`}
-            linkText={translate(
-              "text.system_operator_product_type.see_system_operator",
-            )}
-          />
-          <ResourceCard
-            title={translate(
-              "field.system_operator_product_type.product_type_id",
-            )}
-            content={[
-              { labelKey: "product_type.name", value: productType?.name },
-              {
-                labelKey: "product_type.products",
-                value: productType?.products,
-              },
-            ]}
-            to={`/product_type/${record?.product_type_id}/show`}
-            linkText={translate(
-              "text.system_operator_product_type.see_product_type",
-            )}
+            linkText={translate("text.resource_card.see_system_operator")}
           />
         </div>
       </Tabs.Panel>
@@ -104,6 +80,16 @@ const SystemOperatorProductTypeShowContent = () => {
   const record = useRecordContext<SystemOperatorProductTypeRecord>();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
+  const { data: systemOperator } = useGetOne(
+    "party",
+    { id: record?.system_operator_id },
+    { enabled: !!record?.system_operator_id },
+  );
+  const { data: productType } = useGetOne(
+    "product_type",
+    { id: record?.product_type_id },
+    { enabled: !!record?.product_type_id },
+  );
   const { permissions } = usePermissions<Permissions>();
   const canEdit = !!permissions?.allow(
     "system_operator_product_type",
@@ -130,15 +116,20 @@ const SystemOperatorProductTypeShowContent = () => {
   );
 
   const summary: ResourceSummaryField[] = [
-    { labelKey: "system_operator_product_type.status", value: statusLabel },
     {
-      labelKey: "system_operator_product_type_history.recorded_at",
-      value: fmt(record.recorded_at),
+      labelKey: "product_type.name",
+      value: productType?.name,
+      shouldShow: !!productType,
     },
     {
-      labelKey: "system_operator_product_type_history.recorded_by",
-      value: <IdentityField source={fields.recorded_by.source} />,
-      valueAs: "div",
+      labelKey: "product_type.service",
+      value: productType?.service,
+      shouldShow: !!productType,
+    },
+    {
+      labelKey: "product_type.products",
+      value: productType?.products,
+      shouldShow: !!productType,
     },
     {
       labelKey: "system_operator_product_type_history.replaced_at",
@@ -155,8 +146,8 @@ const SystemOperatorProductTypeShowContent = () => {
 
   return (
     <ResourceShowLayout
-      mainHeaderText={`System operator product type #${record.system_operator_product_type_id ?? record.id}`}
-      secondaryHeaderText={`Record #${record.id}`}
+      mainHeaderText={systemOperator?.name ?? translate("text.system_operator")}
+      secondaryHeaderText={`System operator product type #${record.system_operator_product_type_id ?? record.id}`}
       status={
         statusVariant
           ? {
