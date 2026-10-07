@@ -36,7 +36,7 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
   const [tab, setTab] = useTabSearchParam("overview");
 
   return (
-    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
         {canViewComments && (
