@@ -51,14 +51,6 @@ export const EntityShow = () => {
 
   const summary: ResourceSummaryField[] = [
     {
-      labelKey: "entity.id",
-      value: data.id,
-    },
-    {
-      labelKey: "entity.name",
-      value: data.name,
-    },
-    {
       labelKey: "entity.type",
       value: data.type,
     },
