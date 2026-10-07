@@ -8,6 +8,7 @@ import {
   Search,
   Switch,
   Tooltip,
+  TimelineSlider,
 } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
@@ -25,8 +26,15 @@ import {
   ServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
-import { toDateTimeString } from "../../../util";
+import { cn, toDateTimeString } from "../../../util";
 import { LabelValue } from "../../../components/LabelValue";
+import { TimelineCard, TimelineDateField } from "./TimelineCard";
+import {
+  findMilestoneLabel,
+  formatValue,
+  parseValue,
+  useChangesTimelineMarks,
+} from "./timelineUtils";
 
 type Props = {
   spgId: number;
@@ -39,7 +47,11 @@ export const SpgpaControllableUnitsTable = ({
   spgpa,
   powerScale,
 }: Props) => {
-  const { data, isLoading, error } = useSpgpaControllableUnits(spgId, spgpa);
+  const [now] = useState(() => new Date().toISOString());
+  const marks = useChangesTimelineMarks(spgpa, now);
+  const [selectedDate, setSelectedDate] = useState<string>(now);
+  const { data, isInitialLoading, isLoading, error } =
+    useSpgpaControllableUnits(spgId, spgpa, selectedDate);
   const navigate = useNavigate();
   const t = useTranslateField();
   const translate = useTranslate();
@@ -92,16 +104,12 @@ export const SpgpaControllableUnitsTable = ({
     };
   }, [data]);
 
-  if (isLoading) {
+  if (isInitialLoading) {
     return <Loader />;
   }
 
   if (error) {
     throw error;
-  }
-
-  if (!data || data.rows.length === 0) {
-    return <BodyText>No controllable units in this group yet.</BodyText>;
   }
 
   const columns: Column<SpgpaControllableUnitRow>[] = [
@@ -195,63 +203,126 @@ export const SpgpaControllableUnitsTable = ({
   ];
 
   return (
-    <div className="flex flex-col gap-4">
-      {approvalSummary && (
-        <Panel border className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4">
-          <Heading size="small">
-            {translate("text.spgpa_summary_heading")}
-          </Heading>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <LabelValue
-              label={translate("text.spgpa_summary_approved_flexible_power")}
-              value={approvalSummary.approvedPower}
-              unit="W"
-              storageScale={KILO}
-              displayScale={powerScale}
-            />
-            <LabelValue
-              label={translate(
-                "text.spgpa_summary_flexible_power_needing_approval",
+    <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-4">
+        <TimelineCard
+          heading={translate("text.spgpa_snapshot_heading")}
+          hint={translate("text.spgpa_snapshot_hint")}
+          fields={
+            <TimelineDateField
+              id="spgpa-snapshot-date"
+              label={translate("text.spgpa_snapshot_date_label")}
+              milestoneLabel={findMilestoneLabel(
+                selectedDate,
+                marks,
+                translate,
               )}
-              value={approvalSummary.unapprovedPower}
-              unit="W"
-              storageScale={KILO}
-              displayScale={powerScale}
+              selected={parseValue(selectedDate)}
+              maxDate={parseValue(now)}
+              onChange={(date) => {
+                const formatted = formatValue(date);
+                if (formatted) setSelectedDate(formatted);
+              }}
             />
-          </div>
-        </Panel>
-      )}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex flex-1 items-center gap-4">
-          <div className="w-1/2">
-            <Search
-              label={translate("text.spg_show_table_search_label")}
-              hideLabel
-              clearButtonLabel={translate("text.spg_show_table_search_clear")}
-              placeholder={translate("text.spg_show_table_search_placeholder")}
-              value={searchQuery}
-              onChange={(value) => setSearchQuery(value)}
-              onClear={() => setSearchQuery("")}
+          }
+        >
+          {marks.length > 0 && (
+            <TimelineSlider
+              marks={marks}
+              value={new Date(selectedDate).getTime()}
+              onValueChange={(v) => setSelectedDate(new Date(v).toISOString())}
+              label={translate("text.spgpa_snapshot_handle_label")}
+              formatValueForA11y={(value) =>
+                toDateTimeString(new Date(value).toISOString())
+              }
             />
-          </div>
-          <FormItem id="hide-prequalified">
-            <FormItemLabel>
-              {translate("text.spgpa_hide_prequalified")}
-            </FormItemLabel>
-            <Switch
-              checked={hidePrequalified}
-              onChange={(e) => setHidePrequalified(e.target.checked)}
-            />
-          </FormItem>
-        </div>
+          )}
+        </TimelineCard>
+        {approvalSummary && (
+          <Panel
+            border
+            className="max-w-3xl p-4 sm:p-5 flex flex-col gap-4"
+            aria-busy={isLoading || undefined}
+          >
+            <Heading size="small">
+              {translate("text.spgpa_summary_heading")}
+            </Heading>
+            <BodyText size="small" className="text-semantic-text-subtle">
+              {translate("text.spgpa_snapshot_as_of")}{" "}
+              {toDateTimeString(data?.asOf ?? selectedDate)}
+            </BodyText>
+            <div
+              className={cn(
+                "grid grid-cols-2 sm:grid-cols-4 gap-4 transition-opacity",
+                isLoading ? "opacity-50" : undefined,
+              )}
+            >
+              <LabelValue
+                label={translate("text.spgpa_summary_approved_flexible_power")}
+                value={approvalSummary.approvedPower}
+                unit="W"
+                storageScale={KILO}
+                displayScale={powerScale}
+              />
+              <LabelValue
+                label={translate(
+                  "text.spgpa_summary_flexible_power_needing_approval",
+                )}
+                value={approvalSummary.unapprovedPower}
+                unit="W"
+                storageScale={KILO}
+                displayScale={powerScale}
+              />
+            </div>
+          </Panel>
+        )}
       </div>
-      <SimpleTable
-        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
-        size="small"
-        data={filteredCUs ?? []}
-        columns={columns}
-        className="w-full"
-      />
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-1 items-center gap-4">
+            <div className="w-1/2">
+              <Search
+                label={translate("text.spg_show_table_search_label")}
+                hideLabel
+                clearButtonLabel={translate("text.spg_show_table_search_clear")}
+                placeholder={translate(
+                  "text.spg_show_table_search_placeholder",
+                )}
+                value={searchQuery}
+                onChange={(value) => setSearchQuery(value)}
+                onClear={() => setSearchQuery("")}
+              />
+            </div>
+            <FormItem id="hide-prequalified">
+              <FormItemLabel>
+                {translate("text.spgpa_hide_prequalified")}
+              </FormItemLabel>
+              <Switch
+                checked={hidePrequalified}
+                onChange={(e) => setHidePrequalified(e.target.checked)}
+              />
+            </FormItem>
+          </div>
+        </div>
+        {isLoading || (filteredCUs && filteredCUs.length > 0) ? (
+          <SimpleTable
+            rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
+            size="small"
+            data={filteredCUs ?? []}
+            columns={columns}
+            className="w-full"
+            loading={isLoading}
+          />
+        ) : (
+          <BodyText>
+            {translate(
+              data && data.rows.length > 0
+                ? "text.spgpa_no_matching_controllable_units"
+                : "text.spgpa_no_controllable_units",
+            )}
+          </BodyText>
+        )}
+      </div>
     </div>
   );
 };
