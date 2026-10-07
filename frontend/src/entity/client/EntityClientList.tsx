@@ -1,9 +1,5 @@
-import {
-  usePermissions,
-  useRecordContext,
-  ResourceContextProvider,
-} from "ra-core";
-import { Link as RouterLink } from "react-router-dom";
+import { usePermissions, ResourceContextProvider } from "ra-core";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { List, Datagrid } from "../../components/EDS-ra/list";
 import {
@@ -29,8 +25,16 @@ const CreateEntityClientButton = ({ entityId }: { entityId: any }) => (
   </Button>
 );
 
-export const EntityClientList = () => {
-  const { id } = useRecordContext()!;
+type Props = {
+  entityId?: string;
+};
+
+export const EntityClientList = ({ entityId }: Props) => {
+  let { id } = useParams()!;
+  if (!id && entityId) {
+    id = entityId;
+  }
+  console.log(id);
   const { permissions } = usePermissions<Permissions>();
   const canRead = permissions?.allow("entity_client", "read");
   const canCreate = permissions?.allow("entity_client", "create");
