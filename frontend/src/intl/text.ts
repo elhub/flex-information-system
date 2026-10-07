@@ -11,13 +11,20 @@ export type TextKey =
   | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "entity.see_more"
   | "print"
   | "service_providing_group"
   | "service_providing_group_product_application"
+  | "service_provider_product_application"
+  | "service_provider"
+  | "system_operator"
+  | "sppa_overview.see_service_provider"
+  | "sppa_overview.see_system_operator"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
   | "resource_show_layout.more_actions_aria_label"
+  | "resource_card.resource_name"
   | "events"
   | "print"
   | "tab.summary"
@@ -271,9 +278,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.created_at": "Created at",
     "dashboard.no_active_applications": "No active applications.",
     entity_role: "Entity",
+    "entity.see_more": "See Entity",
     edit: "Edit",
     print: "Print",
     events: "Events",
+    service_provider_product_application:
+      "Service provider product application",
+    service_provider: "Service provider",
+    system_operator: "System operator",
+    "sppa_overview.see_service_provider": "See service provider",
+    "sppa_overview.see_system_operator": "See system operator",
     delete: "Delete",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
@@ -284,6 +298,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Navigate to",
     "resource_show_layout.more_button": "More",
     "resource_show_layout.more_actions_aria_label": "More actions",
+    "resource_card.resource_name": "Name",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
     "spg_info_tab.see_group": "See group",
@@ -593,6 +608,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     edit: "Endre",
     print: "Skriv ut",
     events: "Hendelser",
+    service_provider_product_application:
+      "Produktprekvalifisering for tjenesteleverandør",
+    service_provider: "Tjenesteleverandør",
+    system_operator: "Systemoperatør",
+    "sppa_overview.see_service_provider": "Se tjenesteleverandør",
+    "sppa_overview.see_system_operator": "Se systemoperatør",
     delete: "Slett",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
@@ -603,6 +624,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_show_layout.navigate_group_label": "Naviger til",
     "resource_show_layout.more_button": "Mer",
     "resource_show_layout.more_actions_aria_label": "Flere handlinger",
+    "resource_card.resource_name": "Navn",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
     "spg_info_tab.see_group": "Se gruppe",
@@ -660,6 +682,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    "entity.see_more": "Se Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
     cu_show_add_technical_resources_heading: "Legg til tekniske ressurser",
