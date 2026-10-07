@@ -79,7 +79,7 @@ export const EntityShow = () => {
 
   return (
     <ResourceShowLayout
-      secondaryHeaderText={`Entity #${data.id}`}
+      secondaryHeaderText={`${translate("text.entity.name")} #${data.id}`}
       mainHeaderText={data.name}
       summary={summary}
       content={<EntityTabs id={"" + data.id} />}
