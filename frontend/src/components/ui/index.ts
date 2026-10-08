@@ -52,10 +52,12 @@ import { Datepicker } from "./datepicker/Datepicker";
 import { DateTimePicker } from "./datetimepicker/DateTimePicker";
 import { Stepper } from "./stepper/Stepper";
 import {
-  TimelineRangeSlider,
-  mergeTimelineMarks,
   type TimelineMark,
-} from "./timelineRangeSlider/TimelineRangeSlider";
+  mergeTimelineMarks,
+} from "./timelineSlider/timelineMark";
+import { SummaryCard } from "./summaryCard/SummaryCard";
+import { TimelineRangeSlider } from "./timelineSlider/TimelineRangeSlider";
+import { TimelineSlider } from "./timelineSlider/TimelineSlider";
 
 export {
   Alert,
@@ -108,7 +110,9 @@ export {
   VerticalSpace,
   FormContainer,
   Textarea,
+  SummaryCard,
   TimelineRangeSlider,
+  TimelineSlider,
   mergeTimelineMarks,
   type TimelineMark,
   ToggleGroup,
