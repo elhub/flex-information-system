@@ -11,7 +11,7 @@ import {
   ScopesField,
   NestedResourceHistoryButton,
 } from "../../components/EDS-ra";
-import { EventButton } from "../../event/EventButton";
+import { EventButton } from "../../components/EDS-ra/buttons";
 import { Permissions } from "../../auth/permissions";
 import { getFields } from "../../zod";
 import { zPartyMembershipHistory } from "../../generated-client/zod.gen";

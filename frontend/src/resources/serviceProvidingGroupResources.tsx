@@ -1,9 +1,6 @@
 import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
-import BookmarksIcon from "@mui/icons-material/Bookmarks";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
@@ -45,7 +42,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group"
         name="service_providing_group"
-        icon={BookmarksIcon}
         list={ServiceProvidingGroupList}
         show={ServiceProvidingGroupShow}
         edit={
@@ -281,7 +277,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_grid_prequalification"
         name="service_providing_group_grid_prequalification"
-        icon={BookmarkAddedIcon}
         list={ServiceProvidingGroupGridPrequalificationList}
         show={ServiceProvidingGroupGridPrequalificationShow}
         edit={
@@ -324,7 +319,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_membership"
         name="service_providing_group_membership"
-        icon={BookmarkAddIcon}
         show={ServiceProvidingGroupMembershipShow}
         edit={
           canUpdateMembership ? (
