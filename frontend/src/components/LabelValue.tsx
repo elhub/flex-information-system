@@ -1,5 +1,5 @@
 import { useTranslateField } from "../intl/intl";
-import { FieldTooltip } from "../tooltip/FieldTooltip";
+import { FieldTooltip } from "./EDS-ra/fields/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
 import { BodyText, BodyTextProps, Link } from "./ui";
