@@ -118,9 +118,13 @@ export type TextKey =
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
   | "spgpa_hide_prequalified"
-  | "spgpa_summary_heading"
-  | "spgpa_summary_approved_flexible_power"
-  | "spgpa_summary_flexible_power_needing_approval"
+  | "spgpa_snapshot_total_capacity"
+  | "spgpa_snapshot_approved_units"
+  | "spgpa_snapshot_pending_units"
+  | "spgpa_snapshot_total_units"
+  | "spgpa_snapshot_pending_badge"
+  | "spgpa_snapshot_approved_flexible_power"
+  | "spgpa_snapshot_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -130,6 +134,13 @@ export type TextKey =
   | "spg_changes_period_heading"
   | "spg_changes_period_hint"
   | "spg_changes_from_label"
+  | "spgpa_snapshot_heading"
+  | "spgpa_snapshot_hint"
+  | "spgpa_snapshot_date_label"
+  | "spgpa_snapshot_handle_label"
+  | "spgpa_snapshot_as_of"
+  | "spgpa_no_controllable_units"
+  | "spgpa_no_matching_controllable_units"
   | "spg_changes_to_label"
   | "spg_changes_since_label"
   | "spg_changes_custom_milestone"
@@ -449,15 +460,31 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filter by name, id, accounting point id or system operator",
     spgpa_hide_prequalified: "Hide prequalified",
-    spgpa_summary_heading: "Flexible power overview",
-    spgpa_summary_approved_flexible_power:
+    spgpa_snapshot_total_capacity: "Total flexible power",
+    spgpa_snapshot_approved_units:
+      "%{approved} of %{total} controllable units approved",
+    spgpa_snapshot_pending_units:
+      "%{count} controllable units awaiting approval",
+    spgpa_snapshot_total_units: "%{count} controllable units in the group",
+    spgpa_snapshot_pending_badge: "%{count} units",
+    spgpa_snapshot_approved_flexible_power:
       "Flexible power with approved status",
-    spgpa_summary_flexible_power_needing_approval:
+    spgpa_snapshot_flexible_power_needing_approval:
       "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
     spg_changes_period_heading: "Select comparison period",
     spg_changes_period_hint: "Drag the handlers or edit the dates",
     spg_changes_from_label: "From",
+    spgpa_snapshot_heading: "View as of a specific time",
+    spgpa_snapshot_hint:
+      "Shows which controllable units were members of the group at the selected time, what they looked like, and which approvals had been given by then.\nDrag the handle to a milestone or pick any date and time.",
+    spgpa_snapshot_date_label: "Snapshot time",
+    spgpa_snapshot_handle_label: "Selected",
+    spgpa_snapshot_as_of: "Snapshot as of",
+    spgpa_no_controllable_units:
+      "No controllable units in this group at the selected date.",
+    spgpa_no_matching_controllable_units:
+      "No controllable units match the current filters.",
     spg_changes_to_label: "To",
     spg_changes_custom_milestone: "Custom",
     spg_changes_milestone_now: "Current (Now)",
@@ -767,15 +794,31 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
     spgpa_hide_prequalified: "Skjul prekvalifiserte",
-    spgpa_summary_heading: "Oversikt over fleksibel kapasitet",
-    spgpa_summary_approved_flexible_power:
+    spgpa_snapshot_total_capacity: "Total fleksibel kapasitet",
+    spgpa_snapshot_approved_units:
+      "%{approved} av %{total} styrbare enheter godkjent",
+    spgpa_snapshot_pending_units:
+      "%{count} styrbare enheter venter på godkjenning",
+    spgpa_snapshot_total_units: "%{count} styrbare enheter i gruppen",
+    spgpa_snapshot_pending_badge: "%{count} enheter",
+    spgpa_snapshot_approved_flexible_power:
       "Fleksibel kapasitet som har status godkjent",
-    spgpa_summary_flexible_power_needing_approval:
+    spgpa_snapshot_flexible_power_needing_approval:
       "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
     spg_changes_period_heading: "Velg sammenligningsperiode",
     spg_changes_period_hint: "Dra glidebryterne eller endre datoene",
     spg_changes_from_label: "Fra",
+    spgpa_snapshot_heading: "Vis status på et bestemt tidspunkt",
+    spgpa_snapshot_hint:
+      "Viser hvilke styrbare enheter som var medlemmer av gruppen på det valgte tidspunktet, hvordan de så ut, og hvilke godkjenninger som var gitt da.\nDra glidebryteren til en milepæl eller velg dato og klokkeslett selv.",
+    spgpa_snapshot_date_label: "Tidspunkt",
+    spgpa_snapshot_handle_label: "Valgt",
+    spgpa_snapshot_as_of: "Øyeblikksbilde per",
+    spgpa_no_controllable_units:
+      "Ingen styrbare enheter i denne gruppen på valgt dato.",
+    spgpa_no_matching_controllable_units:
+      "Ingen styrbare enheter samsvarer med gjeldende filtre.",
     spg_changes_to_label: "Til",
     spg_changes_custom_milestone: "Egendefinert",
     spg_changes_milestone_now: "Nå",

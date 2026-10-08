@@ -66,7 +66,7 @@ export const fetchControllableUnitHistory = async (
   }).then(throwOnError);
 };
 
-const fetchSnapshot = async (
+export const fetchSnapshot = async (
   spgId: number,
   asOf: string,
 ): Promise<Map<number, ServiceProvidingGroupMembershipHistory>> => {
