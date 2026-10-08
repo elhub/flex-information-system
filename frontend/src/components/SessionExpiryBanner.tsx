@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert } from "@mui/material";
+import { Alert } from "./ui";
 
 // show the banner 5 minutes before expiry
 const WARN_BEFORE_MS = 5 * 60 * 1000;
@@ -58,20 +58,11 @@ export const SessionExpiryBanner = () => {
   if (!show) return null;
 
   return (
-    <Alert
-      severity="error"
-      variant="filled"
-      sx={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 9999, // above everything else
-        borderRadius: 0,
-      }}
-    >
-      Your session will expire in 5 minutes. To continue your work in the
-      Flexibility Information System, please log out and log in again.
-    </Alert>
+    <div className="fixed bottom-0 left-0 right-0 z-[9999]">
+      <Alert variant="warning" className="rounded-none">
+        Your session will expire in 5 minutes. To continue your work in the
+        Flexibility Information System, please log out and log in again.
+      </Alert>
+    </div>
   );
 };

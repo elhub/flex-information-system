@@ -66,6 +66,13 @@ export default defineConfig([
               message: "Import from '@/components/ui' instead.",
             },
           ],
+          patterns: [
+            {
+              group: ["@mui/*"],
+              message:
+                "Use components from the design system ('@/components/ui') instead of MUI.",
+            },
+          ],
         },
       ],
     },

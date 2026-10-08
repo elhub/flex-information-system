@@ -1,7 +1,6 @@
 import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route, Navigate } from "react-router-dom";
 import { JSX } from "react";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ControllableUnitList } from "../controllable_unit/ControllableUnitList";
@@ -42,7 +41,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             <ControllableUnitShow />
           </ResourceContextProvider>
         }
-        icon={BookmarkIcon}
         edit={
           canUpdate ? (
             <EditRedirectPreviousPage>
