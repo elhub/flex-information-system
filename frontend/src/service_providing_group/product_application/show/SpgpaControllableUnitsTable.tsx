@@ -53,6 +53,7 @@ export const SpgpaControllableUnitsTable = ({
 }: Props) => {
   const [now] = useState(() => new Date().toISOString());
   const marks = useChangesTimelineMarks(spgpa, now);
+  const fromDate = new Date(marks[0].value).toISOString();
   const [selectedDate, setSelectedDate] = useState<string>(now);
   const { data, isInitialLoading, isLoading, error } =
     useSpgpaControllableUnits(spgId, spgpa, selectedDate);
@@ -224,6 +225,7 @@ export const SpgpaControllableUnitsTable = ({
                 translate,
               )}
               selected={parseValue(selectedDate)}
+              minDate={parseValue(fromDate)}
               maxDate={parseValue(now)}
               onChange={(date) => {
                 const formatted = formatValue(date);
