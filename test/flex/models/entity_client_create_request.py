@@ -14,27 +14,26 @@ T = TypeVar("T", bound="EntityClientCreateRequest")
 
 @_attrs_define
 class EntityClientCreateRequest:
-    """Request schema for create operations - Client linked to an entity for client credentials and JWT grant
-    authentication methods.
+    """Request schema for create operations - Client linked to an entity for JWT grant authentication methods.
 
-        Attributes:
-            entity_id (int): Reference to the entity that this client is attached to. Example: 30.
-            scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
-                party. When assuming a party through party membership, the least privileged set of scopes will be kept.
-                Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
-                Example: ['read:data'].
-            name (None | str | Unset): Name of the client. Example: Laptop.
-            party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
-                client cannot assume any party. Example: 30.
-            client_secret (None | str | Unset): The secret of the entity. For use with client credentials authentication
-                method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
-            public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
-                grant authentication method. Example: -----BEGIN PUBLIC KEY-----
-                MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
-                TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
-                kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
-                0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
-                -----END PUBLIC KEY-----.
+    Attributes:
+        entity_id (int): Reference to the entity that this client is attached to. Example: 30.
+        scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
+            party. When assuming a party through party membership, the least privileged set of scopes will be kept.
+            Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+            Example: ['read:data'].
+        name (None | str | Unset): Name of the client. Example: Laptop.
+        party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
+            client cannot assume any party. Example: 30.
+        client_secret (None | str | Unset): The secret of the entity. Input as plain text but stored encrypted. Example:
+            mysupersecretpassword.
+        public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
+            grant authentication method. Example: -----BEGIN PUBLIC KEY-----
+            MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
+            TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
+            kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
+            0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
+            -----END PUBLIC KEY-----.
     """
 
     entity_id: int

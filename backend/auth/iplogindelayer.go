@@ -54,29 +54,6 @@ func NewIPLoginDelayer(config LoginDelayerConfig) *IPLoginDelayer {
 	}
 }
 
-// GetDelayerFromIP returns the delayer associated to the given IP address. If
-// it is the first time this IP address connects, a new delayer is registered.
-//
-//nolint:revive
-func (ipLoginDelayer *IPLoginDelayer) GetDelayerFromIP(ipAddress string) *loginDelayer {
-	ipLoginDelayer.mutex.Lock()
-	defer ipLoginDelayer.mutex.Unlock()
-
-	delayer, exists := ipLoginDelayer.delayers[ipAddress]
-	if !exists {
-		delayer = &loginDelayer{
-			ipAddress:            ipAddress,
-			config:               &ipLoginDelayer.config,
-			mutex:                sync.Mutex{},
-			currentFailedLogins:  0,
-			lastLoginAttemptTime: time.Now(),
-		}
-		ipLoginDelayer.delayers[ipAddress] = delayer
-	}
-
-	return delayer
-}
-
 type loginDelayer struct {
 	ipAddress            string
 	config               *LoginDelayerConfig

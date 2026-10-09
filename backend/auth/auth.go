@@ -15,7 +15,6 @@ import (
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
-	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -262,18 +261,6 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 	}
 
 	switch tokenPayload.GrantType {
-	case grantTypeClientCredentials:
-		var ccPayload clientCredentialsPayload
-
-		err := ctx.ShouldBindWith(&ccPayload, binding.FormPost)
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-				Error:            oauthErrorInvalidRequest,
-				ErrorDescription: "bad client credentials request: " + err.Error(),
-			})
-		} else {
-			auth.clientCredentialsHandler(ctx, ccPayload)
-		}
 	case grantTypeTokenExchange:
 		var tePayload tokenExchangePayload
 
@@ -1059,130 +1046,6 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 	}
 
 	return token, nil
-}
-
-// clientCredentialsPayload is the payload for the client credentials request.
-type clientCredentialsPayload struct {
-	GrantType    grantType `binding:"required" form:"grant_type"`
-	ClientID     string    `binding:"required" form:"client_id"`
-	ClientSecret string    `binding:"required" form:"client_secret"`
-}
-
-// Validate checks if the client credentials payload is valid.
-func (cc clientCredentialsPayload) Validate() error {
-	val := validate.New()
-
-	val.Check(cc.GrantType == grantTypeClientCredentials, "invalid grant type")
-	val.Check(cc.ClientID != "", "client_id is required")
-	val.Check(cc.ClientSecret != "", "client_secret is required")
-
-	return val.Error()
-}
-
-func (auth *API) clientCredentialsHandler( //nolint:funlen
-	ctx *gin.Context,
-	payload clientCredentialsPayload,
-) {
-	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
-
-	err := payload.Validate()
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: err.Error(),
-		})
-
-		return
-	}
-
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not begin tx in client credentials handler",
-			err),
-		)
-
-		return
-	}
-	defer tx.Commit(ctx)
-
-	delayer := auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
-
-	if !delayer.Allow(ctx) {
-		ctx.Header(
-			"Retry-After",
-			strconv.Itoa(int(math.Ceil(time.Until(delayer.MinTimeForNextRequest()).Seconds()))),
-		)
-		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-			Error:            oauthErrorAccessDenied,
-			ErrorDescription: "too many login attempts, try again later",
-		})
-
-		return
-	}
-
-	entityID, eid, scopeStrings, err := models.GetEntityOfCredentials(
-		ctx, tx, payload.ClientID, payload.ClientSecret,
-	)
-	if err != nil {
-		time.Sleep(auth.failedLoginResponseDelay)
-
-		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "Invalid client_id or client_secret",
-		})
-
-		return
-	}
-
-	// this makes sure valid logins are not delayed
-	delayer.Cancel()
-
-	scopes, err := scope.ListFromStrings(scopeStrings)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"invalid scope format from database",
-			err,
-		))
-
-		return
-	}
-
-	accessToken := accessToken{
-		EntityID:       entityID,
-		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
-		ExternalID:     eid,
-		PartyID:        0,
-		Role:           "flex_entity",
-		Scope:          scopes,
-	}
-
-	slog.InfoContext(
-		ctx, "successful client credentials login",
-		"entity", entityID, "eid", eid,
-	)
-
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not sign access token",
-			err),
-		)
-
-		return
-	}
-
-	//nolint:gosec // no credentials hardcoded
-	ctx.JSON(http.StatusOK, gin.H{
-		"access_token":      string(signedAccessToken),
-		"issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
-		"token_type":        "Bearer",
-		"expires_in":        auth.tokenDurationSeconds,
-	})
 }
 
 // ---- token exchange phase.
