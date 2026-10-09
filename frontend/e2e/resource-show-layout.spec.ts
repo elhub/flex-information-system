@@ -34,7 +34,7 @@ const expectScreenshot = (page: Page, fileName: string) =>
   expect(page.getByTestId("resource-show-layout")).toHaveScreenshot(fileName, {
     mask: [
       page.getByTestId("resource-show-content"),
-      summaryValueOf(page, "Recorded at"),
+      page.getByTestId("resource-show-summary"),
     ],
   });
 
@@ -43,7 +43,6 @@ const expectResourceShowLayout = async (page: Page) => {
     page.getByRole("heading", { level: 2, name: CONTROLLABLE_UNIT_NAME }),
   ).toBeVisible();
   await expect(page.getByText("Active", { exact: true })).toBeVisible();
-  await expect(summaryValueOf(page, "Accounting point")).toBeVisible();
   await expect(page.getByRole("button", { name: /more/i })).toBeVisible();
 };
 

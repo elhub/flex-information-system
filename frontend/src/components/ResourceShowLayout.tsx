@@ -56,19 +56,24 @@ export type ResourceSummaryPanelProps = {
 };
 
 export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
-  <Panel border className="bg-semantic-background-alternative h-fit p-4 sm:p-5">
-    <div className="flex flex-col gap-4">
-      {fields
-        .filter((field) => field.shouldShow ?? true)
-        .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
-          <LabelValue
-            key={labelValueProps.label ?? labelValueProps.labelKey ?? index}
-            size="large"
-            {...labelValueProps}
-          />
-        ))}
-    </div>
-  </Panel>
+  <div data-testid="resource-show-summary">
+    <Panel
+      border
+      className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+    >
+      <div className="flex flex-col gap-4">
+        {fields
+          .filter((field) => field.shouldShow ?? true)
+          .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
+            <LabelValue
+              key={labelValueProps.label ?? labelValueProps.labelKey ?? index}
+              size="large"
+              {...labelValueProps}
+            />
+          ))}
+      </div>
+    </Panel>
+  </div>
 );
 
 type ResourceTitleProps = {
