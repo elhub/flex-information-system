@@ -30,6 +30,9 @@ export const ArrayInput = ({
   parse,
   description,
   descriptionOverride,
+  overrideLabel,
+  className,
+  resource,
   ...rest
 }: ArrayInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -37,6 +40,7 @@ export const ArrayInput = ({
     defaultValue,
     format,
     parse,
+    resource,
     ...rest,
   });
 
@@ -64,6 +68,9 @@ export const ArrayInput = ({
       error={fieldState.error?.message}
       description={description}
       descriptionOverride={descriptionOverride}
+      overrideLabel={overrideLabel}
+      className={className}
+      resource={resource}
     >
       <Combobox
         inputClassName={inputClassName}

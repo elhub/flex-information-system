@@ -15,6 +15,7 @@ export { EnumArrayInput } from "./EnumArrayInput";
 export { EnumInput } from "./EnumInput";
 export { FormToolbar } from "./FormToolbar";
 export { FormToolbarWithConfirmation } from "./FormToolbarWithConfirmation";
+export { PartyReferenceArrayInput } from "./PartyReferenceArrayInput";
 export { PartyReferenceInput } from "./PartyReferenceInput";
 export { ReferenceComboboxInput } from "./ReferenceComboboxInput";
 export {

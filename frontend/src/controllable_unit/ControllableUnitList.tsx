@@ -17,8 +17,9 @@ import {
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
 import {
+  AutocompleteInput,
   EnumArrayInput,
-  PartyReferenceInput,
+  PartyReferenceArrayInput,
   TextInput,
 } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
@@ -153,12 +154,36 @@ export const ControllableUnitList = () => {
       overrideLabel={translate("field.controllable_unit.accounting_point_id")}
       tooltip={false}
     />,
-    <PartyReferenceInput
+    <AutocompleteInput
+      key="is_small"
+      source="is_small"
+      tooltip={false}
+      choices={[
+        {
+          id: "true",
+          name: translate("text.controllable_unit.is_small.true.label"),
+        },
+        {
+          id: "false",
+          name: translate("text.controllable_unit.is_small.false.label"),
+        },
+      ]}
+    />,
+    <PartyReferenceArrayInput
       key="system_operator_id"
-      source="accounting_point.system_operator_id"
-      filter={{ type: "system_operator" }}
+      source="accounting_point.system_operator_id@in"
+      partyType="system_operator"
+      tooltip={false}
       overrideLabel={translate("field.accounting_point.system_operator_id")}
-      optionText={(record) => record.name}
+    />,
+    <PartyReferenceArrayInput
+      key="balance_responsible_party_id"
+      source="accounting_point.balance_responsible_party.balance_responsible_party_id@in"
+      partyType="balance_responsible_party"
+      tooltip={false}
+      overrideLabel={translate(
+        "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
+      )}
     />,
     <EnumArrayInput
       key="status"
