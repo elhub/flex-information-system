@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // Runs against the local stack (just start && just load), served by nginx.
-// Rebuild the frontend image after changes: docker compose build frontend && docker compose up -d frontend
+// Rebuild the images after frontend changes: just reset
 const baseURL =
   process.env.PLAYWRIGHT_BASE_URL ?? "https://test.flex.internal:6443";
 export const STORAGE_STATE = "e2e/.auth/user.json";
