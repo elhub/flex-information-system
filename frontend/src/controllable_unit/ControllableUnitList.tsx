@@ -140,6 +140,15 @@ export const ControllableUnitList = () => {
   const canLookup = permissions?.allow("controllable_unit", "lookup");
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
+  // Only these roles can read api.accounting_point_balance_responsible_party
+  // (RLS APBRP-FISO001, -SO001, -SP001, -BRP001). For other roles that can read
+  // CUs (e.g. EU, ES) the BRP filter would always give an empty list.
+  const canFilterOnBrp = [
+    "flex_flexibility_information_system_operator",
+    "flex_system_operator",
+    "flex_service_provider",
+    "flex_balance_responsible_party",
+  ].includes(identity?.role);
 
   const controllableUnitFilters = [
     <TextInput
@@ -176,15 +185,19 @@ export const ControllableUnitList = () => {
       tooltip={false}
       overrideLabel={translate("field.accounting_point.system_operator_id")}
     />,
-    <PartyReferenceArrayInput
-      key="balance_responsible_party_id"
-      source="accounting_point.balance_responsible_party.balance_responsible_party_id@in"
-      partyType="balance_responsible_party"
-      tooltip={false}
-      overrideLabel={translate(
-        "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
-      )}
-    />,
+    ...(canFilterOnBrp
+      ? [
+          <PartyReferenceArrayInput
+            key="balance_responsible_party_id"
+            source="accounting_point.balance_responsible_party.balance_responsible_party_id@in"
+            partyType="balance_responsible_party"
+            tooltip={false}
+            overrideLabel={translate(
+              "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
+            )}
+          />,
+        ]
+      : []),
     <EnumArrayInput
       key="status"
       source="status@in"
