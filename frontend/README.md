@@ -30,3 +30,10 @@ Build the application in production mode by running:
 ```sh
 npm run build
 ```
+
+## End-to-end visual regression tests
+
+The Playwright suite provides focused visual regression checks for frontend
+components, currently centered on the shared `ResourceShowLayout`. See the
+[frontend testing guide](../docs-dev/testing-frontend.md) for scope, setup, run
+instructions, and snapshot updates.

@@ -29,7 +29,6 @@ export default defineConfig({
     timezoneId: "Europe/Oslo" /* seed data is Oslo-midnight based */,
     colorScheme: "light",
     reducedMotion: "reduce",
-    viewport: { width: 1440, height: 900 },
     trace: "retain-on-failure",
   },
   projects: [
@@ -38,7 +37,11 @@ export default defineConfig({
       name: "chromium",
       testIgnore: /auth\.setup\.ts/,
       dependencies: ["setup"],
-      use: { ...devices["Desktop Chrome"], storageState: STORAGE_STATE },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1920, height: 1080 },
+        storageState: STORAGE_STATE,
+      },
     },
   ],
 });

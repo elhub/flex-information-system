@@ -260,7 +260,9 @@ const ResourceBody = ({
       <ResourceSummaryPanel fields={summary} />
       {displayControls}
     </div>
-    <div className="min-w-0 flex-1">{content}</div>
+    <div className="min-w-0 flex-1" data-testid="resource-show-content">
+      {content}
+    </div>
   </div>
 );
 
@@ -277,7 +279,7 @@ export const ResourceShowLayout = ({
   content,
 }: ResourceShowLayoutProps) => {
   return (
-    <div className="flex flex-col gap-4 p-2">
+    <div className="flex flex-col gap-4 p-2" data-testid="resource-show-layout">
       <ResourceHeader
         secondaryHeaderText={secondaryHeaderText}
         mainHeaderText={mainHeaderText}
