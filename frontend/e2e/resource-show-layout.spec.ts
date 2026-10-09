@@ -6,7 +6,7 @@ const CONTROLLABLE_UNIT_NAME = process.env.E2E_CU_NAME ?? "Test Solar";
 
 let controllableUnitId: number;
 
-test.beforeAll(async ({ request }) => {
+test.beforeEach(async ({ request }) => {
   const response = await request.get(
     `/api/v1/controllable_unit?name=eq.${encodeURIComponent(CONTROLLABLE_UNIT_NAME)}`,
     { headers: { "Api-Version": API_VERSION } },
@@ -19,9 +19,6 @@ test.beforeAll(async ({ request }) => {
   ).toBeTruthy();
   controllableUnitId = controllableUnit.id;
 });
-
-const summaryValueOf = (page: Page, label: string): Locator =>
-  page.getByText(`${label}:`).locator("xpath=following-sibling::*");
 
 const openShowPage = async (page: Page) => {
   await page.goto(`/#/controllable_unit/${controllableUnitId}/show`);

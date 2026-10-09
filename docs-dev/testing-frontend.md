@@ -71,6 +71,12 @@ animations.
 
 ### Running the tests
 
+Before the first run, install Playwright's Chromium browser from `frontend/`:
+
+```bash
+npx playwright install chromium
+```
+
 Start and load the test environment if it is not already running:
 
 ```bash
