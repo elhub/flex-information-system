@@ -26,42 +26,68 @@ Run `npx tsc --noEmit` after changing a hook or its tests to check TypeScript.
 
 ## Playwright screenshot tests
 
-Playwright tests exercise the running frontend against the local test
-environment. They live in `frontend/e2e/`; the current suite focuses on the
-shared `ResourceShowLayout` using a seeded controllable unit. It checks the
-resource heading, status, and summary, and compares the shared layout while
-masking resource-specific tab content and the recorded-at timestamp. It also
-checks that utility and navigation actions are available in the more-actions
-menu. This is the primary snapshot coverage today; add snapshots for other
-components when they exercise a distinct layout or behavior.
+> [!NOTE]
+> Screenshot testing is new and a work in progress.
 
-Use these tests as focused pre-merge visual regression checks for components
-with snapshot coverage. The current focus is `ResourceShowLayout`, where they
-help catch unintended changes to the shared show-page structure. They
-complement behavior tests and manual exploration, do not cover every resource
-page or tab, and are not part of automated CI.
+### Why
 
-Authentication runs once as a setup project, and the tests use the seeded test
-data.
+Many pages share a few layout components, so one change can affect many pages.
+A code diff does not show how those pages look afterwards. Screenshot tests
+render a real page and compare it with an approved image in the repository.
+This catches unintended visual changes before merge, and makes intended changes
+visible to reviewers as an updated image in the pull request.
 
-Start and load the test environment from the repository root if it is not
-already running:
+### Scope
+
+The tests cover the structure of **shared components**, not individual
+resources. One representative page per shared component is enough.
+
+Out of scope: resource-specific content (masked in the screenshot), business
+rules and authorisation (covered by API and database tests), and full user
+journeys. Keep the set of images small so every change gets reviewed.
+
+### How we use them
+
+Run the tests locally before merging changes to shared components, styling, or
+frontend dependencies. They are not yet part of CI.
+
+- If a failure is expected, update the baseline and check the new image.
+- If a failure is unexpected, treat it as a bug and find the cause first.
+- In review, check that changed images show the intended change and nothing
+  else.
+
+### Current coverage
+
+The suite in `frontend/e2e/` covers `ResourceShowLayout` on the show page of
+the seeded controllable unit `Test Solar`. It checks the heading, the `Active`
+status, and the `More` button, then compares the layout with the baseline. The
+summary (`resource-show-summary`) and tab content (`resource-show-content`) are
+masked, so the image only covers the shared frame.
+
+Authentication runs once in `e2e/auth.setup.ts`, which assumes the `Test FISO`
+party. Settings in `frontend/playwright.config.ts` keep screenshots stable:
+serial runs, Chromium at 1920x1080, fixed locale and time zone, and disabled
+animations.
+
+### Running the tests
+
+Start and load the test environment if it is not already running:
 
 ```bash
 just start
 just load
 ```
 
-Choose how to serve the frontend under test:
+Choose how to serve the frontend under test. Playwright uses
+`https://test.flex.internal:6443` by default; set `PLAYWRIGHT_BASE_URL` to use
+another base URL.
 
-### Test environment
+#### Test environment
 
-Rebuild and restart the frontend container to include the current frontend
-changes. From the repository root, run:
+Rebuild the images to include the current frontend changes:
 
 ```bash
-docker compose build frontend
-docker compose up -d frontend
+just reset
 ```
 
 Then, from `frontend/`, run Playwright against the test environment:
@@ -70,10 +96,14 @@ Then, from `frontend/`, run Playwright against the test environment:
 npm run test:e2e
 ```
 
-### Development environment
+#### Development environment
 
-Run the frontend source through Vite. Start the dev server from the repository
-root and leave it running:
+Both the backend and the frontend must be running locally. Start each in its
+own terminal and leave them running:
+
+```bash
+just backend
+```
 
 ```bash
 just frontend
@@ -88,27 +118,20 @@ PLAYWRIGHT_BASE_URL=https://dev.flex.internal:5443 npm run test:e2e
 Vite proxies API and authentication requests to the development services, so
 this option uses the current source without rebuilding the frontend image.
 
-Configuration lives in `frontend/playwright.config.ts`. Playwright uses
-`https://test.flex.internal:6443` by default. Set `PLAYWRIGHT_BASE_URL` to use
-another base URL. The tests run serially against a shared database and browser
-session. The Chromium project captures screenshots at a 1920x1080 desktop
-viewport.
+### Updating baseline images
 
-Expected screenshots are committed under `frontend/e2e/__snapshots__/` so
-developers, reviewers, and CI compare against the same baseline. Keep this set
-focused. When a deliberate UI change should update a baseline, run from
-`frontend/` against the same environment used for the test. For the test
-environment:
+Baselines are committed under `frontend/e2e/__snapshots__/`. To update them
+after a deliberate UI change, run from `frontend/` against the same environment
+used for the test. For the test environment:
 
 ```bash
 npm run test:e2e:update
 ```
 
-For the development environment:
+For the development environment, with the backend and frontend running locally:
 
 ```bash
 PLAYWRIGHT_BASE_URL=https://dev.flex.internal:5443 npm run test:e2e:update
 ```
 
-Review the changed images alongside the UI change before committing them;
-updating snapshots should not be used to dismiss an unexplained difference.
+Do not update a baseline to dismiss a difference you cannot explain.
