@@ -37,6 +37,24 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
+// CanClientUnassume Security finding from pentest is that. Entity clients cannot unassume.
+func CanClientUnassume(
+	ctx context.Context,
+	tx pgx.Tx,
+	externalID string,
+) (bool, error) {
+	var canUnassume bool
+	err := tx.QueryRow(
+		ctx,
+		"select can_unassume from auth.can_client_unassume($1)",
+		externalID,
+	).Scan(&canUnassume)
+	if err != nil {
+		return false, fmt.Errorf("failed to check if client can unassume: %w", err)
+	}
+	return canUnassume, nil
+}
+
 // GetEntityIdentityByExternalID returns an identity corresponding to the same
 // entity and client as the identity given as parameter, but without party
 // association.
