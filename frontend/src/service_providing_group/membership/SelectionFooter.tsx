@@ -32,7 +32,7 @@ export const SelectionFooter = ({
       : translate("text.spg_manage_members_selected_singular");
 
   return (
-    <div className="sticky bottom-0 -mx-3 bg-global-color-grey-200 flex items-center gap-4 px-6 py-4">
+    <div className="sticky bottom-0 z-10 -mx-3 bg-global-color-grey-200 flex items-center gap-4 px-6 py-4">
       <div className="flex flex-col leading-tight">
         <span className="font-semibold text-sm">{selectedLabel}</span>
         <span className="text-xs text-neutral-500">

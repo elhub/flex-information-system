@@ -32,7 +32,7 @@ export const ServiceProvidingGroupManageMembers = () => {
     : translate("text.spg_manage_members_heading_no_name");
 
   return (
-    <FormContainer>
+    <FormContainer className="overflow-visible">
       {isWizardStep && <ServiceProvidingGroupStepper activeStep={2} />}
       <Heading level={3} size="medium">
         {heading}
