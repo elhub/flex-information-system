@@ -84,9 +84,10 @@ No policies.
 
 #### Entity
 
-| Policy key | Policy                                             | Status |
-|------------|----------------------------------------------------|--------|
-| ECL-ENT001 | Read, create, update and delete their own clients. | DONE   |
+| Policy key | Policy                                                                 | Status |
+|------------|------------------------------------------------------------------------|--------|
+| ECL-ENT001 | Read their own clients.                                                | DONE   |
+| ECL-ENT002 | Create, update and delete their own clients, when the user is a human. | DONE   |
 
 #### Common
 

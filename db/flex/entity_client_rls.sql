@@ -1,27 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:entity-client-rls runOnChange:true endDelimiter:;
-ALTER TABLE IF EXISTS entity_client ENABLE ROW LEVEL SECURITY;
-
--- RLS: ECL-ENT001
-GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_entity;
-DROP POLICY IF EXISTS "ECL_ENT001" ON entity_client;
-CREATE POLICY "ECL_ENT001" ON entity_client
-FOR ALL
-TO flex_entity
-USING (
-    entity_id = (SELECT flex.current_entity())
-);
-
--- RLS: ECL-FISO001
-DROP POLICY IF EXISTS "ECL_FISO001" ON entity_client;
-CREATE POLICY "ECL_FISO001" ON entity_client
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
-
--- checks the user is not a machine (entity client login / organisation entity)
+-- changeset flex:user-is-human runOnChange:true endDelimiter:;
 CREATE OR REPLACE FUNCTION user_is_human()
 RETURNS boolean
 SECURITY INVOKER
@@ -36,6 +16,56 @@ AS $$
             AND i.client_id IS null
     )
 $$;
+
+-- changeset flex:entity-client-rls runOnChange:true endDelimiter:;
+ALTER TABLE IF EXISTS entity_client ENABLE ROW LEVEL SECURITY;
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_entity;
+
+-- RLS: ECL-ENT001
+DROP POLICY IF EXISTS "ECL_ENT001" ON entity_client;
+
+CREATE POLICY "ECL_ENT001" ON entity_client
+FOR SELECT
+TO flex_entity
+USING (
+    entity_id = (SELECT flex.current_entity())
+);
+
+-- RLS: ECL-ENT002
+DROP POLICY IF EXISTS "ECL_ENT002_INSERT" ON entity_client;
+CREATE POLICY "ECL_ENT002_INSERT" ON entity_client
+FOR INSERT
+TO flex_entity
+WITH CHECK (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_entity())
+);
+
+DROP POLICY IF EXISTS "ECL_ENT002_UPDATE" ON entity_client;
+CREATE POLICY "ECL_ENT002_UPDATE" ON entity_client
+FOR UPDATE
+TO flex_entity
+USING (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_entity())
+);
+DROP POLICY IF EXISTS "ECL_ENT002_DELETE" ON entity_client;
+CREATE POLICY "ECL_ENT002_DELETE" ON entity_client
+FOR DELETE
+TO flex_entity
+USING (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_entity())
+);
+
+
+-- RLS: ECL-FISO001
+DROP POLICY IF EXISTS "ECL_FISO001" ON entity_client;
+CREATE POLICY "ECL_FISO001" ON entity_client
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_organisation;
 -- RLS: ECL-ORG001
