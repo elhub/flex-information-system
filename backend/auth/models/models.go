@@ -46,7 +46,7 @@ func CanEntityClientUnassume(
 	var canUnassume bool
 	err := tx.QueryRow(
 		ctx,
-		"select can_unassume from auth.can_client_unassume($1)",
+		"select not auth.is_client($1)",
 		externalID,
 	).Scan(&canUnassume)
 	if err != nil {
