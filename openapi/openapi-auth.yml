@@ -78,33 +78,6 @@ components:
       required:
         - code
         - message
-    client_credentials_request:
-      description: Client credentials body
-      properties:
-        grant_type:
-          type: string
-          enum:
-            - client_credentials
-          description: >-
-            The grant type of the request signals which step of the login
-            process we want to use.
-          example: client_credentials
-        client_id:
-          type: string
-          description: The identifier of the entity that logs in.
-          # yamllint disable-line rule:line-length
-          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
-          example: 2854fee6-4591-4b1f-8726-af04475ef047
-        client_secret:
-          type: string
-          description: The password of the entity that logs in.
-          example: '1234'
-      # yamllint disable-line rule:line-length
-      example: grant_type=client_credentials&client_id=2854fee6-4591-4b1f-8726-af04475ef047&client_secret=1234
-      required:
-        - grant_type
-        - client_id
-        - client_secret
     jwt_bearer_request:
       description: JWT Bearer authorization grant request
       properties:
@@ -141,8 +114,8 @@ components:
           type: string
           format: jwt
           description: >-
-            The token to exchange, given in the client credentials step of the
-            login process.
+            The token to exchange, obtained during the preceding authentication
+            step.
           # yamllint disable-line rule:line-length
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE
         actor_token_type:
@@ -503,9 +476,8 @@ paths:
             format: jwt
             pattern: ^Bearer [\w-]+\.[\w-]+\.[\w-]+$
           description: >-
-            The token to exchange, given in the client credentials step of the
-            login process. This header is not present in the client credentials
-            request.
+              The token to exchange, obtained during the preceding authentication
+              step.
           # yamllint disable-line rule:line-length
           example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE
       requestBody:
@@ -514,7 +486,6 @@ paths:
           application/x-www-form-url-encoded:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/client_credentials_request'
                 - $ref: '#/components/schemas/token_exchange_request'
                 - $ref: '#/components/schemas/jwt_bearer_request'
       responses:
@@ -564,7 +535,6 @@ paths:
           description: |-
             Bad Request
 
-            In the client credentials step, returned for invalid `grant_type`.
             In the token exchange step, returned for all errors.
         '401':
           content:
@@ -574,7 +544,7 @@ paths:
           description: |-
             Unauthorized
 
-            Returned when the client credentials are invalid.
+            Returned when the supplied credentials are invalid.
         '429':
           content:
             application/json:
@@ -583,8 +553,8 @@ paths:
           description: |-
             Too Many Requests
 
-            Returned after too many failures with the client credentials login.
-            Further requests are allowed again after a while.
+            Returned after too many failed authentication attempts. Further
+            requests are allowed again after a while.
         '500':
           content:
             application/json:

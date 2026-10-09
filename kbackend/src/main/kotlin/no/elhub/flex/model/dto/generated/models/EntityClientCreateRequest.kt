@@ -7,8 +7,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT
- * grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for JWT grant authentication
+ * methods.
  */
 @Serializable
 public data class EntityClientCreateRequest(
@@ -37,8 +37,7 @@ public data class EntityClientCreateRequest(
   @SerialName("scopes")
   public val scopes: List<AuthScope>,
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain
-   * text but stored encrypted.
+   * The secret of the entity. Input as plain text but stored encrypted.
    */
   @SerialName("client_secret")
   public val clientSecret: String? = null,

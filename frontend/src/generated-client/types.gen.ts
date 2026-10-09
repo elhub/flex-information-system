@@ -1715,7 +1715,7 @@ export type Entity = {
 };
 
 /**
- * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for update operations - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientUpdateRequest = {
   /**
@@ -1732,7 +1732,7 @@ export type EntityClientUpdateRequest = {
    */
   scopes?: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   * The secret of the entity. Input as plain text but stored encrypted.
    */
   client_secret?: string;
   /**
@@ -1742,7 +1742,7 @@ export type EntityClientUpdateRequest = {
 };
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientCreateRequest = {
   /**
@@ -1763,7 +1763,7 @@ export type EntityClientCreateRequest = {
    */
   scopes: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   * The secret of the entity. Input as plain text but stored encrypted.
    */
   client_secret?: string;
   /**
@@ -1773,7 +1773,7 @@ export type EntityClientCreateRequest = {
 };
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClient = {
   /**
@@ -1789,7 +1789,7 @@ export type EntityClient = {
    */
   name?: string;
   /**
-   * The identifier of the entity. For use with client credentials authentication method.
+   * The identifier of the entity.
    */
   readonly client_id: string;
   /**
@@ -1802,7 +1802,7 @@ export type EntityClient = {
    */
   scopes: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   * The secret of the entity. Input as plain text but stored encrypted.
    */
   client_secret?: string;
   /**
@@ -5217,7 +5217,7 @@ export type EntityWritable = {
 };
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientWritable = {
   /**
@@ -5238,7 +5238,7 @@ export type EntityClientWritable = {
    */
   scopes: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   * The secret of the entity. Input as plain text but stored encrypted.
    */
   client_secret?: string;
   /**

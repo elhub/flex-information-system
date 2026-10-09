@@ -394,14 +394,13 @@ export const tooltips = {
   "entity_client.entity_id":
     "Reference to the entity that this client is attached to.",
   "entity_client.name": "Name of the client.",
-  "entity_client.client_id":
-    "The identifier of the entity. For use with client credentials authentication method.",
+  "entity_client.client_id": "The identifier of the entity. ",
   "entity_client.party_id":
     "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
   "entity_client.scopes":
     "List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.\nScopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.",
   "entity_client.client_secret":
-    "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+    "The secret of the entity. Input as plain text but stored encrypted.",
   "entity_client.public_key":
     "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.",
   "entity_client.recorded_at":

@@ -840,7 +840,7 @@ export const zEntityCreateRequest = z.object({
 });
 
 /**
- * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for update operations - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientUpdateRequest = z.object({
   name: z.string().max(256).optional(),
@@ -856,7 +856,7 @@ export const zEntityClientUpdateRequest = z.object({
 });
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientCreateRequest = z.object({
   entity_id: z.coerce.number(),
@@ -1679,7 +1679,7 @@ export const zEntity = z.object({
 });
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClient = z.object({
   id: z.coerce.number().readonly(),
@@ -2880,7 +2880,7 @@ export const zEntityWritable = z.object({
 });
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientWritable = z.object({
   entity_id: z.coerce.number(),

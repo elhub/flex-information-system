@@ -3526,7 +3526,7 @@
             },
             "entity_client_update_request": {
                 "summary": "Update - Entity client",
-                "description": "Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "description": "Request schema for update operations - Client linked to an entity for JWT grant authentication methods.",
                 "type": "object",
                 "properties": {
                     "name": {
@@ -3556,7 +3556,7 @@
                         ]
                     },
                     "client_secret": {
-                        "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
                         "format": "text",
                         "type": "string",
                         "minLength": 12,
@@ -3575,7 +3575,7 @@
             },
             "entity_client_create_request": {
                 "summary": "Create - Entity client",
-                "description": "Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "description": "Request schema for create operations - Client linked to an entity for JWT grant authentication methods.",
                 "type": "object",
                 "properties": {
                     "entity_id": {
@@ -3611,7 +3611,7 @@
                         ]
                     },
                     "client_secret": {
-                        "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
                         "format": "text",
                         "type": "string",
                         "minLength": 12,
@@ -3634,7 +3634,7 @@
             },
             "entity_client_response": {
                 "summary": "Response - Entity client",
-                "description": "Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "description": "Response schema - Client linked to an entity for JWT grant authentication methods.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3659,7 +3659,7 @@
                         "example": "Laptop"
                     },
                     "client_id": {
-                        "description": "The identifier of the entity. For use with client credentials authentication method.",
+                        "description": "The identifier of the entity. ",
                         "format": "text",
                         "type": "string",
                         "readOnly": true,
@@ -3684,7 +3684,7 @@
                         ]
                     },
                     "client_secret": {
-                        "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
                         "format": "text",
                         "type": "string",
                         "minLength": 12,
