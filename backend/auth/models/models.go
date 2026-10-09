@@ -37,8 +37,8 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
-// CanClientUnassume Security finding from pentest is that. Entity clients cannot unassume.
-func CanClientUnassume(
+// CanEntityClientUnassume Security finding from pentest is that. Entity clients cannot unassume.
+func CanEntityClientUnassume(
 	ctx context.Context,
 	tx pgx.Tx,
 	externalID string,

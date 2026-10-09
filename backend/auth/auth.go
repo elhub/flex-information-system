@@ -906,7 +906,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		r.Context(), tx, receivedToken.ExternalID,
 	)
 
-	canUnassume, err := models.CanClientUnassume(
+	canUnassume, err := models.CanEntityClientUnassume(
 		r.Context(), tx, receivedToken.ExternalID,
 	)
 	if err != nil {
