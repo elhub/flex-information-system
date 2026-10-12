@@ -29,19 +29,10 @@ import (
 )
 
 const (
-	callbackPath     = "/auth/v1/callback"
-	sessionCookieKey = "__Host-flex_session"
-
+	callbackPath                    = "/auth/v1/callback"
+	sessionCookieKey                = "__Host-flex_session"
 	defaultFailedLoginResponseDelay = 2 * time.Second
-
-	defaultLoginDelayerDurationBeforeReset  = 1 * time.Hour
-	defaultLoginDelayerMaxFailedLogins      = 20
-	defaultLoginDelayerNbLoginsWithoutDelay = 5
-	defaultLoginDelayerBaseDelay            = 2 * time.Minute
-	defaultLoginDelayerDelayIncreaseFactor  = 1.1
-	defaultLoginDelayerMaxDelay             = 1 * time.Hour
-
-	maxRequestBodyBytes = 1024
+	maxRequestBodyBytes             = 1024
 )
 
 // API holds the authentication API handlers.
@@ -55,10 +46,9 @@ type API struct {
 	oidcProvider             *oidc.Provider
 	ctxKey                   string
 	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
-	loginDelayer             *IPLoginDelayer
-	defaultAnonymousScopes   scope.List // default scopes for an anonymous user
-	defaultEntityScopes      scope.List // default scopes for an entity user
-	defaultOwnedPartyScopes  scope.List // default scopes for a user assuming an owned party
+	defaultAnonymousScopes   scope.List    // default scopes for an anonymous user
+	defaultEntityScopes      scope.List    // default scopes for an entity user
+	defaultOwnedPartyScopes  scope.List    // default scopes for a user assuming an owned party
 }
 
 // NewAPI creates a new auth.API instance.
@@ -72,32 +62,6 @@ func NewAPI(
 ) *API {
 	// default login limiting
 	failedLoginResponseDelay := defaultFailedLoginResponseDelay
-	loginDelayerConfig := LoginDelayerConfig{
-		DurationBeforeReset:  defaultLoginDelayerDurationBeforeReset,
-		MaxFailedLogins:      defaultLoginDelayerMaxFailedLogins,
-		NbLoginsWithoutDelay: defaultLoginDelayerNbLoginsWithoutDelay,
-		BaseDelay:            defaultLoginDelayerBaseDelay,
-		DelayIncreaseFactor:  defaultLoginDelayerDelayIncreaseFactor,
-		MaxDelay:             defaultLoginDelayerMaxDelay,
-	}
-
-	if isLoginLimitingDisabled {
-		failedLoginResponseDelay = 0
-		// A zero-delay delayer would make it impossible to test login delay.
-		// Here, we use something lax enough to be able to run all our API tests,
-		// but still finite, so that if we run requests in a loop, it will
-		// eventually block.
-		loginDelayerConfig = LoginDelayerConfig{
-			DurationBeforeReset:  5 * time.Second,
-			MaxFailedLogins:      6,
-			NbLoginsWithoutDelay: 2,
-			BaseDelay:            500 * time.Millisecond,
-			DelayIncreaseFactor:  2,
-			MaxDelay:             2 * time.Second,
-		}
-	}
-
-	loginDelayer := NewIPLoginDelayer(loginDelayerConfig)
 
 	return &API{
 		self:                     self,
@@ -107,7 +71,6 @@ func NewAPI(
 		oidcProvider:             oidcProvider,
 		ctxKey:                   ctxKey,
 		failedLoginResponseDelay: failedLoginResponseDelay,
-		loginDelayer:             loginDelayer,
 		defaultAnonymousScopes: scope.List{
 			// TODO limit the scope a bit?
 			scope.Scope{Verb: scope.Use, Asset: "auth"},  // to be able to log in
