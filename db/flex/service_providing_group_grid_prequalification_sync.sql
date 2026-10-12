@@ -5,6 +5,15 @@
 -- (SPG, ISO) pairs for which a SPG-GP record should exist in the DB
 CREATE OR REPLACE VIEW flex.service_providing_group_grid_prequalification_v
 WITH (security_invoker = false) AS (
+    -- the PSO of a SPGPA always grid-prequalifies the SPG
+    SELECT DISTINCT
+        spgpa_pso.service_providing_group_id,
+        spgpa_pso.procuring_system_operator_id AS impacted_system_operator_id
+    FROM flex.service_providing_group_product_application AS spgpa_pso
+    WHERE spgpa_pso.status NOT IN ('requested', 'rejected')
+
+    UNION
+
     SELECT DISTINCT
         spgpa.service_providing_group_id,
         ap_so.system_operator_id AS impacted_system_operator_id
