@@ -9,18 +9,35 @@ import org.jetbrains.exposed.v1.jdbc.Database
 
 private val logger = KotlinLogging.logger {}
 
-/**
- * Configures the HikariCP connection pool from `ktor.database.*` config keys,
- * connects Exposed, initialises [FlexTransaction], and returns the datasource.
- */
+/** Configures the database for the running Ktor [Application]. See [createDataSource]. */
 fun Application.configureDatabase(): HikariDataSource {
+    val config = environment.config
+    return createDataSource(
+        url = config.propertyOrNull("ktor.database.url")?.getString(),
+        driverClass = config.propertyOrNull("ktor.database.driverClass")?.getString(),
+        username = config.propertyOrNull("ktor.database.username")?.getString(),
+        password = config.propertyOrNull("ktor.database.password")?.getString(),
+        maximumPoolSize = config.propertyOrNull("ktor.database.hikari.maximumPoolSize")?.getString()?.toInt() ?: 10,
+    )
+}
+
+/**
+ * Creates the HikariCP connection pool, connects Exposed, initialises [FlexTransaction],
+ * and returns the datasource. Does not require a Ktor [Application], so it can be used in job mode.
+ */
+fun createDataSource(
+    url: String?,
+    driverClass: String?,
+    username: String?,
+    password: String?,
+    maximumPoolSize: Int = 10,
+): HikariDataSource {
     val config = HikariConfig().apply {
-        jdbcUrl = environment.config.propertyOrNull("ktor.database.url")?.getString()
-        driverClassName = environment.config.propertyOrNull("ktor.database.driverClass")?.getString()
-        username = environment.config.propertyOrNull("ktor.database.username")?.getString()
-        password = environment.config.propertyOrNull("ktor.database.password")?.getString()
-        maximumPoolSize =
-            environment.config.propertyOrNull("ktor.database.hikari.maximumPoolSize")?.getString()?.toInt() ?: 10
+        jdbcUrl = url
+        driverClassName = driverClass
+        this.username = username
+        this.password = password
+        this.maximumPoolSize = maximumPoolSize
         schema = "api"
         transactionIsolation = "TRANSACTION_READ_COMMITTED"
         validate()

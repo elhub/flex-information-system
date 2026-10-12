@@ -1,8 +1,11 @@
 package no.elhub.flex
 
+import arrow.core.getOrElse
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
@@ -13,6 +16,13 @@ import no.elhub.flex.config.configureMetrics
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
+import no.elhub.flex.config.createDataSource
+import no.elhub.flex.integration.adapter.AdapterHttpClient
+import no.elhub.flex.jobs.Job
+import no.elhub.flex.jobs.JobApplicationConfig
+import no.elhub.flex.jobs.JobRegistry
+import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
+import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -20,10 +30,19 @@ import org.koin.core.annotation.Module
 import org.koin.environmentProperties
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
+import kotlin.system.exitProcess
 
-/** Entry point for the application. */
+/**
+ * Entry point.
+ * If `JOB` is set, the application runs in job mode and only that job runs; otherwise the backend starts.
+ */
 fun main(args: Array<String>) {
-    EngineMain.main(args)
+    val job = System.getenv("JOB")
+    if (!job.isNullOrBlank()) {
+        runJob(job)
+    } else {
+        EngineMain.main(args)
+    }
 }
 
 @Module(includes = [MetricsModule::class])
@@ -79,4 +98,55 @@ fun Application.module() {
 
     val accountingPointAdapterSyncEnabled = environment.config.property("accounting-point-adapter.sync-enabled").getString().toBoolean()
     configureScheduling(accountingPointAdapterSyncEnabled)
+}
+
+private val logger = KotlinLogging.logger {}
+
+/**
+ * Main function when running the application in job mode.
+ * Runs a single job without launching any Ktor application or Koin.
+ * Configuration is read once from environment variables, see [JobApplicationConfig].
+ */
+fun runJob(jobName: String) {
+    val job = Job.fromString(jobName).getOrElse {
+        logger.error { "Unknown job: '$jobName'. Known jobs: ${Job.knownNames()}" }
+        exitProcess(1)
+    }
+
+    val config = JobApplicationConfig.fromEnv()
+
+    // dependencies
+    val dataSource = createDataSource(
+        url = config.databaseUrl,
+        driverClass = config.databaseDriverClass,
+        username = config.databaseUsername,
+        password = config.databasePassword,
+    )
+    val adapter = AdapterHttpClient(
+        baseUrl = config.adapterBaseUrl,
+        apiKey = config.adapterApiKey,
+    )
+
+    // job instances
+    val registry = JobRegistry(
+        SyncMeteringGridAreaDataJob(
+            adapterClient = adapter,
+            meteringGridAreaRepository = MeteringGridAreaRepositoryImpl(),
+            finalise = config.syncMeteringGridAreaDataFinalise,
+        ),
+    )
+
+    logger.info { "Starting job: ${job.name}" }
+    val result = dataSource.use { runBlocking { registry.resolve(job).run() } }
+
+    result.fold(
+        {
+            logger.error { "Job '${job.name}' failed: $it" }
+            exitProcess(1)
+        },
+        {
+            logger.info { "Job '${job.name}' completed successfully" }
+            exitProcess(0)
+        },
+    )
 }
