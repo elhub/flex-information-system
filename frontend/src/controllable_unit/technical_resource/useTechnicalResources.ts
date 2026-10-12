@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listTechnicalResource } from "../../generated-client";
 import { throwOnError } from "../../util";
 
-export const useTechnicalResources = (controllableUnitId: number) =>
+export const useTechnicalResources = (controllableUnitId: number | undefined) =>
   useQuery({
     queryKey: [
       "technical_resource",
@@ -15,4 +15,6 @@ export const useTechnicalResources = (controllableUnitId: number) =>
           order: "id.desc",
         },
       }).then(throwOnError),
+    enabled: !!controllableUnitId,
+    staleTime: 30_000,
   });
