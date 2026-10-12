@@ -62,9 +62,9 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             id
               ? {
                   service_providing_group_id: id,
-                  "status@neq": "terminated",
+                  "status@neq": "inactive",
                 }
-              : { "status@neq": "terminated" }
+              : { "status@neq": "inactive" }
           }
           sort={{ field: "id", order: "DESC" }}
           disableSyncWithLocation

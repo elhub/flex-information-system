@@ -66,7 +66,7 @@ FOR ALL
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
-    AND status != 'terminated'
+    AND status != 'inactive'
 );
 
 -- RLS: SPGGP-SO002
@@ -87,7 +87,7 @@ SELECT EXISTS (
     SELECT 1 FROM flex.service_providing_group_grid_prequalification
     WHERE service_providing_group_id = spg_id
     AND impacted_system_operator_id = (SELECT flex.current_party())
-    AND status != 'terminated'
+    AND status != 'inactive'
 )
 $$;
 
@@ -97,6 +97,6 @@ ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
 USING (
-    status != 'terminated'
+    status != 'inactive'
     AND current_party_impacted_in_spg(service_providing_group_id)
 );

@@ -364,7 +364,7 @@ export const zServiceProvidingGroupGridPrequalificationStatus = z.enum([
   "conditionally_approved",
   "approved",
   "not_approved",
-  "terminated",
+  "inactive",
 ]);
 
 /**

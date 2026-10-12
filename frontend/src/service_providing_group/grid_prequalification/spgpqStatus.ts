@@ -19,5 +19,5 @@ export const spgpqStatusVariantMap: Record<
   },
   approved: { status: "approved", icon: IconQualitiesCircle },
   not_approved: { status: "failed", icon: IconCrossCircle },
-  terminated: { status: "stopped", icon: IconCrossCircle },
+  inactive: { status: "stopped", icon: IconCrossCircle },
 };

@@ -907,7 +907,7 @@
                     "conditionally_approved",
                     "approved",
                     "not_approved",
-                    "terminated"
+                    "inactive"
                 ],
                 "example": "in_progress"
             },

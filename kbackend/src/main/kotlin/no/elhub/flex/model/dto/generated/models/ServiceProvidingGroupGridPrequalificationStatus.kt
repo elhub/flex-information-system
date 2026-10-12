@@ -20,8 +20,8 @@ public enum class ServiceProvidingGroupGridPrequalificationStatus(
   APPROVED("approved"),
   @SerialName("not_approved")
   NOT_APPROVED("not_approved"),
-  @SerialName("terminated")
-  TERMINATED("terminated"),
+  @SerialName("inactive")
+  INACTIVE("inactive"),
   ;
 
   override fun toString(): String = value

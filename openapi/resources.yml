@@ -1110,9 +1110,10 @@ resources:
           The status of the grid prequalification for this service providing group.
         x-details: >-
           Always `requested` when created. Can then be updated to the other values.
-          Automatically set to `terminated` (soft delete) when none of the controllable
+          Automatically set to `inactive` (soft delete) when none of the controllable
           units of the service providing group has the impacted system operator as
-          CSO anymore.
+          CSO anymore, and back to `requested` if one comes back. Once `inactive`,
+          only the system can change the status.
         format: text
         type: string
         default: requested
@@ -1142,11 +1143,11 @@ resources:
               en: Not approved
               nb: Ikke godkjent
               nn: Ikkje godkjent
-          - id: terminated
+          - id: inactive
             x-intl:
-              en: Terminated
-              nb: Terminert
-              nn: Terminert
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
         example: in_progress
         x-intl:
           en: Status

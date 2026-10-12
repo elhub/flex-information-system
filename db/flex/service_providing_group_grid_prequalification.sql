@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
             'conditionally_approved',
             'approved',
             'not_approved',
-            'terminated'
+            'inactive'
         )
     ),
     prequalified_at timestamp with time zone NULL,
@@ -31,17 +31,9 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     CONSTRAINT fk_service_providing_group_grid_prequalification_impacted_system_operator_id -- noqa
     FOREIGN KEY (
         impacted_system_operator_id, impacted_system_operator_party_type
-    ) REFERENCES party (id, type)
+    ) REFERENCES party (id, type),
+    UNIQUE (service_providing_group_id, impacted_system_operator_id)
 );
-
--- changeset flex:service-providing-group-grid-prequalification-spg-iso-uk runOnChange:true endDelimiter:--
--- only one non-terminated SPG-ISO pair
-CREATE UNIQUE INDEX IF NOT EXISTS
-uk_service_providing_group_grid_prequalification_spg_iso
-ON service_providing_group_grid_prequalification (
-    service_providing_group_id, impacted_system_operator_id
-)
-WHERE status != 'terminated';
 
 -- changeset flex:service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION spg_grid_prequalification_ready_for_market_check(
@@ -55,7 +47,7 @@ AS
 $$
 BEGIN
     RETURN (
-        spggp.status != 'terminated'
+        spggp.status != 'inactive'
         AND (
             spggp.status IN ('approved', 'conditionally_approved')
             OR spggp.prequalified_at IS NOT null
@@ -76,7 +68,12 @@ CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_update
 BEFORE UPDATE OF status ON service_providing_group_grid_prequalification
 FOR EACH ROW
-WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+-- inactive (soft-deleted) rows can be reactivated (requested) by the system
+-- or the FISO, and other roles can neither see nor update them (see RLS)
+WHEN (
+    OLD.status IS DISTINCT FROM NEW.status -- noqa
+    AND OLD.status != 'inactive' -- noqa
+)
 EXECUTE FUNCTION status.restrict_update('requested');
 
 -- changeset flex:service-providing-group-grid-prequalification-capture-event runOnChange:true endDelimiter:--

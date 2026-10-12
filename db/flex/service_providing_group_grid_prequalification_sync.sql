@@ -49,11 +49,10 @@ BEGIN
         = expected_spggp.service_providing_group_id
             AND flex_spggp.impacted_system_operator_id
             = expected_spggp.impacted_system_operator_id
-            -- no terminated rows: if the SPG-ISO pair becomes expected again,
-            -- a new row will be inserted instead (the partial unique index
-            -- allows it)
-            AND flex_spggp.status != 'terminated'
-    -- missing in the table (or only a terminated row is present) -> insert
+    -- the SPG-ISO pair is expected again -> reactivate the soft-deleted row
+    WHEN MATCHED AND flex_spggp.status = 'inactive' THEN
+        UPDATE SET status = 'requested'
+    -- missing in the table -> insert
     WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             service_providing_group_id,
@@ -67,7 +66,7 @@ BEGIN
     -- soft delete the SPG-GP when no CU of the SPG is (or will be) under the
     -- ISO as CSO anymore (CU removed from the SPG, membership ended, CSO changed)
     WHEN NOT MATCHED BY SOURCE
-        AND flex_spggp.status != 'terminated'
+        AND flex_spggp.status != 'inactive'
         AND NOT EXISTS (
             SELECT 1
             FROM flex.service_providing_group_membership AS spgm
@@ -86,7 +85,7 @@ BEGIN
                     OR upper(spgm.valid_time_range) > current_timestamp
                 )
         ) THEN
-        UPDATE SET status = 'terminated';
+        UPDATE SET status = 'inactive';
 END;
 $$;
 

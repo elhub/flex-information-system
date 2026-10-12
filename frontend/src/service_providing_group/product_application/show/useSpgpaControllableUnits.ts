@@ -50,7 +50,7 @@ const useGridPrequalifications = (spgId: number | undefined) =>
       listServiceProvidingGroupGridPrequalification({
         query: {
           service_providing_group_id: `eq.${spgId}`,
-          status: "neq.terminated",
+          status: "neq.inactive",
         },
       }).then(throwOnError),
     enabled: !!spgId,

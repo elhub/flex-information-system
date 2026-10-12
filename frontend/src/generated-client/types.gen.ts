@@ -484,7 +484,7 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
   | "conditionally_approved"
   | "approved"
   | "not_approved"
-  | "terminated";
+  | "inactive";
 
 /**
  * The level of visibility of the comment.

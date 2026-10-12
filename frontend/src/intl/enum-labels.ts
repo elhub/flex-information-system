@@ -100,9 +100,9 @@ export type EnumLabel =
   | "service_providing_group_grid_prequalification.status.approved"
   | "service_providing_group_grid_prequalification.status.conditionally_approved"
   | "service_providing_group_grid_prequalification.status.in_progress"
+  | "service_providing_group_grid_prequalification.status.inactive"
   | "service_providing_group_grid_prequalification.status.not_approved"
   | "service_providing_group_grid_prequalification.status.requested"
-  | "service_providing_group_grid_prequalification.status.terminated"
   | "service_providing_group_grid_suspension.reason.breach_of_conditions"
   | "service_providing_group_grid_suspension.reason.other"
   | "service_providing_group_grid_suspension.reason.significant_group_change"
@@ -191,8 +191,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_prequalification.status.approved": "Approved",
     "service_providing_group_grid_prequalification.status.not_approved":
       "Not approved",
-    "service_providing_group_grid_prequalification.status.terminated":
-      "Terminated",
+    "service_providing_group_grid_prequalification.status.inactive": "Inactive",
     "service_providing_group_grid_suspension.reason.breach_of_conditions":
       "Breach of conditions",
     "service_providing_group_grid_suspension.reason.significant_group_change":
@@ -385,8 +384,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_prequalification.status.approved": "Godkjent",
     "service_providing_group_grid_prequalification.status.not_approved":
       "Ikke godkjent",
-    "service_providing_group_grid_prequalification.status.terminated":
-      "Terminert",
+    "service_providing_group_grid_prequalification.status.inactive": "Inaktiv",
     "service_providing_group_grid_suspension.reason.breach_of_conditions":
       "Brudd på vilkår",
     "service_providing_group_grid_suspension.reason.significant_group_change":
@@ -579,8 +577,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_prequalification.status.approved": "Godkjent",
     "service_providing_group_grid_prequalification.status.not_approved":
       "Ikkje godkjent",
-    "service_providing_group_grid_prequalification.status.terminated":
-      "Terminert",
+    "service_providing_group_grid_prequalification.status.inactive": "Inaktiv",
     "service_providing_group_grid_suspension.reason.breach_of_conditions":
       "Brot på vilkår",
     "service_providing_group_grid_suspension.reason.significant_group_change":

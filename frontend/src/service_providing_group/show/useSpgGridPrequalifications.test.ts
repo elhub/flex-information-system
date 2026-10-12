@@ -82,7 +82,7 @@ it("resolves the impacted system operator's name for each prequalification", asy
   expect(mockedListPrequalifications).toHaveBeenCalledWith({
     query: {
       service_providing_group_id: "eq.1",
-      status: "neq.terminated",
+      status: "neq.inactive",
       order: "id.desc",
     },
   });

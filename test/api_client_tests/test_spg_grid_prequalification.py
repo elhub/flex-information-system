@@ -702,9 +702,9 @@ def _active_memberships(client_fiso, spg_id):
 
 
 # the SPGGP sync job soft-deletes the SPGGP when the SPG has no CU left under
-# the ISO as CSO, then creates a new one if the pair is expected again
+# the ISO as CSO, then reactivates it if the pair is expected again
 @pytest.mark.parametrize("removal", ["delete", "expire"])
-def test_spggp_terminated_when_no_cu_left(data, removal):
+def test_spggp_inactive_when_no_cu_left(data, removal):
     (sts, spg_id, so_id, other_so_id, client_sp, _, pt_ids) = data
     client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
@@ -754,9 +754,9 @@ def test_spggp_terminated_when_no_cu_left(data, removal):
         client=client_fiso, id=spggp_id
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
-    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.TERMINATED
+    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.INACTIVE
 
-    # the terminated SPGGP is hidden from the impacted SO
+    # the inactive SPGGP is hidden from the impacted SO
     client_so = sts.get_client(TestEntityClient.TEST, "SO")
     assert _list_spggps(client_so, spg_id, so_id) == []
 
@@ -764,7 +764,22 @@ def test_spggp_terminated_when_no_cu_left(data, removal):
     assert isinstance(spggps, list)
     assert spggp_id not in [item.id for item in spggps]
 
-    # a CU comes back: a new SPGGP is created next to the terminated one
+    # the impacted SO cannot update it (hidden by RLS)
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_so,
+        id=spggp_id,
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+    spggp = read_service_providing_group_grid_prequalification.sync(
+        client=client_fiso, id=spggp_id
+    )
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.INACTIVE
+
+    # a CU comes back: the same SPGGP is reactivated
     today_midnight = datetime.datetime.combine(
         datetime.date.today(), datetime.time.min
     ).astimezone(tz=datetime.timezone.utc)
@@ -781,7 +796,9 @@ def test_spggp_terminated_when_no_cu_left(data, removal):
     # trigger the sync through a new SPGPA on a fresh SPG-SO pair
     _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[1])
     spggps = _list_spggps(client_fiso, spg_id, so_id)
-    assert {item.status for item in spggps} == {
-        ServiceProvidingGroupGridPrequalificationStatus.REQUESTED,
-        ServiceProvidingGroupGridPrequalificationStatus.TERMINATED,
-    }
+    assert [(item.id, item.status) for item in spggps] == [
+        (spggp_id, ServiceProvidingGroupGridPrequalificationStatus.REQUESTED)
+    ]
+
+    # visible again by the impacted SO
+    assert [item.id for item in _list_spggps(client_so, spg_id, so_id)] == [spggp_id]
