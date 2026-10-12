@@ -5,9 +5,6 @@
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'api' AND table_name = 'entity_client' AND column_name = 'client_secret'
 -- CREATE OR REPLACE VIEW cannot remove a column, so the view is dropped and recreated.
--- Dropping it also drops its INSTEAD OF trigger and requires dropping the embedding
--- functions that take the view row type; all of them are recreated below.
--- Skipped on fresh databases, where the view is created without the column.
 DROP FUNCTION IF EXISTS api.entity(api.entity_client);
 DROP FUNCTION IF EXISTS api.client(api.entity);
 DROP FUNCTION IF EXISTS api.party(api.entity_client);
