@@ -1,4 +1,4 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.client
+package no.elhub.flex.integration.adapter.generated.client
 
 import kotlin.Exception
 import kotlin.Int

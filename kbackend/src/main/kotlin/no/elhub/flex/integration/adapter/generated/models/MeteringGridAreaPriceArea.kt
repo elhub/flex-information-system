@@ -1,17 +1,16 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.models
+package no.elhub.flex.integration.adapter.generated.models
 
-import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class EnergySupplier(
+public data class MeteringGridAreaPriceArea(
   /**
-   * Business ID of the energy supplier. GLN format - 13 digits starting with non-zero.
+   * Norwegian price area
    */
-  @SerialName("business_id")
-  public val businessId: String,
+  @SerialName("price_area")
+  public val priceArea: PriceArea,
   /**
    * Start of the validity period
    */

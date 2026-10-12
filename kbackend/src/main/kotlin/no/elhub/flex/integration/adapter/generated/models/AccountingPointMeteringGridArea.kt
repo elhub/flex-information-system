@@ -1,17 +1,17 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.models
+package no.elhub.flex.integration.adapter.generated.models
 
-import java.util.LinkedHashSet
+import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class EnergyDirection(
+public data class AccountingPointMeteringGridArea(
   /**
-   * Energy direction(s) of the accounting point.
+   * Business ID of the metering grid area. EIC-Y format.
    */
-  @SerialName("direction")
-  public val direction: LinkedHashSet<EnergyDirectionDirection>,
+  @SerialName("business_id")
+  public val businessId: String,
   /**
    * Start of the validity period
    */

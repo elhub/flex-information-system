@@ -1,4 +1,4 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.client
+package no.elhub.flex.integration.adapter.generated.client
 
 import kotlin.String
 import kotlin.collections.Map
@@ -9,7 +9,7 @@ import kotlin.collections.Map
  * @property customHeaders A map of custom HTTP headers to include in every request
  */
 public class ApiConfiguration(
-  public val basePath: String = "http://accounting-point-adapter:8080",
+  public val basePath: String = "http://adapter:8080",
   public val customHeaders: Map<String, String> = mapOf(),
 ) {
   /**

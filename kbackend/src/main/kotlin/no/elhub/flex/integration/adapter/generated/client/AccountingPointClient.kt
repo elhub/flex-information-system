@@ -1,4 +1,4 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.client
+package no.elhub.flex.integration.adapter.generated.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.NoTransformationFoundException
@@ -14,7 +14,7 @@ import kotlin.String
 import kotlin.time.Instant
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.IOException
-import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
+import no.elhub.flex.integration.adapter.generated.models.AccountingPoint
 
 public class AccountingPointClient(
   private val httpClient: HttpClient,
@@ -34,8 +34,8 @@ public class AccountingPointClient(
    *
    * Returns:
    * 	[NetworkResult.Success] with
-   * [no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint] if the request
-   * was successful.
+   * [no.elhub.flex.integration.adapter.generated.models.AccountingPoint] if the request was
+   * successful.
    * 	[NetworkResult.Failure] with a [NetworkError] if the request failed.
    */
   public suspend fun readAccountingPoint(

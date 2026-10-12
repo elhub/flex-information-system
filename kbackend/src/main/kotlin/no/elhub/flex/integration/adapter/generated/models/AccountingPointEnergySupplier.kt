@@ -1,4 +1,4 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.models
+package no.elhub.flex.integration.adapter.generated.models
 
 import kotlin.String
 import kotlin.time.Instant
@@ -6,9 +6,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class MeteringGridArea(
+public data class AccountingPointEnergySupplier(
   /**
-   * Business ID of the metering grid area. EIC-Y format.
+   * Business ID of the energy supplier. GLN format - 13 digits starting with non-zero.
    */
   @SerialName("business_id")
   public val businessId: String,

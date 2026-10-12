@@ -1,4 +1,4 @@
-package no.elhub.flex.integration.accountingpointadapter.generated.models
+package no.elhub.flex.integration.adapter.generated.models
 
 import java.util.UUID
 import kotlin.Double
@@ -19,22 +19,22 @@ public data class AccountingPoint(
    * Time-dependent list of end users associated with this accounting point
    */
   @SerialName("end_user")
-  public val endUser: List<EndUser>,
+  public val endUser: List<AccountingPointEndUser>,
   /**
    * Time-dependent list of energy suppliers associated with this accounting point
    */
   @SerialName("energy_supplier")
-  public val energySupplier: List<EnergySupplier>,
+  public val energySupplier: List<AccountingPointEnergySupplier>,
   /**
    * Time-dependent list of metering grid areas associated with this accounting point
    */
   @SerialName("metering_grid_area")
-  public val meteringGridArea: List<MeteringGridArea>,
+  public val meteringGridArea: List<AccountingPointMeteringGridArea>,
   /**
    * Time-dependent list of energy directions associated with this accounting point
    */
   @SerialName("energy_direction")
-  public val energyDirection: List<EnergyDirection>? = null,
+  public val energyDirection: List<AccountingPointEnergyDirection>? = null,
   /**
    * Geographic latitude of the accounting point (WGS84).
    */
