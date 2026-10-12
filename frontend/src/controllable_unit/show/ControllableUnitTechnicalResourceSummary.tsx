@@ -1,7 +1,15 @@
-import { Heading, Loader, Panel } from "../../components/ui";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardHeaderContent,
+  CardTitle,
+  Loader,
+} from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { KILO } from "../../utils/scales";
 import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
+import { useTranslate } from "ra-core";
 
 type Props = {
   controllableUnitId: number;
@@ -10,6 +18,7 @@ type Props = {
 export const ControllableUnitTechnicalResourceSummary = ({
   controllableUnitId,
 }: Props) => {
+  const translate = useTranslate();
   const {
     data: technicalResources,
     isLoading,
@@ -24,9 +33,7 @@ export const ControllableUnitTechnicalResourceSummary = ({
   );
   const count = powers.length;
   const sum =
-    Math.round(
-      powers.reduce((total, power) => total + power, 0) * 1000,
-    ) / 1000;
+    Math.round(powers.reduce((total, power) => total + power, 0) * 1000) / 1000;
   const average = count > 0 ? Math.round((sum / count) * 100) / 100 : 0;
   const min = powers.reduce(
     (minimum, power) => Math.min(minimum, power),
@@ -38,38 +45,50 @@ export const ControllableUnitTechnicalResourceSummary = ({
   );
 
   return (
-    <Panel border className="h-fit p-4 sm:p-5 flex flex-col gap-4">
-      <Heading size="large">Technical resource summary</Heading>
-      <p>
-        This controllable unit contains <b>{count}</b> technical resources. Here
-        are the <b>rated power</b> aggregates computed across all of them:
-      </p>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <LabelValue
-          label="Aggregated rated power"
-          value={sum}
-          unit="W"
-          storageScale={KILO}
-        />
-        <LabelValue
-          label="Average rated power"
-          value={average}
-          unit="W"
-          storageScale={KILO}
-        />
-        <LabelValue
-          label="Minimum rated power"
-          value={min}
-          unit="W"
-          storageScale={KILO}
-        />
-        <LabelValue
-          label="Maximum rated power"
-          value={max}
-          unit="W"
-          storageScale={KILO}
-        />
-      </div>
-    </Panel>
+    <Card className="h-fit">
+      <CardHeader>
+        <CardHeaderContent>
+          <CardTitle>
+            {translate("text.cu_technical_resource_summary.heading")} ({count})
+          </CardTitle>
+        </CardHeaderContent>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <LabelValue
+            label={translate(
+              "text.cu_technical_resource_summary.aggregated_rated_power",
+            )}
+            value={sum}
+            unit="W"
+            storageScale={KILO}
+          />
+          <LabelValue
+            label={translate(
+              "text.cu_technical_resource_summary.average_rated_power",
+            )}
+            value={average}
+            unit="W"
+            storageScale={KILO}
+          />
+          <LabelValue
+            label={translate(
+              "text.cu_technical_resource_summary.minimum_rated_power",
+            )}
+            value={min}
+            unit="W"
+            storageScale={KILO}
+          />
+          <LabelValue
+            label={translate(
+              "text.cu_technical_resource_summary.maximum_rated_power",
+            )}
+            value={max}
+            unit="W"
+            storageScale={KILO}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };

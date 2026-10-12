@@ -49,12 +49,13 @@ it("shares technical resources with other consumers and updates after invalidati
   const viewModel = renderHook(() => useControllableUnitViewModel(42), {
     wrapper,
   });
-  await waitFor(() => expect(viewModel.result.current.isPending).toBe(false));
-
   const resources = renderHook(() => useTechnicalResources(42), { wrapper });
-  expect(resources.result.current.data).toEqual([
-    { id: 1, maximum_active_power: 10 },
-  ]);
+  await waitFor(() => {
+    expect(viewModel.result.current.isPending).toBe(false);
+    expect(resources.result.current.data).toEqual([
+      { id: 1, maximum_active_power: 10 },
+    ]);
+  });
   expect(listTechnicalResource).toHaveBeenCalledTimes(1);
   expect(viewModel.result.current.data?.technicalResources).toBe(
     resources.result.current.data,

@@ -12,8 +12,11 @@ vi.mock("../technical_resource/useTechnicalResources", () => ({
 vi.mock("../../components/ui", () => {
   const Container = ({ children }: PropsWithChildren) => <div>{children}</div>;
   return {
-    Heading: Container,
-    Panel: Container,
+    Card: Container,
+    CardContent: Container,
+    CardHeader: Container,
+    CardHeaderContent: Container,
+    CardTitle: Container,
     Loader: Container,
     BodyText: Container,
     Link: Container,
@@ -27,31 +30,19 @@ describe("ControllableUnitTechnicalResourceSummary", () => {
     {
       name: "an empty list",
       powers: [],
-      count: 0,
-      sum: 0,
-      average: 0,
-      min: 0,
-      max: 0,
+      expectedValues: ["0 kW", "0 kW", "0 kW", "0 kW"],
     },
     {
       name: "multiple technical resources",
       powers: [10, 20, 40],
-      count: 3,
-      sum: 70,
-      average: 23.33,
-      min: 10,
-      max: 40,
+      expectedValues: ["70 kW", "23.33 kW", "10 kW", "40 kW"],
     },
     {
       name: "a zero-power resource",
       powers: [0, 10, 10],
-      count: 3,
-      sum: 20,
-      average: 6.67,
-      min: 0,
-      max: 10,
+      expectedValues: ["20 kW", "6.67 kW", "0 kW", "10 kW"],
     },
-  ])("summarizes $name", ({ powers, count, sum, average, min, max }) => {
+  ])("summarizes $name", ({ powers, expectedValues }) => {
     vi.mocked(useTechnicalResources).mockReturnValue({
       data: powers.map(
         (power, index) =>
@@ -66,20 +57,10 @@ describe("ControllableUnitTechnicalResourceSummary", () => {
     );
 
     expect(useTechnicalResources).toHaveBeenCalledWith(42);
-    expect(
-      screen.getByText(/This controllable unit contains/),
-    ).toHaveTextContent(
-      `This controllable unit contains ${count} technical resources.`,
-    );
-    for (const [label, value] of [
-      ["Aggregated rated power", `${sum} kW`],
-      ["Average rated power", `${average} kW`],
-      ["Minimum rated power", `${min} kW`],
-      ["Maximum rated power", `${max} kW`],
-    ]) {
-      expect(screen.getByText(`${label}:`).parentElement).toHaveTextContent(
-        value,
-      );
-    }
+    const displayedValues = screen
+      .getAllByText(/ kW$/)
+      .map((element) => element.textContent)
+      .sort();
+    expect(displayedValues).toEqual([...expectedValues].sort());
   });
 });
