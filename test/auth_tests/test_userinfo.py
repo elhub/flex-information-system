@@ -31,8 +31,8 @@ def test_no_login():
 # ---- ---- ---- ----- -----
 
 
-# Login as FISO (only client credentials step) and call userinfo
-def test_only_client_credentials(sts):
+# Log in as entity only (no party) and call userinfo
+def test_only_entity_token(sts):
     entity_token = sts.get_client(TestEntityClient.TEST).token
 
     response = requests.get(

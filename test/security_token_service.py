@@ -18,7 +18,12 @@ from flex.api.party_membership import (
 )
 from flex.types import UNSET
 import os
+import uuid
+from pathlib import Path
+import jwt
 import requests
+from datetime import datetime as dt, timedelta
+from datetime import timezone as tz
 from typing import List, cast
 from enum import Enum
 
@@ -79,6 +84,10 @@ class TestEntityClient(Enum):
     # https://stackoverflow.com/questions/62460557/cannot-collect-test-class-testmain-because-it-has-a-init-constructor-from
     __test__ = False
 
+    # name of the keypair in test/keys used to sign grants for this client
+    def key_name(self):
+        return "common" if self == TestEntityClient.COMMON else "test"
+
     def client_id(self):
         match self:
             case TestEntityClient.TEST:
@@ -98,6 +107,8 @@ Helper class for authentication, so we don't repeat this in every test
 
 API_VERSION = "2026-06-08"
 
+KEYS_DIR = Path(__file__).parent / "keys"
+
 
 class SecurityTokenService:
     COMMON_ROLES = ["BRP", "EU", "ES", "FISO", "MO", "SP", "SO", "TP"]
@@ -111,21 +122,34 @@ class SecurityTokenService:
 
     auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 
-    def _client_credentials(self, client_id, client_secret) -> str:
+    def _jwt_bearer(self, entity: "TestEntityClient") -> str:
         """
-        Get an access token using client credentials
+        Get an entity access token using the JWT bearer grant (no sub)
         """
-        auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        client_credentials_data = {
-            "grant_type": "client_credentials",
-            "client_id": client_id,
-            "client_secret": client_secret,
-        }
-        client_credentials_response = requests.post(
-            self.auth_url + "/token", headers=auth_headers, data=client_credentials_data
+        with open(KEYS_DIR / f".{entity.key_name()}.key.pem") as f:
+            private_key = f.read()
+        now = dt.now(tz.utc)
+        grant = jwt.encode(
+            {
+                "aud": self.auth_url + "/",
+                "iss": entity.client_id(),
+                "jti": str(uuid.uuid4()),
+                "iat": now,
+                "exp": now + timedelta(seconds=120),
+            },
+            private_key,
+            algorithm="RS256",
         )
-        client_credentials_response.raise_for_status()
-        return client_credentials_response.json()["access_token"]
+        response = requests.post(
+            self.auth_url + "/token",
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            data={
+                "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                "assertion": grant,
+            },
+        )
+        response.raise_for_status()
+        return response.json()["access_token"]
 
     def _token_exchange(self, entity_token, party_id) -> str:
         """
@@ -172,7 +196,7 @@ class SecurityTokenService:
 
     # network call for authentication
     def _get_client(self, entity: TestEntityClient, party_name=None):
-        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
+        entity_token = self._jwt_bearer(entity)
         entity_client = AuthenticatedClient(
             base_url=self.api_url,
             token=entity_token,
@@ -199,7 +223,7 @@ class SecurityTokenService:
 
     def get_client(self, entity=None, party_name=None, reset=False):
         """
-        Get an AuthenticatedClient using client credentials.
+        Get an AuthenticatedClient using the JWT bearer grant.
 
         If party_name is None, the returned AuthenticatedClient will be an entity.
         If party_name is not None, the returned AuthenticatedClient will be a party.
@@ -294,7 +318,7 @@ class SecurityTokenService:
 
         # now get a client for the new party
 
-        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
+        entity_token = self._jwt_bearer(entity)
         token = self._token_exchange(entity_token, party.id)
 
         return AuthenticatedClient(
