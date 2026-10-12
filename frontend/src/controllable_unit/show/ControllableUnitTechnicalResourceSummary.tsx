@@ -23,7 +23,10 @@ export const ControllableUnitTechnicalResourceSummary = ({
     (resource) => resource.maximum_active_power,
   );
   const count = powers.length;
-  const sum = powers.reduce((total, power) => total + power, 0);
+  const sum =
+    Math.round(
+      powers.reduce((total, power) => total + power, 0) * 1000,
+    ) / 1000;
   const average = count > 0 ? Math.round((sum / count) * 100) / 100 : 0;
   const min = powers.reduce(
     (minimum, power) => Math.min(minimum, power),
