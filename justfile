@@ -571,18 +571,18 @@ openapi-to-md:
 
     done
 
-openapi-client-accounting-point-adapter:
+openapi-client-adapter:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p ./out
-    rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
+    rm -rf local/accounting-point/client/* ./out/openapi-client-adapter
 
     uv run openapi-python-client generate \
-        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml \
-        --output-path ./out/openapi-client-accounting-point-adapter \
+        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/adapter/openapi.yaml \
+        --output-path ./out/openapi-client-adapter \
         --config ./openapi/openapi-client-config.yml
-    mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
-    mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
+    mv ./out/openapi-client-adapter/flex/models local/accounting-point/client/models
+    mv ./out/openapi-client-adapter/flex/types.py local/accounting-point/client/types.py
 
     uv run ruff format local/accounting-point/client
 
