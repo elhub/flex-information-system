@@ -25,8 +25,6 @@ class EntityClientCreateRequest:
         name (None | str | Unset): Name of the client. Example: Laptop.
         party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
             client cannot assume any party. Example: 30.
-        client_secret (None | str | Unset): The secret of the entity. Input as plain text but stored encrypted. Example:
-            mysupersecretpassword.
         public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
             grant authentication method. Example: -----BEGIN PUBLIC KEY-----
             MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
@@ -40,7 +38,6 @@ class EntityClientCreateRequest:
     scopes: list[AuthScope]
     name: None | str | Unset = UNSET
     party_id: int | None | Unset = UNSET
-    client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -64,12 +61,6 @@ class EntityClientCreateRequest:
         else:
             party_id = self.party_id
 
-        client_secret: None | str | Unset
-        if isinstance(self.client_secret, Unset):
-            client_secret = UNSET
-        else:
-            client_secret = self.client_secret
-
         public_key: None | str | Unset
         if isinstance(self.public_key, Unset):
             public_key = UNSET
@@ -88,8 +79,6 @@ class EntityClientCreateRequest:
             field_dict["name"] = name
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if client_secret is not UNSET:
-            field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
 
@@ -125,15 +114,6 @@ class EntityClientCreateRequest:
 
         party_id = _parse_party_id(d.pop("party_id", UNSET))
 
-        def _parse_client_secret(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        client_secret = _parse_client_secret(d.pop("client_secret", UNSET))
-
         def _parse_public_key(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -148,7 +128,6 @@ class EntityClientCreateRequest:
             scopes=scopes,
             name=name,
             party_id=party_id,
-            client_secret=client_secret,
             public_key=public_key,
         )
 

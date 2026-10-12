@@ -265,6 +265,7 @@ CREATE TABLE api.entity_client (
     client_id text NOT NULL,
     party_id bigint NULL,
     scopes text [] NOT NULL,
+    -- The client_secret is no longer used as client_credentials functionality has been removed from auth
     client_secret text NULL,
     public_key text NULL,
     recorded_by bigint NOT NULL,

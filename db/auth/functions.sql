@@ -1,34 +1,5 @@
 -- liquibase formatted sql
 
--- changeset flex:auth-entity-of-credentials runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION auth.entity_of_credentials(
-    _client_id text, _client_secret text
-)
-RETURNS TABLE (
-    entity_id bigint,
-    external_id uuid,
-    scopes text []
-)
-SECURITY DEFINER VOLATILE
-LANGUAGE sql
-AS $$
-    SELECT
-        e.id,
-        flex.identity_external_id(e.id, null, clt.id) AS external_id,
-        clt.scopes as scopes
-    FROM flex.entity e
-    INNER JOIN flex.entity_client AS clt
-        ON e.id = clt.entity_id
-    WHERE clt.client_id::text = _client_id
-        AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
-$$;
-
--- changeset flex:auth-entity-of-credentials-revoke runOnChange:false endDelimiter:--
-REVOKE EXECUTE ON FUNCTION auth.entity_of_credentials(text, text) FROM public;
-
--- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
-GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
-
 -- changeset flex:auth-entity-of-business-id-drop runOnChange:true endDelimiter:--
 DROP FUNCTION IF EXISTS auth.entity_of_business_id(text, text);
 
@@ -89,7 +60,7 @@ RETURNS TABLE (
     entity_id bigint,
     external_id uuid,
     client_public_key text,
-    scopes text []
+    scopes text[]
 ) SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
@@ -119,7 +90,7 @@ RETURNS TABLE (
     external_id uuid,
     client_id uuid,
     party_id bigint,
-    scopes text [],
+    scopes text[],
     name text,
     public_key text
 ) SECURITY DEFINER VOLATILE
@@ -150,7 +121,7 @@ CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
 ) RETURNS TABLE (
     external_id uuid,
     client_id text,
-    scopes text []
+    scopes text[]
 ) SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
@@ -177,7 +148,7 @@ RETURNS TABLE (
     entity_id bigint,
     eid uuid,
     role text,
-    scopes text []
+    scopes text[]
 )
 SECURITY DEFINER VOLATILE
 LANGUAGE plpgsql

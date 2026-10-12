@@ -1732,10 +1732,6 @@ export type EntityClientUpdateRequest = {
    */
   scopes?: Array<AuthScope>;
   /**
-   * The secret of the entity. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
-  /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
   public_key?: string;
@@ -1762,10 +1758,6 @@ export type EntityClientCreateRequest = {
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
-  /**
-   * The secret of the entity. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
   /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
@@ -1801,10 +1793,6 @@ export type EntityClient = {
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
-  /**
-   * The secret of the entity. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
   /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
@@ -5237,10 +5225,6 @@ export type EntityClientWritable = {
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
-  /**
-   * The secret of the entity. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
   /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */

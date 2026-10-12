@@ -3507,14 +3507,6 @@
                             "read:data"
                         ]
                     },
-                    "client_secret": {
-                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
-                        "format": "text",
-                        "type": "string",
-                        "minLength": 12,
-                        "nullable": true,
-                        "example": "mysupersecretpassword"
-                    },
                     "public_key": {
                         "description": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.",
                         "format": "text",
@@ -3562,14 +3554,6 @@
                             "read:data"
                         ]
                     },
-                    "client_secret": {
-                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
-                        "format": "text",
-                        "type": "string",
-                        "minLength": 12,
-                        "nullable": true,
-                        "example": "mysupersecretpassword"
-                    },
                     "public_key": {
                         "description": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.",
                         "format": "text",
@@ -3611,7 +3595,7 @@
                         "example": "Laptop"
                     },
                     "client_id": {
-                        "description": "The identifier of the entity. ",
+                        "description": "The identifier of the entity.",
                         "format": "text",
                         "type": "string",
                         "readOnly": true,
@@ -3634,14 +3618,6 @@
                         "example": [
                             "read:data"
                         ]
-                    },
-                    "client_secret": {
-                        "description": "The secret of the entity. Input as plain text but stored encrypted.",
-                        "format": "text",
-                        "type": "string",
-                        "minLength": 12,
-                        "nullable": true,
-                        "example": "mysupersecretpassword"
                     },
                     "public_key": {
                         "description": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.",

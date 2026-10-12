@@ -14,7 +14,6 @@ entity_client;name;api;;R;R;R;R;R;R;R;R;RCU;RCU;;
 entity_client;client_id;api;;R;R;R;R;R;R;R;R;R;R;;
 entity_client;party_id;api;;R;R;R;R;R;R;R;R;RCU;RCU;;
 entity_client;scopes;api;;R;R;R;R;R;R;R;R;RCU;RCU;;
-entity_client;client_secret;api;;R;R;R;R;R;R;R;R;RCU;RCU;;
 entity_client;public_key;api;;R;R;R;R;R;R;R;R;RCU;RCU;;
 entity_client;recorded_at;api;;R;R;R;R;R;R;R;R;R;R;;
 entity_client;recorded_by;api;;R;R;R;R;R;R;R;R;R;R;;

@@ -846,7 +846,6 @@ export const zEntityClientUpdateRequest = z.object({
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope).optional(),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -863,7 +862,6 @@ export const zEntityClientCreateRequest = z.object({
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -1688,7 +1686,6 @@ export const zEntityClient = z.object({
   client_id: z.string().readonly(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -2887,7 +2884,6 @@ export const zEntityClientWritable = z.object({
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(

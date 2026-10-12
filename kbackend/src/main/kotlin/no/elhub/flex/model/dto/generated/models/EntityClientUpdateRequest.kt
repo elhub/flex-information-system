@@ -32,11 +32,6 @@ public data class EntityClientUpdateRequest(
   @SerialName("scopes")
   public val scopes: List<AuthScope>? = null,
   /**
-   * The secret of the entity. Input as plain text but stored encrypted.
-   */
-  @SerialName("client_secret")
-  public val clientSecret: String? = null,
-  /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant
    * authentication method.
    */
