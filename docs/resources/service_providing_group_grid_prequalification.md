@@ -1,7 +1,8 @@
 # Service Providing Group Grid Prequalification
 
 A resource tracking the grid prequalification status of a service providing
-group. One SPG grid prequalification per impacted system operator.
+group. One SPG grid prequalification per impacted system operator, plus one for
+the procuring system operator.
 
 ## Status transitions for grid prequalification
 
