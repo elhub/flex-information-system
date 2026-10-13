@@ -783,6 +783,7 @@ export type {
   MeteringGridAreaWritable,
   Notice,
   NoticeData,
+  NoticeDataControllableUnitProductDuplication,
   NoticeDataPartyMissing,
   NoticeDataPartyMissingWritable,
   NoticeDataPartyOutdated,

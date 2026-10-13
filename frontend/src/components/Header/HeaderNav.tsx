@@ -1,6 +1,6 @@
 import { matchPath, NavLink, useLocation, useMatch } from "react-router-dom";
 import { Button, Dropdown, Nav } from "../ui";
-import { IconChevronDown } from "@elhub/ds-icons";
+import { IconChevronDown, IconExternal } from "@elhub/ds-icons";
 import { useGetIdentity, useTranslate } from "ra-core";
 import { userGuideCreateUsersURL, userGuideURL } from "../../httpConfig";
 import { FlexIdentity } from "../../auth";
@@ -162,16 +162,31 @@ const DropdownNav = (group: {
       </Button>
       <Dropdown.Menu placement="bottom-start" arrow>
         <Dropdown.Menu.GroupedList>
-          {group.items.map((item) => (
-            <Dropdown.Menu.GroupedList.Item
-              as={NavLink}
-              to={item.to}
-              className="w-full no-underline"
-              key={item.to}
-            >
-              {item.label}
-            </Dropdown.Menu.GroupedList.Item>
-          ))}
+          {group.items.map((item) => {
+            const isExternal = /^https?:\/\//.test(item.to);
+            return isExternal ? (
+              <Dropdown.Menu.GroupedList.Item
+                as="a"
+                href={item.to}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full no-underline flex gap-2 items-center"
+                key={item.to}
+              >
+                {item.label}
+                <IconExternal size="small" />
+              </Dropdown.Menu.GroupedList.Item>
+            ) : (
+              <Dropdown.Menu.GroupedList.Item
+                as={NavLink}
+                to={item.to}
+                className="w-full no-underline"
+                key={item.to}
+              >
+                {item.label}
+              </Dropdown.Menu.GroupedList.Item>
+            );
+          })}
         </Dropdown.Menu.GroupedList>
       </Dropdown.Menu>
     </Dropdown>

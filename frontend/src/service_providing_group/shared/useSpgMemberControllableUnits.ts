@@ -99,7 +99,7 @@ const fetchSpgMemberControllableUnits = async (
 
 export const spgMemberControllableUnitsQueryKey = (
   spgId: number | undefined,
-) => ["spgMemberControllableUnits", spgId];
+) => ["spgMemberControllableUnits", { spgId: spgId }];
 
 /**
  * Fetches the controllable units that are members of the given service

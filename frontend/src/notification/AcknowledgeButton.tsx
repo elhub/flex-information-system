@@ -1,16 +1,26 @@
-import { UpdateButton, useRecordContext } from "react-admin";
-import CheckIcon from "@mui/icons-material/Check";
+import { useRecordContext, useResourceContext, useUpdate } from "ra-core";
+import { IconValidationCheck } from "@elhub/ds-icons";
+import { Button } from "../components/ui";
 
-export const AcknowledgeButton = (props: any) => {
+export const AcknowledgeButton = () => {
   const record = useRecordContext()!;
+  const resource = useResourceContext();
+  const [update, { isPending }] = useUpdate();
 
   return (
-    <UpdateButton
-      label="Acknowledge"
-      data={{ acknowledged: true }}
-      startIcon={<CheckIcon />}
-      disabled={record.acknowledged}
-      {...props}
-    />
+    <Button
+      variant="invisible"
+      icon={IconValidationCheck}
+      disabled={record.acknowledged || isPending}
+      onClick={() =>
+        update(
+          resource,
+          { id: record.id, data: { acknowledged: true }, previousData: record },
+          { mutationMode: "pessimistic" },
+        )
+      }
+    >
+      Acknowledge
+    </Button>
   );
 };

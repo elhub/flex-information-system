@@ -56,7 +56,7 @@ export type ResourceSummaryPanelProps = {
 };
 
 export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
-  <div className="flex flex-col gap-4">
+  <div data-testid="resource-show-summary">
     <Panel
       border
       className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
@@ -260,12 +260,14 @@ const ResourceBody = ({
   displayControls,
   content,
 }: ResourceBodyProps) => (
-  <div className="flex flex-col gap-4 pt-4 xl:flex-row xl:items-start">
-    <div className="flex flex-col gap-4 xl:w-1/4">
+  <div className="flex flex-col gap-4 xl:flex-row xl:items-start">
+    <div className="flex flex-col gap-4 xl:w-1/4 pt-4">
       <ResourceSummaryPanel fields={summary} />
       {displayControls}
     </div>
-    <div className="min-w-0 flex-1">{content}</div>
+    <div className="min-w-0 flex-1" data-testid="resource-show-content">
+      {content}
+    </div>
   </div>
 );
 
@@ -282,7 +284,7 @@ export const ResourceShowLayout = ({
   content,
 }: ResourceShowLayoutProps) => {
   return (
-    <div className="flex flex-col gap-4 p-2">
+    <div className="flex flex-col gap-4 p-2" data-testid="resource-show-layout">
       <ResourceHeader
         secondaryHeaderText={secondaryHeaderText}
         mainHeaderText={mainHeaderText}

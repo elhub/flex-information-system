@@ -7,7 +7,7 @@ import {
   useRecordContext,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import { Chip, Tooltip } from "@mui/material";
+import { Tag, Tooltip } from "../components/ui";
 import {
   listSystemOperatorProductType,
   ProductType,
@@ -87,15 +87,12 @@ export const ProductTypeField = ({ source }: FieldProps) => {
       // (cf ReferenceField's implementation in React-Admin)
       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
     >
-      <Tooltip title={data?.service}>
-        <Chip
-          label={data ? displayProductType(data) : record[source]}
-          size="small"
-          sx={{
-            borderRadius: 2,
-            fontWeight: 500,
-          }}
-        />
+      <Tooltip content={data?.service ?? ""}>
+        <span>
+          <Tag size="small">
+            {data ? displayProductType(data) : record[source]}
+          </Tag>
+        </span>
       </Tooltip>
     </Link>
   );

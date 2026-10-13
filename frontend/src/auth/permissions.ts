@@ -17918,10 +17918,6 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
-      target: "controllable_unit_service_provider",
-      operation: "delete",
-    },
-    {
       target: "controllable_unit_service_provider.end_user_id",
       operation: "create",
     },

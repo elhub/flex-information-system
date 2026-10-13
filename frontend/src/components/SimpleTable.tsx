@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { useTranslate } from "ra-core";
 import { BodyText, Table } from "./ui";
 import { Tooltip } from "../components/ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
@@ -18,7 +19,7 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   columns: Column<T>[];
   data: T[];
   size?: "medium" | "small";
-  empty?: ReactNode;
+  empty?: ReactNode | null;
   action?: { render: (row: T) => ReactNode; header?: string };
   rowActions?: (row: T) => ReactNode;
   expandPanel?: (row: T) => ReactNode;
@@ -27,13 +28,15 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   rowKey?: (row: T) => string | number;
   className?: string;
   rowClick?: (record: T) => void;
+  loading?: boolean;
+  loadingRows?: number;
 };
 
 export const SimpleTable = <T extends { id?: string | number }>({
   columns,
   data,
   size,
-  empty = "No results",
+  empty,
   action,
   rowActions,
   expandPanel,
@@ -42,7 +45,10 @@ export const SimpleTable = <T extends { id?: string | number }>({
   className,
   rowKey,
   rowClick,
+  loading,
+  loadingRows = 5,
 }: SimpleTableProps<T>) => {
+  const translate = useTranslate();
   const hasRowClick = rowClick !== undefined;
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
@@ -59,18 +65,28 @@ export const SimpleTable = <T extends { id?: string | number }>({
     rowClick(record);
   };
 
-  if (!data.length)
+  if (!data.length && !loading) {
+    if (empty === undefined)
+      return <BodyText>{translate("text.simple_table.no_results")}</BodyText>;
+    if (empty === null) return null;
     return typeof empty === "string" ? (
       <BodyText>{empty}</BodyText>
     ) : (
       <>{empty}</>
     );
+  }
 
   const hasAnyAction =
-    rowActions != null && data.some((r) => rowActions(r) != null);
+    rowActions != null && (loading || data.some((r) => rowActions(r) != null));
+  const columnCount =
+    columns.length +
+    (expandPanel ? 1 : 0) +
+    (checkbox ? 1 : 0) +
+    (action ? 1 : 0) +
+    (hasAnyAction ? 1 : 0);
 
   return (
-    <Table className={className} size={size}>
+    <Table className={className} size={size} aria-busy={loading || undefined}>
       <Table.Header>
         <Table.Row>
           {expandPanel && <Table.ColumnHeader style={{ width: "1px" }} />}
@@ -110,54 +126,62 @@ export const SimpleTable = <T extends { id?: string | number }>({
           )}
         </Table.Row>
       </Table.Header>
-      <Table.Body>
-        {data.map((row, i) =>
-          expandPanel ? (
-            <Table.ExpandableRow
-              key={rowKey ? rowKey(row) : String(row.id ?? i)}
-              style={hasRowClick ? { cursor: "pointer" } : undefined}
-              content={expandPanel(row)}
-              onOpenChange={(isOpen: boolean) => onExpand?.(row, isOpen)}
-            >
-              {checkbox && (
-                <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
-              )}
-              {columns.map((col) => (
-                <Table.DataCell key={String(col.key)}>
-                  {col.render
-                    ? col.render(row[col.key], row)
-                    : String(row[col.key] ?? "")}
-                </Table.DataCell>
-              ))}
-              {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
-              {hasAnyAction && (
-                <Table.DataCell>{rowActions!(row)}</Table.DataCell>
-              )}
-            </Table.ExpandableRow>
-          ) : (
-            <Table.Row
-              key={rowKey ? rowKey(row) : String(row.id ?? i)}
-              onClick={(e) => handleRowClick(e, row)}
-              className={rowClick ? "cursor-pointer" : undefined}
-            >
-              {checkbox && (
-                <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
-              )}
-              {columns.map((col) => (
-                <Table.DataCell key={String(col.key)}>
-                  {col.render
-                    ? col.render(row[col.key], row)
-                    : String(row[col.key] ?? "")}
-                </Table.DataCell>
-              ))}
-              {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
-              {hasAnyAction && (
-                <Table.DataCell>{rowActions!(row)}</Table.DataCell>
-              )}
-            </Table.Row>
-          ),
-        )}
-      </Table.Body>
+      {loading ? (
+        <Table.Skeleton rows={loadingRows} columns={columnCount} />
+      ) : (
+        <Table.Body>
+          {data.map((row, i) =>
+            expandPanel ? (
+              <Table.ExpandableRow
+                key={rowKey ? rowKey(row) : String(row.id ?? i)}
+                style={hasRowClick ? { cursor: "pointer" } : undefined}
+                content={expandPanel(row)}
+                onOpenChange={(isOpen: boolean) => onExpand?.(row, isOpen)}
+              >
+                {checkbox && (
+                  <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
+                )}
+                {columns.map((col) => (
+                  <Table.DataCell key={String(col.key)}>
+                    {col.render
+                      ? col.render(row[col.key], row)
+                      : String(row[col.key] ?? "")}
+                  </Table.DataCell>
+                ))}
+                {action && (
+                  <Table.DataCell>{action.render(row)}</Table.DataCell>
+                )}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(row)}</Table.DataCell>
+                )}
+              </Table.ExpandableRow>
+            ) : (
+              <Table.Row
+                key={rowKey ? rowKey(row) : String(row.id ?? i)}
+                onClick={(e) => handleRowClick(e, row)}
+                className={rowClick ? "cursor-pointer" : undefined}
+              >
+                {checkbox && (
+                  <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
+                )}
+                {columns.map((col) => (
+                  <Table.DataCell key={String(col.key)}>
+                    {col.render
+                      ? col.render(row[col.key], row)
+                      : String(row[col.key] ?? "")}
+                  </Table.DataCell>
+                ))}
+                {action && (
+                  <Table.DataCell>{action.render(row)}</Table.DataCell>
+                )}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(row)}</Table.DataCell>
+                )}
+              </Table.Row>
+            ),
+          )}
+        </Table.Body>
+      )}
     </Table>
   );
 };

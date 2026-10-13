@@ -169,21 +169,15 @@ export const SpgpqActionBar = ({ spgpq }: Props) => {
   if (actions.length === 0) return null;
 
   return (
-    <div
-      className="flex items-center justify-end rounded-md border
-      border-semantic-border-default bg-global-color-white
-      px-4 py-3"
-    >
-      <div className="flex gap-2">
-        {actions.map((config) => (
-          <ActionButton
-            key={config.label}
-            config={config}
-            spgpqId={spgpq.id}
-            spgId={spgpq.service_providing_group_id}
-          />
-        ))}
-      </div>
-    </div>
+    <>
+      {actions.map((config) => (
+        <ActionButton
+          key={config.label}
+          config={config}
+          spgpqId={spgpq.id}
+          spgId={spgpq.service_providing_group_id}
+        />
+      ))}
+    </>
   );
 };

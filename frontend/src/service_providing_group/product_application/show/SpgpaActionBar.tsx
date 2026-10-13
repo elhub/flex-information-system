@@ -67,7 +67,7 @@ const getActionsForStatus = (
           confirmTitle: "Mark as prequalified",
           confirmContent: "This will mark the application as prequalified.",
           variant: "primary",
-          requiresCompleteAt: true,
+          requiresCompleteAt: false,
         },
         rejectAction,
       ];

@@ -109,6 +109,7 @@ export const ServiceProvidingGroupShowTable = ({
             as={RouterLink}
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="invisible"
+            size="small"
             icon={IconUser}
           >
             Manage members
@@ -152,7 +153,9 @@ export const ServiceProvidingGroupShowTable = ({
         <Button
           variant="secondary"
           onClick={() =>
-            navigate(`/accounting_point/${row.accountingPointId}/show`)
+            navigate(
+              `/accounting_point/${row.accountingPointId}/show?tab=location`,
+            )
           }
         >
           {translate("text.technical_resources_show_location")}
@@ -216,6 +219,7 @@ export const ServiceProvidingGroupShowTable = ({
             to={`/service_providing_group/${spgId}/manage-members`}
             variant="primary"
             icon={IconUser}
+            size="small"
           >
             Manage members
           </Button>

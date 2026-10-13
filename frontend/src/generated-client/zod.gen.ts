@@ -262,6 +262,15 @@ export const zNoticeDataProductTypeNotQualified = z.object({
 });
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.controllable_unit.product_duplication
+ */
+export const zNoticeDataControllableUnitProductDuplication = z.object({
+  kind: z.literal("notice.data.controllable_unit.product_duplication"),
+  product_type_id: z.coerce.number().optional(),
+  service_providing_group_ids: z.array(z.coerce.number()).optional(),
+});
+
+/**
  * Common format of the data field in events concerning update operations.
  */
 export const zEventDataUpdatedFields = z.object({
@@ -1342,6 +1351,7 @@ export const zNoticeData = z.discriminatedUnion("kind", [
   zNoticeDataPartyMissing,
   zNoticeDataPartyOutdated,
   zNoticeDataProductTypeNotQualified,
+  zNoticeDataControllableUnitProductDuplication,
 ]);
 
 /**
@@ -2651,6 +2661,7 @@ export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataPartyMissingWritable,
   zNoticeDataPartyOutdatedWritable,
   zNoticeDataProductTypeNotQualified,
+  zNoticeDataControllableUnitProductDuplication,
 ]);
 
 /**

@@ -5,6 +5,7 @@ import {
   ListBaseProps,
   useListContext,
 } from "ra-core";
+import { FilterInputContext } from "../inputs/BaseInput";
 import { BodyText, FormItem, Pagination, Panel } from "../../ui";
 import { Combobox } from "../../../components/ui";
 
@@ -54,9 +55,11 @@ type ListFiltersProps = {
 };
 
 const ListFilters = ({ filters }: ListFiltersProps) => (
-  <FilterLiveForm>
-    <div className="flex gap-2 flex-wrap">{filters}</div>
-  </FilterLiveForm>
+  <FilterInputContext.Provider value={true}>
+    <FilterLiveForm>
+      <div className="flex gap-2 flex-wrap">{filters}</div>
+    </FilterLiveForm>
+  </FilterInputContext.Provider>
 );
 
 type ListActionsProps = {

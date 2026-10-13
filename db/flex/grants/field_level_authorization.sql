@@ -499,10 +499,6 @@ GRANT UPDATE ON TABLE
 flex.controllable_unit_service_provider
 TO flex_service_provider;
 
-GRANT DELETE ON TABLE
-flex.controllable_unit_service_provider
-TO flex_service_provider;
-
 GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider
 TO flex_third_party;

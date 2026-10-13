@@ -1,16 +1,16 @@
-import { Link as RouterLink } from "react-router-dom";
-import { Link, Loader, Panel } from "../../../components/ui";
+import { Loader } from "../../../components/ui";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
 import { KILO, Scale } from "../../../utils/scales";
-import { LabelValue } from "../../../components/LabelValue";
+import { useTranslate } from "ra-core";
 import { useParty } from "../../../hooks/party";
-import { IconRight } from "@elhub/ds-icons";
+import { ResourceCard } from "../../../components/ResourceCard";
 
 type Props = {
   spgId: number;
   spgProcuringSystemOperatorId?: number;
+  impactedSystemOperatorId?: number;
   spg: ServiceProvidingGroup | undefined;
   powerScale?: Scale;
 };
@@ -18,12 +18,16 @@ type Props = {
 export const SpgInfoTab = ({
   spgId,
   spgProcuringSystemOperatorId,
+  impactedSystemOperatorId,
   spg,
   powerScale = KILO,
 }: Props) => {
-  const procuringServiceProvider = useParty(spgProcuringSystemOperatorId);
+  const translate = useTranslate();
+  const procuringSystemOperator = useParty(spgProcuringSystemOperatorId);
+  const impactedSystemOperator = useParty(impactedSystemOperatorId);
 
-  if (procuringServiceProvider.error) throw procuringServiceProvider.error;
+  if (procuringSystemOperator.error) throw procuringSystemOperator.error;
+  if (impactedSystemOperator.error) throw impactedSystemOperator.error;
 
   if (!spg) {
     return <Loader size="small" />;
@@ -31,40 +35,45 @@ export const SpgInfoTab = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Panel border className="p-4 sm:p-5">
-        <div className="grid gap-5 sm:grid-cols-2">
-          <LabelValue
-            label="Service providing group"
-            value={
-              <Link
-                as={RouterLink}
-                to={`/service_providing_group/${spgId}/show`}
-                className="inline-flex items-center gap-1"
-                title="View service providing group"
-              >
-                {spg.name} (#{spg.id})
-                <IconRight size="small" />
-              </Link>
-            }
+      <div className="grid gap-5 sm:grid-cols-2">
+        <ResourceCard
+          title={translate("text.service_providing_group")}
+          content={[
+            {
+              label: translate("text.resource_card.resource_name"),
+              value: spg.name,
+            },
+          ]}
+          to={`/service_providing_group/${spgId}/show`}
+          linkText={translate("text.resource_card.see_group")}
+        />
+        {spgProcuringSystemOperatorId && (
+          <ResourceCard
+            title={translate("text.spg_info_tab.procuring_system_operator")}
+            content={[
+              {
+                label: translate("text.resource_card.resource_name"),
+                value: procuringSystemOperator.data?.name,
+              },
+            ]}
+            to={`/party/${spgProcuringSystemOperatorId}/show`}
+            linkText={translate("text.resource_card.see_system_operator")}
           />
-          {spgProcuringSystemOperatorId && (
-            <LabelValue
-              label="System operator / PSO"
-              value={
-                <Link
-                  as={RouterLink}
-                  to={`/party/${spgProcuringSystemOperatorId}/show`}
-                  className="inline-flex items-center gap-1"
-                  title="View system operator / PSO"
-                >
-                  {procuringServiceProvider.data?.name}
-                  <IconRight size="small" />
-                </Link>
-              }
-            />
-          )}
-        </div>
-      </Panel>
+        )}
+        {impactedSystemOperatorId && (
+          <ResourceCard
+            title={translate("text.spg_info_tab.impacted_system_operator")}
+            content={[
+              {
+                label: translate("text.resource_card.resource_name"),
+                value: impactedSystemOperator.data?.name,
+              },
+            ]}
+            to={`/party/${impactedSystemOperatorId}/show`}
+            linkText={translate("text.resource_card.see_system_operator")}
+          />
+        )}
+      </div>
       {spg.summary && (
         <>
           <ServiceProvidingGroupControllableUnitSummary
