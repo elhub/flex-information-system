@@ -34,6 +34,10 @@ provider, and as part of the process, the Flexibility Information System will
 obtain the identity of the user from the Identity provider and issue an access
 token for the portal.
 
+## Client Credentials
+
+Was recently supported, but has been removed.
+
 ## JWT Bearer
 
 This is the preferred method for authenticating towards the API. The method
@@ -121,6 +125,19 @@ grant_type=urn:ietf:params:oauth:grant-type:token-exchange
 
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
+
+## Example - JWT Bearer and token exchange
+
+Below is an example of a realistic login sequence:
+
+* an entity authenticates with a self-signed JWT in the first call to the
+  `/token` endpoint;
+* it now has sufficient authorisation to read information about itself,
+  including which parties it is allowed to assume;
+* it asks for a token exchange in the second call to the `/token` endpoint,
+  and receives a token for the party it assumes.
+
+![Login Sequence](../diagrams/login_sequence.png)
 
 ## User information endpoint
 
