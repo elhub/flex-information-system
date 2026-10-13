@@ -20,13 +20,12 @@ T = TypeVar("T", bound="EntityClientResponse")
 
 @_attrs_define
 class EntityClientResponse:
-    """Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+    """Response schema - Client linked to an entity for JWT grant authentication methods.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 14.
         entity_id (int): Reference to the entity that this client is attached to. Example: 30.
-        client_id (str): The identifier of the entity. For use with client credentials authentication method. Example:
-            addr@flex.test.
+        client_id (str): The identifier of the entity. Example: addr@flex.test.
         scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
             party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
@@ -37,8 +36,6 @@ class EntityClientResponse:
         name (None | str | Unset): Name of the client. Example: Laptop.
         party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
             client cannot assume any party. Example: 30.
-        client_secret (None | str | Unset): The secret of the entity. For use with client credentials authentication
-            method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
         public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
             grant authentication method. Example: -----BEGIN PUBLIC KEY-----
             MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
@@ -58,7 +55,6 @@ class EntityClientResponse:
     recorded_by: int
     name: None | str | Unset = UNSET
     party_id: int | None | Unset = UNSET
-    client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
     entity: EntityResponse | None | Unset = UNSET
     party: None | PartyResponse | Unset = UNSET
@@ -94,12 +90,6 @@ class EntityClientResponse:
             party_id = UNSET
         else:
             party_id = self.party_id
-
-        client_secret: None | str | Unset
-        if isinstance(self.client_secret, Unset):
-            client_secret = UNSET
-        else:
-            client_secret = self.client_secret
 
         public_key: None | str | Unset
         if isinstance(self.public_key, Unset):
@@ -139,8 +129,6 @@ class EntityClientResponse:
             field_dict["name"] = name
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if client_secret is not UNSET:
-            field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
         if entity is not UNSET:
@@ -190,15 +178,6 @@ class EntityClientResponse:
             return cast(int | None | Unset, data)
 
         party_id = _parse_party_id(d.pop("party_id", UNSET))
-
-        def _parse_client_secret(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        client_secret = _parse_client_secret(d.pop("client_secret", UNSET))
 
         def _parse_public_key(data: object) -> None | str | Unset:
             if data is None:
@@ -252,7 +231,6 @@ class EntityClientResponse:
             recorded_by=recorded_by,
             name=name,
             party_id=party_id,
-            client_secret=client_secret,
             public_key=public_key,
             entity=entity,
             party=party,

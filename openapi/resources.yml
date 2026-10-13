@@ -1383,7 +1383,7 @@ resources:
     name: Entity Client
     summary: Entity client
     description: >-
-      Client linked to an entity for client credentials and JWT grant authentication methods.
+      Client linked to an entity for JWT grant authentication methods.
     x-intl:
       en: Entity Client
       nb: Entitetsklient
@@ -1441,7 +1441,7 @@ resources:
           nn: Namn
       client_id:
         description: >-
-          The identifier of the entity. For use with client credentials authentication method.
+          The identifier of the entity.
         format: text
         type: string
         readOnly: true
@@ -1481,18 +1481,6 @@ resources:
           en: Scopes
           nb: Scopes
           nn: Scopes
-      client_secret:
-        description: >-
-          The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-        format: text
-        type: string
-        minLength: 12
-        nullable: true
-        example: mysupersecretpassword
-        x-intl:
-          en: Client secret
-          nb: Klienthemmelighet
-          nn: Klientløyndom
       public_key:
         description: The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
         format: text

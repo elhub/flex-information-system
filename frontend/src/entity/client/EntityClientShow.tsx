@@ -59,7 +59,6 @@ export const EntityClientShow = () => {
           label
         />
         <ScopesField source={fields.scopes.source} label />
-        <TextField source={fields.client_secret.source} label />
         <TextField source={fields.public_key.source} label emptyText="--" />
       </Content>
       <VerticalSpace />

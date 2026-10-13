@@ -841,13 +841,12 @@ export const zEntityCreateRequest = z.object({
 });
 
 /**
- * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for update operations - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientUpdateRequest = z.object({
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope).optional(),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -857,14 +856,13 @@ export const zEntityClientUpdateRequest = z.object({
 });
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientCreateRequest = z.object({
   entity_id: z.coerce.number(),
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -1680,7 +1678,7 @@ export const zEntity = z.object({
 });
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClient = z.object({
   id: z.coerce.number().readonly(),
@@ -1689,7 +1687,6 @@ export const zEntityClient = z.object({
   client_id: z.string().readonly(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(
@@ -2881,14 +2878,13 @@ export const zEntityWritable = z.object({
 });
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export const zEntityClientWritable = z.object({
   entity_id: z.coerce.number(),
   name: z.string().max(256).optional(),
   party_id: z.coerce.number().optional(),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
   public_key: z
     .string()
     .regex(

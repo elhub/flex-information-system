@@ -84,3 +84,7 @@ WHERE NOT ('read:grid' = any(scopes));
 
 ALTER TABLE flex.entity_client
 ENABLE TRIGGER USER;
+
+-- changeset flex:drop-entity-client-secret-crypt runOnChange:false endDelimiter:;
+DROP TRIGGER IF EXISTS entity_client_secret_crypt ON flex.entity_client;
+DROP FUNCTION IF EXISTS flex.entity_client_secret_crypt();
