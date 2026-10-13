@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
-import { IconPlus } from "@elhub/ds-icons";
+import { IconDownload, IconPlus } from "@elhub/ds-icons";
 import { ListPageLayout } from "../components/list/ListPageLayout";
 import { downloadCsv } from "../components/list/csv";
 import type { ListColumn, ListFilterDef } from "../components/list/types";
@@ -246,7 +246,7 @@ export const ControllableUnitList = () => {
           Create manually
         </Button>
       )}
-      <Button variant="invisible" onClick={exportCsv}>
+      <Button variant="invisible" onClick={exportCsv} icon={IconDownload}>
         Export
       </Button>
     </>

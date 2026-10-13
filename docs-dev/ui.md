@@ -108,3 +108,31 @@ summary-field presentation. It uses structured, typed props such as
 Workflow and display controls can still be supplied by each page, but the layout
 defines where they appear. Pages provide the tabs and define their content. Use
 `ResourceShowLayout` for new resource show pages.
+
+## List page layout
+
+Top-level resource list pages use a consistent layout, provided by the
+`ListPageLayout` component in `components/list`. It is built from small parts
+that only depend on the `ListInterface` contract (`components/list/types.ts`):
+
+* The heading shows the page title, with optional actions (such as a create
+  button) at the top right.
+* `ListFilters` renders the filter bar from a list of typed filter definitions
+  (`text`, `select` or `multiselect`), with "Reset filters" and "Clear filters"
+  buttons.
+* `ListTable` renders a sortable table from column definitions, and handles the
+  error, loading and empty states. Rows can optionally link to a show page.
+* `ListPagination` renders the page selector and the page size.
+
+Data and business logic live in a per-resource hook, for example
+`useControllableUnitList`, which returns a `ListInterface`. The filter, sort
+and paging state is kept in the URL search params by `useListState`, so list
+pages are linkable and survive navigation back from a show page. The layout
+does not know where the data comes from.
+
+`ListPageLayout` is meant for top-level list pages. For tables embedded
+elsewhere, such as in tabs on show pages, use `SimpleTable`, which takes data
+that is already loaded and has no state of its own. A tab table that needs
+server-side filtering or paging can reuse `ListFilters`, `ListTable` and
+`ListPagination` with a hook that returns a `ListInterface` backed by local
+state rather than the URL.
