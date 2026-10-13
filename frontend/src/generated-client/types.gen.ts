@@ -355,6 +355,24 @@ export type NoticeDataPartyOutdated = {
 };
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.party.incompatible
+ */
+export type NoticeDataPartyIncompatible = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.incompatible";
+  /**
+   * Details about the entity with access to incompatible parties.
+   */
+  entity?: Entity;
+  /**
+   * The incompatible parties the entity owns or is a member of.
+   */
+  party?: Array<Party>;
+};
+
+/**
  * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export type NoticeDataProductTypeNotQualified = {
@@ -396,6 +414,9 @@ export type NoticeData =
   | ({
       kind: "notice.data.party.outdated";
     } & NoticeDataPartyOutdated)
+  | ({
+      kind: "notice.data.party.incompatible";
+    } & NoticeDataPartyIncompatible)
   | ({
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)
@@ -4794,6 +4815,24 @@ export type NoticeDataPartyOutdatedWritable = {
   party?: PartyWritable;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.party.incompatible
+ */
+export type NoticeDataPartyIncompatibleWritable = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.incompatible";
+  /**
+   * Details about the entity with access to incompatible parties.
+   */
+  entity?: EntityWritable;
+  /**
+   * The incompatible parties the entity owns or is a member of.
+   */
+  party?: Array<PartyWritable>;
+};
+
 export type NoticeDataWritable =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -4804,6 +4843,9 @@ export type NoticeDataWritable =
   | ({
       kind: "notice.data.party.outdated";
     } & NoticeDataPartyOutdatedWritable)
+  | ({
+      kind: "notice.data.party.incompatible";
+    } & NoticeDataPartyIncompatibleWritable)
   | ({
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)

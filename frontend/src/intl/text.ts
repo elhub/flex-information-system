@@ -244,6 +244,8 @@ export type TextKey =
   | "notice_details"
   | "notice_description"
   | "notice_action"
+  | "notice_party_incompatible_intro"
+  | "notice_party_incompatible_empty"
   | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
@@ -577,6 +579,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_details: "Notice details",
     notice_description: "Description",
     notice_action: "Action",
+    notice_party_incompatible_intro:
+      "Entity %{entity} can act as all the following incompatible parties:",
+    notice_party_incompatible_empty: "No parties",
     "accounting_point_location_map.popup.business_id": "Business ID",
     "accounting_point_location_map.popup.kind": "Kind",
     "accounting_point_location_map.popup.status": "Status",
@@ -923,6 +928,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_details: "Merknadsdetaljer",
     notice_description: "Beskrivelse",
     notice_action: "Handling",
+    notice_party_incompatible_intro:
+      "Enheten %{entity} kan opptre som alle de følgende ukompatible aktørene:",
+    notice_party_incompatible_empty: "Ingen parter",
     "accounting_point_location_map.popup.business_id": "Forretnings-ID",
     "accounting_point_location_map.popup.kind": "Type",
     "accounting_point_location_map.popup.status": "Status",

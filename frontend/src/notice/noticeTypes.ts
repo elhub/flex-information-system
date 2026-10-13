@@ -73,6 +73,15 @@ const noticeTypes = [
       "Update party to match the latest data fetched from the party register.",
   },
   {
+    id: "no.elhub.flex.party.incompatible",
+    shortId: "party.incompatible",
+    label: "Party incompatible",
+    description:
+      "This entity has access, by ownership or membership, to parties in incompatible groups: system operator on one side, and energy supplier, balance responsible party or service provider on the other.",
+    action:
+      "Review the parties and memberships of the entity and remove the incompatible access.",
+  },
+  {
     id: "no.elhub.flex.party.residual",
     shortId: "party.residual",
     label: "Party residual",
