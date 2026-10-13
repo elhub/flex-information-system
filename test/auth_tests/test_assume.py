@@ -38,3 +38,16 @@ def test_assume_endpoint_rejects_clients(sts):
     json = response.json()
     assert json.get("error") is not None
     assert json["error"] == "invalid_client"
+
+
+def test_unassume_rejects_clients(sts):
+    entity_token = sts.get_client(TestEntityClient.TEST).token
+    response = requests.post(
+        auth_url + "/unassume",
+        headers=auth_headers,
+        cookies={"__Host-flex_session": entity_token},
+    )
+    assert response.status_code == 400
+    json = response.json()
+    assert json.get("error") is not None
+    assert json["error"] == "invalid_client"

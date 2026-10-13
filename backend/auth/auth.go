@@ -905,6 +905,33 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	externalID, clientID, scopes, err := models.GetEntityIdentityByExternalID(
 		r.Context(), tx, receivedToken.ExternalID,
 	)
+
+	canUnassume, err := models.CanEntityClientUnassume(
+		r.Context(), tx, receivedToken.ExternalID,
+	)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not check if party can be unassumed",
+		})
+		w.Write(body)
+
+		return
+	}
+	if !canUnassume {
+		w.WriteHeader(http.StatusBadRequest)
+
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "party cannot be unassumed",
+		})
+		w.Write(body)
+
+		return
+	}
+
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 

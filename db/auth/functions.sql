@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION auth.entity_of_credentials(
 RETURNS TABLE (
     entity_id bigint,
     external_id uuid,
-    scopes text []
+    scopes text[]
 )
 SECURITY DEFINER VOLATILE
 LANGUAGE sql
@@ -89,7 +89,7 @@ RETURNS TABLE (
     entity_id bigint,
     external_id uuid,
     client_public_key text,
-    scopes text []
+    scopes text[]
 ) SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
@@ -110,6 +110,25 @@ REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
 -- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
 
+-- changeset flex:auth-is-entity-client runOnChange:false endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.is_client(external_id text)
+RETURNS boolean
+SECURITY DEFINER STABLE
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.identity i
+        WHERE i.eid::text = external_id
+            AND i.client_id IS NOT NULL
+    );
+$$;
+-- changeset flex:auth-is-entity-client-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.is_client(text) FROM public;
+-- changeset flex:auth-is-entity-client-grant runOnChange:false endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.is_client(text) TO flex_anonymous;
+
+
 -- changeset flex:auth-entity-client-by-client-id runOnChange:true endDelimiter:--
 -- Gets the full entity client record identified by its client id
 CREATE OR REPLACE FUNCTION auth.entity_client_by_client_id(in_client_id text)
@@ -119,7 +138,7 @@ RETURNS TABLE (
     external_id uuid,
     client_id uuid,
     party_id bigint,
-    scopes text [],
+    scopes text[],
     name text,
     public_key text
 ) SECURITY DEFINER VOLATILE
@@ -150,7 +169,7 @@ CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
 ) RETURNS TABLE (
     external_id uuid,
     client_id text,
-    scopes text []
+    scopes text[]
 ) SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
@@ -177,7 +196,7 @@ RETURNS TABLE (
     entity_id bigint,
     eid uuid,
     role text,
-    scopes text []
+    scopes text[]
 )
 SECURITY DEFINER VOLATILE
 LANGUAGE plpgsql
