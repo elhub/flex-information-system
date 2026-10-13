@@ -18,6 +18,7 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -32,6 +33,8 @@ def _get_kwargs(
     params["service_providing_group_id"] = service_providing_group_id
 
     params["impacted_system_operator_id"] = impacted_system_operator_id
+
+    params["status"] = status
 
     params["select"] = select
 
@@ -151,6 +154,7 @@ def sync_detailed(
     id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -166,6 +170,7 @@ def sync_detailed(
         id (str | Unset):
         service_providing_group_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -184,6 +189,7 @@ def sync_detailed(
         id=id,
         service_providing_group_id=service_providing_group_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -204,6 +210,7 @@ def sync(
     id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -219,6 +226,7 @@ def sync(
         id (str | Unset):
         service_providing_group_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -238,6 +246,7 @@ def sync(
         id=id,
         service_providing_group_id=service_providing_group_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -252,6 +261,7 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -267,6 +277,7 @@ async def asyncio_detailed(
         id (str | Unset):
         service_providing_group_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -285,6 +296,7 @@ async def asyncio_detailed(
         id=id,
         service_providing_group_id=service_providing_group_id,
         impacted_system_operator_id=impacted_system_operator_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -303,6 +315,7 @@ async def asyncio(
     id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
     impacted_system_operator_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -318,6 +331,7 @@ async def asyncio(
         id (str | Unset):
         service_providing_group_id (str | Unset):
         impacted_system_operator_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -338,6 +352,7 @@ async def asyncio(
             id=id,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
+            status=status,
             select=select,
             order=order,
             offset=offset,
