@@ -23,8 +23,8 @@ data class JobApplicationConfig(
             databaseUsername = requireEnv("FLEX_DATABASE_USERNAME"),
             databasePassword = requireEnv("FLEX_DATABASE_PASSWORD"),
             databaseDriverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
-            adapterBaseUrl = requireEnv("ACCOUNTING_POINT_ADAPTER_BASE_URL"),
-            adapterApiKey = requireEnv("ACCOUNTING_POINT_ADAPTER_API_KEY"),
+            adapterBaseUrl = requireEnv("ADAPTER_BASE_URL"),
+            adapterApiKey = requireEnv("ADAPTER_API_KEY"),
             syncMeteringGridAreaDataFinalise = (System.getenv("SYNC_METERING_GRID_AREA_DATA_FINALISE") ?: "false").toBooleanStrict(),
         )
     }
