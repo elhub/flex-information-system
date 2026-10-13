@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
             'in_progress',
             'conditionally_approved',
             'approved',
-            'not_approved'
+            'not_approved',
+            'inactive'
         )
     ),
     prequalified_at timestamp with time zone NULL,
@@ -46,8 +47,11 @@ AS
 $$
 BEGIN
     RETURN (
-        spggp.status IN ('approved', 'conditionally_approved')
-        OR spggp.prequalified_at IS NOT null
+        spggp.status != 'inactive'
+        AND (
+            spggp.status IN ('approved', 'conditionally_approved')
+            OR spggp.prequalified_at IS NOT null
+        )
     );
 END;
 $$;
@@ -64,7 +68,12 @@ CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_update
 BEFORE UPDATE OF status ON service_providing_group_grid_prequalification
 FOR EACH ROW
-WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+-- inactive (soft-deleted) rows can be reactivated (requested) by the system
+-- or the FISO, and other roles can neither see nor update them (see RLS)
+WHEN (
+    OLD.status IS DISTINCT FROM NEW.status -- noqa
+    AND OLD.status != 'inactive' -- noqa
+)
 EXECUTE FUNCTION status.restrict_update('requested');
 
 -- changeset flex:service-providing-group-grid-prequalification-capture-event runOnChange:true endDelimiter:--

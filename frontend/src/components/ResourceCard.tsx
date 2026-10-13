@@ -26,13 +26,13 @@ export const ResourceCard = ({
   linkText,
 }: PartyCardProps) => {
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <CardHeaderContent>
           <CardTitle>{title}</CardTitle>
         </CardHeaderContent>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid flex-1 content-start gap-4 sm:grid-cols-2">
         {content?.map(({ label, labelKey, value }) => (
           <div key={label ?? labelKey}>
             <LabelValue

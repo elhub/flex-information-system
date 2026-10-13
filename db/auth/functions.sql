@@ -1,5 +1,34 @@
 -- liquibase formatted sql
 
+-- changeset flex:auth-entity-of-credentials runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.entity_of_credentials(
+    _client_id text, _client_secret text
+)
+RETURNS TABLE (
+    entity_id bigint,
+    external_id uuid,
+    scopes text[]
+)
+SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        e.id,
+        flex.identity_external_id(e.id, null, clt.id) AS external_id,
+        clt.scopes as scopes
+    FROM flex.entity e
+    INNER JOIN flex.entity_client AS clt
+        ON e.id = clt.entity_id
+    WHERE clt.client_id::text = _client_id
+        AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
+$$;
+
+-- changeset flex:auth-entity-of-credentials-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.entity_of_credentials(text, text) FROM public;
+
+-- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
+
 -- changeset flex:auth-entity-of-business-id-drop runOnChange:true endDelimiter:--
 DROP FUNCTION IF EXISTS auth.entity_of_business_id(text, text);
 
@@ -80,6 +109,25 @@ REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
 
 -- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
+
+-- changeset flex:auth-is-entity-client runOnChange:false endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.is_client(external_id text)
+RETURNS boolean
+SECURITY DEFINER STABLE
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.identity i
+        WHERE i.eid::text = external_id
+            AND i.client_id IS NOT NULL
+    );
+$$;
+-- changeset flex:auth-is-entity-client-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.is_client(text) FROM public;
+-- changeset flex:auth-is-entity-client-grant runOnChange:false endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.is_client(text) TO flex_anonymous;
+
 
 -- changeset flex:auth-entity-client-by-client-id runOnChange:true endDelimiter:--
 -- Gets the full entity client record identified by its client id

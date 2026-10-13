@@ -56,19 +56,24 @@ export type ResourceSummaryPanelProps = {
 };
 
 export const ResourceSummaryPanel = ({ fields }: ResourceSummaryPanelProps) => (
-  <Panel border className="bg-semantic-background-alternative h-fit p-4 sm:p-5">
-    <div className="flex flex-col gap-4">
-      {fields
-        .filter((field) => field.shouldShow ?? true)
-        .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
-          <LabelValue
-            key={labelValueProps.label ?? labelValueProps.labelKey ?? index}
-            size="large"
-            {...labelValueProps}
-          />
-        ))}
-    </div>
-  </Panel>
+  <div data-testid="resource-show-summary">
+    <Panel
+      border
+      className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+    >
+      <div className="flex flex-col gap-4">
+        {fields
+          .filter((field) => field.shouldShow ?? true)
+          .map(({ shouldShow: _shouldShow, ...labelValueProps }, index) => (
+            <LabelValue
+              key={labelValueProps.label ?? labelValueProps.labelKey ?? index}
+              size="large"
+              {...labelValueProps}
+            />
+          ))}
+      </div>
+    </Panel>
+  </div>
 );
 
 type ResourceTitleProps = {
@@ -260,7 +265,9 @@ const ResourceBody = ({
       <ResourceSummaryPanel fields={summary} />
       {displayControls}
     </div>
-    <div className="min-w-0 flex-1">{content}</div>
+    <div className="min-w-0 flex-1" data-testid="resource-show-content">
+      {content}
+    </div>
   </div>
 );
 
@@ -277,7 +284,7 @@ export const ResourceShowLayout = ({
   content,
 }: ResourceShowLayoutProps) => {
   return (
-    <div className="flex flex-col gap-4 p-2">
+    <div className="flex flex-col gap-4 p-2" data-testid="resource-show-layout">
       <ResourceHeader
         secondaryHeaderText={secondaryHeaderText}
         mainHeaderText={mainHeaderText}

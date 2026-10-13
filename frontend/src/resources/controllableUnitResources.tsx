@@ -179,7 +179,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             <ResourceContextProvider value="technical_resource">
               <Create
                 redirect={(_: any, _id: any, record: any) =>
-                  `controllable_unit/${record.controllable_unit_id}/show`
+                  `controllable_unit/${record.controllable_unit_id}/show?tab=technical_resources`
                 }
               >
                 <TechnicalResourceInput />
