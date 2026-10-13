@@ -4070,9 +4070,9 @@ only verification, by setting the status to either <code>prequalification</code>
 <code>temporary_qualified</code>. They are responsible for taking to application to either
 <code>prequalified</code>, <code>verified</code> or <code>rejected</code>. If it is rejected, the service
 provider can then make updates and propose the application again.</p>
-<p>The system will regularly check automatically whether SPG grid prequalification
-resources need to be created for each impacted system operator, and any status
-change from <code>requested</code> will trigger this check as well.</p>
+<p>Once an application moves past <code>requested</code>, the system creates an SPG grid
+prequalification for the procuring system operator and for each impacted system operator.
+The system also checks this regularly, so any missing grid prequalifications are created.</p>
 <p><a href="../../diagrams/service_providing_group_product_application_status.png">Full Size</a>
 |
 <a href="../../diagrams/service_providing_group_product_application_status.plantuml">Graphviz description</a>

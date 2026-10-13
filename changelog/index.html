@@ -336,6 +336,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#2026-10-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-10-13
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-09-17" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3651,6 +3662,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#2026-10-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-10-13
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-09-17" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3703,6 +3725,14 @@
 <h1 id="changelog">Changelog</h1>
 <p>This changelog tracks all changes that are visible in our API.</p>
 <!-- markdownlint-disable MD013 -->
+<h2 id="2026-10-13">2026-10-13</h2>
+<ul>
+<li><strong>Removed the <code>client_credentials</code> grant type from the <code>/token</code> endpoint of the auth API.</strong>
+  Requests with <code>grant_type=client_credentials</code> are no longer accepted.
+  Use the <code>JWT Bearer</code> grant instead: upload a public key to the entity client and
+  authenticate with a self-signed JWT (see <a href="../auth/authn-methods/">Authentication methods</a>).</li>
+<li><strong>Removed the <code>client_secret</code> field from the <em>Entity Client</em> resource.</strong></li>
+</ul>
 <h2 id="2026-09-17">2026-09-17</h2>
 <ul>
 <li><strong>Removed default limit on list endpoint</strong>

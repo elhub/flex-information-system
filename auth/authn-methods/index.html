@@ -796,7 +796,7 @@
   <a href="#client-credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Client credentials
+        Client Credentials
       
     </span>
   </a>
@@ -826,10 +826,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-client-credentials-and-token-exchange" class="md-nav__link">
+  <a href="#example-jwt-bearer-and-token-exchange" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example - client credentials and token exchange
+        Example - JWT Bearer and token exchange
       
     </span>
   </a>
@@ -3700,7 +3700,7 @@
   <a href="#client-credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Client credentials
+        Client Credentials
       
     </span>
   </a>
@@ -3730,10 +3730,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-client-credentials-and-token-exchange" class="md-nav__link">
+  <a href="#example-jwt-bearer-and-token-exchange" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example - client credentials and token exchange
+        Example - JWT Bearer and token exchange
       
     </span>
   </a>
@@ -3783,10 +3783,6 @@ client. From there, users have two ways of authenticating.</p>
 <ul>
 <li><code>JWT Bearer</code> - The entity uploads a public key to one of its clients and uses
   a self-signed JWT Authorization grant to authenticate.</li>
-<li><code>Client Credentials</code> - The entity uses a client_id and client_secret to
-  authenticate. The client_id is the UUID of one of the clients added by the
-  entity in the system, and client_secret is a password that must be set on
-  this client.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Possible future use of enterprise certificates</p>
@@ -3802,28 +3798,8 @@ Access Management (IAM).</p>
 provider, and as part of the process, the Flexibility Information System will
 obtain the identity of the user from the Identity provider and issue an access
 token for the portal.</p>
-<h2 id="client-credentials">Client credentials</h2>
-<div class="admonition warning">
-<p class="admonition-title">Deprecated</p>
-<p>This is a temporary solution that will be removed in later versions of the
-FIS. Use the <code>JWT Bearer</code> method instead.</p>
-</div>
-<p>To use this method, first log in to the portal and add a new client to the
-entity. Then, write down the generated Client ID on the created client, because
-you will need it to log in, and set the Client Secret on the client. This should
-be a strong password. Consider generating a random password using some kind of
-online generator.</p>
-<p>Once Client Secret is set in the portal, the connection is established through
-basic authentication on the auth API's <code>/token</code> endpoint, using the
-<a href="https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/">client_credentials</a>
-<code>grant_type</code> with
-<a href="https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1">Client Password</a>,
-in a URL-encoded body.</p>
-<p>Set <code>Content-Type</code> header as <code>application/x-www-form-urlencoded</code>.</p>
-<p>Example body:</p>
-<div class="highlight"><pre><span></span><code>grant_type=client_credentials&amp;client_id=&lt;client_id&gt;&amp;client_secret=&lt;client_secret&gt;
-</code></pre></div>
-<p>The result is a JWT access token for the entity that can be used to access the API.</p>
+<h2 id="client-credentials">Client Credentials</h2>
+<p>Was recently supported, but has been removed.</p>
 <h2 id="jwt-bearer">JWT Bearer</h2>
 <p>This is the preferred method for authenticating towards the API. The method
 uses
@@ -3899,7 +3875,7 @@ language/system of choice. Here are a few examples/guides:</p>
 <p>The response from the endpoint will be a JWT access token that can be used to
 access the API.</p>
 <h2 id="token-exchange">Token exchange</h2>
-<p>If the user has logged in via client credentials or OpenID connect, the user can
+<p>If the user has logged in via OpenID connect, the user can
 assume a party by doing a
 <a href="https://datatracker.ietf.org/doc/html/rfc8693">OAuth 2.0 Token Exchange (RFC8693)</a>
 that lets an entity "impersonate" a party with the returned token. This is done
@@ -3934,15 +3910,15 @@ parameter in the URL-encoded body of the request.</p>
 </code></pre></div>
 <p>The response from the endpoint will be a JWT access token that can be used to
 access the API.</p>
-<h2 id="example-client-credentials-and-token-exchange">Example - client credentials and token exchange</h2>
-<p>Below is an example of realistic login sequence:</p>
+<h2 id="example-jwt-bearer-and-token-exchange">Example - JWT Bearer and token exchange</h2>
+<p>Below is an example of a realistic login sequence:</p>
 <ul>
-<li>a user logs in as an entity by giving their credentials in the first call to
-  the <code>/token</code> endpoint;</li>
-<li>they now have sufficient authorisation to read information about themselves,
-  including which parties they are allowed to assume;</li>
-<li>they ask for a token exchange in the second call to the <code>/token</code> endpoint,
-  in order to assume one of the possible parties.</li>
+<li>an entity authenticates with a self-signed JWT in the first call to the
+  <code>/token</code> endpoint;</li>
+<li>it now has sufficient authorisation to read information about itself,
+  including which parties it is allowed to assume;</li>
+<li>it asks for a token exchange in the second call to the <code>/token</code> endpoint,
+  and receives a token for the party it assumes.</li>
 </ul>
 <p><img alt="Login Sequence" src="../../diagrams/login_sequence.png" /></p>
 <h2 id="user-information-endpoint">User information endpoint</h2>

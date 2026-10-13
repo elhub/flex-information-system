@@ -4058,7 +4058,8 @@
 
 <h1 id="service-providing-group-grid-prequalification">Service Providing Group Grid Prequalification</h1>
 <p>A resource tracking the grid prequalification status of a service providing
-group. One SPG grid prequalification per impacted system operator.</p>
+group. One SPG grid prequalification per impacted system operator, plus one for
+the procuring system operator.</p>
 <h2 id="status-transitions-for-grid-prequalification">Status transitions for grid prequalification</h2>
 <p><a href="../../diagrams/service_providing_group_prequalification_status.png">Full Size</a>
 |
@@ -4103,7 +4104,7 @@ group. One SPG grid prequalification per impacted system operator.</p>
 <tr>
 <td><a name="field-status" href="#field-status">status</a></td>
 <td>The status of the grid prequalification for this service providing group.</td>
-<td>text<br/>One of: <code>requested</code>, <code>in_progress</code>, <code>conditionally_approved</code>, <code>approved</code>, <code>not_approved</code><br/>Default: <code>requested</code><br/><br/>Always <code>requested</code> when created. Can then be updated to the other values.</td>
+<td>text<br/>One of: <code>requested</code>, <code>in_progress</code>, <code>conditionally_approved</code>, <code>approved</code>, <code>not_approved</code>, <code>inactive</code><br/>Default: <code>requested</code><br/><br/>Always <code>requested</code> when created. Can then be updated to the other values. Automatically set to <code>inactive</code> (soft delete) when none of the controllable units of the service providing group has the impacted system operator as CSO anymore, and back to <code>requested</code> if one comes back. Once <code>inactive</code>, only the system can change the status.</td>
 <td></td>
 </tr>
 <tr>
@@ -4144,6 +4145,11 @@ group. One SPG grid prequalification per impacted system operator.</p>
 <tr>
 <td>SPGGP-VAL002</td>
 <td>If <code>status</code> is set to <code>not_approved</code>, then <code>prequalified_at</code> must be unset in the resource or by the request.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGGP-VAL003</td>
+<td><code>status</code> is automatically set to <code>inactive</code> (soft delete) by a periodic job once none of the controllable units of the service providing group has the impacted system operator as CSO anymore, and set back to <code>requested</code> by the same job if one comes back. Once <code>inactive</code>, only the system can change the status.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -4232,6 +4238,11 @@ resource. The default policy is <strong>deny</strong>.</p>
 <tr>
 <td>SPGGP-SO002</td>
 <td>Read SPGGP related to SPG they can see.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGGP-SO003</td>
+<td>Read SPGGP of SPGs for which the SO is the procuring SO</td>
 <td>DONE</td>
 </tr>
 </tbody>

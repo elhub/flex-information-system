@@ -4079,16 +4079,23 @@
 
 
 <h1 id="entity-client">Entity Client</h1>
-<p>This resource represents a client linked to an entity, to be used in the client
-credentials and JWT grant authentication methods.</p>
+<p>This resource represents a client linked to an entity, to be used in the JWT Bearer
+authentication method.</p>
 <p>The main purpose of this resource is to enable machine access to the API.
 A program connecting to the API will use one of the clients present on the
 entity.
 It will thereby get the possibility to act as the party referenced in the
 <code>party_id</code> field, with the authorisations listed in the client's <code>scopes</code>.</p>
-<p>Entity clients are secured by a password in <code>client_secret</code> or a <code>public_key</code>
-associated to the private key JWTs sent to the JWT grant authentication will
-be signed with.</p>
+<p>Entity clients are secured by a <code>public_key</code> associated to the private key
+that JWTs sent to the JWT Bearer authentication will be signed with.</p>
+<div class="admonition warning">
+<p class="admonition-title">Client credentials removed</p>
+<p>Entity clients could previously also be secured by a <code>client_secret</code> and
+used with the <code>client_credentials</code> grant. This grant type has been removed.
+The <code>client_secret</code> field is no longer part of the API, and existing clients
+must authenticate with the JWT Bearer method using a <code>public_key</code>.
+See the <a href="../../changelog/">changelog</a>.</p>
+</div>
 <p>An entity can have several clients registered, typically an organisation entity
 with one client per enterprise machine expected to use the API in an automated
 way.</p>
@@ -4148,7 +4155,7 @@ key stored in the entity client.</p>
 </tr>
 <tr>
 <td><a name="field-client_id" href="#field-client_id">client_id</a></td>
-<td>The identifier of the entity. For use with client credentials authentication method.</td>
+<td>The identifier of the entity.</td>
 <td>text<br/>Read only</td>
 <td></td>
 </tr>
@@ -4162,12 +4169,6 @@ key stored in the entity client.</p>
 <td><a name="field-scopes" href="#field-scopes">scopes</a></td>
 <td>List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.<br/>Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.</td>
 <td><br/>Required<br/>Array<br/>See the <a href="../../auth/scopes/">list of scopes</a> for allowed values.</td>
-<td></td>
-</tr>
-<tr>
-<td><a name="field-client_secret" href="#field-client_secret">client_secret</a></td>
-<td>The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.</td>
-<td>text<br/>Min length: <code>12</code></td>
 <td></td>
 </tr>
 <tr>
@@ -4367,18 +4368,6 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>scopes</td>
-<td></td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>RCU</td>
-</tr>
-<tr>
-<td>client_secret</td>
 <td></td>
 <td>R</td>
 <td>R</td>
