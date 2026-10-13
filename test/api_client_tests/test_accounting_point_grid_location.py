@@ -26,6 +26,8 @@ from flex.models import (
     ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupGridPrequalificationCreateRequest,
+    ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
@@ -58,6 +60,9 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
+)
+from flex.api.service_providing_group_grid_prequalification import (
+    create_service_providing_group_grid_prequalification,
 )
 from flex.api.service_providing_group_product_application import (
     create_service_providing_group_product_application,
@@ -352,6 +357,152 @@ def test_apgl_so_procuring(sts):
     )
     assert isinstance(apgls_after, list)
     assert any(a.id == apgl.id for a in apgls_after)
+
+
+# RLS: APGL-SO002
+# RLS: APGL-SO003
+def test_apgl_so_impacted(sts):
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+
+    # Common SO is not CSO or PSO for AP 1015 in test data
+    client_iso = sts.get_client(TestEntityClient.COMMON, "SO")
+    iso_id = sts.get_userinfo(client_iso)["party_id"]
+
+    apgl = create_accounting_point_grid_location.sync(
+        client=client_fiso,
+        body=_base_create_request(1015),
+    )
+    assert isinstance(apgl, AccountingPointGridLocationResponse)
+
+    # make a change so there is history to read
+    u = update_accounting_point_grid_location.sync(
+        client=client_fiso,
+        id=cast(int, apgl.id),
+        body=AccountingPointGridLocationUpdateRequest(name="Updated by FISO"),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # not visible before the SO is impacted
+    apgls_before = list_accounting_point_grid_location.sync(
+        client=client_iso,
+        accounting_point_id="eq.1015",
+    )
+    assert isinstance(apgls_before, list)
+    assert len(apgls_before) == 0
+
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="TEST-APGL-SO-IMPACTED-CU",
+            accounting_point_id=1015,
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_active_power=1.0,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    client_sp = sts.get_client(TestEntityClient.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+    spg = create_service_providing_group.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupCreateRequest(
+            service_provider_id=sp_id,
+            name="TEST-APGL-SO-IMPACTED-SPG",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
+        ),
+    )
+    assert isinstance(spg, ServiceProvidingGroupResponse)
+
+    client_eu = sts.get_client(TestEntityClient.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+    cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-APGL-CONTRACT",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-APGL-SO-IMPACTED-CU-TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    spgm = create_service_providing_group_membership.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_providing_group_id=cast(int, spg.id),
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+
+    # Common SO becomes impacted through a grid prequalification on the SPG
+    spggp = create_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupGridPrequalificationCreateRequest(
+            service_providing_group_id=cast(int, spg.id),
+            impacted_system_operator_id=iso_id,
+        ),
+    )
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+
+    # APGL-SO003: ISO can now read the grid location
+    apgls_after = list_accounting_point_grid_location.sync(
+        client=client_iso,
+        accounting_point_id="eq.1015",
+    )
+    assert isinstance(apgls_after, list)
+    assert any(a.id == apgl.id for a in apgls_after)
+
+    apgl_iso = read_accounting_point_grid_location.sync(
+        client=client_iso,
+        id=cast(int, apgl.id),
+    )
+    assert isinstance(apgl_iso, AccountingPointGridLocationResponse)
+
+    # APGL-SO002: and its history
+    hist = list_accounting_point_grid_location_history.sync(
+        client=client_iso,
+        accounting_point_grid_location_id=f"eq.{apgl.id}",
+    )
+    assert isinstance(hist, list)
+    assert len(hist) >= 1
+
+    # APGL-SO003 is read only
+    u = update_accounting_point_grid_location.sync(
+        client=client_iso,
+        id=cast(int, apgl.id),
+        body=AccountingPointGridLocationUpdateRequest(name="Updated by ISO"),
+    )
+    assert isinstance(u, ErrorMessage) or u is None
+    apgl_check = read_accounting_point_grid_location.sync(
+        client=client_fiso,
+        id=cast(int, apgl.id),
+    )
+    assert isinstance(apgl_check, AccountingPointGridLocationResponse)
+    assert apgl_check.name == "Updated by FISO"
 
 
 def test_rla_absence(sts):

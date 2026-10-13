@@ -57,3 +57,18 @@ USING (
             AND ap_pso.procuring_system_operator_id = (SELECT current_party())
     )
 );
+
+-- RLS: APGL-SO003
+DROP POLICY IF EXISTS "APGL_SO003" ON accounting_point_grid_location;
+CREATE POLICY "APGL_SO003" ON accounting_point_grid_location
+FOR SELECT
+TO flex_system_operator
+USING (
+    -- ISO
+    EXISTS (
+        SELECT 1
+        FROM accounting_point_impacted_system_operator AS ap_iso
+        WHERE ap_iso.accounting_point_id = accounting_point_grid_location.accounting_point_id -- noqa
+            AND ap_iso.impacted_system_operator_id = (SELECT current_party())
+    )
+);

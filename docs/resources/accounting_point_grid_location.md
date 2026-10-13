@@ -105,8 +105,9 @@ No policies.
 
 | Policy key | Policy                                                                                  | Status |
 |------------|-----------------------------------------------------------------------------------------|--------|
-| APGL-SO001 | Create, read and update accounting point grid locations where they are CSO, ISO or PSO. | DONE   |
+| APGL-SO001 | Create, read and update accounting point grid locations where they are CSO or PSO.      | DONE   |
 | APGL-SO002 | Read history on accounting point grid locations where they are  CSO, ISO or PSO.        | DONE   |
+| APGL-SO003 | Read accounting point grid locations where they are ISO.                                | DONE   |
 
 #### Service Provider
 
