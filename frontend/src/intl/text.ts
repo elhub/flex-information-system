@@ -80,6 +80,8 @@ export type TextKey =
   | "cu_show_no_service_provider"
   | "cu_show_no_balance_responsible_party"
   | "cu_technical_resource_summary.heading"
+  | "cu_technical_resource_summary.description_prefix"
+  | "cu_technical_resource_summary.description_suffix"
   | "cu_technical_resource_summary.aggregated_rated_power"
   | "cu_technical_resource_summary.average_rated_power"
   | "cu_technical_resource_summary.minimum_rated_power"
@@ -361,6 +363,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_show_no_service_provider: "No service provider",
     cu_show_no_balance_responsible_party: "No balance responsible party",
     "cu_technical_resource_summary.heading": "Technical resource summary",
+    "cu_technical_resource_summary.description_prefix":
+      "This controllable unit contains",
+    "cu_technical_resource_summary.description_suffix":
+      "technical resources. Here are the rated power aggregates computed across all of them:",
     "cu_technical_resource_summary.aggregated_rated_power":
       "Aggregated rated power",
     "cu_technical_resource_summary.average_rated_power": "Average rated power",
@@ -702,6 +708,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_show_no_balance_responsible_party: "Ingen balanseansvarlig",
     "cu_technical_resource_summary.heading":
       "Oppsummering av tekniske ressurser",
+    "cu_technical_resource_summary.description_prefix":
+      "Denne kontrollerbare enheten inneholder",
+    "cu_technical_resource_summary.description_suffix":
+      "tekniske ressurser. Her er aggregatene for merkeeffekt beregnet på tvers av alle:",
     "cu_technical_resource_summary.aggregated_rated_power":
       "Aggregert merkeeffekt",
     "cu_technical_resource_summary.average_rated_power":

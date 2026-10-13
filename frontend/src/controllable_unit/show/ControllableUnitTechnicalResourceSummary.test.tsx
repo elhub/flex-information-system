@@ -18,6 +18,8 @@ vi.mock("../../components/ui", () => {
     CardHeaderContent: Container,
     CardTitle: Container,
     Loader: Container,
+    Panel: Container,
+    Heading: Container,
     BodyText: Container,
     Link: Container,
   };
