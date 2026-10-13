@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { Alert, BodyText, Loader, Table, type SortState } from "../ui";
 import type { ListColumn, ListInterface } from "./types";
 
-type ListTableProps<T extends { id: number | string }> = {
+export type ListTableProps<T extends { id: number | string }> = {
   list: ListInterface<T>;
   columns: ListColumn<T>[];
-  // where to navigate when a row is clicked; omit for non-clickable rows
   rowLink?: (row: T) => string;
+  expandedContent?: (row: T) => React.ReactNode;
 };
 
 // Sortable table for a ListInterface, including error, loading and empty states.
@@ -14,19 +14,28 @@ export const ListTable = <T extends { id: number | string }>({
   list,
   columns,
   rowLink,
+  expandedContent,
 }: ListTableProps<T>) => {
   if (list.isError)
     return <Alert variant="error">Could not load the list.</Alert>;
   if (list.isLoading) return <Loader />;
   if (list.rows.length === 0) return <BodyText>No results</BodyText>;
 
-  return <RowsTable list={list} columns={columns} rowLink={rowLink} />;
+  return (
+    <RowsTable
+      list={list}
+      columns={columns}
+      rowLink={rowLink}
+      expandedContent={expandedContent}
+    />
+  );
 };
 
 const RowsTable = <T extends { id: number | string }>({
   list,
   columns,
   rowLink,
+  expandedContent,
 }: ListTableProps<T>) => {
   const navigate = useNavigate();
 
@@ -64,6 +73,7 @@ const RowsTable = <T extends { id: number | string }>({
       >
         <Table.Header>
           <Table.Row>
+            {expandedContent && <Table.ColumnHeader style={{ width: "1px" }} />}
             {columns.map((col) => (
               <Table.ColumnHeader
                 key={col.header}
@@ -78,19 +88,32 @@ const RowsTable = <T extends { id: number | string }>({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {list.rows.map((row) => (
-            <Table.Row
-              key={row.id}
-              style={rowLink ? { cursor: "pointer" } : undefined}
-              onClick={(e) => handleRowClick(e, row)}
-            >
-              {columns.map((col) => (
-                <Table.DataCell key={col.header}>
-                  {col.render(row)}
-                </Table.DataCell>
-              ))}
-            </Table.Row>
-          ))}
+          {list.rows.map((row) => {
+            const cells = columns.map((col) => (
+              <Table.DataCell key={col.header}>
+                {col.render(row)}
+              </Table.DataCell>
+            ));
+            const style = rowLink ? { cursor: "pointer" } : undefined;
+            return expandedContent ? (
+              <Table.ExpandableRow
+                key={row.id}
+                style={style}
+                onClick={(e) => handleRowClick(e, row)}
+                content={expandedContent(row)}
+              >
+                {cells}
+              </Table.ExpandableRow>
+            ) : (
+              <Table.Row
+                key={row.id}
+                style={style}
+                onClick={(e) => handleRowClick(e, row)}
+              >
+                {cells}
+              </Table.Row>
+            );
+          })}
         </Table.Body>
       </Table>
     </Table.ScrollContainer>

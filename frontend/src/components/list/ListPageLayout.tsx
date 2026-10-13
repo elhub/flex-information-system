@@ -2,18 +2,14 @@ import { ReactNode } from "react";
 import { Heading, Panel } from "../ui";
 import { ListFilters } from "./ListFilters";
 import { ListPagination } from "./ListPagination";
-import { ListTable } from "./ListTable";
-import type { ListColumn, ListFilterDef, ListInterface } from "./types";
+import { ListTable, type ListTableProps } from "./ListTable";
+import type { ListFilterDef } from "./types";
 
 type ListPageLayoutProps<T extends { id: number | string }> = {
   title: string;
-  list: ListInterface<T>;
-  columns: ListColumn<T>[];
   filters?: ListFilterDef[];
   actions?: ReactNode;
-  // where to navigate when a row is clicked; omit for non-clickable rows
-  rowLink?: (row: T) => string;
-};
+} & ListTableProps<T>;
 
 // Common layout for list pages: heading, actions, filter bar, sortable table
 // and paging. Data and business logic live in a per-resource hook returning
@@ -25,6 +21,7 @@ export const ListPageLayout = <T extends { id: number | string }>({
   filters = [],
   actions,
   rowLink,
+  expandedContent,
 }: ListPageLayoutProps<T>) => (
   <div className="flex flex-col gap-2">
     <div className="flex items-center justify-between gap-2 mb-4">
@@ -35,7 +32,12 @@ export const ListPageLayout = <T extends { id: number | string }>({
     </div>
     <Panel border className="flex flex-col gap-5">
       <ListFilters filters={filters} list={list} />
-      <ListTable list={list} columns={columns} rowLink={rowLink} />
+      <ListTable
+        list={list}
+        columns={columns}
+        rowLink={rowLink}
+        expandedContent={expandedContent}
+      />
       <ListPagination list={list} />
     </Panel>
   </div>
