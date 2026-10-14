@@ -99,20 +99,24 @@ export const useSpgpaShowSummary = ({
       ),
     },
     {
+      tooltip: true,
       labelKey: "service_providing_group_product_application.created_at",
       value: toDateTimeString(spgpa.created_at),
     },
     {
+      tooltip: true,
       shouldShow: !!spgpa.prequalified_at,
       labelKey: "service_providing_group_product_application.prequalified_at",
       value: toDateTimeString(spgpa.prequalified_at),
     },
     {
+      tooltip: true,
       shouldShow: !!spgpa.verified_at,
       labelKey: "service_providing_group_product_application.verified_at",
       value: toDateTimeString(spgpa.verified_at),
     },
     {
+      tooltip: true,
       shouldShow: !!spgpa.complete_at,
       labelKey: "service_providing_group_product_application.complete_at",
       value: toDateTimeString(spgpa.complete_at),
