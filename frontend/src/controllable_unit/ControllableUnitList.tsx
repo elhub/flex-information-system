@@ -38,6 +38,12 @@ export const ControllableUnitList = () => {
   const canLookup = permissions?.allow("controllable_unit", "lookup");
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
+  const canFilterOnBrp = [
+    "flex_balance_responsible_party",
+    "flex_flexibility_information_system_operator",
+    "flex_system_operator",
+    "flex_service_provider",
+  ].includes(identity?.role);
 
   const filters: ListFilterDef[] = [
     {
@@ -57,15 +63,19 @@ export const ControllableUnitList = () => {
       options: systemOperators.data ?? [],
       isLoading: systemOperators.isLoading,
     },
-    {
-      type: "multiselect",
-      source: BRP_FILTER_SOURCE,
-      label: translate(
-        "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
-      ),
-      options: balanceResponsibleParties.data ?? [],
-      isLoading: balanceResponsibleParties.isLoading,
-    },
+    ...(canFilterOnBrp
+      ? [
+          {
+            type: "multiselect" as const,
+            source: BRP_FILTER_SOURCE,
+            label: translate(
+              "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
+            ),
+            options: balanceResponsibleParties.data ?? [],
+            isLoading: balanceResponsibleParties.isLoading,
+          },
+        ]
+      : []),
     {
       type: "select",
       source: "is_small",

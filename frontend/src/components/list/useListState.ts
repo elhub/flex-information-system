@@ -9,6 +9,11 @@ type Options = {
   defaultPerPage?: number;
 };
 
+const toPositiveInt = (value: string | null, fallback: number) => {
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : fallback;
+};
+
 // Filter, sort and paging state kept in the URL search params, so list
 // pages are linkable and survive navigation back from a show page.
 // Default filters apply until the user touches any filter ("filtered=1").
@@ -45,8 +50,8 @@ export const useListState = ({
       ? { field: sortField, order: sortOrder }
       : defaultSort;
 
-  const page = Number(params.get("page") ?? 1);
-  const perPage = Number(params.get("perPage") ?? defaultPerPage);
+  const page = toPositiveInt(params.get("page"), 1);
+  const perPage = toPositiveInt(params.get("perPage"), defaultPerPage);
 
   const update = (fn: (next: URLSearchParams) => void) =>
     setParams(

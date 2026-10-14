@@ -13,6 +13,8 @@ export const ListFilters = <T,>({
   filters: ListFilterDef[];
   list: ListInterface<T>;
 }) => {
+  const translate = useTranslate();
+
   if (filters.length === 0) return null;
 
   return (
@@ -22,12 +24,12 @@ export const ListFilters = <T,>({
       ))}
       {list.canResetFilters && (
         <Button variant="invisible" onClick={list.resetFilters} size="small">
-          Reset filters
+          {translate("text.list_filter.reset_filters")}
         </Button>
       )}
       {Object.keys(list.filters).length > 0 && (
         <Button variant="invisible" onClick={list.clearFilters} size="small">
-          Clear filters
+          {translate("text.list_filter.clear_filters")}
         </Button>
       )}
     </div>
