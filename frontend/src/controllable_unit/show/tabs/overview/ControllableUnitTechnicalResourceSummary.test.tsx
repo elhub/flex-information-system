@@ -1,15 +1,15 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { TechnicalResource } from "../../generated-client";
-import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
+import type { TechnicalResource } from "../../../../generated-client";
+import { useTechnicalResources } from "../../common/useTechnicalResources";
 import { ControllableUnitTechnicalResourceSummary } from "./ControllableUnitTechnicalResourceSummary";
 
-vi.mock("../technical_resource/useTechnicalResources", () => ({
+vi.mock("../../common/useTechnicalResources", () => ({
   useTechnicalResources: vi.fn(),
 }));
 
-vi.mock("../../components/ui", () => {
+vi.mock("../../../../components/ui", () => {
   const Container = ({ children }: PropsWithChildren) => <div>{children}</div>;
   return {
     Card: Container,

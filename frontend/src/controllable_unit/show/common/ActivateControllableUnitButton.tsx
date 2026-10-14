@@ -3,7 +3,7 @@ import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
 import { Button, BodyText } from "../../../components/ui";
 import { throwOnError } from "../../../util";
-import { controllableUnitViewModelQueryKey } from "../useControllableUnitViewModel";
+import { controllableUnitViewModelQueryKey } from "./useControllableUnitViewModel";
 
 export const ActivateControllableUnitButton = ({
   controllableUnitId,

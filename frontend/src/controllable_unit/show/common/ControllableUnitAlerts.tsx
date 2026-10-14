@@ -1,4 +1,4 @@
-import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
+import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import type { AlertType } from "../../../components/ResourceShowLayout";
 import { useTranslate } from "ra-core";
 

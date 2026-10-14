@@ -17,11 +17,11 @@ import {
   readControllableUnit,
   readParty,
   TechnicalResource,
-} from "../../generated-client";
+} from "../../../generated-client";
 
 import { useQuery } from "@tanstack/react-query";
-import { findCurrentlyValidRecord, throwOnError } from "../../util";
-import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
+import { findCurrentlyValidRecord, throwOnError } from "../../../util";
+import { useTechnicalResources } from "./useTechnicalResources";
 
 export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistory;
