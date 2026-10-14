@@ -1,9 +1,6 @@
 import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
-import BookmarksIcon from "@mui/icons-material/Bookmarks";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
@@ -18,7 +15,6 @@ import { ServiceProvidingGroupMembershipHistoryList } from "../service_providing
 import { ServiceProvidingGroupGridPrequalificationShow } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationShow";
 import { ServiceProvidingGroupGridPrequalificationInput } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationInput";
 import { ServiceProvidingGroupGridPrequalificationList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
-import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationHistoryList";
 import { ServiceProvidingGroupProductApplicationInput } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationInput";
 import { ServiceProvidingGroupProductApplicationShow } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationShow";
 import { ServiceProvidingGroupProductApplicationPrint } from "../service_providing_group/product_application/print/ServiceProvidingGroupProductApplicationPrint";
@@ -46,7 +42,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group"
         name="service_providing_group"
-        icon={BookmarksIcon}
         list={ServiceProvidingGroupList}
         show={ServiceProvidingGroupShow}
         edit={
@@ -282,7 +277,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_grid_prequalification"
         name="service_providing_group_grid_prequalification"
-        icon={BookmarkAddedIcon}
         list={ServiceProvidingGroupGridPrequalificationList}
         show={ServiceProvidingGroupGridPrequalificationShow}
         edit={
@@ -303,12 +297,7 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      >
-        <Route
-          path=":service_providing_group_grid_prequalification_id/history"
-          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
-        />
-      </Resource>,
+      ></Resource>,
     );
   }
 
@@ -330,7 +319,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_membership"
         name="service_providing_group_membership"
-        icon={BookmarkAddIcon}
         show={ServiceProvidingGroupMembershipShow}
         edit={
           canUpdateMembership ? (

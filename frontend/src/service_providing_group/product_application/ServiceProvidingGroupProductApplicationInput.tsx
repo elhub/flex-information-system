@@ -1,4 +1,4 @@
-import { Form, useRecordContext, useTranslate } from "ra-core";
+import { Form, useGetIdentity, useRecordContext, useTranslate } from "ra-core";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   Alert,
   FormContainer,
   Heading,
+  Loader,
   VerticalSpace,
 } from "../../components/ui";
 import {
@@ -23,6 +24,7 @@ import {
   FormToolbarWithConfirmation,
   UnitInput,
   DateTimeInput,
+  FormToolbar,
 } from "../../components/EDS-ra/inputs";
 import { SystemOperatorProductTypesInput } from "../../product_type/components";
 import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
@@ -88,12 +90,14 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
   const [draftId] = useState(() => restoredDraftId ?? crypto.randomUUID());
 
   const fields = getFields(spgpaFormSchema.shape);
 
   const recordSpgId = record?.service_providing_group_id as number | undefined;
+  const isServiceProvider = identity?.role === "flex_service_provider";
 
   const handleCreateSuccess = (values: FieldValues) => {
     const spgId = values.service_providing_group_id as number | undefined;
@@ -104,6 +108,8 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
     navigate(-1);
   };
+
+  if (identityLoading) return <Loader />;
 
   return (
     <Form
@@ -206,15 +212,19 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         />
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
         <DateTimeInput {...fields.complete_at} description tooltip={false} />
-        <FormToolbarWithConfirmation
-          confirmTitle={translate("ra.action.save")}
-          confirmContent={
-            <p>{translate("text.spga_save_confirmation_text")}</p>
-          }
-          onSuccess={
-            createOrUpdate === "create" ? handleCreateSuccess : undefined
-          }
-        />
+        {isServiceProvider ? (
+          <FormToolbarWithConfirmation
+            confirmTitle={translate("ra.action.save")}
+            confirmContent={
+              <p>{translate("text.spga_save_confirmation_text")}</p>
+            }
+            onSuccess={
+              createOrUpdate === "create" ? handleCreateSuccess : undefined
+            }
+          />
+        ) : (
+          <FormToolbar />
+        )}
       </FormContainer>
     </Form>
   );

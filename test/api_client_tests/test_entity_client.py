@@ -65,7 +65,7 @@ def test_entity_client_fiso(sts):
     u = update_entity_client.sync(
         client=client_ent,
         id=cast(int, clt.id),
-        body=EntityClientUpdateRequest(name="Some new Name"),
+        body=EntityClientUpdateRequest(name="updated client name"),
     )
     assert isinstance(u, ErrorMessage)
 
@@ -149,7 +149,7 @@ def test_entity_client_org(sts):
     e = update_entity_client.sync(
         client=client_org,
         id=cast(int, clt.id),
-        body=EntityClientUpdateRequest(client_secret="123456789012345"),
+        body=EntityClientUpdateRequest(name="updated client name"),
     )
     assert isinstance(e, ErrorMessage)
 
@@ -168,7 +168,7 @@ def test_entity_client_org(sts):
     e = update_entity_client.sync(
         client=client_org_with_org_ent,
         id=cast(int, clt.id),
-        body=EntityClientUpdateRequest(client_secret="4321432143214321"),
+        body=EntityClientUpdateRequest(name="updated client name"),
     )
     assert isinstance(e, ErrorMessage)
 

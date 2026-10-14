@@ -5,7 +5,7 @@ import {
   IconWarningCircle,
 } from "@elhub/ds-icons";
 import { ServiceProvidingGroupGridPrequalificationStatus } from "../../generated-client";
-import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
+import { StatusVariant } from "../../components/StatusBadge";
 
 export const spgpqStatusVariantMap: Record<
   ServiceProvidingGroupGridPrequalificationStatus,
@@ -19,4 +19,5 @@ export const spgpqStatusVariantMap: Record<
   },
   approved: { status: "approved", icon: IconQualitiesCircle },
   not_approved: { status: "failed", icon: IconCrossCircle },
+  inactive: { status: "stopped", icon: IconCrossCircle },
 };

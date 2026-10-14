@@ -368,6 +368,24 @@ export type NoticeDataProductTypeNotQualified = {
   product_type_ids?: Array<number>;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.controllable_unit.product_duplication
+ */
+export type NoticeDataControllableUnitProductDuplication = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.controllable_unit.product_duplication";
+  /**
+   * The product type for which the controllable unit is registered in multiple service providing groups with active applications.
+   */
+  product_type_id?: number;
+  /**
+   * The service providing groups the controllable unit is a member of that have active applications for the product type.
+   */
+  service_providing_group_ids?: Array<number>;
+};
+
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -380,7 +398,10 @@ export type NoticeData =
     } & NoticeDataPartyOutdated)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.controllable_unit.product_duplication";
+    } & NoticeDataControllableUnitProductDuplication);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -483,7 +504,8 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
   | "in_progress"
   | "conditionally_approved"
   | "approved"
-  | "not_approved";
+  | "not_approved"
+  | "inactive";
 
 /**
  * The level of visibility of the comment.
@@ -1694,7 +1716,7 @@ export type Entity = {
 };
 
 /**
- * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for update operations - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientUpdateRequest = {
   /**
@@ -1711,17 +1733,13 @@ export type EntityClientUpdateRequest = {
    */
   scopes?: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
-  /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
   public_key?: string;
 };
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientCreateRequest = {
   /**
@@ -1742,17 +1760,13 @@ export type EntityClientCreateRequest = {
    */
   scopes: Array<AuthScope>;
   /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
-  /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
   public_key?: string;
 };
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClient = {
   /**
@@ -1768,7 +1782,7 @@ export type EntityClient = {
    */
   name?: string;
   /**
-   * The identifier of the entity. For use with client credentials authentication method.
+   * The identifier of the entity.
    */
   readonly client_id: string;
   /**
@@ -1780,10 +1794,6 @@ export type EntityClient = {
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
-  /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
   /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
@@ -4796,7 +4806,10 @@ export type NoticeDataWritable =
     } & NoticeDataPartyOutdatedWritable)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.controllable_unit.product_duplication";
+    } & NoticeDataControllableUnitProductDuplication);
 
 /**
  * An empty object
@@ -5193,7 +5206,7 @@ export type EntityWritable = {
 };
 
 /**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for JWT grant authentication methods.
  */
 export type EntityClientWritable = {
   /**
@@ -5213,10 +5226,6 @@ export type EntityClientWritable = {
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
-  /**
-   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-   */
-  client_secret?: string;
   /**
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
@@ -9755,6 +9764,7 @@ export type ListServiceProvidingGroupGridPrequalificationData = {
      * Reference to the `party` that is the impacted system operator.
      */
     impacted_system_operator_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -10011,6 +10021,7 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
      * Reference to the `party` that is the impacted system operator.
      */
     impacted_system_operator_id?: string;
+    status?: string;
     /**
      * Filter based on record time. Alternative to using recorded_at and replaced_at filters together.
      */

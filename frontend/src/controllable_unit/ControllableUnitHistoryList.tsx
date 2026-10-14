@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
+  IdentityField,
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
@@ -39,7 +40,11 @@ const IsSmallField = ({ source: _source }: { source: string }) => {
   );
 };
 
-export const ControllableUnitHistoryList = () => {
+export const ControllableUnitHistoryList = ({
+  controllableUnitId,
+}: {
+  controllableUnitId?: number;
+}) => {
   const { controllable_unit_id } = useParams();
 
   const fields = getFields(zControllableUnit.shape);
@@ -48,7 +53,9 @@ export const ControllableUnitHistoryList = () => {
   return (
     <List
       resource="controllable_unit_history"
-      filter={{ controllable_unit_id }}
+      filter={{
+        controllable_unit_id: controllableUnitId ?? controllable_unit_id,
+      }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
@@ -58,6 +65,7 @@ export const ControllableUnitHistoryList = () => {
         <TextField {...fields.name} weight="semibold" />
         <DateField {...fields.start_date} />
         <RegulationDirectionField source={fields.regulation_direction.source} />
+        <TextField {...fields.maximum_active_power} unit="kW" />
         <IsSmallField source={fields.is_small.source} />
         <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <StatusBadgeField
@@ -65,8 +73,11 @@ export const ControllableUnitHistoryList = () => {
           enumKey="controllable_unit.status"
           variantMap={cuStatusVariantMap}
         />
+        <TextField {...fields.additional_information} />
         <DateField {...fields.recorded_at} showTime />
+        <IdentityField {...fields.recorded_by} />
         <DateField {...historyFields.replaced_at} showTime />
+        <IdentityField {...historyFields.replaced_by} />
       </Datagrid>
     </List>
   );

@@ -66,6 +66,7 @@ FOR ALL
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
+    AND status != 'inactive'
 );
 
 -- RLS: SPGGP-SO002
@@ -86,6 +87,7 @@ SELECT EXISTS (
     SELECT 1 FROM flex.service_providing_group_grid_prequalification
     WHERE service_providing_group_id = spg_id
     AND impacted_system_operator_id = (SELECT flex.current_party())
+    AND status != 'inactive'
 )
 $$;
 
@@ -94,4 +96,30 @@ CREATE POLICY "SPGGP_SO002"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
-USING (current_party_impacted_in_spg(service_providing_group_id));
+USING (
+    status != 'inactive'
+    AND current_party_impacted_in_spg(service_providing_group_id)
+);
+
+-- RLS: SPGGP-SO003
+
+-- the procuring system operator of a product application must see the grid
+-- prequalification(s) triggered by starting its prequalification
+CREATE OR REPLACE FUNCTION current_party_is_pso_in_spg(spg_id bigint)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1 FROM flex.service_providing_group_product_application
+    WHERE service_providing_group_id = spg_id
+    AND procuring_system_operator_id = (SELECT flex.current_party())
+)
+$$;
+
+DROP POLICY IF EXISTS "SPGGP_SO003" ON service_providing_group_grid_prequalification;
+CREATE POLICY "SPGGP_SO003"
+ON service_providing_group_grid_prequalification
+FOR SELECT
+TO flex_system_operator
+USING (current_party_is_pso_in_spg(service_providing_group_id));

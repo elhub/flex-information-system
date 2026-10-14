@@ -1,23 +1,22 @@
 [tools]
-"python" = "3.14.6"
-"go" = "1.26.5"
-"uv" = "0.11.31"
-"golangci-lint" = "2.12.2"
-"pandoc" = "3.10"
-"ruff" = "0.15.22"
+"python" = "3.14.8"
+"go" = "1.27.2"
+"uv" = "0.12.24"
+"golangci-lint" = "2.14.0"
+"ruff" = "0.16.10"
+"pandoc" = "3.12"
 "sqlc" = "1.31.1"
-jsonschema = "16.3.0"
-spectral = "6.16.2"
+"spectral" = "6.17.0"
+"jsonschema" = "17.2.0"
 
 "go:github.com/google/go-licenses/v2" = "2.0.1"
 "go:golang.org/x/vuln/cmd/govulncheck" = "1.5.0"
 "go:golang.org/x/tools/cmd/stringer" = "0.47.0"
-"go:github.com/dmarkham/enumer" = "1.6.3"
-"go:github.com/air-verse/air" = "1.65.3"
+"go:github.com/dmarkham/enumer" = "1.7.2"
+"go:github.com/air-verse/air" = "1.67.4"
 
 [settings]
 python.uv_venv_auto = "create|source"
 
 [env]
-GOEXPERIMENT = 'jsonv2'
 REQUESTS_CA_BUNDLE = '/etc/ssl/certs/ca-certificates.crt'

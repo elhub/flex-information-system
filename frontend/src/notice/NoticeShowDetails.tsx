@@ -1,7 +1,10 @@
 import {
   RecordContextProvider,
   ResourceContextProvider,
+  useGetMany,
+  useGetOne,
   useRecordContext,
+  useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { BodyText, Heading, VerticalSpace } from "../components/ui";
@@ -13,6 +16,7 @@ import {
   zNoticeDataProductTypeNotQualified,
 } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
+import { SimpleTable } from "../components/SimpleTable";
 import { DataTable } from "../components/EDS-ra/list/Datagrid";
 import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
@@ -21,6 +25,7 @@ import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeC
 import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
 import { NoticeActionButton } from "./details/NoticeActionButton";
+import { LabelValue } from "../components/LabelValue";
 
 type Notice = GNotice & {
   data: any;
@@ -95,7 +100,85 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
   );
 };
 
+// component for showing which CUs are duplicate within the same Product Type
+// no.elhub.flex.controllable_unit.service_providing_group.product_duplication
+const NoticeSPGDuplicationOfCuWithinSameProductType = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const spgIds: number[] = notice.data.service_providing_group_ids ?? [];
+  const cuId = Number(notice.source?.split("/")[2]);
+  const { data: cu } = useGetOne(
+    "controllable_unit",
+    { id: cuId },
+    { enabled: Number.isInteger(cuId) },
+  );
+  const { data: spgs, isPending } = useGetMany("service_providing_group", {
+    ids: spgIds,
+  });
+
+  const cuLink = Number.isInteger(cuId) ? (
+    <a href={`#/controllable_unit/${cuId}/show`} className="eds-link">
+      {cu?.name ?? `#${cuId}`}
+    </a>
+  ) : (
+    notice.source
+  );
+
+  const rows = spgIds.map((id) => ({
+    id,
+    name: spgs?.find((spg) => spg.id === id)?.name,
+    controllable_unit: cuId,
+    product_type: notice.data.product_type_id as number,
+  }));
+
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        Controllable unit defined in multiple service providing groups for the
+        same product type
+      </Heading>
+      <SimpleTable
+        size="small"
+        empty="No service providing groups"
+        data={rows}
+        columns={[
+          {
+            key: "id",
+            header: "Service providing group",
+            render: (_, row) => (
+              <a
+                href={`#/service_providing_group/${row.id}/show`}
+                className="eds-link"
+              >
+                {isPending ? `#${row.id}` : (row.name ?? `#${row.id}`)}
+              </a>
+            ),
+          },
+          {
+            key: "controllable_unit",
+            header: "Controllable unit",
+            render: () => cuLink,
+          },
+          {
+            key: "product_type",
+            header: "Product type",
+            render: () => (
+              <ProductTypeArrayField
+                productTypeIds={[notice.data.product_type_id]}
+              />
+            ),
+          },
+        ]}
+      />
+    </>
+  );
+};
+
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
+  "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
+    (notice) => (
+      <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
+    ),
   "no.elhub.flex.party.outdated": (notice) => (
     <NoticePartyOutdated source={notice.source} noticeData={notice.data} />
   ),
@@ -148,6 +231,7 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
 };
 
 export const NoticeShowDetails = () => {
+  const translate = useTranslate();
   const record = useRecordContext<Notice>();
   const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
   const typeSpecificDetails = record
@@ -158,19 +242,19 @@ export const NoticeShowDetails = () => {
     <>
       {noticeType?.description && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Description
-          </Heading>
-          <BodyText>{noticeType.description}</BodyText>
+          <LabelValue
+            label={translate("text.notice_description")}
+            value={noticeType.description}
+          />
           <VerticalSpace />
         </>
       )}
       {noticeType?.action && (
         <>
-          <Heading level={3} size="xsmall" spacing>
-            Action
-          </Heading>
-          <BodyText>{noticeType.action}</BodyText>
+          <LabelValue
+            label={translate("text.notice_action")}
+            value={noticeType.action}
+          />
           <VerticalSpace />
         </>
       )}

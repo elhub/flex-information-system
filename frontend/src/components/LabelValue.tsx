@@ -1,5 +1,5 @@
 import { useTranslateField } from "../intl/intl";
-import { FieldTooltip } from "../tooltip/FieldTooltip";
+import { FieldTooltip } from "./EDS-ra/fields/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
 import { BodyText, BodyTextProps, Link } from "./ui";
@@ -8,7 +8,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { cn } from "../util";
 import { convertScale, IDENTITY, Scale } from "../utils/scales";
 
-type LabelValueProps = {
+export type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
   label?: string;
   value: string | number | ReactNode | undefined;

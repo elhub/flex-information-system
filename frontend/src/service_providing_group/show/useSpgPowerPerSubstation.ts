@@ -13,7 +13,7 @@ export type SubstationRow = {
   ratedPowerMax: number | undefined;
 };
 
-const fetchSpgPowerPerSubstation = async (
+export const fetchSpgPowerPerSubstation = async (
   spgId: number,
 ): Promise<SubstationRow[]> => {
   const data = await readServiceProvidingGroupPowerPerSubstation({

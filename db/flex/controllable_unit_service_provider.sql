@@ -75,14 +75,6 @@ AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit');
 
--- changeset flex:controllable-unit-service-provider-valid-time-freeze runOnChange:true endDelimiter:--
--- IFV: CUSP-VAL001
-CREATE OR REPLACE TRIGGER controllable_unit_service_provider_valid_time_freeze
-BEFORE UPDATE ON controllable_unit_service_provider
-FOR EACH ROW
-WHEN (current_role = 'flex_service_provider')
-EXECUTE FUNCTION timeline.freeze('2 weeks');
-
 -- changeset flex:controllable-unit-service-provider-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_timeline_midnight_aligned

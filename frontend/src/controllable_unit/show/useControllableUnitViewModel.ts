@@ -11,7 +11,6 @@ import {
   listAccountingPointMeteringGridArea,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
-  listTechnicalResource,
   MeteringGridArea,
   Party,
   readAccountingPoint,
@@ -20,8 +19,9 @@ import {
   TechnicalResource,
 } from "../../generated-client";
 
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { findCurrentlyValidRecord, throwOnError } from "../../util";
+import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
 
 export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistory;
@@ -182,13 +182,9 @@ const getAccountingPointData = async (
 
 const getControllableUnitData = async (
   controllableUnitId: number,
-): Promise<ControllableUnitShowViewModel> => {
+): Promise<Omit<ControllableUnitShowViewModel, "technicalResources">> => {
   const controllableUnit = await readControllableUnit({
     path: { id: controllableUnitId },
-  }).then(throwOnError);
-
-  const technicalResourcesPromise = listTechnicalResource({
-    query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
   const accountingPointPromise = getAccountingPointData(
@@ -200,18 +196,15 @@ const getControllableUnitData = async (
     query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
-  const [technicalResources, accountingPoint, cuspData, suspensions] =
-    await Promise.all([
-      technicalResourcesPromise,
-      accountingPointPromise,
-      cuspPromise,
-      suspensionsPromise,
-    ]);
+  const [accountingPoint, cuspData, suspensions] = await Promise.all([
+    accountingPointPromise,
+    cuspPromise,
+    suspensionsPromise,
+  ]);
 
   return {
     controllableUnit,
     serviceProvider: cuspData.systemProvider,
-    technicalResources: technicalResources,
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
@@ -229,12 +222,22 @@ export const controllableUnitViewModelQueryKey = (
   controllableUnitId: number | undefined,
 ) => ["controllableUnitViewModel", controllableUnitId];
 
-export const useControllableUnitViewModel = (
-  id: number | undefined,
-): UseQueryResult<ControllableUnitShowViewModel> => {
-  return useQuery({
+export const useControllableUnitViewModel = (id: number | undefined) => {
+  const technicalResources = useTechnicalResources(id);
+  const viewModel = useQuery({
     queryKey: controllableUnitViewModelQueryKey(id),
     queryFn: () => getControllableUnitData(id!),
     enabled: !!id,
   });
+
+  return {
+    data: viewModel.data
+      ? {
+          ...viewModel.data,
+          technicalResources: technicalResources.data,
+        }
+      : undefined,
+    isPending: viewModel.isPending || technicalResources.isPending,
+    error: viewModel.error ?? technicalResources.error,
+  };
 };

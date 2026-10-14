@@ -8,7 +8,6 @@ import (
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
-	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
 	"flex/pgpool"
@@ -91,12 +90,9 @@ func NewAPIHandler(
 		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:entity:lookup"}, http.HandlerFunc(data.entityLookupHandler)),
 	)
 
-	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler)),
-	)
-	eventListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("data", http.HandlerFunc(data.eventHandler)),
-	)
+	dataListPostgRESTHandler := auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler))
+	eventListPostgRESTHandler := auth.CheckScopeForRequest("data", http.HandlerFunc(data.eventHandler))
+
 	dataPostgRESTHandler := auth.CheckScopeForRequest(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
@@ -111,11 +107,9 @@ func NewAPIHandler(
 		scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
 		attachmentPostgRESTHandler,
 	)
-	attachmentListHandler := middleware.DefaultQueryLimit(
-		auth.CheckScope(
-			scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
-			attachmentPostgRESTHandler,
-		),
+	attachmentListHandler := auth.CheckScope(
+		scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
+		attachmentPostgRESTHandler,
 	)
 	mux.Handle(
 		"GET /service_providing_group_product_application_attachment",

@@ -1,18 +1,5 @@
-import { ComponentType } from "react";
 import { useRecordContext, useTranslate } from "ra-core";
-import { SvgIconProps } from "@elhub/ds-icons";
-import { Badge } from "../../ui";
-
-export type StatusVariant = {
-  status:
-    | "ongoing"
-    | "failed"
-    | "approved-with-warning"
-    | "approved"
-    | "stopped"
-    | "temporarily-stopped";
-  icon: ComponentType<SvgIconProps>;
-};
+import { StatusBadge, StatusVariant } from "../../StatusBadge";
 
 type StatusBadgeFieldProps = {
   source: string;
@@ -35,14 +22,10 @@ export const StatusBadgeField = ({
   if (!variant) return null;
 
   return (
-    <Badge
-      size="small"
+    <StatusBadge
       status={variant.status}
-      variant="block"
       icon={variant.icon}
-      style={{ whiteSpace: "nowrap" }}
-    >
-      {translate(`enum.${enumKey}.${value}`)}
-    </Badge>
+      label={translate(`enum.${enumKey}.${value}`)}
+    />
   );
 };

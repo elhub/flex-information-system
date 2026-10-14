@@ -101,7 +101,7 @@ export function CommentFeed({
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Write a comment…"
-              rows={3}
+              rows={5}
             />
           </FormItem>
           {postComment.isError && (

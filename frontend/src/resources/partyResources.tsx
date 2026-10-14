@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 import { EditRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { PartyList } from "../party/PartyList";
-import { PartyShow } from "../party/PartyShow";
+import { PartyShow } from "../party/show/PartyShow";
 import { PartyInput } from "../party/PartyInput";
 import { PartyHistoryList } from "../party/PartyHistoryList";
 import { PartyMembershipShow } from "../party/membership/PartyMembershipShow";

@@ -49,7 +49,6 @@ export const EntityClientInput = () => {
             filter={partyFilter}
           />
           <ScopesInput source="scopes" />
-          <TextInput {...fields.client_secret} type="password" />
           <TextAreaInput {...fields.public_key} rows={3} />
         </div>
         <FormToolbar />

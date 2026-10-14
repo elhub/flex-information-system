@@ -303,6 +303,9 @@ def test_ptym_org(sts):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # scopes were restored, so drop the cached client holding the reduced scopes
+    sts.get_client(TestEntityClient.TEST, "ORG", reset=True)
+
 
 def test_ptym_common(sts):
     client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")

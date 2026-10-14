@@ -16,7 +16,11 @@ import {
 } from "../components/EDS-ra/fields";
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
-import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+  TextInput,
+} from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
@@ -90,6 +94,15 @@ const BalanceResponsiblePartyField = ({
   return <BodyText size="small">{party.name}</BodyText>;
 };
 
+// custom component resolving the system operator through the accounting point
+const SystemOperatorField = ({ source: _source }: { source: string }) => {
+  const record = useRecordContext();
+  const party = record?.accounting_point?.system_operator;
+
+  if (!party) return <BodyText size="small">-</BodyText>;
+  return <BodyText size="small">{party.name}</BodyText>;
+};
+
 const IsSmallField = ({
   source: _source,
   headerTooltip: _headerTooltip,
@@ -139,6 +152,13 @@ export const ControllableUnitList = () => {
       source="accounting_point.business_id@ilike"
       overrideLabel={translate("field.controllable_unit.accounting_point_id")}
       tooltip={false}
+    />,
+    <PartyReferenceInput
+      key="system_operator_id"
+      source="accounting_point.system_operator_id"
+      filter={{ type: "system_operator" }}
+      overrideLabel={translate("field.accounting_point.system_operator_id")}
+      optionText={(record) => record.name}
     />,
     <EnumArrayInput
       key="status"
@@ -196,7 +216,7 @@ export const ControllableUnitList = () => {
       actions={actions}
       filter={{
         embed:
-          "accounting_point!(bidding_zone, balance_responsible_party(balance_responsible_party))",
+          "accounting_point!(bidding_zone, system_operator, balance_responsible_party(balance_responsible_party))",
       }}
     >
       <Datagrid>
@@ -206,6 +226,7 @@ export const ControllableUnitList = () => {
         <IsSmallField source={fields.is_small.source} headerTooltip />
         <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <BiddingZoneField source="bidding_zone" />
+        <SystemOperatorField source="system_operator" />
         <BalanceResponsiblePartyField source="balance_responsible_party" />
         <StatusBadgeField
           source={fields.status.source}

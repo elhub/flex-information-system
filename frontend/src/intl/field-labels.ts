@@ -146,7 +146,6 @@ export type FieldLabel =
   | "entity.recorded_by"
   | "entity.type"
   | "entity_client.client_id"
-  | "entity_client.client_secret"
   | "entity_client.entity_id"
   | "entity_client.id"
   | "entity_client.name"
@@ -878,7 +877,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "entity_client.client_id": "Client ID",
     "entity_client.party_id": "Party",
     "entity_client.scopes": "Scopes",
-    "entity_client.client_secret": "Client secret",
     "entity_client.public_key": "Public key",
     "entity_client.recorded_at": "Recorded at",
     "entity_client.recorded_by": "Recorded by",
@@ -1217,7 +1215,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.ramping_description":
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
-    "service_providing_group_product_application.complete_at": "Completed at",
+    "service_providing_group_product_application.complete_at": "Complete at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1245,7 +1243,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.created_at":
       "Created at",
     "service_providing_group_product_application_history.complete_at":
-      "Completed at",
+      "Complete at",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1652,7 +1650,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "entity_client.client_id": "Klient-ID",
     "entity_client.party_id": "Aktør",
     "entity_client.scopes": "Scopes",
-    "entity_client.client_secret": "Klienthemmelighet",
     "entity_client.public_key": "Offentlig nøkkel",
     "entity_client.recorded_at": "Registrert",
     "entity_client.recorded_by": "Registrert av",
@@ -2422,7 +2419,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "entity_client.client_id": "Klient-ID",
     "entity_client.party_id": "Aktør",
     "entity_client.scopes": "Scopes",
-    "entity_client.client_secret": "Klientløyndom",
     "entity_client.public_key": "Offentleg nøkkel",
     "entity_client.recorded_at": "Registrert",
     "entity_client.recorded_by": "Registrert av",

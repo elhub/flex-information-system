@@ -5,12 +5,14 @@ import { BaseField, BaseFieldProps } from "./BaseField";
 
 type ScopesFieldProps = BaseFieldProps & {
   emptyText?: ReactNode;
+  hideLabel?: boolean;
 };
 
 export const ScopesField = ({
   source,
   emptyText,
   label,
+  hideLabel,
   tooltip,
   textSize = "small",
 }: ScopesFieldProps) => {
@@ -33,7 +35,7 @@ export const ScopesField = ({
     <BaseField
       textSize={textSize}
       source={source}
-      label={label}
+      label={hideLabel ? false : label}
       tooltip={tooltip}
     >
       {content}

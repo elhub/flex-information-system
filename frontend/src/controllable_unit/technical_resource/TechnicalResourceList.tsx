@@ -25,7 +25,10 @@ import {
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { throwOnError } from "../../util";
-import { useTechnicalResources } from "./useTechnicalResources";
+import {
+  technicalResourcesQueryKey,
+  useTechnicalResources,
+} from "./useTechnicalResources";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { TechnicalResourceDetailModal } from "./TechnicalResourceDetailModal";
@@ -47,6 +50,7 @@ const CreateButton = ({
       state={locationState}
       variant="primary"
       icon={IconPlus}
+      size="small"
     >
       Create technical resource
     </Button>
@@ -69,10 +73,7 @@ const DeleteTechnicalResourceButton = ({
         deleteTechnicalResource({ path: { id: record.id } }).then(throwOnError),
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "technical_resource",
-            { controllable_unit_id: record.controllable_unit_id },
-          ],
+          queryKey: technicalResourcesQueryKey(record.controllable_unit_id),
         });
       },
     },

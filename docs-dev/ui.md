@@ -21,13 +21,13 @@ For instance, the pages for controllable units are under the
 Here are the possible pages for a resource:
 
 * a `List` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
-of entries of this resource
+  of entries of this resource
 * a `Show` page showing [details](https://marmelab.com/react-admin/ShowTutorial.html)
-about one record of this resource
+  about one record of this resource
 * an `Input` page presenting input fields for the fields of this resource that
-can be [created or updated](https://marmelab.com/react-admin/EditTutorial.html)
+  can be [created or updated](https://marmelab.com/react-admin/EditTutorial.html)
 * a `HistoryList` page showing the [list](https://marmelab.com/react-admin/ListTutorial.html)
-of entries of the _history_ of this resource
+  of entries of the _history_ of this resource
 
 Resources can be [nested](https://marmelab.com/react-admin/Resource.html#nested-resources)
 in React Admin, meaning that the underlying URLs are composed of several
@@ -43,7 +43,11 @@ unit, so we represent this relation as a `service_provider` nested resource
 of `controllable_unit` in React-Admin, making it easier to handle it as a
 sub-component.
 
-Resources are listed in the main file of the front-end, `App.tsx`.
+Resources are grouped by domain under the `resources` folder of the
+front-end (for instance, `resources/controllableUnitResources.tsx`), each
+exporting a function that builds the `Resource` elements for that domain
+based on the user's permissions. These are aggregated by `createAllResources`
+and passed to the `Admin` component in `App.tsx`.
 
 ## Code factoring
 
@@ -64,3 +68,43 @@ or [`Edit`](https://marmelab.com/react-admin/Edit.html) components of
 React-Admin, according to whether the input page is used to create a fresh
 record or to edit an existing one. In the case of an edition, the various fields
 of the input page will then be filled with the current values.
+
+## Show page layout
+
+New and migrated resource show pages use a consistent layout, provided by the
+`ResourceShowLayout` component, to make the most important information easy
+to find:
+
+* The header identifies the record. For a non-application resource, such as a
+  controllable unit or service providing group, it shows the resource name. For
+  an application resource, it shows who the application is for; for example,
+  an SPG product application is identified by the service providing group it
+  belongs to. A status badge can be shown next to it, for resources that have
+  a status.
+* Actions are placed at the top right of the page. Primary, workflow-changing
+  actions (such as activating a controllable unit) are shown directly as
+  buttons, while secondary actions (such as editing the record) and
+  navigation shortcuts to related resources (such as its events) are grouped
+  in a single "More" dropdown menu, split in an actions and a navigation
+  section.
+* An optional alert banner can be shown below the header, for example to warn
+  about a missing prerequisite.
+* The summary card is placed to the left of the page content, listing the
+  record's most important fields as label/value pairs. Extra controls, such
+  as display unit, can be placed below the summary card.
+* Tabs are placed to the right of the summary and contain the page's related
+  information.
+
+The older `ShowPageLayout` accepts generic React nodes for its badge, alerts,
+action bar, title extras and two content panels, leaving each page to compose
+its own layout. As a result, pages differed in how they presented content and
+placed controls. For example, summary content was composed by each page, while
+workflow actions could be supplied separately through the action bar and
+history or event actions could be placed alongside the summary.
+
+`ResourceShowLayout` standardizes the header, alert, action placement and
+summary-field presentation. It uses structured, typed props such as
+`ResourceStatus`, `AlertType`, `UtilityAction` and `ResourceSummaryField`.
+Workflow and display controls can still be supplied by each page, but the layout
+defines where they appear. Pages provide the tabs and define their content. Use
+`ResourceShowLayout` for new resource show pages.

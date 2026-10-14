@@ -207,16 +207,15 @@ type ApiEntity struct {
 }
 
 type ApiEntityClient struct {
-	ID           int
-	EntityID     int
-	Name         *string
-	ClientID     string
-	PartyID      *int
-	Scopes       []string
-	ClientSecret *string
-	PublicKey    *string
-	RecordedBy   int
-	RecordedAt   pgtype.Timestamptz
+	ID         int
+	EntityID   int
+	Name       *string
+	ClientID   string
+	PartyID    *int
+	Scopes     []string
+	PublicKey  *string
+	RecordedBy int
+	RecordedAt pgtype.Timestamptz
 }
 
 type ApiEvent struct {

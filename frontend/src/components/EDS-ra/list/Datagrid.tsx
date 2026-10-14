@@ -16,7 +16,7 @@ import {
 import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
 
-type RowClickResult = string | { to: string; state?: unknown };
+type RowClickResult = void | string | { to: string; state?: unknown };
 
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
@@ -107,6 +107,8 @@ export const DataTable = <T extends RaRecord>({
       typeof rowClick === "function"
         ? rowClick(record)
         : `/${resource}/${record.id}/show`;
+
+    if (result == null) return;
 
     if (typeof result === "string") {
       navigate(result);

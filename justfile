@@ -86,7 +86,7 @@ load: liquibase
         psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
             -c "BEGIN" \
             -c "SELECT set_config('flex.current_identity', '0', true);" \
-            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE name = '${NAME}';" \
+            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', recorded_by = 0 WHERE name = '${NAME}';" \
             -c "COMMIT"
     done
 

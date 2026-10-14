@@ -5,7 +5,7 @@ const lightGreen = "#d6e4d5";
 const grey = "#f6f6f6";
 const orange = "rgba(213, 128, 0, 1)";
 
-const darkColor =
+export const darkColor =
   window.env.VITE_FLEX_COLOR_DARK ??
   import.meta.env.VITE_FLEX_COLOR_DARK ??
   darkGreen;
