@@ -3,13 +3,16 @@ import { useInput, usePermissions, useResourceContext } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
-import { Button } from "../../ui";
-import { IconCross, IconClockCircle } from "@elhub/ds-icons";
+import { Button, FlexDiv } from "../../ui";
+import { ClearButton } from "./ClearButton";
+import { IconClockCircle } from "@elhub/ds-icons";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
 
 type DateTimeInputProps = BaseInputProps & {
   showNow?: boolean;
+  // shows a button to clear the value
+  clearable?: boolean;
 };
 
 export const DateTimeInput = ({
@@ -19,6 +22,7 @@ export const DateTimeInput = ({
   readOnly,
   disabled,
   showNow,
+  clearable,
   description,
   descriptionOverride,
   ...rest
@@ -49,7 +53,7 @@ export const DateTimeInput = ({
   };
 
   const displayNowButton = showNow && !isEffectivelyDisabled;
-  const displayClearButton = !required && !isEffectivelyDisabled && field.value;
+  const displayClearButton = clearable && !isEffectivelyDisabled && field.value;
 
   return (
     <BaseInput
@@ -63,7 +67,7 @@ export const DateTimeInput = ({
       description={description}
       descriptionOverride={descriptionOverride}
     >
-      <div className="flex items-center gap-1">
+      <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <DateTimePicker
           id={id}
           selected={
@@ -89,21 +93,10 @@ export const DateTimeInput = ({
             Now
           </Button>
         )}
-        {/* isClearable on the DateTimePicker puts the cross icon on top of the picker icon.
-            So we add our own on the side instead */}
         {displayClearButton && (
-          <Button
-            type="button"
-            variant="tertiary"
-            size="small"
-            icon={IconCross}
-            aria-label="Clear"
-            onClick={() => field.onChange(null)}
-          >
-            Clear
-          </Button>
+          <ClearButton onClear={() => field.onChange(null)} />
         )}
-      </div>
+      </FlexDiv>
     </BaseInput>
   );
 };
