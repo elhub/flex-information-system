@@ -27,8 +27,23 @@ export type SpgpaControllableUnitRow = {
   soName: string;
   membershipRecordedAt: string | undefined;
   gridPrequalifiedAt: string | undefined;
+  psoGridPrequalifiedAt: string | undefined;
   productApplicationPrequalifiedAt: string | undefined;
 };
+
+export const isFullyApproved = (
+  row: Pick<
+    SpgpaControllableUnitRow,
+    | "gridPrequalifiedAt"
+    | "psoGridPrequalifiedAt"
+    | "productApplicationPrequalifiedAt"
+  >,
+): boolean =>
+  Boolean(
+    row.gridPrequalifiedAt &&
+    row.psoGridPrequalifiedAt &&
+    row.productApplicationPrequalifiedAt,
+  );
 
 const getGridPrequalifiedAt = (
   membershipRecordedAt: string | undefined,
@@ -163,6 +178,12 @@ export const useSpgpaControllableUnits = (
   // the rows and not ahead of them while a new date is loading.
   const shownAsOf = membersQuery.data?.asOf;
 
+  const psoGridPrequalification = gridPrequalificationsQuery.data?.find(
+    (gp) =>
+      spgpa !== undefined &&
+      gp.impacted_system_operator_id === spgpa.procuring_system_operator_id,
+  );
+
   const rows: SpgpaControllableUnitRow[] | undefined =
     membersQuery.data && shownAsOf && gridPrequalificationsQuery.data
       ? membersQuery.data.rows
@@ -178,6 +199,11 @@ export const useSpgpaControllableUnits = (
               gridPrequalifiedAt: getGridPrequalifiedAt(
                 row.membershipRecordedAt,
                 gridPrequalification,
+                shownAsOf,
+              ),
+              psoGridPrequalifiedAt: getGridPrequalifiedAt(
+                row.membershipRecordedAt,
+                psoGridPrequalification,
                 shownAsOf,
               ),
               productApplicationPrequalifiedAt:
