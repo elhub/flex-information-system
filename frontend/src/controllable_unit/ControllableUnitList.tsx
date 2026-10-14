@@ -8,7 +8,8 @@ import { StatusBadge } from "../components/StatusBadge";
 import { BodyText, Button, Link, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { usePartyOptions } from "../hooks/partyOptions";
-import { toDateTimeString, findCurrentlyValidRecord } from "../util";
+import { tooltips } from "../tooltip/tooltips";
+import { toDateString, findCurrentlyValidRecord } from "../util";
 import type { ControllableUnit } from "../generated-client";
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionIcon } from "./RegulationDirectionField";
@@ -54,7 +55,6 @@ export const ControllableUnitList = () => {
     {
       type: "multiselect",
       source: BRP_FILTER_SOURCE,
-      tooltip: "Matches the balance responsible party that is valid today.",
       label: translate(
         "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
       ),
@@ -65,7 +65,7 @@ export const ControllableUnitList = () => {
       type: "select",
       source: "is_small",
       label: translate("field.controllable_unit.is_small"),
-      tooltip: "Small: 50 kW of flexible power or less.",
+      tooltip: tooltips["controllable_unit.is_small"],
       options: [
         {
           value: "true",
@@ -108,7 +108,7 @@ export const ControllableUnitList = () => {
       sortType: "date",
       render: (cu) =>
         cu.start_date ? (
-          <BodyText size="small">{toDateTimeString(cu.start_date)}</BodyText>
+          <BodyText size="small">{toDateString(cu.start_date)}</BodyText>
         ) : null,
     },
     {

@@ -23,7 +23,8 @@ export type ListInterface<T> = {
   clearFilters: () => void;
   // go back to the page's default filters
   resetFilters: () => void;
-  hasDefaultFilters: boolean;
+  // true when the page has default filters and the current ones differ
+  canResetFilters: boolean;
 
   sort: ListSort;
   setSort: (sort: ListSort) => void;

@@ -1,5 +1,6 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "list_filter.no_results"
   | "delete"
   | "delete_confirm"
   | "dashboard.application"
@@ -280,6 +281,7 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     "simple_table.no_results": "No results",
+    "list_filter.no_results": "No matching options",
     "dashboard.application": "Application",
     "dashboard.sp_product_application": "SP Product Application",
     "dashboard.spg_product_application": "SPG Product Application",
@@ -620,6 +622,7 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     "simple_table.no_results": "Ingen resultater",
+    "list_filter.no_results": "Ingen treff",
     "dashboard.application": "Søknad",
     "dashboard.sp_product_application": "SP-produktsøknad",
     "dashboard.spg_product_application": "SPG-produktsøknad",

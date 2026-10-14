@@ -1,7 +1,9 @@
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
+import { useTranslate } from "ra-core";
+import { useState, type ChangeEvent } from "react";
 import { Button, Combobox, FormItem, FormItemLabel, Tooltip } from "../ui";
 import { DebouncedTextField } from "./DebouncedTextField";
-import type { ListFilterDef, ListInterface } from "./types";
+import type { ListFilterDef, ListFilterOption, ListInterface } from "./types";
 
 // Filter bar with one control per filter definition, plus reset/clear buttons.
 export const ListFilters = <T,>({
@@ -18,7 +20,7 @@ export const ListFilters = <T,>({
       {filters.map((def) => (
         <FilterControl key={def.source} def={def} list={list} />
       ))}
-      {list.hasDefaultFilters && (
+      {list.canResetFilters && (
         <Button variant="invisible" onClick={list.resetFilters} size="small">
           Reset filters
         </Button>
@@ -44,29 +46,43 @@ const FilterControl = <T,>({
   const setValue = (v: string | undefined) => list.setFilter(def.source, v);
 
   return (
-    <FormItem id={id} size="small" className="w-[16rem]">
-      <div className="flex items-center gap-2">
-        <FormItemLabel htmlFor={id} size="small">
-          {def.label}
-        </FormItemLabel>
-        {def.tooltip && (
-          <Tooltip content={def.tooltip}>
-            <span>
-              <IconInformationCircleOutlined />
-            </span>
-          </Tooltip>
-        )}
-      </div>
-      {def.type === "text" ? (
+    <FormItem id={id} size="small">
+      <FilterLabel id={id} label={def.label} tooltip={def.tooltip} />
+      {def.type === "text" && (
         <DebouncedTextField id={id} value={value} onChange={setValue} />
-      ) : def.type === "select" ? (
+      )}
+      {def.type === "select" && (
         <SelectFilter def={def} value={value} setValue={setValue} />
-      ) : (
+      )}
+      {def.type === "multiselect" && (
         <MultiSelectFilter def={def} value={value} setValue={setValue} />
       )}
     </FormItem>
   );
 };
+
+const FilterLabel = ({
+  id,
+  label,
+  tooltip,
+}: {
+  id: string;
+  label: string;
+  tooltip?: string;
+}) => (
+  <div className="flex items-center gap-2">
+    <FormItemLabel htmlFor={id} size="small">
+      {label}
+    </FormItemLabel>
+    {tooltip && (
+      <Tooltip content={tooltip}>
+        <span>
+          <IconInformationCircleOutlined />
+        </span>
+      </Tooltip>
+    )}
+  </div>
+);
 
 type SelectDef = Extract<ListFilterDef, { type: "select" }>;
 type MultiSelectDef = Extract<ListFilterDef, { type: "multiselect" }>;
@@ -76,20 +92,59 @@ type ControlProps<D> = {
   setValue: (value: string | undefined) => void;
 };
 
-const SelectFilter = ({ def, value, setValue }: ControlProps<SelectDef>) => (
-  <Combobox
-    // remount on value change so the typed text follows clear/reset
-    key={value}
-    defaultValue={def.options.find((o) => o.value === value)?.label ?? ""}
-    options={def.options}
-    clearButton
-    selectedOptions={def.options.filter((o) => o.value === value)}
-    onToggleSelected={(option, isSelected) =>
-      setValue(isSelected ? option : undefined)
-    }
-    onClear={() => setValue(undefined)}
-  />
-);
+// Combobox only shows options matching the input text. After a selection the
+// input holds the selected label, which would hide all other options, so we
+// show everything until the user types something different.
+const useOptionSearch = (
+  options: ListFilterOption[],
+  selectedLabel: string,
+) => {
+  const [typed, setTyped] = useState<string | null>(null);
+
+  const isSearching = typed !== null && typed !== selectedLabel;
+  const filteredOptions = isSearching
+    ? options.filter((o) => o.label.toLowerCase().includes(typed.toLowerCase()))
+    : options;
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement> | null) => {
+    const text = event?.currentTarget?.value;
+    const isTyping = event?.type === "change" && typeof text === "string";
+    setTyped(isTyping ? text : null);
+  };
+  const resetSearch = () => setTyped(null);
+
+  return { filteredOptions, onInputChange, resetSearch };
+};
+
+const SelectFilter = ({ def, value, setValue }: ControlProps<SelectDef>) => {
+  const translate = useTranslate();
+  const selectedOptions = def.options.filter((o) => o.value === value);
+  const selectedLabel = selectedOptions[0]?.label ?? "";
+  const { filteredOptions, onInputChange, resetSearch } = useOptionSearch(
+    def.options,
+    selectedLabel,
+  );
+
+  const toggle = (option: string, isSelected: boolean) => {
+    resetSearch();
+    setValue(isSelected ? option : undefined);
+  };
+
+  return (
+    <Combobox
+      noResultsLabel={translate("text.list_filter.no_results")}
+      // remount so the input text follows the selected value
+      key={value}
+      defaultValue={selectedLabel}
+      options={def.options}
+      filteredOptions={filteredOptions}
+      onChange={onInputChange}
+      clearButton
+      selectedOptions={selectedOptions}
+      onToggleSelected={toggle}
+    />
+  );
+};
 
 // multiselect values are stored comma-separated
 const parseMulti = (value: string) => (value ? value.split(",") : []);
@@ -100,22 +155,25 @@ const MultiSelectFilter = ({
   value,
   setValue,
 }: ControlProps<MultiSelectDef>) => {
-  const current = parseMulti(value);
+  const translate = useTranslate();
+  const selected = parseMulti(value);
+
+  const toggle = (option: string, isSelected: boolean) => {
+    const next = isSelected
+      ? [...selected, option]
+      : selected.filter((v) => v !== option);
+    setValue(serializeMulti(next));
+  };
+
   return (
     <Combobox
+      noResultsLabel={translate("text.list_filter.no_results")}
       options={def.options}
       isLoading={def.isLoading}
       isMultiSelect
-      selectedOptions={def.options.filter((o) => current.includes(o.value))}
-      onToggleSelected={(option, isSelected) =>
-        setValue(
-          serializeMulti(
-            isSelected
-              ? [...current, option]
-              : current.filter((v) => v !== option),
-          ),
-        )
-      }
+      maxShown={2}
+      selectedOptions={def.options.filter((o) => selected.includes(o.value))}
+      onToggleSelected={toggle}
     />
   );
 };

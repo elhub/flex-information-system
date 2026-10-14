@@ -25,7 +25,7 @@ export const ListPageLayout = <T extends { id: number | string }>({
 }: ListPageLayoutProps<T>) => (
   <div className="flex flex-col gap-2">
     <div className="flex items-center justify-between gap-2 mb-4">
-      <Heading level={2} size="xlarge">
+      <Heading level={2} size="large">
         {title}
       </Heading>
       {actions && <div className="flex gap-2">{actions}</div>}

@@ -31,6 +31,13 @@ export const useListState = ({
     Object.assign(filters, defaultFilters);
   }
 
+  // reset only makes sense when the page has defaults and we differ from them
+  const defaultEntries = Object.entries(defaultFilters);
+  const canResetFilters =
+    defaultEntries.length > 0 &&
+    (Object.keys(filters).length !== defaultEntries.length ||
+      defaultEntries.some(([k, v]) => filters[k] !== v));
+
   const sortParam = params.get("sort");
   const [sortField, sortOrder] = sortParam?.split(".") ?? [];
   const sort: ListSort =
@@ -66,7 +73,7 @@ export const useListState = ({
     sort,
     page,
     perPage,
-    hasDefaultFilters: Object.keys(defaultFilters).length > 0,
+    canResetFilters,
     setFilter: (source: string, value: string | undefined) =>
       update((next) => {
         const values = { ...filters };
