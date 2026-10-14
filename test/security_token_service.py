@@ -21,6 +21,7 @@ import os
 import uuid
 from pathlib import Path
 import jwt
+from dotenv import dotenv_values
 import requests
 from datetime import datetime as dt, timedelta
 from datetime import timezone as tz
@@ -67,6 +68,13 @@ class TestEntityClient(Enum):
     TEST_ORG = "TestAS"
     # entity_client restricted to the "Test SP" party (see justfile/test_data.sql)
     TEST_SP = "TestSP"
+    # narrowly scoped clients used by the scope tests (see justfile/test_data.sql)
+    TEST_SCOPES = "TestScopes"  # use:data manage:auth
+    TEST_PARTY_MEMBERSHIP_ONLY = (
+        "TestPartyMembershipOnly"  # manage:data:party_membership manage:auth
+    )
+    TEST_GRID = "TestGrid"  # read:grid manage:auth
+    TEST_DATA_ONLY = "TestDataOnly"  # read:data manage:auth
 
     # name prefix used to create the parties in the DB
     def party_name_prefix(self):
@@ -77,7 +85,7 @@ class TestEntityClient(Enum):
                 return "Common"
             case TestEntityClient.TEST_ORG:
                 return "Test"
-            case TestEntityClient.TEST_SP:
+            case _:
                 return "Test"
 
     # make pytest ignore this class
@@ -98,6 +106,14 @@ class TestEntityClient(Enum):
                 return "eed86ad4-9d5c-4d83-a93a-e7675e13a977"
             case TestEntityClient.TEST_SP:
                 return "85f46ccc-1b07-4591-b830-d2cf4e206e5d"
+            case TestEntityClient.TEST_SCOPES:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a01"
+            case TestEntityClient.TEST_PARTY_MEMBERSHIP_ONLY:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a02"
+            case TestEntityClient.TEST_GRID:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a03"
+            case TestEntityClient.TEST_DATA_ONLY:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a04"
 
 
 """
@@ -170,6 +186,38 @@ class SecurityTokenService:
         )
         token_exchange_response.raise_for_status()
         return token_exchange_response.json()["access_token"]
+
+    def get_human_client(self, entity=None) -> AuthenticatedClient:
+        entity = entity or TestEntityClient.TEST
+        secret = os.environ.get("FLEX_JWT_SECRET") or dotenv_values(
+            Path(__file__).parent / ".env"
+        ).get("FLEX_JWT_SECRET")
+        assert secret, "FLEX_JWT_SECRET is not set"
+
+        entity_id = self.get_userinfo(
+            cast(AuthenticatedClient, self.get_client(entity))
+        )["entity_id"]
+
+        eid = uuid.uuid5(
+            uuid.NAMESPACE_URL, f"flex-test-human:{entity.party_name_prefix()}"
+        )
+        token = jwt.encode(
+            {
+                "entity_id": entity_id,
+                "exp": int((dt.now(tz.utc) + timedelta(hours=1)).timestamp()),
+                "eid": str(eid),
+                "role": "flex_entity",
+                "scope": "manage:auth manage:data read:grid manage:attachment",
+            },
+            secret,
+            algorithm="HS256",
+        )
+        return AuthenticatedClient(
+            base_url=self.api_url,
+            token=token,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
+        )
 
     # network call to get userinfo
     def _get_userinfo(self, client: AuthenticatedClient) -> dict:
