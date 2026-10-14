@@ -1,4 +1,4 @@
-// Contract between a list page hook and ListPageLayout.
+// Contract between a list page hook and ResourceListLayout.
 // The layout only knows this interface, not where the data comes from.
 
 export type ListSort = {

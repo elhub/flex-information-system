@@ -1,7 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { usePermissions, useTranslate } from "ra-core";
 import { IconPlus } from "@elhub/ds-icons";
-import { ListPageLayout } from "../components/list/ListPageLayout";
+import { ResourceListLayout } from "../components/list/ResourceListLayout";
 import type { ListColumn, ListFilterDef } from "../components/list/types";
 import { StatusBadge } from "../components/StatusBadge";
 import { BodyText, Button } from "../components/ui";
@@ -106,7 +106,7 @@ export const ServiceProvidingGroupList = () => {
   ) : undefined;
 
   return (
-    <ListPageLayout
+    <ResourceListLayout
       title="Service providing groups"
       list={list}
       columns={columns}
