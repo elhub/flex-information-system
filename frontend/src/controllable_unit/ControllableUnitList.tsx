@@ -1,8 +1,13 @@
 import { Link as RouterLink } from "react-router-dom";
-import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
+import {
+  defaultExporter,
+  useGetIdentity,
+  usePermissions,
+  useTranslate,
+} from "ra-core";
+import type { DataProvider } from "ra-core";
 import { IconDownload, IconPlus } from "@elhub/ds-icons";
 import { ResourceListLayout } from "../components/list/ResourceListLayout";
-import { downloadCsv } from "../components/list/csv";
 import type { ListColumn, ListFilterDef } from "../components/list/types";
 import { StatusBadge } from "../components/StatusBadge";
 import { BodyText, Button, Link, Tooltip } from "../components/ui";
@@ -205,7 +210,7 @@ export const ControllableUnitList = () => {
 
   const exportCsv = async () => {
     const data = await fetchAllForExport();
-    downloadCsv(
+    defaultExporter(
       data.map((cu) => ({
         id: cu.id,
         business_id: cu.business_id,
@@ -220,6 +225,9 @@ export const ControllableUnitList = () => {
         recorded_by: cu.recorded_by,
         recorded_at: cu.recorded_at,
       })),
+      // defaultExporter only uses the data and the resource name
+      async () => ({}),
+      {} as DataProvider,
       "controllable_unit",
     );
   };
