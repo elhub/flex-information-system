@@ -77,6 +77,10 @@ load: liquibase
         "Test SO Client|0191f286-2405-4c79-896c-cef7a6e42456|test"
         "Test SP Client|85f46ccc-1b07-4591-b830-d2cf4e206e5d|test"
         "Test Organisation Client|eed86ad4-9d5c-4d83-a93a-e7675e13a977|test"
+        "Test Scopes Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a01|test"
+        "Test Party Membership Only Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a02|test"
+        "Test Grid Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a03|test"
+        "Test Data Only Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a04|test"
     )
 
     for client in "${CLIENTS[@]}";
