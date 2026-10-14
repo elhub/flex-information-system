@@ -53,7 +53,8 @@ export const DateTimeInput = ({
   };
 
   const displayNowButton = showNow && !isEffectivelyDisabled;
-  const displayClearButton = clearable && !isEffectivelyDisabled && field.value;
+  const displayClearButton =
+    (clearable ?? !required) && !isEffectivelyDisabled && field.value;
 
   return (
     <BaseInput
