@@ -164,7 +164,6 @@ export type PermissionTarget =
   | "entity.type"
   | "entity_client"
   | "entity_client.client_id"
-  | "entity_client.client_secret"
   | "entity_client.entity_id"
   | "entity_client.id"
   | "entity_client.name"
@@ -1223,10 +1222,6 @@ const rawPermissions: Record<
     },
     {
       target: "entity_client.client_id",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
       operation: "read",
     },
     {
@@ -3750,10 +3745,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
       target: "entity_client.entity_id",
       operation: "read",
     },
@@ -6271,10 +6262,6 @@ const rawPermissions: Record<
     },
     {
       target: "entity_client.client_id",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
       operation: "read",
     },
     {
@@ -9104,10 +9091,6 @@ const rawPermissions: Record<
     },
     {
       target: "entity_client.client_id",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
       operation: "read",
     },
     {
@@ -12434,10 +12417,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
       target: "entity_client.entity_id",
       operation: "read",
     },
@@ -15120,10 +15099,6 @@ const rawPermissions: Record<
     },
     {
       target: "entity_client.client_id",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
       operation: "read",
     },
     {
@@ -18269,10 +18244,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
       target: "entity_client.entity_id",
       operation: "read",
     },
@@ -21278,10 +21249,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
       target: "entity_client.entity_id",
       operation: "read",
     },
@@ -23291,18 +23258,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "entity_client.client_secret",
-      operation: "create",
-    },
-    {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
-      operation: "update",
-    },
-    {
       target: "entity_client",
       operation: "create",
     },
@@ -23643,18 +23598,6 @@ const rawPermissions: Record<
     {
       target: "entity_client.client_id",
       operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
-      operation: "create",
-    },
-    {
-      target: "entity_client.client_secret",
-      operation: "read",
-    },
-    {
-      target: "entity_client.client_secret",
-      operation: "update",
     },
     {
       target: "entity_client",

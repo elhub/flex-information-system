@@ -145,7 +145,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -160,7 +159,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -175,7 +173,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -190,7 +187,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -205,7 +201,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -220,7 +215,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -235,7 +229,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -250,7 +243,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -263,7 +255,6 @@ GRANT INSERT (
     name,
     party_id,
     scopes,
-    client_secret,
     public_key
 ) ON TABLE
 api.entity_client
@@ -276,7 +267,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -288,7 +278,6 @@ GRANT UPDATE (
     name,
     party_id,
     scopes,
-    client_secret,
     public_key
 ) ON TABLE
 api.entity_client
@@ -303,7 +292,6 @@ GRANT INSERT (
     name,
     party_id,
     scopes,
-    client_secret,
     public_key
 ) ON TABLE
 api.entity_client
@@ -316,7 +304,6 @@ GRANT SELECT (
     client_id,
     party_id,
     scopes,
-    client_secret,
     public_key,
     recorded_at,
     recorded_by
@@ -328,7 +315,6 @@ GRANT UPDATE (
     name,
     party_id,
     scopes,
-    client_secret,
     public_key
 ) ON TABLE
 api.entity_client

@@ -265,7 +265,6 @@ CREATE TABLE api.entity_client (
     client_id text NOT NULL,
     party_id bigint NULL,
     scopes text [] NOT NULL,
-    client_secret text NULL,
     public_key text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL

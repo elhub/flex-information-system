@@ -86,3 +86,8 @@ and iterate faster.
 Indeed, some of them, like the Schemathesis tests, are quite long, and we do not
 want to run them all the time.
 For more information, run `just test --help`.
+
+## Frontend testing
+
+Frontend tests use Vitest for unit tests and Playwright for end-to-end screenshot
+tests. See [Frontend testing](testing-frontend.md) for setup and commands.

@@ -236,11 +236,6 @@ export const EntityClientList = ({ entityId }: Props) => {
               source="scopes"
               label="field.entity_client.scopes"
             />
-            <TextField
-              hideLabel
-              source="client_secret"
-              label="field.entity_client.client_secret"
-            />
             <CopyableTextField
               source="public_key"
               label="field.entity_client.public_key"

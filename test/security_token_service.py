@@ -18,7 +18,13 @@ from flex.api.party_membership import (
 )
 from flex.types import UNSET
 import os
+import uuid
+from pathlib import Path
+import jwt
+from dotenv import dotenv_values
 import requests
+from datetime import datetime as dt, timedelta
+from datetime import timezone as tz
 from typing import List, cast
 from enum import Enum
 
@@ -62,6 +68,13 @@ class TestEntityClient(Enum):
     TEST_ORG = "TestAS"
     # entity_client restricted to the "Test SP" party (see justfile/test_data.sql)
     TEST_SP = "TestSP"
+    # narrowly scoped clients used by the scope tests (see justfile/test_data.sql)
+    TEST_SCOPES = "TestScopes"  # use:data manage:auth
+    TEST_PARTY_MEMBERSHIP_ONLY = (
+        "TestPartyMembershipOnly"  # manage:data:party_membership manage:auth
+    )
+    TEST_GRID = "TestGrid"  # read:grid manage:auth
+    TEST_DATA_ONLY = "TestDataOnly"  # read:data manage:auth
 
     # name prefix used to create the parties in the DB
     def party_name_prefix(self):
@@ -72,12 +85,16 @@ class TestEntityClient(Enum):
                 return "Common"
             case TestEntityClient.TEST_ORG:
                 return "Test"
-            case TestEntityClient.TEST_SP:
+            case _:
                 return "Test"
 
     # make pytest ignore this class
     # https://stackoverflow.com/questions/62460557/cannot-collect-test-class-testmain-because-it-has-a-init-constructor-from
     __test__ = False
+
+    # name of the keypair in test/keys used to sign grants for this client
+    def key_name(self):
+        return "common" if self == TestEntityClient.COMMON else "test"
 
     def client_id(self):
         match self:
@@ -89,6 +106,14 @@ class TestEntityClient(Enum):
                 return "eed86ad4-9d5c-4d83-a93a-e7675e13a977"
             case TestEntityClient.TEST_SP:
                 return "85f46ccc-1b07-4591-b830-d2cf4e206e5d"
+            case TestEntityClient.TEST_SCOPES:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a01"
+            case TestEntityClient.TEST_PARTY_MEMBERSHIP_ONLY:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a02"
+            case TestEntityClient.TEST_GRID:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a03"
+            case TestEntityClient.TEST_DATA_ONLY:
+                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a04"
 
 
 """
@@ -97,6 +122,8 @@ Helper class for authentication, so we don't repeat this in every test
 
 
 API_VERSION = "2026-06-08"
+
+KEYS_DIR = Path(__file__).parent / "keys"
 
 
 class SecurityTokenService:
@@ -111,21 +138,34 @@ class SecurityTokenService:
 
     auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 
-    def _client_credentials(self, client_id, client_secret) -> str:
+    def _jwt_bearer(self, entity: "TestEntityClient") -> str:
         """
-        Get an access token using client credentials
+        Get an entity access token using the JWT bearer grant (no sub)
         """
-        auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        client_credentials_data = {
-            "grant_type": "client_credentials",
-            "client_id": client_id,
-            "client_secret": client_secret,
-        }
-        client_credentials_response = requests.post(
-            self.auth_url + "/token", headers=auth_headers, data=client_credentials_data
+        with open(KEYS_DIR / f".{entity.key_name()}.key.pem") as f:
+            private_key = f.read()
+        now = dt.now(tz.utc)
+        grant = jwt.encode(
+            {
+                "aud": self.auth_url + "/",
+                "iss": entity.client_id(),
+                "jti": str(uuid.uuid4()),
+                "iat": now,
+                "exp": now + timedelta(seconds=120),
+            },
+            private_key,
+            algorithm="RS256",
         )
-        client_credentials_response.raise_for_status()
-        return client_credentials_response.json()["access_token"]
+        response = requests.post(
+            self.auth_url + "/token",
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            data={
+                "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                "assertion": grant,
+            },
+        )
+        response.raise_for_status()
+        return response.json()["access_token"]
 
     def _token_exchange(self, entity_token, party_id) -> str:
         """
@@ -146,6 +186,38 @@ class SecurityTokenService:
         )
         token_exchange_response.raise_for_status()
         return token_exchange_response.json()["access_token"]
+
+    def get_human_client(self, entity=None) -> AuthenticatedClient:
+        entity = entity or TestEntityClient.TEST
+        secret = os.environ.get("FLEX_JWT_SECRET") or dotenv_values(
+            Path(__file__).parent / ".env"
+        ).get("FLEX_JWT_SECRET")
+        assert secret, "FLEX_JWT_SECRET is not set"
+
+        entity_id = self.get_userinfo(
+            cast(AuthenticatedClient, self.get_client(entity))
+        )["entity_id"]
+
+        eid = uuid.uuid5(
+            uuid.NAMESPACE_URL, f"flex-test-human:{entity.party_name_prefix()}"
+        )
+        token = jwt.encode(
+            {
+                "entity_id": entity_id,
+                "exp": int((dt.now(tz.utc) + timedelta(hours=1)).timestamp()),
+                "eid": str(eid),
+                "role": "flex_entity",
+                "scope": "manage:auth manage:data read:grid manage:attachment",
+            },
+            secret,
+            algorithm="HS256",
+        )
+        return AuthenticatedClient(
+            base_url=self.api_url,
+            token=token,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
+        )
 
     # network call to get userinfo
     def _get_userinfo(self, client: AuthenticatedClient) -> dict:
@@ -172,7 +244,7 @@ class SecurityTokenService:
 
     # network call for authentication
     def _get_client(self, entity: TestEntityClient, party_name=None):
-        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
+        entity_token = self._jwt_bearer(entity)
         entity_client = AuthenticatedClient(
             base_url=self.api_url,
             token=entity_token,
@@ -199,7 +271,7 @@ class SecurityTokenService:
 
     def get_client(self, entity=None, party_name=None, reset=False):
         """
-        Get an AuthenticatedClient using client credentials.
+        Get an AuthenticatedClient using the JWT bearer grant.
 
         If party_name is None, the returned AuthenticatedClient will be an entity.
         If party_name is not None, the returned AuthenticatedClient will be a party.
@@ -294,7 +366,7 @@ class SecurityTokenService:
 
         # now get a client for the new party
 
-        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
+        entity_token = self._jwt_bearer(entity)
         token = self._token_exchange(entity_token, party.id)
 
         return AuthenticatedClient(

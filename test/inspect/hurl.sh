@@ -16,6 +16,10 @@ PRIVATE_KEY_FILE="${SCRIPT_DIR}/../keys/.test.key.pem"
 HURL_VARIABLE_grant_jwt=$("$SCRIPT_DIR/../../.venv/bin/python3" "$SCRIPT_DIR/gen_jwt.py" "$PRIVATE_KEY_FILE" "$AUDIENCE/")
 export HURL_VARIABLE_grant_jwt
 
+# grant without sub: yields an entity token
+HURL_VARIABLE_grant_jwt_entity=$("$SCRIPT_DIR/../../.venv/bin/python3" "$SCRIPT_DIR/gen_jwt.py" "$PRIVATE_KEY_FILE" "$AUDIENCE/" --no-sub)
+export HURL_VARIABLE_grant_jwt_entity
+
 HURL_VARIABLE_today=$(date +%Y-%m-%d)
 export HURL_VARIABLE_today
 

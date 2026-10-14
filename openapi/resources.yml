@@ -1110,6 +1110,10 @@ resources:
           The status of the grid prequalification for this service providing group.
         x-details: >-
           Always `requested` when created. Can then be updated to the other values.
+          Automatically set to `inactive` (soft delete) when none of the controllable
+          units of the service providing group has the impacted system operator as
+          CSO anymore, and back to `requested` if one comes back. Once `inactive`,
+          only the system can change the status.
         format: text
         type: string
         default: requested
@@ -1139,11 +1143,17 @@ resources:
               en: Not approved
               nb: Ikke godkjent
               nn: Ikkje godkjent
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
         example: in_progress
         x-intl:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: date-time
@@ -1373,7 +1383,7 @@ resources:
     name: Entity Client
     summary: Entity client
     description: >-
-      Client linked to an entity for client credentials and JWT grant authentication methods.
+      Client linked to an entity for JWT grant authentication methods.
     x-intl:
       en: Entity Client
       nb: Entitetsklient
@@ -1431,7 +1441,7 @@ resources:
           nn: Namn
       client_id:
         description: >-
-          The identifier of the entity. For use with client credentials authentication method.
+          The identifier of the entity.
         format: text
         type: string
         readOnly: true
@@ -1471,18 +1481,6 @@ resources:
           en: Scopes
           nb: Scopes
           nn: Scopes
-      client_secret:
-        description: >-
-          The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
-        format: text
-        type: string
-        minLength: 12
-        nullable: true
-        example: mysupersecretpassword
-        x-intl:
-          en: Client secret
-          nb: Klienthemmelighet
-          nn: Klientløyndom
       public_key:
         description: The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
         format: text

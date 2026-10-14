@@ -120,7 +120,7 @@ CREATE OR REPLACE FUNCTION test_data.add_controllable_unit(
     so_id bigint,
     accounting_point_id bigint,
     in_end_user_id bigint,
-    service_providers cu_sp []
+    service_providers cu_sp[]
 )
 RETURNS bigint
 AS $$
@@ -309,7 +309,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
-    l_technology text [],
+    l_technology text[],
     l_maximum_active_power decimal,
     l_device_type text,
     l_make text,
@@ -657,7 +657,22 @@ BEGIN
   INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
   (entity_id_person, entity_first_name || ' Person Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
-  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
+  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
+  (entity_id_person, entity_first_name || ' Scopes Client', '{use:data, manage:auth}'::text[]),
+  (entity_id_person, entity_first_name || ' Party Membership Only Client', '{manage:data:party_membership, manage:auth}'::text[]),
+  (entity_id_person, entity_first_name || ' Grid Client', '{read:grid, manage:auth}'::text[]),
+  (entity_id_person, entity_first_name || ' Data Only Client', '{read:data, manage:auth}'::text[]);
+
+  -- a human identity for the person entity (what an OIDC login creates), so
+  -- tests can act as a human; the eid is derived from the entity name, see
+  -- SecurityTokenService.get_human_client
+  INSERT INTO flex.identity (entity_id, eid)
+  VALUES (
+    entity_id_person,
+    public.uuid_generate_v5(
+      public.uuid_ns_url(), 'flex-test-human:' || entity_first_name
+    )
+  );
 
   -- end user parties
 
