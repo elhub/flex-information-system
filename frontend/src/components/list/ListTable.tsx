@@ -1,3 +1,4 @@
+import { useTranslate } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { Alert, BodyText, Loader, Table, type SortState } from "../ui";
 import type { ListColumn, ListInterface } from "./types";
@@ -16,10 +17,15 @@ export const ListTable = <T extends { id: number | string }>({
   rowLink,
   expandedContent,
 }: ListTableProps<T>) => {
+  const translate = useTranslate();
+
   if (list.isError)
-    return <Alert variant="error">Could not load the list.</Alert>;
+    return (
+      <Alert variant="error">{translate("text.list_table.load_error")}</Alert>
+    );
   if (list.isLoading) return <Loader />;
-  if (list.rows.length === 0) return <BodyText>No results</BodyText>;
+  if (list.rows.length === 0)
+    return <BodyText>{translate("text.simple_table.no_results")}</BodyText>;
 
   return (
     <RowsTable
