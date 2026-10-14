@@ -21,6 +21,7 @@ import os
 import uuid
 from pathlib import Path
 import jwt
+from dotenv import dotenv_values
 import requests
 from datetime import datetime as dt, timedelta
 from datetime import timezone as tz
@@ -185,6 +186,38 @@ class SecurityTokenService:
         )
         token_exchange_response.raise_for_status()
         return token_exchange_response.json()["access_token"]
+
+    def get_human_client(self, entity=None) -> AuthenticatedClient:
+        entity = entity or TestEntityClient.TEST
+        secret = os.environ.get("FLEX_JWT_SECRET") or dotenv_values(
+            Path(__file__).parent / ".env"
+        ).get("FLEX_JWT_SECRET")
+        assert secret, "FLEX_JWT_SECRET is not set"
+
+        entity_id = self.get_userinfo(
+            cast(AuthenticatedClient, self.get_client(entity))
+        )["entity_id"]
+
+        eid = uuid.uuid5(
+            uuid.NAMESPACE_URL, f"flex-test-human:{entity.party_name_prefix()}"
+        )
+        token = jwt.encode(
+            {
+                "entity_id": entity_id,
+                "exp": int((dt.now(tz.utc) + timedelta(hours=1)).timestamp()),
+                "eid": str(eid),
+                "role": "flex_entity",
+                "scope": "manage:auth manage:data read:grid manage:attachment",
+            },
+            secret,
+            algorithm="HS256",
+        )
+        return AuthenticatedClient(
+            base_url=self.api_url,
+            token=token,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
+        )
 
     # network call to get userinfo
     def _get_userinfo(self, client: AuthenticatedClient) -> dict:

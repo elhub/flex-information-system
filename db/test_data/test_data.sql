@@ -663,6 +663,17 @@ BEGIN
   (entity_id_person, entity_first_name || ' Grid Client', '{read:grid, manage:auth}'::text[]),
   (entity_id_person, entity_first_name || ' Data Only Client', '{read:data, manage:auth}'::text[]);
 
+  -- a human identity for the person entity (what an OIDC login creates), so
+  -- tests can act as a human; the eid is derived from the entity name, see
+  -- SecurityTokenService.get_human_client
+  INSERT INTO flex.identity (entity_id, eid)
+  VALUES (
+    entity_id_person,
+    public.uuid_generate_v5(
+      public.uuid_ns_url(), 'flex-test-human:' || entity_first_name
+    )
+  );
+
   -- end user parties
 
   PERFORM test_data.add_party_for_entity(

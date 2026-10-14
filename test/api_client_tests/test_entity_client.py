@@ -8,6 +8,12 @@ from flex.models import (
     EntityClientUpdateRequest,
     AuthScope,
     PartyResponse,
+    PartyMembershipCreateRequest,
+    PartyMembershipResponse,
+    PartyCreateRequest,
+    PartyBusinessIdType,
+    PartyRole,
+    PartyType,
     ErrorMessage,
     EmptyObject,
 )
@@ -20,6 +26,14 @@ from flex.api.entity_client import (
 )
 from flex.api.party import (
     read_party,
+    create_party,
+)
+from flex.api.party_membership import (
+    create_party_membership,
+    delete_party_membership,
+)
+from test_party import (
+    unique_gln,
 )
 import pytest
 from typing import cast
@@ -96,6 +110,144 @@ def test_entity_client_fiso(sts):
         ),
     )
     assert isinstance(e, ErrorMessage)
+
+
+def test_entity_client_human(sts):
+    # RLS: ECL-ENT002
+    # a human can create, update and delete their own clients (unlike a client)
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_ent = sts.get_client(TestEntityClient.TEST)
+    client_other_ent = sts.get_client(TestEntityClient.COMMON)
+    client_human = sts.get_human_client()
+
+    ent_id = sts.get_userinfo(client_ent)["entity_id"]
+    other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
+
+    # endpoint: POST /entity_client
+    clt = create_entity_client.sync(
+        client=client_human,
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
+    )
+    assert isinstance(clt, EntityClientResponse)
+    clt_id = cast(int, clt.id)
+
+    # not for another entity
+    e = create_entity_client.sync(
+        client=client_human,
+        body=EntityClientCreateRequest(
+            entity_id=other_ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # endpoint: GET /entity_client/{id}
+    r = read_entity_client.sync(client=client_human, id=clt_id)
+    assert isinstance(r, EntityClientResponse)
+
+    # endpoint: PATCH /entity_client/{id}
+    u = update_entity_client.sync(
+        client=client_human,
+        id=clt_id,
+        body=EntityClientUpdateRequest(name="updated client name"),
+    )
+    assert isinstance(u, EntityClientResponse)
+    assert u.name == "updated client name"
+
+    # -------- test of restrictions on the party field
+
+    # set up two parties, one owned by each test entity
+
+    p = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="New Party Entity Client Test",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role=PartyRole.FLEX_SERVICE_PROVIDER,
+            type_=PartyType.SERVICE_PROVIDER,
+            entity_id=ent_id,
+        ),
+    )
+    assert isinstance(p, PartyResponse)
+
+    p2 = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="New Party Entity Client Test 2",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role=PartyRole.FLEX_ENERGY_SUPPLIER,
+            type_=PartyType.ENERGY_SUPPLIER,
+            entity_id=other_ent_id,
+        ),
+    )
+    assert isinstance(p2, PartyResponse)
+
+    # the entity can assume an owned party, so it can set up a client for it
+    u = update_entity_client.sync(
+        client=client_human,
+        id=clt_id,
+        body=EntityClientUpdateRequest(party_id=cast(int, p.id)),
+    )
+    assert isinstance(u, EntityClientResponse)
+
+    # not the other one
+    e = update_entity_client.sync(
+        client=client_human,
+        id=clt_id,
+        body=EntityClientUpdateRequest(party_id=cast(int, p2.id)),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # once the entity is a member of the other party, it can
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            party_id=cast(int, p2.id),
+            entity_id=ent_id,
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
+        ),
+    )
+    assert isinstance(pm, PartyMembershipResponse)
+
+    u = update_entity_client.sync(
+        client=client_human,
+        id=clt_id,
+        body=EntityClientUpdateRequest(party_id=cast(int, p2.id)),
+    )
+    assert isinstance(u, EntityClientResponse)
+
+    # --------
+
+    # FISO and the entity client cannot delete it
+    for c in (client_fiso, client_ent):
+        e = delete_entity_client.sync(
+            client=c,
+            id=clt_id,
+            body=EmptyObject(),
+        )
+        assert isinstance(e, ErrorMessage)
+
+    # endpoint: DELETE /entity_client/{id}
+    d = delete_entity_client.sync(
+        client=client_human,
+        id=clt_id,
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, pm.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
 
 
 def test_entity_client_org(sts):
