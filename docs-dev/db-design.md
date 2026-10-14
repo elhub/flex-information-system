@@ -220,9 +220,10 @@ and `timestamptz` makes our views non-update-able.
 
 For some timelines we also need to ensure that there are no overlaps in the
 timeline. This is done by a separate trigger (`make_room`) that runs before
-insert and update on the backing table. This trigger runs as `SECURITY INVOKER`
+insert and update on the backing table. This trigger runs as `SECURITY DEFINER`
 since the calling user does not have direct access to update other rows in the
-backing table.
+backing table. Overlapped records that are fully covered by the new range are
+deleted (soft delete), the others are shortened.
 
 The consistency of the timeline is also ensured with constraints on the main
 table. It allows us to ensure that there are no overlaps on the timeline and
