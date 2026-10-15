@@ -60,6 +60,7 @@ export type TextKey =
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
   | "table.header.grid_prequalification"
+  | "table.header.pso_grid_prequalification"
   | "table.header.product_application"
   | "table.header.valid_from"
   | "table.header.valid_to"
@@ -79,6 +80,13 @@ export type TextKey =
   | "controllable_unit.is_small.false.label"
   | "cu_show_no_service_provider"
   | "cu_show_no_balance_responsible_party"
+  | "cu_technical_resource_summary.heading"
+  | "cu_technical_resource_summary.description_prefix"
+  | "cu_technical_resource_summary.description_suffix"
+  | "cu_technical_resource_summary.aggregated_rated_power"
+  | "cu_technical_resource_summary.average_rated_power"
+  | "cu_technical_resource_summary.minimum_rated_power"
+  | "cu_technical_resource_summary.maximum_rated_power"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
   | "cu_show_suspended_heading"
@@ -335,6 +343,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
     "table.header.grid_prequalification": "Grid prequalification",
+    "table.header.pso_grid_prequalification": "Grid prequalification (PSO)",
     "table.header.product_application": "Product application",
     "table.header.valid_from": "Valid from",
     "table.header.valid_to": "Valid to",
@@ -355,6 +364,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false.label": "No",
     cu_show_no_service_provider: "No service provider",
     cu_show_no_balance_responsible_party: "No balance responsible party",
+    "cu_technical_resource_summary.heading": "Technical resource summary",
+    "cu_technical_resource_summary.description_prefix":
+      "This controllable unit contains",
+    "cu_technical_resource_summary.description_suffix":
+      "technical resources. Here are the rated power aggregates computed across all of them:",
+    "cu_technical_resource_summary.aggregated_rated_power":
+      "Aggregated rated power",
+    "cu_technical_resource_summary.average_rated_power": "Average rated power",
+    "cu_technical_resource_summary.minimum_rated_power": "Minimum rated power",
+    "cu_technical_resource_summary.maximum_rated_power": "Maximum rated power",
     cu_flexible_power_exceeds_rated_power_heading:
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
@@ -669,6 +688,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "table.header.grid_prequalification": "Nettprekvalifisering",
+    "table.header.pso_grid_prequalification": "Nettprekvalifisering (PSO)",
     "table.header.product_application": "Produktprekvalifisering",
     "table.header.valid_from": "Gyldig fra",
     "table.header.valid_to": "Gyldig til",
@@ -689,6 +709,18 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false.label": "Nei",
     cu_show_no_service_provider: "Ingen tjenesteleverandør",
     cu_show_no_balance_responsible_party: "Ingen balanseansvarlig",
+    "cu_technical_resource_summary.heading":
+      "Oppsummering av tekniske ressurser",
+    "cu_technical_resource_summary.description_prefix":
+      "Denne kontrollerbare enheten inneholder",
+    "cu_technical_resource_summary.description_suffix":
+      "tekniske ressurser. Her er aggregatene for merkeeffekt beregnet på tvers av alle:",
+    "cu_technical_resource_summary.aggregated_rated_power":
+      "Aggregert merkeeffekt",
+    "cu_technical_resource_summary.average_rated_power":
+      "Gjennomsnittlig merkeeffekt",
+    "cu_technical_resource_summary.minimum_rated_power": "Laveste merkeeffekt",
+    "cu_technical_resource_summary.maximum_rated_power": "Høyeste merkeeffekt",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:

@@ -5,6 +5,15 @@
 -- (SPG, ISO) pairs for which a SPG-GP record should exist in the DB
 CREATE OR REPLACE VIEW flex.service_providing_group_grid_prequalification_v
 WITH (security_invoker = false) AS (
+    -- the PSO of a SPGPA always grid-prequalifies the SPG
+    SELECT DISTINCT
+        spgpa_pso.service_providing_group_id,
+        spgpa_pso.procuring_system_operator_id AS impacted_system_operator_id
+    FROM flex.service_providing_group_product_application AS spgpa_pso
+    WHERE spgpa_pso.status NOT IN ('requested', 'rejected')
+
+    UNION
+
     SELECT DISTINCT
         spgpa.service_providing_group_id,
         ap_so.system_operator_id AS impacted_system_operator_id
@@ -49,6 +58,9 @@ BEGIN
         = expected_spggp.service_providing_group_id
             AND flex_spggp.impacted_system_operator_id
             = expected_spggp.impacted_system_operator_id
+    -- the SPG-ISO pair is expected again -> reactivate the soft-deleted row
+    WHEN MATCHED AND flex_spggp.status = 'inactive' THEN
+        UPDATE SET status = 'requested'
     -- missing in the table -> insert
     WHEN NOT MATCHED BY TARGET THEN
         INSERT (
@@ -59,10 +71,30 @@ BEGIN
             expected_spggp.service_providing_group_id,
             expected_spggp.impacted_system_operator_id,
             0 -- system
-        );
-    -- TODO: missing in the view -> [soft-]delete the SPG-GP?
-    -- WHEN NOT MATCHED BY SOURCE THEN
-    --     DELETE;
+        )
+    -- soft delete the SPG-GP when no CU of the SPG is (or will be) under the
+    -- ISO as CSO anymore (CU removed from the SPG, membership ended, CSO changed)
+    WHEN NOT MATCHED BY SOURCE
+        AND flex_spggp.status != 'inactive'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_membership AS spgm
+                INNER JOIN flex.controllable_unit AS cu
+                    ON spgm.controllable_unit_id = cu.id
+                INNER JOIN flex.accounting_point_system_operator AS ap_so
+                    ON
+                        cu.accounting_point_id = ap_so.accounting_point_id
+                        AND spgm.valid_time_range && ap_so.valid_time_range
+            WHERE spgm.service_providing_group_id
+                = flex_spggp.service_providing_group_id
+                AND ap_so.system_operator_id
+                = flex_spggp.impacted_system_operator_id
+                AND (
+                    upper(spgm.valid_time_range) IS null
+                    OR upper(spgm.valid_time_range) > current_timestamp
+                )
+        ) THEN
+        UPDATE SET status = 'inactive';
 END;
 $$;
 

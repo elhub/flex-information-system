@@ -16,10 +16,6 @@ client. From there, users have two ways of authenticating.
 
 * `JWT Bearer` - The entity uploads a public key to one of its clients and uses
   a self-signed JWT Authorization grant to authenticate.
-* `Client Credentials` - The entity uses a client_id and client_secret to
-  authenticate. The client_id is the UUID of one of the clients added by the
-  entity in the system, and client_secret is a password that must be set on
-  this client.
 
 !!! note "Possible future use of enterprise certificates"
 
@@ -38,35 +34,9 @@ provider, and as part of the process, the Flexibility Information System will
 obtain the identity of the user from the Identity provider and issue an access
 token for the portal.
 
-## Client credentials
+## Client Credentials
 
-!!! warning "Deprecated"
-
-    This is a temporary solution that will be removed in later versions of the
-    FIS. Use the `JWT Bearer` method instead.
-
-To use this method, first log in to the portal and add a new client to the
-entity. Then, write down the generated Client ID on the created client, because
-you will need it to log in, and set the Client Secret on the client. This should
-be a strong password. Consider generating a random password using some kind of
-online generator.
-
-Once Client Secret is set in the portal, the connection is established through
-basic authentication on the auth API's `/token` endpoint, using the
-[client_credentials](https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/)
-`grant_type` with
-[Client Password](https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1),
-in a URL-encoded body.
-
-Set `Content-Type` header as `application/x-www-form-urlencoded`.
-
-Example body:
-
-```text
-grant_type=client_credentials&client_id=<client_id>&client_secret=<client_secret>
-```
-
-The result is a JWT access token for the entity that can be used to access the API.
+Was recently supported, but has been removed.
 
 ## JWT Bearer
 
@@ -115,7 +85,7 @@ access the API.
 
 ## Token exchange
 
-If the user has logged in via client credentials or OpenID connect, the user can
+If the user has logged in via OpenID connect, the user can
 assume a party by doing a
 [OAuth 2.0 Token Exchange (RFC8693)](https://datatracker.ietf.org/doc/html/rfc8693)
 that lets an entity "impersonate" a party with the returned token. This is done
@@ -156,16 +126,16 @@ grant_type=urn:ietf:params:oauth:grant-type:token-exchange
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-## Example - client credentials and token exchange
+## Example - JWT Bearer and token exchange
 
-Below is an example of realistic login sequence:
+Below is an example of a realistic login sequence:
 
-* a user logs in as an entity by giving their credentials in the first call to
-  the `/token` endpoint;
-* they now have sufficient authorisation to read information about themselves,
-  including which parties they are allowed to assume;
-* they ask for a token exchange in the second call to the `/token` endpoint,
-  in order to assume one of the possible parties.
+* an entity authenticates with a self-signed JWT in the first call to the
+  `/token` endpoint;
+* it now has sufficient authorisation to read information about itself,
+  including which parties it is allowed to assume;
+* it asks for a token exchange in the second call to the `/token` endpoint,
+  and receives a token for the party it assumes.
 
 ![Login Sequence](../diagrams/login_sequence.png)
 

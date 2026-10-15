@@ -1,7 +1,7 @@
 # Entity Client
 
-This resource represents a client linked to an entity, to be used in the client
-credentials and JWT grant authentication methods.
+This resource represents a client linked to an entity, to be used in the JWT Bearer
+authentication method.
 
 The main purpose of this resource is to enable machine access to the API.
 A program connecting to the API will use one of the clients present on the
@@ -9,9 +9,16 @@ entity.
 It will thereby get the possibility to act as the party referenced in the
 `party_id` field, with the authorisations listed in the client's `scopes`.
 
-Entity clients are secured by a password in `client_secret` or a `public_key`
-associated to the private key JWTs sent to the JWT grant authentication will
-be signed with.
+Entity clients are secured by a `public_key` associated to the private key
+that JWTs sent to the JWT Bearer authentication will be signed with.
+
+!!! warning "Client credentials removed"
+
+    Entity clients could previously also be secured by a `client_secret` and
+    used with the `client_credentials` grant. This grant type has been removed.
+    The `client_secret` field is no longer part of the API, and existing clients
+    must authenticate with the JWT Bearer method using a `public_key`.
+    See the [changelog](../changelog.md).
 
 An entity can have several clients registered, typically an organisation entity
 with one client per enterprise machine expected to use the API in an automated
@@ -47,18 +54,17 @@ key stored in the entity client.
 
 ## Fields
 
-| Name                                                                        | Description                                                                                                                                                                                                                                                                                                       | Format                                                                                                  | Reference                       |
-|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                  | Unique surrogate identifier.                                                                                                                                                                                                                                                                                      | bigint<br/>Read only                                                                                    |                                 |
-| <a name="field-entity_id" href="#field-entity_id">entity_id</a>             | Reference to the entity that this client is attached to.                                                                                                                                                                                                                                                          | bigint<br/>Required<br/>Non-updatable                                                                   | [entity.id](entity.md#field-id) |
-| <a name="field-name" href="#field-name">name</a>                            | Name of the client.                                                                                                                                                                                                                                                                                               | text<br/>Max length: `256`                                                                              |                                 |
-| <a name="field-client_id" href="#field-client_id">client_id</a>             | The identifier of the entity. For use with client credentials authentication method.                                                                                                                                                                                                                              | text<br/>Read only                                                                                      |                                 |
-| <a name="field-party_id" href="#field-party_id">party_id</a>                | Reference to the party this client allows to assume. A null value means the client cannot assume any party.                                                                                                                                                                                                       | bigint                                                                                                  | [party.id](party.md#field-id)   |
-| <a name="field-scopes" href="#field-scopes">scopes</a>                      | List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.<br/>Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. | <br/>Required<br/>Array<br/>See the [list of scopes](../auth/scopes.md) for allowed values.             |                                 |
-| <a name="field-client_secret" href="#field-client_secret">client_secret</a> | The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.                                                                                                                                                                                        | text<br/>Min length: `12`                                                                               |                                 |
-| <a name="field-public_key" href="#field-public_key">public_key</a>          | The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.                                                                                                                                                                                                          | text<br/>Pattern: `^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$` |                                 |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>       | When the resource was recorded (created or updated) in the system.                                                                                                                                                                                                                                                | date-time<br/>Read only                                                                                 |                                 |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>       | The identity that recorded the resource.                                                                                                                                                                                                                                                                          | bigint<br/>Read only                                                                                    |                                 |
+| Name                                                                  | Description                                                                                                                                                                                                                                                                                                       | Format                                                                                                  | Reference                       |
+|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------------------------------|
+| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                                                                                                                                                                                                                                                                                      | bigint<br/>Read only                                                                                    |                                 |
+| <a name="field-entity_id" href="#field-entity_id">entity_id</a>       | Reference to the entity that this client is attached to.                                                                                                                                                                                                                                                          | bigint<br/>Required<br/>Non-updatable                                                                   | [entity.id](entity.md#field-id) |
+| <a name="field-name" href="#field-name">name</a>                      | Name of the client.                                                                                                                                                                                                                                                                                               | text<br/>Max length: `256`                                                                              |                                 |
+| <a name="field-client_id" href="#field-client_id">client_id</a>       | The identifier of the entity.                                                                                                                                                                                                                                                                                     | text<br/>Read only                                                                                      |                                 |
+| <a name="field-party_id" href="#field-party_id">party_id</a>          | Reference to the party this client allows to assume. A null value means the client cannot assume any party.                                                                                                                                                                                                       | bigint                                                                                                  | [party.id](party.md#field-id)   |
+| <a name="field-scopes" href="#field-scopes">scopes</a>                | List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.<br/>Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. | <br/>Required<br/>Array<br/>See the [list of scopes](../auth/scopes.md) for allowed values.             |                                 |
+| <a name="field-public_key" href="#field-public_key">public_key</a>    | The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.                                                                                                                                                                                                          | text<br/>Pattern: `^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$` |                                 |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system.                                                                                                                                                                                                                                                | date-time<br/>Read only                                                                                 |                                 |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a> | The identity that recorded the resource.                                                                                                                                                                                                                                                                          | bigint<br/>Read only                                                                                    |                                 |
 
 ## Validation Rules
 
@@ -84,9 +90,10 @@ No policies.
 
 #### Entity
 
-| Policy key | Policy                                             | Status |
-|------------|----------------------------------------------------|--------|
-| ECL-ENT001 | Read, create, update and delete their own clients. | DONE   |
+| Policy key | Policy                                                                 | Status |
+|------------|------------------------------------------------------------------------|--------|
+| ECL-ENT001 | Read their own clients.                                                | DONE   |
+| ECL-ENT002 | Create, update and delete their own clients, when the user is a human. | DONE   |
 
 #### Common
 
@@ -142,7 +149,6 @@ For party type abbreviations, check
 | client_id     |      | R   | R  | R  | R    | R  | R  | R  | R   |
 | party_id      |      | R   | R  | R  | R    | R  | R  | R  | RCU |
 | scopes        |      | R   | R  | R  | R    | R  | R  | R  | RCU |
-| client_secret |      | R   | R  | R  | R    | R  | R  | R  | RCU |
 | public_key    |      | R   | R  | R  | R    | R  | R  | R  | RCU |
 | recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R   |
 | recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R   |

@@ -8,33 +8,22 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// The models package is a collection of methods for working with the database.
-
-// GetEntityOfCredentials gets the entity ID associated to the given credentials, as well as the
-// external ID of an identity obtained as a result of logging in as this entity.
-func GetEntityOfCredentials(
+// CanEntityClientUnassume Security finding from pentest is that. Entity clients cannot unassume.
+func CanEntityClientUnassume(
 	ctx context.Context,
 	tx pgx.Tx,
-	clientID string,
-	clientSecret string,
-) (int, string, []string, error) {
-	var (
-		entityID int
-		eid      string
-		scopes   []string
-	)
-
+	externalID string,
+) (bool, error) {
+	var canUnassume bool
 	err := tx.QueryRow(
 		ctx,
-		"select entity_id, external_id, scopes from auth.entity_of_credentials($1, $2)",
-		clientID,
-		clientSecret,
-	).Scan(&entityID, &eid, &scopes)
+		"select not auth.is_client($1)",
+		externalID,
+	).Scan(&canUnassume)
 	if err != nil {
-		return -1, "", nil, fmt.Errorf("failed to get identity of credentials: %w", err)
+		return false, fmt.Errorf("failed to check if client can unassume: %w", err)
 	}
-
-	return entityID, eid, scopes, nil
+	return canUnassume, nil
 }
 
 // GetEntityIdentityByExternalID returns an identity corresponding to the same

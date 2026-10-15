@@ -13,6 +13,7 @@ import {
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
   type SpgpaControllableUnitRow,
+  isFullyApproved,
   useSpgpaControllableUnits,
 } from "./useSpgpaControllableUnits";
 import { useTranslate } from "ra-core";
@@ -46,6 +47,23 @@ type Props = {
   powerScale: Scale;
 };
 
+const renderApprovalStatus = (value: unknown) =>
+  value ? (
+    <Tooltip content={toDateTimeString(String(value))}>
+      <IconValidationCheck
+        style={{ width: 18, height: 18 }}
+        className="text-semantic-text-success"
+        aria-hidden
+      />
+    </Tooltip>
+  ) : (
+    <IconCross
+      style={{ width: 18, height: 18 }}
+      className="text-semantic-text-error"
+      aria-hidden
+    />
+  );
+
 export const SpgpaControllableUnitsTable = ({
   spgId,
   spgpa,
@@ -75,9 +93,7 @@ export const SpgpaControllableUnitsTable = ({
       );
     }
     if (hidePrequalified) {
-      result = result?.filter(
-        (cu) => !cu.gridPrequalifiedAt || !cu.productApplicationPrequalifiedAt,
-      );
+      result = result?.filter((cu) => !isFullyApproved(cu));
     }
     return result;
   }, [searchQuery, hidePrequalified, data?.rows]);
@@ -85,18 +101,16 @@ export const SpgpaControllableUnitsTable = ({
   const formatPower = (value: unknown) =>
     formatScaled(Number(value), "W", KILO, powerScale);
 
-  // A unit counts as approved once both its grid prequalification and the
-  // product application have been approved.
+  // A unit counts as approved once its grid prequalification, the PSO grid
+  // prequalification and the product application have all been approved.
   const approvalSummary = useMemo(() => {
     if (!data) {
       return undefined;
     }
-    const isApproved = (cu: SpgpaControllableUnitRow) =>
-      Boolean(cu.gridPrequalifiedAt && cu.productApplicationPrequalifiedAt);
     const power = (cus: SpgpaControllableUnitRow[]) =>
       cus.reduce((sum, cu) => sum + (cu.maximum_active_power ?? 0), 0);
-    const approvedCus = data.rows.filter(isApproved);
-    const pendingCus = data.rows.filter((cu) => !isApproved(cu));
+    const approvedCus = data.rows.filter(isFullyApproved);
+    const pendingCus = data.rows.filter((cu) => !isFullyApproved(cu));
     const approvedPower = power(approvedCus);
     const pendingPower = power(pendingCus);
     const totalPower = approvedPower + pendingPower;
@@ -170,42 +184,17 @@ export const SpgpaControllableUnitsTable = ({
     {
       key: "gridPrequalifiedAt",
       header: translate("text.table.header.grid_prequalification"),
-      render: (value) =>
-        value ? (
-          <Tooltip content={toDateTimeString(String(value))}>
-            <IconValidationCheck
-              style={{ width: 18, height: 18 }}
-              className="text-semantic-text-success"
-              aria-hidden
-            />
-          </Tooltip>
-        ) : (
-          <IconCross
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-error"
-            aria-hidden
-          />
-        ),
+      render: renderApprovalStatus,
+    },
+    {
+      key: "psoGridPrequalifiedAt",
+      header: translate("text.table.header.pso_grid_prequalification"),
+      render: renderApprovalStatus,
     },
     {
       key: "productApplicationPrequalifiedAt",
       header: translate("text.table.header.product_application"),
-      render: (value) =>
-        value ? (
-          <Tooltip content={toDateTimeString(String(value))}>
-            <IconValidationCheck
-              style={{ width: 18, height: 18 }}
-              className="text-semantic-text-success"
-              aria-hidden
-            />
-          </Tooltip>
-        ) : (
-          <IconCross
-            style={{ width: 18, height: 18 }}
-            className="text-semantic-text-error"
-            aria-hidden
-          />
-        ),
+      render: renderApprovalStatus,
     },
   ];
 

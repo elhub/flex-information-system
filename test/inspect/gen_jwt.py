@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # Generate a JWT token using a private key and decode it using a public key
-# Usage: python3 gen_jwt.py <path to private key>
+# Usage: python3 gen_jwt.py <path to private key> <audience> [--no-sub]
+# With --no-sub the grant has no sub claim, so the issued token is for the entity.
 import jwt
 
 from datetime import datetime as dt, timedelta
@@ -27,6 +28,9 @@ payload = {
     # Expiration time
     "exp": dt.now(tz.utc) + timedelta(seconds=120),  # Token expires in 30 seconds
 }
+
+if "--no-sub" in sys.argv[3:]:
+    del payload["sub"]
 
 # Create the JWT
 token = jwt.encode(payload, private_key, algorithm="RS256")

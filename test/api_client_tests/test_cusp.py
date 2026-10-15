@@ -33,6 +33,12 @@ from typing import cast
 from datetime import date, timedelta, time, timezone
 
 
+def midnight_n_days_diff(n):
+    return datetime.datetime.combine(
+        date.today() + timedelta(days=n), time.min
+    ).astimezone(tz=timezone.utc)
+
+
 @pytest.fixture
 def data():
     sts = SecurityTokenService()
@@ -237,11 +243,6 @@ def test_cusp_sp(data):
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
 
-    def midnight_n_days_diff(n):
-        return datetime.datetime.combine(
-            date.today() + timedelta(days=n), time.min
-        ).astimezone(tz=timezone.utc)
-
     # SP can add CU-SP for current date when the CU is empty
 
     cusp = create_controllable_unit_service_provider.sync(
@@ -355,6 +356,61 @@ def test_cusp_sp(data):
         client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
     )
     assert isinstance(d, ErrorMessage)
+
+
+# RLS: CUSP-SP001
+# Removing the end date soft-deletes the future contracts it now overlaps
+def test_cusp_sp_remove_end_date(data):
+    (sts, cu_id, eu_id, _) = data
+
+    sp_client = sts.get_client(TestEntityClient.TEST, "SP")
+    sp_id = sts.get_userinfo(sp_client)["party_id"]
+
+    # contract with an end date
+    cusp = create_controllable_unit_service_provider.sync(
+        client=sp_client,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(-5),
+            valid_to=midnight_n_days_diff(2),
+        ),
+    )
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    # followed by a future contract with another service provider
+    other_sp_id = sts.get_userinfo(sts.get_client(TestEntityClient.COMMON, "SP"))[
+        "party_id"
+    ]
+    future = create_controllable_unit_service_provider.sync(
+        client=sts.get_client(TestEntityClient.TEST, "FISO"),
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=other_sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-CONTRACT-FUTURE",
+            valid_from=midnight_n_days_diff(16),
+        ),
+    )
+    assert isinstance(future, ControllableUnitServiceProviderResponse)
+
+    # removing the end date makes the contract unlimited and removes the
+    # future contract
+    u = update_controllable_unit_service_provider.sync(
+        client=sp_client,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(valid_to=None),
+    )
+    assert isinstance(u, ControllableUnitServiceProviderResponse)
+    assert u.valid_to is None
+
+    f = read_controllable_unit_service_provider.sync(
+        client=sts.get_client(TestEntityClient.TEST, "FISO"), id=cast(int, future.id)
+    )
+    assert isinstance(f, ControllableUnitServiceProviderResponse)
+    assert f.valid_from is None and f.valid_to is None
 
 
 # RLS: CUSP-SO001

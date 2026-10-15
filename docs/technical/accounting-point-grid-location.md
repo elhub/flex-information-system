@@ -215,7 +215,7 @@ As seen by the `source` field in the table above, we also want to keep track of
 how the grid location was determined. The enum values are as follows.
 
 * `cso` - registered by connecting system operator (CSO)
-* `so` - registered by impacted or procuring system operator
+* `so` - registered by procuring system operator
 * `grid_model` - given from common/national grid model
 * `system` - (guessed) by the flexibility information system
 

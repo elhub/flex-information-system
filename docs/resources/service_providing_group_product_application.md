@@ -17,9 +17,9 @@ only verification, by setting the status to either `prequalification` or
 `prequalified`, `verified` or `rejected`. If it is rejected, the service
 provider can then make updates and propose the application again.
 
-The system will regularly check automatically whether SPG grid prequalification
-resources need to be created for each impacted system operator, and any status
-change from `requested` will trigger this check as well.
+Once an application moves past `requested`, the system creates an SPG grid
+prequalification for the procuring system operator and for each impacted system operator.
+The system also checks this regularly, so any missing grid prequalifications are created.
 
 [Full Size](../diagrams/service_providing_group_product_application_status.png)
 |

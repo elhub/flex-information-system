@@ -13,8 +13,6 @@ from security_token_service import (
     API_VERSION,
 )
 from flex.models import (
-    EntityClientCreateRequest,
-    EntityClientResponse,
     AuthScope,
     PartyMembershipCreateRequest,
     PartyMembershipResponse,
@@ -24,10 +22,6 @@ from flex.models import (
     PartyBusinessIdType,
     PartyResponse,
     EmptyObject,
-)
-from flex.api.entity_client import (
-    create_entity_client,
-    delete_entity_client,
 )
 from flex.api.party import (
     create_party,
@@ -44,7 +38,34 @@ from api_client_tests.test_party import unique_gln
 auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 grid_url = os.environ["FLEX_URL_BASE"] + "/grid/v0"
 auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-client_secret = "qwertyuiop123456"
+
+
+def jwt_bearer_token(client_id, privkey, sub=None):
+    """
+    Log in as an entity client through the JWT bearer grant.
+    Without sub the token is an entity token, with sub it is a party token.
+    """
+    now = dt.now(tz.utc)
+    claims = {
+        "aud": auth_url + "/",
+        "iss": client_id,
+        "jti": str(uuid.uuid4()),
+        "iat": now,
+        "exp": now + timedelta(seconds=120),
+    }
+    if sub is not None:
+        claims["sub"] = sub
+    grant = jwt.encode(claims, privkey, algorithm="RS256")
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "assertion": grant,
+        },
+    )
+    assert response.status_code == 200
+    return response.json()["access_token"]
 
 
 @pytest.fixture(scope="module")
@@ -72,20 +93,11 @@ def data(request, jwt_keys):
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
 
-    pubkey, privkey = jwt_keys
+    _, privkey = jwt_keys
 
-    # create an entity client we will log in with
-    clt = create_entity_client.sync(
-        client=client_ent,
-        body=EntityClientCreateRequest(
-            entity_id=ent_id,
-            name="client - test scopes",
-            scopes=[AuthScope.USEDATA, AuthScope.MANAGEAUTH],
-            client_secret=client_secret,
-            public_key=pubkey,
-        ),
-    )
-    assert isinstance(clt, EntityClientResponse)
+    # entity client we will log in with (use:data, manage:auth)
+    # seeded in the test data, since machines cannot create entity clients
+    clt = TestEntityClient.TEST_SCOPES
 
     # create party owned by entity
     p1 = create_party.sync(
@@ -135,36 +147,17 @@ def data(request, jwt_keys):
             client=client_fiso,
             body=EmptyObject(),
         )
-        _d = delete_entity_client.sync(
-            id=cast(int, clt.id),
-            client=client_ent,
-            body=EmptyObject(),
-        )
 
     request.addfinalizer(teardown)
 
-    yield (clt, privkey, p1.id, p1.business_id, p2.id, p2.business_id)
+    yield (clt.client_id(), privkey, p1.id, p1.business_id, p2.id, p2.business_id)
 
 
-def test_scopes_client_credentials(data):
-    entity_clt, _, owned_party_id, _, membership_party_id, _ = data
+def test_scopes_entity_token_exchange(data):
+    entity_clt_id, clt_private_key, owned_party_id, _, membership_party_id, _ = data
 
-    entity_clt = cast(EntityClientResponse, entity_clt)
-
-    # log in as entity through entity client secret
-    response = requests.post(
-        auth_url + "/token",
-        headers=auth_headers,
-        data={
-            "grant_type": "client_credentials",
-            "client_id": entity_clt.client_id,
-            "client_secret": client_secret,
-        },
-    )
-    assert response.status_code == 200
-    json = response.json()
-    entity_token = json.get("access_token")
-    assert entity_token is not None
+    # log in as entity through entity client key
+    entity_token = jwt_bearer_token(entity_clt_id, clt_private_key)
 
     # check scopes come from client
     decoded_token = jwt.decode(
@@ -199,17 +192,17 @@ def test_scopes_client_credentials(data):
     )
     assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
-    # unassume party
+    # try to unassume party
     response = requests.delete(
         auth_url + "/assume",
         headers=auth_headers | {"Authorization": f"Bearer {party_token}"},
         cookies={"__Host-flex_session": party_token},
     )
-    assert response.status_code == 200
-    entity_token = response.cookies.get("__Host-flex_session")
-    assert entity_token is not None
+    # entity clients are not allowed to unassume, they have to log in again
+    assert response.status_code == 400
+    entity_token = jwt_bearer_token(entity_clt_id, clt_private_key)
 
-    # check scopes are reset to the client scopes
+    # check scopes are the client scopes
     decoded_token = jwt.decode(
         entity_token,
         algorithms=["HS256"],
@@ -247,12 +240,12 @@ def test_scopes_client_credentials(data):
 
 
 def test_scopes_jwt_bearer_entity(data):
-    entity_clt, clt_private_key, owned_party_id, _, membership_party_id, _ = data
+    entity_clt_id, clt_private_key, owned_party_id, _, membership_party_id, _ = data
 
     # log in as entity through entity client key
     payload = {
         "aud": "https://test.flex.internal:6443/auth/v1/",
-        "iss": entity_clt.client_id,
+        "iss": entity_clt_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
@@ -305,17 +298,17 @@ def test_scopes_jwt_bearer_entity(data):
     )
     assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
-    # unassume party
+    # try to unassume party
     response = requests.delete(
         auth_url + "/assume",
         headers=auth_headers | {"Authorization": f"Bearer {party_token}"},
         cookies={"__Host-flex_session": party_token},
     )
-    assert response.status_code == 200
-    entity_token = response.cookies.get("__Host-flex_session")
-    assert entity_token is not None
+    # entity clients are not allowed to unassume, they have to log in again
+    assert response.status_code == 400
+    entity_token = jwt_bearer_token(entity_clt_id, clt_private_key)
 
-    # check scopes are reset to the client scopes
+    # check scopes are the client scopes
     decoded_token = jwt.decode(
         entity_token,
         algorithms=["HS256"],
@@ -353,12 +346,12 @@ def test_scopes_jwt_bearer_entity(data):
 
 
 def test_scopes_jwt_bearer_owned_party(data):
-    entity_clt, clt_private_key, _, owned_party_gln, _, _ = data
+    entity_clt_id, clt_private_key, _, owned_party_gln, _, _ = data
 
     # log in as owned party through entity client key
     payload = {
         "aud": "https://test.flex.internal:6443/auth/v1/",
-        "iss": entity_clt.client_id,
+        "iss": entity_clt_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
@@ -389,12 +382,12 @@ def test_scopes_jwt_bearer_owned_party(data):
 
 
 def test_scopes_jwt_bearer_membership_party(data):
-    entity_clt, clt_private_key, _, _, _, membership_party_gln = data
+    entity_clt_id, clt_private_key, _, _, _, membership_party_gln = data
 
     # log in as owned party through entity client key
     payload = {
         "aud": "https://test.flex.internal:6443/auth/v1/",
-        "iss": entity_clt.client_id,
+        "iss": entity_clt_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
@@ -441,22 +434,11 @@ def test_scopes_embedding(jwt_keys):
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    pubkey, privkey = jwt_keys
+    _, privkey = jwt_keys
 
-    # entity client that can only manage party membership but not read other resources
-    clt = create_entity_client.sync(
-        client=client_ent,
-        body=EntityClientCreateRequest(
-            entity_id=ent_id,
-            scopes=[
-                AuthScope.MANAGEDATAPARTY_MEMBERSHIP,
-                AuthScope.MANAGEAUTH,
-            ],
-            client_secret=client_secret,
-            public_key=pubkey,
-        ),
-    )
-    assert isinstance(clt, EntityClientResponse)
+    # seeded entity client that can only manage party membership but not read
+    # other resources (manage:data:party_membership, manage:auth)
+    client_id = TestEntityClient.TEST_PARTY_MEMBERSHIP_ONLY.client_id()
 
     # create an owned party so we can assume it and keep the client scopes
     party = create_party.sync(
@@ -475,7 +457,7 @@ def test_scopes_embedding(jwt_keys):
     # log in as owned party through entity client key
     payload = {
         "aud": "https://test.flex.internal:6443/auth/v1/",
-        "iss": clt.client_id,
+        "iss": client_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
@@ -512,42 +494,51 @@ def test_scopes_embedding(jwt_keys):
     )
     assert e.status_code == 403
 
-    # cleanup
-    delete_entity_client.sync(
-        id=cast(int, clt.id),
-        client=client_ent,
-        body=EmptyObject(),
-    )
 
-
-def test_scopes_grid_read_grid_required():
+def test_scopes_grid_read_grid_required(jwt_keys):
+    _, privkey = jwt_keys
     sts = SecurityTokenService()
     client_ent = cast(AuthenticatedClient, sts.get_client(TestEntityClient.TEST))
 
+    client_fiso = cast(
+        AuthenticatedClient, sts.get_client(TestEntityClient.TEST, "FISO")
+    )
+
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    # client with read:grid
-    clt_with_grid = create_entity_client.sync(
-        client=client_ent,
-        body=EntityClientCreateRequest(
-            entity_id=ent_id,
-            scopes=[AuthScope.READGRID, AuthScope.MANAGEAUTH],
-            client_secret=client_secret,
+    other_ent_id = sts.get_userinfo(
+        cast(AuthenticatedClient, sts.get_client(TestEntityClient.COMMON))
+    )["entity_id"]
+
+    # SO party owned by another entity, with the entity as a member.
+    # Owned parties do not get read:grid, so it must come from the membership.
+    party = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="party - test grid scopes",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role=PartyRole.FLEX_SYSTEM_OPERATOR,
+            type_=PartyType.SYSTEM_OPERATOR,
+            entity_id=other_ent_id,
         ),
     )
-    assert isinstance(clt_with_grid, EntityClientResponse)
-
-    response = requests.post(
-        auth_url + "/token",
-        headers=auth_headers,
-        data={
-            "grant_type": "client_credentials",
-            "client_id": clt_with_grid.client_id,
-            "client_secret": client_secret,
-        },
+    assert isinstance(party, PartyResponse)
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            entity_id=ent_id,
+            party_id=cast(int, party.id),
+            scopes=[AuthScope.READGRID, AuthScope.READDATA, AuthScope.MANAGEAUTH],
+        ),
     )
-    assert response.status_code == 200
-    token_with_grid = response.json()["access_token"]
+    assert isinstance(pm, PartyMembershipResponse)
+    sub = f"no:party:gln:{party.business_id}:system_operator"
+
+    # seeded client with read:grid (read:grid, manage:auth)
+    token_with_grid = jwt_bearer_token(
+        TestEntityClient.TEST_GRID.client_id(), privkey, sub
+    )
 
     # can read grid
     r = requests.get(
@@ -557,28 +548,10 @@ def test_scopes_grid_read_grid_required():
     )
     assert r.status_code == 200
 
-    # client with only read:data
-    clt_data_only = create_entity_client.sync(
-        client=client_ent,
-        body=EntityClientCreateRequest(
-            entity_id=ent_id,
-            scopes=[AuthScope.READDATA, AuthScope.MANAGEAUTH],
-            client_secret=client_secret,
-        ),
+    # seeded client with only read:data (read:data, manage:auth)
+    token_data_only = jwt_bearer_token(
+        TestEntityClient.TEST_DATA_ONLY.client_id(), privkey, sub
     )
-    assert isinstance(clt_data_only, EntityClientResponse)
-
-    response = requests.post(
-        auth_url + "/token",
-        headers=auth_headers,
-        data={
-            "grant_type": "client_credentials",
-            "client_id": clt_data_only.client_id,
-            "client_secret": client_secret,
-        },
-    )
-    assert response.status_code == 200
-    token_data_only = response.json()["access_token"]
 
     # cannot read grid
     r = requests.get(
@@ -589,13 +562,8 @@ def test_scopes_grid_read_grid_required():
     assert r.status_code == 403
 
     # cleanup
-    delete_entity_client.sync(
-        id=cast(int, clt_with_grid.id),
-        client=client_ent,
-        body=EmptyObject(),
-    )
-    delete_entity_client.sync(
-        id=cast(int, clt_data_only.id),
-        client=client_ent,
+    delete_party_membership.sync(
+        id=cast(int, pm.id),
+        client=client_fiso,
         body=EmptyObject(),
     )

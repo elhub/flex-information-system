@@ -3,12 +3,11 @@
 //
 // It allows you to write stuff like:
 //
-//	func (cc clientCredentialsPayload) Validate() error {
+//	func (j jwtBearerPayload) Validate() error {
 //		val := validate.New()
 //
-//		val.Check(cc.GrantType == grantTypeClientCredentials, "invalid grant type")
-//		val.Check(cc.ClientID != "", "client_id is required")
-//		val.Check(cc.ClientSecret != "", "client_secret is required")
+//		val.Check(j.GrantType == grantTypeJWTBearer, "invalid grant type")
+//		val.Check(j.Assertion != "", "assertion is required")
 //
 //	 	return val.Error()
 //	}
