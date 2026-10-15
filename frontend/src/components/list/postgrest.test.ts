@@ -25,6 +25,12 @@ describe("buildListQuery", () => {
     });
   });
 
+  it("escapes LIKE wildcards in ilike values", () => {
+    expect(
+      buildListQuery({ ...base, filters: { "name@ilike": "50%_a\\b" } }),
+    ).toMatchObject({ name: "ilike.*50\\%\\_a\\\\b*" });
+  });
+
   it("ignores empty values", () => {
     expect(
       buildListQuery({ ...base, filters: { "name@ilike": "" } }),

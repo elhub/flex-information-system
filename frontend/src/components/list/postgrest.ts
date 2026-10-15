@@ -7,6 +7,14 @@ type ListParams = {
   perPage: number;
 };
 
+// Match "%" and "_" literally instead of as wildcards. A typed "*" still
+// works as a wildcard, since PostgREST does not allow escaping it.
+const BACKSLASH = "\\";
+const LIKE_SPECIAL_CHARS = /[\\%_]/g;
+
+const escapeLike = (value: string) =>
+  value.replace(LIKE_SPECIAL_CHARS, (char) => BACKSLASH + char);
+
 // Translate a filter "source@op" and raw value to a PostgREST query entry.
 const toFilterEntry = (
   source: string,
@@ -16,7 +24,7 @@ const toFilterEntry = (
   if (value === "") return undefined;
   switch (op) {
     case "ilike":
-      return [column, `ilike.*${value}*`];
+      return [column, `ilike.*${escapeLike(value)}*`];
     case "in":
       return [column, `in.(${value})`];
     default:
