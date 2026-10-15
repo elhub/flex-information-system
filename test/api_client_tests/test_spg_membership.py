@@ -599,14 +599,13 @@ def test_spgm_so(data):
     # --------------------------------------------------------------------------
 
 
-def test_rla_absence(data):
+def test_no_read_access(data):
     (sts, _, _, _) = data
 
-    roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
-
-    for role in roles_without_rla:
+    # these roles have no read access to the resource
+    for role in sts.NO_SPG_ROLES:
         spgms = list_service_providing_group_membership.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(spgms, list)
-        assert len(spgms) == 0
+        assert isinstance(spgms, ErrorMessage)
+        assert spgms.code == "42501"

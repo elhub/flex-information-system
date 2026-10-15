@@ -487,12 +487,13 @@ def test_tr_sp(sts):
     assert not isinstance(d, ErrorMessage)
 
 
-def test_rla_absence(sts):
-    roles_without_rla = ["TP"]
+def test_no_read_access(sts):
+    # these roles have no read access to the resource
+    roles_without_access = ["MO", "TP"]
 
-    for role in roles_without_rla:
+    for role in roles_without_access:
         trs = list_technical_resource.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(trs, list)
-        assert len(trs) == 0
+        assert isinstance(trs, ErrorMessage)
+        assert trs.code == "42501"

@@ -524,14 +524,15 @@ def test_cusp_eu(data):
     assert len(old_cusphs) == 0
 
 
-def test_rla_absence(data):
+def test_no_read_access(data):
     (sts, _, _, _) = data
 
-    roles_without_rla = ["ES", "MO", "TP"]
+    # these roles have no read access to the resource
+    roles_without_access = ["ES", "MO", "TP"]
 
-    for role in roles_without_rla:
+    for role in roles_without_access:
         cusps = list_controllable_unit_service_provider.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(cusps, list)
-        assert len(cusps) == 0
+        assert isinstance(cusps, ErrorMessage)
+        assert cusps.code == "42501"

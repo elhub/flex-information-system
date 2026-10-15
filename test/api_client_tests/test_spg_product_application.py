@@ -839,10 +839,10 @@ def test_spgpa_no_duplicate_product_types(data):
     assert not isinstance(u, ErrorMessage)
 
 
-def test_spgpa_common(data):
+def test_spgpa_history_read(data):
     (sts, _, _, _, _, _, _) = data
 
-    for role in sts.COMMON_ROLES:
+    for role in sts.SPG_ROLES:
         client = sts.get_client(TestEntityClient.TEST, role)
 
         spgpa_visible = list_service_providing_group_product_application.sync(
@@ -871,3 +871,14 @@ def test_spgpa_common(data):
                 hist_spgpa,
                 ServiceProvidingGroupProductApplicationHistoryResponse,
             )
+
+
+def test_no_read_access(data):
+    (sts, _, _, _, _, _, _) = data
+
+    for role in sts.NO_SPG_ROLES:
+        spgpas = list_service_providing_group_product_application.sync(
+            client=sts.get_client(TestEntityClient.TEST, role),
+        )
+        assert isinstance(spgpas, ErrorMessage)
+        assert spgpas.code == "42501"

@@ -109,12 +109,12 @@ For party type abbreviations, check
 
 | FIELD                | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |----------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                   |      | R   | R  | R  | R    | R  | R   | R  |     |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| service_provider_id  |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| end_user_id          |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| contract_reference   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| valid_from           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| valid_to             |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recorded_at          |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by          |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                   |      | R   |    | R  | R    | R  | R   |    |     |
+| controllable_unit_id |      | R   |    | R  | RC   | R  | RC  |    |     |
+| service_provider_id  |      | R   |    | R  | RC   | R  | RC  |    |     |
+| end_user_id          |      | R   |    | R  | RC   | R  | RC  |    |     |
+| contract_reference   |      | R   |    | R  | RCU  | R  | RCU |    |     |
+| valid_from           |      | R   |    | R  | RCU  | R  | RCU |    |     |
+| valid_to             |      | R   |    | R  | RCU  | R  | RCU |    |     |
+| recorded_at          |      | R   |    | R  | R    | R  | R   |    |     |
+| recorded_by          |      | R   |    | R  | R    | R  | R   |    |     |

@@ -101,10 +101,10 @@ For party type abbreviations, check
 
 | FIELD                      | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |----------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                         |      | R   | R  | R  | R    | R  | R   | R  |     |
-| controllable_unit_id       |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| service_providing_group_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| valid_from                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| valid_to                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recorded_at                |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by                |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                         |      |     |    |    | R    | R  | R   |    |     |
+| controllable_unit_id       |      |     |    |    | RC   | R  | RC  |    |     |
+| service_providing_group_id |      |     |    |    | RC   | R  | RC  |    |     |
+| valid_from                 |      |     |    |    | RCU  | R  | RCU |    |     |
+| valid_to                   |      |     |    |    | RCU  | R  | RCU |    |     |
+| recorded_at                |      |     |    |    | R    | R  | R   |    |     |
+| recorded_by                |      |     |    |    | R    | R  | R   |    |     |
