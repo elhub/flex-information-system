@@ -12,13 +12,11 @@ export const BRP_FILTER_SOURCE =
   "accounting_point.balance_responsible_party.balance_responsible_party_id@in";
 const BRP_VALID_AT_KEY = "accounting_point.balance_responsible_party.valid_at";
 
-// Inner join embeds that are filtered on, so units without a match are dropped
-// instead of just having an empty embed.
+// Always inner-join the accounting point so a unit is omitted when that
+// accounting point is not visible. Inner-join the BRP only when filtering on
+// it, so units without a matching BRP are dropped instead of having an empty embed.
 const buildEmbed = (filters: ListFilters, full: boolean) => {
-  const hasApFilter = Object.keys(filters).some((key) =>
-    key.startsWith("accounting_point."),
-  );
-  const ap = hasApFilter ? "accounting_point!" : "accounting_point";
+  const ap = "accounting_point!";
   const brp = filters[BRP_FILTER_SOURCE]
     ? "balance_responsible_party!"
     : "balance_responsible_party";
