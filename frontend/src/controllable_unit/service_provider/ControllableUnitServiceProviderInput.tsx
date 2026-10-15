@@ -97,6 +97,7 @@ const ControllableUnitServiceProviderForm = ({
   return (
     <Form
       record={recordWithPartyId}
+      sanitizeEmptyValues
       resolver={unTypedZodResolver(
         zControllableUnitServiceProviderCreateRequest,
       )}
@@ -146,7 +147,7 @@ const ControllableUnitServiceProviderForm = ({
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <DateInput {...fields.valid_from} outputFormat="date-time" />
-          <DateInput {...fields.valid_to} outputFormat="date-time" />
+          <DateInput {...fields.valid_to} outputFormat="date-time" clearable />
         </FlexDiv>
 
         <FormToolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />
