@@ -1349,8 +1349,8 @@ export const zNoticeDataPartyOutdated = z.object({
  */
 export const zNoticeDataPartyIncompatible = z.object({
   kind: z.literal("notice.data.party.incompatible"),
-  entity: z.lazy((): any => zEntity).optional(),
-  party: z.array(z.lazy((): any => zParty)).optional(),
+  entity: z.coerce.number().optional(),
+  party: z.array(z.coerce.number()).optional(),
 });
 
 export const zNoticeData = z.discriminatedUnion("kind", [
@@ -2668,8 +2668,8 @@ export const zNoticeDataPartyOutdatedWritable = z.object({
  */
 export const zNoticeDataPartyIncompatibleWritable = z.object({
   kind: z.literal("notice.data.party.incompatible"),
-  entity: z.lazy((): any => zEntityWritable).optional(),
-  party: z.array(z.lazy((): any => zPartyWritable)).optional(),
+  entity: z.coerce.number().optional(),
+  party: z.array(z.coerce.number()).optional(),
 });
 
 export const zNoticeDataWritable = z.discriminatedUnion("kind", [

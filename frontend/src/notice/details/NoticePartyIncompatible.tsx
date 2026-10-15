@@ -1,8 +1,12 @@
-import { useTranslate } from "ra-core";
+import { useGetMany, useGetOne, useTranslate } from "ra-core";
 import { BodyText } from "../../components/ui";
 import { SimpleTable } from "../../components/SimpleTable";
 import { useTranslateEnum } from "../../intl/intl";
-import { NoticeDataPartyIncompatible } from "../../generated-client";
+import {
+  NoticeDataPartyIncompatible,
+  Entity,
+  Party,
+} from "../../generated-client";
 
 type NoticePartyIncompatibleProps = {
   noticeData: NoticeDataPartyIncompatible;
@@ -14,15 +18,19 @@ export const NoticePartyIncompatible = ({
 }: NoticePartyIncompatibleProps) => {
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
-  const { entity } = noticeData;
-  const party = (noticeData.party ?? []).map((p) => ({
-    ...p,
-    id: `${p.type}/${p.business_id}`,
-  }));
+  const entityId = noticeData.entity;
+  const partyIds = noticeData.party ?? [];
+  const { data: entity } = useGetOne<Entity>(
+    "entity",
+    { id: entityId },
+    { enabled: entityId != undefined },
+  );
+  const { data: partyData } = useGetMany<Party>("party", { ids: partyIds });
+  const party = partyData ?? [];
 
   const entityLabel = entity?.business_id
     ? `${entity.name} (${entity.business_id_type?.toUpperCase()} ${entity.business_id})`
-    : entity?.name;
+    : (entity?.name ?? `#${entityId}`);
 
   return (
     <div className="flex flex-col gap-4">

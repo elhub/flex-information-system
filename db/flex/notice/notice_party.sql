@@ -144,33 +144,15 @@ WITH (security_invoker = false) AS (
             WHERE p.status != 'terminated'
         ),
 
-        -- (entity ID, entity data, and list of parties' data)
-        -- for all entities having access to incompatible parties
+        -- entity ID and list of IDs of parties
+        -- (for all entities having access to incompatible parties)
         entity_incompatible AS (
             SELECT
-                e.id AS entity_id,
-                jsonb_strip_nulls(
-                    jsonb_build_object(
-                        'business_id', e.business_id,
-                        'business_id_type', e.business_id_type,
-                        'name', e.name,
-                        'type', e.type
-                    )
-                ) AS entity,
-                jsonb_agg(
-                    jsonb_build_object(
-                        'business_id', p.business_id,
-                        'business_id_type', p.business_id_type,
-                        'name', p.name,
-                        'type', p.type
-                    )
-                    ORDER BY p.type, p.business_id
-                ) AS party
+                epa.entity_id,
+                jsonb_agg(p.id ORDER BY p.type, p.business_id) AS party
             FROM entity_party_access AS epa
                 INNER JOIN flex.party AS p
                     ON epa.party_id = p.id
-                INNER JOIN flex.entity AS e
-                    ON epa.entity_id = e.id
             -- pre-filter party types that we are concerned about
             WHERE p.type IN (
                     'energy_supplier',
@@ -178,7 +160,7 @@ WITH (security_invoker = false) AS (
                     'service_provider',
                     'system_operator'
                 )
-            GROUP BY e.id
+            GROUP BY epa.entity_id
             HAVING
             -- entity has at least one party in each incompatible party group
                 bool_or(
@@ -198,7 +180,7 @@ WITH (security_invoker = false) AS (
         ei.entity_id AS source_id,
         jsonb_build_object(
             'kind', 'notice.data.party.incompatible',
-            'entity', ei.entity,
+            'entity', ei.entity_id,
             'party', ei.party
         ) AS data, -- noqa
         md5(ei.entity_id::text) AS deduplication_key -- noqa

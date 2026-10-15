@@ -363,13 +363,13 @@ export type NoticeDataPartyIncompatible = {
    */
   kind: "notice.data.party.incompatible";
   /**
-   * Details about the entity with access to incompatible parties.
+   * ID of the entity with access to incompatible parties.
    */
-  entity?: Entity;
+  entity?: number;
   /**
-   * The incompatible parties the entity owns or is a member of.
+   * IDs of the incompatible parties the entity owns or is a member of.
    */
-  party?: Array<Party>;
+  party?: Array<number>;
 };
 
 /**

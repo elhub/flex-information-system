@@ -453,14 +453,18 @@ components:
           type: string
           const: notice.data.party.incompatible
         entity:
-          description: Details about the entity with access to incompatible parties.
-          $ref: "#/components/schemas/entity_response"
+          description: ID of the entity with access to incompatible parties.
+          format: bigint
+          type: integer
+          example: 7
         party:
           description: >-
-            The incompatible parties the entity owns or is a member of.
+            IDs of the incompatible parties the entity owns or is a member of.
           type: array
           items:
-            $ref: "#/components/schemas/party_response"
+            format: bigint
+            type: integer
+            example: 12
     notice_data_product_type_not_qualified:
       type: object
       description: >-
