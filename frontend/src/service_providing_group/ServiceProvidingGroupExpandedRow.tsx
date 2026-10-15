@@ -1,7 +1,6 @@
 import { Loader, BodyText } from "../components/ui";
 import styles from "./ServiceProvidingGroupExpandedRow.module.css";
 import { useTranslate } from "ra-core";
-import { RaRecord } from "ra-core";
 import { Link } from "react-router-dom";
 import { useSpgGridPrequalifications } from "./show/useSpgGridPrequalifications";
 import { useSpgProductApplications } from "./show/useSpgProductApplications";
@@ -55,7 +54,7 @@ const EmptyBox = ({ message }: { message: string }) => (
 );
 
 type Props = {
-  record: RaRecord & { id: number };
+  record: { id: number };
 };
 
 export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
