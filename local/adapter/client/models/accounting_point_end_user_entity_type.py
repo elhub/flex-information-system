@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class EndUserEntityType(str, Enum):
+class AccountingPointEndUserEntityType(StrEnum):
     ORGANISATION = "organisation"
     PERSON = "person"
 

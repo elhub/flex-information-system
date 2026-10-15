@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class EnergyDirectionDirectionItem(str, Enum):
+class EnergyDirection(StrEnum):
     CONSUMPTION = "consumption"
     PRODUCTION = "production"
 

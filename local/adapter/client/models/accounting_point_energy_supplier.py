@@ -6,19 +6,18 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="MeteringGridArea")
+T = TypeVar("T", bound="AccountingPointEnergySupplier")
 
 
 @_attrs_define
-class MeteringGridArea:
+class AccountingPointEnergySupplier:
     """
     Attributes:
-        business_id (str): Business ID of the metering grid area. EIC-Y format.
-             Example: 10YNO-1--------2.
+        business_id (str): Business ID of the energy supplier. GLN format - 13 digits starting with non-zero.
+             Example: 7080012345678.
         valid_from (datetime.datetime): Start of the validity period Example: 2024-01-01T00:00:00+01:00.
         valid_to (datetime.datetime | None | Unset): End of the validity period Example: 2024-12-31T00:00:00+01:00.
     """
@@ -59,7 +58,7 @@ class MeteringGridArea:
         d = dict(src_dict)
         business_id = d.pop("business_id")
 
-        valid_from = isoparse(d.pop("valid_from"))
+        valid_from = datetime.datetime.fromisoformat(d.pop("valid_from"))
 
         def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -69,7 +68,7 @@ class MeteringGridArea:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -78,14 +77,14 @@ class MeteringGridArea:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
-        metering_grid_area = cls(
+        accounting_point_energy_supplier = cls(
             business_id=business_id,
             valid_from=valid_from,
             valid_to=valid_to,
         )
 
-        metering_grid_area.additional_properties = d
-        return metering_grid_area
+        accounting_point_energy_supplier.additional_properties = d
+        return accounting_point_energy_supplier
 
     @property
     def additional_keys(self) -> list[str]:

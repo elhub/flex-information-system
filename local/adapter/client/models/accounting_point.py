@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
+from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -9,10 +10,14 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.end_user import EndUser
-    from ..models.energy_direction import EnergyDirection
-    from ..models.energy_supplier import EnergySupplier
-    from ..models.metering_grid_area import MeteringGridArea
+    from ..models.accounting_point_end_user import AccountingPointEndUser
+    from ..models.accounting_point_energy_direction import (
+        AccountingPointEnergyDirection,
+    )
+    from ..models.accounting_point_energy_supplier import AccountingPointEnergySupplier
+    from ..models.accounting_point_metering_grid_area import (
+        AccountingPointMeteringGridArea,
+    )
 
 
 T = TypeVar("T", bound="AccountingPoint")
@@ -24,24 +29,27 @@ class AccountingPoint:
     Attributes:
         gsrn (str): Global Service Relation Number (GSRN) - unique identifier for the accounting point Example:
             707057500012345678.
-        end_user (list[EndUser]): Time-dependent list of end users associated with this accounting point
-        energy_supplier (list[EnergySupplier]): Time-dependent list of energy suppliers associated with this accounting
-            point
-        metering_grid_area (list[MeteringGridArea]): Time-dependent list of metering grid areas associated with this
-            accounting point
-        energy_direction (list[EnergyDirection] | Unset): Time-dependent list of energy directions associated with this
-            accounting point
+        end_user (list[AccountingPointEndUser]): Time-dependent list of end users associated with this accounting point
+        energy_supplier (list[AccountingPointEnergySupplier]): Time-dependent list of energy suppliers associated with
+            this accounting point
+        metering_grid_area (list[AccountingPointMeteringGridArea]): Time-dependent list of metering grid areas
+            associated with this accounting point
+        energy_direction (list[AccountingPointEnergyDirection] | Unset): Time-dependent list of energy directions
+            associated with this accounting point
         latitude (float | None | Unset): Geographic latitude of the accounting point (WGS84). Example: 59.9139.
         longitude (float | None | Unset): Geographic longitude of the accounting point (WGS84). Example: 10.7522.
+        substation (UUID | Unset): Substation this accounting point is related to in the grid model. Example:
+            67878d70-9e32-47b6-aa29-53fedfab1358.
     """
 
     gsrn: str
-    end_user: list[EndUser]
-    energy_supplier: list[EnergySupplier]
-    metering_grid_area: list[MeteringGridArea]
-    energy_direction: list[EnergyDirection] | Unset = UNSET
+    end_user: list[AccountingPointEndUser]
+    energy_supplier: list[AccountingPointEnergySupplier]
+    metering_grid_area: list[AccountingPointMeteringGridArea]
+    energy_direction: list[AccountingPointEnergyDirection] | Unset = UNSET
     latitude: float | None | Unset = UNSET
     longitude: float | None | Unset = UNSET
+    substation: UUID | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -81,6 +89,10 @@ class AccountingPoint:
         else:
             longitude = self.longitude
 
+        substation: str | Unset = UNSET
+        if not isinstance(self.substation, Unset):
+            substation = str(self.substation)
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -97,15 +109,23 @@ class AccountingPoint:
             field_dict["latitude"] = latitude
         if longitude is not UNSET:
             field_dict["longitude"] = longitude
+        if substation is not UNSET:
+            field_dict["substation"] = substation
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.end_user import EndUser
-        from ..models.energy_direction import EnergyDirection
-        from ..models.energy_supplier import EnergySupplier
-        from ..models.metering_grid_area import MeteringGridArea
+        from ..models.accounting_point_end_user import AccountingPointEndUser  # noqa: PLC0415
+        from ..models.accounting_point_energy_direction import (
+            AccountingPointEnergyDirection,
+        )  # noqa: PLC0415
+        from ..models.accounting_point_energy_supplier import (
+            AccountingPointEnergySupplier,
+        )  # noqa: PLC0415
+        from ..models.accounting_point_metering_grid_area import (
+            AccountingPointMeteringGridArea,
+        )  # noqa: PLC0415
 
         d = dict(src_dict)
         gsrn = d.pop("gsrn")
@@ -113,32 +133,34 @@ class AccountingPoint:
         end_user = []
         _end_user = d.pop("end_user")
         for end_user_item_data in _end_user:
-            end_user_item = EndUser.from_dict(end_user_item_data)
+            end_user_item = AccountingPointEndUser.from_dict(end_user_item_data)
 
             end_user.append(end_user_item)
 
         energy_supplier = []
         _energy_supplier = d.pop("energy_supplier")
         for energy_supplier_item_data in _energy_supplier:
-            energy_supplier_item = EnergySupplier.from_dict(energy_supplier_item_data)
+            energy_supplier_item = AccountingPointEnergySupplier.from_dict(
+                energy_supplier_item_data
+            )
 
             energy_supplier.append(energy_supplier_item)
 
         metering_grid_area = []
         _metering_grid_area = d.pop("metering_grid_area")
         for metering_grid_area_item_data in _metering_grid_area:
-            metering_grid_area_item = MeteringGridArea.from_dict(
+            metering_grid_area_item = AccountingPointMeteringGridArea.from_dict(
                 metering_grid_area_item_data
             )
 
             metering_grid_area.append(metering_grid_area_item)
 
         _energy_direction = d.pop("energy_direction", UNSET)
-        energy_direction: list[EnergyDirection] | Unset = UNSET
+        energy_direction: list[AccountingPointEnergyDirection] | Unset = UNSET
         if _energy_direction is not UNSET:
             energy_direction = []
             for energy_direction_item_data in _energy_direction:
-                energy_direction_item = EnergyDirection.from_dict(
+                energy_direction_item = AccountingPointEnergyDirection.from_dict(
                     energy_direction_item_data
                 )
 
@@ -162,6 +184,13 @@ class AccountingPoint:
 
         longitude = _parse_longitude(d.pop("longitude", UNSET))
 
+        _substation = d.pop("substation", UNSET)
+        substation: UUID | Unset
+        if isinstance(_substation, Unset):
+            substation = UNSET
+        else:
+            substation = UUID(_substation)
+
         accounting_point = cls(
             gsrn=gsrn,
             end_user=end_user,
@@ -170,6 +199,7 @@ class AccountingPoint:
             energy_direction=energy_direction,
             latitude=latitude,
             longitude=longitude,
+            substation=substation,
         )
 
         accounting_point.additional_properties = d

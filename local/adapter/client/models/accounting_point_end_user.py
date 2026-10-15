@@ -6,25 +6,31 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
+from ..models.accounting_point_end_user_entity_type import (
+    AccountingPointEndUserEntityType,
+)
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="EnergySupplier")
+T = TypeVar("T", bound="AccountingPointEndUser")
 
 
 @_attrs_define
-class EnergySupplier:
+class AccountingPointEndUser:
     """
     Attributes:
-        business_id (str): Business ID of the energy supplier. GLN format - 13 digits starting with non-zero.
-             Example: 7080012345678.
+        business_id (str): Business ID of the end user. Norwegian organization number or fødselsnummer, depending on
+            `entity_type`.
+             Example: 123456789.
         valid_from (datetime.datetime): Start of the validity period Example: 2024-01-01T00:00:00+01:00.
+        entity_type (AccountingPointEndUserEntityType | Unset): Type of the end user entity, either a person or an
+            organisation. Example: organisation.
         valid_to (datetime.datetime | None | Unset): End of the validity period Example: 2024-12-31T00:00:00+01:00.
     """
 
     business_id: str
     valid_from: datetime.datetime
+    entity_type: AccountingPointEndUserEntityType | Unset = UNSET
     valid_to: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -32,6 +38,10 @@ class EnergySupplier:
         business_id = self.business_id
 
         valid_from = self.valid_from.isoformat()
+
+        entity_type: str | Unset = UNSET
+        if not isinstance(self.entity_type, Unset):
+            entity_type = self.entity_type.value
 
         valid_to: None | str | Unset
         if isinstance(self.valid_to, Unset):
@@ -49,6 +59,8 @@ class EnergySupplier:
                 "valid_from": valid_from,
             }
         )
+        if entity_type is not UNSET:
+            field_dict["entity_type"] = entity_type
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
 
@@ -59,7 +71,14 @@ class EnergySupplier:
         d = dict(src_dict)
         business_id = d.pop("business_id")
 
-        valid_from = isoparse(d.pop("valid_from"))
+        valid_from = datetime.datetime.fromisoformat(d.pop("valid_from"))
+
+        _entity_type = d.pop("entity_type", UNSET)
+        entity_type: AccountingPointEndUserEntityType | Unset
+        if isinstance(_entity_type, Unset):
+            entity_type = UNSET
+        else:
+            entity_type = AccountingPointEndUserEntityType(_entity_type)
 
         def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -69,7 +88,7 @@ class EnergySupplier:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -78,14 +97,15 @@ class EnergySupplier:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
-        energy_supplier = cls(
+        accounting_point_end_user = cls(
             business_id=business_id,
             valid_from=valid_from,
+            entity_type=entity_type,
             valid_to=valid_to,
         )
 
-        energy_supplier.additional_properties = d
-        return energy_supplier
+        accounting_point_end_user.additional_properties = d
+        return accounting_point_end_user
 
     @property
     def additional_keys(self) -> list[str]:

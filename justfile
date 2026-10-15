@@ -579,16 +579,16 @@ openapi-client-adapter:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p ./out
-    rm -rf local/accounting-point/client/* ./out/openapi-client-adapter
+    rm -rf local/adapter/client/* ./out/openapi-client-adapter
 
     uv run openapi-python-client generate \
         --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/adapter/openapi.yaml \
         --output-path ./out/openapi-client-adapter \
         --config ./openapi/openapi-client-config.yml
-    mv ./out/openapi-client-adapter/flex/models local/accounting-point/client/models
-    mv ./out/openapi-client-adapter/flex/types.py local/accounting-point/client/types.py
+    mv ./out/openapi-client-adapter/flex/models local/adapter/client/models
+    mv ./out/openapi-client-adapter/flex/types.py local/adapter/client/types.py
 
-    uv run ruff format local/accounting-point/client
+    uv run ruff format local/adapter/client
 
 openapi-client-test:
     #!/usr/bin/env bash

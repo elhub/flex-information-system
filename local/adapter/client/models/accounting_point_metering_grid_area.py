@@ -6,34 +6,29 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
-from ..models.energy_direction_direction_item import EnergyDirectionDirectionItem
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="EnergyDirection")
+T = TypeVar("T", bound="AccountingPointMeteringGridArea")
 
 
 @_attrs_define
-class EnergyDirection:
+class AccountingPointMeteringGridArea:
     """
     Attributes:
-        direction (list[EnergyDirectionDirectionItem]): Energy direction(s) of the accounting point. Example:
-            ['consumption'].
+        business_id (str): Business ID of the metering grid area. EIC-Y format.
+             Example: 10YNO-1--------2.
         valid_from (datetime.datetime): Start of the validity period Example: 2024-01-01T00:00:00+01:00.
         valid_to (datetime.datetime | None | Unset): End of the validity period Example: 2024-12-31T00:00:00+01:00.
     """
 
-    direction: list[EnergyDirectionDirectionItem]
+    business_id: str
     valid_from: datetime.datetime
     valid_to: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        direction = []
-        for direction_item_data in self.direction:
-            direction_item = direction_item_data.value
-            direction.append(direction_item)
+        business_id = self.business_id
 
         valid_from = self.valid_from.isoformat()
 
@@ -49,7 +44,7 @@ class EnergyDirection:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "direction": direction,
+                "business_id": business_id,
                 "valid_from": valid_from,
             }
         )
@@ -61,14 +56,9 @@ class EnergyDirection:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        direction = []
-        _direction = d.pop("direction")
-        for direction_item_data in _direction:
-            direction_item = EnergyDirectionDirectionItem(direction_item_data)
+        business_id = d.pop("business_id")
 
-            direction.append(direction_item)
-
-        valid_from = isoparse(d.pop("valid_from"))
+        valid_from = datetime.datetime.fromisoformat(d.pop("valid_from"))
 
         def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -78,7 +68,7 @@ class EnergyDirection:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -87,14 +77,14 @@ class EnergyDirection:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
-        energy_direction = cls(
-            direction=direction,
+        accounting_point_metering_grid_area = cls(
+            business_id=business_id,
             valid_from=valid_from,
             valid_to=valid_to,
         )
 
-        energy_direction.additional_properties = d
-        return energy_direction
+        accounting_point_metering_grid_area.additional_properties = d
+        return accounting_point_metering_grid_area
 
     @property
     def additional_keys(self) -> list[str]:

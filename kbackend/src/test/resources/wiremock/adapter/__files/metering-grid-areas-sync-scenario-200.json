@@ -1,0 +1,115 @@
+[
+    {
+        "business_id": "31Y-COMMON-SHA-Q",
+        "name": "Common Shared AREA 1",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000000044",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO4",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ]
+    },
+    {
+        "business_id": "42Y-COMMON-SHA-W",
+        "name": "Common Shared AREA 2 RENAMED",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000000044",
+                "valid_from": "2023-10-01T00:00:00+02:00",
+                "valid_to": "2026-12-31T00:00:00+01:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO3",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ]
+    },
+    {
+        "business_id": "31Y-TEST-SUITE-0",
+        "name": "Test Suite AREA 1",
+        "is_active": false,
+        "system_operator": [
+            {
+                "business_id": "1337000100041",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO4",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ]
+    },
+    {
+        "business_id": "42Y-TEST-SUITE-6",
+        "name": "Test Suite AREA 2",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000100041",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO3",
+                "valid_from": "2023-10-01T00:00:00+02:00",
+                "valid_to": "2026-01-01T00:00:00+01:00"
+            },
+            {
+                "price_area": "NO1",
+                "valid_from": "2026-01-01T00:00:00+01:00"
+            }
+        ]
+    },
+    {
+        "business_id": "31Y-EMIL-POST--K",
+        "name": "Emil Post AREA 1",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000200048",
+                "valid_from": "2023-10-01T00:00:00+02:00",
+                "valid_to": "2026-01-01T00:00:00+01:00"
+            },
+            {
+                "business_id": "1337000100041",
+                "valid_from": "2026-01-01T00:00:00+01:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO4",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ]
+    },
+    {
+        "business_id": "27YCEST-LA-RE7-U",
+        "name": "K-RIS AREA 51",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000100041",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO2",
+                "valid_from": "2023-10-01T00:00:00+02:00"
+            }
+        ]
+    }
+]
