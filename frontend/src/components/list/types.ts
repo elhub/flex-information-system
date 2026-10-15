@@ -56,7 +56,7 @@ type FilterBase = {
 export type ListFilterDef =
   | (FilterBase & { type: "text" })
   | (FilterBase & {
-      type: "select";
+      type: "singleselect";
       options: ListFilterOption[];
     })
   | (FilterBase & {

@@ -77,7 +77,7 @@ export const ControllableUnitList = () => {
         ]
       : []),
     {
-      type: "select",
+      type: "singleselect",
       source: "is_small",
       label: translate("field.controllable_unit.is_small"),
       tooltip: tooltips["controllable_unit.is_small"],

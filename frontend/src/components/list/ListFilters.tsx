@@ -53,8 +53,8 @@ const FilterControl = <T,>({
       {def.type === "text" && (
         <DebouncedTextField id={id} value={value} onChange={setValue} />
       )}
-      {def.type === "select" && (
-        <SelectFilter def={def} value={value} setValue={setValue} />
+      {def.type === "singleselect" && (
+        <SingleSelectFilter def={def} value={value} setValue={setValue} />
       )}
       {def.type === "multiselect" && (
         <MultiSelectFilter def={def} value={value} setValue={setValue} />
@@ -86,7 +86,7 @@ const FilterLabel = ({
   </div>
 );
 
-type SelectDef = Extract<ListFilterDef, { type: "select" }>;
+type SingleSelectDef = Extract<ListFilterDef, { type: "singleselect" }>;
 type MultiSelectDef = Extract<ListFilterDef, { type: "multiselect" }>;
 type ControlProps<D> = {
   def: D;
@@ -118,7 +118,11 @@ const useOptionSearch = (
   return { filteredOptions, onInputChange, resetSearch };
 };
 
-const SelectFilter = ({ def, value, setValue }: ControlProps<SelectDef>) => {
+const SingleSelectFilter = ({
+  def,
+  value,
+  setValue,
+}: ControlProps<SingleSelectDef>) => {
   const translate = useTranslate();
   const selectedOptions = def.options.filter((o) => o.value === value);
   const selectedLabel = selectedOptions[0]?.label ?? "";
@@ -135,13 +139,11 @@ const SelectFilter = ({ def, value, setValue }: ControlProps<SelectDef>) => {
   return (
     <Combobox
       noResultsLabel={translate("text.list_filter.no_results")}
-      // remount so the input text follows the selected value
       key={value}
       defaultValue={selectedLabel}
       options={def.options}
       filteredOptions={filteredOptions}
       onChange={onInputChange}
-      clearButton
       selectedOptions={selectedOptions}
       onToggleSelected={toggle}
     />
