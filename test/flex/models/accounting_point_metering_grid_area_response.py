@@ -41,8 +41,8 @@ class AccountingPointMeteringGridAreaResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.metering_grid_area_response import MeteringGridAreaResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.metering_grid_area_response import MeteringGridAreaResponse  # noqa: PLC0415
 
         accounting_point_id = self.accounting_point_id
 
@@ -94,8 +94,8 @@ class AccountingPointMeteringGridAreaResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.metering_grid_area_response import MeteringGridAreaResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.metering_grid_area_response import MeteringGridAreaResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         accounting_point_id = d.pop("accounting_point_id")

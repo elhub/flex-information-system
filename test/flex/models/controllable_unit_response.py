@@ -80,8 +80,8 @@ class ControllableUnitResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -220,12 +220,16 @@ class ControllableUnitResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
-        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
-        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
-        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
-        from ..models.technical_resource_response import TechnicalResourceResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.controllable_unit_service_provider_response import (
+            ControllableUnitServiceProviderResponse,  # noqa: PLC0415
+        )
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse  # noqa: PLC0415
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse  # noqa: PLC0415
+        from ..models.service_providing_group_membership_response import (
+            ServiceProvidingGroupMembershipResponse,  # noqa: PLC0415
+        )
+        from ..models.technical_resource_response import TechnicalResourceResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

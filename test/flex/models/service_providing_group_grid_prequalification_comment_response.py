@@ -56,7 +56,7 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
+            ServiceProvidingGroupGridPrequalificationResponse,  # noqa: PLC0415
         )
 
         id = self.id
@@ -107,7 +107,7 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
+            ServiceProvidingGroupGridPrequalificationResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

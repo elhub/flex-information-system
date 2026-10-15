@@ -87,11 +87,13 @@ class ServiceProvidingGroupResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.party_response import PartyResponse
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
         from ..models.service_providing_group_power_per_substation_response import (
-            ServiceProvidingGroupPowerPerSubstationResponse,
+            ServiceProvidingGroupPowerPerSubstationResponse,  # noqa: PLC0415
         )
-        from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
+        from ..models.service_providing_group_summary_response import (
+            ServiceProvidingGroupSummaryResponse,  # noqa: PLC0415
+        )
 
         id = self.id
 
@@ -236,24 +238,28 @@ class ServiceProvidingGroupResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_response import PartyResponse
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
         from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
+            ServiceProvidingGroupGridPrequalificationResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_grid_suspension_response import (
-            ServiceProvidingGroupGridSuspensionResponse,
+            ServiceProvidingGroupGridSuspensionResponse,  # noqa: PLC0415
         )
-        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.service_providing_group_membership_response import (
+            ServiceProvidingGroupMembershipResponse,  # noqa: PLC0415
+        )
         from ..models.service_providing_group_power_per_substation_response import (
-            ServiceProvidingGroupPowerPerSubstationResponse,
+            ServiceProvidingGroupPowerPerSubstationResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_product_application_response import (
-            ServiceProvidingGroupProductApplicationResponse,
+            ServiceProvidingGroupProductApplicationResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_product_suspension_response import (
-            ServiceProvidingGroupProductSuspensionResponse,
+            ServiceProvidingGroupProductSuspensionResponse,  # noqa: PLC0415
         )
-        from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
+        from ..models.service_providing_group_summary_response import (
+            ServiceProvidingGroupSummaryResponse,  # noqa: PLC0415
+        )
 
         d = dict(src_dict)
         id = d.pop("id")

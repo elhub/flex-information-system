@@ -4815,24 +4815,6 @@ export type NoticeDataPartyOutdatedWritable = {
   party?: PartyWritable;
 };
 
-/**
- * Format of the data field in a notice with data.kind = notice.data.party.incompatible
- */
-export type NoticeDataPartyIncompatibleWritable = {
-  /**
-   * Identifies the notice data schema for discriminated union deserialization.
-   */
-  kind: "notice.data.party.incompatible";
-  /**
-   * Details about the entity with access to incompatible parties.
-   */
-  entity?: EntityWritable;
-  /**
-   * The incompatible parties the entity owns or is a member of.
-   */
-  party?: Array<PartyWritable>;
-};
-
 export type NoticeDataWritable =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -4845,7 +4827,7 @@ export type NoticeDataWritable =
     } & NoticeDataPartyOutdatedWritable)
   | ({
       kind: "notice.data.party.incompatible";
-    } & NoticeDataPartyIncompatibleWritable)
+    } & NoticeDataPartyIncompatible)
   | ({
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)

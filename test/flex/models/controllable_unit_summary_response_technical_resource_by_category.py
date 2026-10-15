@@ -17,8 +17,6 @@ T = TypeVar("T", bound="ControllableUnitSummaryResponseTechnicalResourceByCatego
 
 @_attrs_define
 class ControllableUnitSummaryResponseTechnicalResourceByCategory:
-    """ """
-
     additional_properties: dict[str, ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty] = (
         _attrs_field(init=False, factory=dict)
     )
@@ -34,7 +32,7 @@ class ControllableUnitSummaryResponseTechnicalResourceByCategory:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_summary_response_technical_resource_by_category_additional_property import (
-            ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty,
+            ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

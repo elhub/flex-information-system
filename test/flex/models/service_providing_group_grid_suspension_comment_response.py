@@ -52,7 +52,7 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.service_providing_group_grid_suspension_response import (
-            ServiceProvidingGroupGridSuspensionResponse,
+            ServiceProvidingGroupGridSuspensionResponse,  # noqa: PLC0415
         )
 
         id = self.id
@@ -101,7 +101,7 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_grid_suspension_response import (
-            ServiceProvidingGroupGridSuspensionResponse,
+            ServiceProvidingGroupGridSuspensionResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

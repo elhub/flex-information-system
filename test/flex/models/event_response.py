@@ -45,8 +45,8 @@ class EventResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup
-        from ..models.event_data_updated_fields import EventDataUpdatedFields
+        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup  # noqa: PLC0415
+        from ..models.event_data_updated_fields import EventDataUpdatedFields  # noqa: PLC0415
 
         id = self.id
 
@@ -108,9 +108,9 @@ class EventResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup
-        from ..models.event_data_updated_fields import EventDataUpdatedFields
-        from ..models.notification_response import NotificationResponse
+        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup  # noqa: PLC0415
+        from ..models.event_data_updated_fields import EventDataUpdatedFields  # noqa: PLC0415
+        from ..models.notification_response import NotificationResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

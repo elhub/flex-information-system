@@ -254,6 +254,15 @@ export const zNoticeDataValidTimeOutsideContract = z.object({
 });
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.party.incompatible
+ */
+export const zNoticeDataPartyIncompatible = z.object({
+  kind: z.literal("notice.data.party.incompatible"),
+  entity: z.coerce.number().optional(),
+  party: z.array(z.coerce.number()).optional(),
+});
+
+/**
  * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export const zNoticeDataProductTypeNotQualified = z.object({
@@ -1342,15 +1351,6 @@ export const zNoticeDataPartyOutdated = z.object({
   kind: z.literal("notice.data.party.outdated"),
   entity: z.lazy((): any => zEntity).optional(),
   party: z.lazy((): any => zParty).optional(),
-});
-
-/**
- * Format of the data field in a notice with data.kind = notice.data.party.incompatible
- */
-export const zNoticeDataPartyIncompatible = z.object({
-  kind: z.literal("notice.data.party.incompatible"),
-  entity: z.coerce.number().optional(),
-  party: z.array(z.coerce.number()).optional(),
 });
 
 export const zNoticeData = z.discriminatedUnion("kind", [
@@ -2663,20 +2663,11 @@ export const zNoticeDataPartyOutdatedWritable = z.object({
   party: z.lazy((): any => zPartyWritable).optional(),
 });
 
-/**
- * Format of the data field in a notice with data.kind = notice.data.party.incompatible
- */
-export const zNoticeDataPartyIncompatibleWritable = z.object({
-  kind: z.literal("notice.data.party.incompatible"),
-  entity: z.coerce.number().optional(),
-  party: z.array(z.coerce.number()).optional(),
-});
-
 export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataValidTimeOutsideContract,
   zNoticeDataPartyMissingWritable,
   zNoticeDataPartyOutdatedWritable,
-  zNoticeDataPartyIncompatibleWritable,
+  zNoticeDataPartyIncompatible,
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
 ]);

@@ -78,12 +78,12 @@ class ServiceProvidingGroupSummaryResponseTechnicalResource:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.numeric_aggregation import NumericAggregation
+        from ..models.numeric_aggregation import NumericAggregation  # noqa: PLC0415
         from ..models.service_providing_group_summary_response_technical_resource_by_category import (
-            ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory,
+            ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory,  # noqa: PLC0415
         )
         from ..models.service_providing_group_summary_response_technical_resource_by_technology import (
-            ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology,
+            ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

@@ -41,8 +41,8 @@ class AccountingPointEnergySupplierResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.party_response import PartyResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         accounting_point_id = self.accounting_point_id
 
@@ -94,8 +94,8 @@ class AccountingPointEnergySupplierResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.party_response import PartyResponse
+        from ..models.accounting_point_response import AccountingPointResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         accounting_point_id = d.pop("accounting_point_id")

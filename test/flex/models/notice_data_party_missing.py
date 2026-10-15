@@ -74,8 +74,8 @@ class NoticeDataPartyMissing:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.entity_response import EntityResponse
-        from ..models.party_response import PartyResponse
+        from ..models.entity_response import EntityResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         kind = cast(Literal["notice.data.party.missing"], d.pop("kind"))
