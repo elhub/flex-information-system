@@ -60,6 +60,7 @@ export type TextKey =
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
   | "table.header.grid_prequalification"
+  | "table.header.pso_grid_prequalification"
   | "table.header.product_application"
   | "table.header.valid_from"
   | "table.header.valid_to"
@@ -342,6 +343,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
     "table.header.grid_prequalification": "Grid prequalification",
+    "table.header.pso_grid_prequalification": "PSO grid prequalification",
     "table.header.product_application": "Product application",
     "table.header.valid_from": "Valid from",
     "table.header.valid_to": "Valid to",
@@ -686,6 +688,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "table.header.grid_prequalification": "Nettprekvalifisering",
+    "table.header.pso_grid_prequalification": "PSO-nettprekvalifisering",
     "table.header.product_application": "Produktprekvalifisering",
     "table.header.valid_from": "Gyldig fra",
     "table.header.valid_to": "Gyldig til",

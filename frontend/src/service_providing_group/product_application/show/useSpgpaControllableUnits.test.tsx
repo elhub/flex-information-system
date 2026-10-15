@@ -3,7 +3,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { useSpgpaControllableUnits } from "./useSpgpaControllableUnits";
+import {
+  isFullyApproved,
+  useSpgpaControllableUnits,
+} from "./useSpgpaControllableUnits";
 import {
   listAccountingPoint,
   listServiceProvidingGroupGridPrequalification,
@@ -189,4 +192,80 @@ it("uses the verification once it has happened", async () => {
   const { unit1 } = await approvalsAsOf("2024-02-01T00:00:00.000Z");
 
   expect(unit1?.productApplicationPrequalifiedAt).toBe("2024-01-05T00:00:00Z");
+});
+
+const psoApprovalsAsOf = async (
+  gridPrequalifications: unknown[],
+  asOf = "2024-02-01T00:00:00.000Z",
+) => {
+  mockedListGridPrequalifications.mockResolvedValue({
+    data: gridPrequalifications,
+    error: undefined,
+  } as any);
+  // PSO is system operator 3, which no unit belongs to.
+  const spgpa = {
+    status: "verified",
+    prequalified_at: "2024-01-02T00:00:00Z",
+    procuring_system_operator_id: 3,
+  } as any;
+  const { result } = renderHook(
+    () => useSpgpaControllableUnits(1, spgpa, asOf),
+    { wrapper: QueryClientWrapper },
+  );
+  await waitFor(() => expect(result.current.data?.rows).toHaveLength(2));
+  const byName = (name: string) =>
+    result.current.data?.rows.find((row) => row.name === name);
+  return { unit1: byName("CU 1"), unit2: byName("CU 2") };
+};
+
+it("sets the PSO grid prequalification for units that were members at approval, regardless of their own system operator", async () => {
+  const { unit1, unit2 } = await psoApprovalsAsOf([
+    gridPrequalificationFor(3, "2024-01-02T00:00:00Z"),
+  ]);
+
+  expect(unit1?.psoGridPrequalifiedAt).toBe("2024-01-02T00:00:00Z");
+  // Unit 2 joined (01-03) after the PSO approval (01-02).
+  expect(unit2?.psoGridPrequalifiedAt).toBeUndefined();
+});
+
+it("has no PSO grid prequalification when the PSO's is missing or not approved", async () => {
+  const none = await psoApprovalsAsOf([
+    gridPrequalificationFor(1, "2024-01-02T00:00:00Z"),
+  ]);
+  expect(none.unit1?.psoGridPrequalifiedAt).toBeUndefined();
+
+  const notApproved = await psoApprovalsAsOf([
+    {
+      ...gridPrequalificationFor(3, "2024-01-02T00:00:00Z"),
+      status: "requested",
+    },
+  ]);
+  expect(notApproved.unit1?.psoGridPrequalifiedAt).toBeUndefined();
+});
+
+it("has no PSO grid prequalification when the snapshot is before the PSO approval", async () => {
+  const { unit1 } = await psoApprovalsAsOf(
+    [gridPrequalificationFor(3, "2024-01-02T00:00:00Z")],
+    "2024-01-01T12:00:00.000Z",
+  );
+
+  expect(unit1?.psoGridPrequalifiedAt).toBeUndefined();
+});
+
+it("is only fully approved when all three approvals are present", () => {
+  const all = {
+    gridPrequalifiedAt: "a",
+    psoGridPrequalifiedAt: "b",
+    productApplicationPrequalifiedAt: "c",
+  };
+  expect(isFullyApproved(all)).toBe(true);
+  expect(isFullyApproved({ ...all, gridPrequalifiedAt: undefined })).toBe(
+    false,
+  );
+  expect(isFullyApproved({ ...all, psoGridPrequalifiedAt: undefined })).toBe(
+    false,
+  );
+  expect(
+    isFullyApproved({ ...all, productApplicationPrequalifiedAt: undefined }),
+  ).toBe(false);
 });
