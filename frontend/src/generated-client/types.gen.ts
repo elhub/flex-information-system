@@ -355,6 +355,24 @@ export type NoticeDataPartyOutdated = {
 };
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.party.incompatible
+ */
+export type NoticeDataPartyIncompatible = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.incompatible";
+  /**
+   * ID of the entity with access to incompatible parties.
+   */
+  entity?: number;
+  /**
+   * IDs of the incompatible parties the entity owns or is a member of.
+   */
+  party?: Array<number>;
+};
+
+/**
  * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export type NoticeDataProductTypeNotQualified = {
@@ -396,6 +414,9 @@ export type NoticeData =
   | ({
       kind: "notice.data.party.outdated";
     } & NoticeDataPartyOutdated)
+  | ({
+      kind: "notice.data.party.incompatible";
+    } & NoticeDataPartyIncompatible)
   | ({
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)
@@ -4804,6 +4825,9 @@ export type NoticeDataWritable =
   | ({
       kind: "notice.data.party.outdated";
     } & NoticeDataPartyOutdatedWritable)
+  | ({
+      kind: "notice.data.party.incompatible";
+    } & NoticeDataPartyIncompatible)
   | ({
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)

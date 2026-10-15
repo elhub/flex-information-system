@@ -23,7 +23,7 @@ class NotificationResponse:
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.
-        acknowledged (bool): Whether the notification was acknowledged by the target user.
+        acknowledged (bool): Whether the notification was acknowledged by the target user. Example: False.
         event_id (int): Reference to the event notified by this resource. Example: 37.
         party_id (int): Reference to the party concerned by this notification. Example: 37.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
@@ -44,8 +44,8 @@ class NotificationResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.event_response import EventResponse
-        from ..models.party_response import PartyResponse
+        from ..models.event_response import EventResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -96,8 +96,8 @@ class NotificationResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.event_response import EventResponse
-        from ..models.party_response import PartyResponse
+        from ..models.event_response import EventResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

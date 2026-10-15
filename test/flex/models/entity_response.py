@@ -153,10 +153,10 @@ class EntityResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.entity_client_response import EntityClientResponse
-        from ..models.identity_response import IdentityResponse
-        from ..models.party_membership_response import PartyMembershipResponse
-        from ..models.party_response import PartyResponse
+        from ..models.entity_client_response import EntityClientResponse  # noqa: PLC0415
+        from ..models.identity_response import IdentityResponse  # noqa: PLC0415
+        from ..models.party_membership_response import PartyMembershipResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

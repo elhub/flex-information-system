@@ -157,9 +157,9 @@ class ServiceProviderProductSuspensionHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_history_response import PartyHistoryResponse
+        from ..models.party_history_response import PartyHistoryResponse  # noqa: PLC0415
         from ..models.service_provider_product_suspension_comment_history_response import (
-            ServiceProviderProductSuspensionCommentHistoryResponse,
+            ServiceProviderProductSuspensionCommentHistoryResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

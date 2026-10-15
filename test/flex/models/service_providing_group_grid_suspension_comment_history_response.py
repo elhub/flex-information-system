@@ -142,7 +142,7 @@ class ServiceProvidingGroupGridSuspensionCommentHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_grid_suspension_history_response import (
-            ServiceProvidingGroupGridSuspensionHistoryResponse,
+            ServiceProvidingGroupGridSuspensionHistoryResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

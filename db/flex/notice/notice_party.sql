@@ -39,11 +39,11 @@ WITH (security_invoker = false) AS (
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
     WHERE NOT EXISTS (
-        SELECT 1 FROM flex.party AS p
-        WHERE
-            p.business_id = p_stg.gln
-            AND p.type = p_stg.type
-    )
+            SELECT 1 FROM flex.party AS p
+            WHERE
+                p.business_id = p_stg.gln
+                AND p.type = p_stg.type
+        )
 );
 
 -- changeset flex:notice-party-outdated runOnChange:true endDelimiter:--
@@ -62,11 +62,11 @@ WITH (security_invoker = false) AS (
                 (CASE
                     WHEN p_stg.org != e.business_id
                         THEN jsonb_build_object(
-                            'business_id', p_stg.org,
-                            'business_id_type', e_stg.business_id_type,
-                            'name', e_stg.name,
-                            'type', e_stg.type
-                        )
+                                'business_id', p_stg.org,
+                                'business_id_type', e_stg.business_id_type,
+                                'name', e_stg.name,
+                                'type', e_stg.type
+                            )
                 END),
                 'party', jsonb_build_object(
                     'name', (
@@ -120,4 +120,72 @@ WITH (security_invoker = false) AS (
                 p_stg.gln = p.business_id
                 AND p_stg.type = p.type
         )
+);
+
+-- changeset flex:notice-party-incompatible runOnChange:true endDelimiter:--
+-- entity with access (ownership or membership) to parties of incompatible groups
+CREATE OR REPLACE VIEW notice_party_incompatible
+WITH (security_invoker = false) AS (
+    -- (entity, party) pairs describing which parties an entity has access to
+    WITH
+        entity_party_access AS (
+            SELECT
+                p.entity_id,
+                p.id AS party_id
+            FROM flex.party AS p
+            WHERE p.status != 'terminated'
+            UNION
+            SELECT
+                pm.entity_id,
+                pm.party_id
+            FROM flex.party_membership AS pm
+                INNER JOIN flex.party AS p
+                    ON pm.party_id = p.id
+            WHERE p.status != 'terminated'
+        ),
+
+        -- entity ID and list of IDs of parties
+        -- (for all entities having access to incompatible parties)
+        entity_incompatible AS (
+            SELECT
+                epa.entity_id,
+                jsonb_agg(p.id ORDER BY p.type, p.business_id) AS party
+            FROM entity_party_access AS epa
+                INNER JOIN flex.party AS p
+                    ON epa.party_id = p.id
+            -- pre-filter party types that we are concerned about
+            WHERE p.type IN (
+                    'energy_supplier',
+                    'balance_responsible_party',
+                    'service_provider',
+                    'system_operator'
+                )
+            GROUP BY epa.entity_id
+            HAVING
+            -- entity has at least one party in each incompatible party group
+                bool_or(
+                    p.type IN (
+                        'energy_supplier',
+                        'balance_responsible_party',
+                        'service_provider'
+                    )
+                )
+                AND bool_or(p.type = 'system_operator')
+        )
+
+    SELECT
+        p_fiso.id AS party_id,
+        'no.elhub.flex.party.incompatible'::ltree AS type, -- noqa
+        'entity' AS source_resource,
+        ei.entity_id AS source_id,
+        jsonb_build_object(
+            'kind', 'notice.data.party.incompatible',
+            'entity', ei.entity_id,
+            'party', ei.party
+        ) AS data, -- noqa
+        md5(ei.entity_id::text) AS deduplication_key -- noqa
+    FROM entity_incompatible AS ei
+        -- warn all FISOs
+        INNER JOIN flex.party AS p_fiso
+            ON p_fiso.type = 'flexibility_information_system_operator'
 );

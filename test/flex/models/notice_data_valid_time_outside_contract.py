@@ -54,7 +54,7 @@ class NoticeDataValidTimeOutsideContract:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.timeline_multi_range_item import TimelineMultiRangeItem
+        from ..models.timeline_multi_range_item import TimelineMultiRangeItem  # noqa: PLC0415
 
         d = dict(src_dict)
         kind = cast(Literal["notice.data.valid_time.outside_contract"], d.pop("kind"))

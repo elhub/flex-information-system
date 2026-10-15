@@ -60,7 +60,7 @@ class ControllableUnitLookupResponseControllableUnitsItem:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_lookup_response_controllable_units_item_technical_resources_item import (
-            ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem,
+            ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

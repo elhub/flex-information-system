@@ -54,7 +54,7 @@ class ServiceProvidingGroupProductApplicationCommentResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.service_providing_group_product_application_response import (
-            ServiceProvidingGroupProductApplicationResponse,
+            ServiceProvidingGroupProductApplicationResponse,  # noqa: PLC0415
         )
 
         id = self.id
@@ -105,7 +105,7 @@ class ServiceProvidingGroupProductApplicationCommentResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_product_application_response import (
-            ServiceProvidingGroupProductApplicationResponse,
+            ServiceProvidingGroupProductApplicationResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

@@ -62,12 +62,14 @@ class ControllableUnitLookupResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_lookup_response_accounting_point import (
-            ControllableUnitLookupResponseAccountingPoint,
+            ControllableUnitLookupResponseAccountingPoint,  # noqa: PLC0415
         )
         from ..models.controllable_unit_lookup_response_controllable_units_item import (
-            ControllableUnitLookupResponseControllableUnitsItem,
+            ControllableUnitLookupResponseControllableUnitsItem,  # noqa: PLC0415
         )
-        from ..models.controllable_unit_lookup_response_end_user import ControllableUnitLookupResponseEndUser
+        from ..models.controllable_unit_lookup_response_end_user import (
+            ControllableUnitLookupResponseEndUser,  # noqa: PLC0415
+        )
 
         d = dict(src_dict)
         accounting_point = ControllableUnitLookupResponseAccountingPoint.from_dict(d.pop("accounting_point"))

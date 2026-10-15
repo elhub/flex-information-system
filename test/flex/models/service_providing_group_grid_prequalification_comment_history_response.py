@@ -147,7 +147,7 @@ class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_grid_prequalification_history_response import (
-            ServiceProvidingGroupGridPrequalificationHistoryResponse,
+            ServiceProvidingGroupGridPrequalificationHistoryResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

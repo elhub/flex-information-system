@@ -20,6 +20,7 @@ import { SimpleTable } from "../components/SimpleTable";
 import { DataTable } from "../components/EDS-ra/list/Datagrid";
 import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
+import { NoticePartyIncompatible } from "./details/NoticePartyIncompatible";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
 import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeControllableUnitMaximumActivePowerRatio";
 import noticeTypes from "./noticeTypes";
@@ -184,6 +185,9 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
   ),
   "no.elhub.flex.party.missing": (notice) => (
     <NoticePartyMissing noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.incompatible": (notice) => (
+    <NoticePartyIncompatible noticeData={notice.data} />
   ),
   "no.elhub.flex.party.residual": (notice) => (
     <NoticePartyResidual source={notice.source} />

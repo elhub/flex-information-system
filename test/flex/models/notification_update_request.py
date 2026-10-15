@@ -16,7 +16,7 @@ class NotificationUpdateRequest:
     """Request schema for update operations - Notification about an event happening in the system.
 
     Attributes:
-        acknowledged (bool | Unset): Whether the notification was acknowledged by the target user.
+        acknowledged (bool | Unset): Whether the notification was acknowledged by the target user. Example: False.
     """
 
     acknowledged: bool | Unset = UNSET

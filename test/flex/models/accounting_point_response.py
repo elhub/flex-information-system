@@ -69,9 +69,11 @@ class AccountingPointResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
-        from ..models.geojson_point import GeojsonPoint
-        from ..models.party_response import PartyResponse
+        from ..models.accounting_point_grid_location_response import (
+            AccountingPointGridLocationResponse,  # noqa: PLC0415
+        )
+        from ..models.geojson_point import GeojsonPoint  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -214,16 +216,22 @@ class AccountingPointResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_balance_responsible_party_response import (
-            AccountingPointBalanceResponsiblePartyResponse,
+            AccountingPointBalanceResponsiblePartyResponse,  # noqa: PLC0415
         )
-        from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
-        from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
-        from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
-        from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
-        from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.geojson_point import GeojsonPoint
-        from ..models.party_response import PartyResponse
+        from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse  # noqa: PLC0415
+        from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse  # noqa: PLC0415
+        from ..models.accounting_point_energy_supplier_response import (
+            AccountingPointEnergySupplierResponse,  # noqa: PLC0415
+        )
+        from ..models.accounting_point_grid_location_response import (
+            AccountingPointGridLocationResponse,  # noqa: PLC0415
+        )
+        from ..models.accounting_point_metering_grid_area_response import (
+            AccountingPointMeteringGridAreaResponse,  # noqa: PLC0415
+        )
+        from ..models.controllable_unit_response import ControllableUnitResponse  # noqa: PLC0415
+        from ..models.geojson_point import GeojsonPoint  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

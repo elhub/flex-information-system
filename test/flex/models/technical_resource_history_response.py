@@ -197,7 +197,7 @@ class TechnicalResourceHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse
+        from ..models.controllable_unit_history_response import ControllableUnitHistoryResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

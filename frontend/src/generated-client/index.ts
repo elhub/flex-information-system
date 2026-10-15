@@ -784,6 +784,7 @@ export type {
   Notice,
   NoticeData,
   NoticeDataControllableUnitProductDuplication,
+  NoticeDataPartyIncompatible,
   NoticeDataPartyMissing,
   NoticeDataPartyMissingWritable,
   NoticeDataPartyOutdated,
