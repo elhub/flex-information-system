@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{subject}}</title>
+    <style>
+      body {
+        font-family: Roboto, sans-serif;
+        font-size: 14px;
+        color: #222;
+        background: #fff;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      ul {
+        padding: 10px 20px;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      p {
+        margin: 10px 0;
+      }
+      span {
+        color: #0f6537;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>You have open notices in the {{systemName}}</h3>
+    <p>Hello,</p>
+    <p>
+      You have notices that need attention in the <span>{{systemName}}</span>.
+    </p>
+    <b>What should you do?</b>
+    <ul>
+      <li>Log in to the registry.</li>
+      <li>Your notices are shown on the dashboard when you are logged in.</li>
+    </ul>
+    <p>
+      If you have already followed up on your notices, you can ignore this
+      email.
+    </p>
+    <p>Best regards,<br />{{systemName}}</p>
+  </body>
+</html>

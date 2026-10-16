@@ -12,6 +12,14 @@ FOR ALL
 TO flex_common
 USING (party_id = (SELECT flex.current_party()));
 
+-- internal: used by the mail notification job to find recipients of active notices
+GRANT SELECT ON notice TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "NOTICE_INTERNAL_EVENT_NOTIFICATION" ON notice;
+CREATE POLICY "NOTICE_INTERNAL_EVENT_NOTIFICATION" ON notice
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
 -- RLS: NOTICE-FISO001
 DROP POLICY IF EXISTS "NOTICE_FISO001" ON notice;
 CREATE POLICY "NOTICE_FISO001" ON notice
