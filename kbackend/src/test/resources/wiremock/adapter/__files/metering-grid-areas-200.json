@@ -1,0 +1,32 @@
+[
+    {
+        "business_id": "10YNO-1--------2",
+        "name": "Oslo",
+        "is_active": true,
+        "system_operator": [
+            {
+                "business_id": "1337000000044",
+                "valid_from": "2024-01-01T00:00:00+01:00",
+                "valid_to": "2025-01-01T00:00:00+01:00"
+            },
+            {
+                "business_id": "1337000100041",
+                "valid_from": "2025-01-01T00:00:00+01:00",
+                "valid_to": null
+            }
+        ],
+        "price_area": [
+            {
+                "price_area": "NO1",
+                "valid_from": "2024-01-01T00:00:00+01:00"
+            }
+        ]
+    },
+    {
+        "business_id": "10YNO-2--------T",
+        "name": "Kristiansand",
+        "is_active": false,
+        "system_operator": [],
+        "price_area": []
+    }
+]

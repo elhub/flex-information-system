@@ -1,0 +1,27 @@
+package no.elhub.flex.jobs
+
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
+
+/**
+ * Sealed class representing all available scheduled jobs.
+ *
+ * Add a new object here and a corresponding branch in [JobRegistry] to register
+ * a new job. The [name] must match the value set in the `JOB` environment
+ * variable (case-insensitive).
+ */
+sealed class Job(val name: String) {
+
+    data object SyncMeteringGridAreaData : Job("sync-metering-grid-area-data")
+
+    companion object {
+        private val all: List<Job> = listOf(SyncMeteringGridAreaData)
+
+        fun fromString(jobName: String): Either<String, Job> =
+            all.firstOrNull { it.name.equals(jobName, ignoreCase = true) }?.right()
+                ?: "Unknown job '$jobName'. Known jobs: ${knownNames()}".left()
+
+        fun knownNames(): List<String> = all.map { it.name }
+    }
+}

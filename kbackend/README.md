@@ -35,11 +35,11 @@ Run the script from the repository root, passing the service name as the only
 argument:
 
 ```bash
-scripts/generate-openapi-client.sh accountingpointadapter
+scripts/generate-openapi-client.sh adapter
 ```
 
 This generates a Ktor HTTP client with kotlinx.serialization under:
 
 ```bash
-src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/generated/
+src/main/kotlin/no/elhub/flex/integration/adapter/generated/
 ```
