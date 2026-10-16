@@ -55,6 +55,12 @@ fun Application.module() {
         "accounting-point-adapter.api-key" to { it },
         "accounting-point-adapter.sync-enabled" to { it.toBoolean() },
         "flex.timezone" to { TimeZone.of(it) },
+        "mail.host" to { it },
+        "mail.port" to { it.toInt() },
+        "mail.username" to { it },
+        "mail.password" to { it },
+        "mail.from" to { it },
+        "mail.start-tls" to { it.toBoolean() },
         "attachment-storage.bucket" to { it },
         "attachment-storage.internal-endpoint" to { it },
         "attachment-storage.public-endpoint" to { it },
@@ -78,5 +84,6 @@ fun Application.module() {
     configureHealth()
 
     val accountingPointAdapterSyncEnabled = environment.config.property("accounting-point-adapter.sync-enabled").getString().toBoolean()
-    configureScheduling(accountingPointAdapterSyncEnabled)
+    val mailScheduleEnabled = environment.config.property("mail.schedule-enabled").getString().toBoolean()
+    configureScheduling(accountingPointAdapterSyncEnabled, mailScheduleEnabled)
 }
