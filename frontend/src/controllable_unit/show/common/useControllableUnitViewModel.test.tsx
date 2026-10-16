@@ -7,11 +7,11 @@ import {
   listControllableUnitSuspension,
   listTechnicalResource,
   readControllableUnit,
-} from "../../generated-client";
-import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
+} from "../../../generated-client";
+import { useTechnicalResources } from "./useTechnicalResources";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 
-vi.mock("../../generated-client", () => ({
+vi.mock("../../../generated-client", () => ({
   listControllableUnitServiceProvider: vi.fn(),
   listControllableUnitSuspension: vi.fn(),
   listTechnicalResource: vi.fn(),

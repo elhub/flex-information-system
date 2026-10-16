@@ -4,7 +4,7 @@ import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
 import { Loader, Tag } from "../../components/ui";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
-import { TechnicalResourceDetailModal } from "../../controllable_unit/technical_resource/TechnicalResourceDetailModal";
+import { TechnicalResourceDetailModal } from "../../controllable_unit/show/tabs/technical_resource/TechnicalResourceDetailModal";
 import {
   useSpgTechnicalResources,
   SpgTechnicalResource,

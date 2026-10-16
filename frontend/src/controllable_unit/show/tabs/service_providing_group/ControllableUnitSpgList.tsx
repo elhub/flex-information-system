@@ -6,20 +6,25 @@ import {
   useTranslate,
 } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { FormItem, FormItemLabel, Loader, Switch } from "../../components/ui";
-import { Column, SimpleTable } from "../../components/SimpleTable";
-import { Permissions } from "../../auth/permissions";
-import { spgStatusVariantMap } from "../../service_providing_group/serviceProvidingGroupStatus";
+import {
+  FormItem,
+  FormItemLabel,
+  Loader,
+  Switch,
+} from "../../../../components/ui";
+import { Column, SimpleTable } from "../../../../components/SimpleTable";
+import { Permissions } from "../../../../auth/permissions";
+import { spgStatusVariantMap } from "../../../../service_providing_group/serviceProvidingGroupStatus";
 import {
   useControllableUnitSpgMemberships,
   useControllableUnitSpgMembershipHistory,
 } from "./useControllableUnitSpgMemberships";
-import { toDateString } from "../../util";
+import { toDateString } from "../../../../util";
 import {
   DateField,
   IdentityField,
   StatusBadgeField,
-} from "../../components/EDS-ra/fields";
+} from "../../../../components/EDS-ra/fields";
 
 type Props = {
   cuId: number;
@@ -73,7 +78,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
   }
 
   const rows: SpgMembershipRow[] = showHistory
-    ? (history ?? []).map((membership) => ({
+    ? (history ?? []).map((membership: any) => ({
         id: membership.id,
         spg_id: membership.service_providing_group_id,
         membership_id: membership.service_providing_group_membership_id,
@@ -87,7 +92,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
         replaced_at: membership.replaced_at,
         replaced_by: membership.replaced_by,
       }))
-    : (memberships ?? []).map((membership) => ({
+    : (memberships ?? []).map((membership: any) => ({
         id: membership.id,
         spg_id: membership.service_providing_group_id,
         membership_id: membership.id,

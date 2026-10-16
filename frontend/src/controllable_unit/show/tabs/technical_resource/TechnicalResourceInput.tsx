@@ -1,10 +1,15 @@
 import { Form, useRecordContext } from "ra-core";
-import { zTechnicalResource } from "../../generated-client/zod.gen";
-import { TechnicalResource } from "../../generated-client";
-import useLocationState from "../../hooks/useLocationState";
-import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../../zod";
-import { FormContainer, BodyText, Heading, FlexDiv } from "../../components/ui";
+import { zTechnicalResource } from "../../../../generated-client/zod.gen";
+import { TechnicalResource } from "../../../../generated-client";
+import useLocationState from "../../../../hooks/useLocationState";
+import { zTechnicalResourceCreateRequest } from "../../../../generated-client/zod.gen";
+import { getFields, unTypedZodResolver } from "../../../../zod";
+import {
+  FormContainer,
+  BodyText,
+  Heading,
+  FlexDiv,
+} from "../../../../components/ui";
 import {
   TextInput,
   TextAreaInput,
@@ -13,7 +18,7 @@ import {
   EnumArrayInput,
   UnitInput,
   FormToolbar,
-} from "../../components/EDS-ra/inputs";
+} from "../../../../components/EDS-ra/inputs";
 
 export type TechnicalResourceInputLocationState = {
   technicalResource?: Partial<TechnicalResource>;

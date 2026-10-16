@@ -1,13 +1,13 @@
 import { usePermissions } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { TechnicalResource } from "../../generated-client";
-import { Button, Modal, Tag } from "../../components/ui";
+import { TechnicalResource } from "../../../../generated-client";
+import { Button, Modal, Tag } from "../../../../components/ui";
 import { IconPencil } from "@elhub/ds-icons";
-import { Permissions } from "../../auth/permissions";
-import { useTranslateEnum } from "../../intl/intl";
-import { EnumLabel } from "../../intl/enum-labels";
-import { LabelValue } from "../../components/LabelValue";
-import { KILO, Scale } from "../../utils/scales";
+import { Permissions } from "../../../../auth/permissions";
+import { useTranslateEnum } from "../../../../intl/intl";
+import { EnumLabel } from "../../../../intl/enum-labels";
+import { LabelValue } from "../../../../components/LabelValue";
+import { KILO, Scale } from "../../../../utils/scales";
 
 export const TechnicalResourceDetailModal = ({
   record,

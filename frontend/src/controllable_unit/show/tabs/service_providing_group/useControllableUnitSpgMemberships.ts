@@ -3,8 +3,8 @@ import {
   listServiceProvidingGroupMembership,
   listServiceProvidingGroupMembershipHistory,
   ListServiceProvidingGroupMembershipHistoryData,
-} from "../../generated-client";
-import { throwOnError } from "../../util";
+} from "../../../../generated-client";
+import { throwOnError } from "../../../../util";
 
 type WithNestedFilter<Query> = Query & Record<string, string>;
 
