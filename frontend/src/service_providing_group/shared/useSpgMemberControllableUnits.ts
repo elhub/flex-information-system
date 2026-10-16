@@ -3,7 +3,10 @@ import {
   listControllableUnit,
   listServiceProvidingGroupMembership,
 } from "../../generated-client";
-import type { AccountingPointBalanceResponsibleParty } from "../../generated-client";
+import type {
+  AccountingPointBalanceResponsibleParty,
+  AccountingPointGridLocationQuality,
+} from "../../generated-client";
 import {
   findCurrentlyValidRecord,
   throwOnError,
@@ -17,8 +20,10 @@ export type SpgMemberControllableUnitRow = {
   validFrom: string;
   validTo: string;
   maximum_active_power: number;
+  is_small: boolean | undefined;
   rated_power: number | undefined;
   location: string;
+  locationQuality: AccountingPointGridLocationQuality | undefined;
   regulation_direction: string;
   mpid: string;
   accountingPointId: number;
@@ -36,6 +41,7 @@ type SpgMemberControllableUnitsResult = {
 
 const fetchSpgMemberControllableUnits = async (
   serviceProvidingGroupId: number,
+  includeGridLocation: boolean,
 ) => {
   const memberships = await listServiceProvidingGroupMembership({
     query: {
@@ -57,8 +63,9 @@ const fetchSpgMemberControllableUnits = async (
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${controllableUnitIds.join(",")})`,
-      embed:
-        "summary,accounting_point!(system_operator, balance_responsible_party(balance_responsible_party))",
+      embed: includeGridLocation
+        ? "summary,accounting_point!(system_operator, grid_location, balance_responsible_party(balance_responsible_party))"
+        : "summary,accounting_point!(system_operator, balance_responsible_party(balance_responsible_party))",
     },
   }).then(throwOnError);
 
@@ -79,9 +86,11 @@ const fetchSpgMemberControllableUnits = async (
       validFrom: toDateString(membership?.valid_from),
       validTo: toDateString(membership?.valid_to),
       maximum_active_power: cu.maximum_active_power,
+      is_small: cu.is_small,
       rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
       regulation_direction: cu.regulation_direction,
       location: ap?.business_id ?? "-",
+      locationQuality: ap?.grid_location?.quality,
       mpid: ap?.business_id ?? "-",
       accountingPointId: cu.accounting_point_id,
       brpName: currentBrp?.balance_responsible_party?.name ?? "-",
@@ -99,7 +108,14 @@ const fetchSpgMemberControllableUnits = async (
 
 export const spgMemberControllableUnitsQueryKey = (
   spgId: number | undefined,
-) => ["spgMemberControllableUnits", { spgId: spgId }];
+  includeGridLocation?: boolean,
+) => [
+  "spgMemberControllableUnits",
+  {
+    spgId: spgId,
+    ...(includeGridLocation !== undefined ? { includeGridLocation } : {}),
+  },
+];
 
 /**
  * Fetches the controllable units that are members of the given service
@@ -107,9 +123,13 @@ export const spgMemberControllableUnitsQueryKey = (
  * party, and membership data. Shared across any view needing this base
  * per-CU data.
  */
-export const useSpgMemberControllableUnits = (spgId: number | undefined) =>
+export const useSpgMemberControllableUnits = (
+  spgId: number | undefined,
+  includeGridLocation = false,
+) =>
   useQuery({
-    queryKey: spgMemberControllableUnitsQueryKey(spgId),
-    queryFn: () => fetchSpgMemberControllableUnits(spgId ?? 0),
+    queryKey: spgMemberControllableUnitsQueryKey(spgId, includeGridLocation),
+    queryFn: () =>
+      fetchSpgMemberControllableUnits(spgId ?? 0, includeGridLocation),
     enabled: !!spgId,
   });

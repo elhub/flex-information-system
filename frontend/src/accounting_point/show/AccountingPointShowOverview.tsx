@@ -1,6 +1,6 @@
-import { IconCheckCircle, IconWarningCircle } from "@elhub/ds-icons";
 import { useTranslate } from "ra-core";
-import { Badge, BodyText, Heading, Loader, Panel } from "../../components/ui";
+import { BodyText, Heading, Loader, Panel } from "../../components/ui";
+import { GridLocationStatusBadge } from "../grid_location/GridLocationStatusBadge";
 import { LabelValue } from "../../components/LabelValue";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { useAccountingPointControllableUnits } from "./useAccountingPointControllableUnits";
@@ -28,17 +28,6 @@ export const AccountingPointShowOverview = ({
   }
 
   const hasGridLocation = gridLocation != null;
-  const gridLocationStatus = hasGridLocation
-    ? translate(
-        `text.accounting_point_grid_location_panel.status.${gridLocation.quality.toLowerCase()}`,
-      )
-    : translate("text.accounting_point_grid_location_panel.status.missing");
-  const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
-  const statusBadge = !gridLocation
-    ? { status: "failed" as const, icon: IconWarningCircle }
-    : isConfirmed
-      ? { status: "approved" as const, icon: IconCheckCircle }
-      : { status: "approved-with-warning" as const, icon: IconWarningCircle };
 
   const rows = data?.rows ?? [];
   const cuCount = rows.length;
@@ -92,15 +81,7 @@ export const AccountingPointShowOverview = ({
               </b>
             </BodyText>
             <div>
-              <Badge
-                size="small"
-                status={statusBadge.status}
-                variant="block"
-                icon={statusBadge.icon}
-                className="whitespace-nowrap"
-              >
-                {gridLocationStatus}
-              </Badge>
+              <GridLocationStatusBadge quality={gridLocation?.quality} />
             </div>
           </div>
         </Panel>

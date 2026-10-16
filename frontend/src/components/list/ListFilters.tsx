@@ -5,13 +5,18 @@ import { Button, Combobox, FormItem, FormItemLabel, Tooltip } from "../ui";
 import { DebouncedTextField } from "./DebouncedTextField";
 import type { ListFilterDef, ListFilterOption, ListInterface } from "./types";
 
+export type ListFiltersState = Pick<
+  ListInterface<unknown>,
+  "filters" | "setFilter" | "clearFilters" | "resetFilters" | "canResetFilters"
+>;
+
 // Filter bar with one control per filter definition, plus reset/clear buttons.
-export const ListFilters = <T,>({
+export const ListFilters = ({
   filters,
   list,
 }: {
   filters: ListFilterDef[];
-  list: ListInterface<T>;
+  list: ListFiltersState;
 }) => {
   const translate = useTranslate();
 
@@ -36,19 +41,19 @@ export const ListFilters = <T,>({
   );
 };
 
-const FilterControl = <T,>({
+const FilterControl = ({
   def,
   list,
 }: {
   def: ListFilterDef;
-  list: ListInterface<T>;
+  list: ListFiltersState;
 }) => {
   const id = `filter-${def.source}`;
   const value = list.filters[def.source] ?? "";
   const setValue = (v: string | undefined) => list.setFilter(def.source, v);
 
   return (
-    <FormItem id={id} size="small">
+    <FormItem id={id} size="small" className={def.className}>
       <FilterLabel id={id} label={def.label} tooltip={def.tooltip} />
       {def.type === "text" && (
         <DebouncedTextField id={id} value={value} onChange={setValue} />
