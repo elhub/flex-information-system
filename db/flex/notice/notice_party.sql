@@ -133,7 +133,10 @@ WITH (security_invoker = false) AS (
                 p.entity_id,
                 p.id AS party_id
             FROM flex.party AS p
+                INNER JOIN flex.entity AS e
+                    ON p.entity_id = e.id
             WHERE p.status != 'terminated'
+                AND e.type = 'person'
             UNION
             SELECT
                 pm.entity_id,
@@ -147,28 +150,21 @@ WITH (security_invoker = false) AS (
                 AND e.type = 'person'
         ),
 
-        -- entity ID and list of IDs of parties
-        -- (for all entities having access to incompatible parties)
+        -- entity ID and, for each incompatible group, list of IDs of parties
+        -- (for all entities having access to parties in both groups)
+        -- TODO: implement a check for ES/BRP + SP
         entity_incompatible AS (
             SELECT
                 epa.entity_id,
-                jsonb_agg(p.id ORDER BY p.type, p.business_id) AS party
+                jsonb_agg(p.id ORDER BY p.business_id)
+                FILTER (WHERE p.type = 'system_operator') AS party_group_so,
+                jsonb_agg(p.id ORDER BY p.business_id)
+                FILTER (WHERE p.type = 'service_provider') AS party_group_sp
             FROM entity_party_access AS epa
                 INNER JOIN flex.party AS p
                     ON epa.party_id = p.id
-            -- pre-filter party types that we are concerned about
-            WHERE p.type IN (
-                    -- TODO: implement a check for ES/BRP + SP
-                    -- 'energy_supplier',
-                    -- 'balance_responsible_party',
-                    'service_provider',
-                    'system_operator'
-                )
+            WHERE p.type IN ('system_operator', 'service_provider')
             GROUP BY epa.entity_id
-            HAVING
-            -- entity has at least one party in each incompatible party group
-                bool_or(p.type = 'service_provider')
-                AND bool_or(p.type = 'system_operator')
         )
 
     SELECT
@@ -179,11 +175,17 @@ WITH (security_invoker = false) AS (
         jsonb_build_object(
             'kind', 'notice.data.party.incompatible',
             'entity', ei.entity_id,
-            'party', ei.party
+            'party_groups', jsonb_build_array(
+                ei.party_group_so,
+                ei.party_group_sp
+            )
         ) AS data, -- noqa
         md5(ei.entity_id::text) AS deduplication_key -- noqa
     FROM entity_incompatible AS ei
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
+    -- entity has at least one party in each incompatible party group
+    WHERE ei.party_group_so IS NOT null
+        AND ei.party_group_sp IS NOT null
 );

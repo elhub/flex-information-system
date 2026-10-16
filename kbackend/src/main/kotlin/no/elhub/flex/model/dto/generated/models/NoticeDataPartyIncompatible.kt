@@ -17,8 +17,9 @@ public data class NoticeDataPartyIncompatible(
   @SerialName("entity")
   public val entity: Long? = null,
   /**
-   * IDs of the incompatible parties the entity owns or is a member of.
+   * Groups of parties the entity owns or is a member of. Each item is the list of IDs of the
+   * parties in one group. Parties from different groups are incompatible with each other.
    */
-  @SerialName("party")
-  public val party: List<Long>? = null,
+  @SerialName("party_groups")
+  public val partyGroups: List<List<Long>>? = null,
 ) : NoticeData

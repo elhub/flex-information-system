@@ -77,9 +77,9 @@ const noticeTypes = [
     shortId: "party.incompatible",
     label: "Party incompatible",
     description:
-      "This entity has access, by ownership or membership, to parties in incompatible groups: system operator on one side, and energy supplier, balance responsible party or service provider on the other.",
+      "This person has access, by ownership or membership, to both a system operator party and a service provider party, which are incompatible.",
     action:
-      "Review the parties and memberships of the entity and remove the incompatible access.",
+      "Review the parties and memberships of the person and remove the incompatible access.",
   },
   {
     id: "no.elhub.flex.party.residual",
