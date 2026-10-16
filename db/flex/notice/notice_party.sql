@@ -161,7 +161,7 @@ WITH (security_invoker = false) AS (
                     ON epa.party_id = p.id
             -- pre-filter party types that we are concerned about
             WHERE p.type IN (
-                    -- TODO: implement a check for ES/BRP + SP
+                    -- TODO: implement a check for ES/BRP
                     -- 'energy_supplier',
                     -- 'balance_responsible_party',
                     'service_provider',
