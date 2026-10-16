@@ -259,7 +259,7 @@ export const zNoticeDataValidTimeOutsideContract = z.object({
 export const zNoticeDataPartyIncompatible = z.object({
   kind: z.literal("notice.data.party.incompatible"),
   entity: z.coerce.number().optional(),
-  party_groups: z.array(z.array(z.coerce.number()).min(1)).min(2).optional(),
+  party: z.array(z.coerce.number()).optional(),
 });
 
 /**

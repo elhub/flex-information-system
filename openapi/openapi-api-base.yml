@@ -457,20 +457,14 @@ components:
           format: bigint
           type: integer
           example: 7
-        party_groups:
+        party:
           description: >-
-            Groups of parties the entity owns or is a member of. Each item is
-            the list of IDs of the parties in one group. Parties from different
-            groups are incompatible with each other.
+            IDs of the incompatible parties the entity owns or is a member of.
           type: array
-          minItems: 2
           items:
-            type: array
-            minItems: 1
-            items:
-              format: bigint
-              type: integer
-              example: 12
+            format: bigint
+            type: integer
+            example: 12
     notice_data_product_type_not_qualified:
       type: object
       description: >-

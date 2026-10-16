@@ -367,9 +367,9 @@ export type NoticeDataPartyIncompatible = {
    */
   entity?: number;
   /**
-   * Groups of parties the entity owns or is a member of. Each item is the list of IDs of the parties in one group. Parties from different groups are incompatible with each other.
+   * IDs of the incompatible parties the entity owns or is a member of.
    */
-  party_groups?: Array<Array<number>>;
+  party?: Array<number>;
 };
 
 /**

@@ -19,20 +19,17 @@ export const NoticePartyIncompatible = ({
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
   const entityId = noticeData.entity;
-  const partyGroups = noticeData.party_groups ?? [];
-  const partyIds = partyGroups.flat();
+  const partyIds = noticeData.party ?? [];
   const { data: entity } = useGetOne<Entity>(
     "entity",
     { id: entityId },
     { enabled: entityId != undefined },
   );
   const { data: partyData } = useGetMany<Party>("party", { ids: partyIds });
-  const partyById = new Map((partyData ?? []).map((p) => [p.id, p]));
-  const [firstGroup = [], secondGroup = []] = partyGroups.map((ids) =>
-    ids
-      .map((id) => partyById.get(id))
-      .filter((p): p is Party => p != undefined),
-  );
+  const parties = partyData ?? [];
+  // incompatible groups of party types
+  const firstGroup = parties.filter((p) => p.type === "system_operator");
+  const secondGroup = parties.filter((p) => p.type === "service_provider");
 
   const columns: Column<Party>[] = [
     { key: "name", header: translate("field.party.name") },
