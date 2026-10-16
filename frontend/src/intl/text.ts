@@ -251,6 +251,7 @@ export type TextKey =
   | "notice_action"
   | "notice_party_incompatible_intro"
   | "notice_party_incompatible_empty"
+  | "notice_party_incompatible_also"
   | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
@@ -590,8 +591,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_description: "Description",
     notice_action: "Action",
     notice_party_incompatible_intro:
-      "Entity %{entity} can act as all the following incompatible parties:",
+      "Person %{entity} can act as the following parties in the system:",
     notice_party_incompatible_empty: "No parties",
+    notice_party_incompatible_also:
+      "The person can also act as the following parties, that are incompatible with the previous list:",
     "accounting_point_location_map.popup.business_id": "Business ID",
     "accounting_point_location_map.popup.kind": "Kind",
     "accounting_point_location_map.popup.status": "Status",
@@ -944,8 +947,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_description: "Beskrivelse",
     notice_action: "Handling",
     notice_party_incompatible_intro:
-      "Enheten %{entity} kan opptre som alle de følgende ukompatible aktørene:",
+      "Personen %{entity} kan opptre som følgende aktører i systemet:",
     notice_party_incompatible_empty: "Ingen parter",
+    notice_party_incompatible_also:
+      "Personen kan også opptre som følgende aktører, som er ukompatible med den forrige listen:",
     "accounting_point_location_map.popup.business_id": "Forretnings-ID",
     "accounting_point_location_map.popup.kind": "Type",
     "accounting_point_location_map.popup.status": "Status",

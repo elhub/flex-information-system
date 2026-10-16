@@ -1,6 +1,6 @@
 import { useGetMany, useGetOne, useTranslate } from "ra-core";
 import { BodyText } from "../../components/ui";
-import { SimpleTable } from "../../components/SimpleTable";
+import { SimpleTable, Column } from "../../components/SimpleTable";
 import { useTranslateEnum } from "../../intl/intl";
 import {
   NoticeDataPartyIncompatible,
@@ -26,7 +26,27 @@ export const NoticePartyIncompatible = ({
     { enabled: entityId != undefined },
   );
   const { data: partyData } = useGetMany<Party>("party", { ids: partyIds });
-  const party = partyData ?? [];
+  const parties = partyData ?? [];
+  // incompatible groups of party types
+  const firstGroup = parties.filter((p) => p.type === "system_operator");
+  const secondGroup = parties.filter((p) => p.type === "service_provider");
+
+  const columns: Column<Party>[] = [
+    { key: "name", header: translate("field.party.name") },
+    { key: "business_id", header: translate("field.party.business_id") },
+    {
+      key: "business_id_type",
+      header: translate("field.party.business_id_type"),
+      render: (_: unknown, row: Party) =>
+        translateEnum(`party.business_id_type.${row.business_id_type}`),
+    },
+    {
+      key: "type",
+      header: translate("field.party.type"),
+      render: (_: unknown, row: Party) =>
+        translateEnum(`party.type.${row.type}`),
+    },
+  ];
 
   const entityLabel = entity?.business_id
     ? `${entity.name} (${entity.business_id_type?.toUpperCase()} ${entity.business_id})`
@@ -42,22 +62,15 @@ export const NoticePartyIncompatible = ({
       <SimpleTable
         size="small"
         empty={translate("text.notice_party_incompatible_empty")}
-        data={party}
-        columns={[
-          { key: "name", header: translate("field.party.name") },
-          { key: "business_id", header: translate("field.party.business_id") },
-          {
-            key: "business_id_type",
-            header: translate("field.party.business_id_type"),
-            render: (_, row) =>
-              translateEnum(`party.business_id_type.${row.business_id_type}`),
-          },
-          {
-            key: "type",
-            header: translate("field.party.type"),
-            render: (_, row) => translateEnum(`party.type.${row.type}`),
-          },
-        ]}
+        data={firstGroup}
+        columns={columns}
+      />
+      <BodyText>{translate("text.notice_party_incompatible_also")}</BodyText>
+      <SimpleTable
+        size="small"
+        empty={translate("text.notice_party_incompatible_empty")}
+        data={secondGroup}
+        columns={columns}
       />
     </div>
   );

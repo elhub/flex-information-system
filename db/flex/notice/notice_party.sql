@@ -126,14 +126,17 @@ WITH (security_invoker = false) AS (
 -- entity with access (ownership or membership) to parties of incompatible groups
 CREATE OR REPLACE VIEW notice_party_incompatible
 WITH (security_invoker = false) AS (
-    -- (entity, party) pairs describing which parties an entity has access to
+    -- (entity, party) pairs describing which parties a person has access to
     WITH
         entity_party_access AS (
             SELECT
                 p.entity_id,
                 p.id AS party_id
             FROM flex.party AS p
+                INNER JOIN flex.entity AS e
+                    ON p.entity_id = e.id
             WHERE p.status != 'terminated'
+                AND e.type = 'person'
             UNION
             SELECT
                 pm.entity_id,
@@ -141,7 +144,10 @@ WITH (security_invoker = false) AS (
             FROM flex.party_membership AS pm
                 INNER JOIN flex.party AS p
                     ON pm.party_id = p.id
+                INNER JOIN flex.entity AS e
+                    ON pm.entity_id = e.id
             WHERE p.status != 'terminated'
+                AND e.type = 'person'
         ),
 
         -- entity ID and list of IDs of parties
@@ -155,21 +161,16 @@ WITH (security_invoker = false) AS (
                     ON epa.party_id = p.id
             -- pre-filter party types that we are concerned about
             WHERE p.type IN (
-                    'energy_supplier',
-                    'balance_responsible_party',
+                    -- TODO: implement a check for ES/BRP
+                    -- 'energy_supplier',
+                    -- 'balance_responsible_party',
                     'service_provider',
                     'system_operator'
                 )
             GROUP BY epa.entity_id
             HAVING
             -- entity has at least one party in each incompatible party group
-                bool_or(
-                    p.type IN (
-                        'energy_supplier',
-                        'balance_responsible_party',
-                        'service_provider'
-                    )
-                )
+                bool_or(p.type = 'service_provider')
                 AND bool_or(p.type = 'system_operator')
         )
 
