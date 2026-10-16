@@ -405,8 +405,8 @@ def test_sppa_product_type_ids_not_empty(sts):
     assert isinstance(u, ErrorMessage)
 
 
-def test_sppa_common(sts):
-    for role in sts.COMMON_ROLES:
+def test_sppa_history_read(sts):
+    for role in sts.SPG_ROLES:
         client = sts.get_client(TestEntityClient.TEST, role)
 
         sppa_visible = list_service_provider_product_application.sync(
@@ -435,3 +435,12 @@ def test_sppa_common(sts):
                 hist_sppa,
                 ServiceProviderProductApplicationHistoryResponse,
             )
+
+
+def test_no_read_access(sts):
+    for role in sts.NO_SPG_ROLES:
+        sppas = list_service_provider_product_application.sync(
+            client=sts.get_client(TestEntityClient.TEST, role),
+        )
+        assert isinstance(sppas, ErrorMessage)
+        assert sppas.code == "42501"

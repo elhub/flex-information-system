@@ -119,11 +119,11 @@ For party type abbreviations, check
 
 | FIELD               | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |---------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                  |      | R   | R  | R  | R    | R  | R   | R  |     |
-| service_provider_id |      | R   | R  | R  | R    | R  | RC  | R  |     |
-| system_operator_id  |      | R   | R  | R  | R    | R  | RC  | R  |     |
-| product_type_ids    |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| status              |      | R   | R  | R  | RU   | RU | RC  | R  |     |
-| qualified_at        |      | R   | R  | R  | RU   | RU | R   | R  |     |
-| recorded_at         |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by         |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                  |      |     |    |    | R    | R  | R   |    |     |
+| service_provider_id |      |     |    |    | R    | R  | RC  |    |     |
+| system_operator_id  |      |     |    |    | R    | R  | RC  |    |     |
+| product_type_ids    |      |     |    |    | RU   | R  | RCU |    |     |
+| status              |      |     |    |    | RU   | RU | RC  |    |     |
+| qualified_at        |      |     |    |    | RU   | RU | R   |    |     |
+| recorded_at         |      |     |    |    | R    | R  | R   |    |     |
+| recorded_by         |      |     |    |    | R    | R  | R   |    |     |

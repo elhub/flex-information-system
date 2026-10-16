@@ -674,12 +674,13 @@ def test_controllable_unit_sp(sts):
         assert len(hist_sp1) > 0
 
 
-def test_rla_absence(sts):
-    roles_without_rla = ["TP"]
+def test_no_read_access(sts):
+    # these roles have no read access to the resource
+    roles_without_access = ["MO", "TP"]
 
-    for role in roles_without_rla:
+    for role in roles_without_access:
         cus = list_controllable_unit.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(cus, list)
-        assert len(cus) == 0
+        assert isinstance(cus, ErrorMessage)
+        assert cus.code == "42501"

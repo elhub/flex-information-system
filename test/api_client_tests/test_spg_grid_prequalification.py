@@ -607,10 +607,10 @@ def test_spggp_so(data):
 
 
 # RLS: SPGGP-COM001
-def test_spggp_common(data):
+def test_spggp_history_read(data):
     (sts, _, _, _, _, _, _) = data
 
-    for role in sts.COMMON_ROLES:
+    for role in sts.SPG_ROLES:
         client = sts.get_client(TestEntityClient.TEST, role)
 
         # can read history on SPGGP they can read
@@ -640,17 +640,16 @@ def test_spggp_common(data):
             )
 
 
-def test_rla_absence(data):
+def test_no_read_access(data):
     (sts, _, _, _, _, _, _) = data
 
-    roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
-
-    for role in roles_without_rla:
+    # these roles have no read access to the resource
+    for role in sts.NO_SPG_ROLES:
         spggps = list_service_providing_group_grid_prequalification.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(spggps, list)
-        assert len(spggps) == 0
+        assert isinstance(spggps, ErrorMessage)
+        assert spggps.code == "42501"
 
 
 def _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_id):

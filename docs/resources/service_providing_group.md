@@ -121,12 +121,12 @@ For party type abbreviations, check
 
 | FIELD                  | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                     |      | R   | R  | R  | R    | R  | R   | R  |     |
-| name                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| service_provider_id    |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| bidding_zone           |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| status                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| additional_information |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recorded_at            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| created_at             |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                     |      |     |    |    | R    | R  | R   |    |     |
+| name                   |      |     |    |    | RCU  | R  | RCU |    |     |
+| service_provider_id    |      |     |    |    | RC   | R  | RC  |    |     |
+| bidding_zone           |      |     |    |    | RC   | R  | RC  |    |     |
+| status                 |      |     |    |    | RCU  | R  | RCU |    |     |
+| additional_information |      |     |    |    | RCU  | R  | RCU |    |     |
+| recorded_at            |      |     |    |    | R    | R  | R   |    |     |
+| recorded_by            |      |     |    |    | R    | R  | R   |    |     |
+| created_at             |      |     |    |    | R    | R  | R   |    |     |
