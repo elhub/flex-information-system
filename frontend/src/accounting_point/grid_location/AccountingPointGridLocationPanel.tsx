@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { IconCheckCircle, IconWarningCircle } from "@elhub/ds-icons";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
 import { KILO } from "../../utils/scales";
-import {
-  Alert,
-  Badge,
-  BodyText,
-  Button,
-  Heading,
-  Panel,
-  Tooltip,
-} from "../../components/ui";
+import { Alert, BodyText, Button, Heading, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
 import { AccountingPointGridLocationInput } from "./AccountingPointGridLocationInput";
+import { GridLocationStatusBadge } from "./GridLocationStatusBadge";
 import { Substation } from "../show/AccountingPointLocationMap";
 import { tooltips } from "../../tooltip/tooltips";
 
@@ -59,17 +51,6 @@ export const AccountingPointGridLocationPanel = ({
     onClearSelection?.();
   };
 
-  const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
-  const status = !gridLocation
-    ? translate("text.accounting_point_grid_location_panel.status.missing")
-    : isConfirmed
-      ? translate("text.accounting_point_grid_location_panel.status.confirmed")
-      : translate("text.accounting_point_grid_location_panel.status.guessed");
-  const statusBadge = !gridLocation
-    ? { status: "failed" as const, icon: IconWarningCircle }
-    : isConfirmed
-      ? { status: "approved" as const, icon: IconCheckCircle }
-      : { status: "approved-with-warning" as const, icon: IconWarningCircle };
   const qualityTooltip = tooltips[qualityLabelKey];
 
   return (
@@ -80,17 +61,10 @@ export const AccountingPointGridLocationPanel = ({
             {translate("text.accounting_point_grid_location_panel.heading")}
           </Heading>
           {!editing && (
-            <Tooltip content={qualityTooltip}>
-              <Badge
-                size="small"
-                status={statusBadge.status}
-                variant="block"
-                icon={statusBadge.icon}
-                className="whitespace-nowrap"
-              >
-                {status}
-              </Badge>
-            </Tooltip>
+            <GridLocationStatusBadge
+              quality={gridLocation?.quality}
+              tooltip={qualityTooltip}
+            />
           )}
         </div>
       </div>
