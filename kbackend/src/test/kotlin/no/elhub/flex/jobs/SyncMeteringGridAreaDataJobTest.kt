@@ -172,6 +172,17 @@ class SyncMeteringGridAreaDataJobTest : FunSpec({
         priceAreas() shouldBe pa
     }
 
+    test("a failed load is rolled back as a whole, including the staging truncate") {
+        stubScenario()
+        job(finalise = false).run().shouldBeRight()
+        query("SELECT count(*) FROM staging.metering_grid_area") { it.getInt(1) } shouldBe listOf(6)
+
+        stubAdapter("[]")
+        job().run().shouldBeLeft().shouldBeInstanceOf<JobError.DatabaseError>()
+
+        query("SELECT count(*) FROM staging.metering_grid_area") { it.getInt(1) } shouldBe listOf(6)
+    }
+
     test("an adapter failure is returned as an error and flex is left untouched") {
         AdapterWireMockServer.stubFor(
             get(urlPathEqualTo("/metering_grid_area")).willReturn(aResponse().withStatus(500)),

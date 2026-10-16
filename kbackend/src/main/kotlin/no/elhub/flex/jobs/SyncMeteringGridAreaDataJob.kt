@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.integration.adapter.HttpError
 import no.elhub.flex.integration.adapter.NetworkError
@@ -36,11 +37,15 @@ class SyncMeteringGridAreaDataJob(
                 }.bind()
 
             with(stagingPrincipal) {
-                meteringGridAreaRepository.prepareStaging().mapLeft { it.toJobError() }.bind()
-                meteringGridAreaRepository.batchInsertStagingMeteringGridAreas(meteringGridAreaData).mapLeft { it.toJobError() }.bind()
-                meteringGridAreaRepository.batchInsertStagingMeteringGridAreaSystemOperators(meteringGridAreaData).mapLeft { it.toJobError() }.bind()
-                meteringGridAreaRepository.batchInsertStagingMeteringGridAreaPriceAreas(meteringGridAreaData).mapLeft { it.toJobError() }.bind()
-                if (finalise) meteringGridAreaRepository.finaliseStaging().mapLeft { it.toJobError() }.bind()
+                flexTransaction {
+                    either {
+                        meteringGridAreaRepository.prepareStaging().bind()
+                        meteringGridAreaRepository.batchInsertStagingMeteringGridAreas(meteringGridAreaData).bind()
+                        meteringGridAreaRepository.batchInsertStagingMeteringGridAreaSystemOperators(meteringGridAreaData).bind()
+                        meteringGridAreaRepository.batchInsertStagingMeteringGridAreaPriceAreas(meteringGridAreaData).bind()
+                        if (finalise) meteringGridAreaRepository.finaliseStaging().bind()
+                    }.mapLeft { it.toJobError() }
+                }.bind()
             }
         }.also { result ->
             result.onRight { logger.info { "Metering grid area staging load complete" } }
