@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     name text NOT NULL, -- noqa
     nominal_voltage decimal(9, 3) NOT NULL,
     additional_information text,
-    source text NOT NULL,
+    source text NOT NULL, -- noqa
     quality text NOT NULL,
     -- audit fields
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
@@ -66,7 +66,7 @@ BEGIN
 
     IF EXISTS (
         SELECT 1
-        FROM accounting_point_system_operator AS ap_so
+        FROM flex.accounting_point_system_operator AS ap_so
         WHERE ap_so.accounting_point_id = NEW.accounting_point_id
             AND ap_so.system_operator_id = (SELECT flex.current_party())
             AND ap_so.valid_time_range @> current_timestamp
