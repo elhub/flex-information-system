@@ -21,7 +21,7 @@ class FlexTransactionTest : FunSpec({
         }
     }
 
-    val internalPrincipal = FlexPrincipal.internalData()
+    val internalPrincipal = FlexPrincipal.internalData
 
     context("preamble") {
 

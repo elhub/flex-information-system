@@ -72,7 +72,7 @@ class AccountingPointServiceTest : FunSpec({
         controllableUnitRepository,
     )
 
-    val internalPrincipal = FlexPrincipal.internalData()
+    val internalPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         clearMocks(

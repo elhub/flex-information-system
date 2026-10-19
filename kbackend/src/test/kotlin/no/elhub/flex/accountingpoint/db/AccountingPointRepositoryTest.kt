@@ -30,7 +30,7 @@ class AccountingPointRepositoryTest : FunSpec({
     val repo = AccountingPointRepositoryImpl()
 
     val principal = FlexPrincipal(role = "flex_internal_data", eid = "0")
-    val internalDataPrincipal = FlexPrincipal.internalData()
+    val internalDataPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

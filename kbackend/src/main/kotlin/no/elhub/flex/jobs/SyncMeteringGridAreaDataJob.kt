@@ -14,9 +14,6 @@ import no.elhub.flex.model.domain.db.RepositoryError
 
 private val logger = KotlinLogging.logger {}
 
-/** Role allowed to run the `staging.*` functions and write to the staging tables. */
-private val stagingPrincipal = FlexPrincipal(role = "flex_staging_structure_data", eid = "0")
-
 private fun RepositoryError.toJobError() = JobError.DatabaseError(message)
 
 class SyncMeteringGridAreaDataJob(
@@ -36,7 +33,7 @@ class SyncMeteringGridAreaDataJob(
                     }
                 }.bind()
 
-            with(stagingPrincipal) {
+            with(FlexPrincipal.staging) {
                 flexTransaction {
                     either {
                         meteringGridAreaRepository.prepareStaging().bind()

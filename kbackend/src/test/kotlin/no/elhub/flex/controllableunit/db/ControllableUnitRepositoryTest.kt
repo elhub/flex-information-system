@@ -27,7 +27,7 @@ class ControllableUnitRepositoryTest : FunSpec({
     val repo = ControllableUnitRepositoryImpl()
 
     val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
-    val internalDataPrincipal = FlexPrincipal.internalData()
+    val internalDataPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

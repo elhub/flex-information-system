@@ -124,7 +124,7 @@ class AccountingPointServiceImpl(
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .flatMap { adapterAccountingPoint ->
             logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
-            with(FlexPrincipal.internalData()) {
+            with(FlexPrincipal.internalData) {
                 flexTransaction { _ ->
                     either {
                         val accountingPointId = accountingPointRepository.insertAccountingPointIfNotExists(
