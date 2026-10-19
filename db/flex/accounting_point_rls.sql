@@ -1,6 +1,27 @@
 --liquibase formatted sql
 -- Manually managed file
 
+-- changeset flex:accounting-point-service-provider-link-function runOnChange:true endDelimiter:--
+-- checks if the current SP has ever been linked to a CU on the AP
+CREATE OR REPLACE FUNCTION accounting_point_service_provider_link(
+    in_accounting_point_id bigint
+)
+RETURNS boolean
+SECURITY DEFINER -- do not depend on CU RLS as old SP
+STABLE
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit AS cu
+            INNER JOIN flex.controllable_unit_service_provider AS cusp
+                ON cusp.controllable_unit_id = cu.id
+        WHERE cu.accounting_point_id = in_accounting_point_id
+            AND cusp.service_provider_id = (SELECT flex.current_party())
+            AND cusp.valid_time_range IS NOT null
+    );
+$$;
+
 -- changeset flex:accounting-point-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point ENABLE ROW LEVEL SECURITY;
 
@@ -48,7 +69,7 @@ USING (
         FROM flex.accounting_point_system_operator AS ap_so
         WHERE ap_so.accounting_point_id = accounting_point.id -- noqa
             AND ap_so.system_operator_id = (SELECT flex.current_party())
-            AND ap_so.valid_time_range @> CURRENT_TIMESTAMP
+            AND ap_so.valid_time_range @> current_timestamp
     )
 );
 
@@ -94,20 +115,7 @@ CREATE POLICY "AP_SP001"
 ON accounting_point
 FOR SELECT
 TO flex_service_provider
-USING (
-    EXISTS (
-        SELECT 1
-        FROM flex.controllable_unit AS cu
-        WHERE cu.accounting_point_id = accounting_point.id -- noqa
-            AND EXISTS (
-                SELECT 1
-                FROM flex.controllable_unit_service_provider AS cusp
-                WHERE
-                    cusp.controllable_unit_id = cu.id
-                    AND cusp.service_provider_id = (SELECT flex.current_party())
-            )
-    )
-);
+USING (flex.accounting_point_service_provider_link(id));
 
 -- RLS: AP-BRP001
 GRANT SELECT ON accounting_point
@@ -123,7 +131,7 @@ USING (
         FROM flex.accounting_point_balance_responsible_party AS ap_brp
         WHERE ap_brp.accounting_point_id = accounting_point.id -- noqa
             AND ap_brp.balance_responsible_party_id = (SELECT flex.current_party())
-            AND ap_brp.valid_time_range @> CURRENT_TIMESTAMP
+            AND ap_brp.valid_time_range @> current_timestamp
     )
 );
 
