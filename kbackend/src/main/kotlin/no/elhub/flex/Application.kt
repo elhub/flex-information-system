@@ -16,10 +16,8 @@ import no.elhub.flex.config.configureMetrics
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
-import no.elhub.flex.config.createDataSource
-import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
-import no.elhub.flex.jobs.JobApplicationConfig
+import no.elhub.flex.jobs.JobModule
 import no.elhub.flex.jobs.JobRegistry
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
@@ -113,31 +111,20 @@ fun runJob(jobName: String) {
         exitProcess(1)
     }
 
-    val config = JobApplicationConfig.fromEnv()
-
-    // dependencies
-    val dataSource = createDataSource(
-        url = config.databaseUrl,
-        driverClass = config.databaseDriverClass,
-        username = config.databaseUsername,
-        password = config.databasePassword,
-    )
-    val adapter = AdapterHttpClient(
-        baseUrl = config.adapterBaseUrl,
-        apiKey = config.adapterApiKey,
-    )
+    // all dependencies to run jobs (DB, clients)
+    val module = JobModule.fromEnv()
 
     // job instances
     val registry = JobRegistry(
         SyncMeteringGridAreaDataJob(
-            adapterClient = adapter,
+            adapterClient = module.adapterClient,
             meteringGridAreaRepository = MeteringGridAreaRepositoryImpl(),
-            finalise = config.syncMeteringGridAreaDataFinalise,
+            finalise = module.syncMeteringGridAreaDataFinalise,
         ),
     )
 
     logger.info { "Starting job: ${job.name}" }
-    val result = dataSource.use { runBlocking { registry.resolve(job).run() } }
+    val result = module.dataSource.use { runBlocking { registry.resolve(job).run() } }
 
     result.fold(
         {
