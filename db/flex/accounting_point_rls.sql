@@ -18,6 +18,7 @@ AS $$
                 ON cusp.controllable_unit_id = cu.id
         WHERE cu.accounting_point_id = in_accounting_point_id
             AND cusp.service_provider_id = (SELECT flex.current_party())
+            AND cusp.valid_time_range IS NOT null
     );
 $$;
 
