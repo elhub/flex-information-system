@@ -1,6 +1,7 @@
 package no.elhub.flex
 
 import arrow.core.getOrElse
+import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -16,15 +17,21 @@ import no.elhub.flex.config.configureMetrics
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
+import no.elhub.flex.config.createDataSource
+import no.elhub.flex.integration.adapter.AdapterClient
+import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
-import no.elhub.flex.jobs.JobModule
 import no.elhub.flex.jobs.JobRegistry
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
+import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
+import no.elhub.flex.util.requireEnv
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.annotation.Module
+import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 import org.koin.environmentProperties
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
@@ -102,8 +109,7 @@ private val logger = KotlinLogging.logger {}
 
 /**
  * Main function when running the application in job mode.
- * Runs a single job without launching any Ktor application or Koin.
- * Configuration is read once from environment variables, see [JobApplicationConfig].
+ * Runs a single job without launching any Ktor application.
  */
 fun runJob(jobName: String) {
     val job = Job.fromString(jobName).getOrElse {
@@ -111,20 +117,37 @@ fun runJob(jobName: String) {
         exitProcess(1)
     }
 
-    // all dependencies to run jobs (DB, clients)
-    val module = JobModule.fromEnv()
+    // Manual Koin module with all dependencies to run jobs (DB, clients).
+    // Jobs connect to the database as `flex_staging_structure_data`, so `FLEX_DATABASE_USERNAME`
+    // and `FLEX_DATABASE_PASSWORD` must be that role's credentials.
+    val jobModule = module {
+        single(createdAtStart = true) {
+            createDataSource(
+                url = requireEnv("FLEX_DATABASE_URL"),
+                driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
+                username = requireEnv("FLEX_DATABASE_USERNAME"),
+                password = requireEnv("FLEX_DATABASE_PASSWORD"),
+            )
+        }
+        single<AdapterClient> {
+            AdapterHttpClient(requireEnv("ADAPTER_BASE_URL"), requireEnv("ADAPTER_API_KEY"))
+        }
+        single<MeteringGridAreaRepository> { MeteringGridAreaRepositoryImpl() }
+        single {
+            SyncMeteringGridAreaDataJob(
+                adapterClient = get(),
+                meteringGridAreaRepository = get(),
+                finalise = (System.getenv("SYNC_METERING_GRID_AREA_DATA_FINALISE") ?: "false").toBooleanStrict(),
+            )
+        }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>()) }
+    }
 
-    // job instances
-    val registry = JobRegistry(
-        SyncMeteringGridAreaDataJob(
-            adapterClient = module.adapterClient,
-            meteringGridAreaRepository = MeteringGridAreaRepositoryImpl(),
-            finalise = module.syncMeteringGridAreaDataFinalise,
-        ),
-    )
+    // isolated Koin instance, not the global one used by the backend
+    val koin = koinApplication { modules(jobModule) }.koin
 
     logger.info { "Starting job: ${job.name}" }
-    val result = module.dataSource.use { runBlocking { registry.resolve(job).run() } }
+    val result = koin.get<HikariDataSource>().use { runBlocking { koin.get<JobRegistry>().resolve(job).run() } }
 
     result.fold(
         {
