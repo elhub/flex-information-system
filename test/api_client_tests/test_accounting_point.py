@@ -42,6 +42,7 @@ from flex.api.accounting_point import (
 from flex.api.system_operator_product_type import create_system_operator_product_type
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    list_controllable_unit,
     update_controllable_unit,
 )
 from flex.api.technical_resource import create_technical_resource
@@ -375,3 +376,26 @@ def test_ap_sp(sts):
 
     ap = read_accounting_point.sync(client=client_fresh_sp, id=1006)
     assert isinstance(ap, AccountingPointResponse)
+
+
+# RLS: AP-SP001
+def test_ap_former_sp(sts):
+    # Common SP managed the CUs in August 2024 and they were modified later:
+    # they are still be able to see them but as they were at the end of the
+    # contract. This test checks that they can still see the APs of these CUs.
+
+    client_former_sp = sts.get_client(TestEntityClient.COMMON, "SP")
+
+    cus = list_controllable_unit.sync(client=client_former_sp, limit="10000")
+    assert isinstance(cus, list)
+    cus = [cu for cu in cus if "COMMON-SP-AS-OF-2024" in cast(str, cu.name)]
+    assert len(cus) > 0
+
+    ap_ids = {cast(int, cu.accounting_point_id) for cu in cus}
+    for ap_id in ap_ids:
+        ap = read_accounting_point.sync(client=client_former_sp, id=ap_id)
+        assert isinstance(ap, AccountingPointResponse)
+
+    aps = list_accounting_point.sync(client=client_former_sp, limit="10000")
+    assert isinstance(aps, list)
+    assert ap_ids <= {cast(int, ap.id) for ap in aps}
