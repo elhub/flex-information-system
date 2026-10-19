@@ -22,6 +22,7 @@ import { ControllableUnitRegulationDirection } from "../../generated-client";
 import type { AccountingPointGridLocationQuality } from "../../generated-client";
 import { GridLocationStatusBadge } from "../../accounting_point/grid_location/GridLocationStatusBadge";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
+import { tooltips } from "../../tooltip/tooltips";
 
 type Props = {
   spgId: number;
@@ -115,6 +116,7 @@ export const ServiceProvidingGroupShowTable = ({
         type: "singleselect",
         source: "small",
         label: t("controllable_unit.is_small"),
+        tooltip: tooltips["controllable_unit.is_small"],
         options: [
           {
             value: "true",
