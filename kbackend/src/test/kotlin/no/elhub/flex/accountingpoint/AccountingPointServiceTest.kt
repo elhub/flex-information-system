@@ -19,10 +19,8 @@ import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.accountingpoint.db.SubstationRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
-import no.elhub.flex.integration.accountingpointadapter.NetworkError
-import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
-import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
+import no.elhub.flex.integration.adapter.AdapterClient
+import no.elhub.flex.integration.adapter.NetworkError
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointGridLocation
@@ -41,8 +39,10 @@ import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.atLocalMidnight
 import java.util.UUID
 import kotlin.time.Instant
-import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
-import no.elhub.flex.integration.accountingpointadapter.generated.models.MeteringGridArea as AdapterMeteringGridArea
+import no.elhub.flex.integration.adapter.generated.models.AccountingPoint as AdapterAccountingPoint
+import no.elhub.flex.integration.adapter.generated.models.AccountingPointEndUser as EndUser
+import no.elhub.flex.integration.adapter.generated.models.AccountingPointEnergySupplier as EnergySupplier
+import no.elhub.flex.integration.adapter.generated.models.AccountingPointMeteringGridArea as AdapterMeteringGridArea
 
 private val timezone = TimeZone.of("Europe/Oslo")
 
@@ -55,7 +55,7 @@ class AccountingPointServiceTest : FunSpec({
     @Suppress("UnusedPrivateProperty")
     val db = PostgresTestContainer // ensure FlexTransaction is initialised
 
-    val mockAdapter = mockk<AccountingPointAdapterService>()
+    val mockAdapter = mockk<AdapterClient>()
     val accountingPointRepository = mockk<AccountingPointRepository>()
     val meteringGridAreaRepository = mockk<MeteringGridAreaRepository>()
     val accountingPointMeteringGridAreaRepository = mockk<AccountingPointMeteringGridAreaRepository>()
@@ -72,7 +72,7 @@ class AccountingPointServiceTest : FunSpec({
         controllableUnitRepository,
     )
 
-    val internalPrincipal = FlexPrincipal.internalData()
+    val internalPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         clearMocks(

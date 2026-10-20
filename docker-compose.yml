@@ -180,14 +180,14 @@ services:
       - type: bind
         source: ${HOME}/.ca/certificates/idp.flex.internal.key.pem
         target: /key.pem
-  ap-adapter:
+  adapter:
     build: ./local/docker-python
     ports:
       - "5001:8080"
     volumes:
       - type: bind
-        source: ${PWD}/local/accounting-point/main.py
+        source: ${PWD}/local/adapter/main.py
         target: /app/main.py
       - type: bind
-        source: ${PWD}/local/accounting-point/client
+        source: ${PWD}/local/adapter/client
         target: /app/client

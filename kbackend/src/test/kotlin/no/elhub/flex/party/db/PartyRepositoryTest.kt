@@ -14,7 +14,7 @@ class PartyRepositoryTest : FunSpec({
 
     val repo = PartyRepositoryImpl()
 
-    val principal = FlexPrincipal.internalData()
+    val principal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

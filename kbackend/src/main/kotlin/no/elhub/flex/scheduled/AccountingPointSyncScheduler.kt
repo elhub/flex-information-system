@@ -31,7 +31,7 @@ class AccountingPointSyncScheduler(
 
     internal suspend fun runBatch(batchSize: Int = 50) {
         either {
-            with(FlexPrincipal.internalData()) {
+            with(FlexPrincipal.internalData) {
                 logger.info { "Started accounting point sync" }
                 val accountingPointIdBatch = accountingPointSyncRepository.getBatchForSync(batchSize).bind()
 
