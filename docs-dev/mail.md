@@ -12,7 +12,7 @@ this is especially important in order to handle applications.
 
 ## Who gets the email, and why?
 
-FIS operates with notices; see [about notices here](docs-dev/notice.md). Each
+FIS operates with notices; see [about notices here](notice.md). Each
 notice has a receiving party, which is mainly responsible for resolving the
 notice. FIS searches for all active notices. For each active notice, we check
 the receiving party and identify the relevant entity, provided that the entity
