@@ -8,25 +8,25 @@ are made as they are.
 In FIS, the purpose of a notice is to notify market actors outside the system.
 The need comes from the functional aspect of FIS: actors do not necessarily
 check FIS actively, which leaves notices open for longer periods. For the PSO
-this is especially important in order to handle applications.
+this is especially important for handling applications.
 
 ## Who gets the email, and why?
 
-FIS operates with notices; see [about notices here](notice.md). Each
+FIS operates with notices; see [the notice documentation](notice.md). Each
 notice has a receiving party, which is mainly responsible for resolving the
 notice. FIS searches for all active notices. For each active notice, we check
 the receiving party and identify the relevant entity, provided that the entity
 has a registered, valid email address.
 
-## Mail Content
+## Mail content
 
-For now, due to security purposes, the content of the email is generic,
+For now, for security reasons, the content of the email is generic,
 revealing no internal information from FIS, other than that the user needs to
 log in to FIS and resolve the notices. Links or other data could be abused by
 malicious third parties, who could copy our format and trick the user into
 clicking a malicious link.
 
-## Mail Domain
+## Mail domain
 
 // TODO
 
@@ -43,7 +43,7 @@ was sent successfully.
 
 ![Mail technical overview](diagrams/mail_overview.png)
 
-**Note** - this functionality is disabled by default and is enabled by setting
+**Note:** this functionality is disabled by default and is enabled by setting
 the environment variable `MAIL_SCHEDULE_ENABLED=true`.
 
 As of now, the solution lives in the Kotlin backend (kbackend). Kbackend has a
