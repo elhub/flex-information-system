@@ -106,6 +106,12 @@ const useIsProcuringSystemOperator = (
         .then((applications) => applications.length > 0),
   });
 
+// The time of the approval, in the same format as the view's range
+const approvedAtOf = (spgpq: ServiceProvidingGroupGridPrequalification) =>
+  spgpq.prequalified_at
+    ? new Date(spgpq.prequalified_at).toISOString()
+    : undefined;
+
 // Whether anything differs between the approved state and now, i.e., whether
 // there is anything to approve. Independent of the range selected in the view.
 // With the default range this is the same query as the view's, so the request
@@ -117,9 +123,7 @@ const useHasUnapprovedChanges = (
   // false until the scope is known, so that we don't fetch with the wrong one
   scopeReady: boolean,
 ) => {
-  const approvedAt = spgpq.prequalified_at
-    ? new Date(spgpq.prequalified_at).toISOString()
-    : undefined;
+  const approvedAt = approvedAtOf(spgpq);
 
   // the query is disabled without a "from"
   const { data } = useSpgChangesViewModel(
@@ -162,7 +166,7 @@ export const SpgpqChangesTab = ({ spgpq, canApprove }: Props) => {
     <SpgChangesView
       spgId={spgpq.service_providing_group_id}
       milestones={milestones}
-      fallbackFrom={spgpq.prequalified_at ?? undefined}
+      initialFrom={approvedAtOf(spgpq)}
       now={now}
       powerScale={KILO}
       systemOperatorId={systemOperatorId}

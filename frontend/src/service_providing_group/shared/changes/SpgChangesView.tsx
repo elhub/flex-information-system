@@ -28,7 +28,9 @@ type Props = {
   spgId: number;
   // milestones to show on the timeline (the last one is used as "to")
   milestones: TimelineMilestone[];
-  // used as the start of the period when the timeline has too few marks
+  // start of the initial period, defaults to the second to last milestone
+  initialFrom?: string;
+  // used as the start of the initial period when the timeline has too few marks
   fallbackFrom?: string;
   // time used as "now", must be the one used in the last milestone
   now: string;
@@ -164,6 +166,7 @@ const DiffText = ({
 export const SpgChangesView = ({
   spgId,
   milestones,
+  initialFrom,
   fallbackFrom,
   now,
   powerScale,
@@ -175,6 +178,7 @@ export const SpgChangesView = ({
   const marks = useTimelineMarks(milestones);
 
   const [from, setFrom] = useState<string | undefined>(() => {
+    if (initialFrom) return initialFrom;
     const secondToLast = marks[marks.length - 2];
     return secondToLast
       ? new Date(secondToLast.value).toISOString()

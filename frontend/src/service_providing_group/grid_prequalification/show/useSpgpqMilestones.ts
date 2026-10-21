@@ -8,8 +8,9 @@ import {
 import { throwOnError } from "../../../util";
 import type { TimelineMilestone } from "../../shared/changes/timelineUtils";
 
-// The time the SPG-GP was created: the oldest record in its history. Falls back
-// to the recorded time of the current version if the history is not available.
+// The time the SPG-GP was created: the oldest record in its history. Undefined
+// until the history is loaded (or if it is not available): the recorded time of
+// the current version is not the creation time, so it is not used instead.
 const useSpgpqCreatedAt = (
   spgpq: ServiceProvidingGroupGridPrequalification,
 ) => {
@@ -25,7 +26,7 @@ const useSpgpqCreatedAt = (
       }).then(throwOnError),
     retry: false,
   });
-  return data?.[0]?.recorded_at ?? spgpq.recorded_at;
+  return data?.[0]?.recorded_at;
 };
 
 // The SPG-GP's lifecycle milestones plus "now". Unset milestones (e.g. when the
