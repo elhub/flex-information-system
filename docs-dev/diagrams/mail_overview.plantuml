@@ -6,15 +6,15 @@ title Mail Technical Overview
 skinparam LifelineStrategy solid
 skinparam SequenceMessageAlign direction
 
-participant MailScheduler as sched
-participant MailService as svc
+participant "CronJob\n(send-notice-mail)" as sched
+participant SendNoticeMailJob as svc
 participant NoticeRecipientRepository as repo
 database "FIS database" as db
 participant MailTemplate as tpl
 participant MailClient as client
 participant "SMTP server" as smtp
 
-loop Every Monday 06:00 (if ""MAIL_SCHEDULE_ENABLED"")
+loop Weekly, triggered by the cronjob
   sched -> svc: run()
   svc -> repo: getActiveRecipientEmails()
   repo -> db: Query parties with active notices

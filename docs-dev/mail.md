@@ -43,14 +43,16 @@ was sent successfully.
 
 ![Mail technical overview](diagrams/mail_overview.png)
 
-**Note:** this functionality is disabled by default and is enabled by setting
-the environment variable `MAIL_SCHEDULE_ENABLED=true`.
+As of now, the solution lives in the Kotlin backend (kbackend), which can run
+single jobs when the `JOB` environment variable is set. The mail job is
+`send-notice-mail` and is triggered weekly by a cronjob, like the other jobs in
+`kbackend/.../jobs`. When it runs, it queries the database to find relevant
+entities that have an active notice. As long as the notice is active, the user
+will receive a new email each time the job runs.
 
-As of now, the solution lives in the Kotlin backend (kbackend). Kbackend has a
-scheduler mechanism that triggers the email job every Monday at 06:00 PM local
-Norwegian time. When the scheduler triggers, the job queries the database to
-find relevant entities that have an active notice. As long as the notice is
-active, the user will receive a new email each week.
+The job needs `MAIL_SMTP_HOST` and `MAIL_FROM`, and optionally
+`MAIL_SMTP_PORT` (default 587), `MAIL_SMTP_USERNAME`, `MAIL_SMTP_PASSWORD` and
+`MAIL_SMTP_STARTTLS` (default true), in addition to the database credentials.
 
 Once the database query returns, kbackend receives a list of relevant email
 addresses. Then, for each recipient, the email content is created. As of now,

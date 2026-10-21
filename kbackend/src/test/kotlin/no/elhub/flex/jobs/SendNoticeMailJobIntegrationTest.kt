@@ -1,4 +1,4 @@
-package no.elhub.flex.email
+package no.elhub.flex.jobs
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -7,11 +7,13 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import no.elhub.flex.MailpitTestContainer
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.email.MailConfig
+import no.elhub.flex.email.SmtpMailClient
 import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
 import java.sql.Connection
 
-/** Runs [MailService] with the real DB repository and SMTP client against Mailpit. */
-class MailServiceIntegrationTest : FunSpec({
+/** Runs [SendNoticeMailJob] with the real DB repository and SMTP client against Mailpit. */
+class SendNoticeMailJobIntegrationTest : FunSpec({
 
     val config = MailConfig(
         host = MailpitTestContainer.host,
@@ -21,7 +23,7 @@ class MailServiceIntegrationTest : FunSpec({
         from = "flex@example.com",
         startTls = false,
     )
-    val service = MailService(SmtpMailClient(config), NoticeRecipientRepositoryImpl())
+    val job = SendNoticeMailJob(SmtpMailClient(config), NoticeRecipientRepositoryImpl())
 
     beforeTest {
         MailpitTestContainer.clearMessages()
@@ -37,7 +39,7 @@ class MailServiceIntegrationTest : FunSpec({
             conn.insertEndUserWithNotice("c@example.com", "resolved")
         }
 
-        service.run()
+        job.run()
 
         val mails = MailpitTestContainer.messages()
         mails.flatMap { it.to } shouldContainExactlyInAnyOrder listOf("a@example.com", "b@example.com")
@@ -48,7 +50,7 @@ class MailServiceIntegrationTest : FunSpec({
     }
 
     test("sends nothing when there are no active notices") {
-        service.run()
+        job.run()
 
         MailpitTestContainer.messages().shouldBeEmpty()
     }

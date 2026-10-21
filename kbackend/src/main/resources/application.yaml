@@ -28,7 +28,6 @@ mail:
   password: ${MAIL_SMTP_PASSWORD:}
   from: ${MAIL_FROM:}
   start-tls: ${MAIL_SMTP_STARTTLS:true}
-  schedule-enabled: ${MAIL_SCHEDULE_ENABLED:false}
 
 attachment-storage:
   bucket: ${S3_BUCKET:}

@@ -18,14 +18,20 @@ import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.config.createDataSource
+import no.elhub.flex.email.MailClient
+import no.elhub.flex.email.MailConfig
+import no.elhub.flex.email.SmtpMailClient
 import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
+import no.elhub.flex.jobs.SendNoticeMailJob
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
+import no.elhub.flex.notice.db.NoticeRecipientRepository
+import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
 import no.elhub.flex.util.requireEnv
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -108,8 +114,7 @@ fun Application.module() {
     configureHealth()
 
     val accountingPointAdapterSyncEnabled = environment.config.property("accounting-point-adapter.sync-enabled").getString().toBoolean()
-    val mailScheduleEnabled = environment.config.property("mail.schedule-enabled").getString().toBoolean()
-    configureScheduling(accountingPointAdapterSyncEnabled, mailScheduleEnabled)
+    configureScheduling(accountingPointAdapterSyncEnabled)
 }
 
 private val logger = KotlinLogging.logger {}
@@ -147,7 +152,20 @@ fun runJob(jobName: String) {
                 finalise = (System.getenv("SYNC_METERING_GRID_AREA_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single { JobRegistry(get<SyncMeteringGridAreaDataJob>()) }
+        single<NoticeRecipientRepository> { NoticeRecipientRepositoryImpl() }
+        single {
+            MailConfig(
+                host = requireEnv("MAIL_SMTP_HOST"),
+                port = (System.getenv("MAIL_SMTP_PORT") ?: "587").toInt(),
+                username = System.getenv("MAIL_SMTP_USERNAME") ?: "",
+                password = System.getenv("MAIL_SMTP_PASSWORD") ?: "",
+                from = requireEnv("MAIL_FROM"),
+                startTls = (System.getenv("MAIL_SMTP_STARTTLS") ?: "true").toBooleanStrict(),
+            )
+        }
+        single<MailClient> { SmtpMailClient(get()) }
+        single { SendNoticeMailJob(mailClient = get(), noticeRecipientRepository = get()) }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SendNoticeMailJob>()) }
     }
 
     // isolated Koin instance, not the global one used by the backend
