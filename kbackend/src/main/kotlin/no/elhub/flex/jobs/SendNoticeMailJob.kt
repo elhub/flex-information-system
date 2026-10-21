@@ -35,8 +35,6 @@ class SendNoticeMailJob(
         try {
             mailClient.send(MailTemplate.ACTIVE_NOTICES.render(to = email))
             logger.info { "Attempted to send mail to $email" }
-        } catch (ce: CancellationException) {
-            throw ce
         } catch (e: Exception) {
             logger.error(e) { "Failed to send notice mail to $email" }
         }
