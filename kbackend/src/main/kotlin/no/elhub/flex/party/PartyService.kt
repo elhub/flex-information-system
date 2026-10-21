@@ -35,7 +35,7 @@ class PartyServiceImpl(
     override suspend fun getParty(partyId: Long): Party? {
         cache.getIfPresent(partyId)?.let { return it }
 
-        return with(FlexPrincipal.internalData()) {
+        return with(FlexPrincipal.internalData) {
             partyRepository.getById(partyId)
         }.fold(
             { error ->

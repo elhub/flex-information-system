@@ -99,9 +99,9 @@ For party type abbreviations, check
 
 | FIELD                       | ANON | BRP | ES | EU | FISO | SO  | SP | TP | ORG |
 |-----------------------------|------|-----|----|----|------|-----|----|----|-----|
-| id                          |      | R   | R  | R  | R    | R   | R  | R  |     |
-| impacted_system_operator_id |      | R   | R  | R  | RC   | RC  | R  | R  |     |
-| service_providing_group_id  |      | R   | R  | R  | RC   | RC  | R  | R  |     |
-| reason                      |      | R   | R  | R  | RCU  | RCU | R  | R  |     |
-| recorded_at                 |      | R   | R  | R  | R    | R   | R  | R  |     |
-| recorded_by                 |      | R   | R  | R  | R    | R   | R  | R  |     |
+| id                          |      |     |    |    | R    | R   | R  |    |     |
+| impacted_system_operator_id |      |     |    |    | RC   | RC  | R  |    |     |
+| service_providing_group_id  |      |     |    |    | RC   | RC  | R  |    |     |
+| reason                      |      |     |    |    | RCU  | RCU | R  |    |     |
+| recorded_at                 |      |     |    |    | R    | R   | R  |    |     |
+| recorded_by                 |      |     |    |    | R    | R   | R  |    |     |

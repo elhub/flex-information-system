@@ -143,19 +143,19 @@ For party type abbreviations, check
 
 | FIELD                        | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |------------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                           |      | R   | R  | R  | R    | R  | R   | R  |     |
-| service_providing_group_id   |      | R   | R  | R  | R    | R  | RC  | R  |     |
-| procuring_system_operator_id |      | R   | R  | R  | R    | R  | RC  | R  |     |
-| product_type_ids             |      | R   | R  | R  | RU   | RU | RCU | R  |     |
-| status                       |      | R   | R  | R  | RU   | RU | RCU | R  |     |
-| maximum_active_power_up      |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| maximum_active_power_down    |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| additional_information       |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| prequalified_at              |      | R   | R  | R  | RU   | RU | R   | R  |     |
-| verified_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |
-| ramping_capability           |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| ramping_description          |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| recorded_at                  |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by                  |      | R   | R  | R  | R    | R  | R   | R  |     |
-| created_at                   |      | R   | R  | R  | R    | R  | R   | R  |     |
-| complete_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |
+| id                           |      |     |    |    | R    | R  | R   |    |     |
+| service_providing_group_id   |      |     |    |    | R    | R  | RC  |    |     |
+| procuring_system_operator_id |      |     |    |    | R    | R  | RC  |    |     |
+| product_type_ids             |      |     |    |    | RU   | RU | RCU |    |     |
+| status                       |      |     |    |    | RU   | RU | RCU |    |     |
+| maximum_active_power_up      |      |     |    |    | RU   | R  | RCU |    |     |
+| maximum_active_power_down    |      |     |    |    | RU   | R  | RCU |    |     |
+| additional_information       |      |     |    |    | RU   | R  | RCU |    |     |
+| prequalified_at              |      |     |    |    | RU   | RU | R   |    |     |
+| verified_at                  |      |     |    |    | RU   | RU | R   |    |     |
+| ramping_capability           |      |     |    |    | RU   | R  | RCU |    |     |
+| ramping_description          |      |     |    |    | RU   | R  | RCU |    |     |
+| recorded_at                  |      |     |    |    | R    | R  | R   |    |     |
+| recorded_by                  |      |     |    |    | R    | R  | R   |    |     |
+| created_at                   |      |     |    |    | R    | R  | R   |    |     |
+| complete_at                  |      |     |    |    | RU   | RU | R   |    |     |

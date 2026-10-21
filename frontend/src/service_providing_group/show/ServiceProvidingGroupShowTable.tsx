@@ -1,4 +1,9 @@
-import { BodyText, Button, Loader, Search } from "../../components/ui";
+import { BodyText, Button, Loader, Tooltip } from "../../components/ui";
+import {
+  ListFilters,
+  type ListFiltersState,
+} from "../../components/list/ListFilters";
+import type { ListFilterDef } from "../../components/list/types";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { useRemoveMembershipFromShow } from "./useSpgShowViewModel";
 import {
@@ -14,7 +19,10 @@ import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
 import { ControllableUnitRegulationDirection } from "../../generated-client";
+import type { AccountingPointGridLocationQuality } from "../../generated-client";
+import { GridLocationStatusBadge } from "../../accounting_point/grid_location/GridLocationStatusBadge";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
+import { tooltips } from "../../tooltip/tooltips";
 
 type Props = {
   spgId: number;
@@ -59,27 +67,118 @@ export const ServiceProvidingGroupShowTable = ({
   spgId,
   powerScale,
 }: Props) => {
-  const { data, isLoading, error } = useSpgMemberControllableUnits(spgId);
+  const { permissions } = usePermissions<Permissions>();
+  const canViewGridLocation = !!permissions?.allow(
+    "accounting_point_grid_location",
+    "read",
+  );
+  const { data, isLoading, error } = useSpgMemberControllableUnits(
+    spgId,
+    canViewGridLocation,
+  );
   const navigate = useNavigate();
   const t = useTranslateField();
   const translate = useTranslate();
-  const { permissions } = usePermissions<Permissions>();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState<Record<string, string>>({});
+
+  const listFilters: ListFiltersState = {
+    filters,
+    setFilter: (source, value) =>
+      setFilters((prev) => {
+        const next = { ...prev };
+        if (value) next[source] = value;
+        else delete next[source];
+        return next;
+      }),
+    clearFilters: () => setFilters({}),
+    resetFilters: () => setFilters({}),
+    canResetFilters: false,
+  };
+
+  const filterDefs = useMemo<ListFilterDef[]>(() => {
+    const systemOperators = new Map<string, string>();
+    data?.rows.forEach((cu) => {
+      if (cu.accountingPointSystemOperatorId != null) {
+        systemOperators.set(
+          String(cu.accountingPointSystemOperatorId),
+          cu.soName,
+        );
+      }
+    });
+    const defs: ListFilterDef[] = [
+      {
+        type: "text",
+        source: "search",
+        label: `${t("controllable_unit.name")} / ${t("controllable_unit.accounting_point_id")}`,
+        className: "w-52",
+      },
+      {
+        type: "singleselect",
+        source: "small",
+        label: t("controllable_unit.is_small"),
+        tooltip: tooltips["controllable_unit.is_small"],
+        options: [
+          {
+            value: "true",
+            label: translate("text.controllable_unit.is_small.true.label"),
+          },
+          {
+            value: "false",
+            label: translate("text.controllable_unit.is_small.false.label"),
+          },
+        ],
+        className: "w-32",
+      },
+      {
+        type: "singleselect",
+        source: "so",
+        label: t("accounting_point.system_operator_id"),
+        options: Array.from(systemOperators, ([value, label]) => ({
+          value,
+          label,
+        })),
+      },
+    ];
+    if (canViewGridLocation) {
+      defs.push({
+        type: "multiselect",
+        source: "quality",
+        label: translate("text.spg_show_table_location_quality"),
+        options: [
+          ...(["confirmed", "guessed"] as const).map((value) => ({
+            value,
+            label: translate(
+              `enum.accounting_point_grid_location.quality.${value}`,
+            ),
+          })),
+          {
+            value: "missing",
+            label: translate(
+              "text.accounting_point_grid_location_panel.status.missing",
+            ),
+          },
+        ],
+      });
+    }
+    return defs;
+  }, [data?.rows, canViewGridLocation, t, translate]);
 
   const filteredCUs = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    let result = data?.rows;
-    if (q) {
-      result = result?.filter(
-        (cu) =>
-          cu.name?.toLowerCase().includes(q) ||
-          (cu.id != null && String(cu.id).includes(q)) ||
-          (cu.mpid != null && String(cu.mpid).includes(q)) ||
-          cu.soName?.toLowerCase().includes(q),
-      );
-    }
-    return result;
-  }, [searchQuery, data?.rows]);
+    const search = filters.search?.trim().toLowerCase();
+    const qualities = filters.quality ? filters.quality.split(",") : [];
+    return data?.rows.filter(
+      (cu) =>
+        (!search ||
+          cu.name?.toLowerCase().includes(search) ||
+          cu.mpid.toLowerCase().includes(search)) &&
+        (!filters.so ||
+          String(cu.accountingPointSystemOperatorId) === filters.so) &&
+        (!filters.small || String(cu.is_small) === filters.small) &&
+        (!canViewGridLocation ||
+          qualities.length === 0 ||
+          qualities.includes(cu.locationQuality ?? "missing")),
+    );
+  }, [filters, data?.rows, canViewGridLocation]);
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
@@ -147,35 +246,21 @@ export const ServiceProvidingGroupShowTable = ({
       render: (value) => <div className="text-right">{formatPower(value)}</div>,
     },
     {
-      key: "location",
-      header: translate("text.technical_resources_show_label"),
-      render: (value, row) => (
-        <Button
-          variant="secondary"
-          onClick={() =>
-            navigate(
-              `/accounting_point/${row.accountingPointId}/show?tab=location`,
-            )
-          }
-        >
-          {translate("text.technical_resources_show_location")}
-        </Button>
-      ),
-    },
-    {
-      key: "mpid",
-      header: t("controllable_unit.accounting_point_id"),
-      render: (value) =>
-        value !== "-" ? (
-          <BodyText
-            size={"small"}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            {String(value)}
-          </BodyText>
-        ) : (
-          <>{value}</>
-        ),
+      key: "is_small",
+      header: t("controllable_unit.is_small"),
+      render: (value) => {
+        if (value == null) return null;
+        const key = value
+          ? "controllable_unit.is_small.true"
+          : "controllable_unit.is_small.false";
+        return (
+          <Tooltip content={translate(`text.${key}`)}>
+            <span>
+              <BodyText size="small">{translate(`text.${key}.label`)}</BodyText>
+            </span>
+          </Tooltip>
+        );
+      },
     },
     {
       key: "soName",
@@ -197,21 +282,60 @@ export const ServiceProvidingGroupShowTable = ({
           />
         ) : null,
     },
+    {
+      key: "mpid",
+      header: t("controllable_unit.accounting_point_id"),
+      render: (value) =>
+        value !== "-" ? (
+          <BodyText
+            size={"small"}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            {String(value)}
+          </BodyText>
+        ) : (
+          <>{value}</>
+        ),
+    },
+    ...(canViewGridLocation
+      ? [
+          {
+            key: "locationQuality",
+            header: translate("text.spg_show_table_location_quality"),
+            render: (value: unknown) => (
+              <GridLocationStatusBadge
+                quality={
+                  value as AccountingPointGridLocationQuality | undefined
+                }
+              />
+            ),
+          } satisfies Column<SpgMemberControllableUnitRow>,
+        ]
+      : []),
+    {
+      key: "location",
+      header: translate("text.technical_resources_show_label"),
+      render: (value, row) => (
+        <Button
+          variant="secondary"
+          className="break-normal"
+          onClick={() =>
+            navigate(
+              `/accounting_point/${row.accountingPointId}/show?tab=location`,
+            )
+          }
+        >
+          {translate("text.technical_resources_show_location")}
+        </Button>
+      ),
+    },
   ];
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
+      <div className="flex justify-end items-end">
         <div className="flex-1 mr-4">
-          <Search
-            label={translate("text.spg_show_table_search_label")}
-            hideLabel
-            clearButtonLabel={translate("text.spg_show_table_search_clear")}
-            placeholder={translate("text.spg_show_table_search_placeholder")}
-            value={searchQuery}
-            onChange={(value) => setSearchQuery(value)}
-            onClear={() => setSearchQuery("")}
-          />
+          <ListFilters filters={filterDefs} list={listFilters} />
         </div>
         {canManageMembers && (
           <Button

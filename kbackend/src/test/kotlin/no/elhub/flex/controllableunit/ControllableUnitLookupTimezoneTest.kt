@@ -1,7 +1,6 @@
 package no.elhub.flex.controllableunit
 
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import io.kotest.core.spec.style.FunSpec
@@ -33,8 +32,8 @@ import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.event.db.EventRepositoryImpl
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
+import no.elhub.flex.integration.adapter.AdapterHttpClient
+import no.elhub.flex.integration.adapter.AdapterWireMockServer
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.Party
@@ -59,7 +58,7 @@ import kotlin.time.Instant
  */
 class ControllableUnitLookupTimezoneTest : FunSpec({
 
-    extensions(AccountingPointAdapterWireMockServer)
+    extensions(AdapterWireMockServer)
 
     @Suppress("UnusedPrivateProperty")
     val db = PostgresTestContainer // ensure FlexTransaction is initialised
@@ -70,8 +69,8 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     lateinit var mgaBusinessId: String
 
     beforeSpec {
-        val adapterService = AccountingPointAdapterHttpService(
-            baseUrl = AccountingPointAdapterWireMockServer.baseUrl(),
+        val adapterService = AdapterHttpClient(
+            baseUrl = AdapterWireMockServer.baseUrl(),
             apiKey = "test-api-key",
         )
         val mockPartyService = mockk<PartyService>()
@@ -98,7 +97,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     }
 
     beforeTest {
-        AccountingPointAdapterWireMockServer.resetAll()
+        AdapterWireMockServer.resetAll()
         PostgresTestContainer.withConnection { conn ->
             conn.autoCommit = false
             conn.createStatement().use { stmt ->
@@ -173,7 +172,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
      * [endUserID], it responds with an end user contract whose starting date is [validFrom].
      */
     fun stubAdapter(gsrn: String, endUserID: String, validFrom: Instant, mgaId: String) {
-        AccountingPointAdapterWireMockServer.stubFor(
+        AdapterWireMockServer.stubFor(
             get(urlPathEqualTo("/accounting_point/$gsrn"))
                 .willReturn(
                     aResponse()

@@ -12,7 +12,7 @@ import no.elhub.flex.accountingpoint.db.SubstationRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.db.FlexTransaction.flexTransaction
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
+import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
@@ -35,8 +35,8 @@ import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
-import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
-import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
+import no.elhub.flex.integration.adapter.NotFoundError as AdapterNotFoundError
+import no.elhub.flex.integration.adapter.generated.models.AccountingPoint as AdapterAccountingPoint
 
 interface AccountingPointService {
 
@@ -112,7 +112,7 @@ class AccountingPointServiceImpl(
     private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
     private val accountingPointGridLocationRepository: AccountingPointGridLocationRepository,
     private val substationRepository: SubstationRepository,
-    private val accountingPointAdapter: AccountingPointAdapterService,
+    private val adapterClient: AdapterClient,
     private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
     companion object {
@@ -124,7 +124,7 @@ class AccountingPointServiceImpl(
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .flatMap { adapterAccountingPoint ->
             logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
-            with(FlexPrincipal.internalData()) {
+            with(FlexPrincipal.internalData) {
                 flexTransaction { _ ->
                     either {
                         val accountingPointId = accountingPointRepository.insertAccountingPointIfNotExists(
@@ -307,7 +307,7 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String,
         validFrom: Instant
     ): Either<AppError, AdapterAccountingPoint> =
-        accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom)
+        adapterClient.getAccountingPoint(accountingPointBusinessId, validFrom)
             .mapLeft { err ->
                 when (err) {
                     is AdapterNotFoundError -> {

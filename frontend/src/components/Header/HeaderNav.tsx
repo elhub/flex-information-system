@@ -1,9 +1,10 @@
 import { matchPath, NavLink, useLocation, useMatch } from "react-router-dom";
 import { Button, Dropdown, Nav } from "../ui";
 import { IconChevronDown, IconExternal } from "@elhub/ds-icons";
-import { useGetIdentity, useTranslate } from "ra-core";
+import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { userGuideCreateUsersURL, userGuideURL } from "../../httpConfig";
 import { FlexIdentity } from "../../auth";
+import { Permissions, PermissionTarget } from "../../auth/permissions";
 
 type MenuItem =
   | {
@@ -24,24 +25,37 @@ const className = ({ isActive }: { isActive: boolean }) =>
       : "after:bg-transparent",
   ].join(" ");
 
+type LinkItem = { label: string; to: string; resource?: PermissionTarget };
+
+type GroupItem = { label: string; items: LinkItem[] };
+
+type RawMenuItem = LinkItem | GroupItem;
+
 const useMenuItems = () => {
   const { data: identity, isSuccess } = useGetIdentity();
+  const { permissions } = usePermissions<Permissions>();
   const roleIdentity = identity as FlexIdentity | undefined;
 
   const translate = useTranslate();
-  const navLinks: MenuItem[] = [
+  const canRead = (item: LinkItem) =>
+    !item.resource || !!permissions?.allow(item.resource, "read");
+
+  const navLinks: RawMenuItem[] = [
     { label: translate("text.header_nav_dashboard"), to: "/" },
     {
       label: translate("text.header_nav_controllable_units"),
       to: "/controllable_unit",
+      resource: "controllable_unit",
     },
     {
       label: translate("text.header_nav_service_providing_groups"),
       to: "/service_providing_group",
+      resource: "service_providing_group",
     },
     {
       label: translate("text.header_nav_grid_prequalification"),
       to: "/service_providing_group_grid_prequalification",
+      resource: "service_providing_group_grid_prequalification",
     },
     {
       label: translate("text.header_nav_applications"),
@@ -51,12 +65,14 @@ const useMenuItems = () => {
             "text.header_nav_service_provider_product_applications",
           ),
           to: "/service_provider_product_application",
+          resource: "service_provider_product_application",
         },
         {
           label: translate(
             "text.header_nav_service_providing_group_product_applications",
           ),
           to: "/service_providing_group_product_application",
+          resource: "service_providing_group_product_application",
         },
       ],
     },
@@ -66,20 +82,40 @@ const useMenuItems = () => {
         {
           label: translate("text.header_nav_system_operator_product_listing"),
           to: "/system_operator_product_type",
+          resource: "system_operator_product_type",
         },
-        { label: translate("text.header_nav_entities"), to: "/entity" },
-        { label: translate("text.header_nav_parties"), to: "/party" },
+        {
+          label: translate("text.header_nav_entities"),
+          to: "/entity",
+          resource: "entity",
+        },
+        {
+          label: translate("text.header_nav_parties"),
+          to: "/party",
+          resource: "party",
+        },
         // Event is a performance-sensitive resource to list unfiltered when not FISO due to RLA.
         // Other party types should access events through individual resources or notifications.
         ...(roleIdentity?.role ===
         "flex_flexibility_information_system_operator"
-          ? [{ label: translate("text.header_nav_events"), to: "/event" }]
+          ? [
+              {
+                label: translate("text.header_nav_events"),
+                to: "/event",
+                resource: "event" as const,
+              },
+            ]
           : []),
         {
           label: translate("text.header_nav_notifications"),
           to: "/notification",
+          resource: "notification",
         },
-        { label: translate("text.header_nav_notices"), to: "/notice" },
+        {
+          label: translate("text.header_nav_notices"),
+          to: "/notice",
+          resource: "notice",
+        },
       ],
     },
     ...(userGuideURL && userGuideCreateUsersURL
@@ -118,7 +154,13 @@ const useMenuItems = () => {
     ];
   }
 
-  return navLinks;
+  return navLinks.flatMap((link): MenuItem[] => {
+    if (!("items" in link)) {
+      return canRead(link) ? [link] : [];
+    }
+    const items = link.items.filter(canRead);
+    return items.length > 0 ? [{ ...link, items }] : [];
+  });
 };
 
 export const HeaderNav = () => {

@@ -264,8 +264,8 @@ def test_spg_so(sts):
 
 
 # RLS: SPG-COM001
-def test_spg_common(sts):
-    for role in sts.COMMON_ROLES:
+def test_spg_history_read(sts):
+    for role in sts.SPG_ROLES:
         client = sts.get_client(TestEntityClient.TEST, role)
 
         # can read history on SPG they can read
@@ -291,12 +291,11 @@ def test_spg_common(sts):
             assert isinstance(hist_spg, ServiceProvidingGroupHistoryResponse)
 
 
-def test_rla_absence(sts):
-    roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
-
-    for role in roles_without_rla:
+def test_no_read_access(sts):
+    # these roles have no read access to the resource
+    for role in sts.NO_SPG_ROLES:
         spgs = list_service_providing_group.sync(
             client=sts.get_client(TestEntityClient.TEST, role),
         )
-        assert isinstance(spgs, list)
-        assert len(spgs) == 0
+        assert isinstance(spgs, ErrorMessage)
+        assert spgs.code == "42501"

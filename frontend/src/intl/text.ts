@@ -141,6 +141,7 @@ export type TextKey =
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
   | "spg_show_table_search_label"
+  | "spg_show_table_location_quality"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
   | "spg_changes_period_heading"
@@ -486,6 +487,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_create_additional_information_placeholder:
       "This field is optional and can be left empty.",
     spg_show_table_search_label: "Search",
+    spg_show_table_location_quality: "Location quality",
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
       "Filter by name, id, accounting point id or system operator",
@@ -842,6 +844,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_create_additional_information_placeholder:
       "Dette feltet er valgfritt og kan stå tomt.",
     spg_show_table_search_label: "S\u00f8k",
+    spg_show_table_location_quality: "Kvalitet p\u00e5 lokasjon",
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",

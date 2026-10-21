@@ -3,7 +3,8 @@
 
 -- changeset flex:notice-controllable-unit-spg-duplication runOnChange:true endDelimiter:--
 
--- CU registered in multiple SPGs with active applications for the same product type
+-- CU registered in multiple SPGs with product applications for the same product
+-- type, regardless of application status
 CREATE OR REPLACE VIEW notice_cu_spg_product_duplication
 WITH (security_invoker = false) AS (
     WITH
@@ -19,9 +20,7 @@ WITH (security_invoker = false) AS (
                     AS spgpa -- noqa
                     ON spgm.service_providing_group_id
                         = spgpa.service_providing_group_id
-            WHERE
-                spgm.valid_time_range @> current_timestamp
-                AND spg_product_application_ready_for_market_check(spgpa) -- noqa
+            WHERE spgm.valid_time_range @> current_timestamp
         ),
 
         cu_spg_products_not_suspended AS (

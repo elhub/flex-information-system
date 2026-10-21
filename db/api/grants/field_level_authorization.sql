@@ -150,105 +150,7 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.entity_client
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_system_operator;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    entity_id,
-    name,
-    client_id,
-    party_id,
-    scopes,
-    public_key,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.entity_client
-TO flex_third_party;
 
 GRANT INSERT (
     entity_id,
@@ -1173,23 +1075,6 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.controllable_unit
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    business_id,
-    name,
-    regulation_direction,
-    maximum_active_power,
-    is_small,
-    start_date,
-    status,
-    accounting_point_id,
-    additional_information,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit
 TO flex_system_operator;
 
 GRANT INSERT (
@@ -1231,23 +1116,6 @@ GRANT UPDATE (
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    business_id,
-    name,
-    regulation_direction,
-    maximum_active_power,
-    is_small,
-    start_date,
-    status,
-    accounting_point_id,
-    additional_information,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.controllable_unit
@@ -1355,26 +1223,6 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.controllable_unit_history
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    business_id,
-    name,
-    regulation_direction,
-    maximum_active_power,
-    is_small,
-    start_date,
-    status,
-    accounting_point_id,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_history
 TO flex_system_operator;
 
 GRANT SELECT (
@@ -1397,26 +1245,6 @@ GRANT SELECT (
 api.controllable_unit_history
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    business_id,
-    name,
-    regulation_direction,
-    maximum_active_power,
-    is_small,
-    start_date,
-    status,
-    accounting_point_id,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_history
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.controllable_unit_history
 TO flex_internal_event_notification;
@@ -1438,20 +1266,6 @@ GRANT SELECT (
 ) ON TABLE
 api.controllable_unit_service_provider
 TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_service_provider
-TO flex_energy_supplier;
 
 GRANT SELECT (
     id,
@@ -1516,20 +1330,6 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.controllable_unit_service_provider
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_service_provider
 TO flex_system_operator;
 
 GRANT INSERT (
@@ -1564,20 +1364,6 @@ GRANT UPDATE (
 ) ON TABLE
 api.controllable_unit_service_provider
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_service_provider
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.controllable_unit_service_provider
@@ -1619,23 +1405,6 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.controllable_unit_service_provider_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    controllable_unit_service_provider_id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_service_provider_history
 TO flex_end_user;
 
 GRANT SELECT (
@@ -1670,23 +1439,6 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.controllable_unit_service_provider_history
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_service_provider_id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_service_provider_history
 TO flex_system_operator;
 
 GRANT SELECT (
@@ -1705,23 +1457,6 @@ GRANT SELECT (
 ) ON TABLE
 api.controllable_unit_service_provider_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    controllable_unit_service_provider_id,
-    controllable_unit_id,
-    service_provider_id,
-    end_user_id,
-    contract_reference,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_service_provider_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.controllable_unit_service_provider_history
@@ -1742,28 +1477,6 @@ GRANT SELECT (
 api.controllable_unit_suspension
 TO flex_balance_responsible_party;
 
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_suspension
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_suspension
-TO flex_end_user;
-
 GRANT INSERT (
     controllable_unit_id,
     impacted_system_operator_id,
@@ -1792,17 +1505,6 @@ TO flex_flexibility_information_system_operator;
 GRANT DELETE ON TABLE
 api.controllable_unit_suspension
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_suspension
-TO flex_market_operator;
 
 GRANT INSERT (
     controllable_unit_id,
@@ -1844,17 +1546,6 @@ GRANT SELECT (
 api.controllable_unit_suspension
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.controllable_unit_suspension
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.controllable_unit_suspension
 TO flex_internal_event_notification;
@@ -1885,49 +1576,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    controllable_unit_suspension_id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_suspension_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    controllable_unit_suspension_id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_suspension_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_suspension_id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_suspension_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -1956,20 +1605,6 @@ GRANT SELECT (
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    controllable_unit_suspension_id,
-    controllable_unit_id,
-    impacted_system_operator_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.controllable_unit_suspension_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.controllable_unit_suspension_history
@@ -2323,48 +1958,6 @@ GRANT SELECT (
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_third_party;
-
-GRANT SELECT (
-    id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    recorded_by,
-    created_at
-) ON TABLE
-api.service_providing_group
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    recorded_by,
-    created_at
-) ON TABLE
-api.service_providing_group
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    recorded_by,
-    created_at
-) ON TABLE
-api.service_providing_group
-TO flex_end_user;
 
 GRANT INSERT (
     name,
@@ -2397,20 +1990,6 @@ GRANT UPDATE (
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    recorded_by,
-    created_at
-) ON TABLE
-api.service_providing_group
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -2458,20 +2037,6 @@ GRANT UPDATE (
 api.service_providing_group
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    recorded_by,
-    created_at
-) ON TABLE
-api.service_providing_group
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group
 TO flex_internal_event_notification;
@@ -2491,75 +2056,7 @@ GRANT SELECT (
     created_at
 ) ON TABLE
 api.service_providing_group_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at
-) ON TABLE
-api.service_providing_group_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at
-) ON TABLE
-api.service_providing_group_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at
-) ON TABLE
-api.service_providing_group_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at
-) ON TABLE
-api.service_providing_group_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -2594,23 +2091,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    name,
-    service_provider_id,
-    bidding_zone,
-    status,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at
-) ON TABLE
-api.service_providing_group_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_providing_group_history
@@ -2751,42 +2231,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_power_per_substation
 TO flex_third_party;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_membership
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_membership
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_membership
-TO flex_end_user;
 
 GRANT INSERT (
     controllable_unit_id,
@@ -2819,18 +2263,6 @@ TO flex_flexibility_information_system_operator;
 GRANT DELETE ON TABLE
 api.service_providing_group_membership
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_membership
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -2876,18 +2308,6 @@ GRANT DELETE ON TABLE
 api.service_providing_group_membership
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_membership
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_membership
 TO flex_internal_event_notification;
@@ -2905,67 +2325,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_providing_group_membership_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_membership_id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_membership_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_membership_id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_membership_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_membership_id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_membership_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_membership_id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_membership_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -2997,60 +2357,9 @@ GRANT SELECT (
 api.service_providing_group_membership_history
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    service_providing_group_membership_id,
-    controllable_unit_id,
-    service_providing_group_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_membership_history
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_membership_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_prequalification
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_prequalification
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_prequalification
-TO flex_end_user;
 
 GRANT INSERT (
     service_providing_group_id,
@@ -3089,18 +2398,6 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.service_providing_group_grid_prequalification
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_prequalification
 TO flex_system_operator;
 
 GRANT UPDATE (
@@ -3122,18 +2419,6 @@ GRANT SELECT (
 api.service_providing_group_grid_prequalification
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_prequalification
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_prequalification
 TO flex_internal_event_notification;
@@ -3151,67 +2436,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_providing_group_grid_prequalification_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_prequalification_id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_prequalification_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_prequalification_id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_prequalification_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_prequalification_id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_prequalification_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_prequalification_id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_prequalification_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -3242,21 +2467,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_grid_prequalification_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_prequalification_id,
-    service_providing_group_id,
-    impacted_system_operator_id,
-    status,
-    prequalified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_prequalification_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_prequalification_history
@@ -3546,39 +2756,6 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_prequalification_comment_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_suspension
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_suspension
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_suspension
-TO flex_end_user;
 
 GRANT INSERT (
     impacted_system_operator_id,
@@ -3608,17 +2785,6 @@ TO flex_flexibility_information_system_operator;
 GRANT DELETE ON TABLE
 api.service_providing_group_grid_suspension
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_suspension
-TO flex_market_operator;
 
 GRANT INSERT (
     impacted_system_operator_id,
@@ -3660,17 +2826,6 @@ GRANT SELECT (
 api.service_providing_group_grid_suspension
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_grid_suspension
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_suspension
 TO flex_internal_event_notification;
@@ -3687,63 +2842,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_providing_group_grid_suspension_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_suspension_id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_suspension_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_suspension_id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_suspension_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_suspension_id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_suspension_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_suspension_id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_suspension_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -3772,20 +2871,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_grid_suspension_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_providing_group_grid_suspension_id,
-    impacted_system_operator_id,
-    service_providing_group_id,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_grid_suspension_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_suspension_history
@@ -4202,25 +3287,6 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.technical_resource
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    name,
-    controllable_unit_id,
-    technology,
-    category,
-    maximum_active_power,
-    device_type,
-    make,
-    model,
-    business_id,
-    business_id_type,
-    additional_information,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.technical_resource
 TO flex_system_operator;
 
 GRANT INSERT (
@@ -4274,25 +3340,6 @@ TO flex_service_provider;
 GRANT DELETE ON TABLE
 api.technical_resource
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    name,
-    controllable_unit_id,
-    technology,
-    category,
-    maximum_active_power,
-    device_type,
-    make,
-    model,
-    business_id,
-    business_id_type,
-    additional_information,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.technical_resource
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.technical_resource
@@ -4410,28 +3457,6 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.technical_resource_history
-TO flex_market_operator;
-
-GRANT SELECT (
-    id,
-    technical_resource_id,
-    name,
-    controllable_unit_id,
-    technology,
-    category,
-    maximum_active_power,
-    device_type,
-    make,
-    model,
-    business_id,
-    business_id_type,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.technical_resource_history
 TO flex_system_operator;
 
 GRANT SELECT (
@@ -4455,28 +3480,6 @@ GRANT SELECT (
 ) ON TABLE
 api.technical_resource_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    technical_resource_id,
-    name,
-    controllable_unit_id,
-    technology,
-    category,
-    maximum_active_power,
-    device_type,
-    make,
-    model,
-    business_id,
-    business_id_type,
-    additional_information,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.technical_resource_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.technical_resource_history
@@ -4753,40 +3756,7 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE
 api.accounting_point
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    business_id,
-    system_operator_id,
-    location,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.accounting_point
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    business_id,
-    system_operator_id,
-    location,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.accounting_point
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    business_id,
-    system_operator_id,
-    location,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.accounting_point
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -4809,17 +3779,6 @@ GRANT SELECT (
 ) ON TABLE
 api.accounting_point
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    business_id,
-    system_operator_id,
-    location,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.accounting_point
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.accounting_point
@@ -5803,45 +4762,6 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.system_operator_product_type_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_application
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_application
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_application
-TO flex_end_user;
 
 GRANT SELECT (
     id,
@@ -5863,19 +4783,6 @@ GRANT UPDATE (
 ) ON TABLE
 api.service_provider_product_application
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_application
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -5925,19 +4832,6 @@ GRANT UPDATE (
 api.service_provider_product_application
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_application
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_provider_product_application
 TO flex_internal_event_notification;
@@ -5956,71 +4850,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_provider_product_application_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_provider_product_application_id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_application_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_provider_product_application_id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_application_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_provider_product_application_id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_application_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_provider_product_application_id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_application_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -6054,61 +4884,9 @@ GRANT SELECT (
 api.service_provider_product_application_history
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    service_provider_product_application_id,
-    service_provider_id,
-    system_operator_id,
-    product_type_ids,
-    status,
-    qualified_at,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_application_history
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_provider_product_application_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_suspension
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_suspension
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_suspension
-TO flex_end_user;
 
 GRANT INSERT (
     procuring_system_operator_id,
@@ -6141,18 +4919,6 @@ TO flex_flexibility_information_system_operator;
 GRANT DELETE ON TABLE
 api.service_provider_product_suspension
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_suspension
-TO flex_market_operator;
 
 GRANT INSERT (
     procuring_system_operator_id,
@@ -6198,18 +4964,6 @@ GRANT SELECT (
 api.service_provider_product_suspension
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_provider_product_suspension
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_provider_product_suspension
 TO flex_internal_event_notification;
@@ -6227,67 +4981,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_provider_product_suspension_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_provider_product_suspension_id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_suspension_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_provider_product_suspension_id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_suspension_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_provider_product_suspension_id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_suspension_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_provider_product_suspension_id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_suspension_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -6318,21 +5012,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_provider_product_suspension_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_provider_product_suspension_id,
-    procuring_system_operator_id,
-    service_provider_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_provider_product_suspension_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_provider_product_suspension_history
@@ -6642,69 +5321,6 @@ GRANT SELECT (
     complete_at
 ) ON TABLE
 api.service_providing_group_product_application
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    recorded_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    recorded_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    recorded_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
 
 GRANT UPDATE (
@@ -6721,27 +5337,6 @@ GRANT UPDATE (
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    recorded_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -6821,27 +5416,6 @@ GRANT UPDATE (
 api.service_providing_group_product_application
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    recorded_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_product_application
 TO flex_internal_event_notification;
@@ -6868,103 +5442,7 @@ GRANT SELECT (
     complete_at
 ) ON TABLE
 api.service_providing_group_product_application_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_application_id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_application_id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_application_id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_application_id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -7013,30 +5491,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_application_id,
-    service_providing_group_id,
-    procuring_system_operator_id,
-    product_type_ids,
-    status,
-    maximum_active_power_up,
-    maximum_active_power_down,
-    additional_information,
-    prequalified_at,
-    verified_at,
-    ramping_capability,
-    ramping_description,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by,
-    created_at,
-    complete_at
-) ON TABLE
-api.service_providing_group_product_application_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_providing_group_product_application_history
@@ -7326,42 +5780,6 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.service_providing_group_product_application_comment_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_product_suspension
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_product_suspension
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_product_suspension
-TO flex_end_user;
 
 GRANT INSERT (
     procuring_system_operator_id,
@@ -7393,18 +5811,6 @@ TO flex_flexibility_information_system_operator;
 GRANT DELETE ON TABLE
 api.service_providing_group_product_suspension
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_product_suspension
-TO flex_market_operator;
 
 GRANT INSERT (
     procuring_system_operator_id,
@@ -7449,18 +5855,6 @@ GRANT SELECT (
 api.service_providing_group_product_suspension
 TO flex_service_provider;
 
-GRANT SELECT (
-    id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    recorded_by
-) ON TABLE
-api.service_providing_group_product_suspension
-TO flex_third_party;
-
 GRANT SELECT ON TABLE
 api.service_providing_group_product_suspension
 TO flex_internal_event_notification;
@@ -7478,67 +5872,7 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE
 api.service_providing_group_product_suspension_history
-TO flex_balance_responsible_party;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_suspension_id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_product_suspension_history
-TO flex_energy_supplier;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_suspension_id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_product_suspension_history
-TO flex_end_user;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_suspension_id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_product_suspension_history
 TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_suspension_id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_product_suspension_history
-TO flex_market_operator;
 
 GRANT SELECT (
     id,
@@ -7569,21 +5903,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_product_suspension_history
 TO flex_service_provider;
-
-GRANT SELECT (
-    id,
-    service_providing_group_product_suspension_id,
-    procuring_system_operator_id,
-    service_providing_group_id,
-    product_type_ids,
-    reason,
-    recorded_at,
-    replaced_at,
-    recorded_by,
-    replaced_by
-) ON TABLE
-api.service_providing_group_product_suspension_history
-TO flex_third_party;
 
 GRANT SELECT ON TABLE
 api.service_providing_group_product_suspension_history

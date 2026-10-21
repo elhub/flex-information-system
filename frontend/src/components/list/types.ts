@@ -51,6 +51,7 @@ type FilterBase = {
   source: string;
   label: string;
   tooltip?: string;
+  className?: string;
 };
 
 export type ListFilterDef =

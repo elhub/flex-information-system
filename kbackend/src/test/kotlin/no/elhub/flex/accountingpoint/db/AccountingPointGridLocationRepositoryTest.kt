@@ -19,7 +19,7 @@ class AccountingPointGridLocationRepositoryTest : FunSpec({
 
     val repo = AccountingPointGridLocationRepositoryImpl()
 
-    val internalDataPrincipal = FlexPrincipal.internalData()
+    val internalDataPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

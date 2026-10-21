@@ -96,7 +96,11 @@ export const SimpleTable = <T extends { id?: string | number }>({
             </Table.ColumnHeader>
           )}
           {columns.map((col) => (
-            <Table.ColumnHeader key={String(col.key)} scope="col">
+            <Table.ColumnHeader
+              key={String(col.key)}
+              scope="col"
+              className="break-normal"
+            >
               {col.headerTooltip ? (
                 <div className={"flex items-center gap-1"}>
                   <BodyText size="small" weight="bold">
