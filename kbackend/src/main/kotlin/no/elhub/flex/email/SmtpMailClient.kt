@@ -51,6 +51,7 @@ internal fun smtpProperties(config: MailConfig): Properties = Properties().apply
     put("mail.smtp.auth", config.username.isNotBlank().toString())
     put("mail.smtp.starttls.enable", config.startTls.toString())
     // never fall back to plaintext when STARTTLS is requested
+    put("mail.smtp.ssl.checkserveridentity", "true")
     put("mail.smtp.starttls.required", config.startTls.toString())
     put("mail.smtp.ssl.protocols", "TLSv1.2 TLSv1.3")
     put("mail.smtp.connectiontimeout", CONNECTION_TIMEOUT_MS.toString())
