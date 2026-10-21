@@ -34,8 +34,9 @@ class NoticeRecipientRepositoryImpl : NoticeRecipientRepository {
                         """
                         SELECT DISTINCT e.business_id AS email
                         FROM flex.notice n
-                        JOIN flex.party p ON p.id = n.party_id
-                        JOIN flex.entity e ON e.id = p.entity_id
+                        JOIN flex.party_membership pm ON n.party_id = pm.party_id
+                        JOIN flex.party p ON p.id = pm.party_id
+                        JOIN flex.entity e ON e.id = pm.entity_id
                         WHERE n.status = 'active'
                           AND p.status = 'active'
                           AND e.business_id_type = 'email'
