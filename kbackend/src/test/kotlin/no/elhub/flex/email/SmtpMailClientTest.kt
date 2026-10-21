@@ -3,7 +3,7 @@ package no.elhub.flex.email
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class SmtpOCIMailClientTest : FunSpec({
+class SmtpMailClientTest : FunSpec({
     fun config(startTls: Boolean = true, username: String = "user") =
         MailConfig("smtp.example.com", 587, username, "pw", "from@example.com", startTls)
 

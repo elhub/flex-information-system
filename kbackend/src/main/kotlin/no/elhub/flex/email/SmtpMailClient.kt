@@ -13,7 +13,7 @@ import org.koin.core.annotation.Single
 import java.util.Properties
 
 @Single(binds = [MailClient::class])
-class SmtpOCIMailClient(private val config: MailConfig) : MailClient {
+class SmtpMailClient(private val config: MailConfig) : MailClient {
 
     private val session: Session by lazy {
         val props = smtpProperties(config)
