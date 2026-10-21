@@ -33,7 +33,8 @@ clicking a malicious link.
 ## Delivery guarantee
 
 The initial implementation is optimistic and does not care whether a message
-was sent successfully.
+was sent successfully to the recipient.
+However, we do care about delivery to the SMTP relay.
 
 ## Technical overview
 

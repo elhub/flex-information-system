@@ -1,7 +1,7 @@
 package no.elhub.flex.jobs
 
 import arrow.core.Either
-import arrow.core.right
+import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CancellationException
 import no.elhub.flex.auth.FlexPrincipal
@@ -20,15 +20,17 @@ class SendNoticeMailJob(
     private val noticeRecipientRepository: NoticeRecipientRepository,
 ) : ScheduledJob {
     override suspend fun run(): Either<JobError, Unit> =
-        with(FlexPrincipal.internalEventNotification) {
-            noticeRecipientRepository.getActiveRecipientEmails()
-                .mapLeft<JobError> { JobError.DatabaseError(it.message) }
-                .onLeft { logger.error { "Failed to fetch notice recipients: $it" } }
-                .onRight { emails ->
-                    logger.info { "Found ${emails.size} notice recipient email(s)" }
-                    emails.forEach { send(it) }
-                }
-                .map { }
+        either {
+            val emails = with(FlexPrincipal.internalEventNotification) {
+                noticeRecipientRepository.getActiveRecipientEmails()
+                    .mapLeft { JobError.DatabaseError(it.message) }
+                    .bind()
+            }
+            logger.info { "Found ${emails.size} notice recipient email(s)" }
+            emails.forEach { send(it) }
+        }.also { result ->
+            result.onRight { logger.info { "Sending mails done" } }
+            result.onLeft { logger.error { "Failed to fetch notice recipients: $it" } }
         }
 
     private suspend fun send(email: String) {
