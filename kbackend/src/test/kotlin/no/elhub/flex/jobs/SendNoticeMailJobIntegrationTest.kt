@@ -10,6 +10,9 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.email.MailConfig
 import no.elhub.flex.email.SmtpMailClient
 import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
+import no.elhub.flex.notice.db.insertMember
+import no.elhub.flex.notice.db.insertNotice
+import no.elhub.flex.notice.db.insertParty
 import java.sql.Connection
 
 /** Runs [SendNoticeMailJob] with the real DB repository and SMTP client against Mailpit. */
@@ -57,32 +60,7 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
 })
 
 private fun Connection.insertEndUserWithNotice(email: String, noticeStatus: String) {
-    val entityId = prepareStatement(
-        "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (?, 'person', ?, 'email') RETURNING id",
-    ).use { stmt ->
-        stmt.setString(1, "Person $email")
-        stmt.setString(2, email)
-        stmt.executeQuery().use { rs ->
-            rs.next()
-            rs.getLong(1)
-        }
-    }
-    val partyId = prepareStatement(
-        "INSERT INTO flex.party (entity_id, name, type, role, status) VALUES (?, ?, 'end_user', 'flex_end_user', 'active') RETURNING id",
-    ).use { stmt ->
-        stmt.setLong(1, entityId)
-        stmt.setString(2, "Party $email")
-        stmt.executeQuery().use { rs ->
-            rs.next()
-            rs.getLong(1)
-        }
-    }
-    prepareStatement(
-        "INSERT INTO flex.notice (party_id, type, status, deduplication_key) VALUES (?, 'no.elhub.flex.test'::ltree, ?, ?)",
-    ).use { stmt ->
-        stmt.setLong(1, partyId)
-        stmt.setString(2, noticeStatus)
-        stmt.setString(3, "key-$email")
-        stmt.execute()
-    }
+    val partyId = insertParty(partyStatus = "active")
+    insertMember(partyId, email)
+    insertNotice(partyId, noticeStatus, "key-$email")
 }

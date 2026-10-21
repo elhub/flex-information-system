@@ -6,13 +6,11 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
-import java.sql.Connection
-import java.util.UUID
 
 class NoticeRecipientRepositoryTest : FunSpec({
 
     val repo = NoticeRecipientRepositoryImpl()
-    val principal = FlexPrincipal.internalEventNotification()
+    val principal = FlexPrincipal.internalEventNotification
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
@@ -20,9 +18,10 @@ class NoticeRecipientRepositoryTest : FunSpec({
         }
     }
 
-    test("returns email of entity whose party has an active notice") {
+    test("returns email of entity that is a member of a party with an active notice") {
         PostgresTestContainer.withConnection { conn ->
-            val party = conn.insertEndUser("a@example.com", partyStatus = "active")
+            val party = conn.insertParty(partyStatus = "active")
+            conn.insertMember(party, "a@example.com")
             conn.insertNotice(party, "active")
         }
 
@@ -30,77 +29,76 @@ class NoticeRecipientRepositoryTest : FunSpec({
             .shouldBeRight() shouldContainExactlyInAnyOrder listOf("a@example.com")
     }
 
-    test("ignores resolved notices") {
+    test("returns every member with an email") {
         PostgresTestContainer.withConnection { conn ->
-            val party = conn.insertEndUser("a@example.com", partyStatus = "active")
-            conn.insertNotice(party, "resolved")
+            val party = conn.insertParty(partyStatus = "active")
+            conn.insertMember(party, "a@example.com")
+            conn.insertMember(party, "b@example.com")
+            conn.insertNotice(party, "active")
         }
 
-        with(principal) { repo.getActiveRecipientEmails() }.shouldBeRight().shouldBeEmpty()
+        with(principal) { repo.getActiveRecipientEmails() }
+            .shouldBeRight() shouldContainExactlyInAnyOrder listOf("a@example.com", "b@example.com")
     }
 
-    test("ignores parties that are not active") {
+    test("ignores the email of the party's own entity when it is not a member") {
         PostgresTestContainer.withConnection { conn ->
-            val party = conn.insertEndUser("a@example.com", partyStatus = "suspended")
+            val party = conn.insertParty(partyStatus = "active", ownerEmail = "owner@example.com")
             conn.insertNotice(party, "active")
         }
 
         with(principal) { repo.getActiveRecipientEmails() }.shouldBeRight().shouldBeEmpty()
     }
 
-    test("ignores entities that do not use email as business id") {
+    test("ignores members of parties without active notices") {
         PostgresTestContainer.withConnection { conn ->
-            val party = conn.insertEndUser("12345678901", businessIdType = "pid", partyStatus = "active")
+            val withActive = conn.insertParty(partyStatus = "active")
+            conn.insertMember(withActive, "a@example.com")
+            conn.insertNotice(withActive, "active")
+            val withResolved = conn.insertParty(partyStatus = "active")
+            conn.insertMember(withResolved, "b@example.com")
+            conn.insertNotice(withResolved, "resolved")
+            val withoutNotice = conn.insertParty(partyStatus = "active")
+            conn.insertMember(withoutNotice, "c@example.com")
+        }
+
+        with(principal) { repo.getActiveRecipientEmails() }
+            .shouldBeRight() shouldContainExactlyInAnyOrder listOf("a@example.com")
+    }
+
+    test("ignores members of parties that are not active") {
+        PostgresTestContainer.withConnection { conn ->
+            val party = conn.insertParty(partyStatus = "suspended")
+            conn.insertMember(party, "a@example.com")
             conn.insertNotice(party, "active")
         }
 
         with(principal) { repo.getActiveRecipientEmails() }.shouldBeRight().shouldBeEmpty()
     }
 
-    test("returns each email once when an entity has several notices") {
+    test("ignores members that do not use email as business id") {
         PostgresTestContainer.withConnection { conn ->
-            val party = conn.insertEndUser("a@example.com", partyStatus = "active")
-            conn.insertNotice(party, "active", "key-1")
-            conn.insertNotice(party, "active", "key-2")
+            val party = conn.insertParty(partyStatus = "active")
+            conn.insertMember(party, "12345678901", businessIdType = "pid")
+            conn.insertNotice(party, "active")
+        }
+
+        with(principal) { repo.getActiveRecipientEmails() }.shouldBeRight().shouldBeEmpty()
+    }
+
+    test("returns each email once when a member has several parties and notices") {
+        PostgresTestContainer.withConnection { conn ->
+            val entity = conn.insertEntity("a@example.com")
+            val party1 = conn.insertParty(partyStatus = "active")
+            val party2 = conn.insertParty(partyStatus = "active")
+            conn.insertMembership(party1, entity)
+            conn.insertMembership(party2, entity)
+            conn.insertNotice(party1, "active", "key-1")
+            conn.insertNotice(party1, "active", "key-2")
+            conn.insertNotice(party2, "active", "key-3")
         }
 
         with(principal) { repo.getActiveRecipientEmails() }
             .shouldBeRight() shouldContainExactlyInAnyOrder listOf("a@example.com")
     }
 })
-
-private fun Connection.insertEndUser(businessId: String, businessIdType: String = "email", partyStatus: String): Long {
-    val entityId = prepareStatement(
-        "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (?, 'person', ?, ?) RETURNING id",
-    ).use { stmt ->
-        stmt.setString(1, "Person $businessId")
-        stmt.setString(2, businessId)
-        stmt.setString(3, businessIdType)
-        stmt.executeQuery().use { rs ->
-            rs.next()
-            rs.getLong(1)
-        }
-    }
-    return prepareStatement(
-        "INSERT INTO flex.party (entity_id, name, type, role, status) VALUES (?, ?, 'end_user', 'flex_end_user', ?) RETURNING id",
-    ).use { stmt ->
-        stmt.setLong(1, entityId)
-        stmt.setString(2, "Party $businessId")
-        stmt.setString(3, partyStatus)
-        stmt.executeQuery().use { rs ->
-            rs.next()
-            rs.getLong(1)
-        }
-    }
-}
-
-private fun Connection.insertNotice(partyId: Long, status: String, key: String = UUID.randomUUID().toString()) {
-    prepareStatement(
-        "INSERT INTO flex.notice (party_id, type, status, deduplication_key) VALUES (?, 'no.elhub.flex.test'::ltree, ?, ?)",
-    ).use { stmt ->
-        stmt.setLong(1, partyId)
-        stmt.setString(2, status)
-        stmt.setString(3, key)
-        stmt.execute()
-    }
-}

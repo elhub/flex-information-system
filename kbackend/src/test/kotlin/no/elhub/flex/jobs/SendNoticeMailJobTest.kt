@@ -18,7 +18,7 @@ import no.elhub.flex.notice.db.NoticeRecipientRepository
 class SendNoticeMailJobTest : FunSpec({
     val client = mockk<MailClient>()
     val repository = mockk<NoticeRecipientRepository>()
-    val principal = FlexPrincipal.internalEventNotification()
+    val principal = FlexPrincipal.internalEventNotification
     val job = SendNoticeMailJob(client, repository)
 
     beforeTest { clearAllMocks() }

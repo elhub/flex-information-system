@@ -20,7 +20,7 @@ class SendNoticeMailJob(
     private val noticeRecipientRepository: NoticeRecipientRepository,
 ) : ScheduledJob {
     override suspend fun run(): Either<JobError, Unit> =
-        with(FlexPrincipal.internalEventNotification()) {
+        with(FlexPrincipal.internalEventNotification) {
             noticeRecipientRepository.getActiveRecipientEmails()
                 .mapLeft<JobError> { JobError.DatabaseError(it.message) }
                 .onLeft { logger.error { "Failed to fetch notice recipients: $it" } }
