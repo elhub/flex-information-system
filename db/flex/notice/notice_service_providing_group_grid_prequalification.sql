@@ -148,5 +148,5 @@ WITH (security_invoker = false) AS (
     WHERE spggp.status IN ('approved', 'conditionally_approved')
         AND spggp.prequalified_at IS NOT null
         -- kW
-        AND abs(diff.power_diff) > 1
+        AND abs(diff.power_diff) > 50
 );
