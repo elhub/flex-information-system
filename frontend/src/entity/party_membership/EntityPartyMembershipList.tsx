@@ -1,0 +1,82 @@
+import { formatDate } from "date-fns";
+import { usePermissions } from "ra-core";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { listPartyMembership } from "../../generated-client";
+import { throwOnError } from "../../util";
+import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
+import { Chips, Loader } from "../../components/ui";
+import { Permissions } from "../../auth/permissions";
+import { useTranslateField } from "../../intl/intl";
+
+export const entityPartyMembershipsQueryKey = (
+  entityId: number | undefined,
+) => ["party_membership", { entity_id: entityId }];
+
+const useEntityPartyMemberships = (entityId: number | undefined) =>
+  useQuery({
+    queryKey: entityPartyMembershipsQueryKey(entityId),
+    queryFn: () =>
+      listPartyMembership({
+        query: {
+          entity_id: `eq.${entityId}`,
+          embed: "party",
+          order: "id.desc",
+        },
+      }).then(throwOnError),
+    enabled: !!entityId,
+  });
+
+export const EntityPartyMembershipList = ({
+  entityId,
+}: {
+  entityId: number;
+}) => {
+  const { permissions } = usePermissions<Permissions>();
+  const navigate = useNavigate();
+  const t = useTranslateField();
+  const canRead = permissions?.allow("party_membership", "read");
+  const { data, isLoading } = useEntityPartyMemberships(entityId);
+
+  if (!canRead) return null;
+  if (isLoading) return <Loader />;
+
+  const columns: ColumnOf<typeof data>[] = [
+    { key: "id", header: t("party_membership.id") },
+    {
+      key: "party",
+      header: t("party_membership.party_id"),
+      render: (_, row) => row.party?.name ?? row.party_id,
+    },
+    {
+      key: "party_id",
+      header: t("party.business_id"),
+      render: (_, row) => row.party?.business_id ?? "",
+    },
+    {
+      key: "scopes",
+      header: t("party_membership.scopes"),
+      render: (value) => (
+        <Chips>
+          {(value as string[]).map((scope) => (
+            <Chips.Chip key={scope}>{scope}</Chips.Chip>
+          ))}
+        </Chips>
+      ),
+    },
+    {
+      key: "recorded_at",
+      header: t("party_membership.recorded_at"),
+      render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
+    },
+  ];
+
+  return (
+    <SimpleTable
+      data={data ?? []}
+      columns={columns}
+      rowClick={(row) => navigate(`/party/${row.party_id}/show`)}
+      className="w-full"
+    />
+  );
+};

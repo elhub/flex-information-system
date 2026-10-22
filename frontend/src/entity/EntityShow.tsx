@@ -1,4 +1,6 @@
 import { EntityClientList } from "./client/EntityClientList";
+import { EntityPartyMembershipList } from "./party_membership/EntityPartyMembershipList";
+import { EntityPartyOwnershipList } from "./party_ownership/EntityPartyOwnershipList";
 import { readEntity } from "../generated-client/index";
 import { throwOnError } from "../util";
 import { useParams } from "react-router-dom";
@@ -19,9 +21,23 @@ const EntityTabs = ({ id }: { id: string }) => {
     <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.entity.client")} value="client" />
+        <Tabs.Tab
+          label={translate("text.entity.party_memberships")}
+          value="party_memberships"
+        />
+        <Tabs.Tab
+          label={translate("text.entity.party_ownerships")}
+          value="party_ownerships"
+        />
       </Tabs.List>
       <Tabs.Panel value="client">
         <EntityClientList entityId={id} />
+      </Tabs.Panel>
+      <Tabs.Panel value="party_memberships">
+        <EntityPartyMembershipList entityId={Number(id)} />
+      </Tabs.Panel>
+      <Tabs.Panel value="party_ownerships">
+        <EntityPartyOwnershipList entityId={Number(id)} />
       </Tabs.Panel>
     </Tabs>
   );

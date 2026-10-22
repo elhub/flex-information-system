@@ -17,6 +17,8 @@ export type TextKey =
   | "edit"
   | "entity.see_more"
   | "entity.client"
+  | "entity.party_memberships"
+  | "entity.party_ownerships"
   | "entity.name"
   | "print"
   | "service_providing_group"
@@ -305,6 +307,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
+    "entity.party_memberships": "Party memberships",
+    "entity.party_ownerships": "Party ownerships",
     "entity.name": "Entity",
     edit: "Edit",
     print: "Print",
@@ -749,6 +753,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "entity.see_more": "Se Entitet",
     "entity.client": "Klienter",
+    "entity.party_memberships": "Aktørtilknytninger",
+    "entity.party_ownerships": "Aktøreierskap",
     "entity.name": "Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
