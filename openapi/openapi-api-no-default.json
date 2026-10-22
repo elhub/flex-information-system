@@ -1244,7 +1244,8 @@
                     "temporary_qualified",
                     "prequalified",
                     "verified",
-                    "rejected"
+                    "rejected",
+                    "inactive"
                 ],
                 "example": "prequalification"
             },

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     procuring_system_operator_party_type text GENERATED ALWAYS AS (
         'system_operator'
     ) STORED,
-    product_type_ids bigint [] NOT NULL CHECK (
+    product_type_ids bigint[] NOT NULL CHECK (
         product_type_ids_exists(product_type_ids)
     ),
     status text NOT NULL DEFAULT 'requested',
@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
             'temporary_qualified',
             'prequalified',
             'verified',
-            'rejected'
+            'rejected',
+            'inactive'
         )
     ),
     CONSTRAINT spg_product_application_maximum_active_power_up_check CHECK (
@@ -71,9 +72,12 @@ AS
 $$
 BEGIN
     RETURN (
-        spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
-        OR spgpa.prequalified_at IS NOT null
-        OR spgpa.verified_at IS NOT null
+        spgpa.status != 'inactive'
+        AND (
+            spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
+            OR spgpa.prequalified_at IS NOT null
+            OR spgpa.verified_at IS NOT null
+        )
     );
 END;
 $$;
@@ -112,8 +116,9 @@ EXECUTE FUNCTION
 service_providing_group_product_application_insert_on_active_spg();
 
 -- changeset flex:service-providing-group-product-application-sp-status-update-function runOnChange:true endDelimiter:--
--- trigger to check that an update done by the SP is always done when requested
--- or reset (rejected->requested)
+-- trigger to check that an update done by the SP is always done when requested,
+-- or when moving between requested and inactive, or reset
+-- (rejected->requested)
 -- RLS: SPGPA-SP002
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_status_update()
@@ -123,16 +128,17 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF (
-        NEW.status != 'requested'
-        OR NOT (OLD.status IN ('requested', 'rejected'))
+    IF NOT (
+        (OLD.status = 'requested' AND NEW.status IN ('requested', 'inactive'))
+        OR (OLD.status IN ('rejected', 'inactive') AND NEW.status = 'requested')
     ) THEN
         RAISE sqlstate 'PT400' using
             message =
                 'A service provider can only update an application when its'
-                || ' status is "requested" or reset to "requested" after'
-                || ' rejection. Any other updates must be done by the system'
-                || ' operator.';
+                || ' status is "requested", deactivate it by setting the'
+                || ' status to "inactive", or reset it to "requested" after'
+                || ' rejection or deactivation. Any other updates must be done'
+                || ' by the system operator.';
         RETURN null;
     END IF;
 

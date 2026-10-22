@@ -22,6 +22,8 @@ public enum class ServiceProvidingGroupProductApplicationStatus(
   VERIFIED("verified"),
   @SerialName("rejected")
   REJECTED("rejected"),
+  @SerialName("inactive")
+  INACTIVE("inactive"),
   ;
 
   override fun toString(): String = value

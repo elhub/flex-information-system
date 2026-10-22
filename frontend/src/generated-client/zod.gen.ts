@@ -577,6 +577,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "prequalified",
   "verified",
   "rejected",
+  "inactive",
 ]);
 
 /**

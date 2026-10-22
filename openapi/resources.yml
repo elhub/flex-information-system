@@ -4080,6 +4080,16 @@ resources:
                 en: The application was not approved and requires updates before it can be submitted again.
                 nb: Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.
                 nn: Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.
+          - id: inactive
+            x-intl:
+              en: Inactivated
+              nb: Inaktivert
+              nn: Inaktivert
+            description:
+              x-intl:
+                en: The Service Provider has witdrawn the application. Can be set to requested again.
+                nb: Søknaden er trukket tilbake. Kan oppdateres til etterspørt status igjen.
+                nn: Søknaden er dregen tilbake. Kan oppdaterast til etterspurt status igjen.
         example: prequalification
         x-intl:
           en: Status
