@@ -941,6 +941,7 @@ def test_spgpa_sp_inactive(data):
         id=spgpa_id,
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
