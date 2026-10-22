@@ -17,7 +17,6 @@ import {
   Button,
   Chips,
   Dropdown,
-  Loader,
   Tooltip,
 } from "../../components/ui";
 import { deleteEntityClient, listEntityClient } from "../../generated-client";
@@ -201,7 +200,7 @@ export const EntityClientList = ({ entityId }: Props) => {
     id = entityId;
   }
   const { permissions } = usePermissions<Permissions>();
-  const t = useTranslateField();
+  const translateField = useTranslateField();
   const canRead = permissions?.allow("entity_client", "read");
   const canCreate = permissions?.allow("entity_client", "create");
 
@@ -214,21 +213,18 @@ export const EntityClientList = ({ entityId }: Props) => {
     enabled: !!id && !!canRead,
   });
 
-  if (!canRead) return null;
-  if (isLoading) return <Loader />;
-
   const columns: ColumnOf<typeof data>[] = [
-    { key: "id", header: t("entity_client.id") },
-    { key: "client_id", header: t("entity_client.client_id") },
-    { key: "name", header: t("entity_client.name") },
+    { key: "id", header: translateField("entity_client.id") },
+    { key: "client_id", header: translateField("entity_client.client_id") },
+    { key: "name", header: translateField("entity_client.name") },
     {
       key: "party_id",
-      header: t("entity_client.party_id"),
+      header: translateField("entity_client.party_id"),
       render: (_, row) => row.party?.name ?? row.party_id ?? "",
     },
     {
       key: "scopes",
-      header: t("entity_client.scopes"),
+      header: translateField("entity_client.scopes"),
       render: (value) => (
         <Chips>
           {(value as string[]).map((scope) => (
@@ -239,17 +235,17 @@ export const EntityClientList = ({ entityId }: Props) => {
     },
     {
       key: "public_key",
-      header: t("entity_client.public_key"),
+      header: translateField("entity_client.public_key"),
       render: (value) => <CopyableText value={value as string | undefined} />,
     },
     {
       key: "recorded_at",
-      header: t("entity_client.recorded_at"),
+      header: translateField("entity_client.recorded_at"),
       render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
     },
     {
       key: "recorded_by",
-      header: t("entity_client.recorded_by"),
+      header: translateField("entity_client.recorded_by"),
       render: (_, row) => (
         <ResourceContextProvider value="entity_client">
           <RecordContextProvider value={row}>
@@ -272,6 +268,7 @@ export const EntityClientList = ({ entityId }: Props) => {
         columns={columns}
         className="w-full"
         rowActions={(row) => <RowActionsMenu record={row} />}
+        loading={isLoading}
       />
     </div>
   );

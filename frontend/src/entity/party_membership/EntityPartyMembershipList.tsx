@@ -5,17 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { listPartyMembership } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
-import { Chips, Loader } from "../../components/ui";
+import { Chips } from "../../components/ui";
 import { Permissions } from "../../auth/permissions";
 import { useTranslateField } from "../../intl/intl";
 
-export const entityPartyMembershipsQueryKey = (
+const useEntityPartyMemberships = (
   entityId: number | undefined,
-) => ["party_membership", { entity_id: entityId }];
-
-const useEntityPartyMemberships = (entityId: number | undefined) =>
+  canRead: boolean,
+) =>
   useQuery({
-    queryKey: entityPartyMembershipsQueryKey(entityId),
+    queryKey: ["party_membership", { entity_id: entityId }],
     queryFn: () =>
       listPartyMembership({
         query: {
@@ -24,7 +23,7 @@ const useEntityPartyMemberships = (entityId: number | undefined) =>
           order: "id.desc",
         },
       }).then(throwOnError),
-    enabled: !!entityId,
+    enabled: !!entityId && canRead,
   });
 
 export const EntityPartyMembershipList = ({
@@ -36,10 +35,7 @@ export const EntityPartyMembershipList = ({
   const navigate = useNavigate();
   const t = useTranslateField();
   const canRead = permissions?.allow("party_membership", "read");
-  const { data, isLoading } = useEntityPartyMemberships(entityId);
-
-  if (!canRead) return null;
-  if (isLoading) return <Loader />;
+  const { data, isLoading } = useEntityPartyMemberships(entityId, !!canRead);
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: t("party_membership.id") },
@@ -77,6 +73,7 @@ export const EntityPartyMembershipList = ({
       columns={columns}
       rowClick={(row) => navigate(`/party/${row.party_id}/show`)}
       className="w-full"
+      loading={isLoading}
     />
   );
 };

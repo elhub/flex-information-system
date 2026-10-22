@@ -5,7 +5,6 @@ import { Permissions } from "../auth/permissions";
 import { EntityList } from "../entity/EntityList";
 import { EntityShow } from "../entity/EntityShow";
 import { EntityInput } from "../entity/EntityInput";
-import { EntityClientShow } from "../entity/client/EntityClientShow";
 import { EntityClientInput } from "../entity/client/EntityClientInput";
 
 export const createEntityResources = (permissions: Permissions) => {
@@ -44,20 +43,12 @@ export const createEntityResources = (permissions: Permissions) => {
       {/* client subresource */}
       {/* list is part of ENT show page */}
       <Route
-        path=":entity_id/client/:id/show"
-        element={
-          <ResourceContextProvider value="entity_client">
-            <EntityClientShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
         path=":entity_id/client/create"
         element={
           <ResourceContextProvider value="entity_client">
             <Create
               redirect={(_: any, _id: any, record: any) =>
-                `entity/${record.entity_id}/show`
+                `entity/${record.entity_id}/show?tab=client`
               }
             >
               <EntityClientInput />

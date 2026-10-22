@@ -6,7 +6,6 @@ import { StatusBadge } from "../../components/StatusBadge";
 import { partyStatusVariantMap } from "../../party/partyStatus";
 import { throwOnError } from "../../util";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
-import { Loader } from "../../components/ui";
 import { Permissions } from "../../auth/permissions";
 import { useTranslateField } from "../../intl/intl";
 
@@ -26,11 +25,8 @@ export const EntityPartyOwnershipList = ({
       listParty({
         query: { entity_id: `eq.${entityId}`, order: "id.desc" },
       }).then(throwOnError),
-    enabled: !!entityId,
+    enabled: !!entityId && !!canRead,
   });
-
-  if (!canRead) return null;
-  if (isLoading) return <Loader />;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: t("party.id") },
@@ -62,6 +58,7 @@ export const EntityPartyOwnershipList = ({
       columns={columns}
       rowClick={(row) => navigate(`/party/${row.id}/show`)}
       className="w-full"
+      loading={isLoading}
     />
   );
 };
