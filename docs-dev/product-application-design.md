@@ -131,13 +131,6 @@ Form B is uploaded as an attachment, which already works.
 | `fcr_d_approved_maximum_active_power_up`   | decimal (kW) | yes      |
 | `fcr_d_approved_maximum_active_power_down` | decimal (kW) | yes      |
 
-All fields are provided by the applicant (SP).
-
-The organisation, party and name of the SP already exist in FIS
-(application → SPG → `service_provider_id` → `party`). The FCR section shows
-them read-only in the UI instead of storing them again. Only the contact
-person is entered, in `service_provider_contact_information`.
-
 ### Example request
 
 `POST /service_providing_group_product_application` with both mFRR and FCR.
