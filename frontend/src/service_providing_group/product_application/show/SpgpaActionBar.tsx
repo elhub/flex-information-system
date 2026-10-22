@@ -105,7 +105,9 @@ const getActionsForStatus = (
       ];
 
     case "inactive":
-      return [rejectAction, reactivateAction];
+      return isServiceProvider
+        ? [reactivateAction]
+        : [rejectAction, reactivateAction];
 
     default:
       return [];
