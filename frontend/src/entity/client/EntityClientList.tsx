@@ -1,23 +1,28 @@
 import {
   usePermissions,
+  RecordContextProvider,
   ResourceContextProvider,
-  useDelete,
   useNotify,
-  useRecordContext,
   useTranslate,
 } from "ra-core";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { formatDate } from "date-fns";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
-import { List, Datagrid } from "../../components/EDS-ra/list";
-import {
-  DateField,
-  IdentityField,
-  ReferenceField,
-  ScopesField,
-  TextField,
-} from "../../components/EDS-ra/fields";
+import { IdentityField } from "../../components/EDS-ra/fields";
+import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { BodyText, Button, Dropdown, Tooltip } from "../../components/ui";
+import {
+  BodyText,
+  Button,
+  Chips,
+  Dropdown,
+  Loader,
+  Tooltip,
+} from "../../components/ui";
+import { deleteEntityClient, listEntityClient } from "../../generated-client";
+import { useTranslateField } from "../../intl/intl";
+import { throwOnError } from "../../util";
 import {
   IconCopy,
   IconDots,
@@ -28,17 +33,14 @@ import {
 
 // Long values (e.g. public keys) are truncated in the table. The full value is
 // available in a tooltip and can be copied with the button.
-const CopyableTextField = ({
-  source,
+const CopyableText = ({
+  value,
   emptyText = "--",
 }: {
-  source: string;
-  label?: string;
+  value: string | null | undefined;
   emptyText?: string;
 }) => {
-  const record = useRecordContext();
   const notify = useNotify();
-  const value: string | null | undefined = record?.[source];
 
   if (!value) {
     return <BodyText size="small">{emptyText}</BodyText>;
@@ -75,21 +77,30 @@ const CopyableTextField = ({
 
 type EntityClientRow = { id: number; entity_id: number };
 
+const entityClientsQueryKey = (entityId: number | string | undefined) => [
+  "entity_client",
+  { entity_id: Number(entityId) },
+];
+
 const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const canUpdate = permissions?.allow("entity_client", "update");
   const canDelete = permissions?.allow("entity_client", "delete");
   const canReadEvent = permissions?.allow("event", "read");
-  const [deleteMutation] = useDelete(
-    "entity_client",
-    { id: record.id },
-    { returnPromise: true },
-  );
+  const queryClient = useQueryClient();
   const { buttonProps, dialog } = useConfirmAction({
     title: translate("text.delete"),
     content: translate("text.delete_confirm"),
-    onConfirmMutation: { mutationFn: async () => deleteMutation() },
+    onConfirmMutation: {
+      mutationFn: () =>
+        deleteEntityClient({ path: { id: record.id } }).then(throwOnError),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: entityClientsQueryKey(record.entity_id),
+        });
+      },
+    },
   });
 
   const eventsFilter = encodeURIComponent(
@@ -190,70 +201,78 @@ export const EntityClientList = ({ entityId }: Props) => {
     id = entityId;
   }
   const { permissions } = usePermissions<Permissions>();
+  const t = useTranslateField();
   const canRead = permissions?.allow("entity_client", "read");
   const canCreate = permissions?.allow("entity_client", "create");
 
+  const { data, isLoading } = useQuery({
+    queryKey: entityClientsQueryKey(id),
+    queryFn: () =>
+      listEntityClient({
+        query: { entity_id: `eq.${id}`, embed: "party", order: "id.desc" },
+      }).then(throwOnError),
+    enabled: !!id && !!canRead,
+  });
+
+  if (!canRead) return null;
+  if (isLoading) return <Loader />;
+
+  const columns: ColumnOf<typeof data>[] = [
+    { key: "id", header: t("entity_client.id") },
+    { key: "client_id", header: t("entity_client.client_id") },
+    { key: "name", header: t("entity_client.name") },
+    {
+      key: "party_id",
+      header: t("entity_client.party_id"),
+      render: (_, row) => row.party?.name ?? row.party_id ?? "",
+    },
+    {
+      key: "scopes",
+      header: t("entity_client.scopes"),
+      render: (value) => (
+        <Chips>
+          {(value as string[]).map((scope) => (
+            <Chips.Chip key={scope}>{scope}</Chips.Chip>
+          ))}
+        </Chips>
+      ),
+    },
+    {
+      key: "public_key",
+      header: t("entity_client.public_key"),
+      render: (value) => <CopyableText value={value as string | undefined} />,
+    },
+    {
+      key: "recorded_at",
+      header: t("entity_client.recorded_at"),
+      render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
+    },
+    {
+      key: "recorded_by",
+      header: t("entity_client.recorded_by"),
+      render: (_, row) => (
+        <ResourceContextProvider value="entity_client">
+          <RecordContextProvider value={row}>
+            <IdentityField source="recorded_by" />
+          </RecordContextProvider>
+        </ResourceContextProvider>
+      ),
+    },
+  ];
+
   return (
-    canRead && (
-      <ResourceContextProvider value="entity_client">
-        <List
-          perPage={10}
-          empty={false}
-          filter={{ entity_id: id }}
-          sort={{ field: "id", order: "DESC" }}
-          disableSyncWithLocation
-          actions={
-            canCreate
-              ? [<CreateEntityClientButton key="create" entityId={id} />]
-              : []
-          }
-        >
-          <Datagrid<EntityClientRow>
-            rowClick={false}
-            rowActions={(r) => <RowActionsMenu record={r} />}
-          >
-            <TextField hideLabel source="id" label="field.entity_client.id" />
-            <TextField
-              source="client_id"
-              hideLabel={true}
-              label="field.entity_client.client_id"
-            />
-            <TextField
-              hideLabel
-              source="name"
-              label="field.entity_client.name"
-            />
-            <ReferenceField
-              source="party_id"
-              reference="party"
-              hideLabel={true}
-              label="field.entity_client.party_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ScopesField
-              hideLabel
-              source="scopes"
-              label="field.entity_client.scopes"
-            />
-            <CopyableTextField
-              source="public_key"
-              label="field.entity_client.public_key"
-            />
-            <DateField
-              hideLabel={true}
-              source="recorded_at"
-              showTime
-              label="field.entity_client.recorded_at"
-            />
-            <IdentityField
-              hideLabel
-              source="recorded_by"
-              label="field.entity_client.recorded_by"
-            />
-          </Datagrid>
-        </List>
-      </ResourceContextProvider>
-    )
+    <div className="flex flex-col gap-4">
+      {canCreate && (
+        <div className="flex justify-end">
+          <CreateEntityClientButton entityId={id} />
+        </div>
+      )}
+      <SimpleTable
+        data={data ?? []}
+        columns={columns}
+        className="w-full"
+        rowActions={(row) => <RowActionsMenu record={row} />}
+      />
+    </div>
   );
 };
