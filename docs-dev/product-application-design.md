@@ -1,14 +1,11 @@
 # Product-specific application details
 
-!!! note "Status"
-
-    Proposal for discussion. Nothing is implemented yet.
+> **Status:** Proposal for discussion. Nothing is implemented yet.
 
 ## TL;DR
 
-* The **application form** consists of general fields plus one **product
-  section** for each selected product type with product-specific
-  requirements.
+* An **application** consists of general fields plus one **product section**
+  for each selected product type with product-specific requirements.
 * Each product section is **typed**, defined in the OpenAPI spec and released
   with the API.
 * The product sections are stored in **one new JSONB column**,
@@ -18,7 +15,7 @@
   product type with product-specific requirements must have its section
   filled in.
 * The first two product sections are **mFRR** (existing fields moved in) and
-  **FCR** (new, "form A" of the FCR application).
+  **FCR** (new).
 * Models for the **frontend (TS + zod)**, **Kotlin (Fabrikt)** and the
   **Python test client** are generated from the spec. **Database validation**
   is generated from the same definitions.
