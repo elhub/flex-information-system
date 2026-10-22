@@ -67,7 +67,7 @@ const getActionsForStatus = (
   switch (spgpa.status) {
     case "requested":
       if (isServiceProvider) {
-        return [rejectAction, inactiveAction];
+        return [inactiveAction];
       }
 
       return [
