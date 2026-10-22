@@ -19,10 +19,10 @@ export type TextKey =
   | "entity.see_more"
   | "entity.client"
   | "entity.party_memberships"
-  | "entity.party_ownerships"
+  | "entity.owned_parties"
   | "entity.client_description"
   | "entity.party_memberships_description"
-  | "entity.party_ownerships_description"
+  | "entity.owned_parties_description"
   | "entity.name"
   | "print"
   | "service_providing_group"
@@ -313,11 +313,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "entity.see_more": "See entity",
     "entity.client": "Clients",
     "entity.party_memberships": "Party memberships",
-    "entity.party_ownerships": "Party ownerships",
+    "entity.owned_parties": "Owned parties",
     "entity.client_description": "The following clients belong to this entity.",
     "entity.party_memberships_description":
       "The following parties can be assumed by this entity. Each membership shows the scopes the entity is allowed to use when assuming the party.",
-    "entity.party_ownerships_description":
+    "entity.owned_parties_description":
       "The following parties are owned by this entity.",
     "entity.name": "Entity",
     edit: "Edit",
@@ -765,11 +765,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     "entity.see_more": "Se Entitet",
     "entity.client": "Klienter",
     "entity.party_memberships": "Aktørtilknytninger",
-    "entity.party_ownerships": "Aktøreierskap",
+    "entity.owned_parties": "Eide aktører",
     "entity.client_description": "Følgende klienter tilhører denne entiteten.",
     "entity.party_memberships_description":
       "Følgende aktører kan inntas av denne entiteten. Hver tilknytning viser hvilke scopes entiteten har lov til å bruke når den opptrer som aktøren.",
-    "entity.party_ownerships_description":
+    "entity.owned_parties_description":
       "Følgende aktører eies av denne entiteten.",
     "entity.name": "Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",

@@ -146,10 +146,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
                   <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
                 )}
                 {columns.map((col) => (
-                  <Table.DataCell
-                    key={String(col.key)}
-                    className={"break-normal"}
-                  >
+                  <Table.DataCell key={String(col.key)}>
                     {col.render
                       ? col.render(row[col.key], row)
                       : String(row[col.key] ?? "")}
@@ -172,10 +169,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
                   <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
                 )}
                 {columns.map((col) => (
-                  <Table.DataCell
-                    key={String(col.key)}
-                    className={"break-normal"}
-                  >
+                  <Table.DataCell key={String(col.key)}>
                     {col.render
                       ? col.render(row[col.key], row)
                       : String(row[col.key] ?? "")}

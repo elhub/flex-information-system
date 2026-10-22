@@ -22,12 +22,12 @@ const EntityTabs = ({ id }: { id: string }) => {
 
   const showClient = permissions?.allow("entity_client", "read");
   const showMemberships = permissions?.allow("party_membership", "read");
-  const showOwnerships = permissions?.allow("party", "read");
+  const showOwnedParties = permissions?.allow("party", "read");
 
   const visibleTabs = [
     showClient && "client",
     showMemberships && "party_memberships",
-    showOwnerships && "party_ownerships",
+    showOwnedParties && "owned_parties",
   ].filter(Boolean) as string[];
 
   if (visibleTabs.length === 0) return null;
@@ -46,10 +46,10 @@ const EntityTabs = ({ id }: { id: string }) => {
             value="party_memberships"
           />
         )}
-        {showOwnerships && (
+        {showOwnedParties && (
           <Tabs.Tab
-            label={translate("text.entity.party_ownerships")}
-            value="party_ownerships"
+            label={translate("text.entity.owned_parties")}
+            value="owned_parties"
           />
         )}
       </Tabs.List>
@@ -69,10 +69,10 @@ const EntityTabs = ({ id }: { id: string }) => {
           <EntityPartyMembershipList entityId={Number(id)} />
         </Tabs.Panel>
       )}
-      {showOwnerships && (
-        <Tabs.Panel value="party_ownerships">
+      {showOwnedParties && (
+        <Tabs.Panel value="owned_parties">
           <BodyText className="mb-4">
-            {translate("text.entity.party_ownerships_description")}
+            {translate("text.entity.owned_parties_description")}
           </BodyText>
           <EntityPartyOwnershipList entityId={Number(id)} />
         </Tabs.Panel>
