@@ -10,8 +10,10 @@ package no.elhub.flex.jobs
  */
 class JobRegistry(
     private val syncMeteringGridAreaData: SyncMeteringGridAreaDataJob,
+    private val syncGridModelData: SyncGridModelDataJob,
 ) {
     fun resolve(job: Job): ScheduledJob = when (job) {
         is Job.SyncMeteringGridAreaData -> syncMeteringGridAreaData
+        is Job.SyncGridModelData -> syncGridModelData
     }
 }

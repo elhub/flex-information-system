@@ -89,7 +89,7 @@ object PostgresTestContainer {
      * the jobs connect in production.
      */
     val stagingDatabase: Database by lazy {
-        // same pool settings as createDataSource() in production, notably schema = "api"
+        // same pool settings as createDataSource() in job mode
         Database.connect(
             HikariDataSource(
                 HikariConfig().apply {
@@ -97,7 +97,6 @@ object PostgresTestContainer {
                     driverClassName = "org.postgresql.Driver"
                     username = "flex_staging_structure_data"
                     password = "staging_structure_data_password"
-                    schema = "api"
                     transactionIsolation = "TRANSACTION_READ_COMMITTED"
                 },
             ),
