@@ -18,7 +18,7 @@ import {
 import { NestedResourceHistoryButton } from "../../components/EDS-ra";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { Button, Chips, Dropdown, Loader } from "../../components/ui";
+import { Button, Chips, Dropdown } from "../../components/ui";
 import { Permissions } from "../../auth/permissions";
 import { useTranslateField } from "../../intl/intl";
 import { AddPartyMemberViaEntityLookupModal } from "./AddPartyMemberViaEntityLookupModal";
@@ -151,9 +151,10 @@ export const PartyMembershipList = () => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
   const t = useTranslateField();
+  const translate = useTranslate();
   const navigate = useNavigate();
   const [lookupModalOpen, setLookupModalOpen] = useState(false);
-  const { data, isLoading } = usePartyMemberships(Number(id));
+  const { data, isLoading, error } = usePartyMemberships(Number(id));
 
   const isFISO =
     identity?.role === "flex_flexibility_information_system_operator";
@@ -163,7 +164,6 @@ export const PartyMembershipList = () => {
   const canLookup = permissions?.allow("entity", "lookup");
 
   if (!canRead) return null;
-  if (isLoading) return <Loader />;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: t("party_membership.id") },
@@ -221,6 +221,8 @@ export const PartyMembershipList = () => {
         rowActions={(row) => <RowActionsMenu record={row} />}
         rowClick={(row) => navigate(`/entity/${row.entity_id}/show`)}
         className="w-full"
+        loading={isLoading}
+        empty={error ? translate("text.simple_table.load_error") : undefined}
       />
     </div>
   );

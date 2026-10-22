@@ -1,5 +1,6 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "simple_table.load_error"
   | "list_table.load_error"
   | "list_filter.no_results"
   | "list_filter.reset_filters"
@@ -296,6 +297,7 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     "simple_table.no_results": "No results",
+    "simple_table.load_error": "An error occurred while retrieving the data.",
     "list_table.load_error": "Could not load the list.",
     "list_filter.no_results": "No matching options",
     "list_filter.reset_filters": "Reset filters",
@@ -658,6 +660,7 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     "simple_table.no_results": "Ingen resultater",
+    "simple_table.load_error": "Det oppstod en feil under henting av data.",
     "list_table.load_error": "Kunne ikke laste listen.",
     "list_filter.no_results": "Ingen treff",
     "list_filter.reset_filters": "Tilbakestill filtre",

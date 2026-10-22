@@ -4,6 +4,7 @@ import { EntityPartyOwnershipList } from "./party_ownership/EntityPartyOwnership
 import { readEntity } from "../generated-client/index";
 import { throwOnError } from "../util";
 import { useParams } from "react-router-dom";
+import { Permissions } from "../auth/permissions";
 import {
   ResourceShowLayout,
   ResourceSummaryField,
@@ -17,37 +18,65 @@ import { useQuery } from "@tanstack/react-query";
 const EntityTabs = ({ id }: { id: string }) => {
   const [tab, setTab] = useTabSearchParam("client");
   const translate = useTranslate();
+  const { permissions } = usePermissions<Permissions>();
+
+  const showClient = permissions?.allow("entity_client", "read");
+  const showMemberships = permissions?.allow("party_membership", "read");
+  const showOwnerships = permissions?.allow("party", "read");
+
+  const visibleTabs = [
+    showClient && "client",
+    showMemberships && "party_memberships",
+    showOwnerships && "party_ownerships",
+  ].filter(Boolean) as string[];
+
+  if (visibleTabs.length === 0) return null;
+
+  const activeTab = visibleTabs.includes(tab) ? tab : visibleTabs[0];
+
   return (
-    <Tabs value={tab} onChange={setTab}>
+    <Tabs value={activeTab} onChange={setTab}>
       <Tabs.List>
-        <Tabs.Tab label={translate("text.entity.client")} value="client" />
-        <Tabs.Tab
-          label={translate("text.entity.party_memberships")}
-          value="party_memberships"
-        />
-        <Tabs.Tab
-          label={translate("text.entity.party_ownerships")}
-          value="party_ownerships"
-        />
+        {showClient && (
+          <Tabs.Tab label={translate("text.entity.client")} value="client" />
+        )}
+        {showMemberships && (
+          <Tabs.Tab
+            label={translate("text.entity.party_memberships")}
+            value="party_memberships"
+          />
+        )}
+        {showOwnerships && (
+          <Tabs.Tab
+            label={translate("text.entity.party_ownerships")}
+            value="party_ownerships"
+          />
+        )}
       </Tabs.List>
-      <Tabs.Panel value="client">
-        <BodyText className="mb-4">
-          {translate("text.entity.client_description")}
-        </BodyText>
-        <EntityClientList entityId={id} />
-      </Tabs.Panel>
-      <Tabs.Panel value="party_memberships">
-        <BodyText className="mb-4">
-          {translate("text.entity.party_memberships_description")}
-        </BodyText>
-        <EntityPartyMembershipList entityId={Number(id)} />
-      </Tabs.Panel>
-      <Tabs.Panel value="party_ownerships">
-        <BodyText className="mb-4">
-          {translate("text.entity.party_ownerships_description")}
-        </BodyText>
-        <EntityPartyOwnershipList entityId={Number(id)} />
-      </Tabs.Panel>
+      {showClient && (
+        <Tabs.Panel value="client">
+          <BodyText className="mb-4">
+            {translate("text.entity.client_description")}
+          </BodyText>
+          <EntityClientList entityId={id} />
+        </Tabs.Panel>
+      )}
+      {showMemberships && (
+        <Tabs.Panel value="party_memberships">
+          <BodyText className="mb-4">
+            {translate("text.entity.party_memberships_description")}
+          </BodyText>
+          <EntityPartyMembershipList entityId={Number(id)} />
+        </Tabs.Panel>
+      )}
+      {showOwnerships && (
+        <Tabs.Panel value="party_ownerships">
+          <BodyText className="mb-4">
+            {translate("text.entity.party_ownerships_description")}
+          </BodyText>
+          <EntityPartyOwnershipList entityId={Number(id)} />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };

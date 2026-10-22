@@ -201,10 +201,11 @@ export const EntityClientList = ({ entityId }: Props) => {
   }
   const { permissions } = usePermissions<Permissions>();
   const translateField = useTranslateField();
+  const translate = useTranslate();
   const canRead = permissions?.allow("entity_client", "read");
   const canCreate = permissions?.allow("entity_client", "create");
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: entityClientsQueryKey(id),
     queryFn: () =>
       listEntityClient({
@@ -212,6 +213,8 @@ export const EntityClientList = ({ entityId }: Props) => {
       }).then(throwOnError),
     enabled: !!id && !!canRead,
   });
+
+  if (!canRead) return null;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: translateField("entity_client.id") },
@@ -269,6 +272,7 @@ export const EntityClientList = ({ entityId }: Props) => {
         className="w-full"
         rowActions={(row) => <RowActionsMenu record={row} />}
         loading={isLoading}
+        empty={error ? translate("text.simple_table.load_error") : undefined}
       />
     </div>
   );

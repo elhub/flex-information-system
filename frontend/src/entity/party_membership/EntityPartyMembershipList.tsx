@@ -1,5 +1,5 @@
 import { formatDate } from "date-fns";
-import { usePermissions } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { listPartyMembership } from "../../generated-client";
@@ -34,8 +34,14 @@ export const EntityPartyMembershipList = ({
   const { permissions } = usePermissions<Permissions>();
   const navigate = useNavigate();
   const t = useTranslateField();
+  const translate = useTranslate();
   const canRead = permissions?.allow("party_membership", "read");
-  const { data, isLoading } = useEntityPartyMemberships(entityId, !!canRead);
+  const { data, isLoading, error } = useEntityPartyMemberships(
+    entityId,
+    !!canRead,
+  );
+
+  if (!canRead) return null;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: t("party_membership.id") },
@@ -74,6 +80,7 @@ export const EntityPartyMembershipList = ({
       rowClick={(row) => navigate(`/party/${row.party_id}/show`)}
       className="w-full"
       loading={isLoading}
+      empty={error ? translate("text.simple_table.load_error") : undefined}
     />
   );
 };

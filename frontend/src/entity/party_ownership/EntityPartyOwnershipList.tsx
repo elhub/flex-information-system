@@ -19,7 +19,7 @@ export const EntityPartyOwnershipList = ({
   const t = useTranslateField();
   const translate = useTranslate();
   const canRead = permissions?.allow("party", "read");
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["party", { entity_id: entityId }],
     queryFn: () =>
       listParty({
@@ -27,6 +27,8 @@ export const EntityPartyOwnershipList = ({
       }).then(throwOnError),
     enabled: !!entityId && !!canRead,
   });
+
+  if (!canRead) return null;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: t("party.id") },
@@ -59,6 +61,7 @@ export const EntityPartyOwnershipList = ({
       rowClick={(row) => navigate(`/party/${row.id}/show`)}
       className="w-full"
       loading={isLoading}
+      empty={error ? translate("text.simple_table.load_error") : undefined}
     />
   );
 };
