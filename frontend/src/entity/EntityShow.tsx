@@ -8,7 +8,7 @@ import {
   ResourceShowLayout,
   ResourceSummaryField,
 } from "../components/ResourceShowLayout";
-import { Loader, Tabs } from "../components/ui";
+import { BodyText, Loader, Tabs } from "../components/ui";
 import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { usePermissions, useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
@@ -31,12 +31,21 @@ const EntityTabs = ({ id }: { id: string }) => {
         />
       </Tabs.List>
       <Tabs.Panel value="client">
+        <BodyText className="mb-4">
+          {translate("text.entity.client_description")}
+        </BodyText>
         <EntityClientList entityId={id} />
       </Tabs.Panel>
       <Tabs.Panel value="party_memberships">
+        <BodyText className="mb-4">
+          {translate("text.entity.party_memberships_description")}
+        </BodyText>
         <EntityPartyMembershipList entityId={Number(id)} />
       </Tabs.Panel>
       <Tabs.Panel value="party_ownerships">
+        <BodyText className="mb-4">
+          {translate("text.entity.party_ownerships_description")}
+        </BodyText>
         <EntityPartyOwnershipList entityId={Number(id)} />
       </Tabs.Panel>
     </Tabs>
