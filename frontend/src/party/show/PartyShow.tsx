@@ -44,7 +44,7 @@ const PartyShowTabs = ({
           you are an organisation administrator, you can add or remove members
           to this party.
         </BodyText>
-        <PartyMembershipList borderless />
+        <PartyMembershipList />
       </Tabs.Panel>
       <Tabs.Panel value="entity">
         <EntityShow entityId={entityId} />
@@ -79,11 +79,6 @@ const PartySummary = (): ResourceSummaryField[] => {
     {
       labelKey: "party.type",
       value: party.type,
-    },
-    {
-      labelKey: "party.status",
-      value: translateEnum(`party.status.${party.status}`),
-      tooltip: true,
     },
     {
       labelKey: "party.recorded_at",
