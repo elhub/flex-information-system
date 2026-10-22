@@ -15,9 +15,9 @@ import { ControllableUnitSuspensionHistoryList } from "../controllable_unit/susp
 import { ControllableUnitServiceProviderShow } from "../controllable_unit/service_provider/ControllableUnitServiceProviderShow";
 import { ControllableUnitServiceProviderInput } from "../controllable_unit/service_provider/ControllableUnitServiceProviderInput";
 import { ControllableUnitServiceProviderHistoryList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderHistoryList";
-import { TechnicalResourceShow } from "../controllable_unit/show/tabs/technical_resource/TechnicalResourceShow";
-import { TechnicalResourceInput } from "../controllable_unit/show/tabs/technical_resource/TechnicalResourceInput";
-import { TechnicalResourceHistoryList } from "../controllable_unit/show/tabs/technical_resource/TechnicalResourceHistoryList";
+import { TechnicalResourceShow } from "../controllable_unit/technical_resource/TechnicalResourceShow";
+import { TechnicalResourceInput } from "../controllable_unit/technical_resource/TechnicalResourceInput";
+import { TechnicalResourceHistoryList } from "../controllable_unit/technical_resource/TechnicalResourceHistoryList";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import ControllableUnitCreate from "../controllable_unit/ControllableUnitCreate";

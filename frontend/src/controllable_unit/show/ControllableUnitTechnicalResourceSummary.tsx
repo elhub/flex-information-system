@@ -1,7 +1,7 @@
-import { Heading, Loader, Panel } from "../../../../components/ui";
-import { LabelValue } from "../../../../components/LabelValue";
-import { KILO } from "../../../../utils/scales";
-import { useTechnicalResources } from "../../common/useTechnicalResources";
+import { Heading, Loader, Panel } from "../../components/ui";
+import { LabelValue } from "../../components/LabelValue";
+import { KILO } from "../../utils/scales";
+import { useTechnicalResources } from "../technical_resource/useTechnicalResources";
 import { useTranslate } from "ra-core";
 
 type Props = {

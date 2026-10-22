@@ -6,13 +6,13 @@ import {
 } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink, useSearchParams } from "react-router-dom";
-import { Permissions } from "../../../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
 import {
   TechnicalResource,
   deleteTechnicalResource,
-} from "../../../../generated-client";
-import { SimpleTable, ColumnOf } from "../../../../components/SimpleTable";
+} from "../../generated-client";
+import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
 import {
   Button,
   Heading,
@@ -21,16 +21,16 @@ import {
   CardContent,
   Tag,
   Loader,
-} from "../../../../components/ui";
+} from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
-import { useConfirmAction } from "../../../../components/ConfirmAction";
-import { throwOnError } from "../../../../util";
+import { useConfirmAction } from "../../components/ConfirmAction";
+import { throwOnError } from "../../util";
 import {
   technicalResourcesQueryKey,
   useTechnicalResources,
-} from "../../common/useTechnicalResources";
-import { useTranslateEnum } from "../../../../intl/intl";
-import { EnumLabel } from "../../../../intl/enum-labels";
+} from "./useTechnicalResources";
+import { useTranslateEnum } from "../../intl/intl";
+import { EnumLabel } from "../../intl/enum-labels";
 import { TechnicalResourceDetailModal } from "./TechnicalResourceDetailModal";
 
 const CreateButton = ({

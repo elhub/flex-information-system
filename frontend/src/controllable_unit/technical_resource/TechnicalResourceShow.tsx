@@ -11,7 +11,7 @@ import {
   VerticalSpace,
   BodyText,
   Link,
-} from "../../../../components/ui";
+} from "../../components/ui";
 import {
   BaseField,
   DateField,
@@ -21,11 +21,11 @@ import {
   ReferenceField,
   Show,
   TextField,
-} from "../../../../components/EDS-ra";
-import { TechnicalResource } from "../../../../generated-client";
-import { Button } from "../../../../components/ui";
+} from "../../components/EDS-ra";
+import { TechnicalResource } from "../../generated-client";
+import { Button } from "../../components/ui";
 import { IconClockReset, IconPencil } from "@elhub/ds-icons";
-import { Permissions } from "../../../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const EnumTagsField = ({
   source,

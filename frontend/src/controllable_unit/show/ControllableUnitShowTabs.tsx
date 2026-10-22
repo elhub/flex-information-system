@@ -1,15 +1,15 @@
-import { Tabs } from "../../../components/ui";
-import { ResourceCard } from "../../../components/ResourceCard";
-import { TechnicalResourceList } from "./technical_resource/TechnicalResourceList";
-import { ControllableUnitHistoryList } from "../../ControllableUnitHistoryList";
+import { Tabs } from "../../components/ui";
+import { ResourceCard } from "../../components/ResourceCard";
+import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
+import { ControllableUnitHistoryList } from "../ControllableUnitHistoryList";
 import { usePermissions, RecordContextProvider, useTranslate } from "ra-core";
-import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
-import { ControllableUnitSpgList } from "./service_providing_group/ControllableUnitSpgList";
-import type { ControllableUnitShowViewModel } from "../common/useControllableUnitViewModel";
-import { ControllableUnitBalanceResponsiblePartyList } from "../../balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
-import { Permissions } from "../../../auth/permissions";
-import { ControllableUnitTechnicalResourceSummary } from "./overview/ControllableUnitTechnicalResourceSummary";
-import { ControllableUnitServiceProviderList } from "../../service_provider/ControllableUnitServiceProviderList";
+import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { ControllableUnitSpgList } from "./ControllableUnitSpgList";
+import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
+import { ControllableUnitBalanceResponsiblePartyList } from "../balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
+import { Permissions } from "../../auth/permissions";
+import { ControllableUnitTechnicalResourceSummary } from "./ControllableUnitTechnicalResourceSummary";
+import { ControllableUnitServiceProviderList } from "../service_provider/ControllableUnitServiceProviderList";
 
 type Props = {
   cuId: number;

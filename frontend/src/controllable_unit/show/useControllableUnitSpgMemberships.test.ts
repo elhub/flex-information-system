@@ -7,13 +7,13 @@ import type {
   ServiceProvidingGroupHistory,
   ServiceProvidingGroupMembership,
   ServiceProvidingGroupMembershipHistory,
-} from "../../../../generated-client";
+} from "../../generated-client";
 import {
   listServiceProvidingGroupMembership,
   listServiceProvidingGroupMembershipHistory,
-} from "../../../../generated-client";
+} from "../../generated-client";
 
-vi.mock("../../../../generated-client", () => ({
+vi.mock("../../generated-client", () => ({
   listServiceProvidingGroupMembership: vi.fn(),
   listServiceProvidingGroupMembershipHistory: vi.fn(),
 }));

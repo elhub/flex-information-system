@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
-import { Datagrid, List } from "../../../../components/EDS-ra/list";
+import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
   DateField,
   IdentityField,
   ReferenceField,
   TextField,
-} from "../../../../components/EDS-ra/fields";
-import { TextInput } from "../../../../components/EDS-ra/inputs";
+} from "../../components/EDS-ra/fields";
+import { TextInput } from "../../components/EDS-ra/inputs";
 import {
   zTechnicalResource,
   zTechnicalResourceHistory,
-} from "../../../../generated-client/zod.gen";
-import { getFields } from "../../../../zod";
+} from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 export const TechnicalResourceHistoryList = () => {
   const { controllable_unit_id } = useParams();
