@@ -1,5 +1,6 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "simple_table.load_error"
   | "list_table.load_error"
   | "list_filter.no_results"
   | "list_filter.reset_filters"
@@ -17,6 +18,11 @@ export type TextKey =
   | "edit"
   | "entity.see_more"
   | "entity.client"
+  | "entity.party_memberships"
+  | "entity.owned_parties"
+  | "entity.client_description"
+  | "entity.party_memberships_description"
+  | "entity.owned_parties_description"
   | "entity.name"
   | "print"
   | "service_providing_group"
@@ -291,6 +297,7 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     "simple_table.no_results": "No results",
+    "simple_table.load_error": "An error occurred while retrieving the data.",
     "list_table.load_error": "Could not load the list.",
     "list_filter.no_results": "No matching options",
     "list_filter.reset_filters": "Reset filters",
@@ -305,6 +312,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
+    "entity.party_memberships": "Party memberships",
+    "entity.owned_parties": "Owned parties",
+    "entity.client_description": "The following clients belong to this entity.",
+    "entity.party_memberships_description":
+      "The following parties can be assumed by this entity. Each membership shows the scopes the entity is allowed to use when assuming the party.",
+    "entity.owned_parties_description":
+      "The following parties are owned by this entity.",
     "entity.name": "Entity",
     edit: "Edit",
     print: "Print",
@@ -646,6 +660,7 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     "simple_table.no_results": "Ingen resultater",
+    "simple_table.load_error": "Det oppstod en feil under henting av data.",
     "list_table.load_error": "Kunne ikke laste listen.",
     "list_filter.no_results": "Ingen treff",
     "list_filter.reset_filters": "Tilbakestill filtre",
@@ -749,6 +764,13 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "entity.see_more": "Se Entitet",
     "entity.client": "Klienter",
+    "entity.party_memberships": "Aktørtilknytninger",
+    "entity.owned_parties": "Eide aktører",
+    "entity.client_description": "Følgende klienter tilhører denne entiteten.",
+    "entity.party_memberships_description":
+      "Følgende aktører kan inntas av denne entiteten. Hver tilknytning viser hvilke scopes entiteten har lov til å bruke når den opptrer som aktøren.",
+    "entity.owned_parties_description":
+      "Følgende aktører eies av denne entiteten.",
     "entity.name": "Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
