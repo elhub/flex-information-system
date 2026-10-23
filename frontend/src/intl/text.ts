@@ -15,6 +15,7 @@ export type TextKey =
   | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "create"
   | "entity.see_more"
   | "entity.client"
   | "entity.name"
@@ -295,6 +296,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "list_filter.no_results": "No matching options",
     "list_filter.reset_filters": "Reset filters",
     "list_filter.clear_filters": "Clear filters",
+    create: "Create",
     "dashboard.application": "Application",
     "dashboard.sp_product_application": "SP Product Application",
     "dashboard.spg_product_application": "SPG Product Application",
@@ -650,6 +652,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "list_filter.no_results": "Ingen treff",
     "list_filter.reset_filters": "Tilbakestill filtre",
     "list_filter.clear_filters": "Fjern filtre",
+    create: "Opprett",
     "dashboard.application": "Søknad",
     "dashboard.sp_product_application": "SP-produktsøknad",
     "dashboard.spg_product_application": "SPG-produktsøknad",

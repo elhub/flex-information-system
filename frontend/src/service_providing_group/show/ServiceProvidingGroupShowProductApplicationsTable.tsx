@@ -49,6 +49,11 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     {
       key: "id",
       header: t("service_providing_group_product_application.id"),
+      render: (value, row) =>
+        (row as SpgProductApplicationRow & { __draftId?: string }).__draftId !==
+        undefined
+          ? "-"
+          : String(value),
     },
     {
       key: "procuringSystemOperatorName",
@@ -146,13 +151,16 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
           ).__draftId;
           if (draftId === undefined) return null;
           return (
-            <Button
-              variant="invisible"
-              size="small"
-              icon={IconTrash}
-              aria-label={translate("text.spgpa_delete_draft")}
-              onClick={() => deleteDraft(spgId, draftId)}
-            />
+            <Tooltip content={translate("text.spgpa_delete_draft")}>
+              <Button
+                variant="invisible"
+                className="text-semantic-background-action-danger"
+                size="small"
+                icon={IconTrash}
+                aria-label={translate("text.spgpa_delete_draft")}
+                onClick={() => deleteDraft(spgId, draftId)}
+              />
+            </Tooltip>
           );
         }}
         rowClick={(row) => {

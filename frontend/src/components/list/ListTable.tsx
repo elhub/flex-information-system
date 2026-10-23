@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Alert, BodyText, Loader, Table, type SortState } from "../ui";
 import type { ListColumn, ListInterface } from "./types";
 
+export type RowLinkTarget = string | { to: string; state?: unknown };
+
 export type ListTableProps<T extends { id: number | string }> = {
   list: ListInterface<T>;
   columns: ListColumn<T>[];
-  rowLink?: (row: T) => string;
+  rowLink?: (row: T) => RowLinkTarget;
   expandedContent?: (row: T) => React.ReactNode;
 };
 
@@ -63,10 +65,12 @@ const RowsTable = <T extends { id: number | string }>({
   };
 
   const handleRowClick = (e: React.MouseEvent, row: T) => {
-    if (!rowLink) return;
     // links and buttons inside the row handle their own click
     if ((e.target as HTMLElement).closest("button, a")) return;
-    navigate(rowLink(row));
+    if (!rowLink) return;
+    const target = rowLink(row);
+    if (typeof target === "string") navigate(target);
+    else navigate(target.to, { state: target.state });
   };
 
   return (
@@ -87,6 +91,7 @@ const RowsTable = <T extends { id: number | string }>({
                 sortable={!!col.sortField}
                 sortKey={col.sortField}
                 sortType={col.sortType}
+                className={"break-normal"}
               >
                 {col.header}
               </Table.ColumnHeader>
