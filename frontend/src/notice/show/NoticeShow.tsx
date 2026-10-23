@@ -4,10 +4,10 @@ import { ShowBase, useRecordContext, useTranslate } from "ra-core";
 import {
   ResourceShowLayout,
   ResourceSummaryField,
-} from "../components/ResourceShowLayout";
-import { useTabSearchParam } from "../hooks/useTabSearchParam";
-import { useParty } from "../hooks/party";
-import { useTranslateEnum, useTranslateField } from "../intl/intl";
+} from "../../components/ResourceShowLayout";
+import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { useParty } from "../../hooks/party";
+import { useTranslateEnum, useTranslateField } from "../../intl/intl";
 import {
   BodyText,
   Button,
@@ -19,12 +19,12 @@ import {
   CardTitle,
   Loader,
   Tabs,
-} from "../components/ui";
-import { Notice } from "../generated-client";
-import { noticeStatusVariantMap } from "./noticeStatus";
+} from "../../components/ui";
+import { Notice } from "../../generated-client";
+import { noticeStatusVariantMap } from "../noticeStatus";
 import { NoticeShowDetails } from "./NoticeShowDetails";
-import noticeTypes from "./noticeTypes";
-import { LabelValue } from "../components/LabelValue";
+import noticeTypes from "../noticeTypes";
+import { LabelValue } from "../../components/LabelValue";
 
 const parsePartyId = (source?: string | null) => {
   const [, resource, id] = source?.split("/") ?? [];

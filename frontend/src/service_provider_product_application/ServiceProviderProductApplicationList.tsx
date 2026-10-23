@@ -8,7 +8,7 @@ import {
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
-import { sppaStatusVariantMap } from "./show/sppaStatus";
+import { sppaStatusVariantMap } from "./sppaStatus";
 import {
   EnumArrayInput,
   PartyReferenceInput,

@@ -7,25 +7,25 @@ import {
   useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
-import { BodyText, Heading, VerticalSpace } from "../components/ui";
-import { DateField } from "../components/EDS-ra";
-import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
-import { Notice as GNotice } from "../generated-client";
+import { BodyText, Heading, VerticalSpace } from "../../components/ui";
+import { DateField } from "../../components/EDS-ra";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
+import { Notice as GNotice } from "../../generated-client";
 import {
   zControllableUnitServiceProvider,
   zNoticeDataProductTypeNotQualified,
-} from "../generated-client/zod.gen";
-import { getFields } from "../zod";
-import { SimpleTable } from "../components/SimpleTable";
-import { DataTable } from "../components/EDS-ra/list/Datagrid";
-import { NoticePartyMissing } from "./details/NoticePartyMissing";
-import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
-import { NoticePartyResidual } from "./details/NoticePartyResidual";
-import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeControllableUnitMaximumActivePowerRatio";
-import noticeTypes from "./noticeTypes";
+} from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
+import { SimpleTable } from "../../components/SimpleTable";
+import { DataTable } from "../../components/EDS-ra/list/Datagrid";
+import { NoticePartyMissing } from "./NoticePartyMissing";
+import { NoticePartyOutdated } from "./NoticePartyOutdated";
+import { NoticePartyResidual } from "./NoticePartyResidual";
+import { NoticeControllableUnitMaximumActivePowerRatio } from "./NoticeControllableUnitMaximumActivePowerRatio";
+import noticeTypes from "../noticeTypes";
 import type { ReactNode } from "react";
-import { NoticeActionButton } from "./details/NoticeActionButton";
-import { LabelValue } from "../components/LabelValue";
+import { NoticeActionButton } from "./NoticeActionButton";
+import { LabelValue } from "../../components/LabelValue";
 
 type Notice = GNotice & {
   data: any;
