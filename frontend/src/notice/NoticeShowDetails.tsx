@@ -7,7 +7,8 @@ import {
   useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
-import { BodyText, Heading, VerticalSpace } from "../components/ui";
+import { BodyText, Button, Heading, VerticalSpace } from "../components/ui";
+import { Link as RouterLink } from "react-router-dom";
 import { DateField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Notice as GNotice } from "../generated-client";
@@ -27,6 +28,7 @@ import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
 import { NoticeActionButton } from "./details/NoticeActionButton";
 import { LabelValue } from "../components/LabelValue";
+import { toDateTimeString } from "../util";
 
 type Notice = GNotice & {
   data: any;
@@ -175,11 +177,68 @@ const NoticeSPGDuplicationOfCuWithinSameProductType = ({
   );
 };
 
+// component to show details of a notice of type
+// no.elhub.flex.service_providing_group_grid_prequalification.outdated
+const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
+  const translate = useTranslate();
+  const powerDiff: number = notice.data.maximum_active_power_diff ?? 0;
+
+  const rows = [
+    {
+      id: "added",
+      change: "Controllable units added",
+      value: notice.data.added,
+    },
+    {
+      id: "removed",
+      change: "Controllable units removed",
+      value: notice.data.removed,
+    },
+    {
+      id: "changed",
+      change: "Controllable units changed",
+      value: notice.data.changed,
+    },
+    {
+      id: "power",
+      change: "Net flexible power change",
+      value: `${powerDiff > 0 ? "+" : ""}${powerDiff} kW`,
+    },
+  ];
+
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        Changes since the service providing group was grid prequalified
+        {notice.data.prequalified_at &&
+          ` on ${toDateTimeString(notice.data.prequalified_at)}`}
+      </Heading>
+      <SimpleTable
+        size="small"
+        data={rows}
+        columns={[
+          { key: "change", header: "Change" },
+          { key: "value", header: "Value" },
+        ]}
+      />
+      <VerticalSpace />
+      {notice.source != null && (
+        <Button as={RouterLink} to={`${notice.source}/show?tab=changes`}>
+          {translate("text.notice_spggp_outdated_button")}
+        </Button>
+      )}
+    </>
+  );
+};
+
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
   "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
     (notice) => (
       <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
     ),
+  "no.elhub.flex.service_providing_group_grid_prequalification.outdated": (
+    notice,
+  ) => <NoticeSPGGPOutdated notice={notice} />,
   "no.elhub.flex.party.outdated": (notice) => (
     <NoticePartyOutdated source={notice.source} noticeData={notice.data} />
   ),

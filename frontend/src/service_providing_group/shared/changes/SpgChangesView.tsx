@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslate, type TranslateFunction } from "ra-core";
 import { IconMinus, IconPencil, IconPlus } from "@elhub/ds-icons";
@@ -13,21 +13,32 @@ import {
 } from "../../../components/ui";
 import { SpgChangeRow, useSpgChangesViewModel } from "./useSpgChangesViewModel";
 import { ControllableUnitDiff } from "./ControllableUnitDiff";
-import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import {
   findMilestoneLabel,
   formatValue,
   parseValue,
-  useChangesTimelineMarks,
+  useTimelineMarks,
+  type TimelineMilestone,
 } from "./timelineUtils";
 import { TimelineCard, TimelineDateField } from "./TimelineCard";
 import { cn, formatDurationDHM, toDateTimeString } from "../../../util";
 
 type Props = {
   spgId: number;
-  spgpa: ServiceProvidingGroupProductApplication;
+  // milestones to show on the timeline (the last one is used as "to")
+  milestones: TimelineMilestone[];
+  // start of the initial period, defaults to the second to last milestone
+  initialFrom?: string;
+  // used as the start of the initial period when the timeline has too few marks
+  fallbackFrom?: string;
+  // time used as "now", must be the one used in the last milestone
+  now: string;
   powerScale: Scale;
+  // only include CUs for which this system operator is the CSO
+  systemOperatorId?: number;
+  // extra content (e.g. actions) shown above the summary
+  actions?: ReactNode;
 };
 
 const formatPower = (value: number | undefined, powerScale: Scale) =>
@@ -152,21 +163,26 @@ const DiffText = ({
   return <span>{newValue ?? oldValue}</span>;
 };
 
-export const ServiceProvidingGroupShowChangesTab = ({
+export const SpgChangesView = ({
   spgId,
-  spgpa,
+  milestones,
+  initialFrom,
+  fallbackFrom,
+  now,
   powerScale,
+  systemOperatorId,
+  actions,
 }: Props) => {
   const translate = useTranslate();
   const navigate = useNavigate();
-  const [now] = useState(() => new Date().toISOString());
-  const marks = useChangesTimelineMarks(spgpa, now);
+  const marks = useTimelineMarks(milestones);
 
   const [from, setFrom] = useState<string | undefined>(() => {
+    if (initialFrom) return initialFrom;
     const secondToLast = marks[marks.length - 2];
     return secondToLast
       ? new Date(secondToLast.value).toISOString()
-      : spgpa.created_at;
+      : fallbackFrom;
   });
   const [to, setTo] = useState<string | undefined>(now);
   const [visibleStatuses, setVisibleStatuses] = useState<string[]>([
@@ -180,7 +196,7 @@ export const ServiceProvidingGroupShowChangesTab = ({
     isLoading,
     isFetching,
     error,
-  } = useSpgChangesViewModel(spgId, from, to);
+  } = useSpgChangesViewModel(spgId, from, to, systemOperatorId);
   const visibleRows = rows?.filter((row) =>
     visibleStatuses.includes(row.status),
   );
@@ -195,6 +211,8 @@ export const ServiceProvidingGroupShowChangesTab = ({
   return (
     <div className="flex flex-col gap-[50px]">
       <div className="flex flex-col gap-4">
+        {actions}
+
         <TimelineCard
           heading={translate("text.spg_changes_period_heading")}
           hint={translate("text.spg_changes_period_hint")}
