@@ -31,6 +31,7 @@ fun createDataSource(
     username: String?,
     password: String?,
     maximumPoolSize: Int = 10,
+    schema: String? = "api",
 ): HikariDataSource {
     val config = HikariConfig().apply {
         jdbcUrl = url
@@ -38,7 +39,7 @@ fun createDataSource(
         this.username = username
         this.password = password
         this.maximumPoolSize = maximumPoolSize
-        schema = "api"
+        this.schema = schema
         transactionIsolation = "TRANSACTION_READ_COMMITTED"
         validate()
     }
