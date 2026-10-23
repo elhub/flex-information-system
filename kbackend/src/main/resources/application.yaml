@@ -21,6 +21,14 @@ accounting-point-adapter:
   api-key: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
   sync-enabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
 
+mail:
+  host: ${MAIL_SMTP_HOST:}
+  port: ${MAIL_SMTP_PORT:587}
+  username: ${MAIL_SMTP_USERNAME:}
+  password: ${MAIL_SMTP_PASSWORD:}
+  from: ${MAIL_FROM:}
+  start-tls: ${MAIL_SMTP_STARTTLS:true}
+
 attachment-storage:
   bucket: ${S3_BUCKET:}
   internal-endpoint: ${S3_INTERNAL_ENDPOINT:}

@@ -14,7 +14,8 @@ data class FlexPrincipal(
     val eid: String,
 ) {
     companion object {
-        /** A system principal that bypasses RLS by using role `flex_internal_data` and eid `"0"`. */
+        /** A system principal for the notification pipeline, using role `flex_internal_event_notification` and eid `"0"`. */
+        val internalEventNotification = FlexPrincipal(role = "flex_internal_event_notification", eid = "0")
         val internalData = FlexPrincipal(role = "flex_internal_data", eid = "0")
 
         /** A system principal allowed to run the `staging.*` functions and write to the staging tables. */

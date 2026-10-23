@@ -83,6 +83,7 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktor-server-swagger = { group = "io.ktor", name = "ktor-server-swagger", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
+angus-mail = { group = "org.eclipse.angus", name = "angus-mail", version.ref = "angus-mail" }
 krontab = { group = "dev.inmo", name = "krontab", version.ref = "krontab" }
 logging-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 logging-logstash-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
@@ -148,6 +149,7 @@ slf4j = "2.0.20"
 snakeyaml = "2.7"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
+angus-mail = "2.0.3"
 krontab = "3.1.0"
 aws-sdk-kotlin = "1.9.20"
 pdfbox = "3.0.8"
