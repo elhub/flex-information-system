@@ -1,11 +1,11 @@
 import { Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
-import { useControllableUnitShowSummary } from "./ControllableUnitShowSummary";
-import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
-import { useControllableUnitAlerts } from "./components/ControllableUnitAlerts";
-import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
+import { useControllableUnitShowSummary } from "./tabs/overview/ControllableUnitShowSummary";
+import { ControllableUnitShowTabs } from "./tabs/ControllableUnitShowTabs";
+import { useControllableUnitAlerts } from "./common/ControllableUnitAlerts";
+import { useControllableUnitViewModel } from "./common/useControllableUnitViewModel";
 import { useTranslateEnum } from "../../intl/intl";
-import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
+import { ActivateControllableUnitButton } from "./common/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions, useTranslate } from "ra-core";
 import { ResourceShowLayout } from "../../components/ResourceShowLayout";

@@ -1,5 +1,5 @@
-import type { ResourceSummaryField } from "../../components/ResourceShowLayout";
-import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
+import type { ResourceSummaryField } from "../../../../components/ResourceShowLayout";
+import type { ControllableUnitShowViewModel } from "../../common/useControllableUnitViewModel";
 import { formatDate } from "date-fns";
 import { useTranslate } from "ra-core";
 
