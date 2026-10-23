@@ -26,8 +26,7 @@ const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
 const userCanUpdateStatus = (identity: UserIdentity | undefined) =>
   identity?.role === "flex_flexibility_information_system_operator" ||
-  identity?.role === "flex_system_operator" ||
-  identity?.role === "flex_service_provider";
+  identity?.role === "flex_system_operator";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
@@ -123,9 +122,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         },
       ]}
       workflowActions={
-        canUpdateStatus ? (
-          <SpgpaActionBar spgpa={spgpa} role={identity?.role} />
-        ) : undefined
+        canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined
       }
       summary={summary}
       content={

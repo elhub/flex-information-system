@@ -39,37 +39,11 @@ const rejectAction: ActionConfig = {
   requiresCompleteAt: false,
 };
 
-const inactiveAction: ActionConfig = {
-  label: "Inactivate",
-  payload: { status: "inactive" },
-  confirmTitle: "Inactivate application",
-  confirmContent:
-    "Are you sure you want to inactivate the application? You can set it to requested later.",
-  variant: "secondary",
-  requiresCompleteAt: false,
-};
-
-const reactivateAction: ActionConfig = {
-  label: "Reactivate",
-  payload: { status: "requested" },
-  confirmTitle: "Reactivate application",
-  confirmContent: "Are you sure you want to reactivate the application?",
-  variant: "secondary",
-  requiresCompleteAt: false,
-};
-
 const getActionsForStatus = (
   spgpa: ServiceProvidingGroupProductApplication,
-  role: string,
 ): ActionConfig[] => {
-  const isServiceProvider = role === "flex_service_provider";
-
   switch (spgpa.status) {
     case "requested":
-      if (isServiceProvider) {
-        return [inactiveAction];
-      }
-
       return [
         {
           label: "Start prequalification",
@@ -81,14 +55,8 @@ const getActionsForStatus = (
           requiresCompleteAt: true,
         },
         rejectAction,
-        inactiveAction,
       ];
-
     case "prequalification":
-      if (isServiceProvider) {
-        return [];
-      }
-
       return [
         {
           label: "Mark prequalified",
@@ -103,12 +71,6 @@ const getActionsForStatus = (
         },
         rejectAction,
       ];
-
-    case "inactive":
-      return isServiceProvider
-        ? [reactivateAction]
-        : [rejectAction, reactivateAction];
-
     default:
       return [];
   }
@@ -213,11 +175,10 @@ const ActionButton = ({
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
-  role: string;
 };
 
-export const SpgpaActionBar = ({ spgpa, role }: Props) => {
-  const actions = getActionsForStatus(spgpa, role);
+export const SpgpaActionBar = ({ spgpa }: Props) => {
+  const actions = getActionsForStatus(spgpa);
 
   if (actions.length === 0) {
     return null;
