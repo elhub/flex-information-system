@@ -292,13 +292,13 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
-    # check ISO can read the CU
+    # check ISO can NOT read the CU
     cus_iso2 = list_controllable_unit.sync(client=client_iso, limit="10000")
     assert isinstance(cus_iso2, list)
-    assert len(cus_iso2) == len(cus_iso) + 1
+    assert len(cus_iso2) == len(cus_iso)
 
     cu = read_controllable_unit.sync(client=client_iso, id=cast(int, cu.id))
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ErrorMessage)
 
     # RLS: CU-SO003
     # NB: here checking on a few rows is sufficient
