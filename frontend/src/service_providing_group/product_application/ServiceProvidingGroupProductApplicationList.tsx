@@ -207,6 +207,8 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       header: translate(
         "field.service_providing_group_product_application.complete_at",
       ),
+      sortField: "complete_at",
+      sortType: "date",
       render: (row) =>
         row.complete_at ? (
           <BodyText size="small">{toDateTimeString(row.complete_at)}</BodyText>
