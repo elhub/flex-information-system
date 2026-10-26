@@ -111,6 +111,8 @@ export type EnumLabel =
   | "service_providing_group_product_application.ramping_capability.partial"
   | "service_providing_group_product_application.status.inactive"
   | "service_providing_group_product_application.status.inactive.description"
+  | "service_providing_group_product_application.status.incomplete"
+  | "service_providing_group_product_application.status.incomplete.description"
   | "service_providing_group_product_application.status.prequalification"
   | "service_providing_group_product_application.status.prequalification.description"
   | "service_providing_group_product_application.status.prequalified"
@@ -314,6 +316,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Inactivated",
     "service_providing_group_product_application.status.inactive.description":
       "The Service Provider has witdrawn the application. Can be set to requested again.",
+    "service_providing_group_product_application.status.incomplete":
+      "Incomplete",
+    "service_providing_group_product_application.status.incomplete.description":
+      "Product application incomplete. Need more information.",
     "service_providing_group_product_application.ramping_capability.always":
       "Always",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -512,6 +518,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.inactive": "Inaktivert",
     "service_providing_group_product_application.status.inactive.description":
       "Søknaden er trukket tilbake. Kan oppdateres til etterspørt status igjen.",
+    "service_providing_group_product_application.status.incomplete":
+      "Ufullstendig",
+    "service_providing_group_product_application.status.incomplete.description":
+      "Søknaden er ufullstendig. Mer informasjon kreves.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -707,6 +717,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.inactive": "Inaktivert",
     "service_providing_group_product_application.status.inactive.description":
       "Søknaden er dregen tilbake. Kan oppdaterast til etterspurt status igjen.",
+    "service_providing_group_product_application.status.incomplete":
+      "Ufullstendig",
+    "service_providing_group_product_application.status.incomplete.description":
+      "Søknaden er ufullstendig. Meir informasjon krevst.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":

@@ -1245,7 +1245,8 @@
                     "prequalified",
                     "verified",
                     "rejected",
-                    "inactive"
+                    "inactive",
+                    "incomplete"
                 ],
                 "example": "prequalification"
             },

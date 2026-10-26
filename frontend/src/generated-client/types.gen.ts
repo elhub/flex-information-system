@@ -686,7 +686,8 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "prequalified"
   | "verified"
   | "rejected"
-  | "inactive";
+  | "inactive"
+  | "incomplete";
 
 /**
  * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.

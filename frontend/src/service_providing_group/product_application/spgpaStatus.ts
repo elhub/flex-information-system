@@ -15,6 +15,7 @@ export const spgpaStatusVariantMap: Record<
   StatusVariant
 > = {
   inactive: { status: "inactive", icon: IconStopWatch15 },
+  incomplete: { status: "incomplete", icon: IconStopWatch15 },
   requested: { status: "ongoing", icon: IconStopWatch15 },
   prequalification: { status: "ongoing", icon: IconStopWatch15 },
   temporary_qualified: {

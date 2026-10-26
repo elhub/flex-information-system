@@ -4090,6 +4090,16 @@ resources:
                 en: The Service Provider has witdrawn the application. Can be set to requested again.
                 nb: Søknaden er trukket tilbake. Kan oppdateres til etterspørt status igjen.
                 nn: Søknaden er dregen tilbake. Kan oppdaterast til etterspurt status igjen.
+          - id: incomplete
+            x-intl:
+              en: Incomplete
+              nb: Ufullstendig
+              nn: Ufullstendig
+            description:
+              x-intl:
+                en: Product application incomplete. Need more information.
+                nb: Søknaden er ufullstendig. Mer informasjon kreves.
+                nn: Søknaden er ufullstendig. Meir informasjon krevst.
         example: prequalification
         x-intl:
           en: Status

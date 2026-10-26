@@ -3,6 +3,7 @@ from enum import StrEnum
 
 class ServiceProvidingGroupProductApplicationStatus(StrEnum):
     INACTIVE = "inactive"
+    INCOMPLETE = "incomplete"
     PREQUALIFICATION = "prequalification"
     PREQUALIFIED = "prequalified"
     REJECTED = "rejected"
