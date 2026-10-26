@@ -6,7 +6,6 @@ import {
   useTranslate,
 } from "ra-core";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { formatDate } from "date-fns";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { IdentityField } from "../../components/EDS-ra/fields";
@@ -21,7 +20,7 @@ import {
 } from "../../components/ui";
 import { deleteEntityClient, listEntityClient } from "../../generated-client";
 import { useTranslateField } from "../../intl/intl";
-import { throwOnError } from "../../util";
+import { throwOnError, toDateTimeString } from "../../util";
 import {
   IconCopy,
   IconDots,
@@ -244,7 +243,7 @@ export const EntityClientList = ({ entityId }: Props) => {
     {
       key: "recorded_at",
       header: translateField("entity_client.recorded_at"),
-      render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
+      render: (value) => toDateTimeString(String(value)),
     },
     {
       key: "recorded_by",

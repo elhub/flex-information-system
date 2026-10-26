@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { toDateTimeString } from "../../util";
 import {
   Identifier,
   useGetIdentity,
@@ -191,7 +191,7 @@ export const PartyMembershipList = () => {
     {
       key: "recorded_at",
       header: t("party_membership.recorded_at"),
-      render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
+      render: (value) => toDateTimeString(String(value)),
     },
   ];
 

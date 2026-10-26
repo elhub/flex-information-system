@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { toDateTimeString } from "../../util";
 import {
   ShowBase,
   usePermissions,
@@ -83,7 +83,7 @@ const PartySummary = (): ResourceSummaryField[] => {
     {
       labelKey: "party.recorded_at",
       value: party.recorded_at
-        ? formatDate(party.recorded_at, "dd.MM.yyyy HH:mm")
+        ? toDateTimeString(party.recorded_at)
         : undefined,
       tooltip: true,
     },
