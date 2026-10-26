@@ -98,6 +98,7 @@ return (
     actions={actions}
     rowLink={(row) => `/<resource>/${row.id}/show`}
     expandedContent={...}   // optional
+    rowActions={...}        // optional
   />
 );
 ```
@@ -113,6 +114,7 @@ return (
 | `actions`         | No       | Buttons at the top right (create, export). Omit when there are none.        |
 | `rowLink`         | No       | Link to the resource's own show page: `/<resource>/${row.id}/show`. May also return `{ to, state }` to pass router state. Return `undefined` for rows that must not be clickable. |
 | `expandedContent` | No       | Makes rows expandable. Only when there is useful related info (see SPG).    |
+| `rowActions`      | No       | Per-row actions (e.g. a delete button) in their own trailing column. Return `null` for rows without an action; the column (empty header) is only rendered when at least one row returns something. Buttons here don't trigger `rowLink`. Don't put actions inside another column's `render`. |
 
 ## Filters
 
@@ -184,7 +186,8 @@ If a list shows rows that don't come from the API (e.g. local SPGPA drafts), wra
 the `ListInterface` in a small hook: prepend the rows to `list.rows`, hide them
 when a filter or page would exclude them. For `rowLink`, either return
 `{ to, state }` for them (e.g. open the create page with the draft values) or
-`undefined` and put links/buttons in the cells. See
+`undefined` and put links/buttons in the cells. Actions that only apply to these
+rows (e.g. delete draft) go in `rowActions`, returning `null` for other rows. See
 `service_providing_group/product_application/ServiceProvidingGroupProductApplicationList.tsx`.
 
 # Removing the old implementation

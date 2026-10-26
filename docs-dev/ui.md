@@ -117,14 +117,14 @@ parts that only depend on the `ListInterface` contract
 (`components/list/types.ts`), so the layout does not know where the data comes
 from.
 
-| Part                 | Responsibility                                                                                                           |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `ResourceListLayout` | Heading, optional actions (such as a create button) and composition of the parts below.                                  |
-| `ListFilters`        | Filter bar built from typed filter definitions (`text`, `select` or `multiselect`), with reset/clear buttons.            |
-| `ListTable`          | Sortable table from column definitions. Handles error, loading and empty states. Rows can link to a show page or expand. |
-| `ListPagination`     | Page selector and page size.                                                                                             |
-| `useListState`       | Filter, sort and paging state, kept in the URL search params.                                                            |
-| `useXxxList`         | Per-resource hook (for example `useControllableUnitList`) that fetches the data and returns a `ListInterface`.           |
+| Part                 | Responsibility                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ResourceListLayout` | Heading, optional actions (such as a create button) and composition of the parts below.                                                          |
+| `ListFilters`        | Filter bar built from typed filter definitions (`text`, `select` or `multiselect`), with reset/clear buttons.                                    |
+| `ListTable`          | Sortable table from column definitions. Handles error, loading and empty states. Rows can link to a show page, expand or have an actions column. |
+| `ListPagination`     | Page selector and page size.                                                                                                                     |
+| `useListState`       | Filter, sort and paging state, kept in the URL search params.                                                                                    |
+| `useXxxList`         | Per-resource hook (for example `useControllableUnitList`) that fetches the data and returns a `ListInterface`.                                   |
 
 `buildListQuery` in `components/list/postgrest.ts` translates the list state
 into a PostgREST query, and is used by the per-resource hooks.
