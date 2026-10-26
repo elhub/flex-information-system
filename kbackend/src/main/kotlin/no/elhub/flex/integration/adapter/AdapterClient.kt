@@ -52,6 +52,11 @@ class AdapterHttpClient(
     }
 
     private fun httpClient(requestTimeoutMillis: Long) = HttpClient(Apache5) {
+        engine {
+            customizeClient {
+                useSystemProperties()
+            }
+        }
         install(HttpTimeout) {
             this.requestTimeoutMillis = requestTimeoutMillis
         }
