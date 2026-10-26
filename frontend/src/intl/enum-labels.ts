@@ -310,8 +310,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Rejected",
     "service_providing_group_product_application.status.rejected.description":
       "The application was not approved and requires updates before it can be submitted again.",
-    "service_providing_group_product_application.status.inactive":
-      "Inactivated",
+    "service_providing_group_product_application.status.inactive": "Inactive",
     "service_providing_group_product_application.status.inactive.description":
       "The Service Provider has witdrawn the application. Can be set to requested again.",
     "service_providing_group_product_application.ramping_capability.always":
@@ -509,7 +508,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.",
-    "service_providing_group_product_application.status.inactive": "Inaktivert",
+    "service_providing_group_product_application.status.inactive": "Inaktiv",
     "service_providing_group_product_application.status.inactive.description":
       "Søknaden er trukket tilbake. Kan oppdateres til etterspørt status igjen.",
     "service_providing_group_product_application.ramping_capability.always":
@@ -704,7 +703,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.",
-    "service_providing_group_product_application.status.inactive": "Inaktivert",
+    "service_providing_group_product_application.status.inactive": "Inaktiv",
     "service_providing_group_product_application.status.inactive.description":
       "Søknaden er dregen tilbake. Kan oppdaterast til etterspurt status igjen.",
     "service_providing_group_product_application.ramping_capability.always":
