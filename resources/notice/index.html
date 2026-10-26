@@ -4132,9 +4132,9 @@ from the responsible party.</p>
 </tr>
 <tr>
 <td>no.elhub.flex.controllable_unit.service_providing_group.product_duplication</td>
-<td>Inconsistency: CU registered in multiple SPGs with active applications for the same product</td>
+<td>Inconsistency: CU registered in multiple SPGs with applications for the same product</td>
 <td>PSO</td>
-<td>Remove the CU from one of the SPGs or cancel one of the conflicting product applications</td>
+<td>Remove the CU from one of the SPGs</td>
 </tr>
 <tr>
 <td>no.elhub.flex.party.missing</td>
@@ -4153,6 +4153,12 @@ from the responsible party.</p>
 <td>Party registered in the system but not listed by an external source</td>
 <td>FISO</td>
 <td>Delete party to match the latest data fetched from the external source</td>
+</tr>
+<tr>
+<td>no.elhub.flex.party.incompatible</td>
+<td>Person has access (ownership or membership) to parties of incompatible groups (SP vs SO)</td>
+<td>FISO</td>
+<td>Review the parties and memberships of the entity and remove the incompatible access</td>
 </tr>
 <tr>
 <td>no.elhub.flex.service_provider_product_application.status.requested</td>
