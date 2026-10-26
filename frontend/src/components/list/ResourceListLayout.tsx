@@ -22,6 +22,7 @@ export const ResourceListLayout = <T extends { id: number | string }>({
   actions,
   rowLink,
   expandedContent,
+  rowActions,
 }: ResourceListLayoutProps<T>) => (
   <div className="flex flex-col gap-2">
     <div className="flex items-center justify-between gap-2 mb-4">
@@ -37,6 +38,7 @@ export const ResourceListLayout = <T extends { id: number | string }>({
         columns={columns}
         rowLink={rowLink}
         expandedContent={expandedContent}
+        rowActions={rowActions}
       />
       <ListPagination list={list} />
     </Panel>
