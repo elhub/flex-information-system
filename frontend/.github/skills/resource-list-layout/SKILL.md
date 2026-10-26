@@ -118,24 +118,29 @@ return (
 
 ## Filters
 
-`ListFilterDef` is one of `text`, `singleselect`, `multiselect`
-(`components/list/types.ts`).
+`ListFilterDef` (`components/list/types.ts`) is `text`, `singleselect` or
+`multiselect`. Keep the filter type the old page used for each field. For new
+fields, use the default in the table below. Single vs multi select varies per
+page (e.g. a party can be either), so the table is only a default.
 
-- Free text on a name or id: `text` with `@ilike`.
-- Enum / status: `multiselect` with `@in`. Build options from the status map
-  (`Object.keys(xxxStatusVariantMap)`) or the zod enum
-  (`zXxx.shape.field.options`), labelled with `enum.<resource>.<field>.<value>`.
-- Parties: `multiselect` with options from `usePartyOptions("<party_type>")`
-  (`hooks/partyOptions`) and `isLoading`.
-- Boolean: `singleselect` with `"true"` / `"false"` options. Pass `tooltip` when
-  the field has one in `tooltip/tooltips`.
-- Filters shown only for some roles: spread conditionally and check
-  `identity?.role` (see `canFilterOnBrp` in the CU list).
-- Labels: `translate("field.<resource>.<field>")`.
+| Field                 | Default filter                                                                 |
+| --------------------- | ------------------------------------------------------------------------------ |
+| Name / id (free text) | `text` with `@ilike`                                                           |
+| Enum / status         | `multiselect` with `@in`. Options from `Object.keys(xxxStatusVariantMap)` or `zXxx.shape.field.options`, labelled `enum.<resource>.<field>.<value>` |
+| Party                 | `multiselect` with `usePartyOptions("<party_type>")` (`hooks/partyOptions`); pass `isLoading` |
+| Boolean               | `singleselect` with `"true"` / `"false"` options                               |
 
-**Prompt the user** which filters the page should have, and whether there should
-be default filters (and which default sort). Don't suggest a default; let the user
-decide. See the old page's `filters` as a starting point to show them.
+- Label: `translate("field.<resource>.<field>")`.
+- Tooltip: optional `tooltip` on a filter (entries in `tooltip/tooltips`). Never
+  add one by default; ask the user per filter whether it should have one.
+- Role-restricted filters: spread conditionally on `identity?.role` (see
+  `canFilterOnBrp` in the CU list).
+
+**Prompt the user** only for which fields to filter on, which filters get a
+tooltip, whether there are default filters, and the default sort. Don't suggest
+defaults. Use the old page's `filters` as the starting list to show them. Ask
+about the filter type only when there is no old filter to copy and the table
+default is unclear (e.g. a party field that might be single select).
 
 ## Columns
 

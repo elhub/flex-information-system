@@ -89,7 +89,7 @@ const RowsTable = <T extends { id: number | string }>({
       >
         <Table.Header>
           <Table.Row>
-            {expandedContent && <Table.ColumnHeader style={{ width: "1px" }} />}
+            {expandedContent && <Table.ColumnHeader className="w-1" />}
             {columns.map((col) => (
               <Table.ColumnHeader
                 key={col.header}
@@ -102,7 +102,7 @@ const RowsTable = <T extends { id: number | string }>({
                 {col.header}
               </Table.ColumnHeader>
             ))}
-            {showActions && <Table.ColumnHeader style={{ width: "1px" }} />}
+            {showActions && <Table.ColumnHeader className="w-1" />}
           </Table.Row>
         </Table.Header>
         <Table.Body>
