@@ -4082,9 +4082,9 @@ resources:
                 nn: Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.
           - id: inactive
             x-intl:
-              en: Inactivated
-              nb: Inaktivert
-              nn: Inaktivert
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
             description:
               x-intl:
                 en: The Service Provider has witdrawn the application. Can be set to requested again.
