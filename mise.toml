@@ -2,7 +2,7 @@
 "python" = "3.15.0"
 "go" = "1.27.2"
 "uv" = "0.13.1"
-"golangci-lint" = "2.14.0"
+"golangci-lint" = "2.15.0"
 "ruff" = "0.17.1"
 "pandoc" = "3.12"
 "sqlc" = "1.31.1"
