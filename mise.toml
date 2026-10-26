@@ -4,6 +4,7 @@
 "uv" = "0.13.5"
 "golangci-lint" = "2.14.0"
 "ruff" = "0.17.2"
+"golangci-lint" = "2.15.0"
 "pandoc" = "3.12"
 "sqlc" = "1.31.1"
 "spectral" = "6.17.0"
