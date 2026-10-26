@@ -10,6 +10,7 @@ export type ListTableProps<T extends { id: number | string }> = {
   columns: ListColumn<T>[];
   rowLink?: (row: T) => RowLinkTarget;
   expandedContent?: (row: T) => React.ReactNode;
+  rowActions?: (row: T) => React.ReactNode;
 };
 
 // Sortable table for a ListInterface, including error, loading and empty states.
@@ -18,6 +19,7 @@ export const ListTable = <T extends { id: number | string }>({
   columns,
   rowLink,
   expandedContent,
+  rowActions,
 }: ListTableProps<T>) => {
   const translate = useTranslate();
 
@@ -35,6 +37,7 @@ export const ListTable = <T extends { id: number | string }>({
       columns={columns}
       rowLink={rowLink}
       expandedContent={expandedContent}
+      rowActions={rowActions}
     />
   );
 };
@@ -44,8 +47,11 @@ const RowsTable = <T extends { id: number | string }>({
   columns,
   rowLink,
   expandedContent,
+  rowActions,
 }: ListTableProps<T>) => {
   const navigate = useNavigate();
+  const showActions =
+    rowActions != null && list.rows.some((r) => rowActions(r) != null);
 
   const sortState: SortState = {
     orderBy: list.sort.field,
@@ -96,6 +102,7 @@ const RowsTable = <T extends { id: number | string }>({
                 {col.header}
               </Table.ColumnHeader>
             ))}
+            {showActions && <Table.ColumnHeader style={{ width: "1px" }} />}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -105,6 +112,13 @@ const RowsTable = <T extends { id: number | string }>({
                 {col.render(row)}
               </Table.DataCell>
             ));
+            if (showActions) {
+              cells.push(
+                <Table.DataCell key="__row_actions">
+                  {rowActions!(row)}
+                </Table.DataCell>,
+              );
+            }
             const style = rowLink ? { cursor: "pointer" } : undefined;
             return expandedContent ? (
               <Table.ExpandableRow

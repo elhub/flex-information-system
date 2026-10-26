@@ -201,25 +201,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       header: translate(
         "field.service_providing_group_product_application.status",
       ),
-      render: (row) => {
-        const draft = row.__draft;
-        if (!draft) return <SpgpaStatusBadge status={row.status} />;
-        return (
-          <div className="flex items-center justify-between">
-            <SpgpaStatusBadge status={row.status} />
-            <Tooltip content={translate("text.spgpa_delete_draft")}>
-              <Button
-                variant="invisible"
-                className="text-semantic-background-action-danger"
-                size="small"
-                icon={IconTrash}
-                aria-label={translate("text.spgpa_delete_draft")}
-                onClick={() => deleteDraft(draft.spgId, draft.draftId)}
-              />
-            </Tooltip>
-          </div>
-        );
-      },
+      render: (row) => <SpgpaStatusBadge status={row.status} />,
     },
     {
       header: translate(
@@ -249,6 +231,22 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       columns={columns}
       filters={filters}
       actions={actions}
+      rowActions={(row) => {
+        const draft = row.__draft;
+        if (!draft) return null;
+        return (
+          <Tooltip content={translate("text.spgpa_delete_draft")}>
+            <Button
+              variant="invisible"
+              className="text-semantic-background-action-danger"
+              size="small"
+              icon={IconTrash}
+              aria-label={translate("text.spgpa_delete_draft")}
+              onClick={() => deleteDraft(draft.spgId, draft.draftId)}
+            />
+          </Tooltip>
+        );
+      }}
       rowLink={(row) =>
         row.__draft
           ? {
