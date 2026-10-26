@@ -126,14 +126,14 @@ page (e.g. a party can be either), so the table is only a default.
 Each filter has a `source` of the form `<field>@<operator>`, e.g. `name@ilike`
 or `status@in`. The operator is the PostgREST operator used in the query:
 `ilike` = case-insensitive text match, `in` = value is one of the selected
-options. Copy the `source` from the old page's filter where there is one.
+options. Without an `@operator` the default is `eq` (exact match). Reuse the `source` from the old page's filter for the same field. Use the table only for new filters.
 
 | Field                 | Default filter                                                                 |
 | --------------------- | ------------------------------------------------------------------------------ |
 | Name (free text)      | `text`, source `<field>@ilike`                                                 |
 | Enum / status         | `multiselect`, source `<field>@in`. Options from `Object.keys(xxxStatusVariantMap)` or `zXxx.shape.field.options`, labelled `enum.<resource>.<field>.<value>` |
 | Party                 | `multiselect`, source `<field>@in`, options from `usePartyOptions("<party_type>")` (`hooks/partyOptions`); pass `isLoading` |
-| Boolean               | `singleselect` with `"true"` / `"false"` options; copy the source from the old page |
+| Boolean               | `singleselect`, source `<field>` (defaults to `eq`), with `"true"` / `"false"` options |
 
 - Label: `translate("field.<resource>.<field>")`.
 - Tooltip: optional `tooltip` on a filter (entries in `tooltip/tooltips`). Never
