@@ -18,10 +18,13 @@ import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.config.createDataSource
+import no.elhub.flex.gridmodel.db.GridModelRepository
+import no.elhub.flex.gridmodel.db.GridModelRepositoryImpl
 import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
+import no.elhub.flex.jobs.SyncGridModelDataJob
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
@@ -127,6 +130,7 @@ fun runJob(jobName: String) {
                 driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
                 username = requireEnv("FLEX_DATABASE_USERNAME"),
                 password = requireEnv("FLEX_DATABASE_PASSWORD"),
+                schema = null,
             )
         }
         single<AdapterClient> {
@@ -140,7 +144,15 @@ fun runJob(jobName: String) {
                 finalise = (System.getenv("SYNC_METERING_GRID_AREA_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single { JobRegistry(get<SyncMeteringGridAreaDataJob>()) }
+        single<GridModelRepository> { GridModelRepositoryImpl() }
+        single {
+            SyncGridModelDataJob(
+                adapterClient = get(),
+                gridModelRepository = get(),
+                finalise = (System.getenv("SYNC_GRID_MODEL_DATA_FINALISE") ?: "false").toBooleanStrict(),
+            )
+        }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SyncGridModelDataJob>()) }
     }
 
     // isolated Koin instance, not the global one used by the backend

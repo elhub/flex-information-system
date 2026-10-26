@@ -198,4 +198,60 @@ class AdapterClientTest : FunSpec({
             service.getMeteringGridAreas().shouldBeLeft().shouldBeInstanceOf<NetworkError>()
         }
     }
+
+    context("getGridModel") {
+        test("200 response is parsed and returned as Right") {
+            AdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/grid_model"))
+                    .withHeader("Authorization", equalTo("Bearer $API_KEY"))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("grid-model-200.json"),
+                    ),
+            )
+
+            val gridModel = service.getGridModel().shouldBeRight()
+
+            gridModel.substations shouldHaveSize 7
+            gridModel.substations[1].apply {
+                mrid shouldBe UUID.fromString("b1000001-0000-4000-8000-000000000012")
+                name shouldBe "Sol transformatorstasjon"
+                kind shouldBe "transformer"
+                primaryConcessionaire shouldBe "BKK"
+                substationClusterMrid shouldBe UUID.fromString("b1000001-0000-4000-8000-000000000001")
+                voltageLevels shouldBe listOf(66.0, 11.0)
+                latitude shouldBe 60.3975
+                longitude shouldBe 5.3269
+            }
+            gridModel.substationClusters.map { it.name } shouldBe listOf("Krus", "Kopp", "Glass")
+            gridModel.lines.map { it.name } shouldBe listOf("Linje1", "Linje2")
+        }
+
+        test("500 response is returned as Left HttpError") {
+            AdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/grid_model"))
+                    .willReturn(aResponse().withStatus(HttpStatusCode.InternalServerError.value)),
+            )
+
+            val error = service.getGridModel().shouldBeLeft().shouldBeInstanceOf<HttpError>()
+
+            error.statusCode shouldBe HttpStatusCode.InternalServerError.value
+        }
+
+        test("malformed body is returned as Left NetworkError") {
+            AdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/grid_model"))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBody("""{"substations": []}"""),
+                    ),
+            )
+
+            service.getGridModel().shouldBeLeft().shouldBeInstanceOf<NetworkError>()
+        }
+    }
 })

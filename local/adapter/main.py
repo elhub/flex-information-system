@@ -8,12 +8,17 @@ from client.models import (
     AccountingPointEnergySupplier,
     AccountingPointMeteringGridArea,
     EnergyDirection,
+    GridModel,
+    Line,
     MeteringGridArea,
     MeteringGridAreaPriceArea,
     MeteringGridAreaSystemOperator,
     PriceArea,
+    Substation,
+    SubstationCluster,
 )
 from datetime import datetime
+from uuid import UUID
 
 app = Flask(__name__)
 
@@ -210,6 +215,122 @@ METERING_GRID_AREAS = [
 @app.route("/metering_grid_area", methods=["GET"])
 def read_metering_grid_areas():
     return jsonify([mga.to_dict() for mga in METERING_GRID_AREAS])
+
+
+# same as the grid model test data (db/test_data/staging/*.csv)
+GRID_MODEL = GridModel(
+    substation_clusters=[
+        SubstationCluster(
+            mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            name="Krus",
+            latitude=60.3928,
+            longitude=5.324,
+        ),
+        SubstationCluster(
+            mrid=UUID("fa000002-0000-4000-8000-000000000002"),
+            name="Kopp",
+            latitude=60.2791,
+            longitude=5.339,
+        ),
+        SubstationCluster(
+            mrid=UUID("a5000003-0000-4000-8000-000000000003"),
+            name="Glass",
+            latitude=60.4659,
+            longitude=5.321,
+        ),
+    ],
+    substations=[
+        Substation(
+            mrid=UUID("b1000001-0000-4000-8000-000000000011"),
+            name="Bor 132 kV",
+            kind="power",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            voltage_levels=[132.0, 66.0],
+            latitude=60.3925,
+            longitude=5.3238,
+        ),
+        Substation(
+            mrid=UUID("b1000001-0000-4000-8000-000000000012"),
+            name="Sol transformatorstasjon",
+            kind="transformer",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            voltage_levels=[66.0, 11.0],
+            latitude=60.3975,
+            longitude=5.3269,
+        ),
+        Substation(
+            mrid=UUID("b1000001-0000-4000-8000-000000000013"),
+            name="Kobl koblingsstasjon",
+            kind="coupling",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            voltage_levels=[66.0, 11.0],
+            latitude=60.3972,
+            longitude=5.3234,
+        ),
+        Substation(
+            mrid=UUID("fa000002-0000-4000-8000-000000000021"),
+            name="Knorr 132 kV",
+            kind="power",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("fa000002-0000-4000-8000-000000000002"),
+            voltage_levels=[132.0, 66.0],
+            latitude=60.2789,
+            longitude=5.3388,
+        ),
+        Substation(
+            mrid=UUID("fa000002-0000-4000-8000-000000000022"),
+            name="Banan transformatorstasjon",
+            kind="transformer",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("fa000002-0000-4000-8000-000000000002"),
+            voltage_levels=[66.0, 22.0],
+            latitude=60.2823,
+            longitude=5.3577,
+        ),
+        Substation(
+            mrid=UUID("a5000003-0000-4000-8000-000000000031"),
+            name="Lett 132 kV",
+            kind="power",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("a5000003-0000-4000-8000-000000000003"),
+            voltage_levels=[132.0, 66.0],
+            latitude=60.4655,
+            longitude=5.3215,
+        ),
+        Substation(
+            mrid=UUID("a5000003-0000-4000-8000-000000000032"),
+            name="Rese transformatorstasjon",
+            kind="transformer",
+            primary_concessionaire="BKK",
+            substation_cluster_mrid=UUID("a5000003-0000-4000-8000-000000000003"),
+            voltage_levels=[66.0, 22.0],
+            latitude=60.4662,
+            longitude=5.3225,
+        ),
+    ],
+    lines=[
+        Line(
+            mrid=UUID("11100001-0000-4000-8000-000000000001"),
+            name="Linje1",
+            from_substation_cluster_mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            to_substation_cluster_mrid=UUID("fa000002-0000-4000-8000-000000000002"),
+        ),
+        Line(
+            mrid=UUID("11100001-0000-4000-8000-000000000002"),
+            name="Linje2",
+            from_substation_cluster_mrid=UUID("b1000001-0000-4000-8000-000000000001"),
+            to_substation_cluster_mrid=UUID("a5000003-0000-4000-8000-000000000003"),
+        ),
+    ],
+)
+
+
+@app.route("/grid_model", methods=["GET"])
+def read_grid_model():
+    return jsonify(GRID_MODEL.to_dict())
 
 
 if __name__ == "__main__":
