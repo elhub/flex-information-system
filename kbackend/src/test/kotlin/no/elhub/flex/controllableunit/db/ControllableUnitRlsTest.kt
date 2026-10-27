@@ -3,7 +3,6 @@ package no.elhub.flex.controllableunit.db
 import arrow.core.Either
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
@@ -22,7 +21,8 @@ import java.time.Instant
  * - CU-SO003: the history of a CU can be read when the CU can be read
  *
  * The seeding runs with triggers off, since the tests only need the rows to exist.
- * The membership is deleted with triggers on, so that it is moved to the history table.
+ * The membership is deleted, and the CU is updated, with triggers on, so that the old versions are moved
+ * to the history tables.
  */
 class ControllableUnitRlsTest : FunSpec({
 
@@ -66,13 +66,14 @@ class ControllableUnitRlsTest : FunSpec({
         test("PSO can read the history of a CU after its membership is deleted") {
             // given
             val seeded = seedCuInGroupOfPso()
+            updateControllableUnitMaximumActivePower(seeded.cuId, 2.0)
             seed(Triggers.ON) { deleteMembership(seeded.membershipId) }
 
             // when
             val count = with(seeded.pso.principal) { countControllableUnitHistory(seeded.cuId) }
 
             // then
-            count shouldBeGreaterThan 0
+            count shouldBe 1
         }
 
         test("PSO can read a CU after its membership has ended") {
@@ -110,6 +111,7 @@ class ControllableUnitRlsTest : FunSpec({
         test("SO cannot read the CU or its history after its membership is deleted") {
             // given
             val seeded = seedCuInGroupOfPso()
+            updateControllableUnitMaximumActivePower(seeded.cuId, 2.0)
             val unrelatedSo = seed(Triggers.OFF) { insertSystemOperator("Unrelated SO") }
             seed(Triggers.ON) { deleteMembership(seeded.membershipId) }
 
@@ -139,13 +141,24 @@ private fun seedCuInGroupOfPso(validTo: Instant? = null): SeededCuInGroup =
         SeededCuInGroup(cuId, membershipId, pso)
     }
 
+/** Updates the CU with triggers on, so that the previous version of the CU is moved to the history table. */
+private fun updateControllableUnitMaximumActivePower(cuId: Long, maximumActivePower: Double) =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        conn.prepareStatement("UPDATE flex.controllable_unit SET maximum_active_power = ? WHERE id = ?").use { stmt ->
+            stmt.setDouble(1, maximumActivePower)
+            stmt.setLong(2, cuId)
+            stmt.executeUpdate()
+        }
+        conn.commit()
+    }
+
 context(principal: FlexPrincipal)
 private suspend fun countControllableUnits(cuId: Long): Int = count("flex.controllable_unit", "id", cuId)
 
-/** Reads the history through the API view, which combines the current and the historical versions. */
 context(principal: FlexPrincipal)
-private suspend fun countControllableUnitHistory(cuId: Long): Int =
-    count("api.controllable_unit_history", "controllable_unit_id", cuId)
+private suspend fun countControllableUnitHistory(cuId: Long): Int = count("flex.controllable_unit_history", "id", cuId)
 
 context(principal: FlexPrincipal)
 private suspend fun count(table: String, column: String, id: Long): Int =
