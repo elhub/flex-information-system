@@ -41,7 +41,7 @@ The system also checks this regularly, so any missing grid prequalifications are
 | <a name="field-id" href="#field-id">id</a>                                                                               | Unique surrogate identifier.                                                                                                      | bigint<br/>Read only                                                                                                                     |                                                                   |
 | <a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a>       | Reference to the service providing group.                                                                                         | bigint<br/>Required<br/>Non-updatable                                                                                                    | [service_providing_group.id](service_providing_group.md#field-id) |
 | <a name="field-procuring_system_operator_id" href="#field-procuring_system_operator_id">procuring_system_operator_id</a> | Reference to the procuring system operator.                                                                                       | bigint<br/>Required<br/>Non-updatable                                                                                                    | [party.id](party.md#field-id)                                     |
-| <a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a>                                     | References to the product types.                                                                                                  | <br/>Required<br/>Array of bigint                                                                                                        | [product_type.id](product_type.md#field-id)                       |
+| <a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a>                                     | References to the product types.                                                                                                  | <br/>Required<br/>Array of bigint<br/>Must be exactly one product type                                                                   | [product_type.id](product_type.md#field-id)                       |
 | <a name="field-status" href="#field-status">status</a>                                                                   | The status of the application.                                                                                                    | text<br/>One of: `requested`, `prequalification`, `temporary_qualified`, `prequalified`, `verified`, `rejected`<br/>Default: `requested` |                                                                   |
 | <a name="field-maximum_active_power_up" href="#field-maximum_active_power_up">maximum_active_power_up</a>                | The maximum active power applied for in regulation direction up. Stored in kilowatts.                                             | decimal<br/>Required<br/>Min: `0`<br/>Max: `999999.999`<br/>Multiple of: `0.001`                                                         |                                                                   |
 | <a name="field-maximum_active_power_down" href="#field-maximum_active_power_down">maximum_active_power_down</a>          | The maximum active power applied for in regulation direction down. Stored in kilowatts.                                           | decimal<br/>Required<br/>Min: `0`<br/>Max: `999999.999`<br/>Multiple of: `0.001`                                                         |                                                                   |
@@ -65,11 +65,40 @@ The system also checks this regularly, so any missing grid prequalifications are
 | SPGPA-VAL004        | If `status` is set to `prequalified`, then `prequalified_at` must already be specified in the resource or the request.           | DONE   |
 | SPGPA-VAL005        | If `status` is set to `verified`, then `verified_at` must already be specified in the resource or the request.                   | DONE   |
 | SPGPA-VAL006        | If `status` is set to `rejected`, then both `prequalified_at` and `verified_at` must be unset in the resource or by the request. | DONE   |
-| SPGPA-VAL007        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_capability` must be set                               | DONE   |
-| SPGPA-VAL008        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_description` must be set                              | DONE   |
-| SPGPA-VAL009        | `product_type_ids` must not be empty.                                                                                            | DONE   |
+| SPGPA-VAL007        | Fields must, can or must not be set based on the `product_type` matrix below.                                                    | DONE   |
 | SPGPA-VAL010        | Product types can be applied for only once per SPG and system operator.                                                          | DONE   |
 | SPGPA-VAL011        | When `status` is different from `requested` or `rejected`, then `complete_at` must be set in the resource or by the request.     | DONE   |
+
+### Field and product type validation
+
+The following table what fields are required (R), optional (O) or disallowed (X)
+per product type. The product names are the short names in the [product type
+overview](./product_type.md).
+
+
+| Field                                 | Group       | New field? | mFRR | FCR | Comment                                                           |
+|---------------------------------------|-------------|------------|------|-----|-------------------------------------------------------------------|
+| service_provider_contact              | contact     | Yes        | R    | R   |                                                                   |
+| technical_aggergator_contact          | contact     | Yes        | O    | R   |                                                                   |
+| disturbance                           | disturbance | Yes        | R    | R   | If application is also for the disturbance variant of the product |
+| maximum_active_power_disturbance_up   | disturbance | Yes        | O    | O   | Required only if disturbance is checked                           |
+| maximum_active_power_disturbance_down | disturbance | Yes        | O    | O   | Required only if disturbance is checked                           |
+| maximum_active_power                  | normal      | Yes        | X    | R   |                                                                   |
+| maximum_active_power_up               | normal      | No         | R    | X   |                                                                   |
+| maximum_active_power_down             | normal      | No         | R    | X   |                                                                   |
+| ramping_capability                    | ramping     | No         | R    | X   |                                                                   |
+| ramping_description                   | ramping     | No         | R    | X   |                                                                   |
+| variable_energy_flow                  |             | Yes        | O    | R   |                                                                   |
+| limited_energy_reservoir              |             | Yes        | O    | R   |                                                                   |
+| planned_test_date                     |             | Yes        | O    | R   |                                                                   |
+
+Additional fields for system operator approved maximum active power:
+
+* approved_power_disturbance_up
+* approved_power_disturbance_down
+* approved_power
+* approved_power_up
+* approved_power_down
 
 ## Notifications
 
