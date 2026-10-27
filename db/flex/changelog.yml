@@ -298,9 +298,6 @@ databaseChangeLog:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
   - include:
-      file: ./controllable_unit_procuring_system_operator.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
@@ -327,7 +324,10 @@ databaseChangeLog:
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
-  # the notice view depends on the history tables, so it is created after them
+  # views that depend on the history tables are created after them
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
   - include:
       file: ./notice_fresh.sql
       relativeToChangelogFile: true
