@@ -1,9 +1,8 @@
-import { formatDate } from "date-fns";
 import { usePermissions, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { listPartyMembership } from "../../generated-client";
-import { throwOnError } from "../../util";
+import { throwOnError, toDateTimeString } from "../../util";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { Chips } from "../../components/ui";
 import { Permissions } from "../../auth/permissions";
@@ -69,7 +68,7 @@ export const EntityPartyMembershipList = ({
     {
       key: "recorded_at",
       header: t("party_membership.recorded_at"),
-      render: (value) => formatDate(String(value), "dd.MM.yyyy HH:mm"),
+      render: (value) => toDateTimeString(String(value)),
     },
   ];
 

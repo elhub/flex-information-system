@@ -77,25 +77,16 @@ export const cn = (...classes: (string | undefined)[]): string => {
 };
 
 // Format a date string (ISO) to "dd.MM.yyyy", or "-" if absent
-export const toDateString = (value: string | undefined): string => {
+export const toDateString = (value: string | undefined | null): string => {
   if (!value) return "-";
   return formatDate(value, "dd.MM.yyyy");
 };
 
-// Format a date-time string (ISO) to a local date (and, optionally, time)
-// string, or "-" if absent. To be used in all places needing to display a
-// date-time value (e.g., EDS-ra DateField).
-export const toDateTimeString = (
-  value: string | undefined | null,
-  { showTime = true }: { showTime?: boolean } = {},
-): string => {
+// Format a date-time string (ISO) to "dd.MM.yyyy HH:mm", or "-" if absent.
+// To be used in all places needing to display a date-time value.
+export const toDateTimeString = (value: string | undefined | null): string => {
   if (!value) return "-";
-  return new Date(value).toLocaleString(
-    "no-NO",
-    showTime
-      ? { dateStyle: "medium", timeStyle: "short", hour12: false }
-      : { dateStyle: "medium" },
-  );
+  return formatDate(value, "dd.MM.yyyy HH:mm");
 };
 
 // Format the elapsed time between two ISO date-time strings as e.g.
