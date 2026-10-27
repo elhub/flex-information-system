@@ -280,6 +280,22 @@ export const zNoticeDataControllableUnitProductDuplication = z.object({
 });
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.service_providing_group_grid_prequalification.outdated
+ */
+export const zNoticeDataServiceProvidingGroupGridPrequalificationOutdated =
+  z.object({
+    kind: z.literal(
+      "notice.data.service_providing_group_grid_prequalification.outdated",
+    ),
+    service_providing_group_id: z.coerce.number().optional(),
+    prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    added: z.coerce.number().optional(),
+    removed: z.coerce.number().optional(),
+    changed: z.coerce.number().optional(),
+    maximum_active_power_diff: z.coerce.number().optional(),
+  });
+
+/**
  * Common format of the data field in events concerning update operations.
  */
 export const zEventDataUpdatedFields = z.object({
@@ -1361,6 +1377,7 @@ export const zNoticeData = z.discriminatedUnion("kind", [
   zNoticeDataPartyIncompatible,
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
+  zNoticeDataServiceProvidingGroupGridPrequalificationOutdated,
 ]);
 
 /**
@@ -2671,6 +2688,7 @@ export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataPartyIncompatible,
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
+  zNoticeDataServiceProvidingGroupGridPrequalificationOutdated,
 ]);
 
 /**

@@ -95,6 +95,9 @@ from .notice_data_party_incompatible import NoticeDataPartyIncompatible
 from .notice_data_party_missing import NoticeDataPartyMissing
 from .notice_data_party_outdated import NoticeDataPartyOutdated
 from .notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
+from .notice_data_service_providing_group_grid_prequalification_outdated import (
+    NoticeDataServiceProvidingGroupGridPrequalificationOutdated,
+)
 from .notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 from .notice_response import NoticeResponse
 from .notice_status import NoticeStatus
@@ -387,6 +390,7 @@ __all__ = (
     "NoticeDataPartyMissing",
     "NoticeDataPartyOutdated",
     "NoticeDataProductTypeNotQualified",
+    "NoticeDataServiceProvidingGroupGridPrequalificationOutdated",
     "NoticeDataValidTimeOutsideContract",
     "NoticeResponse",
     "NoticeStatus",

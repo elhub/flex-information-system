@@ -4,6 +4,7 @@ import {
   ListServiceProvidingGroupMembershipHistoryData,
   ServiceProvidingGroupMembershipHistory,
   ControllableUnitHistory,
+  listAccountingPoint,
   listControllableUnitHistory,
   listIdentity,
   Identity,
@@ -120,15 +121,62 @@ export const membershipValidityChanged = (
   (oldMembership?.valid_from ?? null) !== (newMembership?.valid_from ?? null) ||
   (oldMembership?.valid_to ?? null) !== (newMembership?.valid_to ?? null);
 
+// Keeps only the CUs whose accounting point currently has the given system
+// operator (i.e., the CUs for which the system operator is the CSO).
+const filterSnapshotsOnSystemOperator = async (
+  snapshots: Map<number, ServiceProvidingGroupMembershipHistory>[],
+  systemOperatorId: number,
+): Promise<Map<number, ServiceProvidingGroupMembershipHistory>[]> => {
+  const accountingPointIds = new Set(
+    snapshots.flatMap((snapshot) =>
+      [...snapshot.values()].map(
+        (membership) =>
+          membership.controllable_unit_history?.[0]?.accounting_point_id,
+      ),
+    ),
+  );
+  accountingPointIds.delete(undefined);
+  if (accountingPointIds.size === 0) return snapshots;
+
+  const accountingPoints = await listAccountingPoint({
+    query: {
+      id: `in.(${[...accountingPointIds].join(",")})`,
+      system_operator_id: `eq.${systemOperatorId}`,
+    },
+  }).then(throwOnError);
+  const allowed = new Set(accountingPoints.map((ap) => ap.id));
+
+  return snapshots.map(
+    (snapshot) =>
+      new Map(
+        [...snapshot].filter(([, membership]) =>
+          allowed.has(
+            membership.controllable_unit_history?.[0]?.accounting_point_id ??
+              -1,
+          ),
+        ),
+      ),
+  );
+};
+
+// When systemOperatorId is given, only the CUs for which that system operator
+// is the (current) CSO are included.
 export const fetchSpgChanges = async (
   spgId: number,
   from: string,
   to: string,
+  systemOperatorId?: number,
 ): Promise<SpgChangeRow[]> => {
-  const [oldSnapshot, currentSnapshot] = await Promise.all([
+  let [oldSnapshot, currentSnapshot] = await Promise.all([
     fetchSnapshot(spgId, from),
     fetchSnapshot(spgId, to),
   ]);
+  if (systemOperatorId !== undefined) {
+    [oldSnapshot, currentSnapshot] = await filterSnapshotsOnSystemOperator(
+      [oldSnapshot, currentSnapshot],
+      systemOperatorId,
+    );
+  }
 
   const allIds = new Set([...oldSnapshot.keys(), ...currentSnapshot.keys()]);
 
@@ -192,16 +240,19 @@ export const spgChangesQueryKey = (
   spgId: number | undefined,
   from: string | undefined,
   to: string | undefined,
-) => ["serviceProvidingGroupChanges", spgId, from, to];
+  systemOperatorId?: number,
+) => ["serviceProvidingGroupChanges", spgId, from, to, systemOperatorId];
 
 export const useSpgChangesViewModel = (
   spgId: number | undefined,
   from: string | undefined,
   to: string | undefined,
+  systemOperatorId?: number,
 ) => {
   return useQuery({
-    queryKey: spgChangesQueryKey(spgId, from, to),
-    queryFn: () => fetchSpgChanges(spgId ?? 0, from ?? "", to ?? ""),
+    queryKey: spgChangesQueryKey(spgId, from, to, systemOperatorId),
+    queryFn: () =>
+      fetchSpgChanges(spgId ?? 0, from ?? "", to ?? "", systemOperatorId),
     enabled: !!spgId && !!from && !!to,
   });
 };
