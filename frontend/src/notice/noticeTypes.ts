@@ -113,6 +113,15 @@ const noticeTypes = [
     action: "Initiate SPG grid prequalification and update status.",
   },
   {
+    id: "no.elhub.flex.service_providing_group_grid_prequalification.outdated",
+    shortId: "service_providing_group_grid_prequalification.outdated",
+    label: "Outdated: SPG changed since grid prequalification",
+    description:
+      "The service providing group has changed by more than 50 kW (net) since it was grid prequalified.",
+    action:
+      "Review the changes and approve them, or follow up with the service provider.",
+  },
+  {
     id: "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract",
     shortId: "service_providing_group_membership.valid_time.outside_contract",
     label: "Inconsistency: SPG contains expired CU(s)",

@@ -53,6 +53,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Service Providing Group Grid Prequalification notices
     UNION ALL
     SELECT * FROM notice_spggp_status_requested
+    UNION ALL
+    SELECT * FROM notice_spggp_outdated
 
     -- Service Providing Group Grid Suspension notices
     UNION ALL

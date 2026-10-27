@@ -178,6 +178,12 @@ export type TextKey =
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
   | "spg_changes_summary_power_diff"
+  | "spgpq_changes_milestone_created"
+  | "spgpq_changes_milestone_approved"
+  | "spgpq_changes_approve_button"
+  | "spgpq_changes_approve_title"
+  | "spgpq_changes_approve_description"
+  | "spgpq_changes_approve_placeholder"
   | "spg_changes_comparison_scope"
   | "spg_changes_log_changed_by_label"
   | "spg_changes_log_property_category"
@@ -252,6 +258,8 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
+  | "notice_spggp_outdated_button"
+  | "notice_spggp_outdated_heading"
   | "notice_see_party_button"
   | "notice_see_source_button"
   | "notice_details"
@@ -549,6 +557,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
     spg_changes_summary_power_diff: "Flexible power diff",
+    spgpq_changes_milestone_created: "Created",
+    spgpq_changes_milestone_approved: "Grid prequalified",
+    spgpq_changes_approve_button: "Approve all changes",
+    spgpq_changes_approve_title: "Approve all changes",
+    spgpq_changes_approve_description:
+      "This approves the current state of the service providing group. The grid prequalification time is set to now, so the approval includes all changes up to this moment.",
+    spgpq_changes_approve_placeholder: "Comment (optional)",
     spg_changes_comparison_scope: "Comparison scope",
     spg_changes_log_changed_by_label: "Changed by",
     spg_changes_log_property_category: "Property: %{property}",
@@ -598,6 +613,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
     notice_spg_membership_button: "Go to SPG membership",
+    notice_spggp_outdated_button: "Review changes",
+    notice_spggp_outdated_heading:
+      "Changes since the service providing group was grid prequalified on %{date}",
     notice_missing_grid_location_button:
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
@@ -915,6 +933,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
     spg_changes_summary_power_diff: "Fleksibel effekt diff",
+    spgpq_changes_milestone_created: "Opprettet",
+    spgpq_changes_milestone_approved: "Nettprekvalifisert",
+    spgpq_changes_approve_button: "Godkjenn alle endringer",
+    spgpq_changes_approve_title: "Godkjenn alle endringer",
+    spgpq_changes_approve_description:
+      "Dette godkjenner gjeldende tilstand for fleksibilitetsgruppen. Tidspunktet for nettprekvalifiseringen settes til nå, slik at godkjenningen omfatter alle endringer frem til dette tidspunktet.",
+    spgpq_changes_approve_placeholder: "Kommentar (valgfritt)",
     spg_changes_comparison_scope: "Sammenligningsomfang",
     spg_changes_log_changed_by_label: "Endret av",
     spg_changes_log_property_category: "Egenskap: %{property}",
@@ -965,6 +990,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
     notice_spg_membership_button: "Gå til medlemskap for fleksibilitetsgruppe",
+    notice_spggp_outdated_button: "Se endringer",
+    notice_spggp_outdated_heading:
+      "Endringer siden fleksibilitetsgruppen ble nettprekvalifisert %{date}",
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",

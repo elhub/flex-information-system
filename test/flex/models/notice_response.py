@@ -16,6 +16,9 @@ if TYPE_CHECKING:
     from ..models.notice_data_party_missing import NoticeDataPartyMissing
     from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
     from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
+    from ..models.notice_data_service_providing_group_grid_prequalification_outdated import (
+        NoticeDataServiceProvidingGroupGridPrequalificationOutdated,
+    )
     from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
     from ..models.party_response import PartyResponse
 
@@ -39,7 +42,8 @@ class NoticeResponse:
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
         data (None | NoticeDataControllableUnitProductDuplication | NoticeDataPartyIncompatible | NoticeDataPartyMissing
-            | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified | NoticeDataValidTimeOutsideContract | Unset): The
+            | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
+            NoticeDataServiceProvidingGroupGridPrequalificationOutdated | NoticeDataValidTimeOutsideContract | Unset): The
             data of the notice.
         party (None | PartyResponse | Unset): Embedded party
     """
@@ -58,6 +62,7 @@ class NoticeResponse:
         | NoticeDataPartyMissing
         | NoticeDataPartyOutdated
         | NoticeDataProductTypeNotQualified
+        | NoticeDataServiceProvidingGroupGridPrequalificationOutdated
         | NoticeDataValidTimeOutsideContract
         | Unset
     ) = UNSET
@@ -72,6 +77,9 @@ class NoticeResponse:
         from ..models.notice_data_party_missing import NoticeDataPartyMissing  # noqa: PLC0415
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated  # noqa: PLC0415
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified  # noqa: PLC0415
+        from ..models.notice_data_service_providing_group_grid_prequalification_outdated import (
+            NoticeDataServiceProvidingGroupGridPrequalificationOutdated,  # noqa: PLC0415
+        )
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract  # noqa: PLC0415
         from ..models.party_response import PartyResponse  # noqa: PLC0415
 
@@ -107,6 +115,8 @@ class NoticeResponse:
         elif isinstance(self.data, NoticeDataProductTypeNotQualified):
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataControllableUnitProductDuplication):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeDataServiceProvidingGroupGridPrequalificationOutdated):
             data = self.data.to_dict()
         else:
             data = self.data
@@ -149,6 +159,9 @@ class NoticeResponse:
         from ..models.notice_data_party_missing import NoticeDataPartyMissing  # noqa: PLC0415
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated  # noqa: PLC0415
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified  # noqa: PLC0415
+        from ..models.notice_data_service_providing_group_grid_prequalification_outdated import (
+            NoticeDataServiceProvidingGroupGridPrequalificationOutdated,  # noqa: PLC0415
+        )
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract  # noqa: PLC0415
         from ..models.party_response import PartyResponse  # noqa: PLC0415
 
@@ -183,6 +196,7 @@ class NoticeResponse:
             | NoticeDataPartyMissing
             | NoticeDataPartyOutdated
             | NoticeDataProductTypeNotQualified
+            | NoticeDataServiceProvidingGroupGridPrequalificationOutdated
             | NoticeDataValidTimeOutsideContract
             | Unset
         ):
@@ -238,6 +252,16 @@ class NoticeResponse:
                 return componentsschemasnotice_data_type_5
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasnotice_data_type_6 = (
+                    NoticeDataServiceProvidingGroupGridPrequalificationOutdated.from_dict(data)
+                )
+
+                return componentsschemasnotice_data_type_6
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
             return cast(
                 None
                 | NoticeDataControllableUnitProductDuplication
@@ -245,6 +269,7 @@ class NoticeResponse:
                 | NoticeDataPartyMissing
                 | NoticeDataPartyOutdated
                 | NoticeDataProductTypeNotQualified
+                | NoticeDataServiceProvidingGroupGridPrequalificationOutdated
                 | NoticeDataValidTimeOutsideContract
                 | Unset,
                 data,
