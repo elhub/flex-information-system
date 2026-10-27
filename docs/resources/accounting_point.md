@@ -104,9 +104,9 @@ For party type abbreviations, check
 
 | FIELD              | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
 |--------------------|------|-----|----|----|------|----|----|----|-----|
-| id                 |      | R   | R  | R  | R    | R  | R  | R  |     |
-| business_id        |      | R   | R  | R  | R    | R  | R  | R  |     |
-| system_operator_id |      | R   | R  | R  | R    | R  | R  | R  |     |
-| location           |      | R   | R  | R  | R    | R  | R  | R  |     |
-| recorded_at        |      | R   | R  | R  | R    | R  | R  | R  |     |
-| recorded_by        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| id                 |      | R   |    |    | R    | R  | R  |    |     |
+| business_id        |      | R   |    |    | R    | R  | R  |    |     |
+| system_operator_id |      | R   |    |    | R    | R  | R  |    |     |
+| location           |      | R   |    |    | R    | R  | R  |    |     |
+| recorded_at        |      | R   |    |    | R    | R  | R  |    |     |
+| recorded_by        |      | R   |    |    | R    | R  | R  |    |     |

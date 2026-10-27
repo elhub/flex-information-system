@@ -1,5 +1,7 @@
 package no.elhub.flex
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import liquibase.Liquibase
 import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
@@ -81,6 +83,25 @@ object PostgresTestContainer {
      */
     fun <T> withConnection(block: (Connection) -> T): T =
         DriverManager.getConnection(jdbcUrl, flexUsername, flexPassword).use(block)
+
+    /**
+     * Exposed [Database] connected as the `flex_staging_structure_data` login role, which is how
+     * the jobs connect in production.
+     */
+    val stagingDatabase: Database by lazy {
+        // same pool settings as createDataSource() in job mode
+        Database.connect(
+            HikariDataSource(
+                HikariConfig().apply {
+                    jdbcUrl = this@PostgresTestContainer.jdbcUrl
+                    driverClassName = "org.postgresql.Driver"
+                    username = "flex_staging_structure_data"
+                    password = "staging_structure_data_password"
+                    transactionIsolation = "TRANSACTION_READ_COMMITTED"
+                },
+            ),
+        )
+    }
 
     private fun applyMigrations() {
         val changelogFile = "changelog.yml"

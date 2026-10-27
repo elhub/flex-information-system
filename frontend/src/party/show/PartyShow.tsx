@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { toDateTimeString } from "../../util";
 import {
   ShowBase,
   usePermissions,
@@ -44,7 +44,7 @@ const PartyShowTabs = ({
           you are an organisation administrator, you can add or remove members
           to this party.
         </BodyText>
-        <PartyMembershipList borderless />
+        <PartyMembershipList />
       </Tabs.Panel>
       <Tabs.Panel value="entity">
         <EntityShow entityId={entityId} />
@@ -81,14 +81,9 @@ const PartySummary = (): ResourceSummaryField[] => {
       value: party.type,
     },
     {
-      labelKey: "party.status",
-      value: translateEnum(`party.status.${party.status}`),
-      tooltip: true,
-    },
-    {
       labelKey: "party.recorded_at",
       value: party.recorded_at
-        ? formatDate(party.recorded_at, "dd.MM.yyyy HH:mm")
+        ? toDateTimeString(party.recorded_at)
         : undefined,
       tooltip: true,
     },

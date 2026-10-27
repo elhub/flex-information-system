@@ -56,7 +56,7 @@ class ControllableUnitLookup(
         val requestingPartyId = call.attributes[AccessTokenKey].partyId
         var accountingPointBusinessIdForMetrics: String? = null
 
-        with(FlexPrincipal.internalData()) {
+        with(FlexPrincipal.internalData) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }

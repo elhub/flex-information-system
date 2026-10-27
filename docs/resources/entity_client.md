@@ -141,14 +141,14 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../auth/authn-model.md#party-market-actors).
 
-| FIELD         | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
-|---------------|------|-----|----|----|------|----|----|----|-----|
-| id            |      | R   | R  | R  | R    | R  | R  | R  | R   |
-| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | RC  |
-| name          |      | R   | R  | R  | R    | R  | R  | R  | RCU |
-| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R   |
-| party_id      |      | R   | R  | R  | R    | R  | R  | R  | RCU |
-| scopes        |      | R   | R  | R  | R    | R  | R  | R  | RCU |
-| public_key    |      | R   | R  | R  | R    | R  | R  | R  | RCU |
-| recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R   |
-| recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| FIELD       | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|-----|
+| id          |      |     |    |    | R    |    |    |    | R   |
+| entity_id   |      |     |    |    | R    |    |    |    | RC  |
+| name        |      |     |    |    | R    |    |    |    | RCU |
+| client_id   |      |     |    |    | R    |    |    |    | R   |
+| party_id    |      |     |    |    | R    |    |    |    | RCU |
+| scopes      |      |     |    |    | R    |    |    |    | RCU |
+| public_key  |      |     |    |    | R    |    |    |    | RCU |
+| recorded_at |      |     |    |    | R    |    |    |    | R   |
+| recorded_by |      |     |    |    | R    |    |    |    | R   |

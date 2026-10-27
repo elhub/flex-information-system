@@ -46,6 +46,7 @@ import {
   ToggleGroup,
   Tooltip,
   VerticalSpace,
+  type SortState,
 } from "@elhub/ds-components";
 import FormContainer from "./formContainer";
 import { Datepicker } from "./datepicker/Datepicker";
@@ -105,6 +106,7 @@ export {
   Tabs,
   Tag,
   type TagVariant,
+  type SortState,
   TextField,
   Tooltip,
   VerticalSpace,

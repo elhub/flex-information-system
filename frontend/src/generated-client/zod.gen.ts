@@ -254,6 +254,15 @@ export const zNoticeDataValidTimeOutsideContract = z.object({
 });
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.party.incompatible
+ */
+export const zNoticeDataPartyIncompatible = z.object({
+  kind: z.literal("notice.data.party.incompatible"),
+  entity: z.coerce.number().optional(),
+  party: z.array(z.coerce.number()).optional(),
+});
+
+/**
  * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export const zNoticeDataProductTypeNotQualified = z.object({
@@ -568,6 +577,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "prequalified",
   "verified",
   "rejected",
+  "inactive",
 ]);
 
 /**
@@ -1348,6 +1358,7 @@ export const zNoticeData = z.discriminatedUnion("kind", [
   zNoticeDataValidTimeOutsideContract,
   zNoticeDataPartyMissing,
   zNoticeDataPartyOutdated,
+  zNoticeDataPartyIncompatible,
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
 ]);
@@ -2657,6 +2668,7 @@ export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataValidTimeOutsideContract,
   zNoticeDataPartyMissingWritable,
   zNoticeDataPartyOutdatedWritable,
+  zNoticeDataPartyIncompatible,
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
 ]);

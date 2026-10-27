@@ -237,21 +237,21 @@ class ServiceProvidingGroupHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_history_response import PartyHistoryResponse
+        from ..models.party_history_response import PartyHistoryResponse  # noqa: PLC0415
         from ..models.service_providing_group_grid_prequalification_history_response import (
-            ServiceProvidingGroupGridPrequalificationHistoryResponse,
+            ServiceProvidingGroupGridPrequalificationHistoryResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_grid_suspension_history_response import (
-            ServiceProvidingGroupGridSuspensionHistoryResponse,
+            ServiceProvidingGroupGridSuspensionHistoryResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_membership_history_response import (
-            ServiceProvidingGroupMembershipHistoryResponse,
+            ServiceProvidingGroupMembershipHistoryResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_product_application_history_response import (
-            ServiceProvidingGroupProductApplicationHistoryResponse,
+            ServiceProvidingGroupProductApplicationHistoryResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_product_suspension_history_response import (
-            ServiceProvidingGroupProductSuspensionHistoryResponse,
+            ServiceProvidingGroupProductSuspensionHistoryResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

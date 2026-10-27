@@ -78,7 +78,7 @@ class ProductTypeResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
+        from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

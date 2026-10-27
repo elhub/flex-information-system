@@ -121,17 +121,17 @@ For party type abbreviations, check
 
 | FIELD                  | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                     |      | R   | R  | R  | R    | R  | R   | R  |     |
-| name                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| controllable_unit_id   |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| technology             |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| category               |      | R   | R  | R  | R    | R  | R   | R  |     |
-| maximum_active_power   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| device_type            |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| make                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| model                  |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| business_id            |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| business_id_type       |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| additional_information |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recorded_at            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by            |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                     |      | R   | R  | R  | R    | R  | R   |    |     |
+| name                   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| controllable_unit_id   |      | R   | R  | R  | RC   | R  | RC  |    |     |
+| technology             |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| category               |      | R   | R  | R  | R    | R  | R   |    |     |
+| maximum_active_power   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| device_type            |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| make                   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| model                  |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| business_id            |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| business_id_type       |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| additional_information |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| recorded_at            |      | R   | R  | R  | R    | R  | R   |    |     |
+| recorded_by            |      | R   | R  | R  | R    | R  | R   |    |     |

@@ -1,5 +1,10 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "simple_table.load_error"
+  | "list_table.load_error"
+  | "list_filter.no_results"
+  | "list_filter.reset_filters"
+  | "list_filter.clear_filters"
   | "delete"
   | "delete_confirm"
   | "dashboard.application"
@@ -11,8 +16,14 @@ export type TextKey =
   | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "create"
   | "entity.see_more"
   | "entity.client"
+  | "entity.party_memberships"
+  | "entity.owned_parties"
+  | "entity.client_description"
+  | "entity.party_memberships_description"
+  | "entity.owned_parties_description"
   | "entity.name"
   | "print"
   | "service_providing_group"
@@ -60,6 +71,7 @@ export type TextKey =
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
   | "table.header.grid_prequalification"
+  | "table.header.pso_grid_prequalification"
   | "table.header.product_application"
   | "table.header.valid_from"
   | "table.header.valid_to"
@@ -136,6 +148,7 @@ export type TextKey =
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
   | "spg_show_table_search_label"
+  | "spg_show_table_location_quality"
   | "spg_show_table_search_clear"
   | "spg_show_table_search_placeholder"
   | "spg_changes_period_heading"
@@ -244,6 +257,9 @@ export type TextKey =
   | "notice_details"
   | "notice_description"
   | "notice_action"
+  | "notice_party_incompatible_intro"
+  | "notice_party_incompatible_empty"
+  | "notice_party_incompatible_also"
   | "accounting_point_show.header"
   | "accounting_point_location_map.popup.business_id"
   | "accounting_point_location_map.popup.kind"
@@ -282,6 +298,12 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     "simple_table.no_results": "No results",
+    "simple_table.load_error": "An error occurred while retrieving the data.",
+    "list_table.load_error": "Could not load the list.",
+    "list_filter.no_results": "No matching options",
+    "list_filter.reset_filters": "Reset filters",
+    "list_filter.clear_filters": "Clear filters",
+    create: "Create",
     "dashboard.application": "Application",
     "dashboard.sp_product_application": "SP Product Application",
     "dashboard.spg_product_application": "SPG Product Application",
@@ -292,6 +314,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
+    "entity.party_memberships": "Party memberships",
+    "entity.owned_parties": "Owned parties",
+    "entity.client_description": "The following clients belong to this entity.",
+    "entity.party_memberships_description":
+      "The following parties can be assumed by this entity. Each membership shows the scopes the entity is allowed to use when assuming the party.",
+    "entity.owned_parties_description":
+      "The following parties are owned by this entity.",
     "entity.name": "Entity",
     edit: "Edit",
     print: "Print",
@@ -342,6 +371,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
     "table.header.grid_prequalification": "Grid prequalification",
+    "table.header.pso_grid_prequalification": "Grid prequalification (PSO)",
     "table.header.product_application": "Product application",
     "table.header.valid_from": "Valid from",
     "table.header.valid_to": "Valid to",
@@ -473,6 +503,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_create_additional_information_placeholder:
       "This field is optional and can be left empty.",
     spg_show_table_search_label: "Search",
+    spg_show_table_location_quality: "Location quality",
     spg_show_table_search_clear: "Clear",
     spg_show_table_search_placeholder:
       "Filter by name, id, accounting point id or system operator",
@@ -577,6 +608,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_details: "Notice details",
     notice_description: "Description",
     notice_action: "Action",
+    notice_party_incompatible_intro:
+      "Person %{entity} can act as the following parties in the system:",
+    notice_party_incompatible_empty: "No parties",
+    notice_party_incompatible_also:
+      "The person can also act as the following parties, that are incompatible with the previous list:",
     "accounting_point_location_map.popup.business_id": "Business ID",
     "accounting_point_location_map.popup.kind": "Kind",
     "accounting_point_location_map.popup.status": "Status",
@@ -626,6 +662,12 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     "simple_table.no_results": "Ingen resultater",
+    "simple_table.load_error": "Det oppstod en feil under henting av data.",
+    "list_table.load_error": "Kunne ikke laste listen.",
+    "list_filter.no_results": "Ingen treff",
+    "list_filter.reset_filters": "Tilbakestill filtre",
+    "list_filter.clear_filters": "Fjern filtre",
+    create: "Opprett",
     "dashboard.application": "Søknad",
     "dashboard.sp_product_application": "SP-produktsøknad",
     "dashboard.spg_product_application": "SPG-produktsøknad",
@@ -686,6 +728,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "table.header.grid_prequalification": "Nettprekvalifisering",
+    "table.header.pso_grid_prequalification": "Nettprekvalifisering (PSO)",
     "table.header.product_application": "Produktprekvalifisering",
     "table.header.valid_from": "Gyldig fra",
     "table.header.valid_to": "Gyldig til",
@@ -724,6 +767,13 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "entity.see_more": "Se Entitet",
     "entity.client": "Klienter",
+    "entity.party_memberships": "Aktørtilknytninger",
+    "entity.owned_parties": "Eide aktører",
+    "entity.client_description": "Følgende klienter tilhører denne entiteten.",
+    "entity.party_memberships_description":
+      "Følgende aktører kan inntas av denne entiteten. Hver tilknytning viser hvilke scopes entiteten har lov til å bruke når den opptrer som aktøren.",
+    "entity.owned_parties_description":
+      "Følgende aktører eies av denne entiteten.",
     "entity.name": "Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
@@ -819,6 +869,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_create_additional_information_placeholder:
       "Dette feltet er valgfritt og kan stå tomt.",
     spg_show_table_search_label: "S\u00f8k",
+    spg_show_table_location_quality: "Kvalitet p\u00e5 lokasjon",
     spg_show_table_search_clear: "Fjern",
     spg_show_table_search_placeholder:
       "Filtrer p\u00e5 navn, id, avregningspunkt eller systemoperat\u00f8r",
@@ -923,6 +974,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_details: "Merknadsdetaljer",
     notice_description: "Beskrivelse",
     notice_action: "Handling",
+    notice_party_incompatible_intro:
+      "Personen %{entity} kan opptre som følgende aktører i systemet:",
+    notice_party_incompatible_empty: "Ingen parter",
+    notice_party_incompatible_also:
+      "Personen kan også opptre som følgende aktører, som er ukompatible med den forrige listen:",
     "accounting_point_location_map.popup.business_id": "Forretnings-ID",
     "accounting_point_location_map.popup.kind": "Type",
     "accounting_point_location_map.popup.status": "Status",

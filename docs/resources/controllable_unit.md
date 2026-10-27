@@ -125,7 +125,7 @@ No policies.
 | Policy key | Policy                                                       | Status |
 |------------|--------------------------------------------------------------|--------|
 | CU-SO001   | Read and update CU that are connected to AP belonging to SO. | DONE   |
-| CU-SO002   | Read CU where they are ISO or PSO.                           | DONE   |
+| CU-SO002   | Read CU where they are PSO.                                  | DONE   |
 | CU-SO003   | Read history on CU that they can read.                       | DONE   |
 
 #### Service Provider
@@ -149,15 +149,15 @@ For party type abbreviations, check
 
 | FIELD                  | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
 |------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                     |      | R   | R  | R  | R    | R  | R   | R  |     |
-| business_id            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| name                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| regulation_direction   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| maximum_active_power   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| is_small               |      | R   | R  | R  | R    | R  | R   | R  |     |
-| start_date             |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| status                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| accounting_point_id    |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| additional_information |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recorded_at            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by            |      | R   | R  | R  | R    | R  | R   | R  |     |
+| id                     |      | R   | R  | R  | R    | R  | R   |    |     |
+| business_id            |      | R   | R  | R  | R    | R  | R   |    |     |
+| name                   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| regulation_direction   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| maximum_active_power   |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| is_small               |      | R   | R  | R  | R    | R  | R   |    |     |
+| start_date             |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| status                 |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| accounting_point_id    |      | R   | R  | R  | RC   | R  | RC  |    |     |
+| additional_information |      | R   | R  | R  | RCU  | R  | RCU |    |     |
+| recorded_at            |      | R   | R  | R  | R    | R  | R   |    |     |
+| recorded_by            |      | R   | R  | R  | R    | R  | R   |    |     |

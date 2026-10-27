@@ -13,7 +13,7 @@ class SubstationRepositoryTest : FunSpec({
 
     val repo = SubstationRepositoryImpl()
 
-    val internalDataPrincipal = FlexPrincipal.internalData()
+    val internalDataPrincipal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

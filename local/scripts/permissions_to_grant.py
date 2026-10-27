@@ -128,6 +128,9 @@ if __name__ == "__main__":
 
     for resource in grants.keys():
         for party_type in grants[resource].keys():
+            if len(grants[resource][party_type]["SELECT"]) == 0:
+                # a role that cannot read the resource gets no grants on it
+                continue
             for grant in grants[resource][party_type].keys():
                 if "*" in grants[resource][party_type][grant]:
                     # grant for whole resource

@@ -5,6 +5,8 @@
 -- This view combines all notice types from individual views.
 -- Individual views are defined in separate files for maintainability.
 -- noqa: disable=AM04
+-- dropped first so that definition changes are applied on existing databases
+DROP MATERIALIZED VIEW IF EXISTS notice_fresh;
 CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit notices
     -- Controllable Unit Service Provider notices
@@ -71,6 +73,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     SELECT * FROM notice_party_outdated
     UNION ALL
     SELECT * FROM notice_party_residual
+    UNION ALL
+    SELECT * FROM notice_party_incompatible
 
     -- Accounting Point Grid Location notices
     UNION ALL

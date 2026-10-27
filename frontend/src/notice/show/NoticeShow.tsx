@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { toDateTimeString } from "../../util";
 import { Link as RouterLink } from "react-router-dom";
 import { ShowBase, useRecordContext, useTranslate } from "ra-core";
 import {
@@ -156,7 +156,7 @@ const NoticeShowContent = () => {
     {
       labelKey: "notice.recorded_at",
       value: notice.recorded_at
-        ? formatDate(notice.recorded_at, "dd.MM.yyyy HH:mm")
+        ? toDateTimeString(notice.recorded_at)
         : undefined,
       tooltip: true,
     },

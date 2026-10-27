@@ -18,6 +18,7 @@ import {
 import { getFields } from "../../zod";
 import { SimpleTable } from "../../components/SimpleTable";
 import { DataTable } from "../../components/EDS-ra/list/Datagrid";
+import { NoticePartyIncompatible } from "./NoticePartyIncompatible";
 import { NoticePartyMissing } from "./NoticePartyMissing";
 import { NoticePartyOutdated } from "./NoticePartyOutdated";
 import { NoticePartyResidual } from "./NoticePartyResidual";
@@ -184,6 +185,9 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
   ),
   "no.elhub.flex.party.missing": (notice) => (
     <NoticePartyMissing noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.incompatible": (notice) => (
+    <NoticePartyIncompatible noticeData={notice.data} />
   ),
   "no.elhub.flex.party.residual": (notice) => (
     <NoticePartyResidual source={notice.source} />

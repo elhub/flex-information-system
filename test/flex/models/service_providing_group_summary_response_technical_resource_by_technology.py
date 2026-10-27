@@ -17,8 +17,6 @@ T = TypeVar("T", bound="ServiceProvidingGroupSummaryResponseTechnicalResourceByT
 
 @_attrs_define
 class ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology:
-    """ """
-
     additional_properties: dict[
         str, ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty
     ] = _attrs_field(init=False, factory=dict)
@@ -34,7 +32,7 @@ class ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_providing_group_summary_response_technical_resource_by_technology_additional_property import (
-            ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
+            ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

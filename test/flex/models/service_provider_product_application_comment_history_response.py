@@ -139,7 +139,7 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.service_provider_product_application_history_response import (
-            ServiceProviderProductApplicationHistoryResponse,
+            ServiceProviderProductApplicationHistoryResponse,  # noqa: PLC0415
         )
 
         d = dict(src_dict)

@@ -20,7 +20,7 @@ import kotlin.time.toJavaInstant
 class AccountingPointSyncRepositoryTest : FunSpec({
 
     val repo = AccountingPointSyncRepositoryImpl()
-    val principal = FlexPrincipal.internalData()
+    val principal = FlexPrincipal.internalData
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->

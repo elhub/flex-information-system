@@ -839,10 +839,10 @@ def test_spgpa_no_duplicate_product_types(data):
     assert not isinstance(u, ErrorMessage)
 
 
-def test_spgpa_common(data):
+def test_spgpa_history_read(data):
     (sts, _, _, _, _, _, _) = data
 
-    for role in sts.COMMON_ROLES:
+    for role in sts.SPG_ROLES:
         client = sts.get_client(TestEntityClient.TEST, role)
 
         spgpa_visible = list_service_providing_group_product_application.sync(
@@ -871,3 +871,91 @@ def test_spgpa_common(data):
                 hist_spgpa,
                 ServiceProvidingGroupProductApplicationHistoryResponse,
             )
+
+
+def test_no_read_access(data):
+    (sts, _, _, _, _, _, _) = data
+
+    for role in sts.NO_SPG_ROLES:
+        spgpas = list_service_providing_group_product_application.sync(
+            client=sts.get_client(TestEntityClient.TEST, role),
+        )
+        assert isinstance(spgpas, ErrorMessage)
+        assert spgpas.code == "42501"
+
+
+# RLS: SPGPA-SP002
+def test_spgpa_sp_inactive(data):
+    (sts, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+    client_so = so_clients[0]
+
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_ids[0],
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    spgpa_id = cast(int, spgpa.id)
+
+    def sp_set_status(status):
+        return update_service_providing_group_product_application.sync(
+            client=client_sp,
+            id=spgpa_id,
+            body=ServiceProvidingGroupProductApplicationUpdateRequest(status=status),
+        )
+
+    # SP can deactivate a requested application
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.INACTIVE)
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert u.status == ServiceProvidingGroupProductApplicationStatus.INACTIVE
+
+    # SP cannot do anything else from inactive than going back to requested
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION)
+    assert isinstance(u, ErrorMessage)
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.INACTIVE)
+    assert isinstance(u, ErrorMessage)
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=spgpa_id,
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            maximum_active_power_up=2.0,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # SP can put it back to requested
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.REQUESTED)
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert u.status == ServiceProvidingGroupProductApplicationStatus.REQUESTED
+
+    # SP cannot deactivate once the SO has started processing it
+    u = update_service_providing_group_product_application.sync(
+        client=client_so,
+        id=spgpa_id,
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.INACTIVE)
+    assert isinstance(u, ErrorMessage)
+
+    # SO and FISO are not restricted by the SP rule
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=spgpa_id,
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.INACTIVE,
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.REQUESTED)
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)

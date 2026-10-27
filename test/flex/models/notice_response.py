@@ -12,6 +12,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.notice_data_controllable_unit_product_duplication import NoticeDataControllableUnitProductDuplication
+    from ..models.notice_data_party_incompatible import NoticeDataPartyIncompatible
     from ..models.notice_data_party_missing import NoticeDataPartyMissing
     from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
     from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
@@ -37,8 +38,9 @@ class NoticeResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
-        data (None | NoticeDataControllableUnitProductDuplication | NoticeDataPartyMissing | NoticeDataPartyOutdated |
-            NoticeDataProductTypeNotQualified | NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
+        data (None | NoticeDataControllableUnitProductDuplication | NoticeDataPartyIncompatible | NoticeDataPartyMissing
+            | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified | NoticeDataValidTimeOutsideContract | Unset): The
+            data of the notice.
         party (None | PartyResponse | Unset): Embedded party
     """
 
@@ -52,6 +54,7 @@ class NoticeResponse:
     data: (
         None
         | NoticeDataControllableUnitProductDuplication
+        | NoticeDataPartyIncompatible
         | NoticeDataPartyMissing
         | NoticeDataPartyOutdated
         | NoticeDataProductTypeNotQualified
@@ -63,13 +66,14 @@ class NoticeResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.notice_data_controllable_unit_product_duplication import (
-            NoticeDataControllableUnitProductDuplication,
+            NoticeDataControllableUnitProductDuplication,  # noqa: PLC0415
         )
-        from ..models.notice_data_party_missing import NoticeDataPartyMissing
-        from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
-        from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
-        from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
-        from ..models.party_response import PartyResponse
+        from ..models.notice_data_party_incompatible import NoticeDataPartyIncompatible  # noqa: PLC0415
+        from ..models.notice_data_party_missing import NoticeDataPartyMissing  # noqa: PLC0415
+        from ..models.notice_data_party_outdated import NoticeDataPartyOutdated  # noqa: PLC0415
+        from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified  # noqa: PLC0415
+        from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -97,6 +101,8 @@ class NoticeResponse:
         elif isinstance(self.data, NoticeDataPartyMissing):
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataPartyOutdated):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeDataPartyIncompatible):
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataProductTypeNotQualified):
             data = self.data.to_dict()
@@ -137,13 +143,14 @@ class NoticeResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.notice_data_controllable_unit_product_duplication import (
-            NoticeDataControllableUnitProductDuplication,
+            NoticeDataControllableUnitProductDuplication,  # noqa: PLC0415
         )
-        from ..models.notice_data_party_missing import NoticeDataPartyMissing
-        from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
-        from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
-        from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
-        from ..models.party_response import PartyResponse
+        from ..models.notice_data_party_incompatible import NoticeDataPartyIncompatible  # noqa: PLC0415
+        from ..models.notice_data_party_missing import NoticeDataPartyMissing  # noqa: PLC0415
+        from ..models.notice_data_party_outdated import NoticeDataPartyOutdated  # noqa: PLC0415
+        from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified  # noqa: PLC0415
+        from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -172,6 +179,7 @@ class NoticeResponse:
         ) -> (
             None
             | NoticeDataControllableUnitProductDuplication
+            | NoticeDataPartyIncompatible
             | NoticeDataPartyMissing
             | NoticeDataPartyOutdated
             | NoticeDataProductTypeNotQualified
@@ -209,7 +217,7 @@ class NoticeResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemasnotice_data_type_3 = NoticeDataProductTypeNotQualified.from_dict(data)
+                componentsschemasnotice_data_type_3 = NoticeDataPartyIncompatible.from_dict(data)
 
                 return componentsschemasnotice_data_type_3
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -217,14 +225,23 @@ class NoticeResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemasnotice_data_type_4 = NoticeDataControllableUnitProductDuplication.from_dict(data)
+                componentsschemasnotice_data_type_4 = NoticeDataProductTypeNotQualified.from_dict(data)
 
                 return componentsschemasnotice_data_type_4
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasnotice_data_type_5 = NoticeDataControllableUnitProductDuplication.from_dict(data)
+
+                return componentsschemasnotice_data_type_5
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(
                 None
                 | NoticeDataControllableUnitProductDuplication
+                | NoticeDataPartyIncompatible
                 | NoticeDataPartyMissing
                 | NoticeDataPartyOutdated
                 | NoticeDataProductTypeNotQualified

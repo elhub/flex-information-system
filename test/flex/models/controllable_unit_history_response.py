@@ -232,13 +232,15 @@ class ControllableUnitHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_service_provider_history_response import (
-            ControllableUnitServiceProviderHistoryResponse,
+            ControllableUnitServiceProviderHistoryResponse,  # noqa: PLC0415
         )
-        from ..models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
+        from ..models.controllable_unit_suspension_history_response import (
+            ControllableUnitSuspensionHistoryResponse,  # noqa: PLC0415
+        )
         from ..models.service_providing_group_membership_history_response import (
-            ServiceProvidingGroupMembershipHistoryResponse,
+            ServiceProvidingGroupMembershipHistoryResponse,  # noqa: PLC0415
         )
-        from ..models.technical_resource_history_response import TechnicalResourceHistoryResponse
+        from ..models.technical_resource_history_response import TechnicalResourceHistoryResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

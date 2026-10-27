@@ -10,7 +10,7 @@ WITH (security_invoker = false) AS (
         spgpa_pso.service_providing_group_id,
         spgpa_pso.procuring_system_operator_id AS impacted_system_operator_id
     FROM flex.service_providing_group_product_application AS spgpa_pso
-    WHERE spgpa_pso.status NOT IN ('requested', 'rejected')
+    WHERE spgpa_pso.status NOT IN ('requested', 'rejected', 'inactive')
 
     UNION
 
@@ -39,7 +39,7 @@ WITH (security_invoker = false) AS (
                 cu.accounting_point_id = ap_so.accounting_point_id
                 AND spgm.valid_time_range && ap_so.valid_time_range
     -- the SPG-PA is being processed so the CSO should grid-prequalify the SPG
-    WHERE spgpa.status NOT IN ('requested', 'rejected')
+    WHERE spgpa.status NOT IN ('requested', 'rejected', 'inactive')
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-sync-function runOnChange:true endDelimiter:--

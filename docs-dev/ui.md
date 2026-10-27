@@ -108,3 +108,45 @@ summary-field presentation. It uses structured, typed props such as
 Workflow and display controls can still be supplied by each page, but the layout
 defines where they appear. Pages provide the tabs and define their content. Use
 `ResourceShowLayout` for new resource show pages.
+
+## List page layout
+
+Top-level resource list pages use a consistent layout, provided by the
+`ResourceListLayout` component in `components/list`. It is built from small
+parts that only depend on the `ListInterface` contract
+(`components/list/types.ts`), so the layout does not know where the data comes
+from.
+
+| Part                 | Responsibility                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ResourceListLayout` | Heading, optional actions (such as a create button) and composition of the parts below.                                                          |
+| `ListFilters`        | Filter bar built from typed filter definitions (`text`, `select` or `multiselect`), with reset/clear buttons.                                    |
+| `ListTable`          | Sortable table from column definitions. Handles error, loading and empty states. Rows can link to a show page, expand or have an actions column. |
+| `ListPagination`     | Page selector and page size.                                                                                                                     |
+| `useListState`       | Filter, sort and paging state, kept in the URL search params.                                                                                    |
+| `useXxxList`         | Per-resource hook (for example `useControllableUnitList`) that fetches the data and returns a `ListInterface`.                                   |
+
+`buildListQuery` in `components/list/postgrest.ts` translates the list state
+into a PostgREST query, and is used by the per-resource hooks.
+
+### Filters and default filters
+
+Filters are keyed by a PostgREST-style source, such as `name@ilike` or
+`status@in`. The filter state lives in the URL, so list pages are linkable and
+survive navigation back from a show page.
+
+A page can define default filters, for example showing only active controllable
+units. They behave as follows:
+
+* The defaults apply until the user changes a filter. At that point, the
+  defaults currently shown are copied into the URL together with the change, so
+  changing one filter doesn't silently drop the others.
+* "Reset filters" goes back to the page's defaults. It is only enabled when the
+  page has defaults and the current filters differ from them.
+* "Clear filters" removes all filters, including the defaults.
+
+### When to use it
+
+`ResourceListLayout` is meant for top-level list pages. For tables embedded
+elsewhere, such as in tabs on show pages, use `SimpleTable`, which takes data
+that is already loaded and has no state of its own.

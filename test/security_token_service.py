@@ -128,6 +128,9 @@ KEYS_DIR = Path(__file__).parent / "keys"
 
 class SecurityTokenService:
     COMMON_ROLES = ["BRP", "EU", "ES", "FISO", "MO", "SP", "SO", "TP"]
+    # roles with / without read policies on SPG related resources (SPG, SPGGP, SPPA, SPGPA, ...)
+    SPG_ROLES = ["FISO", "SP", "SO"]
+    NO_SPG_ROLES = ["BRP", "EU", "ES", "MO", "TP"]
     api_url = os.environ["FLEX_URL_BASE"] + "/api/v1"
 
     # make this class a singleton so the caches of memoised methods are shared

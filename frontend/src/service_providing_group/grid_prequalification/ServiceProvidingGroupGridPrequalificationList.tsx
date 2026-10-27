@@ -1,110 +1,153 @@
-import {
-  usePermissions,
-  useRecordContext,
-  ResourceContextProvider,
-} from "ra-core";
-import { Link } from "react-router-dom";
-import { Datagrid, List } from "../../components/EDS-ra/list";
-import {
-  DateField,
-  EnumField,
-  ReferenceField,
-  TextField,
-} from "../../components/EDS-ra/fields";
-import { Button } from "../../components/ui";
+import { Link as RouterLink } from "react-router-dom";
+import { usePermissions, useTranslate } from "ra-core";
 import { IconPlus } from "@elhub/ds-icons";
+import { ResourceListLayout } from "../../components/list/ResourceListLayout";
+import type { ListColumn, ListFilterDef } from "../../components/list/types";
+import { StatusBadge } from "../../components/StatusBadge";
+import { BodyText, Button } from "../../components/ui";
 import { Permissions } from "../../auth/permissions";
-import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
-import { getFields } from "../../zod";
-import { useTranslateField } from "../../intl/intl";
+import { usePartyOptions } from "../../hooks/partyOptions";
+import { toDateTimeString } from "../../util";
+import type { ServiceProvidingGroupGridPrequalification } from "../../generated-client";
+import { spgpqStatusVariantMap } from "./spgpqStatus";
+import {
+  SPG_NAME_FILTER_SOURCE,
+  useServiceProvidingGroupGridPrequalificationList,
+} from "./useServiceProvidingGroupGridPrequalificationList";
 
-const CreateButton = ({ id }: { id: any }) => (
-  <Button
-    as={Link}
-    icon={IconPlus}
-    to={
-      id
-        ? `/service_providing_group/${id}/grid_prequalification/create`
-        : "/service_providing_group_grid_prequalification/create"
-    }
-    state={{ service_providing_group_id: id }}
-    variant="invisible"
-  >
-    Create
-  </Button>
-);
+const Dash = () => <BodyText size="small">-</BodyText>;
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
-  const t = useTranslateField();
-  const record = useRecordContext();
-  const id = record?.id;
   const { permissions } = usePermissions<Permissions>();
+  const translate = useTranslate();
+  const { list } = useServiceProvidingGroupGridPrequalificationList();
+  const systemOperators = usePartyOptions("system_operator");
 
-  const canRead = permissions?.allow(
-    "service_providing_group_grid_prequalification",
-    "read",
-  );
   const canCreate = permissions?.allow(
     "service_providing_group_grid_prequalification",
     "create",
   );
 
-  const fields = getFields(zServiceProvidingGroupGridPrequalification.shape);
+  const filters: ListFilterDef[] = [
+    {
+      type: "text",
+      source: SPG_NAME_FILTER_SOURCE,
+      label: translate(
+        "field.service_providing_group_grid_prequalification.service_providing_group_id",
+      ),
+    },
+    {
+      type: "multiselect",
+      source: "impacted_system_operator_id@in",
+      label: translate(
+        "field.service_providing_group_grid_prequalification.impacted_system_operator_id",
+      ),
+      options: systemOperators.data ?? [],
+      isLoading: systemOperators.isLoading,
+    },
+    {
+      type: "multiselect",
+      source: "status@in",
+      label: translate(
+        "field.service_providing_group_grid_prequalification.status",
+      ),
+      options: Object.keys(spgpqStatusVariantMap)
+        .filter((value) => value !== "inactive")
+        .map((value) => ({
+          value,
+          label: translate(
+            `enum.service_providing_group_grid_prequalification.status.${value}`,
+          ),
+        })),
+    },
+  ];
+
+  const columns: ListColumn<ServiceProvidingGroupGridPrequalification>[] = [
+    {
+      header: translate(
+        "field.service_providing_group_grid_prequalification.id",
+      ),
+      render: (pq) => <BodyText size="small">{pq.id}</BodyText>,
+    },
+    {
+      header: translate(
+        "field.service_providing_group_grid_prequalification.service_providing_group_id",
+      ),
+      render: (pq) =>
+        pq.service_providing_group ? (
+          <BodyText size="small" weight="semibold">
+            {pq.service_providing_group.name}
+          </BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_grid_prequalification.impacted_system_operator_id",
+      ),
+      render: (pq) =>
+        pq.impacted_system_operator ? (
+          <BodyText size="small">{pq.impacted_system_operator.name}</BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_grid_prequalification.status",
+      ),
+      render: (pq) => {
+        const variant = spgpqStatusVariantMap[pq.status];
+        return variant ? (
+          <StatusBadge
+            status={variant.status}
+            icon={variant.icon}
+            label={translate(
+              `enum.service_providing_group_grid_prequalification.status.${pq.status}`,
+            )}
+          />
+        ) : null;
+      },
+    },
+    {
+      header: translate(
+        "field.service_providing_group_grid_prequalification.prequalified_at",
+      ),
+      sortField: "prequalified_at",
+      sortType: "date",
+      render: (pq) =>
+        pq.prequalified_at ? (
+          <BodyText size="small">
+            {toDateTimeString(pq.prequalified_at)}
+          </BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+  ];
+
+  const actions = canCreate ? (
+    <Button
+      as={RouterLink}
+      icon={IconPlus}
+      to="/service_providing_group_grid_prequalification/create"
+      variant="primary"
+    >
+      {translate("text.create")}
+    </Button>
+  ) : undefined;
 
   return (
-    canRead && (
-      <ResourceContextProvider value="service_providing_group_grid_prequalification">
-        <List
-          perPage={10}
-          actions={canCreate ? [<CreateButton key="create" id={id} />] : []}
-          empty={false}
-          filter={
-            id
-              ? {
-                  service_providing_group_id: id,
-                  "status@neq": "inactive",
-                }
-              : { "status@neq": "inactive" }
-          }
-          sort={{ field: "id", order: "DESC" }}
-          disableSyncWithLocation
-        >
-          <Datagrid
-            rowClick={(r) =>
-              `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`
-            }
-          >
-            <TextField source={fields.id.source} />
-            {!record?.id && (
-              <ReferenceField
-                source={fields.service_providing_group_id.source}
-                reference="service_providing_group"
-                label={t(
-                  "service_providing_group_grid_prequalification.service_providing_group_id",
-                )}
-                hideLabel={true}
-              >
-                <TextField source="name" />
-              </ReferenceField>
-            )}
-            <ReferenceField
-              source={fields.impacted_system_operator_id.source}
-              reference="party"
-              label={t(
-                "service_providing_group_grid_prequalification.impacted_system_operator_id",
-              )}
-              hideLabel={true}
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <EnumField
-              source={fields.status.source}
-              enumKey="service_providing_group_grid_prequalification.status"
-            />
-            <DateField source={fields.prequalified_at.source} showTime />
-          </Datagrid>
-        </List>
-      </ResourceContextProvider>
-    )
+    <ResourceListLayout
+      title={translate("text.header_nav_grid_prequalification")}
+      list={list}
+      columns={columns}
+      filters={filters}
+      actions={actions}
+      rowLink={(pq) =>
+        `/service_providing_group/${pq.service_providing_group_id}/grid_prequalification/${pq.id}/show`
+      }
+    />
   );
 };

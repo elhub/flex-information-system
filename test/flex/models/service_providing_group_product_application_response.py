@@ -90,8 +90,8 @@ class ServiceProvidingGroupProductApplicationResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -238,14 +238,14 @@ class ServiceProvidingGroupProductApplicationResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_response import PartyResponse
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
         from ..models.service_providing_group_product_application_attachment_response import (
-            ServiceProvidingGroupProductApplicationAttachmentResponse,
+            ServiceProvidingGroupProductApplicationAttachmentResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_product_application_comment_response import (
-            ServiceProvidingGroupProductApplicationCommentResponse,
+            ServiceProvidingGroupProductApplicationCommentResponse,  # noqa: PLC0415
         )
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

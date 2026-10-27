@@ -50,8 +50,8 @@ class ControllableUnitSuspensionResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.party_response import PartyResponse
+        from ..models.controllable_unit_response import ControllableUnitResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -116,9 +116,11 @@ class ControllableUnitSuspensionResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
-        from ..models.party_response import PartyResponse
+        from ..models.controllable_unit_response import ControllableUnitResponse  # noqa: PLC0415
+        from ..models.controllable_unit_suspension_comment_response import (
+            ControllableUnitSuspensionCommentResponse,  # noqa: PLC0415
+        )
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

@@ -21,7 +21,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
     val repo = AccountingPointMeteringGridAreaRepositoryImpl()
 
-    val principal = FlexPrincipal.internalData()
+    val principal = FlexPrincipal.internalData
 
     val timezone = TimeZone.of("Europe/Oslo")
     val validFrom = Instant.parse("2024-01-01T00:00:00Z").atLocalMidnight(timezone)

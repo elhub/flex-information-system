@@ -41,7 +41,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
         timezone = TimeZone.of("Europe/Oslo"),
     )
 
-    val principal = FlexPrincipal.internalData()
+    val principal = FlexPrincipal.internalData
 
     val ap1 = AccountingPoint(id = 1L, businessId = "133700000000000001")
     val ap2 = AccountingPoint(id = 2L, businessId = "133700000000000002")

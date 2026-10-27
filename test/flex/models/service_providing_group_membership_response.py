@@ -50,8 +50,8 @@ class ServiceProvidingGroupMembershipResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+        from ..models.controllable_unit_response import ControllableUnitResponse  # noqa: PLC0415
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -112,8 +112,8 @@ class ServiceProvidingGroupMembershipResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+        from ..models.controllable_unit_response import ControllableUnitResponse  # noqa: PLC0415
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

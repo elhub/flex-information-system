@@ -1,209 +1,262 @@
-import {
-  usePermissions,
-  useRecordContext,
-  ResourceContextProvider,
-  useTranslate,
-} from "ra-core";
-import { FunctionField } from "react-admin";
-import { Link } from "react-router-dom";
-import { Datagrid, List } from "../../components/EDS-ra";
-import { TextField } from "../../components/EDS-ra";
-import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
-import { Button } from "../../components/ui";
-import { useTranslateField } from "../../intl/intl";
+import { Link as RouterLink } from "react-router-dom";
+import { usePermissions, useTranslate } from "ra-core";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
-import { Permissions } from "../../auth/permissions";
+import { ResourceListLayout } from "../../components/list/ResourceListLayout";
+import type {
+  ListColumn,
+  ListFilterDef,
+  ListInterface,
+} from "../../components/list/types";
+import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
-import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
-import { getFields } from "../../zod";
+import { BodyText, Button, Tooltip } from "../../components/ui";
+import { Permissions } from "../../auth/permissions";
+import { usePartyOptions } from "../../hooks/partyOptions";
 import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
-import { DRAFT_STATUS } from "./spgpaStatus";
+import type { SpgpaDraft } from "../../hooks/useSpgpaDrafts";
+import type { ServiceProvidingGroupProductApplication } from "../../generated-client";
+import { formatScaled, KILO } from "../../utils/scales";
+import { toDateTimeString } from "../../util";
+import { DRAFT_STATUS, spgpaStatusVariantMap } from "./spgpaStatus";
+import { useServiceProvidingGroupProductApplicationList } from "./useServiceProvidingGroupProductApplicationList";
 
-const CreateButton = ({ id }: { id: any }) => (
-  <Button
-    as={Link}
-    icon={IconPlus}
-    to={
-      id
-        ? `/service_providing_group/${id}/product_application/create`
-        : "/service_providing_group_product_application/create"
-    }
-    state={{ service_providing_group_id: id }}
-    variant="invisible"
-  >
-    Create
-  </Button>
-);
+type Row = ServiceProvidingGroupProductApplication & { __draft?: SpgpaDraft };
+
+const NAME_FILTER = "service_providing_group.name@ilike";
+const SERVICE_PROVIDER_FILTER =
+  "service_providing_group.service_provider_id@in";
+
+const createPath = (spgId?: number) =>
+  spgId
+    ? `/service_providing_group/${spgId}/product_application/create`
+    : "/service_providing_group_product_application/create";
+
+const Dash = () => <BodyText size="small">-</BodyText>;
+
+const formatPower = (value: number | undefined) =>
+  value === undefined ? (
+    <Dash />
+  ) : (
+    <BodyText size="small">{formatScaled(value, "W", KILO)}</BodyText>
+  );
+
+const draftToRow = (draft: SpgpaDraft, index: number): Row =>
+  ({
+    id: -(index + 1),
+    service_providing_group_id: draft.spgId,
+    service_providing_group: { name: draft.spgName },
+    procuring_system_operator: { name: draft.systemOperatorName },
+    product_type_ids: draft.values.product_type_ids ?? [],
+    maximum_active_power_up: draft.values.maximum_active_power_up,
+    maximum_active_power_down: draft.values.maximum_active_power_down,
+    status: DRAFT_STATUS,
+    __draft: draft,
+  }) as unknown as Row;
+
+// Local drafts are not part of the backend data. They are shown first on the
+// first page, unless a filter excludes them.
+const useListWithDrafts = (
+  list: ListInterface<ServiceProvidingGroupProductApplication>,
+) => {
+  const { drafts, deleteDraft } = useSpgpaDrafts();
+  const { filters } = list;
+
+  const nameFilter = filters[NAME_FILTER]?.toLowerCase();
+  const showDrafts =
+    list.page === 1 &&
+    !filters["status@in"] &&
+    !filters[SERVICE_PROVIDER_FILTER];
+
+  const draftRows = showDrafts
+    ? drafts
+        .filter(
+          (d) => !nameFilter || d.spgName?.toLowerCase().includes(nameFilter),
+        )
+        .map(draftToRow)
+    : [];
+
+  const listWithDrafts: ListInterface<Row> = {
+    ...list,
+    rows: [...draftRows, ...list.rows],
+  };
+
+  return { list: listWithDrafts, deleteDraft };
+};
 
 export const ServiceProvidingGroupProductApplicationList = () => {
-  const record = useRecordContext();
-  const id = record?.id;
-  const t = useTranslateField();
+  const { permissions } = usePermissions<Permissions>();
   const translate = useTranslate();
-  const { permissions, isLoading } = usePermissions<Permissions>();
-  const { drafts, deleteDraft } = useSpgpaDrafts();
+  const { list: serverList } = useServiceProvidingGroupProductApplicationList();
+  const { list, deleteDraft } = useListWithDrafts(serverList);
+  const serviceProviders = usePartyOptions("service_provider");
 
-  if (isLoading) return null;
-
-  const canRead = permissions?.allow(
-    "service_providing_group_product_application",
-    "read",
-  );
-  const canCreate = !!permissions?.allow(
+  const canCreate = permissions?.allow(
     "service_providing_group_product_application",
     "create",
   );
 
-  if (!canRead) return null;
-
-  const fields = getFields(zServiceProvidingGroupProductApplication.shape);
-
-  const actions = canCreate ? [<CreateButton key="create" id={id} />] : [];
-
-  const visibleDrafts = id
-    ? drafts.filter((d) => d.spgId === Number(id))
-    : drafts;
-
-  const prependData = visibleDrafts.map((draft, i) => ({
-    id: -(i + 1),
-    service_providing_group: {
-      name: draft.spgName,
-      service_provider: { name: undefined },
-      summary: {
-        controllable_unit: { maximum_active_power: { sum: undefined } },
-        technical_resource: { maximum_active_power: { sum: undefined } },
-      },
+  const filters: ListFilterDef[] = [
+    {
+      type: "text",
+      source: NAME_FILTER,
+      label: translate(
+        "field.service_providing_group_product_application.service_providing_group_id",
+      ),
     },
-    procuring_system_operator: { name: draft.systemOperatorName },
-    product_type_ids: draft.values.product_type_ids,
-    maximum_active_power_up: draft.values.maximum_active_power_up,
-    maximum_active_power_down: draft.values.maximum_active_power_down,
-    status: DRAFT_STATUS,
-    __draftValues: draft.values,
-    __draftId: draft.draftId,
-    __spgId: draft.spgId,
-  }));
+    {
+      type: "multiselect",
+      source: SERVICE_PROVIDER_FILTER,
+      label: translate("field.service_providing_group.service_provider_id"),
+      options: serviceProviders.data ?? [],
+      isLoading: serviceProviders.isLoading,
+    },
+    {
+      type: "multiselect",
+      source: "status@in",
+      label: translate(
+        "field.service_providing_group_product_application.status",
+      ),
+      options: Object.keys(spgpaStatusVariantMap)
+        .filter((value) => value !== DRAFT_STATUS)
+        .map((value) => ({
+          value,
+          label: translate(
+            `enum.service_providing_group_product_application.status.${value}`,
+          ),
+        })),
+    },
+  ];
+
+  const columns: ListColumn<Row>[] = [
+    {
+      header: translate("field.service_providing_group_product_application.id"),
+      render: (row) =>
+        row.__draft ? <Dash /> : <BodyText size="small">{row.id}</BodyText>,
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.service_providing_group_id",
+      ),
+      render: (row) => (
+        <BodyText size="small" weight="semibold">
+          {row.service_providing_group?.name ?? "-"}
+        </BodyText>
+      ),
+    },
+    {
+      header: translate("field.service_providing_group.service_provider_id"),
+      render: (row) => (
+        <BodyText size="small">
+          {row.service_providing_group?.service_provider?.name ?? "-"}
+        </BodyText>
+      ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.procuring_system_operator_id",
+      ),
+      render: (row) => (
+        <BodyText size="small">
+          {row.procuring_system_operator?.name ?? "-"}
+        </BodyText>
+      ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.product_type_ids",
+      ),
+      render: (row) => (
+        <ProductTypeArrayField productTypeIds={row.product_type_ids} />
+      ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.maximum_active_power_up",
+      ),
+      render: (row) => formatPower(row.maximum_active_power_up),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.maximum_active_power_down",
+      ),
+      render: (row) => formatPower(row.maximum_active_power_down),
+    },
+    {
+      header: translate("field.controllable_unit.maximum_active_power"),
+      render: (row) =>
+        formatPower(
+          row.service_providing_group?.summary?.controllable_unit
+            .maximum_active_power?.sum,
+        ),
+    },
+    {
+      header: translate("field.technical_resource.maximum_active_power"),
+      render: (row) =>
+        formatPower(
+          row.service_providing_group?.summary?.technical_resource
+            .maximum_active_power?.sum,
+        ),
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.status",
+      ),
+      render: (row) => <SpgpaStatusBadge status={row.status} />,
+    },
+    {
+      header: translate(
+        "field.service_providing_group_product_application.complete_at",
+      ),
+      sortField: "complete_at",
+      sortType: "date",
+      render: (row) =>
+        row.complete_at ? (
+          <BodyText size="small">{toDateTimeString(row.complete_at)}</BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+  ];
+
+  const actions = canCreate ? (
+    <Button as={RouterLink} icon={IconPlus} to={createPath()} variant="primary">
+      {translate("text.create")}
+    </Button>
+  ) : undefined;
 
   return (
-    <ResourceContextProvider value="service_providing_group_product_application">
-      <List
-        perPage={10}
-        actions={actions}
-        empty={false}
-        filter={
-          id
-            ? {
-                service_providing_group_id: id,
-                embed: "procuring_system_operator",
-              }
-            : {
-                embed:
-                  "service_providing_group(service_provider,summary),procuring_system_operator",
-              }
-        }
-        sort={{ field: "id", order: "DESC" }}
-        disableSyncWithLocation
-      >
-        <Datagrid
-          prependData={prependData}
-          rowActions={(r) => {
-            const row = r as (typeof prependData)[number];
-            if (!row.__draftId) return null;
-            return (
-              <Button
-                variant="invisible"
-                size="small"
-                icon={IconTrash}
-                aria-label={translate("text.spgpa_delete_draft")}
-                onClick={() => deleteDraft(row.__spgId, row.__draftId)}
-              />
-            );
-          }}
-          rowClick={(r) => {
-            if (r.__draftId) {
-              const row = r as (typeof prependData)[number];
-              const createPath = row.__spgId
-                ? `/service_providing_group/${row.__spgId}/product_application/create`
-                : "/service_providing_group_product_application/create";
-              return {
-                to: createPath,
-                state: { ...row.__draftValues, __draftId: row.__draftId },
-              };
+    <ResourceListLayout
+      title={translate(
+        "text.header_nav_service_providing_group_product_applications",
+      )}
+      list={list}
+      columns={columns}
+      filters={filters}
+      actions={actions}
+      rowActions={(row) => {
+        const draft = row.__draft;
+        if (!draft) return null;
+        return (
+          <Tooltip content={translate("text.spgpa_delete_draft")}>
+            <Button
+              variant="invisible"
+              className="text-semantic-background-action-danger"
+              size="small"
+              icon={IconTrash}
+              aria-label={translate("text.spgpa_delete_draft")}
+              onClick={() => deleteDraft(draft.spgId, draft.draftId)}
+            />
+          </Tooltip>
+        );
+      }}
+      rowLink={(row) =>
+        row.__draft
+          ? {
+              to: createPath(row.__draft.spgId),
+              state: { ...row.__draft.values, __draftId: row.__draft.draftId },
             }
-            return `/service_providing_group_product_application/${r.id}/show`;
-          }}
-        >
-          <TextField source={fields.id.source} />
-          {!record?.id && (
-            <TextField
-              source="service_providing_group.name"
-              label={t(
-                "service_providing_group_product_application.service_providing_group_id",
-              )}
-              hideLabel={true}
-            />
-          )}
-
-          {!record?.id && (
-            <TextField
-              source="service_providing_group.service_provider.name"
-              label={t("service_providing_group.service_provider_id")}
-              hideLabel={true}
-            />
-          )}
-          <TextField
-            source="procuring_system_operator.name"
-            label={t(
-              "service_providing_group_product_application.procuring_system_operator_id",
-            )}
-            hideLabel={true}
-          />
-          <FunctionField
-            source={fields.product_type_ids.source}
-            render={(record) => (
-              <ProductTypeArrayField productTypeIds={record.product_type_ids} />
-            )}
-          />
-          <TextField
-            source={fields.maximum_active_power_up.source}
-            unit="kW"
-            label={t(
-              "service_providing_group_product_application.maximum_active_power_up",
-            )}
-            hideLabel={true}
-          />
-          <TextField
-            source={fields.maximum_active_power_down.source}
-            unit="kW"
-            label={t(
-              "service_providing_group_product_application.maximum_active_power_down",
-            )}
-            hideLabel={true}
-          />
-          {!record?.id && (
-            <TextField
-              source="service_providing_group.summary.controllable_unit.maximum_active_power.sum"
-              label={t("controllable_unit.maximum_active_power")}
-              hideLabel={true}
-              unit="kW"
-            />
-          )}
-          {!record?.id && (
-            <TextField
-              source="service_providing_group.summary.technical_resource.maximum_active_power.sum"
-              label={t("technical_resource.maximum_active_power")}
-              hideLabel={true}
-              unit="kW"
-            />
-          )}
-          <FunctionField
-            label={t("service_providing_group_product_application.status")}
-            render={(r: { status: string }) => (
-              <SpgpaStatusBadge status={r.status} />
-            )}
-          />
-        </Datagrid>
-      </List>
-    </ResourceContextProvider>
+          : `/service_providing_group_product_application/${row.id}/show`
+      }
+    />
   );
 };

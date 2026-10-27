@@ -61,8 +61,8 @@ class EntityClientResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.entity_response import EntityResponse
-        from ..models.party_response import PartyResponse
+        from ..models.entity_response import EntityResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         id = self.id
 
@@ -140,8 +140,8 @@ class EntityClientResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.entity_response import EntityResponse
-        from ..models.party_response import PartyResponse
+        from ..models.entity_response import EntityResponse  # noqa: PLC0415
+        from ..models.party_response import PartyResponse  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")

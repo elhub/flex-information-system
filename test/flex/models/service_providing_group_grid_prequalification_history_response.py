@@ -170,11 +170,13 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.party_history_response import PartyHistoryResponse
+        from ..models.party_history_response import PartyHistoryResponse  # noqa: PLC0415
         from ..models.service_providing_group_grid_prequalification_comment_history_response import (
-            ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
+            ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,  # noqa: PLC0415
         )
-        from ..models.service_providing_group_history_response import ServiceProvidingGroupHistoryResponse
+        from ..models.service_providing_group_history_response import (
+            ServiceProvidingGroupHistoryResponse,  # noqa: PLC0415
+        )
 
         d = dict(src_dict)
         id = d.pop("id")
