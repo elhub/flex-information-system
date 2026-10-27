@@ -209,9 +209,9 @@ const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
   return (
     <>
       <Heading level={3} size="xsmall" spacing>
-        Changes since the service providing group was grid prequalified
-        {notice.data.prequalified_at &&
-          ` on ${toDateTimeString(notice.data.prequalified_at)}`}
+        {translate("text.notice_spggp_outdated_heading", {
+          date: toDateTimeString(notice.data.prequalified_at),
+        })}
       </Heading>
       <SimpleTable
         size="small"

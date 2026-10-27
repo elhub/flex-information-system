@@ -252,6 +252,7 @@ export type TextKey =
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_membership_button"
   | "notice_spggp_outdated_button"
+  | "notice_spggp_outdated_heading"
   | "notice_see_party_button"
   | "notice_see_source_button"
   | "notice_details"
@@ -597,6 +598,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Visible to all parties involved in this resource",
     notice_spg_membership_button: "Go to SPG membership",
     notice_spggp_outdated_button: "Review changes",
+    notice_spggp_outdated_heading:
+      "Changes since the service providing group was grid prequalified on %{date}",
     notice_missing_grid_location_button:
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
@@ -963,6 +966,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Synlig for alle parter involvert i denne ressursen",
     notice_spg_membership_button: "Gå til medlemskap for fleksibilitetsgruppe",
     notice_spggp_outdated_button: "Se endringer",
+    notice_spggp_outdated_heading:
+      "Endringer siden fleksibilitetsgruppen ble nettprekvalifisert %{date}",
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
