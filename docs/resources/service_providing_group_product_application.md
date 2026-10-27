@@ -10,18 +10,21 @@ applications. This resource supports the application process and is updated as
 it progresses.
 
 The service provider is responsible for creating a new SPG product application.
-Initially, the status is set to `requested`. The system operator then must
-quickly take over and choose whether the group needs a full prequalification or
+Initially, the status is set to `requested`. The system operator takes
+over and choose whether the group needs a full prequalification or
 only verification, by setting the status to either `prequalification` or
 `temporary_qualified`. They are responsible for taking to application to either
 `prequalified`, `verified` or `rejected`. If it is rejected, the service
-provider can then make updates and propose the application again.
+provider can then make updates and propose the application again. 
 
 While an application is `requested`, the service provider can also withdraw it
 by setting the status to `inactive`. An `inactive` application is not processed
 and does not make the SPG ready for market. The service provider can put it
 back to `requested` later. Inactive applications do not trigger SPG grid
-prequalifications.
+prequalifications. Also, while in `requested` status, the system operator
+can request more or missing information in the application, this is done 
+through the `incomplete` status. The service provider can then put the application back to `requested`
+once the required information for further process is given.
 
 Once an application moves past `requested`, the system creates an SPG grid
 prequalification for the procuring system operator and for each impacted system operator.

@@ -19,6 +19,8 @@ digraph G {
         verified;
         prequalified;
         rejected;
+        incomplete;
+
     }
     inactive;
 
@@ -26,6 +28,7 @@ digraph G {
     start -> requested [label="", color="pink"];
     requested -> prequalification [label="SO chooses to\nprequalify", color="green"];
     requested -> temporary_qualified [label="SO chooses to\nonly verify", color="green"];
+    requested -> incomplete[label="SO needs more information, color="green"];
 
     prequalification -> prequalified [label="Prequalified\nby other PSO", color="green"];
     prequalification -> prequalified [label="Contains only\nsmall\nand/or already\nprequalified CUs", color="green"];
@@ -37,6 +40,7 @@ digraph G {
     prequalified -> requested [label="SPG has changed\nsignificantly", color="green"];
     verified -> requested [label="SPG has changed\nsignificantly", color="green"];
     rejected -> requested [label="SP has made \nupdates to \ncomply", color="blue"];
+    incomplete -> requested [label="SP has updated\n requested information", color="blue"];
 
     requested -> inactive [label="SP withdraws\nthe application", color="blue"];
     inactive -> requested [label="SP reactivates\nthe application", color="blue"];
