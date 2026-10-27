@@ -178,6 +178,17 @@ class SeedScope(private val conn: Connection) {
             validTo?.atOffset(ZoneOffset.UTC),
         )
 
+    /**
+     * Deletes the membership. Seed with [Triggers.ON] so that the audit trigger moves the deleted row
+     * to the history table, like it does when a user removes the CU from the group.
+     */
+    fun deleteMembership(membershipId: Long) {
+        conn.prepareStatement("DELETE FROM flex.service_providing_group_membership WHERE id = ?").use { stmt ->
+            stmt.setLong(1, membershipId)
+            stmt.executeUpdate()
+        }
+    }
+
     fun insertGridPrequalification(
         serviceProvidingGroupId: Long,
         impactedSystemOperatorId: Long,
