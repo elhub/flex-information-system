@@ -153,14 +153,16 @@ default is unclear (e.g. a party field that might be single select).
 `"string" | "date" | "number"`).
 
 - Header: `translate("field.<resource>.<field>")`.
-- Render text with `BodyText size="small"` (`weight="semibold"` for the main
-  identifying column, usually the name). Missing values: a small `Dash`
-  component (`<BodyText size="small">-</BodyText>`), defined in the file.
+- Render text with `BodyText size="small"`. Use `weight="semibold"` for the
+  column that supplies the show page title (the page the row click opens). If
+  the title is not a single column in the list, don't highlight any column.
+  Missing values: a small `Dash` component
+  (`<BodyText size="small">-</BodyText>`), defined in the file.
 - Status: `StatusBadge` with the status map and
   `translate("enum.<resource>.status.<value>")`. If the resource already has a
   dedicated badge component (e.g. `SpgpaStatusBadge`, with tooltips), reuse it.
 - Links to other resources: `Link as={RouterLink}` to that resource's show page.
-- Dates: `toDateString` from `util`. Time-ranged embeds: `findCurrentlyValidRecord`.
+- Dates: `toDateString` from `util` for date-only values, or `toDateTimeString` from `util` when the time should be shown too. Time-ranged embeds: `findCurrentlyValidRecord`.
 - Power values: `formatScaled(value, "W", KILO)` from `utils/scales`.
 - Set `sortField` only on columns that map to a real backend column. Embedded
   or computed columns are generally not sortable. No sortable columns is fine.
