@@ -154,8 +154,12 @@ default is unclear (e.g. a party field that might be single select).
 
 - Header: `translate("field.<resource>.<field>")`.
 - Render text with `BodyText size="small"`. Use `weight="semibold"` for the
-  column that supplies the show page title (the page the row click opens). If
-  the title is not a single column in the list, don't highlight any column.
+  column that supplies the show page title (the page the row click opens).
+  Always open the resource's `XxxShow.tsx` and check what it uses as the page
+  title (e.g. the name of a related party, not necessarily a column named
+  `name`). If the title maps to exactly one column, highlight that column. If
+  it does not (composed from several fields, or no matching column), ask the
+  user whether a column should be highlighted instead of silently skipping it.
   Missing values: a small `Dash` component
   (`<BodyText size="small">-</BodyText>`), defined in the file.
 - Status: `StatusBadge` with the status map and
@@ -237,7 +241,7 @@ navigation restores the list.
 
 # Migration checklist
 
-1. Read the old list and note its filters, columns, actions, default sort and any special behaviour.
+1. Read the old list and note its filters, columns, actions, default sort and any special behaviour. Also read the show page to find which column supplies its title (gets `weight="semibold"`).
 2. Ask the user about filters, defaults, columns and sortable columns.
 3. Create `useXxxList.ts`.
 4. Rewrite `XxxList.tsx` with `ResourceListLayout`.

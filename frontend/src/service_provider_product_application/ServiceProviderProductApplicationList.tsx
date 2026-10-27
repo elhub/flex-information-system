@@ -1,107 +1,154 @@
-import { usePermissions } from "ra-core";
-import { FunctionField } from "react-admin";
-import { Link } from "react-router-dom";
-import { List, Datagrid } from "../components/EDS-ra/list";
-import {
-  DateField,
-  ReferenceField,
-  StatusBadgeField,
-  TextField,
-} from "../components/EDS-ra/fields";
-import { sppaStatusVariantMap } from "./show/sppaStatus";
-import {
-  EnumArrayInput,
-  PartyReferenceInput,
-} from "../components/EDS-ra/inputs";
-import { Button } from "../components/ui";
+import { Link as RouterLink } from "react-router-dom";
+import { usePermissions, useTranslate } from "ra-core";
 import { IconPlus } from "@elhub/ds-icons";
+import { ResourceListLayout } from "../components/list/ResourceListLayout";
+import type { ListColumn, ListFilterDef } from "../components/list/types";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
+import { StatusBadge } from "../components/StatusBadge";
+import { BodyText, Button } from "../components/ui";
 import { Permissions } from "../auth/permissions";
-import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
-import { getFields } from "../zod";
-import { useTranslateField } from "../intl/intl";
+import { usePartyOptions } from "../hooks/partyOptions";
+import { toDateTimeString } from "../util";
+import type { ServiceProviderProductApplication } from "../generated-client";
+import { sppaStatusVariantMap } from "./show/sppaStatus";
+import { useServiceProviderProductApplicationList } from "./useServiceProviderProductApplicationList";
 
-const CreateButton = () => (
-  <Button
-    as={Link}
-    icon={IconPlus}
-    to="/service_provider_product_application/create"
-    variant="invisible"
-  >
-    Create
-  </Button>
-);
+const Dash = () => <BodyText size="small">-</BodyText>;
 
 export const ServiceProviderProductApplicationList = () => {
-  const fields = getFields(zServiceProviderProductApplication.shape);
   const { permissions } = usePermissions<Permissions>();
-  const t = useTranslateField();
-  const canCreate = !!permissions?.allow(
+  const translate = useTranslate();
+  const { list } = useServiceProviderProductApplicationList();
+  const serviceProviders = usePartyOptions("service_provider");
+  const systemOperators = usePartyOptions("system_operator");
+
+  const canCreate = permissions?.allow(
     "service_provider_product_application",
     "create",
   );
 
-  const filters = [
-    <PartyReferenceInput
-      key="service_provider_id"
-      source="service_provider_id"
-      optionText={(record) => record.name}
-    />,
-    <PartyReferenceInput
-      key="system_operator_id"
-      source="system_operator_id"
-      optionText={(record) => record.name}
-    />,
-    <EnumArrayInput
-      key="status"
-      enumKey="service_provider_product_application.status"
-      source="status@in"
-    />,
+  const filters: ListFilterDef[] = [
+    {
+      type: "multiselect",
+      source: "service_provider_id@in",
+      label: translate(
+        "field.service_provider_product_application.service_provider_id",
+      ),
+      options: serviceProviders.data ?? [],
+      isLoading: serviceProviders.isLoading,
+    },
+    {
+      type: "multiselect",
+      source: "system_operator_id@in",
+      label: translate(
+        "field.service_provider_product_application.system_operator_id",
+      ),
+      options: systemOperators.data ?? [],
+      isLoading: systemOperators.isLoading,
+    },
+    {
+      type: "multiselect",
+      source: "status@in",
+      label: translate("field.service_provider_product_application.status"),
+      options: Object.keys(sppaStatusVariantMap).map((value) => ({
+        value,
+        label: translate(
+          `enum.service_provider_product_application.status.${value}`,
+        ),
+      })),
+    },
   ];
 
-  const actions = !canCreate ? [] : [<CreateButton key="create" />];
+  const columns: ListColumn<ServiceProviderProductApplication>[] = [
+    {
+      header: translate("field.service_provider_product_application.id"),
+      render: (sppa) => <BodyText size="small">{sppa.id}</BodyText>,
+    },
+    {
+      header: translate(
+        "field.service_provider_product_application.service_provider_id",
+      ),
+      render: (sppa) =>
+        sppa.service_provider ? (
+          <BodyText size="small" weight="semibold">
+            {sppa.service_provider.name}
+          </BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+    {
+      header: translate(
+        "field.service_provider_product_application.system_operator_id",
+      ),
+      render: (sppa) =>
+        sppa.system_operator ? (
+          <BodyText size="small">{sppa.system_operator.name}</BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+    {
+      header: translate(
+        "field.service_provider_product_application.product_type_ids",
+      ),
+      render: (sppa) => (
+        <ProductTypeArrayField productTypeIds={sppa.product_type_ids} />
+      ),
+    },
+    {
+      header: translate("field.service_provider_product_application.status"),
+      render: (sppa) => {
+        const variant = sppaStatusVariantMap[sppa.status];
+        return variant ? (
+          <StatusBadge
+            status={variant.status}
+            icon={variant.icon}
+            label={translate(
+              `enum.service_provider_product_application.status.${sppa.status}`,
+            )}
+          />
+        ) : null;
+      },
+    },
+    {
+      header: translate(
+        "field.service_provider_product_application.qualified_at",
+      ),
+      sortField: "qualified_at",
+      sortType: "date",
+      render: (sppa) =>
+        sppa.qualified_at ? (
+          <BodyText size="small">
+            {toDateTimeString(sppa.qualified_at)}
+          </BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+  ];
+
+  const actions = canCreate ? (
+    <Button
+      as={RouterLink}
+      icon={IconPlus}
+      to="/service_provider_product_application/create"
+      variant="primary"
+    >
+      {translate("text.create")}
+    </Button>
+  ) : undefined;
 
   return (
-    <List
-      perPage={25}
-      sort={{ field: "id", order: "DESC" }}
-      empty={false}
-      actions={actions}
+    <ResourceListLayout
+      title={translate("text.header_nav_service_provider_product_applications")}
+      list={list}
+      columns={columns}
       filters={filters}
-    >
-      <Datagrid
-        rowClick={(r) => `/service_provider_product_application/${r.id}/show`}
-      >
-        <TextField source={fields.id.source} />
-        <ReferenceField
-          source={fields.service_provider_id.source}
-          reference="party"
-          label={t("service_provider_product_application.service_provider_id")}
-          hideLabel={true}
-        >
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField
-          source={fields.system_operator_id.source}
-          reference="party"
-          label={t("service_provider_product_application.system_operator_id")}
-          hideLabel={true}
-        >
-          <TextField source="name" />
-        </ReferenceField>
-        <FunctionField
-          source={fields.product_type_ids.source}
-          render={(record) => (
-            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
-          )}
-        />
-        <StatusBadgeField
-          source={fields.status.source}
-          enumKey="service_provider_product_application.status"
-          variantMap={sppaStatusVariantMap}
-        />
-        <DateField source={fields.qualified_at.source} showTime />
-      </Datagrid>
-    </List>
+      actions={actions}
+      rowLink={(sppa) =>
+        `/service_provider_product_application/${sppa.id}/show`
+      }
+    />
   );
 };
