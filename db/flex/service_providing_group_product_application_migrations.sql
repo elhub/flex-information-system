@@ -302,3 +302,23 @@ CHECK (
         'inactive'
     )
 );
+
+-- changeset flex:spgpa-add-incomplete-status runOnChange:false endDelimiter:;
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'spg_product_application_status_check' AND pg_get_constraintdef(oid) LIKE '%incomplete%'
+ALTER TABLE flex.service_providing_group_product_application
+DROP CONSTRAINT IF EXISTS spg_product_application_status_check;
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_status_check
+CHECK (
+    status IN (
+        'requested',
+        'incomplete',
+        'prequalification',
+        'temporary_qualified',
+        'prequalified',
+        'verified',
+        'rejected',
+        'inactive'
+    )
+);

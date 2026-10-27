@@ -130,15 +130,15 @@ $$
 BEGIN
     IF NOT (
         (OLD.status = 'requested' AND NEW.status IN ('requested', 'inactive'))
-        OR (OLD.status IN ('rejected', 'inactive') AND NEW.status = 'requested')
+        OR (OLD.status IN ('rejected', 'inactive', 'incomplete') AND NEW.status = 'requested')
     ) THEN
         RAISE sqlstate 'PT400' using
             message =
                 'A service provider can only update an application when its'
                 || ' status is "requested", deactivate it by setting the'
                 || ' status to "inactive", or reset it to "requested" after'
-                || ' rejection or deactivation. Any other updates must be done'
-                || ' by the system operator.';
+                || ' rejection, incomplete, or deactivation.'
+                || ' Any other updates must be done by the system operator.';
         RETURN null;
     END IF;
 

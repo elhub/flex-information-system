@@ -578,6 +578,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "verified",
   "rejected",
   "inactive",
+  "incomplete",
 ]);
 
 /**
