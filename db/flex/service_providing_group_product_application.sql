@@ -137,8 +137,7 @@ BEGIN
                 'A service provider can only update an application when its'
                 || ' status is "requested", deactivate it by setting the'
                 || ' status to "inactive", or reset it to "requested" after'
-                || ' rejection or deactivation.'
-                || ' status is "incomplete", set it to "requested" once changes are done.'
+                || ' rejection, incomplete, or deactivation.'
                 || ' Any other updates must be done by the system operator.';
         RETURN null;
     END IF;
