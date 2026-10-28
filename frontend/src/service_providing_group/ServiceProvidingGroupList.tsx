@@ -23,7 +23,6 @@ export const ServiceProvidingGroupList = () => {
     {
       type: "text",
       source: "name@ilike",
-      className: "lg:w-64",
       label: translate("field.service_providing_group.name"),
     },
     {
