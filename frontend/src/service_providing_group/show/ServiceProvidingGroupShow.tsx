@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslateEnum } from "../../intl/intl";
 import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
-import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
+import { ActivateServiceProvidingGroupButton } from "./ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
 import { useServiceProvidingGroupAlerts } from "./useServiceProvidingGroupAlert";
 import { useServiceProvidingGroupShowSummary } from "./useServiceProvidingGroupShowSummary";

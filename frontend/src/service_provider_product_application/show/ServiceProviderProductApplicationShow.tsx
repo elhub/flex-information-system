@@ -1,16 +1,16 @@
 import { useParams } from "react-router-dom";
-import { Loader } from "../components/ui";
-import { ResourceShowLayout } from "../components/ResourceShowLayout";
+import { Loader } from "../../components/ui";
+import { ResourceShowLayout } from "../../components/ResourceShowLayout";
 import { usePermissions, useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
-import { Permissions } from "../auth/permissions";
-import { useSppaShowSummary } from "./show/SppaShowSummary";
-import { SppaShowTabs } from "./show/SppaShowTabs";
-import { SppaActionBar } from "./show/SppaActionBar";
-import { useSppaRecord } from "./show/useSppaShowViewModel";
-import { useTranslateEnum } from "../intl/intl";
-import { sppaStatusVariantMap } from "./show/sppaStatus";
-import { useParty } from "../hooks/party";
+import { Permissions } from "../../auth/permissions";
+import { useSppaShowSummary } from "./SppaShowSummary";
+import { SppaShowTabs } from "./SppaShowTabs";
+import { SppaActionBar } from "./SppaActionBar";
+import { useSppaRecord } from "./useSppaShowViewModel";
+import { useTranslateEnum } from "../../intl/intl";
+import { sppaStatusVariantMap } from "../sppaStatus";
+import { useParty } from "../../hooks/party";
 
 export const ServiceProviderProductApplicationShow = () => {
   const sppaId = Number(useParams<{ id: string }>().id);

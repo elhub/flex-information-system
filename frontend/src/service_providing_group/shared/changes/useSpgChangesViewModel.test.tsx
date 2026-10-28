@@ -12,6 +12,7 @@ import type {
   ServiceProvidingGroupMembershipHistory,
 } from "../../../generated-client";
 import {
+  listAccountingPoint,
   listControllableUnitHistory,
   listIdentity,
   listServiceProvidingGroupMembershipHistory,
@@ -19,6 +20,7 @@ import {
 import { renderHookWithQuery } from "../../../test/test-utils";
 
 vi.mock("../../../generated-client", () => ({
+  listAccountingPoint: vi.fn(),
   listServiceProvidingGroupMembershipHistory: vi.fn(),
   listControllableUnitHistory: vi.fn(),
   listIdentity: vi.fn(),
@@ -28,6 +30,7 @@ const mockedSpgHistoryList = vi.mocked(
   listServiceProvidingGroupMembershipHistory,
 );
 
+const mockedListAccountingPoint = vi.mocked(listAccountingPoint);
 const mockedListCuHistory = vi.mocked(listControllableUnitHistory);
 const mockedListIdentities = vi.mocked(listIdentity);
 
@@ -61,6 +64,7 @@ const membershipFor = (
     controllable_unit_history: [
       {
         name,
+        accounting_point_id: cuId * 100,
         maximum_active_power: maximumActivePower,
         replaced_at: replacedAt,
         recorded_at: recordedAt,
@@ -96,6 +100,7 @@ beforeEach(() => {
   mockedSpgHistoryList.mockReset();
   mockedListCuHistory.mockReset();
   mockedListIdentities.mockReset();
+  mockedListAccountingPoint.mockReset();
 });
 
 it("marks a controllable unit only present in the current snapshot as added", async () => {
@@ -339,4 +344,34 @@ it("fetches expected cu history enriched with party name for recorded_by_name an
   expect(history[0].replaced_by_name).toBeUndefined();
   expect(history[1].recorded_by_name).toEqual("Test FISO");
   expect(history[1].replaced_by_name).toEqual("Test FISO");
+});
+
+it("only includes CUs whose accounting point has the given system operator", async () => {
+  mockSnapshots(
+    [membershipFor(1, "CU 1", 50), membershipFor(2, "CU 2", 50)],
+    [membershipFor(1, "CU 1", 60), membershipFor(2, "CU 2", 70)],
+  );
+  mockedListAccountingPoint.mockResolvedValue({
+    data: [{ id: 100 }],
+    error: undefined,
+  } as never);
+
+  const rows = await fetchSpgChanges(1, FROM, NOW, 26);
+
+  expect(rows).toEqual([expect.objectContaining({ id: 1, status: "changed" })]);
+  expect(mockedListAccountingPoint).toHaveBeenCalledWith({
+    query: { id: "in.(100,200)", system_operator_id: "eq.26" },
+  });
+});
+
+it("includes all CUs when no system operator is given", async () => {
+  mockSnapshots(
+    [],
+    [membershipFor(1, "CU 1", 50), membershipFor(2, "CU 2", 50)],
+  );
+
+  const rows = await fetchSpgChanges(1, FROM, NOW);
+
+  expect(rows).toHaveLength(2);
+  expect(mockedListAccountingPoint).not.toHaveBeenCalled();
 });

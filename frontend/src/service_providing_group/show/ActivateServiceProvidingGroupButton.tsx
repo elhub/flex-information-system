@@ -1,9 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslate } from "ra-core";
-import { useConfirmAction } from "../components/ConfirmAction";
-import { updateServiceProvidingGroup } from "../generated-client";
-import { Button, BodyText } from "../components/ui";
-import { throwOnError } from "../util";
+import { useConfirmAction } from "../../components/ConfirmAction";
+import { updateServiceProvidingGroup } from "../../generated-client";
+import { Button, BodyText } from "../../components/ui";
+import { throwOnError } from "../../util";
 
 export const ActivateServiceProvidingGroupButton = ({
   spgId,

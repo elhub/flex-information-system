@@ -1,11 +1,11 @@
-import { Loader } from "../../../components/ui";
-import { ServiceProvidingGroup } from "../../../generated-client";
-import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
-import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
-import { KILO, Scale } from "../../../utils/scales";
+import { Loader } from "../../components/ui";
+import { ServiceProvidingGroup } from "../../generated-client";
+import { ServiceProvidingGroupControllableUnitSummary } from "../summary/ServiceProvidingGroupControllableUnitSummary";
+import { ServiceProvidingGroupTechnicalResourceSummary } from "../summary/ServiceProvidingGroupTechnicalResourceSummary";
+import { KILO, Scale } from "../../utils/scales";
 import { useTranslate } from "ra-core";
-import { useParty } from "../../../hooks/party";
-import { ResourceCard } from "../../../components/ResourceCard";
+import { useParty } from "../../hooks/party";
+import { ResourceCard } from "../../components/ResourceCard";
 
 type Props = {
   spgId: number;

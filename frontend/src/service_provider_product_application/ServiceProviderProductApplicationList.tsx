@@ -10,7 +10,7 @@ import { Permissions } from "../auth/permissions";
 import { usePartyOptions } from "../hooks/partyOptions";
 import { toDateTimeString } from "../util";
 import type { ServiceProviderProductApplication } from "../generated-client";
-import { sppaStatusVariantMap } from "./show/sppaStatus";
+import { sppaStatusVariantMap } from "./sppaStatus";
 import { useServiceProviderProductApplicationList } from "./useServiceProviderProductApplicationList";
 
 const Dash = () => <BodyText size="small">-</BodyText>;

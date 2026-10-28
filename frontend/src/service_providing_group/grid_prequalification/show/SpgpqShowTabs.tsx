@@ -1,6 +1,6 @@
 import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { Tabs } from "../../../components/ui";
-import { SpgInfoTab } from "../../product_application/show/SpgInfoTab";
+import { SpgInfoTab } from "../../shared/SpgInfoTab";
 import { SpgpqCommentFeed } from "./SpgpqCommentFeed";
 import {
   ServiceProvidingGroup,
@@ -9,6 +9,7 @@ import {
 import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../ServiceProvidingGroupGridPrequalificationHistoryList";
 import { Permissions } from "../../../auth/permissions";
+import { SpgpqChangesTab } from "./SpgpqChangesTab";
 
 type Props = {
   spgId: number;
@@ -33,12 +34,27 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
   const canViewComments =
     isImpactedSystemOperator || isSpgServiceProvider || isFiso;
 
+  const showChanges = isImpactedSystemOperator || isFiso;
+  // changes can only be approved when the grid prequalification is approved
+  const isApproved =
+    spgpq.status === "approved" || spgpq.status === "conditionally_approved";
+  const canApproveChanges =
+    isApproved &&
+    !!permissions?.allow(
+      "service_providing_group_grid_prequalification",
+      "update",
+    ) &&
+    (isImpactedSystemOperator || isFiso);
+
   const [tab, setTab] = useTabSearchParam("overview");
 
   return (
     <Tabs value={tab} onChange={setTab}>
       <Tabs.List>
         <Tabs.Tab label={translate("text.tab.overview")} value="overview" />
+        {showChanges && (
+          <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
+        )}
         {canViewComments && (
           <Tabs.Tab label={translate("text.tab.comments")} value="comments" />
         )}
@@ -53,6 +69,15 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
           impactedSystemOperatorId={spgpq.impacted_system_operator_id}
         />
       </Tabs.Panel>
+      {showChanges && (
+        <Tabs.Panel value="changes">
+          <SpgpqChangesTab
+            key={`${spgpq.id}-${spgpq.prequalified_at}`}
+            spgpq={spgpq}
+            canApprove={canApproveChanges}
+          />
+        </Tabs.Panel>
+      )}
       <Tabs.Panel value="comments">
         <SpgpqCommentFeed spgpqId={spgpqId} />
       </Tabs.Panel>
