@@ -8,6 +8,7 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitRegulationDirect
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupBiddingZone
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupGridPrequalificationStatus
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupProductApplicationStatus
+import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupStatus
 import java.sql.Connection
 import java.time.Instant
 import java.time.LocalDate
@@ -152,13 +153,15 @@ class SeedScope(private val conn: Connection) {
         serviceProviderId: Long = insertServiceProvider(),
         name: String = "Test SPG",
         biddingZone: ServiceProvidingGroupBiddingZone = ServiceProvidingGroupBiddingZone.NO3,
+        status: ServiceProvidingGroupStatus = ServiceProvidingGroupStatus.NEW,
     ): Long =
         queryLong(
-            "INSERT INTO flex.service_providing_group (name, service_provider_id, bidding_zone) " +
-                "VALUES (?, ?, ?) RETURNING id",
+            "INSERT INTO flex.service_providing_group (name, service_provider_id, bidding_zone, status) " +
+                "VALUES (?, ?, ?, ?) RETURNING id",
             name,
             serviceProviderId,
             biddingZone.value,
+            status.value,
         )
 
     /** Adds the controllable unit to the group. A null [validTo] means the membership has no end. */

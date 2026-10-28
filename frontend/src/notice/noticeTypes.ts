@@ -136,6 +136,15 @@ const noticeTypes = [
     action: "Initiate SPG product prequalification and update status.",
   },
   {
+    id: "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive",
+    shortId:
+      "service_providing_group_product_application.service_providing_group.inactive",
+    label: "Inconsistency: Inactive SPG has product applications",
+    description:
+      "The SPG is inactive but still has product applications that are not inactive or rejected.",
+    action: "Deactivate the product applications on the SPG.",
+  },
+  {
     id: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
     shortId: "service_provider_product_suspension.product_type.not_qualified",
     label: "Inconsistency: SP product type suspension",
