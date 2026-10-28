@@ -31,6 +31,7 @@ export const ServiceProviderProductApplicationList = () => {
     {
       type: "multiselect",
       source: "service_provider_id@in",
+      className: "min-w-64",
       label: translate(
         "field.service_provider_product_application.service_provider_id",
       ),
@@ -40,6 +41,7 @@ export const ServiceProviderProductApplicationList = () => {
     {
       type: "multiselect",
       source: "system_operator_id@in",
+      className: "min-w-64",
       label: translate(
         "field.service_provider_product_application.system_operator_id",
       ),

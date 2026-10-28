@@ -136,10 +136,26 @@ options. Without an `@operator` the default is `eq` (exact match). Reuse the `so
 | Boolean               | `singleselect`, source `<field>` (defaults to `eq`), with `"true"` / `"false"` options |
 
 - Label: `translate("field.<resource>.<field>")`.
+- Width: set via `className` on the filter (see "Filter width" below).
 - Tooltip: optional `tooltip` on a filter (entries in `tooltip/tooltips`). Never
   add one by default; ask the user per filter whether it should have one.
 - Role-restricted filters: spread conditionally on `identity?.role` (see
   `canFilterOnBrp` in the CU list).
+
+### Filter width
+
+Most filters need no width; the design system default is fine. Set a width with
+`className` on the filter only where it helps:
+
+- Multiselect with long options (system operator, service provider, balance
+  responsible party etc.): `min-w-64`. Use `min-w` rather than `w` so the field
+  grows as options are chosen instead of wrapping onto several lines.
+- Single select with short, known options (e.g. Yes/No for "Small"): a narrower
+  width, e.g. `w-32` (see `is_small` in the CU list).
+- Free text, and enums of known length (bidding zone, status): keep the default,
+  unless the field is expected to hold long values (then use `min-w-64`, or ask).
+
+If it is not clear what width a filter should have, ask the user.
 
 **Prompt the user** only for which fields to filter on, which filters get a
 tooltip, whether there are default filters, and the default sort. Don't suggest
