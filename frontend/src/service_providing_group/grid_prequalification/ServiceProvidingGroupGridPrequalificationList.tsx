@@ -32,6 +32,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
     {
       type: "text",
       source: SPG_NAME_FILTER_SOURCE,
+      className: "min-w-64",
       label: translate(
         "field.service_providing_group_grid_prequalification.service_providing_group_id",
       ),
@@ -39,6 +40,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
     {
       type: "multiselect",
       source: "impacted_system_operator_id@in",
+      className: "min-w-64",
       label: translate(
         "field.service_providing_group_grid_prequalification.impacted_system_operator_id",
       ),

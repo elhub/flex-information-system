@@ -136,10 +136,26 @@ options. Without an `@operator` the default is `eq` (exact match). Reuse the `so
 | Boolean               | `singleselect`, source `<field>` (defaults to `eq`), with `"true"` / `"false"` options |
 
 - Label: `translate("field.<resource>.<field>")`.
+- Width: set via `className` on the filter (see "Filter width" below).
 - Tooltip: optional `tooltip` on a filter (entries in `tooltip/tooltips`). Never
   add one by default; ask the user per filter whether it should have one.
 - Role-restricted filters: spread conditionally on `identity?.role` (see
   `canFilterOnBrp` in the CU list).
+
+### Filter width
+
+Most filters need no width; the design system default is fine. Set a width with
+`className` on the filter only where it helps:
+
+- Multiselect with long options (system operator, service provider, balance
+  responsible party etc.): `min-w-64`. Use `min-w` rather than `w` so the field
+  grows as options are chosen instead of wrapping onto several lines.
+- Single select with short, known options (e.g. Yes/No for "Small"): a narrower
+  width, e.g. `w-32` (see `is_small` in the CU list).
+- Free text, and enums of known length (bidding zone, status): keep the default,
+  unless the field is expected to hold long values (then use `min-w-64`, or ask).
+
+If it is not clear what width a filter should have, ask the user.
 
 **Prompt the user** only for which fields to filter on, which filters get a
 tooltip, whether there are default filters, and the default sort. Don't suggest
@@ -154,8 +170,12 @@ default is unclear (e.g. a party field that might be single select).
 
 - Header: `translate("field.<resource>.<field>")`.
 - Render text with `BodyText size="small"`. Use `weight="semibold"` for the
-  column that supplies the show page title (the page the row click opens). If
-  the title is not a single column in the list, don't highlight any column.
+  column that supplies the show page title (the page the row click opens).
+  Always open the resource's `XxxShow.tsx` and check what it uses as the page
+  title (e.g. the name of a related party, not necessarily a column named
+  `name`). If the title maps to exactly one column, highlight that column. If
+  it does not (composed from several fields, or no matching column), ask the
+  user whether a column should be highlighted instead of silently skipping it.
   Missing values: a small `Dash` component
   (`<BodyText size="small">-</BodyText>`), defined in the file.
 - Status: `StatusBadge` with the status map and
@@ -237,7 +257,7 @@ navigation restores the list.
 
 # Migration checklist
 
-1. Read the old list and note its filters, columns, actions, default sort and any special behaviour.
+1. Read the old list and note its filters, columns, actions, default sort and any special behaviour. Also read the show page to find which column supplies its title (gets `weight="semibold"`).
 2. Ask the user about filters, defaults, columns and sortable columns.
 3. Create `useXxxList.ts`.
 4. Rewrite `XxxList.tsx` with `ResourceListLayout`.

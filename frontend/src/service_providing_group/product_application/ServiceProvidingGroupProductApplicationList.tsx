@@ -106,6 +106,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     {
       type: "multiselect",
       source: SERVICE_PROVIDER_FILTER,
+      className: "min-w-64",
       label: translate("field.service_providing_group.service_provider_id"),
       options: serviceProviders.data ?? [],
       isLoading: serviceProviders.isLoading,
