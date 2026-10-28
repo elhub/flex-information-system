@@ -25,13 +25,13 @@ digraph G {
     in_progress -> not_approved [label="", color="green"];
     not_approved -> in_progress [label="SP updates \ndata", color="green"];
 
-    // background soft delete and reactivation based on CU under the SO
-    requested -> inactive [label="no CU left under SO", color="pink"];
+    // background soft delete and reactivation based on CU under the CSO
+    requested -> inactive [label="no CU left under CSO", color="pink"];
     in_progress -> inactive [label="", color="pink"];
     conditionally_approved -> inactive [label="", color="pink"];
     approved -> inactive [label="", color="pink"];
     not_approved -> inactive [label="", color="pink"];
-    inactive -> requested [label="new CU under SO", color="pink"];
+    inactive -> requested [label="new CU under CSO", color="pink"];
 
    }
 @enddot
