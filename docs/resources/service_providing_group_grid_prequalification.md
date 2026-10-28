@@ -2,9 +2,7 @@
 
 A resource tracking the grid prequalification status of a service providing
 group. One SPG grid prequalification per impacted system operator, plus one for
-the procuring system operator, as long as the group has at least one current or
-future controllable unit. When no controllable unit is left, the grid
-prequalification becomes `inactive`.
+the procuring system operator.
 
 ## Status transitions for grid prequalification
 

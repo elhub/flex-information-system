@@ -425,15 +425,14 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # the SO transition away from `requested` (above) triggered the SPGGP
-    # sync: one SPGGP for the PSO (the fresh SO) and one for the CSO of the CU
-    # in the SPG (AP 1002 belongs to the Test SO), so the count increased by 2
+    # the SO transition away from `requested` (above) triggered the
+    # SPGGP sync, we need to verify the count increased by 1
     spggps_after = list_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
         service_providing_group_id=f"eq.{spg_ids[0]}",
     )
     assert isinstance(spggps_after, list)
-    assert len(spggps_after) == len(spggps_before) + 2
+    assert len(spggps_after) == len(spggps_before) + 1
 
     # clearing prequalified_at so we can test SPGPA-VAL004/005
     u = update_service_providing_group_product_application.sync(
