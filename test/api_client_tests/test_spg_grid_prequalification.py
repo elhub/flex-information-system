@@ -707,10 +707,7 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
     (sts, spg_id, so_id, other_so_id, client_sp, _, pt_ids) = data
     client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    # apply to other_so_id only: so_id is then just a CSO of the CUs. If so_id
-    # were the PSO of a SPGPA, the PSO rule would keep its SPGGP alive
-    # whatever happens to the CUs
-    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[0])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[0])
 
     spggps = _list_spggps(client_fiso, spg_id, so_id)
     assert len(spggps) == 1
@@ -719,6 +716,7 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
 
     active_spgms = _active_memberships(client_fiso, spg_id)
 
+    # remove the first CU only: the SPGGP must stay alive
     # (a sync run is triggered by the next SPGPA change below)
     def remove(spgm):
         if removal == "delete":
@@ -741,6 +739,12 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
             assert not isinstance(d, ErrorMessage)
 
     remove(active_spgms[0])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[0])
+    spggp = read_service_providing_group_grid_prequalification.sync(
+        client=client_fiso, id=spggp_id
+    )
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.REQUESTED
 
     # remove the last CU: the SPGGP is soft-deleted at the next sync
     remove(active_spgms[1])
