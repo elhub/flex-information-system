@@ -105,7 +105,6 @@ USING (
 
 -- the procuring system operator of a product application must see the grid
 -- prequalification(s) triggered by starting its prequalification
--- (soft-deleted ones are hidden, as for SPGGP-SO001/002)
 CREATE OR REPLACE FUNCTION current_party_is_pso_in_spg(spg_id bigint)
 RETURNS boolean
 SECURITY DEFINER
@@ -123,7 +122,4 @@ CREATE POLICY "SPGGP_SO003"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
-USING (
-    status != 'inactive'
-    AND current_party_is_pso_in_spg(service_providing_group_id)
-);
+USING (current_party_is_pso_in_spg(service_providing_group_id));

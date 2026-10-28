@@ -5,25 +5,11 @@
 -- (SPG, ISO) pairs for which a SPG-GP record should exist in the DB
 CREATE OR REPLACE VIEW flex.service_providing_group_grid_prequalification_v
 WITH (security_invoker = false) AS (
-    -- the PSO of a SPGPA grid-prequalifies the SPG, as long as the SPG has
-    -- at least one current/future CU (an empty SPG has nothing to prequalify)
+    -- the PSO of a SPGPA always grid-prequalifies the SPG
     SELECT DISTINCT
         spgpa_pso.service_providing_group_id,
         spgpa_pso.procuring_system_operator_id AS impacted_system_operator_id
     FROM flex.service_providing_group_product_application AS spgpa_pso
-        -- current/future memberships on the SPG
-        INNER JOIN flex.service_providing_group_membership AS spgm_pso
-            ON
-                spgpa_pso.service_providing_group_id
-                = spgm_pso.service_providing_group_id
-                AND (
-                    upper(spgm_pso.valid_time_range) IS null
-                    OR upper(spgm_pso.valid_time_range) > current_timestamp
-                )
-        -- associated CUs
-        INNER JOIN flex.controllable_unit AS cu_pso
-            ON spgm_pso.controllable_unit_id = cu_pso.id
-    -- the SPG-PA is being processed so the PSO should grid-prequalify the SPG
     WHERE spgpa_pso.status NOT IN ('requested', 'rejected', 'inactive')
 
     UNION
