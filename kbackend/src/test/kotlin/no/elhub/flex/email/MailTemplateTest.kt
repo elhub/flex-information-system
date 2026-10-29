@@ -25,10 +25,11 @@ class MailTemplateTest : FunSpec({
         shouldThrow<IllegalArgumentException> { MailTemplate("s", "{{nope}}").render("a@b.no") }
     }
 
-    test("active notices template renders without extra variables") {
-        val mail = MailTemplate.ACTIVE_NOTICES.render("a@b.no")
-        mail.subject shouldBe "You have notices in the Flexibility Information System"
-        mail.content shouldContain "You have open notices"
+    test("active notices template renders with a user name") {
+        val mail = MailTemplate.ACTIVE_NOTICES.render("a@b.no", mapOf("userName" to "Ola"))
+        mail.subject shouldBe "Du har varsler i Fleksibilitetsregisteret"
+        mail.content shouldContain "Du har åpne varsler"
+        mail.content shouldContain "Hei Ola,"
         mail.content shouldNotContain "{{"
     }
 })

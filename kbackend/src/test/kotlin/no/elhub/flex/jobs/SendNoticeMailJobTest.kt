@@ -13,6 +13,7 @@ import io.mockk.mockk
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.email.MailClient
 import no.elhub.flex.model.domain.db.DatabaseError
+import no.elhub.flex.notice.db.NoticeRecipient
 import no.elhub.flex.notice.db.NoticeRecipientRepository
 
 class SendNoticeMailJobTest : FunSpec({
@@ -24,15 +25,15 @@ class SendNoticeMailJobTest : FunSpec({
     beforeTest { clearAllMocks() }
 
     test("sends one mail per recipient") {
-        coEvery { with(principal) { repository.getActiveRecipientEmails() } } returns listOf("a@b.no", "c@d.no").right()
+        coEvery { with(principal) { repository.getActiveRecipients() } } returns listOf(NoticeRecipient(1, "Ola", "a@b.no"), NoticeRecipient(2, "Kari", "c@d.no")).right()
         coEvery { client.send(any()) } returns Unit
         job.run().shouldBeRight()
-        coVerify(exactly = 1) { client.send(match { it.mailTo == "a@b.no" }) }
-        coVerify(exactly = 1) { client.send(match { it.mailTo == "c@d.no" }) }
+        coVerify(exactly = 1) { client.send(match { it.mailTo == "a@b.no" && "Hei Ola," in it.content }) }
+        coVerify(exactly = 1) { client.send(match { it.mailTo == "c@d.no" && "Hei Kari," in it.content }) }
     }
 
     test("a failing send does not stop the remaining mails") {
-        coEvery { with(principal) { repository.getActiveRecipientEmails() } } returns listOf("a@b.no", "c@d.no").right()
+        coEvery { with(principal) { repository.getActiveRecipients() } } returns listOf(NoticeRecipient(1, "Ola", "a@b.no"), NoticeRecipient(2, "Kari", "c@d.no")).right()
         coEvery { client.send(match { it.mailTo == "a@b.no" }) } throws RuntimeException("smtp down")
         coEvery { client.send(match { it.mailTo == "c@d.no" }) } returns Unit
         job.run().shouldBeRight()
@@ -40,7 +41,7 @@ class SendNoticeMailJobTest : FunSpec({
     }
 
     test("repository error is returned as a job error") {
-        coEvery { with(principal) { repository.getActiveRecipientEmails() } } returns DatabaseError("boom").left()
+        coEvery { with(principal) { repository.getActiveRecipients() } } returns DatabaseError("boom").left()
         job.run().shouldBeLeft().shouldBeInstanceOf<JobError.DatabaseError>()
         coVerify(exactly = 0) { client.send(any()) }
     }

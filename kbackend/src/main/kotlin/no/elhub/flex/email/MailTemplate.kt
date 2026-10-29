@@ -1,5 +1,7 @@
 package no.elhub.flex.email
 
+import io.ktor.util.escapeHTML
+
 /**
  * An HTML mail template with `{{placeholder}}` variables.
  *
@@ -25,30 +27,24 @@ class MailTemplate(
         PLACEHOLDER.replace(text) { match ->
             val key = match.groupValues[1]
             val value = requireNotNull(values[key]) { "Missing value for mail template placeholder '{{$key}}'" }
-            if (escape) escapeHtml(value) else value
+            if (escape) (value.escapeHTML()) else value
         }
-
-    private fun escapeHtml(text: String): String =
-        text.replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-            .replace("\"", "&quot;")
 
     companion object {
         private val PLACEHOLDER = Regex("""\{\{\s*([a-zA-Z0-9_]+)\s*}}""")
 
-        private val DEFAULT_VARIABLES = mapOf("systemName" to "Flexibility Information System")
+        private val DEFAULT_VARIABLES = mapOf("systemName" to "Fleksibilitetsregisteret")
 
         private fun resource(name: String): String =
             requireNotNull(MailTemplate::class.java.getResourceAsStream("/mail/template/$name")) {
                 "Mail template resource '$name' not found"
             }.use { it.readBytes().toString(Charsets.UTF_8) }.replace("\r\n", "\n").trimEnd()
 
-        /** Reminder sent to recipients of active notices. English only for now. */
+        /** Reminder sent to recipients of active notices. Norwegian only for now. */
         val ACTIVE_NOTICES: MailTemplate by lazy {
             MailTemplate(
-                subject = "You have notices in the {{systemName}}",
-                body = resource("mail-content.html"),
+                subject = "Du har varsler i {{systemName}}",
+                body = resource("notice-mail.html"),
             )
         }
     }

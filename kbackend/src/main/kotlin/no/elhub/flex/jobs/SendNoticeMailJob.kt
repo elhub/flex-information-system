@@ -7,6 +7,7 @@ import kotlinx.coroutines.CancellationException
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.email.MailClient
 import no.elhub.flex.email.MailTemplate
+import no.elhub.flex.notice.db.NoticeRecipient
 import no.elhub.flex.notice.db.NoticeRecipientRepository
 
 private val logger = KotlinLogging.logger {}
@@ -21,24 +22,29 @@ class SendNoticeMailJob(
 ) : ScheduledJob {
     override suspend fun run(): Either<JobError, Unit> =
         either {
-            val emails = with(FlexPrincipal.internalEventNotification) {
-                noticeRecipientRepository.getActiveRecipientEmails()
+            val recipients = with(FlexPrincipal.internalEventNotification) {
+                noticeRecipientRepository.getActiveRecipients()
                     .mapLeft { JobError.DatabaseError(it.message) }
                     .bind()
             }
-            logger.info { "Found ${emails.size} notice recipient email(s)" }
-            emails.forEach { send(it) }
+            logger.info { "Found ${recipients.size} notice recipient(s)" }
+            recipients.forEach { send(it) }
         }.also { result ->
             result.onRight { logger.info { "Sending mails done" } }
             result.onLeft { logger.error { "Failed to fetch notice recipients: $it" } }
         }
 
-    private suspend fun send(email: String) {
+    private suspend fun send(recipient: NoticeRecipient) {
         try {
-            mailClient.send(MailTemplate.ACTIVE_NOTICES.render(to = email))
-            logger.info { "Attempted to send mail to $email" }
+            mailClient.send(
+                MailTemplate.ACTIVE_NOTICES.render(
+                    to = recipient.email,
+                    variables = mapOf("userName" to recipient.name),
+                ),
+            )
+            logger.info { "Attempted to send mail to entity ${recipient.entityId}" }
         } catch (e: Exception) {
-            logger.error(e) { "Failed to send notice mail to $email" }
+            logger.error(e) { "Failed to send notice mail to entity ${recipient.entityId}" }
         }
     }
 }

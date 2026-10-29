@@ -10,10 +10,8 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.email.MailConfig
 import no.elhub.flex.email.SmtpMailClient
 import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
-import no.elhub.flex.notice.db.insertMember
-import no.elhub.flex.notice.db.insertNotice
-import no.elhub.flex.notice.db.insertParty
-import java.sql.Connection
+import no.elhub.flex.util.SeedScope
+import no.elhub.flex.util.seed
 
 /** Runs [SendNoticeMailJob] with the real DB repository and SMTP client against Mailpit. */
 class SendNoticeMailJobIntegrationTest : FunSpec({
@@ -36,10 +34,10 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
     }
 
     test("sends one mail to each recipient with an active notice") {
-        PostgresTestContainer.withConnection { conn ->
-            conn.insertEndUserWithNotice("a@example.com", "active")
-            conn.insertEndUserWithNotice("b@example.com", "active")
-            conn.insertEndUserWithNotice("c@example.com", "resolved")
+        seed {
+            insertEndUserWithNotice("a@example.com", "active")
+            insertEndUserWithNotice("b@example.com", "active")
+            insertEndUserWithNotice("c@example.com", "resolved")
         }
 
         job.run()
@@ -47,8 +45,9 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
         val mails = MailpitTestContainer.messages()
         mails.flatMap { it.to } shouldContainExactlyInAnyOrder listOf("a@example.com", "b@example.com")
         mails.forEach {
-            it.subject shouldBe "You have notices in the Flexibility Information System"
-            it.html shouldContain "Flexibility Information System"
+            it.subject shouldBe "Du har varsler i Fleksibilitetsregisteret"
+            it.html shouldContain "Fleksibilitetsregisteret"
+            it.html shouldContain "Hei Person "
         }
     }
 
@@ -59,8 +58,8 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
     }
 })
 
-private fun Connection.insertEndUserWithNotice(email: String, noticeStatus: String) {
-    val partyId = insertParty(partyStatus = "active")
-    insertMember(partyId, email)
+private fun SeedScope.insertEndUserWithNotice(email: String, noticeStatus: String) {
+    val partyId = insertEndUserParty(status = "active")
+    insertPartyMember(partyId, email)
     insertNotice(partyId, noticeStatus, "key-$email")
 }
