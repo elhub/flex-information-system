@@ -39,7 +39,7 @@ class SyncPartyDataJobTest : FunSpec({
     )
 
     fun stubAdapter(body: String) = AdapterWireMockServer.stubFor(
-        get(urlPathEqualTo("/party"))
+        get(urlPathEqualTo("/parties"))
             .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(body)),
     )
 
@@ -101,7 +101,7 @@ class SyncPartyDataJobTest : FunSpec({
     }
 
     test("an adapter failure is returned as an error") {
-        AdapterWireMockServer.stubFor(get(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(500)))
+        AdapterWireMockServer.stubFor(get(urlPathEqualTo("/parties")).willReturn(aResponse().withStatus(500)))
 
         job().run().shouldBeLeft().shouldBeInstanceOf<JobError.HttpClientError>()
     }

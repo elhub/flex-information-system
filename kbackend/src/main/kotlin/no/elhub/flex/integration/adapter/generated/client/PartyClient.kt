@@ -34,7 +34,7 @@ public class PartyClient(
   public suspend fun readParties(apiConfiguration: ApiConfiguration = ApiConfiguration()):
       NetworkResult<List<Party>> {
     val basePath = apiConfiguration.basePath.trimEnd('/')
-    val url = basePath + """/party"""
+    val url = basePath + """/parties"""
 
     return try {
       val response = httpClient.`get`(url) {
