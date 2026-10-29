@@ -196,6 +196,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/**
                         """.trimIndent()
                     }
+
+                    gitOps {
+                        buildNameSuffix = "kbackend jobs prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-scheduled-jobs-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
                 }
             }
         }
