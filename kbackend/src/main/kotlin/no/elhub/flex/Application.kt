@@ -26,9 +26,12 @@ import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
 import no.elhub.flex.jobs.SyncGridModelDataJob
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
+import no.elhub.flex.jobs.SyncPartyDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
+import no.elhub.flex.party.db.PartyStagingRepository
+import no.elhub.flex.party.db.PartyStagingRepositoryImpl
 import no.elhub.flex.util.requireEnv
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -152,7 +155,15 @@ fun runJob(jobName: String) {
                 finalise = (System.getenv("SYNC_GRID_MODEL_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SyncGridModelDataJob>()) }
+        single<PartyStagingRepository> { PartyStagingRepositoryImpl() }
+        single {
+            SyncPartyDataJob(
+                adapterClient = get(),
+                partyStagingRepository = get(),
+                finalise = (System.getenv("SYNC_PARTY_DATA_FINALISE") ?: "false").toBooleanStrict(),
+            )
+        }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SyncGridModelDataJob>(), get<SyncPartyDataJob>()) }
     }
 
     // isolated Koin instance, not the global one used by the backend

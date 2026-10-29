@@ -16,9 +16,11 @@ import no.elhub.flex.integration.adapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.adapter.generated.client.GridModelClient
 import no.elhub.flex.integration.adapter.generated.client.MeteringGridAreaClient
 import no.elhub.flex.integration.adapter.generated.client.NetworkResult
+import no.elhub.flex.integration.adapter.generated.client.PartyClient
 import no.elhub.flex.integration.adapter.generated.models.AccountingPoint
 import no.elhub.flex.integration.adapter.generated.models.GridModel
 import no.elhub.flex.integration.adapter.generated.models.MeteringGridArea
+import no.elhub.flex.integration.adapter.generated.models.Party
 import no.elhub.flex.util.UUIDSerializer
 import no.elhub.flex.util.currentTraceContext
 import org.koin.core.annotation.Property
@@ -36,6 +38,8 @@ interface AdapterClient {
     suspend fun getMeteringGridAreas(): Either<AdapterError, List<MeteringGridArea>>
 
     suspend fun getGridModel(): Either<AdapterError, GridModel>
+
+    suspend fun getParties(): Either<AdapterError, List<Party>>
 }
 
 @Single(createdAtStart = true)
@@ -49,6 +53,9 @@ class AdapterHttpClient(
 
         // token 5s + Nemo 10s
         const val GRID_MODEL_REQUEST_TIMEOUT_MILLIS = 20_000L
+
+        // token 5s + Ediel export
+        const val PARTY_REQUEST_TIMEOUT_MILLIS = 20_000L
     }
 
     private fun httpClient(requestTimeoutMillis: Long) = HttpClient(Apache5) {
@@ -75,6 +82,7 @@ class AdapterHttpClient(
 
     private val client = AccountingPointClient(httpClient)
     private val meteringGridAreaClient = MeteringGridAreaClient(httpClient)
+    private val partyClient = PartyClient(httpClient(PARTY_REQUEST_TIMEOUT_MILLIS))
     private val gridModelClient = GridModelClient(httpClient(GRID_MODEL_REQUEST_TIMEOUT_MILLIS))
 
     override suspend fun getAccountingPoint(
@@ -136,6 +144,26 @@ class AdapterHttpClient(
             )
         )
         return when (val result = gridModelClient.readGridModel(apiConfiguration = config)) {
+            is NetworkResult.Success -> result.data.right()
+
+            is NetworkResult.Failure -> when (val error = result.error) {
+                is ClientNetworkError.Http -> HttpError(error.statusCode, error.statusDescription).left()
+                is ClientNetworkError.Network -> NetworkError(error.cause?.message).left()
+                is ClientNetworkError.Serialization -> NetworkError(error.cause.message).left()
+                is ClientNetworkError.Unknown -> NetworkError(error.cause?.message).left()
+            }
+        }
+    }
+
+    override suspend fun getParties(): Either<AdapterError, List<Party>> {
+        val config = ApiConfiguration(
+            basePath = baseUrl,
+            customHeaders = mapOf(
+                "Authorization" to "Bearer $apiKey",
+                "traceparent" to currentTraceContext().traceInfo.toString(),
+            )
+        )
+        return when (val result = partyClient.readParties(apiConfiguration = config)) {
             is NetworkResult.Success -> result.data.right()
 
             is NetworkResult.Failure -> when (val error = result.error) {

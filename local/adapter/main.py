@@ -13,6 +13,8 @@ from client.models import (
     MeteringGridArea,
     MeteringGridAreaPriceArea,
     MeteringGridAreaSystemOperator,
+    Party,
+    PartyType,
     PriceArea,
     Substation,
     SubstationCluster,
@@ -331,6 +333,33 @@ GRID_MODEL = GridModel(
 @app.route("/grid_model", methods=["GET"])
 def read_grid_model():
     return jsonify(GRID_MODEL.to_dict())
+
+
+PARTIES = [
+    Party(
+        gln="7080000100019",
+        org="123456789",
+        name="Acme Energy AS",
+        type_=PartyType.ENERGY_SUPPLIER,
+    ),
+    Party(
+        gln="7080000100026",
+        org="987654321",
+        name="Dual Role AS",
+        type_=PartyType.SYSTEM_OPERATOR,
+    ),
+    Party(
+        gln="7080000100026",
+        org="987654321",
+        name="Dual Role AS",
+        type_=PartyType.SERVICE_PROVIDER,
+    ),
+]
+
+
+@app.route("/party", methods=["GET"])
+def read_parties():
+    return jsonify([party.to_dict() for party in PARTIES])
 
 
 if __name__ == "__main__":
