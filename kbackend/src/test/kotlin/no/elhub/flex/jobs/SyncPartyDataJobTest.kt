@@ -82,6 +82,24 @@ class SyncPartyDataJobTest : FunSpec({
         query("SELECT count(*) FROM flex.party_staging WHERE gln = '7080000100019'") { it.getInt(1) } shouldBe listOf(0)
     }
 
+    test("a rejected finalise rolls back the staging truncate and preserves flex") {
+        fun partyRows(table: String) = query("SELECT gln, org, name, type FROM $table ORDER BY gln, type") {
+            listOf(it.getString(1), it.getString(2), it.getString(3), it.getString(4))
+        }
+
+        stubAdapter(PARTIES)
+        job().run().shouldBeRight()
+        val stagingBefore = partyRows("staging.party")
+        val flexBefore = partyRows("flex.party_staging")
+
+        AdapterWireMockServer.resetAll()
+        stubAdapter("[]")
+        job().run().shouldBeLeft().shouldBeInstanceOf<JobError.DatabaseError>()
+
+        partyRows("staging.party") shouldBe stagingBefore
+        partyRows("flex.party_staging") shouldBe flexBefore
+    }
+
     test("an adapter failure is returned as an error") {
         AdapterWireMockServer.stubFor(get(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(500)))
 
