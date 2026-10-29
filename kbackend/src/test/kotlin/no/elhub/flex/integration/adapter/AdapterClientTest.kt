@@ -11,6 +11,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
+import no.elhub.flex.config.AccountingPointAdapterConfig
 import no.elhub.flex.integration.adapter.generated.models.PriceArea
 import java.util.UUID
 import kotlin.time.Instant
@@ -25,7 +26,7 @@ class AdapterClientTest : FunSpec({
     lateinit var service: AdapterHttpClient
 
     beforeSpec {
-        service = AdapterHttpClient(AdapterWireMockServer.baseUrl(), API_KEY)
+        service = AdapterHttpClient(AccountingPointAdapterConfig(AdapterWireMockServer.baseUrl(), API_KEY))
     }
 
     beforeTest {

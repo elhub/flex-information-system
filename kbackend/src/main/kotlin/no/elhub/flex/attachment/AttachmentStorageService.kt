@@ -11,8 +11,8 @@ import aws.sdk.kotlin.services.s3.putObject
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.net.url.Url
 import io.github.oshai.kotlinlogging.KotlinLogging
+import no.elhub.flex.config.AttachmentStorageConfig
 import no.elhub.flex.util.FileContent
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Duration.Companion.minutes
 
@@ -62,13 +62,15 @@ private val logger = KotlinLogging.logger {}
  */
 @Single(createdAtStart = true)
 class S3AttachmentStorageService(
-    @Property("attachment-storage.bucket") private val bucket: String,
-    @Property("attachment-storage.internal-endpoint") private val internalEndpoint: String,
-    @Property("attachment-storage.public-endpoint") private val publicEndpoint: String,
-    @Property("attachment-storage.region") private val region: String = "us-east-1",
-    @Property("attachment-storage.access-key") private val accessKey: String,
-    @Property("attachment-storage.secret-key") private val secretKey: String,
+    config: AttachmentStorageConfig,
 ) : AttachmentStorageService {
+
+    private val bucket = config.bucket
+    private val internalEndpoint = config.internalEndpoint
+    private val publicEndpoint = config.publicEndpoint
+    private val region = config.region
+    private val accessKey = config.accessKey
+    private val secretKey = config.secretKey
 
     private fun buildClient(endpoint: String): S3Client =
         S3Client {
