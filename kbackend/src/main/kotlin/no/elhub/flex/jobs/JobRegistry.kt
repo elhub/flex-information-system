@@ -1,5 +1,8 @@
 package no.elhub.flex.jobs
 
+import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataJob
+import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataJob
+
 /**
  * Resolves a [Job] to its [ScheduledJob] implementation.
  *

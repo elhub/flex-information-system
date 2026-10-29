@@ -8,31 +8,33 @@ import io.ktor.server.application.install
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.netty.EngineMain
 import kotlinx.coroutines.runBlocking
-import no.elhub.flex.auth.FlexAuthentication
-import no.elhub.flex.config.AccountingPointAdapterConfig
-import no.elhub.flex.config.ConfigModule
-import no.elhub.flex.config.Tracing
-import no.elhub.flex.config.configureDatabase
-import no.elhub.flex.config.configureHealth
-import no.elhub.flex.config.configureLogging
-import no.elhub.flex.config.configureMetrics
-import no.elhub.flex.config.configureRouting
-import no.elhub.flex.config.configureScheduling
-import no.elhub.flex.config.configureSerialization
-import no.elhub.flex.config.createDataSource
-import no.elhub.flex.config.flexConfig
-import no.elhub.flex.gridmodel.db.GridModelRepository
-import no.elhub.flex.gridmodel.db.GridModelRepositoryImpl
-import no.elhub.flex.integration.adapter.AdapterClient
-import no.elhub.flex.integration.adapter.AdapterHttpClient
+import no.elhub.flex.api.auth.FlexAuthentication
+import no.elhub.flex.api.config.AccountingPointAdapterConfig
+import no.elhub.flex.api.config.ConfigModule
+import no.elhub.flex.api.config.Tracing
+import no.elhub.flex.api.config.configureDatabase
+import no.elhub.flex.api.config.configureHealth
+import no.elhub.flex.api.config.configureLogging
+import no.elhub.flex.api.config.configureMetrics
+import no.elhub.flex.api.config.configureRouting
+import no.elhub.flex.api.config.configureScheduling
+import no.elhub.flex.api.config.configureSerialization
+import no.elhub.flex.api.config.flexConfig
+import no.elhub.flex.api.metrics.MetricsModule
 import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
-import no.elhub.flex.jobs.SyncGridModelDataJob
-import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
-import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
-import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
-import no.elhub.flex.metrics.MetricsModule
-import no.elhub.flex.util.requireEnv
+import no.elhub.flex.jobs.requireEnv
+import no.elhub.flex.jobs.syncgridmodel.GridModelRepository
+import no.elhub.flex.jobs.syncgridmodel.GridModelRepositoryImpl
+import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataJob
+import no.elhub.flex.jobs.syncmeteringgridarea.MeteringGridAreaStagingRepository
+import no.elhub.flex.jobs.syncmeteringgridarea.MeteringGridAreaStagingRepositoryImpl
+import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataJob
+import no.elhub.flex.shared.SharedModule
+import no.elhub.flex.shared.adapter.AdapterClient
+import no.elhub.flex.shared.adapter.AdapterClientConfig
+import no.elhub.flex.shared.adapter.AdapterHttpClient
+import no.elhub.flex.shared.db.createDataSource
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.annotation.Module
@@ -57,8 +59,8 @@ fun main(args: Array<String>) {
     }
 }
 
-@Module(includes = [MetricsModule::class, ConfigModule::class])
-@ComponentScan("no.elhub.flex")
+@Module(includes = [MetricsModule::class, ConfigModule::class, SharedModule::class])
+@ComponentScan("no.elhub.flex.api")
 class AppModule
 
 @KoinApplication(modules = [AppModule::class])
@@ -124,13 +126,13 @@ fun runJob(jobName: String) {
         }
         single<AdapterClient> {
             AdapterHttpClient(
-                AccountingPointAdapterConfig(
+                AdapterClientConfig(
                     baseUrl = requireEnv("ADAPTER_BASE_URL"),
                     apiKey = requireEnv("ADAPTER_API_KEY"),
                 )
             )
         }
-        single<MeteringGridAreaRepository> { MeteringGridAreaRepositoryImpl() }
+        single<MeteringGridAreaStagingRepository> { MeteringGridAreaStagingRepositoryImpl() }
         single {
             SyncMeteringGridAreaDataJob(
                 adapterClient = get(),
