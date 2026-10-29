@@ -276,6 +276,14 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
       buttonTextKey={"text.notice_missing_grid_location_button"}
     />
   ),
+  "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive":
+    (notice) => (
+      <NoticeActionButton
+        notice={notice}
+        buttonTextKey={"text.notice_spg_product_applications_button"}
+        search="?tab=product_applications"
+      />
+    ),
   "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch": (
     notice,
   ) => (
