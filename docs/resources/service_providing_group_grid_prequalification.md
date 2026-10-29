@@ -2,9 +2,6 @@
 
 A resource tracking the grid prequalification status of a service providing
 group. One SPG grid prequalification per impacted system operator, plus one for
-<<<<<<< Updated upstream
-the procuring system operator.
-=======
 the procuring system operator. The one for the procuring system operator exists
 as long as the product application is being processed.
 >>>>>>> Stashed changes
