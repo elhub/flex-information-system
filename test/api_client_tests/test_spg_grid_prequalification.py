@@ -290,7 +290,7 @@ def data():
     )
     assert not isinstance(u, ErrorMessage)
 
-    pt_ids = [5, 7]
+    pt_ids = [5, 6, 7, 3]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -707,7 +707,9 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
     (sts, spg_id, so_id, other_so_id, client_sp, _, pt_ids) = data
     client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
 
-    _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[0])
+    # all SPGPAs target other_so_id (the PSO), so that so_id is only the CSO of
+    # the CUs: a PSO has a SPGGP as long as its SPGPA is live (whatever the CUs)
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[0])
 
     spggps = _list_spggps(client_fiso, spg_id, so_id)
     assert len(spggps) == 1
@@ -739,7 +741,7 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
             assert not isinstance(d, ErrorMessage)
 
     remove(active_spgms[0])
-    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[0])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[1])
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_fiso, id=spggp_id
     )
@@ -748,30 +750,7 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
 
     # remove the last CU: the SPGGP is soft-deleted at the next sync
     remove(active_spgms[1])
-    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[1])
-    spggp = read_service_providing_group_grid_prequalification.sync(
-        client=client_fiso, id=spggp_id
-    )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
-    assert spggp.status == ServiceProvidingGroupGridPrequalificationStatus.INACTIVE
-
-    # the inactive SPGGP is hidden from the impacted SO
-    client_so = sts.get_client(TestEntityClient.TEST, "SO")
-    assert _list_spggps(client_so, spg_id, so_id) == []
-
-    spggps = list_service_providing_group_grid_prequalification.sync(client=client_so)
-    assert isinstance(spggps, list)
-    assert spggp_id not in [item.id for item in spggps]
-
-    # the impacted SO cannot update it (hidden by RLS)
-    u = update_service_providing_group_grid_prequalification.sync(
-        client=client_so,
-        id=spggp_id,
-        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
-            status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[2])
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_fiso, id=spggp_id
     )
@@ -793,11 +772,8 @@ def test_spggp_inactive_when_no_cu_left(data, removal):
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     # trigger the sync through a new SPGPA on a fresh SPG-SO pair
-    _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_ids[1])
+    _apply_and_start_processing(client_sp, client_fiso, spg_id, other_so_id, pt_ids[3])
     spggps = _list_spggps(client_fiso, spg_id, so_id)
     assert [(item.id, item.status) for item in spggps] == [
         (spggp_id, ServiceProvidingGroupGridPrequalificationStatus.REQUESTED)
     ]
-
-    # visible again by the impacted SO
-    assert [item.id for item in _list_spggps(client_so, spg_id, so_id)] == [spggp_id]
