@@ -142,7 +142,8 @@ const noticeTypes = [
     label: "Inconsistency: Inactive SPG has product applications",
     description:
       "The SPG is inactive but still has product applications that are not inactive or rejected.",
-    action: "Deactivate the product applications on the SPG.",
+    action:
+      "Deactivate requested product applications and ask the procuring system operator to deactivate applications already being processed or qualified.",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
