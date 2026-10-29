@@ -11,13 +11,13 @@ private val logger = KotlinLogging.logger {}
 
 /** Configures the database for the running Ktor [Application]. See [createDataSource]. */
 fun Application.configureDatabase(): HikariDataSource {
-    val config = environment.config
+    val config = environment.config.databaseConfig()
     return createDataSource(
-        url = config.propertyOrNull("ktor.database.url")?.getString(),
-        driverClass = config.propertyOrNull("ktor.database.driverClass")?.getString(),
-        username = config.propertyOrNull("ktor.database.username")?.getString(),
-        password = config.propertyOrNull("ktor.database.password")?.getString(),
-        maximumPoolSize = config.propertyOrNull("ktor.database.hikari.maximumPoolSize")?.getString()?.toInt() ?: 10,
+        url = config.url,
+        driverClass = config.driverClass,
+        username = config.username,
+        password = config.password,
+        maximumPoolSize = config.hikari.maximumPoolSize,
     )
 }
 

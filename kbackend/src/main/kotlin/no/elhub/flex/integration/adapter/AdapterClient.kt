@@ -11,6 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import no.elhub.flex.config.AccountingPointAdapterConfig
 import no.elhub.flex.integration.adapter.generated.client.AccountingPointClient
 import no.elhub.flex.integration.adapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.adapter.generated.client.GridModelClient
@@ -21,7 +22,6 @@ import no.elhub.flex.integration.adapter.generated.models.GridModel
 import no.elhub.flex.integration.adapter.generated.models.MeteringGridArea
 import no.elhub.flex.util.UUIDSerializer
 import no.elhub.flex.util.currentTraceContext
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import java.util.UUID
 import kotlin.time.Instant
@@ -40,9 +40,11 @@ interface AdapterClient {
 
 @Single(createdAtStart = true)
 class AdapterHttpClient(
-    @Property("accounting-point-adapter.base-url") private val baseUrl: String,
-    @Property("accounting-point-adapter.api-key") private val apiKey: String
+    config: AccountingPointAdapterConfig
 ) : AdapterClient {
+
+    private val baseUrl = config.baseUrl
+    private val apiKey = config.apiKey
 
     private companion object {
         const val REQUEST_TIMEOUT_MILLIS = 6000L

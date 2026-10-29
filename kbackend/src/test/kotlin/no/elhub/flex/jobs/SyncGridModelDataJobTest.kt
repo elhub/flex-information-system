@@ -9,6 +9,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.config.AccountingPointAdapterConfig
 import no.elhub.flex.db.FlexTransaction
 import no.elhub.flex.gridmodel.db.GridModelRepositoryImpl
 import no.elhub.flex.integration.adapter.AdapterHttpClient
@@ -34,7 +35,7 @@ class SyncGridModelDataJobTest : FunSpec({
     extensions(AdapterWireMockServer)
 
     fun job(finalise: Boolean = true) = SyncGridModelDataJob(
-        adapterClient = AdapterHttpClient(AdapterWireMockServer.baseUrl(), API_KEY),
+        adapterClient = AdapterHttpClient(AccountingPointAdapterConfig(AdapterWireMockServer.baseUrl(), API_KEY)),
         gridModelRepository = GridModelRepositoryImpl(),
         finalise = finalise,
     )

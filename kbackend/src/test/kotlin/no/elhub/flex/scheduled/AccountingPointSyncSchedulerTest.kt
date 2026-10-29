@@ -17,11 +17,13 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.InternalServerError
+import no.elhub.flex.util.TEST_JWT_SECRET
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -38,7 +40,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
         accountingPointSyncRepository = syncRepository,
         accountingPointService = accountingPointService,
         metrics = FlexMetrics(SimpleMeterRegistry()),
-        timezone = TimeZone.of("Europe/Oslo"),
+        flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
     )
 
     val principal = FlexPrincipal.internalData

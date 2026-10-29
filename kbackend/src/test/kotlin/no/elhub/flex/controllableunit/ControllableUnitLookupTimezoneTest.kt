@@ -28,6 +28,8 @@ import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepositor
 import no.elhub.flex.accountingpoint.db.AccountingPointRepositoryImpl
 import no.elhub.flex.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.auth.FlexAuthentication
+import no.elhub.flex.config.AccountingPointAdapterConfig
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
@@ -70,8 +72,10 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
 
     beforeSpec {
         val adapterService = AdapterHttpClient(
-            baseUrl = AdapterWireMockServer.baseUrl(),
-            apiKey = "test-api-key",
+            AccountingPointAdapterConfig(
+                baseUrl = AdapterWireMockServer.baseUrl(),
+                apiKey = "test-api-key",
+            )
         )
         val mockPartyService = mockk<PartyService>()
         coEvery { mockPartyService.getParty(any()) } returns
@@ -91,8 +95,12 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             metrics = FlexMetrics(SimpleMeterRegistry()),
             partyService = mockPartyService,
             // keep enabled so that we check that checks in the DB pass
-            accountingPointAdapterSyncEnabled = true,
-            timezone = osloTz,
+            adapterConfig = AccountingPointAdapterConfig(
+                baseUrl = AdapterWireMockServer.baseUrl(),
+                apiKey = "test-api-key",
+                syncEnabled = true,
+            ),
+            flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
         )
     }
 
