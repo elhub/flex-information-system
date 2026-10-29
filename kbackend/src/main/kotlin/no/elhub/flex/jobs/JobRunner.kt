@@ -5,9 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
 import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataApp
-import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataJob
 import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataApp
-import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataJob
 import org.koin.core.Koin
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
@@ -27,7 +25,7 @@ fun runJob(jobName: String) {
 
     logger.info { "Starting job: ${job.name}" }
     val koin = startKoin(job)
-    val result = koin.get<HikariDataSource>().use { runBlocking { koin.resolve(job).run() } }
+    val result = koin.get<HikariDataSource>().use { runBlocking { koin.get<ScheduledJob>().run() } }
 
     result.fold(
         {
@@ -44,9 +42,4 @@ fun runJob(jobName: String) {
 private fun startKoin(job: Job): Koin = when (job) {
     is Job.SyncMeteringGridAreaData -> startKoin<SyncMeteringGridAreaDataApp> { slf4jLogger() }.koin
     is Job.SyncGridModelData -> startKoin<SyncGridModelDataApp> { slf4jLogger() }.koin
-}
-
-private fun Koin.resolve(job: Job): ScheduledJob = when (job) {
-    is Job.SyncMeteringGridAreaData -> get<SyncMeteringGridAreaDataJob>()
-    is Job.SyncGridModelData -> get<SyncGridModelDataJob>()
 }
