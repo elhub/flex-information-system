@@ -404,6 +404,40 @@ export type NoticeDataControllableUnitProductDuplication = {
   service_providing_group_ids?: Array<number>;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.service_providing_group_grid_prequalification.outdated
+ */
+export type NoticeDataServiceProvidingGroupGridPrequalificationOutdated = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+  /**
+   * The service providing group that changed.
+   */
+  service_providing_group_id?: number;
+  /**
+   * When the service providing group was last grid prequalified. The changes are computed relative to the state at this time.
+   */
+  prequalified_at?: string;
+  /**
+   * Number of controllable units added since the grid prequalification.
+   */
+  added?: number;
+  /**
+   * Number of controllable units removed since the grid prequalification.
+   */
+  removed?: number;
+  /**
+   * Number of controllable units whose maximum active power changed since the grid prequalification.
+   */
+  changed?: number;
+  /**
+   * Net change in maximum active power (kW) of the controllable units under the system operator since the grid prequalification.
+   */
+  maximum_active_power_diff?: number;
+};
+
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -422,7 +456,10 @@ export type NoticeData =
     } & NoticeDataProductTypeNotQualified)
   | ({
       kind: "notice.data.controllable_unit.product_duplication";
-    } & NoticeDataControllableUnitProductDuplication);
+    } & NoticeDataControllableUnitProductDuplication)
+  | ({
+      kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -685,7 +722,8 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "temporary_qualified"
   | "prequalified"
   | "verified"
-  | "rejected";
+  | "rejected"
+  | "inactive";
 
 /**
  * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
@@ -4833,7 +4871,10 @@ export type NoticeDataWritable =
     } & NoticeDataProductTypeNotQualified)
   | ({
       kind: "notice.data.controllable_unit.product_duplication";
-    } & NoticeDataControllableUnitProductDuplication);
+    } & NoticeDataControllableUnitProductDuplication)
+  | ({
+      kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * An empty object

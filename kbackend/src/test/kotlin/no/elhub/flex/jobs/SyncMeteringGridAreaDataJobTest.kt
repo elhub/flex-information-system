@@ -9,6 +9,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.config.AccountingPointAdapterConfig
 import no.elhub.flex.db.FlexTransaction
 import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.integration.adapter.AdapterWireMockServer
@@ -53,7 +54,7 @@ class SyncMeteringGridAreaDataJobTest : FunSpec({
     )
 
     fun job(finalise: Boolean = true) = SyncMeteringGridAreaDataJob(
-        adapterClient = AdapterHttpClient(AdapterWireMockServer.baseUrl(), API_KEY),
+        adapterClient = AdapterHttpClient(AccountingPointAdapterConfig(AdapterWireMockServer.baseUrl(), API_KEY)),
         meteringGridAreaRepository = MeteringGridAreaRepositoryImpl(),
         finalise = finalise,
     )

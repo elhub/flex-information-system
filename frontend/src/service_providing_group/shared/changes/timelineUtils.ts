@@ -1,10 +1,8 @@
 import { useMemo } from "react";
 import { format, formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
-import { useTranslate, type TranslateFunction } from "ra-core";
-import { useTranslateField } from "../../../intl/intl";
+import type { TranslateFunction } from "ra-core";
 import { mergeTimelineMarks, type TimelineMark } from "../../../components/ui";
-import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 
 export const OSLO_TIMEZONE = "Europe/Oslo";
 
@@ -29,44 +27,14 @@ export const findMilestoneLabel = (
   return match?.label ?? translate("text.spg_changes_custom_milestone");
 };
 
-// Builds the timeline marks for the SPGPA's lifecycle milestones (skipping
-// any that are unset) plus "now", each labeled and formatted for display.
-export const useChangesTimelineMarks = (
-  spgpa: ServiceProvidingGroupProductApplication,
-  now: string,
-): TimelineMark[] => {
-  const translate = useTranslate();
-  const translateField = useTranslateField();
+export type TimelineMilestone = { at: string | undefined; label: string };
 
-  return useMemo(() => {
-    const milestones: { at: string | undefined; label: string }[] = [
-      {
-        at: spgpa.created_at,
-        label: translateField(
-          "service_providing_group_product_application.created_at",
-        ),
-      },
-      {
-        at: spgpa.prequalified_at,
-        label: translateField(
-          "service_providing_group_product_application.prequalified_at",
-        ),
-      },
-      {
-        at: spgpa.verified_at,
-        label: translateField(
-          "service_providing_group_product_application.verified_at",
-        ),
-      },
-      {
-        at: spgpa.complete_at,
-        label: translateField(
-          "service_providing_group_product_application.complete_at",
-        ),
-      },
-      { at: now, label: translate("text.spg_changes_milestone_now") },
-    ];
-
+// Builds the timeline marks for the given milestones (skipping any that are
+// unset), each labeled and formatted for display.
+export const useTimelineMarks = (
+  milestones: TimelineMilestone[],
+): TimelineMark[] =>
+  useMemo(() => {
     const mappedMilestones = milestones
       .filter((milestone): milestone is { at: string; label: string } =>
         Boolean(milestone.at),
@@ -82,5 +50,4 @@ export const useChangesTimelineMarks = (
         in: tz(OSLO_TIMEZONE),
       }),
     }));
-  }, [spgpa, now, translate, translateField]);
-};
+  }, [milestones]);

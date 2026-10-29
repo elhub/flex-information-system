@@ -11,6 +11,8 @@ import io.mockk.mockk
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.attachment.AttachmentStorageService
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.AccountingPointAdapterConfig
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
@@ -24,6 +26,7 @@ import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.party.PartyService
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.util.TEST_JWT_SECRET
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
@@ -64,7 +67,7 @@ fun defaultTestApplication(): TestApplication {
                         single<EventRepository> { mockEventRepo }
                         single { FlexMetrics(get()) }
                         single<PartyService> { mockPartyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get()) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )

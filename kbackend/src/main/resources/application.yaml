@@ -13,13 +13,13 @@ ktor:
       maximumPoolSize: 10
 
 flex:
-  jwt-secret: ${FLEX_JWT_SECRET}
+  jwtSecret: ${FLEX_JWT_SECRET}
   timezone: ${FLEX_TIMEZONE:Europe/Oslo}
 
-accounting-point-adapter:
-  base-url: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
-  api-key: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
-  sync-enabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
+accountingPointAdapter:
+  baseUrl: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
+  apiKey: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
+  syncEnabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
 
 mail:
   host: ${MAIL_SMTP_HOST:}
@@ -30,9 +30,10 @@ mail:
   start-tls: ${MAIL_SMTP_STARTTLS:true}
 
 attachment-storage:
+attachmentStorage:
   bucket: ${S3_BUCKET:}
-  internal-endpoint: ${S3_INTERNAL_ENDPOINT:}
-  public-endpoint: ${S3_PUBLIC_ENDPOINT:}
+  internalEndpoint: ${S3_INTERNAL_ENDPOINT:}
+  publicEndpoint: ${S3_PUBLIC_ENDPOINT:}
   region: ${S3_REGION:}
-  access-key: ${S3_ACCESS_KEY:}
-  secret-key: ${S3_SECRET_KEY:}
+  accessKey: ${S3_ACCESS_KEY:}
+  secretKey: ${S3_SECRET_KEY:}

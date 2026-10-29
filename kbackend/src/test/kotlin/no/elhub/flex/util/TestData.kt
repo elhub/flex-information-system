@@ -8,6 +8,7 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitRegulationDirect
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupBiddingZone
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupGridPrequalificationStatus
 import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupProductApplicationStatus
+import no.elhub.flex.model.dto.generated.models.ServiceProvidingGroupStatus
 import java.sql.Connection
 import java.time.Instant
 import java.time.LocalDate
@@ -152,13 +153,15 @@ class SeedScope(private val conn: Connection) {
         serviceProviderId: Long = insertServiceProvider(),
         name: String = "Test SPG",
         biddingZone: ServiceProvidingGroupBiddingZone = ServiceProvidingGroupBiddingZone.NO3,
+        status: ServiceProvidingGroupStatus = ServiceProvidingGroupStatus.NEW,
     ): Long =
         queryLong(
-            "INSERT INTO flex.service_providing_group (name, service_provider_id, bidding_zone) " +
-                "VALUES (?, ?, ?) RETURNING id",
+            "INSERT INTO flex.service_providing_group (name, service_provider_id, bidding_zone, status) " +
+                "VALUES (?, ?, ?, ?) RETURNING id",
             name,
             serviceProviderId,
             biddingZone.value,
+            status.value,
         )
 
     /** Adds the controllable unit to the group. A null [validTo] means the membership has no end. */
@@ -177,6 +180,17 @@ class SeedScope(private val conn: Connection) {
             validFrom.atOffset(ZoneOffset.UTC),
             validTo?.atOffset(ZoneOffset.UTC),
         )
+
+    /**
+     * Deletes the membership. Seed with [Triggers.ON] so that the audit trigger moves the deleted row
+     * to the history table, like it does when a user removes the CU from the group.
+     */
+    fun deleteMembership(membershipId: Long) {
+        conn.prepareStatement("DELETE FROM flex.service_providing_group_membership WHERE id = ?").use { stmt ->
+            stmt.setLong(1, membershipId)
+            stmt.executeUpdate()
+        }
+    }
 
     fun insertGridPrequalification(
         serviceProvidingGroupId: Long,

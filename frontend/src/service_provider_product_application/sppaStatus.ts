@@ -4,8 +4,8 @@ import {
   IconStopWatch15,
   IconWarningCircle,
 } from "@elhub/ds-icons";
-import { ServiceProviderProductApplicationStatus } from "../../generated-client";
-import { StatusVariant } from "../../components/StatusBadge";
+import { ServiceProviderProductApplicationStatus } from "../generated-client";
+import { StatusVariant } from "../components/StatusBadge";
 
 export const sppaStatusVariantMap: Record<
   ServiceProviderProductApplicationStatus,

@@ -6,10 +6,10 @@ import { usePermissions, RecordContextProvider, useTranslate } from "ra-core";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { ControllableUnitSpgList } from "./ControllableUnitSpgList";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
-import { ControllableUnitServiceProviderList } from "../service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitTechnicalResourceSummary } from "./ControllableUnitTechnicalResourceSummary";
+import { ControllableUnitServiceProviderList } from "../service_provider/ControllableUnitServiceProviderList";
 
 type Props = {
   cuId: number;

@@ -59,6 +59,7 @@ export const ControllableUnitList = () => {
     {
       type: "multiselect",
       source: "accounting_point.system_operator_id@in",
+      className: "min-w-64",
       label: translate("field.accounting_point.system_operator_id"),
       options: systemOperators.data ?? [],
       isLoading: systemOperators.isLoading,
@@ -68,6 +69,7 @@ export const ControllableUnitList = () => {
           {
             type: "multiselect" as const,
             source: BRP_FILTER_SOURCE,
+            className: "min-w-64",
             label: translate(
               "field.accounting_point_balance_responsible_party.balance_responsible_party_id",
             ),
@@ -79,6 +81,7 @@ export const ControllableUnitList = () => {
     {
       type: "singleselect",
       source: "is_small",
+      className: "w-32",
       label: translate("field.controllable_unit.is_small"),
       tooltip: tooltips["controllable_unit.is_small"],
       options: [

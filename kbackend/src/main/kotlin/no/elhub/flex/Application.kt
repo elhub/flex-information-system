@@ -5,10 +5,12 @@ import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
+import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.netty.EngineMain
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
+import no.elhub.flex.config.AccountingPointAdapterConfig
+import no.elhub.flex.config.ConfigModule
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureDatabase
 import no.elhub.flex.config.configureHealth
@@ -18,20 +20,18 @@ import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.config.createDataSource
-import no.elhub.flex.email.MailClient
-import no.elhub.flex.email.MailConfig
-import no.elhub.flex.email.SmtpMailClient
+import no.elhub.flex.config.flexConfig
+import no.elhub.flex.gridmodel.db.GridModelRepository
+import no.elhub.flex.gridmodel.db.GridModelRepositoryImpl
 import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
-import no.elhub.flex.jobs.SendNoticeMailJob
+import no.elhub.flex.jobs.SyncGridModelDataJob
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
-import no.elhub.flex.notice.db.NoticeRecipientRepository
-import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
 import no.elhub.flex.util.requireEnv
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -39,6 +39,7 @@ import org.koin.core.annotation.Module
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.environmentProperties
+import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
 import kotlin.system.exitProcess
@@ -56,7 +57,7 @@ fun main(args: Array<String>) {
     }
 }
 
-@Module(includes = [MetricsModule::class])
+@Module(includes = [MetricsModule::class, ConfigModule::class])
 @ComponentScan("no.elhub.flex")
 class AppModule
 
@@ -73,37 +74,17 @@ fun Application.module() {
     configureSerialization()
     configureDatabase()
 
-    val jwtSecret = environment.config.property("flex.jwt-secret").getString()
+    val flexConfig = environment.config.flexConfig()
     install(FlexAuthentication) {
-        this.jwtSecret = jwtSecret
+        jwtSecret = flexConfig.jwtSecret
         excludedPaths += listOf("/healthz", "/metrics")
     }
 
-    // Properties injected with @Property
-    val propertiesForKoin: List<Pair<String, (String) -> Any>> = listOf(
-        "accounting-point-adapter.base-url" to { it },
-        "accounting-point-adapter.api-key" to { it },
-        "accounting-point-adapter.sync-enabled" to { it.toBoolean() },
-        "flex.timezone" to { TimeZone.of(it) },
-        "mail.host" to { it },
-        "mail.port" to { it.toInt() },
-        "mail.username" to { it },
-        "mail.password" to { it },
-        "mail.from" to { it },
-        "mail.start-tls" to { it.toBoolean() },
-        "attachment-storage.bucket" to { it },
-        "attachment-storage.internal-endpoint" to { it },
-        "attachment-storage.public-endpoint" to { it },
-        "attachment-storage.region" to { it },
-        "attachment-storage.access-key" to { it },
-        "attachment-storage.secret-key" to { it },
-    )
-
     startKoin<FlexApp> {
         environmentProperties()
-        properties(
-            propertiesForKoin.associate { (id, transform) ->
-                id to transform(environment.config.property(id).getString())
+        modules(
+            module {
+                single<ApplicationConfig> { environment.config }
             }
         )
         slf4jLogger()
@@ -113,8 +94,7 @@ fun Application.module() {
     configureMetrics()
     configureHealth()
 
-    val accountingPointAdapterSyncEnabled = environment.config.property("accounting-point-adapter.sync-enabled").getString().toBoolean()
-    configureScheduling(accountingPointAdapterSyncEnabled)
+    configureScheduling(get<AccountingPointAdapterConfig>().syncEnabled)
 }
 
 private val logger = KotlinLogging.logger {}
@@ -139,10 +119,16 @@ fun runJob(jobName: String) {
                 driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
                 username = requireEnv("FLEX_DATABASE_USERNAME"),
                 password = requireEnv("FLEX_DATABASE_PASSWORD"),
+                schema = null,
             )
         }
         single<AdapterClient> {
-            AdapterHttpClient(requireEnv("ADAPTER_BASE_URL"), requireEnv("ADAPTER_API_KEY"))
+            AdapterHttpClient(
+                AccountingPointAdapterConfig(
+                    baseUrl = requireEnv("ADAPTER_BASE_URL"),
+                    apiKey = requireEnv("ADAPTER_API_KEY"),
+                )
+            )
         }
         single<MeteringGridAreaRepository> { MeteringGridAreaRepositoryImpl() }
         single {
@@ -152,20 +138,15 @@ fun runJob(jobName: String) {
                 finalise = (System.getenv("SYNC_METERING_GRID_AREA_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single<NoticeRecipientRepository> { NoticeRecipientRepositoryImpl() }
+        single<GridModelRepository> { GridModelRepositoryImpl() }
         single {
-            MailConfig(
-                host = requireEnv("MAIL_SMTP_HOST"),
-                port = (System.getenv("MAIL_SMTP_PORT") ?: "587").toInt(),
-                username = System.getenv("MAIL_SMTP_USERNAME") ?: "",
-                password = System.getenv("MAIL_SMTP_PASSWORD") ?: "",
-                from = requireEnv("MAIL_FROM"),
-                startTls = (System.getenv("MAIL_SMTP_STARTTLS") ?: "true").toBooleanStrict(),
+            SyncGridModelDataJob(
+                adapterClient = get(),
+                gridModelRepository = get(),
+                finalise = (System.getenv("SYNC_GRID_MODEL_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single<MailClient> { SmtpMailClient(get()) }
-        single { SendNoticeMailJob(mailClient = get(), noticeRecipientRepository = get()) }
-        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SendNoticeMailJob>()) }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SyncGridModelDataJob>()) }
     }
 
     // isolated Koin instance, not the global one used by the backend

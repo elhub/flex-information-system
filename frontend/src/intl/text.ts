@@ -1,5 +1,6 @@
 export type TextKey =
   | "simple_table.no_results"
+  | "simple_table.load_error"
   | "list_table.load_error"
   | "list_filter.no_results"
   | "list_filter.reset_filters"
@@ -15,8 +16,14 @@ export type TextKey =
   | "dashboard.no_active_applications"
   | "entity_role"
   | "edit"
+  | "create"
   | "entity.see_more"
   | "entity.client"
+  | "entity.party_memberships"
+  | "entity.owned_parties"
+  | "entity.client_description"
+  | "entity.party_memberships_description"
+  | "entity.owned_parties_description"
   | "entity.name"
   | "print"
   | "service_providing_group"
@@ -171,6 +178,12 @@ export type TextKey =
   | "spg_changes_status_changed"
   | "spg_changes_status_unchanged"
   | "spg_changes_summary_power_diff"
+  | "spgpq_changes_milestone_created"
+  | "spgpq_changes_milestone_approved"
+  | "spgpq_changes_approve_button"
+  | "spgpq_changes_approve_title"
+  | "spgpq_changes_approve_description"
+  | "spgpq_changes_approve_placeholder"
   | "spg_changes_comparison_scope"
   | "spg_changes_log_changed_by_label"
   | "spg_changes_log_property_category"
@@ -244,7 +257,10 @@ export type TextKey =
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
+  | "notice_spg_product_applications_button"
   | "notice_spg_membership_button"
+  | "notice_spggp_outdated_button"
+  | "notice_spggp_outdated_heading"
   | "notice_see_party_button"
   | "notice_see_source_button"
   | "notice_details"
@@ -291,10 +307,12 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     "simple_table.no_results": "No results",
+    "simple_table.load_error": "An error occurred while retrieving the data.",
     "list_table.load_error": "Could not load the list.",
     "list_filter.no_results": "No matching options",
     "list_filter.reset_filters": "Reset filters",
     "list_filter.clear_filters": "Clear filters",
+    create: "Create",
     "dashboard.application": "Application",
     "dashboard.sp_product_application": "SP Product Application",
     "dashboard.spg_product_application": "SPG Product Application",
@@ -305,6 +323,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
+    "entity.party_memberships": "Party memberships",
+    "entity.owned_parties": "Owned parties",
+    "entity.client_description": "The following clients belong to this entity.",
+    "entity.party_memberships_description":
+      "The following parties can be assumed by this entity. Each membership shows the scopes the entity is allowed to use when assuming the party.",
+    "entity.owned_parties_description":
+      "The following parties are owned by this entity.",
     "entity.name": "Entity",
     edit: "Edit",
     print: "Print",
@@ -533,6 +558,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Changed",
     spg_changes_status_unchanged: "Unchanged",
     spg_changes_summary_power_diff: "Flexible power diff",
+    spgpq_changes_milestone_created: "Created",
+    spgpq_changes_milestone_approved: "Grid prequalified",
+    spgpq_changes_approve_button: "Approve all changes",
+    spgpq_changes_approve_title: "Approve all changes",
+    spgpq_changes_approve_description:
+      "This approves the current state of the service providing group. The grid prequalification time is set to now, so the approval includes all changes up to this moment.",
+    spgpq_changes_approve_placeholder: "Comment (optional)",
     spg_changes_comparison_scope: "Comparison scope",
     spg_changes_log_changed_by_label: "Changed by",
     spg_changes_log_property_category: "Property: %{property}",
@@ -582,9 +614,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
     notice_spg_membership_button: "Go to SPG membership",
+    notice_spggp_outdated_button: "Review changes",
+    notice_spggp_outdated_heading:
+      "Changes since the service providing group was grid prequalified on %{date}",
     notice_missing_grid_location_button:
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
+    notice_spg_product_applications_button: "Go to product applications",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
     notice_see_party_button: "See party",
@@ -646,10 +682,12 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     "simple_table.no_results": "Ingen resultater",
+    "simple_table.load_error": "Det oppstod en feil under henting av data.",
     "list_table.load_error": "Kunne ikke laste listen.",
     "list_filter.no_results": "Ingen treff",
     "list_filter.reset_filters": "Tilbakestill filtre",
     "list_filter.clear_filters": "Fjern filtre",
+    create: "Opprett",
     "dashboard.application": "Søknad",
     "dashboard.sp_product_application": "SP-produktsøknad",
     "dashboard.spg_product_application": "SPG-produktsøknad",
@@ -749,6 +787,13 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "entity.see_more": "Se Entitet",
     "entity.client": "Klienter",
+    "entity.party_memberships": "Aktørtilknytninger",
+    "entity.owned_parties": "Eide aktører",
+    "entity.client_description": "Følgende klienter tilhører denne entiteten.",
+    "entity.party_memberships_description":
+      "Følgende aktører kan inntas av denne entiteten. Hver tilknytning viser hvilke scopes entiteten har lov til å bruke når den opptrer som aktøren.",
+    "entity.owned_parties_description":
+      "Følgende aktører eies av denne entiteten.",
     "entity.name": "Entitet",
     cu_show_suspended_heading: "Kontrollerbar enhet er suspendert",
     cu_show_suspended_body: "Årsak: %{reason}",
@@ -890,6 +935,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_changes_status_changed: "Endret",
     spg_changes_status_unchanged: "Uendret",
     spg_changes_summary_power_diff: "Fleksibel effekt diff",
+    spgpq_changes_milestone_created: "Opprettet",
+    spgpq_changes_milestone_approved: "Nettprekvalifisert",
+    spgpq_changes_approve_button: "Godkjenn alle endringer",
+    spgpq_changes_approve_title: "Godkjenn alle endringer",
+    spgpq_changes_approve_description:
+      "Dette godkjenner gjeldende tilstand for fleksibilitetsgruppen. Tidspunktet for nettprekvalifiseringen settes til nå, slik at godkjenningen omfatter alle endringer frem til dette tidspunktet.",
+    spgpq_changes_approve_placeholder: "Kommentar (valgfritt)",
     spg_changes_comparison_scope: "Sammenligningsomfang",
     spg_changes_log_changed_by_label: "Endret av",
     spg_changes_log_property_category: "Egenskap: %{property}",
@@ -940,10 +992,14 @@ export const text: Record<string, Record<TextKey, string>> = {
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
     notice_spg_membership_button: "Gå til medlemskap for fleksibilitetsgruppe",
+    notice_spggp_outdated_button: "Se endringer",
+    notice_spggp_outdated_heading:
+      "Endringer siden fleksibilitetsgruppen ble nettprekvalifisert %{date}",
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
+    notice_spg_product_applications_button: "Gå til søknader",
     notice_see_party_button: "Gå til parten",
     notice_see_source_button: "Gå til kilden",
     notice_details: "Merknadsdetaljer",

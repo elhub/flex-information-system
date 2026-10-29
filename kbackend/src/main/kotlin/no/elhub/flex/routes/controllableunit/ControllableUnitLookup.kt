@@ -6,10 +6,11 @@ import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
-import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.AccountingPointAdapterConfig
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.metrics.FlexMetrics
@@ -32,7 +33,6 @@ import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
 import no.elhub.flex.util.respondJson
 import no.elhub.flex.util.todayLocalMidnight
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
@@ -47,9 +47,11 @@ class ControllableUnitLookup(
     private val eventRepo: EventRepository,
     private val metrics: FlexMetrics,
     private val partyService: PartyService,
-    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
-    @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
+    adapterConfig: AccountingPointAdapterConfig,
+    flexConfig: FlexConfig,
 ) {
+    private val accountingPointAdapterSyncEnabled = adapterConfig.syncEnabled
+    private val timezone = flexConfig.zone
     private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {

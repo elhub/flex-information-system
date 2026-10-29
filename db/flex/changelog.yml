@@ -298,9 +298,6 @@ databaseChangeLog:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
   - include:
-      file: ./controllable_unit_procuring_system_operator.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
@@ -320,15 +317,20 @@ databaseChangeLog:
   - include:
       file: ./notice.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./notice_fresh.sql
-      relativeToChangelogFile: true
   # history
   - includeAll:
       path: ./
       relativeToChangelogFile: true
       endsWithFilter: _history_audit.sql
       maxDepth: 1
+
+  # views that depend on the history tables are created after them
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./notice_fresh.sql
+      relativeToChangelogFile: true
 
   - include:
       file: ./party_membership_migrations.sql

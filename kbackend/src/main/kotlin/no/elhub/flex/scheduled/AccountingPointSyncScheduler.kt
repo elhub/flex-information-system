@@ -4,16 +4,15 @@ import arrow.core.raise.context.bind
 import arrow.core.raise.context.either
 import dev.inmo.krontab.doInfinity
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.util.todayLocalMidnight
 import no.elhub.flex.util.withTrace
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
@@ -22,8 +21,10 @@ class AccountingPointSyncScheduler(
     private val accountingPointSyncRepository: AccountingPointSyncRepository,
     private val accountingPointService: AccountingPointService,
     private val metrics: FlexMetrics,
-    @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
+    flexConfig: FlexConfig,
 ) {
+    private val timezone = flexConfig.zone
+
     suspend fun start() {
         val batchSize = 50
         doInfinity("0 /5 * * *") { runBatch(batchSize) }

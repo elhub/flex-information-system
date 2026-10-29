@@ -1,5 +1,5 @@
 import { IconStopWatch15 } from "@elhub/ds-icons";
-import { sppaStatusVariantMap } from "../../service_provider_product_application/show/sppaStatus";
+import { sppaStatusVariantMap } from "../../service_provider_product_application/sppaStatus";
 import { StatusVariant } from "../../components/StatusBadge";
 import { spgpaStatusVariantMap } from "../../service_providing_group/product_application/spgpaStatus";
 import { DashboardItemKind } from "../hooks/useDashboardApplications";

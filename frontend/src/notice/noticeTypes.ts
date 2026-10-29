@@ -113,6 +113,15 @@ const noticeTypes = [
     action: "Initiate SPG grid prequalification and update status.",
   },
   {
+    id: "no.elhub.flex.service_providing_group_grid_prequalification.outdated",
+    shortId: "service_providing_group_grid_prequalification.outdated",
+    label: "Outdated: SPG changed since grid prequalification",
+    description:
+      "The service providing group has changed by more than 50 kW (net) since it was grid prequalified.",
+    action:
+      "Review the changes and approve them, or follow up with the service provider.",
+  },
+  {
     id: "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract",
     shortId: "service_providing_group_membership.valid_time.outside_contract",
     label: "Inconsistency: SPG contains expired CU(s)",
@@ -125,6 +134,16 @@ const noticeTypes = [
     label: "SPG product application status requested",
     description: "SPG product application status requested.",
     action: "Initiate SPG product prequalification and update status.",
+  },
+  {
+    id: "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive",
+    shortId:
+      "service_providing_group_product_application.service_providing_group.inactive",
+    label: "Inconsistency: Inactive SPG has product applications",
+    description:
+      "The SPG is inactive but still has product applications that are not inactive or rejected.",
+    action:
+      "Deactivate requested product applications and ask the procuring system operator to deactivate applications already being processed or qualified.",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",

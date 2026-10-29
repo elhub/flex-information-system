@@ -790,6 +790,7 @@ export type {
   NoticeDataPartyOutdated,
   NoticeDataPartyOutdatedWritable,
   NoticeDataProductTypeNotQualified,
+  NoticeDataServiceProvidingGroupGridPrequalificationOutdated,
   NoticeDataValidTimeOutsideContract,
   NoticeDataWritable,
   NoticeStatus,

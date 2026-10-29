@@ -23,6 +23,8 @@ import kotlinx.datetime.todayIn
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.AccountingPointAdapterConfig
+import no.elhub.flex.config.FlexConfig
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
@@ -927,7 +929,7 @@ private fun testApp(
                         single<EventRepository> { eventRepo }
                         single { metrics }
                         single<PartyService> { partyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), syncEnabled) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
                     },
                 )
             }

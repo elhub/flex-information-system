@@ -168,10 +168,40 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     }
 
                     gitOps {
+                        buildNameSuffix = "kbackend jobs test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-scheduled-jobs-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
                         buildNameSuffix = "kbackend prod1"
                         clusters = setOf(KubeCluster.PROD1)
                         gitOpsRepository = gitOpsRepo
                         projectName = "flex-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "kbackend jobs prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-scheduled-jobs-kbackend"
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = false
