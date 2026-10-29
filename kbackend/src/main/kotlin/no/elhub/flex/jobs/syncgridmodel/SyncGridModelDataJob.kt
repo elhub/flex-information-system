@@ -12,14 +12,18 @@ import no.elhub.flex.shared.adapter.NetworkError
 import no.elhub.flex.shared.adapter.NotFoundError
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
+import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}
 
+@Single(createdAtStart = true)
 class SyncGridModelDataJob(
     val adapterClient: AdapterClient,
     val gridModelRepository: GridModelRepository,
-    private val finalise: Boolean,
+    config: SyncGridModelDataConfig,
 ) : ScheduledJob {
+    private val finalise = config.finalise
+
     override suspend fun run(): Either<JobError, Unit> {
         logger.info { "Starting grid model staging load (finalise=$finalise)" }
         return either {

@@ -37,7 +37,7 @@ class SyncGridModelDataJobTest : FunSpec({
     fun job(finalise: Boolean = true) = SyncGridModelDataJob(
         adapterClient = AdapterHttpClient(AdapterClientConfig(AdapterWireMockServer.baseUrl(), API_KEY)),
         gridModelRepository = GridModelRepositoryImpl(),
-        finalise = finalise,
+        config = SyncGridModelDataConfig(finalise),
     )
 
     fun stubAdapter(body: String) = AdapterWireMockServer.stubFor(

@@ -56,7 +56,7 @@ class SyncMeteringGridAreaDataJobTest : FunSpec({
     fun job(finalise: Boolean = true) = SyncMeteringGridAreaDataJob(
         adapterClient = AdapterHttpClient(AdapterClientConfig(AdapterWireMockServer.baseUrl(), API_KEY)),
         meteringGridAreaRepository = MeteringGridAreaStagingRepositoryImpl(),
-        finalise = finalise,
+        config = SyncMeteringGridAreaDataConfig(finalise),
     )
 
     fun stubAdapter(body: String) = AdapterWireMockServer.stubFor(

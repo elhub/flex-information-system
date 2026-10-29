@@ -12,16 +12,20 @@ import no.elhub.flex.shared.adapter.NotFoundError
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.RepositoryError
+import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}
 
 private fun RepositoryError.toJobError() = JobError.DatabaseError(message)
 
+@Single(createdAtStart = true)
 class SyncMeteringGridAreaDataJob(
     val adapterClient: AdapterClient,
     val meteringGridAreaRepository: MeteringGridAreaStagingRepository,
-    private val finalise: Boolean,
+    config: SyncMeteringGridAreaDataConfig,
 ) : ScheduledJob {
+    private val finalise = config.finalise
+
     override suspend fun run(): Either<JobError, Unit> {
         logger.info { "Starting metering grid area staging load (finalise=$finalise)" }
         return either {

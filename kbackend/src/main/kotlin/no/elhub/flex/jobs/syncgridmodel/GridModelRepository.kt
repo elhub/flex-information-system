@@ -10,6 +10,7 @@ import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.RepositoryError
 import no.elhub.flex.shared.db.prepareNamed
+import org.koin.core.annotation.Single
 import java.sql.Connection
 
 interface GridModelRepository {
@@ -36,6 +37,7 @@ interface GridModelRepository {
 
 private val logger = KotlinLogging.logger {}
 
+@Single(createdAtStart = true)
 class GridModelRepositoryImpl : GridModelRepository {
     context(principal: FlexPrincipal)
     override suspend fun prepareStaging(): Either<RepositoryError, Unit> =

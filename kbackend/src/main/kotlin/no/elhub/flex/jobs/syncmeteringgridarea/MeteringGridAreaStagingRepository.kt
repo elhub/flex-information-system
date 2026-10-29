@@ -9,6 +9,7 @@ import no.elhub.flex.shared.db.RepositoryError
 import no.elhub.flex.shared.db.createNullableTimestampArray
 import no.elhub.flex.shared.db.createTimestampArray
 import no.elhub.flex.shared.db.prepareNamed
+import org.koin.core.annotation.Single
 import java.sql.Connection
 import no.elhub.flex.shared.adapter.generated.models.MeteringGridArea as AdapterMeteringGridArea
 
@@ -46,6 +47,7 @@ interface MeteringGridAreaStagingRepository {
 
 private val logger = KotlinLogging.logger {}
 
+@Single(createdAtStart = true)
 class MeteringGridAreaStagingRepositoryImpl : MeteringGridAreaStagingRepository {
     context(principal: FlexPrincipal)
     override suspend fun prepareStaging(): Either<RepositoryError, Unit> =
