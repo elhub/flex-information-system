@@ -1,0 +1,25 @@
+ktor:
+  database:
+    url: jdbc:postgresql://db/flex
+    username: user
+    password: pw
+    driverClass: org.postgresql.Driver
+    hikari:
+      maximumPoolSize: 5
+
+flex:
+  jwtSecret: secret
+  timezone: Europe/Oslo
+
+accountingPointAdapter:
+  baseUrl: http://adapter
+  apiKey: key
+  syncEnabled: false
+
+attachmentStorage:
+  bucket: bucket
+  internalEndpoint: http://internal
+  publicEndpoint: http://public
+  region: ""
+  accessKey: ak
+  secretKey: sk

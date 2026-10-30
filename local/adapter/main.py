@@ -357,7 +357,7 @@ PARTIES = [
 ]
 
 
-@app.route("/party", methods=["GET"])
+@app.route("/parties", methods=["GET"])
 def read_parties():
     return jsonify([party.to_dict() for party in PARTIES])
 

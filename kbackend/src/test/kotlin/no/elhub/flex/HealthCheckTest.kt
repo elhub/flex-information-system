@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.TestApplication
-import no.elhub.flex.config.TraceInfo
+import no.elhub.flex.shared.tracing.TraceInfo
 
 class HealthCheckTest :
     FunSpec({
