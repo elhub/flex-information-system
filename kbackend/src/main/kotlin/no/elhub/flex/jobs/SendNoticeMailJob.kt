@@ -7,6 +7,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CancellationException
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.MailConfig
+import no.elhub.flex.email.LoggingMailClient
 import no.elhub.flex.email.MailClient
 import no.elhub.flex.email.MailTemplate
 import no.elhub.flex.email.SmtpMailClient
@@ -17,16 +18,17 @@ private val logger = KotlinLogging.logger {}
 
 /**
  * Sends a notice reminder mail to every recipient that has at least one active notice.
+ * With [MailConfig.dryRun] the mails are rendered and logged but not delivered.
  * Sending is fire-and-forget: a failing send is logged and does not stop the remaining mails.
  */
 class SendNoticeMailJob(
     private val noticeRecipientRepository: NoticeRecipientRepository,
     private val mailConfig: MailConfig = MailConfig.fromEnv(),
-    private val mailClient: MailClient = SmtpMailClient(mailConfig),
+    private val mailClient: MailClient = if (mailConfig.dryRun) LoggingMailClient() else SmtpMailClient(mailConfig),
 ) : ScheduledJob {
     override suspend fun run(): Either<JobError, Unit> =
         either {
-            ensure(mailConfig.host.isNotBlank() && mailConfig.from.isNotBlank()) {
+            ensure(mailConfig.dryRun || (mailConfig.host.isNotBlank() && mailConfig.from.isNotBlank())) {
                 JobError.ConfigError("Mail is not configured: MAIL_SMTP_HOST and MAIL_FROM must be set")
             }
             val recipients = with(FlexPrincipal.internalEventNotification) {

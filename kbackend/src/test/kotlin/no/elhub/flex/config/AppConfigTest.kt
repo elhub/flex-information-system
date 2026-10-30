@@ -46,6 +46,7 @@ class AppConfigTest : FunSpec({
             password = "pw",
             from = "flex@example.com",
             startTls = false,
+            dryRun = true,
         )
     }
 })

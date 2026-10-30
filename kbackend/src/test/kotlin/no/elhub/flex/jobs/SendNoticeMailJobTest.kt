@@ -21,7 +21,7 @@ class SendNoticeMailJobTest : FunSpec({
     val client = mockk<MailClient>()
     val repository = mockk<NoticeRecipientRepository>()
     val principal = FlexPrincipal.internalEventNotification
-    val job = SendNoticeMailJob(repository, MailConfig("smtp.example.com", 587, "", "", "from@example.com", false), client)
+    val job = SendNoticeMailJob(repository, MailConfig("smtp.example.com", 587, "", "", "from@example.com", false, dryRun = false), client)
 
     beforeTest { clearAllMocks() }
 
@@ -42,9 +42,14 @@ class SendNoticeMailJobTest : FunSpec({
     }
 
     test("missing mail config is returned as a config error") {
-        val unconfigured = SendNoticeMailJob(repository, MailConfig("", 587, "", "", "", true), client)
+        val unconfigured = SendNoticeMailJob(repository, MailConfig("", 587, "", "", "", true, dryRun = false), client)
         unconfigured.run().shouldBeLeft().shouldBeInstanceOf<JobError.ConfigError>()
         coVerify(exactly = 0) { client.send(any()) }
+    }
+
+    test("dry run does not need mail settings and does not use the smtp client") {
+        coEvery { with(principal) { repository.getActiveRecipients() } } returns listOf(NoticeRecipient(1, "Ola", "a@b.no")).right()
+        SendNoticeMailJob(repository, MailConfig("", 587, "", "", "", true, dryRun = true)).run().shouldBeRight()
     }
 
     test("repository error is returned as a job error") {

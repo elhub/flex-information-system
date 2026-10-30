@@ -22,6 +22,7 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
         password = "",
         from = "flex@example.com",
         startTls = false,
+        dryRun = false,
     )
     val job = SendNoticeMailJob(NoticeRecipientRepositoryImpl(), config)
 

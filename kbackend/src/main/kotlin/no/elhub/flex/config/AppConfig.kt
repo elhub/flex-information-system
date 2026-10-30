@@ -42,6 +42,8 @@ data class MailConfig(
     val password: String = "",
     val from: String,
     val startTls: Boolean = true,
+    /** When true, mails are logged instead of delivered, and no SMTP settings are needed. */
+    val dryRun: Boolean = true,
 ) {
     companion object {
         /**
@@ -56,6 +58,7 @@ data class MailConfig(
             password = System.getenv("MAIL_SMTP_PASSWORD") ?: "",
             from = System.getenv("MAIL_FROM") ?: "",
             startTls = (System.getenv("MAIL_SMTP_STARTTLS") ?: "true").toBooleanStrict(),
+            dryRun = (System.getenv("MAIL_DRY_RUN") ?: "true").toBooleanStrict(),
         )
     }
 }

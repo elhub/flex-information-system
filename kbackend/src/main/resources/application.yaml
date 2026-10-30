@@ -28,6 +28,7 @@ mail:
   password: ${MAIL_SMTP_PASSWORD:}
   from: ${MAIL_FROM:}
   startTls: ${MAIL_SMTP_STARTTLS:true}
+  dryRun: ${MAIL_DRY_RUN:true}
 
 attachmentStorage:
   bucket: ${S3_BUCKET:}
