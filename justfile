@@ -582,7 +582,7 @@ openapi-client-adapter:
     rm -rf local/adapter/client/* ./out/openapi-client-adapter
 
     uv run openapi-python-client generate \
-        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/adapter/openapi.yaml \
+        --path ./kbackend/src/main/kotlin/no/elhub/flex/shared/adapter/openapi.yaml \
         --output-path ./out/openapi-client-adapter \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client-adapter/flex/models local/adapter/client/models
