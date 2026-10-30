@@ -114,14 +114,19 @@ fun runJob(jobName: String) {
 
     // Manual Koin module with all dependencies to run jobs (DB, clients).
     // Jobs connect to the database as `flex_staging_structure_data`, so `FLEX_DATABASE_USERNAME`
-    // and `FLEX_DATABASE_PASSWORD` must be that role's credentials.
+    // and `FLEX_DATABASE_PASSWORD` must be that role's credentials. The send-notice-mail job
+    // uses its own credentials (`NOTICE_MAIL_DB_USERNAME` / `NOTICE_MAIL_DB_PASSWORD`) on the same database.
+    val (usernameVar, passwordVar) = when (job) {
+        is Job.SendNoticeMail -> "NOTICE_MAIL_DB_USERNAME" to "NOTICE_MAIL_DB_PASSWORD"
+        else -> "FLEX_DATABASE_USERNAME" to "FLEX_DATABASE_PASSWORD"
+    }
     val jobModule = module {
         single(createdAtStart = true) {
             createDataSource(
                 url = requireEnv("FLEX_DATABASE_URL"),
                 driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
-                username = requireEnv("FLEX_DATABASE_USERNAME"),
-                password = requireEnv("FLEX_DATABASE_PASSWORD"),
+                username = requireEnv(usernameVar),
+                password = requireEnv(passwordVar),
                 schema = null,
             )
         }
