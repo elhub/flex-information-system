@@ -16,8 +16,8 @@ topdir="$(git rev-parse --show-toplevel)"
 
 docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabrikt-io/fabrikt:latest \
 	--output-directory 'kbackend' \
-	--base-package "no.elhub.flex.integration.$service.generated" \
-	--api-file "kbackend/src/main/kotlin/no/elhub/flex/integration/${service//.//}/openapi.yaml" \
+	--base-package "no.elhub.flex.shared.$service.generated" \
+	--api-file "kbackend/src/main/kotlin/no/elhub/flex/shared/${service//.//}/openapi.yaml" \
 	--http-client-target 'ktor' \
 	--serialization-library 'kotlinx_serialization' \
 	--instant-library 'kotlin_time_instant' \

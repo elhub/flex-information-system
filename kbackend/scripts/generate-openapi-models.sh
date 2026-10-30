@@ -108,13 +108,13 @@ PYEOF
 tmp_rel="${tmp_spec#"$topdir/"}"
 
 # Delete directory first in order to avoid stale models
-generated_dir="$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated"
+generated_dir="$topdir/kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated"
 rm -rf "$generated_dir"
 mkdir -p "$generated_dir"
 
 docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabrikt-io/fabrikt:latest \
 	--output-directory 'kbackend' \
-	--base-package "no.elhub.flex.model.dto.generated" \
+	--base-package "no.elhub.flex.api.model.dto.generated" \
 	--api-file "$tmp_rel" \
 	--serialization-library 'kotlinx_serialization' \
 	--instant-library 'kotlin_time_instant' \
@@ -125,4 +125,4 @@ docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabri
 # OpenAPI schema name 'notice_data' as their supertype instead of the generated
 # sealed interface name 'NoticeData'.
 sed -i 's/) : notice_data$/) : NoticeData/' \
-	"$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated/models/NoticeData"*.kt
+	"$topdir/kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated/models/NoticeData"*.kt

@@ -10,8 +10,8 @@ implemented here.
 
 Models for the API are generated from `openapi.yaml` at the module
 root using [Fabrikt](https://github.com/fabrikt-io/fabrikt). Generated classes
-are placed under the `no.elhub.flex.model.dto.generated` package and should not
-be edited by hand. To run the script:
+are placed under the `no.elhub.flex.api.model.dto.generated` package and
+should not be edited by hand. To run the script:
 
 ```bash
 scripts/generate-openapi-models.sh
@@ -25,7 +25,7 @@ Clients for external service integrations are generated using
 `openapi.yaml` file located at:
 
 ```bash
-src/main/kotlin/no/elhub/flex/integration/<service>/openapi.yaml
+src/main/kotlin/no/elhub/flex/shared/<service>/openapi.yaml
 ```
 
 The generated client is placed in a `generated` subpackage under the same
@@ -41,5 +41,5 @@ scripts/generate-openapi-client.sh adapter
 This generates a Ktor HTTP client with kotlinx.serialization under:
 
 ```bash
-src/main/kotlin/no/elhub/flex/integration/adapter/generated/
+src/main/kotlin/no/elhub/flex/shared/adapter/generated/
 ```

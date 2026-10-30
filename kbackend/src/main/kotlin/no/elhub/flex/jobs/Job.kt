@@ -7,9 +7,9 @@ import arrow.core.right
 /**
  * Sealed class representing all available scheduled jobs.
  *
- * Add a new object here and a corresponding branch in [JobRegistry] to register
- * a new job. The [name] must match the value set in the `JOB` environment
- * variable (case-insensitive).
+ * To add a job: create a package under `jobs` with the job, a `@Module` that scans it, and a
+ * `@KoinApplication`; then add an object here and a branch in [runJob]. The [name] must match
+ * the value set in the `JOB` environment variable (case-insensitive).
  */
 sealed class Job(val name: String) {
 
@@ -19,8 +19,10 @@ sealed class Job(val name: String) {
 
     data object SyncGridModelData : Job("sync-grid-model-data")
 
+    data object SyncPartyData : Job("sync-party-data")
+
     companion object {
-        private val all: List<Job> = listOf(SyncMeteringGridAreaData, SendNoticeMail, SyncGridModelData)
+        private val all: List<Job> = listOf(SyncMeteringGridAreaData, SendNoticeMail, SyncGridModelData, SyncPartyData)
 
         fun fromString(jobName: String): Either<String, Job> =
             all.firstOrNull { it.name.equals(jobName, ignoreCase = true) }?.right()

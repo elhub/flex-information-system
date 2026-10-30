@@ -23,12 +23,3 @@ attachmentStorage:
   region: ""
   accessKey: ak
   secretKey: sk
-
-mail:
-  host: smtp.example.com
-  port: 25
-  username: user
-  password: pw
-  from: flex@example.com
-  startTls: false
-  dryRun: true

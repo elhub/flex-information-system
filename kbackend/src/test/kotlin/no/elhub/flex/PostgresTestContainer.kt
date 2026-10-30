@@ -6,7 +6,7 @@ import liquibase.Liquibase
 import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.DirectoryResourceAccessor
-import no.elhub.flex.db.FlexTransaction
+import no.elhub.flex.shared.db.FlexTransaction
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
@@ -21,7 +21,7 @@ import java.sql.DriverManager
  * Liquibase migrations from `db/changelog.yml` are applied on first access;
  * no test data is loaded — each test is responsible for seeding its own data.
  *
- * The Exposed [database] instance is initialised and [no.elhub.flex.db.FlexTransaction]
+ * The Exposed [database] instance is initialised and [no.elhub.flex.shared.db.FlexTransaction]
  * is wired up.
  */
 object PostgresTestContainer {
