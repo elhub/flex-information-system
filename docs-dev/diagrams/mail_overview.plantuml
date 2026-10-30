@@ -1,0 +1,30 @@
+@startuml mail_overview
+!theme plain
+
+title Mail Technical Overview
+
+skinparam LifelineStrategy solid
+skinparam SequenceMessageAlign direction
+
+participant "CronJob\n(send-notice-mail)" as sched
+participant SendNoticeMailJob as svc
+participant NoticeRecipientRepository as repo
+database "FIS database" as db
+participant MailTemplate as tpl
+participant MailClient as client
+participant "SMTP server" as smtp
+
+loop Weekly, triggered by the cronjob
+  sched -> svc: run()
+  svc -> repo: getActiveRecipientEmails()
+  repo -> db: Query parties with active notices
+  db --> repo: Email addresses
+  repo --> svc: Email addresses
+  loop Each email address
+    svc -> tpl: render(email)
+    tpl --> svc: Mail (generic content)
+    svc -> client: send(mail)
+    client -> smtp: SMTP
+  end
+end
+@enduml

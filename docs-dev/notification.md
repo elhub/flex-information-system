@@ -103,6 +103,9 @@ The client must acknowledge the notification by calling
 > [!NOTE]
 > We might add a push-based system in the future. This could e.g. include email
 > or webhooks. Acknowledgement would still be needed.
+>
+> Note that [notice](notice.md) reminders are already sent by email. See
+> [mail](mail.md). That mail is separate from event notifications.
 
 ## Picking recipients
 

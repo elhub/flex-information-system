@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.elhub.jsonapi)
     // Scheduling
     implementation(libs.krontab)
+    implementation(libs.angus.mail)
     // Object storage (S3)
     implementation(libs.storage.aws.s3)
     // File validation

@@ -18,13 +18,7 @@ import org.koin.core.annotation.Single
 class JobInfrastructureModule {
 
     @Single(createdAtStart = true)
-    fun dataSource(): HikariDataSource = createDataSource(
-        url = requireEnv("FLEX_DATABASE_URL"),
-        driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
-        username = requireEnv("FLEX_DATABASE_USERNAME"),
-        password = requireEnv("FLEX_DATABASE_PASSWORD"),
-        schema = null,
-    )
+    fun dataSource(): HikariDataSource = dataSourceFromEnv()
 
     @Single(createdAtStart = true)
     fun adapterClientConfig(): AdapterClientConfig = AdapterClientConfig(
@@ -32,3 +26,18 @@ class JobInfrastructureModule {
         apiKey = requireEnv("ADAPTER_API_KEY"),
     )
 }
+
+/**
+ * Creates the job connection pool. The URL and driver come from the shared `FLEX_DATABASE_*` variables;
+ * the credentials are read from [usernameVar] and [passwordVar], so a job can use its own database user.
+ */
+fun dataSourceFromEnv(
+    usernameVar: String = "FLEX_DATABASE_USERNAME",
+    passwordVar: String = "FLEX_DATABASE_PASSWORD",
+): HikariDataSource = createDataSource(
+    url = requireEnv("FLEX_DATABASE_URL"),
+    driverClass = System.getenv("FLEX_DATABASE_DRIVER_CLASS") ?: "org.postgresql.Driver",
+    username = requireEnv(usernameVar),
+    password = requireEnv(passwordVar),
+    schema = null,
+)

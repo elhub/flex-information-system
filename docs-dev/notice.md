@@ -19,6 +19,9 @@ for many _support features_. Notices can be a valuable source of _alerts_ and
 visual information to guide users in resolving conflicts or fixing issues that
 prevent a process from making progress.
 
+Parties with active notices are reminded by email once a week. See
+[mail](mail.md).
+
 Notices have several important characteristics:
 
 * Notices always concern _one specific resource_ where an action is required.

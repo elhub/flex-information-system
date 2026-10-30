@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{subject}}</title>
+    <style>
+      body {
+        font-family: Roboto, sans-serif;
+        font-size: 14px;
+        color: #222;
+        background: #fff;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      ul {
+        padding: 10px 20px;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      p {
+        margin: 10px 0;
+      }
+      span {
+        color: #0f6537;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Du har åpne varsler i {{systemName}}</h3>
+    <p>Hei {{userName}},</p>
+    <p>Du har varsler som trenger oppfølging i <span>{{systemName}}</span>.</p>
+    <b>Hva bør du gjøre?</b>
+    <ul>
+      <li>Logg inn i registeret.</li>
+      <li>Varslene dine vises på dashbordet når du er logget inn.</li>
+    </ul>
+    <p>
+      Hvis du allerede har fulgt opp varslene dine, kan du se bort fra denne
+      e-posten.
+    </p>
+    <p>Med vennlig hilsen,<br />{{systemName}}</p>
+    <hr />
+    <p><small>Dette er en automatisk generert e-post fra FIS.</small></p>
+  </body>
+</html>

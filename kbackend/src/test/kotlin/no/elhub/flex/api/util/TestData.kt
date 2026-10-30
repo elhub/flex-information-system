@@ -275,6 +275,52 @@ class SeedScope(private val conn: Connection) {
             status.value,
         )
 
+    /** Inserts a person entity. Uses [businessId] as the name suffix so entities are easy to tell apart. */
+    fun insertPerson(businessId: String, businessIdType: String = "email", name: String = "Person $businessId"): Long =
+        queryLong(
+            "INSERT INTO flex.entity (name, type, business_id, business_id_type) " +
+                "VALUES (?, 'person', ?, ?) RETURNING id",
+            name,
+            businessId,
+            businessIdType,
+        )
+
+    /** Inserts an end user party owned by a fresh person entity. */
+    fun insertEndUserParty(
+        status: String = "active",
+        ownerEmail: String = "owner-${UUID.randomUUID()}@example.com",
+    ): Long =
+        queryLong(
+            "INSERT INTO flex.party (entity_id, name, type, role, status) " +
+                "VALUES (?, ?, 'end_user', 'flex_end_user', ?) RETURNING id",
+            insertPerson(ownerEmail),
+            "Party $ownerEmail",
+            status,
+        )
+
+    fun insertPartyMembership(partyId: Long, entityId: Long) {
+        queryLong(
+            "INSERT INTO flex.party_membership (party_id, entity_id, scopes) " +
+                "VALUES (?, ?, '{manage:auth}'::flex.scope[]) RETURNING party_id",
+            partyId,
+            entityId,
+        )
+    }
+
+    /** Creates a person entity with the given business id and makes it a member of [partyId]. */
+    fun insertPartyMember(partyId: Long, businessId: String, businessIdType: String = "email", name: String = "Person $businessId") {
+        insertPartyMembership(partyId, insertPerson(businessId, businessIdType, name))
+    }
+
+    fun insertNotice(partyId: Long, status: String, key: String = UUID.randomUUID().toString()): Long =
+        queryLong(
+            "INSERT INTO flex.notice (party_id, type, status, deduplication_key) " +
+                "VALUES (?, 'no.elhub.flex.test'::ltree, ?, ?) RETURNING id",
+            partyId,
+            status,
+            key,
+        )
+
     private fun queryLong(sql: String, vararg params: Any?): Long =
         conn.prepareStatement(sql).use { stmt ->
             params.forEachIndexed { i, p -> stmt.setObject(i + 1, p) }
