@@ -23,8 +23,8 @@ public class GridModelClient(
    *
    *
    * Returns:
-   * 	[NetworkResult.Success] with [no.elhub.flex.shared.adapter.generated.models.GridModel] if
-   * the request was successful.
+   * 	[NetworkResult.Success] with [no.elhub.flex.shared.adapter.generated.models.GridModel] if the
+   * request was successful.
    * 	[NetworkResult.Failure] with a [NetworkError] if the request failed.
    */
   public suspend fun readGridModel(apiConfiguration: ApiConfiguration = ApiConfiguration()):

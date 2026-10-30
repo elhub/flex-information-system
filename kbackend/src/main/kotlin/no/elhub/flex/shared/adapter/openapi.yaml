@@ -21,6 +21,8 @@ tags:
     description: Operations related to grid areas
   - name: grid_model
     description: Operations related to the grid model
+  - name: party
+    description: Operations related to parties
 
 security:
   - bearer_auth: []
@@ -310,6 +312,44 @@ components:
             - price_area: "NO2"
               valid_from: "2024-01-01T00:00:00+01:00"
 
+    party_type:
+      type: string
+      description: Type of the party
+      enum:
+        - balance_responsible_party
+        - energy_supplier
+        - service_provider
+        - system_operator
+
+    party:
+      type: object
+      required:
+        - gln
+        - org
+        - name
+        - type
+      properties:
+        gln:
+          type: string
+          description: >
+            Business ID of the party.
+            GLN format - 13 digits starting with non-zero.
+          pattern: "^[1-9][0-9]{12}$"
+          example: "7080000100019"
+        org:
+          type: string
+          description: >
+            Norwegian organisation number of the organisation acting as the
+            party.
+          pattern: "^[1-9][0-9]{8}$"
+          example: "123456789"
+        name:
+          type: string
+          description: Name of the party
+          example: "Acme Energy AS"
+        type:
+          $ref: '#/components/schemas/party_type'
+
     substation:
       type: object
       required:
@@ -543,6 +583,39 @@ paths:
             text/plain:
               schema:
                 type: string
+
+  /parties:
+    get:
+      summary: Read party data
+      description: >-
+        Retrieves all parties from the external party register, restricted to
+        the party types relevant for the flexibility information system. An
+        organisation acting as several types of party is listed once per type.
+      operationId: read_parties
+      tags:
+        - party
+      responses:
+        '200':
+          description: Party data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/party'
+              example:
+                - gln: "7080000100019"
+                  org: "123456789"
+                  name: "Acme Energy AS"
+                  type: "energy_supplier"
+                - gln: "7080000100026"
+                  org: "987654321"
+                  name: "Dual Role AS"
+                  type: "system_operator"
+                - gln: "7080000100026"
+                  org: "987654321"
+                  name: "Dual Role AS"
+                  type: "service_provider"
 
   /grid_model:
     get:

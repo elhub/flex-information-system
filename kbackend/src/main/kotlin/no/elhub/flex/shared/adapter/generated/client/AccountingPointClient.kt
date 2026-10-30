@@ -33,9 +33,8 @@ public class AccountingPointClient(
    * format. Defaults to open end if not provided.
    *
    * Returns:
-   * 	[NetworkResult.Success] with
-   * [no.elhub.flex.shared.adapter.generated.models.AccountingPoint] if the request was
-   * successful.
+   * 	[NetworkResult.Success] with [no.elhub.flex.shared.adapter.generated.models.AccountingPoint]
+   * if the request was successful.
    * 	[NetworkResult.Failure] with a [NetworkError] if the request failed.
    */
   public suspend fun readAccountingPoint(

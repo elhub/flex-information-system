@@ -26,8 +26,8 @@ public class MeteringGridAreaClient(
    *
    * Returns:
    * 	[NetworkResult.Success] with
-   * [kotlin.collections.List<no.elhub.flex.shared.adapter.generated.models.MeteringGridArea>] if
-   * the request was successful.
+   * [kotlin.collections.List<no.elhub.flex.shared.adapter.generated.models.MeteringGridArea>] if the
+   * request was successful.
    * 	[NetworkResult.Failure] with a [NetworkError] if the request failed.
    */
   public suspend fun readMeteringGridAreas(apiConfiguration: ApiConfiguration = ApiConfiguration()):

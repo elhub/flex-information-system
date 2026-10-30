@@ -12,6 +12,8 @@ from .line import Line
 from .metering_grid_area import MeteringGridArea
 from .metering_grid_area_price_area import MeteringGridAreaPriceArea
 from .metering_grid_area_system_operator import MeteringGridAreaSystemOperator
+from .party import Party
+from .party_type import PartyType
 from .price_area import PriceArea
 from .substation import Substation
 from .substation_cluster import SubstationCluster
@@ -29,6 +31,8 @@ __all__ = (
     "MeteringGridArea",
     "MeteringGridAreaPriceArea",
     "MeteringGridAreaSystemOperator",
+    "Party",
+    "PartyType",
     "PriceArea",
     "Substation",
     "SubstationCluster",

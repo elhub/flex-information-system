@@ -6,6 +6,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
 import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataApp
 import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataApp
+import no.elhub.flex.jobs.syncparty.SyncPartyDataApp
 import org.koin.core.Koin
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
@@ -42,4 +43,5 @@ fun runJob(jobName: String) {
 private fun startKoin(job: Job): Koin = when (job) {
     is Job.SyncMeteringGridAreaData -> startKoin<SyncMeteringGridAreaDataApp> { slf4jLogger() }.koin
     is Job.SyncGridModelData -> startKoin<SyncGridModelDataApp> { slf4jLogger() }.koin
+    is Job.SyncPartyData -> startKoin<SyncPartyDataApp> { slf4jLogger() }.koin
 }
