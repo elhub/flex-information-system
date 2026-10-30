@@ -166,9 +166,10 @@ transmission and regional grids across the entire country. Work is underway
 to include distribution. It will have common names and IDs for each component,
 making the grid understandable for both humans and machines.
 
-The model includes grid elements and their connections, but e.g. not include
-switches, breakers etc. It is distributed in a JSON-LD format and looks like a
-directed graph, but the line direction is random and does *not* indicate flow.
+The model includes substations and connecting lines, but e.g. not include
+switches, breakers etc. It is distributed on a [JSON
+API](https://api.elbits.no/nemo/docs) and looks like a directed graph, but the
+line direction is random and does *not* indicate flow.
 
 The following is an example derived from the FNN model definition (and not from
 model data itself). It just provides another view on how the model i structured
@@ -244,6 +245,8 @@ Communicating what these areas are is important for the value chain.
 The most precise definition of such a area would be a description referencing a
 common, national grid model.
 
+#### Using cutsets
+
 The most reliable way to define such areas would be to express them as a list of
 cuts in the grid model. A grid model is basically a graph of nodes and edges. By
 defining a set of edges that "cut" the graph, we can define an area in the grid.
@@ -254,14 +257,29 @@ The following example shows such a definition. The black nodes and lines are
 the graph representing the grid. An accounting point (and thus CU) would
 typically be connected to the black and white dots.
 
-An area (blue) is defined by the red cuts. Any accounting point connected to the
-nodes inside the blue area belongs to the area.
+An area (blue) is separated from the rest by the red cuts. This splits the graph
+in two. The data model must then contain information about which of the graphs
+that is the one we are targeting, e.g. by pointing at one of the nodes within
+the circle. Any accounting point connected to the nodes inside the blue area
+then belongs to the area.
 
 The green dotted line is a non-existing but planned connection. Since the area
 is defined by the cuts, it is possible to detect that the planned connection
 would impact the area.
 
 ![area defined by cuts](../diagrams/grid_area_definition.drawio.png)
+
+Using cutsets to define areas requires that the graph is granular enough to
+express the exact cut. Some areas might have cuts "inside" substations, which
+makes it impossible to use in the current state of the common nation grid model.
+
+#### Using component lists
+
+Another approach of defining areas is listing all components that are part of
+the area. This could be as simple as a list of substations. Again, due to the
+need to have cuts "inside" a substation, we need to express it using
+line+substation pairs. A area definition becomes a list of `(substation,line)`
+tuples.
 
 ### Aggregation to service providing groups using areas
 
