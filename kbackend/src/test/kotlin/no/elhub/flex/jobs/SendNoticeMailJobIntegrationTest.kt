@@ -7,8 +7,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import no.elhub.flex.MailpitTestContainer
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.email.MailConfig
-import no.elhub.flex.email.SmtpMailClient
+import no.elhub.flex.config.MailConfig
 import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
 import no.elhub.flex.util.SeedScope
 import no.elhub.flex.util.seed
@@ -24,7 +23,7 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
         from = "flex@example.com",
         startTls = false,
     )
-    val job = SendNoticeMailJob(SmtpMailClient(config), NoticeRecipientRepositoryImpl())
+    val job = SendNoticeMailJob(NoticeRecipientRepositoryImpl(), config)
 
     beforeTest {
         MailpitTestContainer.clearMessages()

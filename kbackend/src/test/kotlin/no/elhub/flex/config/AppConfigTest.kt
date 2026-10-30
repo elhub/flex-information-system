@@ -37,4 +37,15 @@ class AppConfigTest : FunSpec({
             secretKey = "sk",
         )
     }
+
+    test("mail config") {
+        config.mailConfig() shouldBe MailConfig(
+            host = "smtp.example.com",
+            port = 25,
+            username = "user",
+            password = "pw",
+            from = "flex@example.com",
+            startTls = false,
+        )
+    }
 })

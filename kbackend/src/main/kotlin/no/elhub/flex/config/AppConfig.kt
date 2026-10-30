@@ -35,6 +35,32 @@ data class AttachmentStorageConfig(
 )
 
 @Serializable
+data class MailConfig(
+    val host: String,
+    val port: Int = 587,
+    val username: String = "",
+    val password: String = "",
+    val from: String,
+    val startTls: Boolean = true,
+) {
+    companion object {
+        /**
+         * Reads the config from the `MAIL_*` environment variables, the same ones `application.yaml` uses.
+         * Used in job mode, where `application.yaml` cannot be loaded. Missing values are left blank
+         * so that only the job that sends mail needs them.
+         */
+        fun fromEnv(): MailConfig = MailConfig(
+            host = System.getenv("MAIL_SMTP_HOST") ?: "",
+            port = (System.getenv("MAIL_SMTP_PORT") ?: "587").toInt(),
+            username = System.getenv("MAIL_SMTP_USERNAME") ?: "",
+            password = System.getenv("MAIL_SMTP_PASSWORD") ?: "",
+            from = System.getenv("MAIL_FROM") ?: "",
+            startTls = (System.getenv("MAIL_SMTP_STARTTLS") ?: "true").toBooleanStrict(),
+        )
+    }
+}
+
+@Serializable
 data class DatabaseConfig(
     val url: String,
     val driverClass: String = "org.postgresql.Driver",
@@ -53,5 +79,7 @@ fun ApplicationConfig.accountingPointAdapterConfig(): AccountingPointAdapterConf
 
 fun ApplicationConfig.attachmentStorageConfig(): AttachmentStorageConfig =
     property("attachmentStorage").getAs()
+
+fun ApplicationConfig.mailConfig(): MailConfig = property("mail").getAs()
 
 fun ApplicationConfig.databaseConfig(): DatabaseConfig = property("ktor.database").getAs()

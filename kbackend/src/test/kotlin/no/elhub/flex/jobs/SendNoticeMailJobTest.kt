@@ -11,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.MailConfig
 import no.elhub.flex.email.MailClient
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.notice.db.NoticeRecipient
@@ -20,7 +21,7 @@ class SendNoticeMailJobTest : FunSpec({
     val client = mockk<MailClient>()
     val repository = mockk<NoticeRecipientRepository>()
     val principal = FlexPrincipal.internalEventNotification
-    val job = SendNoticeMailJob(client, repository)
+    val job = SendNoticeMailJob(repository, MailConfig("smtp.example.com", 587, "", "", "from@example.com", false), client)
 
     beforeTest { clearAllMocks() }
 
@@ -38,6 +39,12 @@ class SendNoticeMailJobTest : FunSpec({
         coEvery { client.send(match { it.mailTo == "c@d.no" }) } returns Unit
         job.run().shouldBeRight()
         coVerify(exactly = 1) { client.send(match { it.mailTo == "c@d.no" }) }
+    }
+
+    test("missing mail config is returned as a config error") {
+        val unconfigured = SendNoticeMailJob(repository, MailConfig("", 587, "", "", "", true), client)
+        unconfigured.run().shouldBeLeft().shouldBeInstanceOf<JobError.ConfigError>()
+        coVerify(exactly = 0) { client.send(any()) }
     }
 
     test("repository error is returned as a job error") {

@@ -9,6 +9,7 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import no.elhub.flex.config.MailConfig
 import org.koin.core.annotation.Single
 import java.util.Properties
 

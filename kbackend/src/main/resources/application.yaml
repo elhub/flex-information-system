@@ -27,9 +27,8 @@ mail:
   username: ${MAIL_SMTP_USERNAME:}
   password: ${MAIL_SMTP_PASSWORD:}
   from: ${MAIL_FROM:}
-  start-tls: ${MAIL_SMTP_STARTTLS:true}
+  startTls: ${MAIL_SMTP_STARTTLS:true}
 
-attachment-storage:
 attachmentStorage:
   bucket: ${S3_BUCKET:}
   internalEndpoint: ${S3_INTERNAL_ENDPOINT:}

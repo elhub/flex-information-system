@@ -27,11 +27,14 @@ import no.elhub.flex.integration.adapter.AdapterClient
 import no.elhub.flex.integration.adapter.AdapterHttpClient
 import no.elhub.flex.jobs.Job
 import no.elhub.flex.jobs.JobRegistry
+import no.elhub.flex.jobs.SendNoticeMailJob
 import no.elhub.flex.jobs.SyncGridModelDataJob
 import no.elhub.flex.jobs.SyncMeteringGridAreaDataJob
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.metrics.MetricsModule
+import no.elhub.flex.notice.db.NoticeRecipientRepository
+import no.elhub.flex.notice.db.NoticeRecipientRepositoryImpl
 import no.elhub.flex.util.requireEnv
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -146,7 +149,9 @@ fun runJob(jobName: String) {
                 finalise = (System.getenv("SYNC_GRID_MODEL_DATA_FINALISE") ?: "false").toBooleanStrict(),
             )
         }
-        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SyncGridModelDataJob>()) }
+        single<NoticeRecipientRepository> { NoticeRecipientRepositoryImpl() }
+        single { SendNoticeMailJob(noticeRecipientRepository = get()) }
+        single { JobRegistry(get<SyncMeteringGridAreaDataJob>(), get<SendNoticeMailJob>(), get<SyncGridModelDataJob>()) }
     }
 
     // isolated Koin instance, not the global one used by the backend

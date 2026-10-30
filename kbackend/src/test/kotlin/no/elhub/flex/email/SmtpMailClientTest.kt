@@ -2,6 +2,7 @@ package no.elhub.flex.email
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import no.elhub.flex.config.MailConfig
 
 class SmtpMailClientTest : FunSpec({
     fun config(startTls: Boolean = true, username: String = "user") =

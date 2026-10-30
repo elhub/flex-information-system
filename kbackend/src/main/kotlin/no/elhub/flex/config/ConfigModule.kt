@@ -17,4 +17,7 @@ class ConfigModule {
     @Single(createdAtStart = true)
     fun attachmentStorageConfig(config: ApplicationConfig): AttachmentStorageConfig =
         config.attachmentStorageConfig()
+
+    @Single(createdAtStart = true)
+    fun mailConfig(config: ApplicationConfig): MailConfig = config.mailConfig()
 }
