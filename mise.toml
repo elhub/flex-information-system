@@ -4,10 +4,10 @@
 "uv" = "0.13.5"
 "ruff" = "0.17.2"
 "golangci-lint" = "2.15.0"
-"pandoc" = "3.12"
+"pandoc" = "3.13"
 "sqlc" = "1.31.1"
 "spectral" = "6.17.0"
-"jsonschema" = "17.2.1"
+"jsonschema" = "17.3.2"
 
 "go:github.com/google/go-licenses/v2" = "2.0.1"
 "go:golang.org/x/vuln/cmd/govulncheck" = "1.5.0"
