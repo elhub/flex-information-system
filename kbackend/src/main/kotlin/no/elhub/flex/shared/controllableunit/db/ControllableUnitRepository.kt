@@ -1,10 +1,10 @@
-package no.elhub.flex.shared.accountingpoint.db
+package no.elhub.flex.shared.controllableunit.db
 
 import arrow.core.Either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
-import no.elhub.flex.shared.accountingpoint.model.AccountingPointStartDates
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.controllableunit.model.AccountingPointStartDates
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.RepositoryError
@@ -14,7 +14,7 @@ import no.elhub.flex.shared.db.query
 import no.elhub.flex.shared.util.toKotlinInstantOrNull
 import org.koin.core.annotation.Single
 
-interface AccountingPointStartDatesRepository {
+interface ControllableUnitRepository {
 
     /**
      * Gets the earliest start date of controllable units and their service provider contracts behind the given
@@ -29,7 +29,7 @@ interface AccountingPointStartDatesRepository {
 private val logger = KotlinLogging.logger {}
 
 @Single(createdAtStart = true)
-class AccountingPointStartDatesRepositoryImpl : AccountingPointStartDatesRepository {
+class ControllableUnitRepositoryImpl : ControllableUnitRepository {
 
     context(principal: FlexPrincipal)
     override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStartDates>> =

@@ -20,6 +20,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
@@ -36,7 +37,6 @@ import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
-import no.elhub.flex.shared.accountingpoint.AccountingPointService
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.error.EndUserError
@@ -45,11 +45,13 @@ import no.elhub.flex.shared.error.ResourceNotFoundError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Clock
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 class ControllableUnitLookupTest :
     FunSpec({
         val mockRepo = mockk<ControllableUnitRepository>()
         val mockAccountingPointService = mockk<AccountingPointService>()
+        val mockSharedAccountingPointService = mockk<SharedAccountingPointService>()
         val mockEventRepo = mockk<EventRepository>()
         val mockPartyService = mockk<PartyService>()
         val meterRegistry = SimpleMeterRegistry()
@@ -72,7 +74,7 @@ class ControllableUnitLookupTest :
         context("POST /controllable_unit/lookup") {
 
             test("missing Authorization header returns HTTP 401") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
@@ -88,7 +90,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -104,7 +106,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Cookie", "__Host-flex_session=${makeJwt()}")
@@ -121,7 +123,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -137,7 +139,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -149,7 +151,7 @@ class ControllableUnitLookupTest :
             }
 
             test("disallowed role returns HTTP 403") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt(role = "flex_organisation")}")
@@ -160,7 +162,7 @@ class ControllableUnitLookupTest :
             }
 
             test("insufficient scope returns HTTP 403") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt(scope = "read:data")}")
@@ -177,7 +179,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -193,7 +195,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt(scope = "manage:data")}")
@@ -204,7 +206,7 @@ class ControllableUnitLookupTest :
             }
 
             test("missing end_user returns HTTP 400") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -215,7 +217,7 @@ class ControllableUnitLookupTest :
             }
 
             test("ill-formed end_user returns HTTP 400") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -226,7 +228,7 @@ class ControllableUnitLookupTest :
             }
 
             test("PID (11-digit fødselsnummer) is rejected as end_user") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -237,7 +239,7 @@ class ControllableUnitLookupTest :
             }
 
             test("both AP and CU business IDs returns HTTP 400") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -258,7 +260,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -274,7 +276,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -285,7 +287,7 @@ class ControllableUnitLookupTest :
             }
 
             test("missing both AP and CU business IDs returns HTTP 400") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -296,7 +298,7 @@ class ControllableUnitLookupTest :
             }
 
             test("invalid GSRN accounting point returns HTTP 400") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -313,7 +315,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                 } returns ResourceNotFoundError("controllable unit does not exist").left()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -330,7 +332,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -341,7 +343,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -355,7 +357,7 @@ class ControllableUnitLookupTest :
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -371,7 +373,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -384,6 +386,7 @@ class ControllableUnitLookupTest :
             context("adapter sync disabled") {
                 val syncDisabledRepo = mockk<ControllableUnitRepository>()
                 val syncDisabledAccountingPointService = mockk<AccountingPointService>()
+                val syncDisabledSharedAccountingPointService = mockk<SharedAccountingPointService>()
 
                 test("AP absent from database with sync disabled returns HTTP 404 even if adapter would have provided it") {
                     val endUserBusinessId = "123456789"
@@ -402,14 +405,14 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) { syncDisabledRepo.lookupControllableUnits(any(), any()) }
                     } returns emptyList<ControllableUnitForLookup>().right()
 
-                    val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, mockEventRepo, metrics, mockPartyService, syncEnabled = false)
+                    val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, syncDisabledSharedAccountingPointService, mockEventRepo, metrics, mockPartyService, syncEnabled = false)
                     val response = app.client.post("/controllable_unit/lookup") {
                         contentType(ContentType.Application.Json)
                         header("Authorization", "Bearer ${makeJwt()}")
                         setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                     }
                     response.status shouldBe HttpStatusCode.NotFound
-                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any()) }
+                    coVerify(exactly = 0) { syncDisabledSharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
                     app.stop()
                 }
 
@@ -437,14 +440,14 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) { syncDisabledRepo.lookupControllableUnits(any(), any()) }
                     } returns emptyList<ControllableUnitForLookup>().right()
 
-                    val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, mockEventRepo, metrics, mockPartyService, syncEnabled = false)
+                    val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, syncDisabledSharedAccountingPointService, mockEventRepo, metrics, mockPartyService, syncEnabled = false)
                     val response = app.client.post("/controllable_unit/lookup") {
                         contentType(ContentType.Application.Json)
                         header("Authorization", "Bearer ${makeJwt()}")
                         setBody("""{"end_user":"$endUserBusinessId","controllable_unit":"$controllableUnitBusinessId"}""")
                     }
                     response.status shouldBe HttpStatusCode.OK
-                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any()) }
+                    coVerify(exactly = 0) { syncDisabledSharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
                     app.stop()
                 }
             }
@@ -456,7 +459,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -472,7 +475,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -490,7 +493,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -506,7 +509,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -523,7 +526,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                 } returns ResourceNotFoundError("Current AP not found").left()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -541,7 +544,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -565,7 +568,7 @@ class ControllableUnitLookupTest :
                     ),
                 ).right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -583,10 +586,10 @@ class ControllableUnitLookupTest :
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns InternalServerError("traceId").left()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -603,7 +606,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -634,7 +637,7 @@ class ControllableUnitLookupTest :
                     ),
                 ).right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -662,7 +665,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -678,7 +681,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -707,7 +710,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -731,7 +734,7 @@ class ControllableUnitLookupTest :
                     ),
                 ).right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -762,7 +765,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -778,7 +781,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -802,7 +805,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -818,7 +821,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -836,7 +839,7 @@ class ControllableUnitLookupTest :
             }
 
             test("early validation failure records a bad_request metric with accounting_point_id unknown") {
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -858,7 +861,7 @@ class ControllableUnitLookupTest :
                     mockPartyService.getParty(any())
                 } returns null
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -882,13 +885,13 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                    mockSharedAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns InternalServerError("traceId").left()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnitForLookup>().right()
 
-                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo, metrics, mockPartyService)
+                val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -910,6 +913,7 @@ class ControllableUnitLookupTest :
 private fun testApp(
     repo: ControllableUnitRepository,
     accountingPointService: AccountingPointService,
+    sharedAccountingPointService: SharedAccountingPointService,
     eventRepo: EventRepository,
     metrics: FlexMetrics,
     partyService: PartyService,
@@ -926,10 +930,11 @@ private fun testApp(
                     module {
                         single<ControllableUnitRepository> { repo }
                         single<AccountingPointService> { accountingPointService }
+                        single<SharedAccountingPointService> { sharedAccountingPointService }
                         single<EventRepository> { eventRepo }
                         single { metrics }
                         single<PartyService> { partyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
                     },
                 )
             }

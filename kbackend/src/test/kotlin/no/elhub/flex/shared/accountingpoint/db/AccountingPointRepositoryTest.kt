@@ -3,9 +3,7 @@ package no.elhub.flex.shared.accountingpoint.db
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.datatest.withData
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
@@ -13,14 +11,10 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPointEndUser
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointEnergySupplier
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
-import no.elhub.flex.shared.db.NoMatchError
-import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.shared.util.toKotlinInstant
 import no.elhub.flex.shared.util.toKotlinInstantOrNull
 import no.elhub.flex.testutil.gs1CheckDigit
 import no.elhub.flex.testutil.uniqueGsrn
-import java.sql.Connection
-import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.time.Instant
 
@@ -40,130 +34,6 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
-    context("getAccountingPointByBusinessId") {
-
-        test("returns the accounting point when it exists") {
-            // given
-            val noiseApBusinessId = uniqueGsrn()
-            val targetApBusinessId = uniqueGsrn()
-            insertAccountingPoint(noiseApBusinessId)
-            val targetApId = insertAccountingPoint(targetApBusinessId)
-
-            // when
-            val result = with(principal) {
-                repo.getAccountingPointByBusinessId(targetApBusinessId)
-            }.shouldBeRight()
-
-            // then
-            result shouldBe AccountingPoint(id = targetApId, businessId = targetApBusinessId)
-        }
-
-        test("returns NotFoundError when business ID does not exist") {
-            // given
-            insertAccountingPoint(uniqueGsrn())
-
-            // when
-            val result = with(principal) {
-                repo.getAccountingPointByBusinessId(uniqueGsrn())
-            }
-
-            // then
-            result.shouldBeLeft() shouldBe NotFoundError("accounting point does not exist in database")
-        }
-    }
-
-    context("getCurrentAccountingPoint") {
-
-        test("returns the accounting point for an existing CU") {
-            // given
-            val targetApBusinessId = uniqueGsrn()
-            val targetCuBusinessId = UUID.randomUUID().toString()
-            val noiseApId = insertAccountingPoint(uniqueGsrn())
-            insertControllableUnit(noiseApId, UUID.randomUUID().toString())
-            val targetApId = insertAccountingPoint(targetApBusinessId)
-            insertControllableUnit(targetApId, targetCuBusinessId)
-
-            // when
-            val result = with(principal) {
-                repo.getCurrentAccountingPoint(targetCuBusinessId)
-            }.shouldBeRight()
-
-            // then
-            result.businessId shouldBe targetApBusinessId
-        }
-
-        test("returns NotFoundError when CU does not exist") {
-            // given
-            val noiseApId = insertAccountingPoint(uniqueGsrn())
-            insertControllableUnit(noiseApId, UUID.randomUUID().toString())
-
-            // when
-            val result = with(principal) {
-                repo.getCurrentAccountingPoint(UUID.randomUUID().toString())
-            }
-
-            // then
-            result.shouldBeLeft() shouldBe NotFoundError("Current accounting point not found")
-        }
-    }
-
-    context("checkEndUserMatchesAccountingPoint") {
-
-        fun pidToBirthDate(pid: String): String = pid.substring(0, 6)
-
-        test("returns end user ID when end user matches accounting point") {
-            // given
-            val targetApBusinessId = uniqueGsrn()
-            val targetEntityBusinessId = uniquePid()
-            val noiseApId = insertAccountingPoint(uniqueGsrn())
-            linkApToEndUser(noiseApId, insertEndUserParty(uniquePid()))
-            val targetApId = insertAccountingPoint(targetApBusinessId)
-            val expectedEndUser = insertEndUserParty(targetEntityBusinessId)
-            linkApToEndUser(targetApId, expectedEndUser)
-
-            // when
-            val result = with(principal) {
-                repo.checkEndUserMatchesAccountingPoint(pidToBirthDate(targetEntityBusinessId), targetApBusinessId)
-            }.shouldBeRight()
-
-            // then
-            result shouldBe expectedEndUser
-        }
-
-        test("returns NoMatchError when end user does not match accounting point") {
-            // given
-            val targetApBusinessId = uniqueGsrn()
-            val linkedEntityBusinessId = uniquePid()
-            val targetApId = insertAccountingPoint(targetApBusinessId)
-            linkApToEndUser(targetApId, insertEndUserParty(linkedEntityBusinessId))
-            val otherBirthDate = "170514"
-
-            // when
-            val result = with(principal) {
-                repo.checkEndUserMatchesAccountingPoint(otherBirthDate, targetApBusinessId)
-            }
-
-            // then
-            (result.shouldBeLeft() is NoMatchError) shouldBe true
-        }
-
-        // the SQL function does not distinguish the cases so we always return 'no match', but the following case should
-        // not happen because a missing accounting point should be caught earlier in the handler (before calling this)
-        test("returns NoMatchError when accounting point does not exist") {
-            // given
-            val noiseApId = insertAccountingPoint(uniqueGsrn())
-            linkApToEndUser(noiseApId, insertEndUserParty(uniquePid()))
-
-            // when
-            val result = with(principal) {
-                repo.checkEndUserMatchesAccountingPoint(pidToBirthDate(uniquePid()), uniqueGsrn())
-            }
-
-            // then
-            (result.shouldBeLeft() is NoMatchError) shouldBe true
-        }
-    }
-
     context("insertAccountingPointIfNotExists") {
 
         test("inserts a new accounting point and returns its id") {
@@ -176,7 +46,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }.shouldBeRight()
 
             // then
-            val result = with(principal) { repo.getAccountingPointByBusinessId(businessId) }.shouldBeRight()
+            val result = queryAccountingPoint(businessId).shouldNotBeNull()
             result.businessId shouldBe businessId
             result.id shouldBe id
         }
@@ -216,7 +86,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }.shouldBeRight()
 
             // then — noise row still present and unchanged
-            val noiseResult = with(principal) { repo.getAccountingPointByBusinessId(noiseBusinessId) }.shouldBeRight()
+            val noiseResult = queryAccountingPoint(noiseBusinessId).shouldNotBeNull()
             noiseResult.id shouldBe noiseId
         }
     }
@@ -890,52 +760,6 @@ class AccountingPointRepositoryTest : FunSpec({
             result.shouldBeLeft() shouldBe DatabaseError("No sync row found for accounting point $missingApId")
         }
     }
-
-    context("getByIds") {
-
-        test("returns matching accounting points for the given IDs") {
-            // given
-            val businessId1 = uniqueGsrn()
-            val businessId2 = uniqueGsrn()
-            val id1 = insertAccountingPoint(businessId1)
-            val id2 = insertAccountingPoint(businessId2)
-
-            // when
-            val result = with(principal) { repo.getByIds(listOf(id1, id2)) }.shouldBeRight()
-
-            // then
-            result.map { it.id } shouldContainExactlyInAnyOrder listOf(id1, id2)
-            result.map { it.businessId } shouldContainExactlyInAnyOrder listOf(businessId1, businessId2)
-        }
-
-        test("silently omits IDs with no matching row") {
-            // given
-            val existingId = insertAccountingPoint(uniqueGsrn())
-            val missingId = Long.MAX_VALUE
-
-            // when
-            val result = with(principal) { repo.getByIds(listOf(existingId, missingId)) }.shouldBeRight()
-
-            // then — only the existing one is returned
-            result.map { it.id } shouldContainExactlyInAnyOrder listOf(existingId)
-        }
-
-        test("returns empty list for empty input") {
-            // when
-            val result = with(principal) { repo.getByIds(emptyList()) }.shouldBeRight()
-
-            // then
-            result shouldHaveSize 0
-        }
-
-        test("returns empty list when no IDs match") {
-            // given — IDs that do not exist
-            val result = with(principal) { repo.getByIds(listOf(Long.MAX_VALUE - 1, Long.MAX_VALUE)) }.shouldBeRight()
-
-            // then
-            result shouldHaveSize 0
-        }
-    }
 })
 
 private val pidCounter = AtomicLong(0L)
@@ -1034,6 +858,16 @@ private fun queryEnergySupplierRows(apId: Long): List<EnergySupplierRow> =
         }
     }
 
+private fun queryAccountingPoint(businessId: String): AccountingPoint? =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement("SELECT id, business_id FROM flex.accounting_point WHERE business_id = ?").use { stmt ->
+            stmt.setString(1, businessId)
+            stmt.executeQuery().use { rs ->
+                if (rs.next()) AccountingPoint(id = rs.getLong("id"), businessId = rs.getString("business_id")) else null
+            }
+        }
+    }
+
 private fun insertAccountingPoint(apBusinessId: String): Long =
     PostgresTestContainer.withConnection { conn ->
         conn.autoCommit = false
@@ -1046,29 +880,6 @@ private fun insertAccountingPoint(apBusinessId: String): Long =
                     rs.getLong(1)
                 }
             }
-        conn.commit()
-        id
-    }
-
-private fun insertControllableUnit(apId: Long, cuBusinessId: String): Long =
-    PostgresTestContainer.withConnection { conn ->
-        conn.autoCommit = false
-        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
-        val id = conn.prepareStatement(
-            """
-            INSERT INTO flex.controllable_unit (business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id)
-            VALUES (?::uuid, ?, current_date, 'up', 100.0, ?)
-            RETURNING id
-            """.trimIndent(),
-        ).use { stmt ->
-            stmt.setString(1, cuBusinessId)
-            stmt.setString(2, "CU $cuBusinessId")
-            stmt.setLong(3, apId)
-            stmt.executeQuery().use { rs ->
-                rs.next()
-                rs.getLong(1)
-            }
-        }
         conn.commit()
         id
     }
@@ -1148,24 +959,6 @@ private fun insertEnergySupplierParty(gln: String): Long =
         conn.commit()
         partyId
     }
-
-private fun linkApToEndUser(apId: Long, euPartyId: Long) {
-    PostgresTestContainer.withConnection { conn ->
-        conn.autoCommit = false
-        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
-        conn.prepareStatement(
-            """
-            INSERT INTO flex.accounting_point_end_user (accounting_point_id, end_user_id, valid_time_range)
-            VALUES (?, ?, tstzrange(date_trunc('day', now() AT TIME ZONE 'Europe/Oslo') AT TIME ZONE 'Europe/Oslo', null, '[)'))
-            """.trimIndent(),
-        ).use { stmt ->
-            stmt.setLong(1, apId)
-            stmt.setLong(2, euPartyId)
-            stmt.executeUpdate()
-        }
-        conn.commit()
-    }
-}
 
 /** Inserts an end-user link with an explicit valid_from timestamp (for isolation/noise tests). */
 private fun linkApToEndUserAt(apId: Long, euPartyId: Long, validFrom: Instant) {

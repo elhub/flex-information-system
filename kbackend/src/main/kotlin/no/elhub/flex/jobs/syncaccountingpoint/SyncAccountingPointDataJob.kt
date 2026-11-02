@@ -51,7 +51,7 @@ class SyncAccountingPointDataJob(
 
                 logger.info { "Processing batch of ${accountingPointIdBatch.size} accounting points" }
 
-                val accountingPoints = accountingPointService.getByIds(accountingPointIdBatch).bind()
+                val accountingPoints = accountingPointSyncRepository.getByIds(accountingPointIdBatch).bind()
 
                 val earliestStartDates = accountingPointService
                     .getAccountingPointStartDates(accountingPoints.map { it.id })

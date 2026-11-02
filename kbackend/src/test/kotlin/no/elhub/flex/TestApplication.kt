@@ -8,6 +8,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
+import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.attachment.AttachmentStorageService
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
@@ -23,17 +24,19 @@ import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.shared.accountingpoint.AccountingPointService
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.error.DataFetchError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 fun defaultTestApplication(): TestApplication {
-    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
+    val mockSharedAccountingPointService = mockk<SharedAccountingPointService>().also { svc ->
         coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>()) } returns Unit.right()
+    }
+    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
         coEvery { with(any<FlexPrincipal>()) { svc.getCurrentAccountingPoint(any()) } } returns
             DataFetchError("stub").left()
         coEvery { with(any<FlexPrincipal>()) { svc.getAccountingPointByBusinessId(any()) } } returns
@@ -63,11 +66,12 @@ fun defaultTestApplication(): TestApplication {
                     module {
                         single<MeterRegistry> { SimpleMeterRegistry() }
                         single<AccountingPointService> { mockAccountingPointService }
+                        single<SharedAccountingPointService> { mockSharedAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
                         single { FlexMetrics(get()) }
                         single<PartyService> { mockPartyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )

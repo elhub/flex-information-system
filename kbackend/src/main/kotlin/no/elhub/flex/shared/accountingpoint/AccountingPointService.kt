@@ -8,7 +8,6 @@ import io.ktor.http.HttpStatusCode
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointGridLocationRepository
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointRepository
-import no.elhub.flex.shared.accountingpoint.db.AccountingPointStartDatesRepository
 import no.elhub.flex.shared.accountingpoint.db.SubstationRepository
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointEndUser
@@ -22,6 +21,7 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPointMeteringGridAre
 import no.elhub.flex.shared.accountingpoint.model.Location
 import no.elhub.flex.shared.adapter.AdapterClient
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.NoMatchError
 import no.elhub.flex.shared.db.NotFoundError
@@ -52,43 +52,6 @@ interface AccountingPointService {
         validFrom: Instant
     ): Either<AppError, Unit>
 
-    /**
-     * Returns the end-user ID if the end-user matches the accounting point, or an error if not.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun checkEndUserMatchesAccountingPoint(
-        endUserBusinessId: String,
-        accountingPointBusinessId: String
-    ): Either<AppError, Long>
-
-    /**
-     * Looks up an accounting point by its business ID
-     *
-     * Returns [ResourceNotFoundError] if not found.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getAccountingPointByBusinessId(accountingPointBusinessId: String): Either<AppError, AccountingPoint>
-
-    /**
-     * Gets the current accounting point for a given controllable unit.
-     *
-     * Returns an [AccountingPoint] or [ResourceNotFoundError] when the controllable unit does not exist.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint>
-
-    /**
-     * Retrieves accounting points by their internal IDs.
-     *
-     * IDs with no matching row are silently omitted from the result.
-     *
-     * Returns [InternalServerError] if the query fails.
-     *
-     * @param accountingPointIds the internal IDs of the accounting points to retrieve.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
-
     // NB: nullable results here because we want to decide at the call site what we do if no data is there
 
     /**
@@ -96,12 +59,6 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
-
-    /**
-     * Gets the earliest date from which we have active data about an accounting point in the system.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?>
 }
 
 @Suppress("TooManyFunctions")
@@ -113,7 +70,7 @@ class AccountingPointServiceImpl(
     private val accountingPointGridLocationRepository: AccountingPointGridLocationRepository,
     private val substationRepository: SubstationRepository,
     private val adapterClient: AdapterClient,
-    private val accountingPointStartDatesRepository: AccountingPointStartDatesRepository,
+    private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -253,42 +210,8 @@ class AccountingPointServiceImpl(
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun checkEndUserMatchesAccountingPoint(
-        endUserBusinessId: String,
-        accountingPointBusinessId: String
-    ): Either<AppError, Long> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
-        when (error) {
-            is NoMatchError -> EndUserError("End user does not match")
-            else -> InternalServerError(traceIdOrUnknown())
-        }
-    }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointByBusinessId(
-        accountingPointBusinessId: String
-    ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId).mapLeft { error ->
-        when (error) {
-            is NotFoundError -> ResourceNotFoundError("accounting point with business ID $accountingPointBusinessId not found")
-            else -> InternalServerError(traceIdOrUnknown())
-        }
-    }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint> = accountingPointRepository.getCurrentAccountingPoint(controllableUnitBusinessId).mapLeft { error ->
-        when (error) {
-            is NotFoundError -> ResourceNotFoundError("Accounting point not found")
-            else -> InternalServerError(traceIdOrUnknown())
-        }
-    }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
-        accountingPointRepository.getByIds(accountingPointIds)
-            .mapLeft { InternalServerError(traceIdOrUnknown()) }
-
-    context(principal: FlexPrincipal)
     override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
-        accountingPointStartDatesRepository.getAccountingPointStartDates(accountingPointIds)
+        controllableUnitRepository.getAccountingPointStartDates(accountingPointIds)
             .map { apStarts ->
                 apStarts.mapValues {
                     logger.debug { "Accounting point ${it.key.value} has CU start ${it.value.controllableUnitStartTime} and CUSP start ${it.value.controllableUnitServiceProviderValidTimeStart}" }
@@ -298,10 +221,6 @@ class AccountingPointServiceImpl(
                 }
             }
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?> =
-        getAccountingPointStartDates(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

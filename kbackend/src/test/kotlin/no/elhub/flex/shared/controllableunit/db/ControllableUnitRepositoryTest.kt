@@ -1,4 +1,4 @@
-package no.elhub.flex.shared.accountingpoint.db
+package no.elhub.flex.shared.controllableunit.db
 
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
@@ -12,9 +12,9 @@ import java.util.UUID
 import kotlin.time.Instant
 
 @Suppress("MagicNumber")
-class AccountingPointStartDatesRepositoryTest : FunSpec({
+class ControllableUnitRepositoryTest : FunSpec({
 
-    val repo = AccountingPointStartDatesRepositoryImpl()
+    val repo = ControllableUnitRepositoryImpl()
 
     val internalDataPrincipal = FlexPrincipal.internalData
 

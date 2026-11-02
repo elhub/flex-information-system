@@ -67,7 +67,7 @@ class SyncAccountingPointDataJobTest : FunSpec({
         // given
         with(principal) {
             coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
-            coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
+            coEvery { syncRepository.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
             coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                 mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
         }
@@ -91,7 +91,7 @@ class SyncAccountingPointDataJobTest : FunSpec({
         val validFromSlot = slot<Instant>()
         with(principal) {
             coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
-            coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
+            coEvery { syncRepository.getByIds(any()) } returns listOf(ap1).right()
             coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                 mapOf(AccountingPointId(ap1.id) to null).right()
         }
@@ -115,7 +115,7 @@ class SyncAccountingPointDataJobTest : FunSpec({
 
         // then
         with(principal) {
-            coVerify(exactly = 0) { accountingPointService.getByIds(any()) }
+            coVerify(exactly = 0) { syncRepository.getByIds(any()) }
         }
         coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
     }
@@ -132,23 +132,23 @@ class SyncAccountingPointDataJobTest : FunSpec({
         // then
         result.shouldBeLeft().shouldBeInstanceOf<JobError.DatabaseError>()
         with(principal) {
-            coVerify(exactly = 0) { accountingPointService.getByIds(any()) }
+            coVerify(exactly = 0) { syncRepository.getByIds(any()) }
         }
         coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
     }
 
-    test("getByIds failure: returns an error and makes no synchronize calls") {
+    test("getByIds failure: returns a database error and makes no synchronize calls") {
         // given
         with(principal) {
             coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
-            coEvery { accountingPointService.getByIds(any()) } returns InternalServerError("trace-id").left()
+            coEvery { syncRepository.getByIds(any()) } returns DatabaseError("db failure").left()
         }
 
         // when
         val result = job().run()
 
         // then
-        result.shouldBeLeft().shouldBeInstanceOf<JobError.HttpClientError>()
+        result.shouldBeLeft().shouldBeInstanceOf<JobError.DatabaseError>()
         coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
     }
 
@@ -156,7 +156,7 @@ class SyncAccountingPointDataJobTest : FunSpec({
         // given
         with(principal) {
             coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
-            coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
+            coEvery { syncRepository.getByIds(any()) } returns listOf(ap1).right()
             coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                 InternalServerError("trace-id").left()
         }
@@ -173,7 +173,7 @@ class SyncAccountingPointDataJobTest : FunSpec({
         // given
         with(principal) {
             coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
-            coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
+            coEvery { syncRepository.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
             coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                 mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
         }

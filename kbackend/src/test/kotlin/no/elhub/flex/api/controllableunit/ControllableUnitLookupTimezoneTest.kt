@@ -22,6 +22,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.api.accountingpoint.AccountingPointServiceImpl
+import no.elhub.flex.api.accountingpoint.db.AccountingPointRepositoryImpl
 import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
@@ -35,11 +37,8 @@ import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
-import no.elhub.flex.shared.accountingpoint.AccountingPointServiceImpl
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
-import no.elhub.flex.shared.accountingpoint.db.AccountingPointRepositoryImpl
-import no.elhub.flex.shared.accountingpoint.db.AccountingPointStartDatesRepositoryImpl
 import no.elhub.flex.shared.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.shared.adapter.AdapterClientConfig
 import no.elhub.flex.shared.adapter.AdapterHttpClient
@@ -50,6 +49,9 @@ import no.elhub.flex.testutil.uniqueEicY
 import no.elhub.flex.testutil.uniqueGsrn
 import java.util.UUID
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointServiceImpl as SharedAccountingPointServiceImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointRepositoryImpl as SharedAccountingPointRepositoryImpl
+import no.elhub.flex.shared.controllableunit.db.ControllableUnitRepositoryImpl as SharedControllableUnitRepositoryImpl
 
 /**
  * Integration tests verifying that the validFrom timestamps sent and received to/from the
@@ -82,17 +84,22 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
         val mockPartyService = mockk<PartyService>()
         coEvery { mockPartyService.getParty(any()) } returns
             Party(id = 1L, name = "Test Party", role = "flex_organisation", businessId = "123456789")
+        val sharedAccountingPointService = SharedAccountingPointServiceImpl(
+            SharedAccountingPointRepositoryImpl(),
+            MeteringGridAreaRepositoryImpl(),
+            AccountingPointMeteringGridAreaRepositoryImpl(),
+            AccountingPointGridLocationRepositoryImpl(),
+            SubstationRepositoryImpl(),
+            adapterService,
+            SharedControllableUnitRepositoryImpl(),
+        )
         lookup = ControllableUnitLookup(
             repo = ControllableUnitRepositoryImpl(),
             accountingPointService = AccountingPointServiceImpl(
                 AccountingPointRepositoryImpl(),
-                MeteringGridAreaRepositoryImpl(),
-                AccountingPointMeteringGridAreaRepositoryImpl(),
-                AccountingPointGridLocationRepositoryImpl(),
-                SubstationRepositoryImpl(),
-                adapterService,
-                AccountingPointStartDatesRepositoryImpl(),
+                sharedAccountingPointService,
             ),
+            sharedAccountingPointService = sharedAccountingPointService,
             eventRepo = EventRepositoryImpl(),
             metrics = FlexMetrics(SimpleMeterRegistry()),
             partyService = mockPartyService,

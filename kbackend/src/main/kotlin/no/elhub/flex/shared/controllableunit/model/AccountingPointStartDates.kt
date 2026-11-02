@@ -1,4 +1,4 @@
-package no.elhub.flex.shared.accountingpoint.model
+package no.elhub.flex.shared.controllableunit.model
 
 import kotlin.time.Instant
 
