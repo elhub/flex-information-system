@@ -8,7 +8,6 @@ import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
-import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.attachment.AttachmentStorageService
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
@@ -21,12 +20,13 @@ import no.elhub.flex.api.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.api.event.db.EventRepository
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
-import no.elhub.flex.api.model.error.DataFetchError
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.util.TEST_JWT_SECRET
+import no.elhub.flex.shared.accountingpoint.AccountingPointService
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.error.DataFetchError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant

@@ -14,16 +14,16 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.todayIn
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
-import no.elhub.flex.api.model.domain.AccountingPoint
-import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.model.error.InternalServerError
 import no.elhub.flex.api.util.TEST_JWT_SECRET
+import no.elhub.flex.shared.accountingpoint.AccountingPointService
+import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.error.InternalServerError
 import kotlin.time.Clock
 import kotlin.time.Instant
 

@@ -4,15 +4,15 @@ import arrow.core.raise.context.bind
 import arrow.core.raise.context.either
 import dev.inmo.krontab.doInfinity
 import io.github.oshai.kotlinlogging.KotlinLogging
-import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
-import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.api.util.withTrace
+import no.elhub.flex.shared.accountingpoint.AccountingPointService
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.tracing.TraceInfo
+import no.elhub.flex.shared.util.todayLocalMidnight
+import no.elhub.flex.shared.util.withTrace
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 

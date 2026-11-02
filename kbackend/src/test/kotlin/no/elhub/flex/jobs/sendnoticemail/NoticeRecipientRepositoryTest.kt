@@ -5,8 +5,8 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.util.seed
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.testutil.seed
 
 class NoticeRecipientRepositoryTest : FunSpec({
 

@@ -21,7 +21,7 @@ suspend fun currentTraceContext(): TraceContext =
  * the current trace without it being threaded explicitly through every call signature.
  *
  * Installed into the coroutine context by the API tracing plugin for HTTP requests, and by
- * [no.elhub.flex.api.util.withTrace] for non-HTTP contexts such as scheduled jobs.
+ * [no.elhub.flex.shared.util.withTrace] for non-HTTP contexts such as scheduled jobs.
  */
 @JvmInline
 value class TraceContext(val traceInfo: TraceInfo) : CoroutineContext.Element {

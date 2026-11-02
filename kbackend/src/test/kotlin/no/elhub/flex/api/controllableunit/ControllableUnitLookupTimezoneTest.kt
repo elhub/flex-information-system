@@ -22,11 +22,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.accountingpoint.AccountingPointServiceImpl
-import no.elhub.flex.api.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
-import no.elhub.flex.api.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
-import no.elhub.flex.api.accountingpoint.db.AccountingPointRepositoryImpl
-import no.elhub.flex.api.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
@@ -34,19 +29,25 @@ import no.elhub.flex.api.config.Tracing
 import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.api.event.db.EventRepositoryImpl
-import no.elhub.flex.api.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
-import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.api.util.uniqueEicY
-import no.elhub.flex.api.util.uniqueGsrn
+import no.elhub.flex.shared.accountingpoint.AccountingPointServiceImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointStartDatesRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.shared.adapter.AdapterClientConfig
 import no.elhub.flex.shared.adapter.AdapterHttpClient
 import no.elhub.flex.shared.adapter.AdapterWireMockServer
+import no.elhub.flex.shared.meteringgridarea.db.MeteringGridAreaRepositoryImpl
+import no.elhub.flex.shared.util.todayLocalMidnight
+import no.elhub.flex.testutil.uniqueEicY
+import no.elhub.flex.testutil.uniqueGsrn
 import java.util.UUID
 import kotlin.time.Instant
 
@@ -90,7 +91,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 AccountingPointGridLocationRepositoryImpl(),
                 SubstationRepositoryImpl(),
                 adapterService,
-                ControllableUnitRepositoryImpl(),
+                AccountingPointStartDatesRepositoryImpl(),
             ),
             eventRepo = EventRepositoryImpl(),
             metrics = FlexMetrics(SimpleMeterRegistry()),
