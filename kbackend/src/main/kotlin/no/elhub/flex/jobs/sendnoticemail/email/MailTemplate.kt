@@ -33,7 +33,13 @@ class MailTemplate(
     companion object {
         private val PLACEHOLDER = Regex("""\{\{\s*([a-zA-Z0-9_]+)\s*}}""")
 
-        private val DEFAULT_VARIABLES = mapOf("systemName" to "Fleksibilitetsregisteret")
+        const val SYSTEM_NAME = "Statnetts fleksregister"
+        const val REGISTER_URL = "fleksregister.statnett.no"
+
+        private val DEFAULT_VARIABLES = mapOf(
+            "systemName" to SYSTEM_NAME,
+            "registerUrl" to REGISTER_URL,
+        )
 
         private fun resource(name: String): String =
             requireNotNull(MailTemplate::class.java.getResourceAsStream("/mail/template/$name")) {

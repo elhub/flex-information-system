@@ -27,7 +27,7 @@ class MailTemplateTest : FunSpec({
 
     test("active notices template renders with a user name") {
         val mail = MailTemplate.ACTIVE_NOTICES.render("a@b.no", mapOf("userName" to "Ola"))
-        mail.subject shouldBe "Du har varsler i Fleksibilitetsregisteret"
+        mail.subject shouldBe "Du har varsler i Statnetts fleksregister"
         mail.content shouldContain "Du har åpne varsler"
         mail.content shouldContain "Hei Ola,"
         mail.content shouldNotContain "{{"

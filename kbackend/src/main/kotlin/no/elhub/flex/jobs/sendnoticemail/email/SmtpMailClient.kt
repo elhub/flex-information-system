@@ -31,7 +31,7 @@ class SmtpMailClient(private val config: MailConfig) : MailClient {
     override suspend fun send(mail: Mail) {
         withContext(Dispatchers.IO) {
             val message = MimeMessage(session).apply {
-                setFrom(InternetAddress(config.from))
+                setFrom(InternetAddress(config.from, MailTemplate.SYSTEM_NAME, "UTF-8"))
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.mailTo))
                 subject = mail.subject
                 setContent(mail.content, "text/html; charset=UTF-8")

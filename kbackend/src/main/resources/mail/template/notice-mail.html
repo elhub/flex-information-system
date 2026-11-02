@@ -22,18 +22,19 @@
       p {
         margin: 10px 0;
       }
-      span {
-        color: #0f6537;
-      }
     </style>
   </head>
   <body>
     <h3>Du har åpne varsler i {{systemName}}</h3>
     <p>Hei {{userName}},</p>
-    <p>Du har varsler som trenger oppfølging i <span>{{systemName}}</span>.</p>
+    <p>Du har varsler som trenger oppfølging i {{systemName}}.</p>
     <b>Hva bør du gjøre?</b>
     <ul>
-      <li>Logg inn i registeret.</li>
+      <!--
+        Registeradressen vises bevisst som ren tekst og ikke som lenke, av
+        sikkerhetshensyn (phishing): brukeren skal skrive adressen selv.
+      -->
+      <li>Logg inn i registeret på {{registerUrl}}.</li>
       <li>Varslene dine vises på dashbordet når du er logget inn.</li>
     </ul>
     <p>
@@ -42,6 +43,11 @@
     </p>
     <p>Med vennlig hilsen,<br />{{systemName}}</p>
     <hr />
-    <p><small>Dette er en automatisk generert e-post fra FIS.</small></p>
+    <p>
+      <small
+        >Dette er en automatisk generert e-post fra {{systemName}}
+        ({{registerUrl}}).</small
+      >
+    </p>
   </body>
 </html>

@@ -44,8 +44,8 @@ class SendNoticeMailJobIntegrationTest : FunSpec({
         val mails = MailpitTestContainer.messages()
         mails.flatMap { it.to } shouldContainExactlyInAnyOrder listOf("a@example.com", "b@example.com")
         mails.forEach {
-            it.subject shouldBe "Du har varsler i Fleksibilitetsregisteret"
-            it.html shouldContain "Fleksibilitetsregisteret"
+            it.subject shouldBe "Du har varsler i Statnetts fleksregister"
+            it.html shouldContain "Statnetts fleksregister"
             it.html shouldContain "Hei Person "
         }
     }
