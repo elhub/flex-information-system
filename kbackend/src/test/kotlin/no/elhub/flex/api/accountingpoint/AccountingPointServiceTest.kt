@@ -12,12 +12,9 @@ import io.mockk.mockk
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
-import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.error.InternalServerError
-import kotlin.time.Instant
-import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 class AccountingPointServiceTest : FunSpec({
 
@@ -25,8 +22,7 @@ class AccountingPointServiceTest : FunSpec({
     val db = PostgresTestContainer // ensure FlexTransaction is initialised
 
     val accountingPointRepository = mockk<AccountingPointRepository>()
-    val sharedAccountingPointService = mockk<SharedAccountingPointService>()
-    val service = AccountingPointServiceImpl(accountingPointRepository, sharedAccountingPointService)
+    val service = AccountingPointServiceImpl(accountingPointRepository)
 
     val internalPrincipal = FlexPrincipal.internalData
 
@@ -56,54 +52,6 @@ class AccountingPointServiceTest : FunSpec({
 
             // when
             val result = with(internalPrincipal) { service.getByIds(listOf(ap1.id)) }
-
-            // then
-            result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
-        }
-    }
-
-    context("getAccountingPointStartDate") {
-
-        val apId = 10L
-
-        test("returns the start date for the accounting point from the shared service") {
-            // given
-            val start = Instant.parse("2024-01-01T00:00:00Z")
-            with(internalPrincipal) {
-                coEvery { sharedAccountingPointService.getAccountingPointStartDates(listOf(apId)) } returns
-                    mapOf(AccountingPointId(apId) to start).right()
-            }
-
-            // when
-            val result = with(internalPrincipal) { service.getAccountingPointStartDate(apId) }
-
-            // then
-            result.shouldBeRight() shouldBe start
-        }
-
-        test("returns null when the shared service has no start date for it") {
-            // given
-            with(internalPrincipal) {
-                coEvery { sharedAccountingPointService.getAccountingPointStartDates(listOf(apId)) } returns
-                    emptyMap<AccountingPointId, Instant?>().right()
-            }
-
-            // when
-            val result = with(internalPrincipal) { service.getAccountingPointStartDate(apId) }
-
-            // then
-            result.shouldBeRight() shouldBe null
-        }
-
-        test("propagates errors from the shared service") {
-            // given
-            with(internalPrincipal) {
-                coEvery { sharedAccountingPointService.getAccountingPointStartDates(any()) } returns
-                    InternalServerError("trace-id").left()
-            }
-
-            // when
-            val result = with(internalPrincipal) { service.getAccountingPointStartDate(apId) }
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()

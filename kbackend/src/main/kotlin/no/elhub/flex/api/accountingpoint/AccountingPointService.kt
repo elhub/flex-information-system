@@ -3,7 +3,6 @@ package no.elhub.flex.api.accountingpoint
 import arrow.core.Either
 import no.elhub.flex.api.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
-import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.NoMatchError
 import no.elhub.flex.shared.db.NotFoundError
@@ -13,8 +12,6 @@ import no.elhub.flex.shared.error.InternalServerError
 import no.elhub.flex.shared.error.ResourceNotFoundError
 import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
-import kotlin.time.Instant
-import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 interface AccountingPointService {
 
@@ -54,18 +51,11 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
-
-    /**
-     * Gets the earliest date from which we have active data about an accounting point in the system.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?>
 }
 
 @Single(createdAtStart = true)
 class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
-    private val sharedAccountingPointService: SharedAccountingPointService,
 ) : AccountingPointService {
 
     context(principal: FlexPrincipal)
@@ -101,8 +91,4 @@ class AccountingPointServiceImpl(
     override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
         accountingPointRepository.getByIds(accountingPointIds)
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?> =
-        sharedAccountingPointService.getAccountingPointStartDates(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 }

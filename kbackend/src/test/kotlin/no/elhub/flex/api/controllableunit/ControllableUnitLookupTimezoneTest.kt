@@ -95,10 +95,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
         )
         lookup = ControllableUnitLookup(
             repo = ControllableUnitRepositoryImpl(),
-            accountingPointService = AccountingPointServiceImpl(
-                AccountingPointRepositoryImpl(),
-                sharedAccountingPointService,
-            ),
+            accountingPointService = AccountingPointServiceImpl(AccountingPointRepositoryImpl()),
             sharedAccountingPointService = sharedAccountingPointService,
             eventRepo = EventRepositoryImpl(),
             metrics = FlexMetrics(SimpleMeterRegistry()),

@@ -25,6 +25,7 @@ import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.util.asLocalMidnightInstant
 import no.elhub.flex.api.util.body
 import no.elhub.flex.api.util.respondJson
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.error.AppError
 import no.elhub.flex.shared.error.BadRequestError
@@ -85,7 +86,7 @@ class ControllableUnitLookup(
                         .fold({ if (it is ResourceNotFoundError) null.right() else it.left() }, { it.id.right() })
                         .bind()
                         // if it exists, compute start date, otherwise take the default one
-                        ?.let { apId -> accountingPointService.getAccountingPointStartDate(apId).bind() }
+                        ?.let { apId -> sharedAccountingPointService.getAccountingPointStartDates(listOf(apId)).bind()[AccountingPointId(apId)] }
                         ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 

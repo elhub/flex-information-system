@@ -38,6 +38,7 @@ import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.error.EndUserError
 import no.elhub.flex.shared.error.InternalServerError
@@ -45,6 +46,7 @@ import no.elhub.flex.shared.error.ResourceNotFoundError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Clock
+import kotlin.time.Instant
 import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 class ControllableUnitLookupTest :
@@ -64,8 +66,8 @@ class ControllableUnitLookupTest :
                 with(any<FlexPrincipal>()) { mockEventRepo.insertEvent(any(), any(), any(), any(), any(), any()) }
             } returns Unit.right()
             coEvery {
-                with(any<FlexPrincipal>()) { mockAccountingPointService.getAccountingPointStartDate(any()) }
-            } returns null.right()
+                with(any<FlexPrincipal>()) { mockSharedAccountingPointService.getAccountingPointStartDates(any()) }
+            } returns emptyMap<AccountingPointId, Instant?>().right()
             coEvery {
                 mockPartyService.getParty(any())
             } returns Party(id = 1L, name = "Test Party", role = "flex_organisation", businessId = "123456789")
@@ -424,8 +426,8 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                     } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                     coEvery {
-                        with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getAccountingPointStartDate(any()) }
-                    } returns null.right()
+                        with(any<FlexPrincipal>()) { syncDisabledSharedAccountingPointService.getAccountingPointStartDates(any()) }
+                    } returns emptyMap<AccountingPointId, Instant?>().right()
                     coEvery {
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
