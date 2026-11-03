@@ -2,6 +2,7 @@ package no.elhub.flex.shared.accountingpoint
 
 import arrow.core.Either
 import arrow.core.flatMap
+import arrow.core.raise.Raise
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
@@ -23,14 +24,10 @@ import no.elhub.flex.shared.adapter.AdapterClient
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
-import no.elhub.flex.shared.db.NoMatchError
-import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.shared.db.RepositoryError
 import no.elhub.flex.shared.error.AppError
 import no.elhub.flex.shared.error.DataFetchError
-import no.elhub.flex.shared.error.EndUserError
 import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.ResourceNotFoundError
 import no.elhub.flex.shared.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
@@ -101,78 +98,9 @@ class AccountingPointServiceImpl(
                             ).mapLeft { it.toInternalServerError("updateAccountingPointLocation") }.bind()
                         }
 
-                        val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
-                        val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
-                        val gridModelSubstation = adapterAccountingPoint.substation
-
-                        val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
-                        val mgaMap = meteringGridAreaRepository
-                            .getMeteringGridAreasByBusinessIds(mgaBusinessIds)
-                            .mapLeft { err -> err.toInternalServerError("getMeteringGridAreasByBusinessIds") }
-                            .bind()
-
-                        val accountingPointMgas = adapterAccountingPoint.meteringGridArea.map { adapterMga ->
-                            AccountingPointMeteringGridArea(
-                                id = 0L,
-                                accountingPointId = accountingPointId,
-                                meteringGridAreaId = mgaMap.getValue(adapterMga.businessId).id,
-                                validFrom = adapterMga.validFrom,
-                                validTo = adapterMga.validTo,
-                            )
-                        }
-                        accountingPointMeteringGridAreaRepository.replaceAllFor(accountingPointMgas)
-                            .mapLeft { err -> err.toInternalServerError("replaceAllFor MGAs") }
-                            .bind()
-
-                        accountingPointRepository.replaceAllAccountingPointEndUsers(endUsers)
-                            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEndUsers") }.bind()
-
-                        accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
-                            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
-
-                        gridModelSubstation?.let { substationBusinessId ->
-                            either {
-                                val substationName = substationRepository.getNameByBusinessId(substationBusinessId).bind()
-
-                                val mustUpdateGridLocation = accountingPointGridLocationRepository
-                                    .getByAccountingPointId(accountingPointId)
-                                    .bind()
-                                    ?.let { currentGridLocation ->
-                                        // grid model always takes priority over other sources
-                                        currentGridLocation.source != AccountingPointGridLocationSource.GRID_MODEL ||
-                                            // a grid model location can be updated if the substation is different
-                                            substationBusinessId != currentGridLocation.businessId ||
-                                            // or if its currently stored voltage is zero
-                                            // (we possibly got something from the API)
-                                            currentGridLocation.nominalVoltage == 0.0
-                                    }
-                                    ?: true // if no grid location present, always update
-
-                                if (mustUpdateGridLocation) {
-                                    accountingPointGridLocationRepository.upsert(
-                                        AccountingPointGridLocation(
-                                            accountingPointId = accountingPointId,
-                                            objectType = AccountingPointGridLocationObjectType.SUBSTATION,
-                                            businessId = substationBusinessId,
-                                            name = substationName,
-                                            nominalVoltage = 0.0, // TODO: update when grid model API provides voltage
-                                            additionalInformation = null,
-                                            source = AccountingPointGridLocationSource.GRID_MODEL,
-                                            quality = AccountingPointGridLocationQuality.CONFIRMED,
-                                        )
-                                    ).bind()
-                                }
-                            }.fold(
-                                // substation update can fail if the substation has not been synced yet: we just log the issue
-                                { err ->
-                                    logger.warn {
-                                        "grid location upsert failed for accounting point " +
-                                            "$accountingPointId, substation $substationBusinessId: $err"
-                                    }
-                                },
-                                { },
-                            )
-                        }
+                        updateAccountingPointMeteringGridAreas(accountingPointId, adapterAccountingPoint)
+                        updateAccountingPointEndUsersAndEnergySuppliers(accountingPointId, adapterAccountingPoint)
+                        updateAccountingPointGridLocation(accountingPointId, adapterAccountingPoint)
 
                         accountingPointRepository.markSyncComplete(accountingPointId)
                             .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
@@ -180,6 +108,95 @@ class AccountingPointServiceImpl(
                 }
             }
         }
+
+    context(principal: FlexPrincipal)
+    private suspend fun Raise<AppError>.updateAccountingPointMeteringGridAreas(
+        accountingPointId: Long,
+        adapterAccountingPoint: AdapterAccountingPoint,
+    ) {
+        val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
+        val mgaMap = meteringGridAreaRepository
+            .getMeteringGridAreasByBusinessIds(mgaBusinessIds)
+            .mapLeft { err -> err.toInternalServerError("getMeteringGridAreasByBusinessIds") }
+            .bind()
+        val accountingPointMgas = adapterAccountingPoint.meteringGridArea.map { adapterMga ->
+            AccountingPointMeteringGridArea(
+                id = 0L,
+                accountingPointId = accountingPointId,
+                meteringGridAreaId = mgaMap.getValue(adapterMga.businessId).id,
+                validFrom = adapterMga.validFrom,
+                validTo = adapterMga.validTo,
+            )
+        }
+
+        accountingPointMeteringGridAreaRepository.replaceAllFor(accountingPointMgas)
+            .mapLeft { err -> err.toInternalServerError("replaceAllFor MGAs") }
+            .bind()
+    }
+
+    context(principal: FlexPrincipal)
+    private suspend fun Raise<AppError>.updateAccountingPointEndUsersAndEnergySuppliers(
+        accountingPointId: Long,
+        adapterAccountingPoint: AdapterAccountingPoint,
+    ) {
+        val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
+        val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+
+        accountingPointRepository.replaceAllAccountingPointEndUsers(endUsers)
+            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEndUsers") }.bind()
+
+        accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
+            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
+    }
+
+    context(principal: FlexPrincipal)
+    private suspend fun updateAccountingPointGridLocation(
+        accountingPointId: Long,
+        adapterAccountingPoint: AdapterAccountingPoint,
+    ) {
+        val substationBusinessId = adapterAccountingPoint.substation ?: return
+        either {
+            val substationName = substationRepository.getNameByBusinessId(substationBusinessId).bind()
+
+            val mustUpdateGridLocation = accountingPointGridLocationRepository
+                .getByAccountingPointId(accountingPointId)
+                .bind()
+                ?.let { currentGridLocation ->
+                    // grid model always takes priority over other sources
+                    currentGridLocation.source != AccountingPointGridLocationSource.GRID_MODEL ||
+                        // a grid model location can be updated if the substation is different
+                        substationBusinessId != currentGridLocation.businessId ||
+                        // or if its currently stored voltage is zero
+                        // (we possibly got something from the API)
+                        currentGridLocation.nominalVoltage == 0.0
+                }
+                ?: true // if no grid location present, always update
+
+            if (mustUpdateGridLocation) {
+                accountingPointGridLocationRepository.upsert(
+                    AccountingPointGridLocation(
+                        accountingPointId = accountingPointId,
+                        objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                        businessId = substationBusinessId,
+                        name = substationName,
+                        nominalVoltage = 0.0, // TODO: update when grid model API provides voltage
+                        additionalInformation = null,
+                        source = AccountingPointGridLocationSource.GRID_MODEL,
+                        quality = AccountingPointGridLocationQuality.CONFIRMED,
+                    )
+                ).bind()
+            }
+        }.fold(
+            // substation update can fail if the substation has not been synced yet: we just log the issue
+            { err ->
+                logger.warn {
+                    "grid location upsert failed for accounting point " +
+                        "$accountingPointId, substation $substationBusinessId: $err"
+                }
+            },
+            { },
+        )
+    }
 
     private fun RepositoryError.toInternalServerError(context: String): AppError {
         logger.error { "$context failed: $this" }
