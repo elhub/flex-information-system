@@ -12,7 +12,6 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.RepositoryError
 import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.metrics.AccountingPointSyncMetrics
 import no.elhub.flex.shared.tracing.TraceInfo
 import no.elhub.flex.shared.util.todayLocalMidnight
 import no.elhub.flex.shared.util.withTrace
@@ -33,7 +32,6 @@ private fun Any.toJobError(): JobError = when (this) {
 class SyncAccountingPointDataJob(
     private val accountingPointSyncRepository: AccountingPointSyncRepository,
     private val accountingPointService: AccountingPointService,
-    private val metrics: AccountingPointSyncMetrics,
     config: SyncAccountingPointDataConfig,
 ) : ScheduledJob {
     private val timezone = config.timezone
@@ -66,11 +64,8 @@ class SyncAccountingPointDataJob(
                             accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                             logger.debug { "Accounting point ${accountingPoint.id} completed" }
                         }
-                    }.onRight {
-                        metrics.success()
                     }.onLeft { e ->
                         logger.error { "Failed to sync accounting point ${accountingPoint.id}: $e" }
-                        metrics.failure()
                     }
                 }
                 logger.info { "Completed sync of batch" }

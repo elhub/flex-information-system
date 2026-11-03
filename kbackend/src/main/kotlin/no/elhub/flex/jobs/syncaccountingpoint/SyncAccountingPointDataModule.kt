@@ -1,14 +1,11 @@
 package no.elhub.flex.jobs.syncaccountingpoint
 
 import com.zaxxer.hikari.HikariDataSource
-import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.jobs.dataSourceFromEnv
 import no.elhub.flex.jobs.requireEnv
 import no.elhub.flex.shared.SharedModule
 import no.elhub.flex.shared.adapter.AdapterClientConfig
-import no.elhub.flex.shared.metrics.AccountingPointSyncMetrics
-import no.elhub.flex.shared.metrics.MetricsModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.annotation.Module
@@ -24,7 +21,7 @@ data class SyncAccountingPointDataConfig(
  * It therefore does not include [no.elhub.flex.jobs.JobInfrastructureModule], which provides the default
  * job data source.
  */
-@Module(includes = [SharedModule::class, MetricsModule::class])
+@Module(includes = [SharedModule::class])
 @ComponentScan("no.elhub.flex.jobs.syncaccountingpoint")
 class SyncAccountingPointDataModule {
 
@@ -43,9 +40,6 @@ class SyncAccountingPointDataModule {
     @Single(createdAtStart = true)
     fun config(): SyncAccountingPointDataConfig =
         SyncAccountingPointDataConfig(timezone = TimeZone.of(System.getenv("FLEX_TIMEZONE") ?: "Europe/Oslo"))
-
-    @Single(createdAtStart = true)
-    fun syncMetrics(meterRegistry: MeterRegistry): AccountingPointSyncMetrics = AccountingPointSyncMetrics(meterRegistry)
 }
 
 @KoinApplication(modules = [SyncAccountingPointDataModule::class])

@@ -7,7 +7,6 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -24,7 +23,6 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.metrics.AccountingPointSyncMetrics
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -38,21 +36,11 @@ class SyncAccountingPointDataJobTest : FunSpec({
     val syncRepository = mockk<AccountingPointSyncRepository>()
     val accountingPointService = mockk<AccountingPointService>()
 
-    lateinit var meterRegistry: SimpleMeterRegistry
-
-    fun job(): SyncAccountingPointDataJob {
-        meterRegistry = SimpleMeterRegistry()
-        return SyncAccountingPointDataJob(
-            accountingPointSyncRepository = syncRepository,
-            accountingPointService = accountingPointService,
-            metrics = AccountingPointSyncMetrics(meterRegistry),
-            config = SyncAccountingPointDataConfig(timezone),
-        )
-    }
-
-    fun counter(result: String) = meterRegistry
-        .counter("flex_accounting_point_sync_processed_total", "result", result)
-        .count()
+    fun job() = SyncAccountingPointDataJob(
+        accountingPointSyncRepository = syncRepository,
+        accountingPointService = accountingPointService,
+        config = SyncAccountingPointDataConfig(timezone),
+    )
 
     val principal = FlexPrincipal.internalData
 
@@ -81,8 +69,6 @@ class SyncAccountingPointDataJobTest : FunSpec({
         result.shouldBeRight()
         coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap1.businessId, startInstant) }
         coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap2.businessId, startInstant) }
-        counter("success") shouldBe 2.0
-        counter("failure") shouldBe 0.0
     }
 
     test("no start date: falls back to today's local midnight") {
@@ -187,7 +173,5 @@ class SyncAccountingPointDataJobTest : FunSpec({
         // then
         result.shouldBeRight()
         coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) }
-        counter("success") shouldBe 1.0
-        counter("failure") shouldBe 1.0
     }
 })
