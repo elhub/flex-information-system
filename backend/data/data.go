@@ -31,7 +31,7 @@ var openapiInput []byte
 // api gathers handlers for all endpoints of the data API.
 type api struct {
 	postgRESTURL *url.URL
-	kbackendURL  *url.URL
+	kbackend     http.Handler
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
@@ -45,7 +45,7 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 func NewAPIHandler(
 	baseURL string,
 	postgRESTUpstream string,
-	kbackendUpstream string,
+	kbackend http.Handler,
 	db *pgpool.Pool,
 	ctxKey string,
 ) (http.Handler, error) {
@@ -54,16 +54,11 @@ func NewAPIHandler(
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
 	}
 
-	kbackendURL, err := url.Parse(kbackendUpstream)
-	if err != nil {
-		return nil, fmt.Errorf("invalid kbackend URL: %w", err)
-	}
-
 	mux := http.NewServeMux()
 
 	data := &api{
 		postgRESTURL: postgRESTURL,
-		kbackendURL:  kbackendURL,
+		kbackend:     kbackend,
 		db:           db,
 		mux:          mux,
 		ctxKey:       ctxKey,
@@ -79,10 +74,7 @@ func NewAPIHandler(
 	))
 
 	// controllable unit lookup — reverse-proxied to the Kotlin backend
-	mux.HandleFunc(
-		"POST /controllable_unit/lookup",
-		data.kbackendProxyHandler,
-	)
+	mux.Handle("POST /controllable_unit/lookup", data.kbackend)
 
 	// entity lookup
 	mux.Handle(
@@ -121,18 +113,9 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_product_application_attachment/{id}", attachmentReadHandler)
 
 	// attachment write handled by the Kotlin backend
-	mux.HandleFunc(
-		"POST /service_providing_group_product_application_attachment",
-		data.kbackendProxyHandler,
-	)
-	mux.HandleFunc(
-		"GET /service_providing_group_product_application_attachment/{id}/download",
-		data.kbackendProxyHandler,
-	)
-	mux.HandleFunc(
-		"DELETE /service_providing_group_product_application_attachment/{id}",
-		data.kbackendProxyHandler,
-	)
+	mux.Handle("POST /service_providing_group_product_application_attachment", data.kbackend)
+	mux.Handle("GET /service_providing_group_product_application_attachment/{id}/download", data.kbackend)
+	mux.Handle("DELETE /service_providing_group_product_application_attachment/{id}", data.kbackend)
 
 	// all other requests are forwarded to PostgREST
 	mux.Handle("GET /accounting_point", dataListPostgRESTHandler)
@@ -378,39 +361,6 @@ func NewAPIHandler(
 
 func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
-}
-
-func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) {
-	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
-		Rewrite: func(pr *httputil.ProxyRequest) {
-			pr.Out.URL.Scheme = data.kbackendURL.Scheme
-			pr.Out.URL.Host = data.kbackendURL.Host
-			pr.Out.URL.Path = req.URL.Path
-			pr.Out.Host = data.kbackendURL.Host
-
-			// Forward Authorization and Content-Type headers.
-			pr.Out.Header.Set("Authorization", req.Header.Get("Authorization"))
-			pr.Out.Header.Set("Content-Type", req.Header.Get("Content-Type"))
-
-			// Forward the session cookie if present (the Kotlin backend
-			// also supports cookie-based authentication).
-			if cookie := req.Header.Get("Cookie"); cookie != "" {
-				pr.Out.Header.Set("Cookie", cookie)
-			}
-		},
-		ModifyResponse: func(resp *http.Response) error {
-			// the Go trace middleware already sets this header, so we need to drop
-			// the Kotlin one to make sure we don't send two to the client
-			resp.Header.Del("Traceresponse")
-			return nil
-		},
-		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err error) {
-			slog.ErrorContext(r.Context(), "kbackend proxy error", "error", err)
-			writeInternalServerError(w)
-		},
-	}
-
-	proxy.ServeHTTP(w, req)
 }
 
 func requireQueryParameter(name string, next http.Handler) http.Handler {

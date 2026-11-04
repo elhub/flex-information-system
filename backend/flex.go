@@ -9,6 +9,7 @@ import (
 	"flex/data"
 	"flex/event"
 	"flex/grid"
+	"flex/internal/kbackend"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/trace"
@@ -322,12 +323,19 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		isLoginLimitingDisabled,
 	)
 
+	slog.DebugContext(ctx, "Creating kbackend proxy")
+
+	kbackendProxy, err := kbackend.NewProxy(kbackendUpstream)
+	if err != nil {
+		return fmt.Errorf("could not create kbackend proxy: %w", err)
+	}
+
 	slog.DebugContext(ctx, "Creating data API")
 
 	dataAPIHandler, err := data.NewAPIHandler(
 		dataAPIBaseURL,
 		postgRESTUpstream,
-		kbackendUpstream,
+		kbackendProxy,
 		dbPool,
 		requestDetailsContextKey,
 	)
