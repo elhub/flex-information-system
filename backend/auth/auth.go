@@ -955,6 +955,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // userInfoResponse is the response containing the user information.
+// TODO: dead code to remove (/userinfo now served by the Kotlin backend).
 type userInfoResponse struct {
 	Sub         string  `json:"sub"`
 	EntityID    int     `json:"entity_id"`
@@ -965,6 +966,7 @@ type userInfoResponse struct {
 }
 
 // GetUserInfoHandler returns the identity information of the current user.
+// TODO: dead code to remove (/userinfo now served by the Kotlin backend).
 func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 	rd, _ := RequestDetailsFromContextKey(ctx, auth.ctxKey)
 	role := rd.Role()
