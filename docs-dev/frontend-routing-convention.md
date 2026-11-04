@@ -6,15 +6,13 @@ Status: **draft, for discussion**
 
 * **Problem:** the same record has both nested and flat URLs, and which one
   you land on depends on where you clicked. Notices and events identify
-  records as flat `/{resource}/{id}` (built in the database), so a purely
-  nested scheme is not possible.
+  records as flat `/{resource}/{id}`, so a purely nested scheme is not
+  possible.
 * **Recommendation: flat only (option 1).** Every route is `/{resource}/…`.
-  The parent is data on the record, not a path segment. History is a flat
-  list, `/{resource}_history?…`. Create takes the parent from a query
-  parameter, e.g. `?service_providing_group_id=12`.
-* **Effect:** removes the copy-pasted nested `<Route>` blocks without a route
-  generator. Cost: a one-off migration of link call sites, and parent-scoped
-  pages read the parent from data instead of the URL.
+  The parent is data on the record, not a path segment. Create and history
+  take the parent as a query parameter.
+* **Cost:** a one-off migration of link call sites. In return the copy-pasted
+  nested `<Route>` blocks go away without a route generator.
 
 ## Problem
 
@@ -33,14 +31,9 @@ Routes in `frontend/src/resources/*` are inconsistent.
 For example, the SPGPA list links to the flat show, while the SPG tab and
 dashboard link to the nested show. Create is linked both flat and nested.
 
-Other issues:
-
-* **Edit and history shape.** Edit is `…/:id` nested and `/:resource/:id/edit`
-  flat (react-admin registers `:id/*`, so both work). History is
-  `…/x_history` or `…/:id/history`.
-* **Boilerplate.** About 25 copies of the same show/create/edit/history
-  `<Route>` block, hand-written post-save redirects, and an unused
-  `navigation/routeLabels.ts` that duplicates every nested path as a regex.
+Boilerplate: about 25 copies of the same show/create/edit/history `<Route>`
+block, hand-written post-save redirects, and an unused
+`navigation/routeLabels.ts` that duplicates every nested path as a regex.
 
 ### Constraints
 
@@ -69,36 +62,6 @@ Every route is `/{resource}/…`. The parent is a field on the record, or a
 query parameter on create.
 
 ```text
-/service_providing_group_product_application                list
-/service_providing_group_product_application/create?service_providing_group_id=12
-/service_providing_group_product_application/:id/show
-/service_providing_group_product_application/:id/edit
-/service_providing_group_product_application_history?service_providing_group_id=12
-```
-
-Pros:
-
-* Matches react-admin and the notice and event identifiers, so notice links,
-  shared buttons and `Datagrid` row clicks need no resolver.
-* A child resource is a single `<Resource>`; the nested `<Route>` blocks
-  disappear without a helper.
-* One URL per record, so no ambiguity in "current page" logic.
-* A pasted create link keeps the parent (today's nested link loses it).
-* Parent-scoped and single-record history are the same flat list with a query
-  parameter.
-* Secondary: least work if routing later moves to plain react-router (see
-  below). Not the reason to choose it.
-
-Cons:
-
-* The parent is no longer in the URL. Child show pages need an explicit link
-  back to it (they already have the id).
-* Create needs a rule for a missing parent (see open decisions).
-* All link call sites change once.
-
-Target vocabulary:
-
-```text
 /{resource}                         list (only where a list exists)
 /{resource}/create[?{parent}_id=N]  create
 /{resource}/:id/show                show (only where a show page exists)
@@ -112,6 +75,23 @@ notice sources always need one (CUSP and SPG membership, for example).
 `technical_resource`, `entity_client` and `party_membership` have no show
 page (and will not get one) and are shown as tabs on the parent, so they get
 no show route.
+
+Pros:
+
+* Matches react-admin and the notice and event identifiers, so notice links,
+  shared buttons and `Datagrid` row clicks need no resolver.
+* A child resource is a single `<Resource>`; the nested `<Route>` blocks
+  disappear without a helper.
+* One URL per record, so no ambiguity in "current page" logic.
+* A pasted create link keeps the parent (today's nested link loses it).
+* Parent-scoped and single-record history are the same flat list with a query
+  parameter.
+
+Cons:
+
+* The parent is no longer in the URL. Child show pages need an explicit link
+  back to it (they already have the id).
+* All link call sites change once.
 
 ### 2. Hybrid: lists and create flat, records nested
 
@@ -157,16 +137,8 @@ because it leaves gaps that flat URLs have to fill anyway:
 
 ## Keeping a later move to plain react-router cheap
 
-Nothing here depends on leaving react-admin, but a few rules cost nothing now.
-The URL patterns are the convention; `<Resource>` is just how they are
-registered today:
-
-```tsx
-<Route path="/x" element={<XList />} />
-<Route path="/x/create" element={<XCreate />} />
-<Route path="/x/:id/show" element={<XShow />} />
-<Route path="/x/:id/edit" element={<XEdit />} />
-```
+Routing may leave react-admin's `<Resource>` some day. These rules cost
+nothing now and keep that move small:
 
 * Link to `/:id/edit` explicitly (`<Resource>` registers `:id/*`, a plain
   route does not).
@@ -175,20 +147,12 @@ registered today:
 * Redirect after save with `useNavigate`, not the `redirect` prop.
 * Avoid `useCreatePath`; use template strings or small path functions.
 
-Caveats: each route still needs a `ResourceContextProvider` while react-admin's
-`Show`, `Edit` and `Create` are used. A plain `<Route>` around them is untried
-(from reading `ra-core`), so try one resource first.
-
 ## Cross-cutting decisions
 
-| Topic                 | Recommendation                                                                        | Alternative                             |
-| --------------------- | ------------------------------------------------------------------------------------- | --------------------------------------- |
-| Edit URL              | `/:resource/:id/edit`. Already works (`:id/*`), and the shared `EditButton` builds it | `/:resource/:id`, react-admin's default |
-| History URL           | `/{resource}_history?…`, list only (the parent or record is a query parameter)        | keep `/:id/history` for single records  |
-| Post-save redirect    | One wrapper: back if there is in-app history, else record show or parent tab          | `navigate(-1)` everywhere, as today     |
-| Create without parent | Parent from `?{parent}_id=`; the form shows the picker if absent                      | Redirect to the parent list if absent   |
-| Old URLs              | Do not keep them. Notice and event identifiers are already flat                       | Redirects for one release               |
-| Route generation      | Hand-written `<Resource>` blocks plus this document                                   | Helper or registry                      |
+| Topic              | Recommendation                                                               | Alternative                         |
+| ------------------ | ---------------------------------------------------------------------------- | ----------------------------------- |
+| Post-save redirect | One wrapper: back if there is in-app history, else record show or parent tab | `navigate(-1)` everywhere, as today |
+| Old URLs           | Do not keep them. Notice and event identifiers are already flat              | Redirects for one release           |
 
 ## Open decisions
 
