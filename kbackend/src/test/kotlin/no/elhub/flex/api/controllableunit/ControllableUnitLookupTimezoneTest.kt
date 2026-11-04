@@ -27,11 +27,8 @@ import no.elhub.flex.api.accountingpoint.db.AccountingPointGridLocationRepositor
 import no.elhub.flex.api.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.api.accountingpoint.db.AccountingPointRepositoryImpl
 import no.elhub.flex.api.accountingpoint.db.SubstationRepositoryImpl
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.api.event.db.EventRepositoryImpl
 import no.elhub.flex.api.meteringgridarea.db.MeteringGridAreaRepositoryImpl
@@ -44,6 +41,9 @@ import no.elhub.flex.api.util.makeJwt
 import no.elhub.flex.api.util.todayLocalMidnight
 import no.elhub.flex.api.util.uniqueEicY
 import no.elhub.flex.api.util.uniqueGsrn
+import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.adapter.AdapterClientConfig
 import no.elhub.flex.shared.adapter.AdapterHttpClient
 import no.elhub.flex.shared.adapter.AdapterWireMockServer
@@ -101,7 +101,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 apiKey = "test-api-key",
                 syncEnabled = true,
             ),
-            flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
+            flexConfig = FlexConfig("Europe/Oslo"),
         )
     }
 

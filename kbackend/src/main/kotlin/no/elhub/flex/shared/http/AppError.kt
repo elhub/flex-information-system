@@ -1,4 +1,4 @@
-package no.elhub.flex.api.model.error
+package no.elhub.flex.shared.http
 
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.KSerializer
@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import no.elhub.flex.api.util.HttpStatusCodeSerializer
 
 /** Custom type for all errors in the app. */
 @Serializable(with = AppErrorSerializer::class)
@@ -52,19 +51,6 @@ data class AuthenticationError(
     override val message: String = "Unauthorized",
     override val code: HttpStatusCode = HttpStatusCode.Unauthorized
 ) : AppError()
-
-/**
- * Error indicating a header is missing from the request.
- *
- * @property name the name of the missing header
- * @property code the HTTP status code
- */
-data class MissingHeaderError(
-    val name: String,
-    override val code: HttpStatusCode = HttpStatusCode.BadRequest,
-) : AppError() {
-    override val message: String = "Missing header '$name'"
-}
 
 /**
  * Error indicating a path parameter is missing from the request.

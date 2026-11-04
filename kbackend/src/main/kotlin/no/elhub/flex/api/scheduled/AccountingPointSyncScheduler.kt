@@ -10,9 +10,9 @@ import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.AccountingPointId
 import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.api.util.withTrace
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.tracing.TraceInfo
+import no.elhub.flex.shared.tracing.withTrace
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 

@@ -1,4 +1,4 @@
-package no.elhub.flex.api.auth
+package no.elhub.flex.auth.token
 
 import arrow.core.Either
 import arrow.core.raise.either
@@ -6,6 +6,7 @@ import arrow.core.raise.ensure
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
+import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.shared.auth.FlexPrincipal
 import java.util.Date
 
@@ -33,6 +34,9 @@ data class AccessToken(
     companion object {
         @Suppress("MagicNumber")
         private const val MILLIS_PER_SECOND = 1000L
+
+        /** The role of a token that has not assumed a party. */
+        private const val ENTITY_ROLE = "flex_entity"
 
         /**
          * Verifies [jwt] with HS256 using [secret], then parses the claims into an [AccessToken].
@@ -63,10 +67,11 @@ data class AccessToken(
                 val partyId = decoded.getClaim("party_id").asInt() ?: 0
                 val role = decoded.getClaim("role").asString()
                     ?: raise(InvalidTokenError("missing role claim"))
-                val scope = decoded.getClaim("scope").asString()
-                    ?.split(" ")
-                    ?.mapNotNull { Scope.fromString(it) }
+                val scopeClaim = decoded.getClaim("scope").asString()
                     ?: raise(InvalidTokenError("missing scope claim"))
+                val scope = scopeClaim.split(" ").map { part ->
+                    Scope.fromString(part) ?: raise(InvalidTokenError("invalid scope '$part'"))
+                }
                 val exp = decoded.expiresAt?.time?.div(MILLIS_PER_SECOND)
                     ?: raise(InvalidTokenError("missing exp claim"))
 
@@ -84,6 +89,9 @@ data class AccessToken(
                 ensure(token.entityId > 0) { InvalidTokenError("entity_id must be positive") }
                 ensure(token.extId.isNotBlank()) { InvalidTokenError("eid must not be blank") }
                 ensure(token.role.isNotBlank()) { InvalidTokenError("role must not be blank") }
+                ensure(token.role == ENTITY_ROLE || token.partyId > 0) {
+                    InvalidTokenError("party_id must be positive unless the role is $ENTITY_ROLE")
+                }
 
                 token
             }

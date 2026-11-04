@@ -1,11 +1,11 @@
-package no.elhub.flex.api.config
+package no.elhub.flex.config
 
 import arrow.core.flatMap
 import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.util.AttributeKey
 import kotlinx.coroutines.withContext
-import no.elhub.flex.api.util.header
+import no.elhub.flex.shared.http.header
 import no.elhub.flex.shared.tracing.TraceContext
 import no.elhub.flex.shared.tracing.TraceInfo
 

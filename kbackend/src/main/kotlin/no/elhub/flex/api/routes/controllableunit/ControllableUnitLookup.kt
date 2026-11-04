@@ -7,7 +7,6 @@ import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.api.accountingpoint.AccountingPointService
-import no.elhub.flex.api.auth.AccessTokenKey
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepository
@@ -21,18 +20,19 @@ import no.elhub.flex.api.model.dto.generated.models.ControllableUnitLookupRespon
 import no.elhub.flex.api.model.dto.generated.models.ControllableUnitLookupResponseAccountingPoint
 import no.elhub.flex.api.model.dto.generated.models.ControllableUnitLookupResponseEndUser
 import no.elhub.flex.api.model.dto.toDtos
-import no.elhub.flex.api.model.error.AppError
-import no.elhub.flex.api.model.error.BadRequestError
-import no.elhub.flex.api.model.error.EndUserError
-import no.elhub.flex.api.model.error.InternalServerError
-import no.elhub.flex.api.model.error.ResourceNotFoundError
 import no.elhub.flex.api.party.PartyService
-import no.elhub.flex.api.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.api.util.asLocalMidnightInstant
 import no.elhub.flex.api.util.body
-import no.elhub.flex.api.util.respondJson
 import no.elhub.flex.api.util.todayLocalMidnight
+import no.elhub.flex.auth.plugin.AccessTokenKey
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.BadRequestError
+import no.elhub.flex.shared.http.EndUserError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ResourceNotFoundError
+import no.elhub.flex.shared.http.respondJson
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 

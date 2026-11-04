@@ -1,11 +1,11 @@
-package no.elhub.flex.api.config
+package no.elhub.flex.api
 
 import io.ktor.server.application.Application
 import no.elhub.flex.api.routes.attachment.attachmentRoutes
 import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
 
-/** Defines the endpoints of the application. */
-fun Application.configureRouting() {
+/** Registers the routes of the data API. */
+fun Application.apiRoutes() {
     controllableUnitRoutes()
     attachmentRoutes()
 }

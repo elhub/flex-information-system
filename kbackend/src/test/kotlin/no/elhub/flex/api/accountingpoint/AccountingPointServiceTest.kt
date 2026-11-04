@@ -29,7 +29,6 @@ import no.elhub.flex.api.model.domain.AccountingPointStartDates
 import no.elhub.flex.api.model.domain.Location
 import no.elhub.flex.api.model.domain.MeteringGridArea
 import no.elhub.flex.api.model.domain.MeteringGridAreaStatus
-import no.elhub.flex.api.model.error.InternalServerError
 import no.elhub.flex.api.util.atLocalMidnight
 import no.elhub.flex.shared.adapter.AdapterClient
 import no.elhub.flex.shared.adapter.NetworkError
@@ -37,6 +36,7 @@ import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.LockTimeoutError
 import no.elhub.flex.shared.db.NotFoundError
+import no.elhub.flex.shared.http.InternalServerError
 import java.util.UUID
 import kotlin.time.Instant
 import no.elhub.flex.shared.adapter.generated.models.AccountingPoint as AdapterAccountingPoint

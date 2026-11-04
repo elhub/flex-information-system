@@ -1,11 +1,12 @@
-package no.elhub.flex.api.auth
+package no.elhub.flex.auth.plugin
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.createRouteScopedPlugin
 import io.ktor.server.application.hooks.CallSetup
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
+import no.elhub.flex.auth.model.dto.generated.models.ErrorMessage
+import no.elhub.flex.auth.token.AccessToken
 
 /** Configuration for the [RequireRole] plugin. */
 class RequireRoleConfig {

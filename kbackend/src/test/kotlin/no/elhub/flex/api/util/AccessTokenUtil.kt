@@ -1,7 +1,7 @@
 package no.elhub.flex.api.util
 
-import no.elhub.flex.api.auth.AccessToken
-import no.elhub.flex.api.auth.Scope
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.token.AccessToken
 import java.util.Date
 
 @Suppress("MagicNumber")

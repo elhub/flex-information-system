@@ -6,11 +6,11 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.method
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import no.elhub.flex.api.auth.FlexRole
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
-import no.elhub.flex.api.auth.requireRoles
-import no.elhub.flex.api.auth.requireScope
+import no.elhub.flex.auth.plugin.FlexRole
+import no.elhub.flex.auth.plugin.requireRoles
+import no.elhub.flex.auth.plugin.requireScope
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
 import org.koin.ktor.ext.inject
 
 /**

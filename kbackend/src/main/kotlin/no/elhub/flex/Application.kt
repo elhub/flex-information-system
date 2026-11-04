@@ -4,19 +4,19 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.netty.EngineMain
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.ConfigModule
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureDatabase
-import no.elhub.flex.api.config.configureHealth
-import no.elhub.flex.api.config.configureLogging
-import no.elhub.flex.api.config.configureMetrics
-import no.elhub.flex.api.config.configureRouting
-import no.elhub.flex.api.config.configureScheduling
-import no.elhub.flex.api.config.configureSerialization
-import no.elhub.flex.api.config.flexConfig
 import no.elhub.flex.api.metrics.MetricsModule
+import no.elhub.flex.auth.AuthModule
+import no.elhub.flex.auth.config.authConfig
+import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureDatabase
+import no.elhub.flex.config.configureHealth
+import no.elhub.flex.config.configureLogging
+import no.elhub.flex.config.configureMetrics
+import no.elhub.flex.config.configureScheduling
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.jobs.runJob
 import no.elhub.flex.shared.SharedModule
 import org.koin.core.annotation.ComponentScan
@@ -41,7 +41,7 @@ fun main(args: Array<String>) {
     }
 }
 
-@Module(includes = [MetricsModule::class, ConfigModule::class, SharedModule::class])
+@Module(includes = [MetricsModule::class, ConfigModule::class, SharedModule::class, AuthModule::class])
 @ComponentScan("no.elhub.flex.api")
 class AppModule
 
@@ -58,9 +58,9 @@ fun Application.module() {
     configureSerialization()
     configureDatabase()
 
-    val flexConfig = environment.config.flexConfig()
+    val authConfig = environment.config.authConfig()
     install(FlexAuthentication) {
-        jwtSecret = flexConfig.jwtSecret
+        jwtSecret = authConfig.jwtSecret
         excludedPaths += listOf("/healthz", "/metrics")
     }
 

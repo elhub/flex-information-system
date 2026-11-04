@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.shared.http
 
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.KSerializer

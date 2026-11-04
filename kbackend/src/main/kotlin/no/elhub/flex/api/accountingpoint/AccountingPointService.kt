@@ -21,18 +21,18 @@ import no.elhub.flex.api.model.domain.AccountingPointGridLocationSource
 import no.elhub.flex.api.model.domain.AccountingPointId
 import no.elhub.flex.api.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.api.model.domain.Location
-import no.elhub.flex.api.model.error.AppError
-import no.elhub.flex.api.model.error.DataFetchError
-import no.elhub.flex.api.model.error.EndUserError
-import no.elhub.flex.api.model.error.InternalServerError
-import no.elhub.flex.api.model.error.ResourceNotFoundError
-import no.elhub.flex.api.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.shared.adapter.AdapterClient
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.NoMatchError
 import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.shared.db.RepositoryError
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.DataFetchError
+import no.elhub.flex.shared.http.EndUserError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ResourceNotFoundError
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 import no.elhub.flex.shared.adapter.NotFoundError as AdapterNotFoundError

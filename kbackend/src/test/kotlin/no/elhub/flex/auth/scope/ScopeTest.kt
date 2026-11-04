@@ -1,4 +1,4 @@
-package no.elhub.flex.api.auth
+package no.elhub.flex.auth.scope
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData

@@ -9,15 +9,10 @@ import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.routing.RoutingCall
-import no.elhub.flex.api.model.error.BadRequestError
-import no.elhub.flex.api.model.error.MissingHeaderError
-import no.elhub.flex.api.model.error.MissingPathParameterError
-import no.elhub.flex.api.model.error.MissingQueryParameterError
-import no.elhub.flex.api.model.error.MultipartError
-
-/** Typed helper to get a header by name. */
-fun ApplicationRequest.header(name: String): Either<MissingHeaderError, String> =
-    headers[name]?.right() ?: MissingHeaderError(name).left()
+import no.elhub.flex.shared.http.BadRequestError
+import no.elhub.flex.shared.http.MissingPathParameterError
+import no.elhub.flex.shared.http.MissingQueryParameterError
+import no.elhub.flex.shared.http.MultipartError
 
 /** Receives and deserializes the request body, returning a [BadRequestError] if parsing fails. */
 suspend inline fun <reified T : Any> ApplicationCall.body(): Either<BadRequestError, T> =

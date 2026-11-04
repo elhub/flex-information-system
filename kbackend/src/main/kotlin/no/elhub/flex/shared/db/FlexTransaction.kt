@@ -17,12 +17,12 @@ import kotlin.coroutines.CoroutineContext
  * - `set_config('flex.current_entity', ...)` — sets the entity/party/identity
  *   session variables used by row-level security policies
  *
- * Initialised once at startup by [no.elhub.flex.api.config.configureDatabase].
+ * Initialised once at startup by [no.elhub.flex.config.configureDatabase].
  */
 object FlexTransaction {
     private lateinit var db: Database
 
-    /** Called by [no.elhub.flex.api.config.configureDatabase] after the pool is connected. */
+    /** Called by [no.elhub.flex.config.configureDatabase] after the pool is connected. */
     fun init(database: Database) {
         db = database
     }

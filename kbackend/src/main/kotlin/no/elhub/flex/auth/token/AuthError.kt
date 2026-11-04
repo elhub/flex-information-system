@@ -1,4 +1,6 @@
-package no.elhub.flex.api.auth
+package no.elhub.flex.auth.token
+
+import no.elhub.flex.auth.scope.Scope
 
 /** Errors that can occur during authentication and authorisation. */
 sealed class AuthError(val message: String)

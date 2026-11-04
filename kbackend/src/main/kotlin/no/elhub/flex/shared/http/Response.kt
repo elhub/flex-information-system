@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.shared.http
 
 import arrow.core.Either
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -8,11 +8,11 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import kotlinx.serialization.json.Json
-import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
-import no.elhub.flex.api.model.error.AppError
-import no.elhub.flex.api.model.error.InternalServerError
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
-val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * Extension function to respond with a JSON body from either an error or a successful serializable value.
@@ -56,13 +56,13 @@ suspend fun handleError(
         logger.error { error.message }
     }
 
+    // same body as the `error_message` schema of the APIs (`code` and `message`)
+    val body = buildJsonObject {
+        put("code", "HTTP${error.code.value}")
+        put("message", error.message)
+    }
     call.respondText(
-        Json.encodeToString(
-            ErrorMessage(
-                code = "HTTP${error.code.value}",
-                message = error.message,
-            ),
-        ),
+        Json.encodeToString(JsonObject.serializer(), body),
         ContentType.Application.Json,
         error.code,
     )

@@ -1,4 +1,4 @@
-package no.elhub.flex.api.auth
+package no.elhub.flex.auth.plugin
 
 enum class FlexRole(val roleName: String) {
     SERVICE_PROVIDER("flex_service_provider"),

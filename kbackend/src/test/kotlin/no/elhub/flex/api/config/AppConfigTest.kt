@@ -3,6 +3,10 @@ package no.elhub.flex.api.config
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.server.config.yaml.YamlConfig
+import no.elhub.flex.auth.config.AuthConfig
+import no.elhub.flex.auth.config.authConfig
+import no.elhub.flex.config.DatabaseConfig
+import no.elhub.flex.config.databaseConfig
 
 class AppConfigTest : FunSpec({
 
@@ -19,7 +23,11 @@ class AppConfigTest : FunSpec({
     }
 
     test("flex config") {
-        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo", jwtSecret = "secret")
+        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo")
+    }
+
+    test("auth config") {
+        config.authConfig() shouldBe AuthConfig(jwtSecret = "secret")
     }
 
     test("accounting point adapter config") {

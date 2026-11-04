@@ -20,10 +20,9 @@ import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.AccountingPoint
 import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.model.error.InternalServerError
-import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.http.InternalServerError
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -40,7 +39,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
         accountingPointSyncRepository = syncRepository,
         accountingPointService = accountingPointService,
         metrics = FlexMetrics(SimpleMeterRegistry()),
-        flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
+        flexConfig = FlexConfig("Europe/Oslo"),
     )
 
     val principal = FlexPrincipal.internalData

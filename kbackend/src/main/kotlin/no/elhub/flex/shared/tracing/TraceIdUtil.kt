@@ -1,9 +1,7 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.shared.tracing
 
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
-import no.elhub.flex.shared.tracing.TraceContext
-import no.elhub.flex.shared.tracing.TraceInfo
 import org.slf4j.MDC
 
 class TraceIdUtil {
