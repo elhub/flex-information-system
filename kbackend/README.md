@@ -8,10 +8,18 @@ implemented here.
 
 ### API Models
 
-Models for the API are generated from `openapi.yaml` at the module
-root using [Fabrikt](https://github.com/fabrikt-io/fabrikt). Generated classes
-are placed under the `no.elhub.flex.api.model.dto.generated` package and
-should not be edited by hand. To run the script:
+Models for the APIs are generated from their OpenAPI documents using
+[Fabrikt](https://github.com/fabrikt-io/fabrikt). Generated classes should not
+be edited by hand.
+
+| API  | Source                             | Package                                  |
+|------|------------------------------------|------------------------------------------|
+| data | `backend/data/static/openapi.json` | `no.elhub.flex.api.model.dto.generated`  |
+| auth | `backend/auth/static/openapi.json` | `no.elhub.flex.auth.model.dto.generated` |
+
+The documents are produced from the files in `openapi/`, so generate them first
+(`just openapi` does everything in the right order). To only run the model
+generation, which needs Docker:
 
 ```bash
 scripts/generate-openapi-models.sh

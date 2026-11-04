@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# This script generates API models using the Fabrikt OpenAPI generator.
+# This script generates API models using the Fabrikt OpenAPI generator, for each API spec:
 #
-# The source spec (backend/data/static/openapi.json) uses OpenAPI 3.1.0 features
-# that the Kaizen parser (used by Fabrikt) does not support. A preprocessed copy
-# is written to a temp file with the following transformations applied:
+#   - the data API:  backend/data/static/openapi.json -> no.elhub.flex.api.model.dto.generated
+#   - the auth API:  backend/auth/static/openapi.json -> no.elhub.flex.auth.model.dto.generated
+#
+# The source specs use OpenAPI 3.1.0 features that the Kaizen parser (used by Fabrikt)
+# does not support. A preprocessed copy is written to a temp file with the following
+# transformations applied:
 #   - openapi version downgraded to 3.0.1
 #   - jsonSchemaDialect removed
 #   - type: ["string", "null"] replaced with type: string + nullable: true
@@ -21,13 +24,21 @@ set -euo pipefail
 #   - format: "bigint" rewritten to format: "int64" so Fabrikt maps the field to kotlin.Long
 
 topdir="$(git rev-parse --show-toplevel)"
-source_spec="backend/data/static/openapi.json"
 
-# Write temp file inside topdir so it is accessible via the Docker volume mount
-tmp_spec="$(mktemp "$topdir/.fabrikt-preprocessed-XXXXXX.json")"
-trap 'rm -f "$tmp_spec"' EXIT
+# the temp file of the spec being generated, removed on exit if something fails half-way
+tmp_spec=""
+trap '[ -z "$tmp_spec" ] || rm -f "$tmp_spec"' EXIT
 
-python3 - "$topdir/$source_spec" "$tmp_spec" <<'PYEOF'
+# generate_models <source spec, relative to topdir> <base package> <generated directory, relative to topdir>
+generate_models() {
+	local source_spec="$1"
+	local base_package="$2"
+	local generated_dir="$topdir/$3"
+
+	# Write temp file inside topdir so it is accessible via the Docker volume mount
+	tmp_spec="$(mktemp "$topdir/.fabrikt-preprocessed-XXXXXX.json")"
+
+	python3 - "$topdir/$source_spec" "$tmp_spec" <<'PYEOF'
 import json
 import sys
 
@@ -104,25 +115,37 @@ with open(dst, "w") as f:
     json.dump(spec, f)
 PYEOF
 
-# Path relative to topdir for Docker (workspace is mounted at /workspace)
-tmp_rel="${tmp_spec#"$topdir/"}"
+	# Path relative to topdir for Docker (workspace is mounted at /workspace)
+	local tmp_rel="${tmp_spec#"$topdir/"}"
 
-# Delete directory first in order to avoid stale models
-generated_dir="$topdir/kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated"
-rm -rf "$generated_dir"
-mkdir -p "$generated_dir"
+	# Delete directory first in order to avoid stale models
+	rm -rf "$generated_dir"
+	mkdir -p "$generated_dir"
 
-docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabrikt-io/fabrikt:latest \
-	--output-directory 'kbackend' \
-	--base-package "no.elhub.flex.api.model.dto.generated" \
-	--api-file "$tmp_rel" \
-	--serialization-library 'kotlinx_serialization' \
-	--instant-library 'kotlin_time_instant' \
-	--validation-library 'no_validation' \
-	--targets 'http_models'
+	docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabrikt-io/fabrikt:latest \
+		--output-directory 'kbackend' \
+		--base-package "$base_package" \
+		--api-file "$tmp_rel" \
+		--serialization-library 'kotlinx_serialization' \
+		--instant-library 'kotlin_time_instant' \
+		--validation-library 'no_validation' \
+		--targets 'http_models'
+
+	rm -f "$tmp_spec"
+}
+
+generate_models \
+	"backend/data/static/openapi.json" \
+	"no.elhub.flex.api.model.dto.generated" \
+	"kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated"
 
 # Fix Fabrikt bug: the NoticeData* implementation classes reference the raw
 # OpenAPI schema name 'notice_data' as their supertype instead of the generated
 # sealed interface name 'NoticeData'.
 sed -i 's/) : notice_data$/) : NoticeData/' \
 	"$topdir/kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated/models/NoticeData"*.kt
+
+generate_models \
+	"backend/auth/static/openapi.json" \
+	"no.elhub.flex.auth.model.dto.generated" \
+	"kbackend/src/main/kotlin/no/elhub/flex/auth/model/dto/generated"
