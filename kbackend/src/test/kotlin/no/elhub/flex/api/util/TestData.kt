@@ -220,10 +220,10 @@ class SeedScope(private val conn: Connection) {
             status.value,
         )
 
-    fun insertMeteringGridArea(name: String = "Test MGA"): Long =
+    fun insertMeteringGridArea(name: String = "Test MGA", businessId: String = uniqueEicY()): Long =
         queryLong(
             "INSERT INTO flex.metering_grid_area (business_id, name) VALUES (?, ?) RETURNING id",
-            uniqueEicY(),
+            businessId,
             name,
         )
 

@@ -7,8 +7,10 @@ import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.util.SeedScope
 import no.elhub.flex.api.util.Triggers
+import no.elhub.flex.api.util.eicComputeCheckChar
 import no.elhub.flex.api.util.seed
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicLong
 
 private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_users"
 
@@ -128,13 +130,25 @@ private fun SeedScope.seedCu(
     soValidTo: Instant? = null,
 ): SeededCu {
     val so = insertSystemOperator("CSO")
-    val mga = insertMeteringGridArea()
+    val mga = insertMeteringGridArea(businessId = nextLocalMgaEic())
     insertMeteringGridAreaSystemOperator(mga, so.partyId, validTo = soValidTo)
     val ap = insertAccountingPoint()
     insertAccountingPointMeteringGridArea(ap, mga)
     val cuId = insertControllableUnit(ap, status = status)
     if (memberEmail != null) insertPartyMember(so.partyId, memberEmail)
     return SeededCu(cuId, so.partyId)
+}
+
+// Own EIC-Y sequence so this test does not consume the shared uniqueEicY() counter, which would
+// shift the ids other test classes get. Counters with a '-' check character are rejected by the DB.
+private val localMgaCounter = AtomicLong(500_000_000_000L)
+
+private fun nextLocalMgaEic(): String {
+    while (true) {
+        val prefix = "10Y" + localMgaCounter.getAndIncrement().toString().padStart(12, '0')
+        val check = eicComputeCheckChar(prefix)
+        if (check != '-') return prefix + check
+    }
 }
 
 private fun syncNotices() = execute("SELECT flex.notice_sync()")
