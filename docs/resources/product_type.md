@@ -21,16 +21,18 @@ as input.
     The list of product types is defined for discussion and will probably be
     adjusted/extended.
 
-| Business ID                       | Name                            | Short | Service               | Disturbance | Example products          |
-|-----------------------------------|---------------------------------|-------|-----------------------|-------------|---------------------------|
-| `manual_congestion`               | Manual Congestion               | mCMR  | congestion management | No          | LongFlex, ShortFlex       |
-| `automatic_congestion`            | Automatic Congestion            | aCMR  | congestion management | No          | MaxUsage                  |
-| `automatic_voltage`               | Automatic Voltage               | aVCR  | voltage control       | No          |                           |
-| `manual_voltage`                  | Manual Voltage                  | mVCR  | voltage control       | No          |                           |
-| `automatic_fast_frequency`        | Fast Frequency                  | FFR   | balancing             | No          | FFR Profil, FFR Flex      |
-| `automatic_frequency_containment` | Frequency Containment           | FCR   | balancing             | Yes         | FCR-N, FCR-D              |
-| `automatic_frequency_restoration` | Automatic Frequency Restoration | aFRR  | balancing             | No          | aFRR CM                   |
-| `manual_frequency_restoration`    | Manual Frequency Restoration    | mFRR  | balancing             | Yes         | mFRR EAM, mFRR CM, mFFR-D |
+| Business ID                                   | Name                                     | Service               | Example products     |
+|-----------------------------------------------|------------------------------------------|-----------------------|----------------------|
+| `manual_congestion`                           | Manual Congestion                        | congestion management | LongFlex, ShortFlex  |
+| `automatic_congestion`                        | Automatic Congestion                     | congestion management | MaxUsage             |
+| `automatic_voltage`                           | Automatic Voltage                        | voltage control       |                      |
+| `manual_voltage`                              | Manual Voltage                           | voltage control       |                      |
+| `automatic_fast_frequency`                    | Fast Frequency                           | balancing             | FFR Profil, FFR Flex |
+| `automatic_frequency_containment`             | Frequency Containment                    | balancing             | FCR-N                |
+| `automatic_frequency_containment_disturbance` | Frequency Containment Disturbance        | balancing             | FCR-D                |
+| `automatic_frequency_restoration`             | Automatic Frequency Restoration          | balancing             | aFRR CM              |
+| `manual_frequency_restoration`                | Manual Frequency Restoration             | balancing             | mFFR-EAM, mFFR-CM    |
+| `manual_frequency_restoration_disturbance`    | Manual Frequency Restoration Disturbance | balancing             | mFFR-D               |
 
 ## Relevant links
 

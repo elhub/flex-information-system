@@ -76,26 +76,21 @@ per product type. The product names are the short names in the [product type
 overview](./product_type.md).
 
 
-| Field                                 | Group       | New field? | mFRR | FCR | Comment                                                           |
-|---------------------------------------|-------------|------------|------|-----|-------------------------------------------------------------------|
-| service_provider_contact              | contact     | Yes        | R    | R   |                                                                   |
-| technical_aggergator_contact          | contact     | Yes        | O    | R   |                                                                   |
-| disturbance                           | disturbance | Yes        | R    | R   | If application is also for the disturbance variant of the product |
-| maximum_active_power_disturbance_up   | disturbance | Yes        | O    | O   | Required only if disturbance is checked                           |
-| maximum_active_power_disturbance_down | disturbance | Yes        | O    | O   | Required only if disturbance is checked                           |
-| maximum_active_power                  | normal      | Yes        | X    | R   |                                                                   |
-| maximum_active_power_up               | normal      | No         | R    | X   |                                                                   |
-| maximum_active_power_down             | normal      | No         | R    | X   |                                                                   |
-| ramping_capability                    | ramping     | No         | R    | X   |                                                                   |
-| ramping_description                   | ramping     | No         | R    | X   |                                                                   |
-| variable_energy_flow                  |             | Yes        | O    | R   |                                                                   |
-| limited_energy_reservoir              |             | Yes        | O    | R   |                                                                   |
-| planned_test_date                     |             | Yes        | O    | R   |                                                                   |
+| Field                        | Group   | New field? | mFRR | FCR-N | FCR-D | Comment |
+|------------------------------|---------|------------|------|-------|-------|---------|
+| service_provider_contact     | contact | Yes        | R    | R     | R     |         |
+| technical_aggergator_contact | contact | Yes        | O    | R     | R     |         |
+| maximum_active_power         | normal  | Yes        | X    | R     | X     |         |
+| maximum_active_power_up      | normal  | No         | R    | X     | R     |         |
+| maximum_active_power_down    | normal  | No         | R    | X     | R     |         |
+| ramping_capability           | ramping | No         | R    | X     | X     |         |
+| ramping_description          | ramping | No         | R    | X     | X     |         |
+| variable_energy_flow         |         | Yes        | O    | R     | R     |         |
+| limited_energy_reservoir     |         | Yes        | O    | R     | R     |         |
+| planned_test_date            |         | Yes        | O    | R     | R     |         |
 
 Additional fields for system operator approved maximum active power:
 
-* approved_power_disturbance_up
-* approved_power_disturbance_down
 * approved_power
 * approved_power_up
 * approved_power_down
