@@ -7,16 +7,14 @@ import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.util.SeedScope
 import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.eicComputeCheckChar
 import no.elhub.flex.api.util.seed
 import java.time.Instant
-import java.util.concurrent.atomic.AtomicLong
 
 private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_users"
 
 private data class SeededCu(val cuId: Long, val csoId: Long)
 
-private data class PersistedCuNotice(val partyId: Long, val status: String)
+private data class PersistedNotice(val partyId: Long, val status: String)
 
 /**
  * Notice: a controllable unit whose connecting system operator has no person member in FIS.
@@ -101,15 +99,15 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
             val cu = seed(Triggers.OFF) { seedCu() }
 
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCuNotice(fiso, "active"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "active"))
 
             seed(Triggers.OFF) { insertPartyMember(cu.csoId, "user@example.com") }
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCuNotice(fiso, "resolved"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "resolved"))
 
             execute("DELETE FROM flex.party_membership WHERE party_id = ${cu.csoId}")
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCuNotice(fiso, "active"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "active"))
         }
 
         test("syncing twice does not duplicate the notice") {
@@ -130,25 +128,13 @@ private fun SeedScope.seedCu(
     soValidTo: Instant? = null,
 ): SeededCu {
     val so = insertSystemOperator("CSO")
-    val mga = insertMeteringGridArea(businessId = nextLocalMgaEic())
+    val mga = insertMeteringGridArea()
     insertMeteringGridAreaSystemOperator(mga, so.partyId, validTo = soValidTo)
     val ap = insertAccountingPoint()
     insertAccountingPointMeteringGridArea(ap, mga)
     val cuId = insertControllableUnit(ap, status = status)
     if (memberEmail != null) insertPartyMember(so.partyId, memberEmail)
     return SeededCu(cuId, so.partyId)
-}
-
-// Own EIC-Y sequence so this test does not consume the shared uniqueEicY() counter, which would
-// shift the ids other test classes get. Counters with a '-' check character are rejected by the DB.
-private val localMgaCounter = AtomicLong(500_000_000_000L)
-
-private fun nextLocalMgaEic(): String {
-    while (true) {
-        val prefix = "10Y" + localMgaCounter.getAndIncrement().toString().padStart(12, '0')
-        val check = eicComputeCheckChar(prefix)
-        if (check != '-') return prefix + check
-    }
 }
 
 private fun syncNotices() = execute("SELECT flex.notice_sync()")
@@ -163,10 +149,10 @@ private fun detectedPartiesFor(cuId: Long): List<Long> =
             "WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
     ) { it.getLong(1) }
 
-private fun persistedNoticesFor(cuId: Long): List<PersistedCuNotice> =
+private fun persistedNoticesFor(cuId: Long): List<PersistedNotice> =
     query(
         "SELECT party_id, status FROM flex.notice WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
-    ) { PersistedCuNotice(it.getLong(1), it.getString(2)) }
+    ) { PersistedNotice(it.getLong(1), it.getString(2)) }
 
 private fun <T> query(sql: String, map: (java.sql.ResultSet) -> T): List<T> =
     PostgresTestContainer.withConnection { conn ->

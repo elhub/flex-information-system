@@ -12,7 +12,6 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu_no_users.cu_id AS source_id,
         jsonb_build_object(
-            'kind', 'notice.data.controllable_unit.cso.no_active_users', -- noqa
             'controllable_unit_name', cu_no_users.cu_name,
             'connecting_system_operator_name', cso.name
         ) AS data, -- noqa
@@ -21,12 +20,12 @@ WITH (security_invoker = false) AS (
         SELECT
             cu.id AS cu_id,
             cu.name AS cu_name,
-            cuso.system_operator_id AS cso_id
+            apso.system_operator_id AS cso_id
         FROM flex.controllable_unit AS cu
-            INNER JOIN flex.controllable_unit_system_operator AS cuso
+            INNER JOIN flex.accounting_point_system_operator AS apso
                 ON
-                    cu.id = cuso.controllable_unit_id
-                    AND cuso.valid_time_range @> current_timestamp
+                    cu.accounting_point_id = apso.accounting_point_id
+                    AND apso.valid_time_range @> current_timestamp
         WHERE
             cu.status != 'terminated'
             AND NOT EXISTS (
@@ -34,7 +33,7 @@ WITH (security_invoker = false) AS (
                 FROM flex.party_membership AS pm
                     INNER JOIN flex.entity AS e ON pm.entity_id = e.id
                 WHERE
-                    pm.party_id = cuso.system_operator_id
+                    pm.party_id = apso.system_operator_id
                     AND e.type = 'person'
             )
     ) AS cu_no_users
