@@ -13,7 +13,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.application.install
 import io.ktor.server.routing.post
-import io.ktor.server.routing.routing
 import io.ktor.server.testing.TestApplication
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
@@ -36,12 +35,13 @@ import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
 import no.elhub.flex.api.util.todayLocalMidnight
 import no.elhub.flex.api.util.uniqueEicY
 import no.elhub.flex.api.util.uniqueGsrn
-import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.auth.plugin.authenticatedRouting
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.adapter.AdapterClientConfig
@@ -129,9 +129,9 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     fun testApp() = TestApplication {
         application {
             install(Tracing.plugin)
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+            configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
-            routing {
+            authenticatedRouting {
                 post("/controllable_unit/lookup") { lookup.handle(call) }
             }
         }

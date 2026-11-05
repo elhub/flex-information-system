@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.auth.util
 
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.token.AccessToken

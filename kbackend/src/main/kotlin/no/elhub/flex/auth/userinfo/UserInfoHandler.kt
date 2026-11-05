@@ -6,7 +6,7 @@ import io.ktor.server.application.ApplicationCall
 import no.elhub.flex.auth.db.AuthRepository
 import no.elhub.flex.auth.model.dto.generated.models.FlexRole
 import no.elhub.flex.auth.model.dto.generated.models.UserinfoResponse
-import no.elhub.flex.auth.plugin.AccessTokenKey
+import no.elhub.flex.auth.plugin.accessToken
 import no.elhub.flex.auth.token.toFlexPrincipal
 import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.http.InternalServerError
@@ -22,7 +22,7 @@ class UserInfoHandler(private val repository: AuthRepository) {
 
     suspend fun handle(call: ApplicationCall) =
         either {
-            val token = call.attributes[AccessTokenKey]
+            val token = call.accessToken
 
             val role = FlexRole.fromValue(token.role) ?: run {
                 logger.warn { "The role of the token is not a role of the auth API: ${token.role}" }

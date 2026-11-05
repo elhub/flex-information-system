@@ -24,7 +24,7 @@ import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.util.asLocalMidnightInstant
 import no.elhub.flex.api.util.body
 import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.auth.plugin.AccessTokenKey
+import no.elhub.flex.auth.plugin.accessToken
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.http.BadRequestError
@@ -55,7 +55,7 @@ class ControllableUnitLookup(
     private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {
-        val requestingPartyId = call.attributes[AccessTokenKey].partyId
+        val requestingPartyId = call.accessToken.partyId
         var accountingPointBusinessIdForMetrics: String? = null
 
         with(FlexPrincipal.internalData) {

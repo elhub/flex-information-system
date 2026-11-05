@@ -11,18 +11,19 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.install
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
-import io.ktor.server.routing.routing
 import io.ktor.server.testing.TestApplication
-import no.elhub.flex.api.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.plugin.accessToken
+import no.elhub.flex.auth.plugin.authenticatedRouting
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.config.configureSerialization
 import java.util.Date
 
 private const val INVALID_TOKEN_CHALLENGE = """Bearer error="invalid_token", error_description="invalid bearer token""""
 private const val INVALID_TOKEN_BODY = """
-    {"error": "invalid_request", "error_description": "unable to verify and validate token"}
+    {"code": "HTTP401", "message": "unable to verify and validate token"}
 """
 
 class FlexAuthenticationTest : FunSpec({
@@ -70,7 +71,7 @@ class FlexAuthenticationTest : FunSpec({
                 header(HttpHeaders.Cookie, "__Host-flex_session=${jwt()}")
             }
 
-            response.status shouldBe HttpStatusCode.BadRequest
+            response.status shouldBe HttpStatusCode.Unauthorized
             app.stop()
         }
     }
@@ -111,7 +112,7 @@ class FlexAuthenticationTest : FunSpec({
         }
     }
 
-    context("invalid tokens are rejected with 400 invalid_token") {
+    context("invalid tokens are rejected with 401 invalid_token") {
 
         withData(
             mapOf(
@@ -129,7 +130,7 @@ class FlexAuthenticationTest : FunSpec({
 
             val response = app.client.get("/whoami") { header(HttpHeaders.Authorization, "Bearer $token") }
 
-            response.status shouldBe HttpStatusCode.BadRequest
+            response.status shouldBe HttpStatusCode.Unauthorized
             response.headers[HttpHeaders.WWWAuthenticate] shouldBe INVALID_TOKEN_CHALLENGE
             response.bodyAsText() shouldEqualJson INVALID_TOKEN_BODY.trimIndent()
             app.stop()
@@ -140,7 +141,7 @@ class FlexAuthenticationTest : FunSpec({
 
             val response = app.client.get("/whoami") { header(HttpHeaders.Cookie, "__Host-flex_session=not.a.jwt") }
 
-            response.status shouldBe HttpStatusCode.BadRequest
+            response.status shouldBe HttpStatusCode.Unauthorized
             response.headers[HttpHeaders.WWWAuthenticate] shouldBe INVALID_TOKEN_CHALLENGE
             app.stop()
         }
@@ -184,9 +185,9 @@ private fun testApp(): TestApplication =
     TestApplication {
         application {
             configureSerialization()
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
-            routing {
-                get("/whoami") { call.respondText(call.attributes[AccessTokenKey].role) }
+            configureAuthentication(TEST_JWT_SECRET)
+            authenticatedRouting {
+                get("/whoami") { call.respondText(call.accessToken.role) }
             }
         }
     }

@@ -15,8 +15,8 @@ import no.elhub.flex.api.util.FileContentType
 import no.elhub.flex.api.util.InvalidFileContent
 import no.elhub.flex.api.util.multipart
 import no.elhub.flex.api.util.pathParameter
-import no.elhub.flex.auth.plugin.AccessTokenKey
 import no.elhub.flex.auth.plugin.FlexRole
+import no.elhub.flex.auth.plugin.accessToken
 import no.elhub.flex.auth.token.toFlexPrincipal
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
@@ -51,7 +51,7 @@ class AttachmentHandler(
 
     suspend fun download(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             val id = call.pathParameter("id")
                 .map { it.toLongOrNull() }
@@ -95,7 +95,7 @@ class AttachmentHandler(
 
     suspend fun create(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             // extract information from multipart body
             val createBody =
@@ -239,7 +239,7 @@ class AttachmentHandler(
 
     suspend fun delete(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             val id = call.pathParameter("id")
                 .map { it.toLongOrNull() }

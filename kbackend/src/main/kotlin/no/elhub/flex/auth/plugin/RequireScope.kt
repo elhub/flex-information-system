@@ -2,7 +2,7 @@ package no.elhub.flex.auth.plugin
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.createRouteScopedPlugin
-import io.ktor.server.application.hooks.CallSetup
+import io.ktor.server.auth.AuthenticationChecked
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import no.elhub.flex.auth.model.dto.generated.models.ErrorMessage
@@ -22,8 +22,8 @@ val RequireScope = createRouteScopedPlugin("RequireScope", ::RequireScopeConfig)
         "RequireScope plugin must be configured with a requiredScope"
     }
 
-    on(CallSetup) { call ->
-        val tokenScopes = call.attributes[AccessTokenKey].scope
+    on(AuthenticationChecked) { call ->
+        val tokenScopes = call.accessToken.scope
 
         if (!tokenScopes.covers(requiredScope)) {
             call.respond(

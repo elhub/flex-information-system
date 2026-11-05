@@ -16,13 +16,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
-import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.makeJwt
 import no.elhub.flex.api.util.seed
 import no.elhub.flex.auth.authRoutes
 import no.elhub.flex.auth.db.AuthRepositoryImpl
-import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
@@ -170,7 +170,7 @@ private fun testApp(): TestApplication =
     TestApplication {
         application {
             install(Tracing.plugin)
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+            configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
             configureLogging()
             install(Koin) {

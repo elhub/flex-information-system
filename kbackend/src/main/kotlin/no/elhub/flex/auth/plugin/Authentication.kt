@@ -4,13 +4,19 @@ import arrow.core.getOrElse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.ApplicationPlugin
-import io.ktor.server.application.createApplicationPlugin
-import io.ktor.server.application.hooks.CallSetup
-import io.ktor.server.request.uri
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.AuthenticationConfig
+import io.ktor.server.auth.AuthenticationContext
+import io.ktor.server.auth.AuthenticationFailedCause
+import io.ktor.server.auth.AuthenticationProvider
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.response.respond
-import io.ktor.util.AttributeKey
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.routing
 import no.elhub.flex.auth.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.auth.model.dto.generated.models.OauthErrorMessage
 import no.elhub.flex.auth.token.AccessToken
@@ -23,88 +29,133 @@ private const val SESSION_COOKIE_NAME = "__Host-flex_session"
 
 private const val BEARER_PREFIX = "Bearer "
 
-/** Ktor [io.ktor.util.AttributeKey] for storing the verified [AccessToken] in call attributes. */
-val AccessTokenKey = AttributeKey<AccessToken>("flex-access-token")
+private const val MISSING_BEARER_DESCRIPTION = "missing Bearer in Authorization header"
 
-/** Configuration for the [FlexAuthentication] plugin. */
-class FlexAuthenticationConfig {
+/** Name under which the [FlexAuthenticationProvider] is registered, to be used with [authenticate]. */
+const val FLEX_AUTH = "flex"
+
+/** Configuration for the [FlexAuthenticationProvider]. */
+class FlexAuthenticationConfig(name: String?) : AuthenticationProvider.Config(name) {
     /** The HS256 secret used to verify incoming JWTs. */
     var jwtSecret: String = ""
-
-    /** Paths that bypass JWT verification entirely (exact match). */
-    val excludedPaths: MutableList<String> = mutableListOf()
 }
 
 /**
- * Plugin that verifies incoming JWTs on every request and stores the parsed
- * [AccessToken] under [AccessTokenKey].
+ * Authentication provider that verifies the JWT of a request and exposes the parsed [AccessToken]
+ * as the call's principal (see [accessToken]).
  *
  * Token resolution order:
  * 1. `Authorization: Bearer <token>` header — takes precedence. An empty header counts as absent.
  * 2. `__Host-flex_session` cookie — fallback for browser/OIDC sessions.
  *
- * Responds with
+ * Failures are answered with
  * - HTTP 401 and `WWW-Authenticate: Bearer` when there is no token at all,
- * - HTTP 400 and an OAuth error body when the `Authorization` header is not a `Bearer` header,
- *   or when the token is invalid or expired.
+ * - HTTP 401 and `WWW-Authenticate: Bearer error="invalid_token"` when the token is invalid or expired,
+ * - HTTP 400 and an OAuth `invalid_request` body when the `Authorization` header is not a `Bearer` header
+ *   (RFC 6750 section 3.1).
  */
-val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
-    createApplicationPlugin("FlexAuthentication", ::FlexAuthenticationConfig) {
-        val secret = pluginConfig.jwtSecret
-        val excludedPaths = pluginConfig.excludedPaths.toSet()
+class FlexAuthenticationProvider(config: FlexAuthenticationConfig) : AuthenticationProvider(config) {
+    private val secret = config.jwtSecret
 
-        on(CallSetup) { call ->
-            if (call.request.uri in excludedPaths) return@on
+    override suspend fun onAuthenticate(context: AuthenticationContext) {
+        val call = context.call
+        val authHeader = call.request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
+        val sessionCookie = call.request.cookies[SESSION_COOKIE_NAME]
 
-            val authHeader = call.request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
-            val sessionCookie = call.request.cookies[SESSION_COOKIE_NAME]
-
-            val jwt = when {
-                authHeader != null -> {
-                    if (!authHeader.startsWith(BEARER_PREFIX)) {
-                        logger.debug { "Authorization header is not a Bearer header" }
-                        call.respondBadToken(
-                            challenge = """Bearer error="invalid_request", error_description="$MISSING_BEARER_DESCRIPTION"""",
-                            description = MISSING_BEARER_DESCRIPTION,
+        val jwt = when {
+            authHeader != null -> {
+                if (!authHeader.startsWith(BEARER_PREFIX)) {
+                    logger.debug { "Authorization header is not a Bearer header" }
+                    context.reject(NonBearerChallengeKey, AuthenticationFailedCause.InvalidCredentials) {
+                        response.headers.append(
+                            HttpHeaders.WWWAuthenticate,
+                            """Bearer error="invalid_request", error_description="$MISSING_BEARER_DESCRIPTION"""",
                         )
-                        return@on
+                        respond(
+                            HttpStatusCode.BadRequest,
+                            OauthErrorMessage(error = "invalid_request", errorDescription = MISSING_BEARER_DESCRIPTION),
+                        )
                     }
-                    authHeader.removePrefix(BEARER_PREFIX)
+                    return
                 }
+                authHeader.removePrefix(BEARER_PREFIX)
+            }
 
-                sessionCookie != null -> sessionCookie
+            sessionCookie != null -> sessionCookie
 
-                else -> {
-                    logger.debug { "No Authorization header or session cookie present" }
-                    call.response.headers.append(HttpHeaders.WWWAuthenticate, "Bearer")
-                    call.respond(
+            else -> {
+                logger.debug { "No Authorization header or session cookie present" }
+                context.reject(NoTokenChallengeKey, AuthenticationFailedCause.NoCredentials) {
+                    response.headers.append(HttpHeaders.WWWAuthenticate, "Bearer")
+                    respond(
                         HttpStatusCode.Unauthorized,
                         ErrorMessage(code = "HTTP401", message = MissingTokenError.message),
                     )
-                    return@on
                 }
-            }
-
-            AccessToken.parse(jwt, secret).getOrElse { error ->
-                logger.debug { "JWT verification failed: ${error.message}" }
-                call.respondBadToken(
-                    challenge = """Bearer error="invalid_token", error_description="invalid bearer token"""",
-                    description = "unable to verify and validate token",
-                )
-                return@on
-            }.also { token ->
-                call.attributes.put(AccessTokenKey, token)
+                return
             }
         }
+
+        val token = AccessToken.parse(jwt, secret).getOrElse { error ->
+            logger.debug { "JWT verification failed: ${error.message}" }
+            context.reject(InvalidTokenChallengeKey, AuthenticationFailedCause.InvalidCredentials) {
+                response.headers.append(
+                    HttpHeaders.WWWAuthenticate,
+                    """Bearer error="invalid_token", error_description="invalid bearer token"""",
+                )
+                respond(
+                    HttpStatusCode.Unauthorized,
+                    ErrorMessage(code = "HTTP401", message = "unable to verify and validate token"),
+                )
+            }
+            return
+        }
+
+        context.principal(name, token)
     }
-
-private const val MISSING_BEARER_DESCRIPTION = "missing Bearer in Authorization header"
-
-/** Responds with HTTP 400, the `WWW-Authenticate` [challenge] and an OAuth `invalid_request` body. */
-private suspend fun ApplicationCall.respondBadToken(challenge: String, description: String) {
-    response.headers.append(HttpHeaders.WWWAuthenticate, challenge)
-    respond(
-        HttpStatusCode.BadRequest,
-        OauthErrorMessage(error = "invalid_request", errorDescription = description),
-    )
 }
+
+private object NonBearerChallengeKey
+
+private object NoTokenChallengeKey
+
+private object InvalidTokenChallengeKey
+
+private fun AuthenticationContext.reject(
+    key: Any,
+    cause: AuthenticationFailedCause,
+    respond: suspend ApplicationCall.() -> Unit,
+) {
+    challenge(key, cause) { challenge, call ->
+        call.respond()
+        challenge.complete()
+    }
+}
+
+/** Registers the [FlexAuthenticationProvider] under [name]. */
+fun AuthenticationConfig.flex(name: String = FLEX_AUTH, configure: FlexAuthenticationConfig.() -> Unit) {
+    register(FlexAuthenticationProvider(FlexAuthenticationConfig(name).apply(configure)))
+}
+
+/** Installs the Ktor [Authentication] plugin with the [FlexAuthenticationProvider] verifying tokens with [secret]. */
+fun Application.configureAuthentication(secret: String) {
+    install(Authentication) {
+        flex { jwtSecret = secret }
+    }
+}
+
+/**
+ * Registers routes that all require a valid token, so that no route can be exposed unauthenticated by mistake.
+ * Routes that must be reachable without authentication belong in a separate `routing { }` block.
+ */
+fun Application.authenticatedRouting(build: Route.() -> Unit) {
+    routing {
+        authenticate(FLEX_AUTH) { build() }
+    }
+}
+
+/** The verified [AccessToken] of the caller. Only available on routes declared with [authenticatedRouting]. */
+val ApplicationCall.accessToken: AccessToken
+    get() = checkNotNull(principal<AccessToken>()) {
+        "No access token found: the route must be declared inside authenticatedRouting"
+    }

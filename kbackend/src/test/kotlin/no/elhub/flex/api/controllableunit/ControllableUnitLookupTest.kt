@@ -32,9 +32,9 @@ import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
-import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
@@ -918,7 +918,7 @@ private fun testApp(
     TestApplication {
         application {
             install(Tracing.plugin)
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+            configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
             configureLogging()
             install(Koin) {

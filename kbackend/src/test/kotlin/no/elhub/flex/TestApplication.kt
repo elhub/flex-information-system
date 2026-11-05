@@ -18,6 +18,8 @@ import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
@@ -56,6 +58,7 @@ fun defaultTestApplication(): TestApplication {
             install(Tracing.plugin)
             configureLogging()
             configureSerialization()
+            configureAuthentication(TEST_JWT_SECRET)
             install(Koin) {
                 modules(
                     module {

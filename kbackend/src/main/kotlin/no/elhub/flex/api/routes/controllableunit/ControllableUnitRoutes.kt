@@ -3,8 +3,8 @@ package no.elhub.flex.api.routes.controllableunit
 import io.ktor.server.application.Application
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
 import no.elhub.flex.auth.plugin.FlexRole
+import no.elhub.flex.auth.plugin.authenticatedRouting
 import no.elhub.flex.auth.plugin.requireRoles
 import no.elhub.flex.auth.plugin.requireScope
 import no.elhub.flex.auth.scope.Scope
@@ -13,7 +13,7 @@ import org.koin.ktor.ext.inject
 
 /** Registers all `controllable_unit` routes on [Application]. */
 fun Application.controllableUnitRoutes() {
-    routing {
+    authenticatedRouting {
         val lookup: ControllableUnitLookup by inject()
         route("/controllable_unit") {
             route("/lookup") {

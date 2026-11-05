@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.auth.util
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm

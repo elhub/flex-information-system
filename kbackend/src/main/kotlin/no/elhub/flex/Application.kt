@@ -9,7 +9,7 @@ import no.elhub.flex.api.config.ConfigModule
 import no.elhub.flex.api.metrics.MetricsModule
 import no.elhub.flex.auth.AuthModule
 import no.elhub.flex.auth.config.authConfig
-import no.elhub.flex.auth.plugin.FlexAuthentication
+import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureDatabase
 import no.elhub.flex.config.configureHealth
@@ -59,10 +59,7 @@ fun Application.module() {
     configureDatabase()
 
     val authConfig = environment.config.authConfig()
-    install(FlexAuthentication) {
-        jwtSecret = authConfig.jwtSecret
-        excludedPaths += listOf("/healthz", "/metrics")
-    }
+    configureAuthentication(authConfig.jwtSecret)
 
     startKoin<FlexApp> {
         environmentProperties()

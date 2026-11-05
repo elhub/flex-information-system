@@ -2,7 +2,7 @@ package no.elhub.flex.auth.plugin
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.createRouteScopedPlugin
-import io.ktor.server.application.hooks.CallSetup
+import io.ktor.server.auth.AuthenticationChecked
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import no.elhub.flex.auth.model.dto.generated.models.ErrorMessage
@@ -17,7 +17,7 @@ class RequireRoleConfig {
 /**
  * Route-scoped plugin that enforces role-based authorization on the routes it is installed on.
  *
- * Reads the [AccessToken] stored by [FlexAuthentication] and responds with HTTP 403 if the
+ * Reads the [AccessToken] exposed by [FlexAuthenticationProvider] and responds with HTTP 403 if the
  * caller's role is not in [RequireRoleConfig.allowedRoles], stopping further pipeline execution.
  *
  * Prefer the [requireRoles] extension function over installing this plugin directly.
@@ -33,8 +33,8 @@ class RequireRoleConfig {
 val RequireRole = createRouteScopedPlugin("RequireRole", ::RequireRoleConfig) {
     val allowedRoles = pluginConfig.allowedRoles
 
-    on(CallSetup) { call ->
-        val token = call.attributes[AccessTokenKey]
+    on(AuthenticationChecked) { call ->
+        val token = call.accessToken
         if (token.role !in allowedRoles.map { it.roleName }) {
             call.respond(
                 HttpStatusCode.Forbidden,
