@@ -23,8 +23,8 @@ import no.elhub.flex.api.model.dto.toDtos
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.util.asLocalMidnightInstant
 import no.elhub.flex.api.util.body
-import no.elhub.flex.api.util.todayLocalMidnight
 import no.elhub.flex.auth.plugin.accessToken
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.http.BadRequestError
@@ -33,8 +33,10 @@ import no.elhub.flex.shared.http.InternalServerError
 import no.elhub.flex.shared.http.ResourceNotFoundError
 import no.elhub.flex.shared.http.respondJson
 import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.shared.util.todayLocalMidnight
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 private val END_USER_REGEX = Regex("^[0-9]{6}$|^[1-9][0-9]{8}$")
 private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
@@ -44,6 +46,7 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    private val sharedAccountingPointService: SharedAccountingPointService,
     private val eventRepo: EventRepository,
     private val metrics: FlexMetrics,
     private val partyService: PartyService,
@@ -83,12 +86,12 @@ class ControllableUnitLookup(
                         .fold({ if (it is ResourceNotFoundError) null.right() else it.left() }, { it.id.right() })
                         .bind()
                         // if it exists, compute start date, otherwise take the default one
-                        ?.let { apId -> accountingPointService.getAccountingPointStartDate(apId).bind() }
+                        ?.let { apId -> sharedAccountingPointService.getAccountingPointStartDates(listOf(apId)).bind()[AccountingPointId(apId)] }
                         ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {
-                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                    sharedAccountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
                 } else {
                     logger.info { "Accounting point sync disabled, not calling adapter." }
                 }

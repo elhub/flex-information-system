@@ -7,9 +7,9 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.util.uniqueGsrn
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
+import no.elhub.flex.testutil.uniqueGsrn
 
 class FlexTransactionTest : FunSpec({
 

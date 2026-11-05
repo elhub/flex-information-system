@@ -16,8 +16,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
-import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.seed
 import no.elhub.flex.auth.authRoutes
 import no.elhub.flex.auth.db.AuthRepositoryImpl
 import no.elhub.flex.auth.plugin.configureAuthentication
@@ -26,6 +24,8 @@ import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
+import no.elhub.flex.testutil.Triggers
+import no.elhub.flex.testutil.seed
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.UUID

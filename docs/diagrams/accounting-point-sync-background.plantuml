@@ -9,14 +9,14 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-control "Scheduler" as SCH
+control "CronJob" as CJ
 participant "Batch sync" as BS
 database "AP" as AP
 database "AP <sub>" as APSUB
 database "AP Sync" as APS
 participant "AP Adapter" as APA
 
-SCH -> BS: Trigger
+CJ -> BS: Trigger
 BS -> APS: Selection lock + return selected APs
 note right
     WITH selected AS (
@@ -84,5 +84,5 @@ loop Per selected AP
     end
 end
 
-BS --> SCH: Done
+BS --> CJ: Done
 @enduml

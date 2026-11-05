@@ -6,18 +6,14 @@ import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.datetime.toKotlinLocalDate
 import kotlinx.serialization.json.Json
-import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.model.domain.AccountingPointStartDates
 import no.elhub.flex.api.model.domain.ControllableUnit
 import no.elhub.flex.api.model.domain.ControllableUnitForLookup
 import no.elhub.flex.api.model.domain.ControllableUnitStatus
 import no.elhub.flex.api.model.domain.RegulationDirection
-import no.elhub.flex.api.util.toKotlinInstantOrNull
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.RepositoryError
-import no.elhub.flex.shared.db.createBigintArray
 import no.elhub.flex.shared.db.prepareNamed
 import no.elhub.flex.shared.db.query
 import org.koin.core.annotation.Single
@@ -53,15 +49,6 @@ interface ControllableUnitRepository {
      */
     context(principal: FlexPrincipal)
     suspend fun getByAccountingPointId(accountingPointId: Long): Either<DatabaseError, List<ControllableUnit>>
-
-    /**
-     * Gets the earliest start date of controllable units and their service provider contracts behind the given
-     * accounting points in the system.
-     *
-     * @param accountingPointIds the internal IDs of the accounting points whose data we want to get
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStartDates>>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -123,37 +110,6 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
             DatabaseError("Failed to query  by accounting point id")
         }
     }
-
-    context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStartDates>> =
-        flexTransaction { conn ->
-            Either.catch {
-                conn.prepareNamed(
-                    """
-                    SELECT
-                        cu.accounting_point_id,
-                        MIN(cu.start_date)::timestamp AS controllable_unit_start_time,
-                        MIN(LOWER(cusp.valid_time_range)) AS controllable_unit_service_provider_valid_time_start
-                    FROM flex.controllable_unit AS cu
-                        LEFT JOIN flex.controllable_unit_service_provider AS cusp
-                            ON cu.id = cusp.controllable_unit_id
-                    WHERE cu.accounting_point_id = ANY(:accountingPointIds)
-                    GROUP BY cu.accounting_point_id
-                    """.trimIndent(),
-                    mapOf("accountingPointIds" to conn.createBigintArray(accountingPointIds))
-                ).query { rs ->
-                    val accountingPointId = rs.getLong("accounting_point_id")
-                    AccountingPointId(accountingPointId) to
-                        AccountingPointStartDates(
-                            controllableUnitStartTime = rs.getTimestamp("controllable_unit_start_time").toKotlinInstantOrNull(),
-                            controllableUnitServiceProviderValidTimeStart = rs.getTimestamp("controllable_unit_service_provider_valid_time_start").toKotlinInstantOrNull(),
-                        )
-                }.toMap()
-            }.mapLeft { e ->
-                logger.error { "getAccountingPointStarts failed: ${e.message}" }
-                DatabaseError("Failed to read accounting point starts")
-            }
-        }
 
     private fun ResultSet.toControllableUnit(): ControllableUnit = ControllableUnit(
         id = getLong("id"),

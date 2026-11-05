@@ -22,33 +22,36 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.accountingpoint.AccountingPointServiceImpl
-import no.elhub.flex.api.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
-import no.elhub.flex.api.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.api.accountingpoint.db.AccountingPointRepositoryImpl
-import no.elhub.flex.api.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.api.event.db.EventRepositoryImpl
-import no.elhub.flex.api.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.api.util.uniqueEicY
-import no.elhub.flex.api.util.uniqueGsrn
 import no.elhub.flex.auth.plugin.authenticatedRouting
 import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
+import no.elhub.flex.shared.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.shared.adapter.AdapterClientConfig
 import no.elhub.flex.shared.adapter.AdapterHttpClient
 import no.elhub.flex.shared.adapter.AdapterWireMockServer
+import no.elhub.flex.shared.meteringgridarea.db.MeteringGridAreaRepositoryImpl
+import no.elhub.flex.shared.util.todayLocalMidnight
+import no.elhub.flex.testutil.uniqueEicY
+import no.elhub.flex.testutil.uniqueGsrn
 import java.util.UUID
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointServiceImpl as SharedAccountingPointServiceImpl
+import no.elhub.flex.shared.accountingpoint.db.AccountingPointRepositoryImpl as SharedAccountingPointRepositoryImpl
+import no.elhub.flex.shared.controllableunit.db.ControllableUnitRepositoryImpl as SharedControllableUnitRepositoryImpl
 
 /**
  * Integration tests verifying that the validFrom timestamps sent and received to/from the
@@ -81,17 +84,19 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
         val mockPartyService = mockk<PartyService>()
         coEvery { mockPartyService.getParty(any()) } returns
             Party(id = 1L, name = "Test Party", role = "flex_organisation", businessId = "123456789")
+        val sharedAccountingPointService = SharedAccountingPointServiceImpl(
+            SharedAccountingPointRepositoryImpl(),
+            MeteringGridAreaRepositoryImpl(),
+            AccountingPointMeteringGridAreaRepositoryImpl(),
+            AccountingPointGridLocationRepositoryImpl(),
+            SubstationRepositoryImpl(),
+            adapterService,
+            SharedControllableUnitRepositoryImpl(),
+        )
         lookup = ControllableUnitLookup(
             repo = ControllableUnitRepositoryImpl(),
-            accountingPointService = AccountingPointServiceImpl(
-                AccountingPointRepositoryImpl(),
-                MeteringGridAreaRepositoryImpl(),
-                AccountingPointMeteringGridAreaRepositoryImpl(),
-                AccountingPointGridLocationRepositoryImpl(),
-                SubstationRepositoryImpl(),
-                adapterService,
-                ControllableUnitRepositoryImpl(),
-            ),
+            accountingPointService = AccountingPointServiceImpl(AccountingPointRepositoryImpl()),
+            sharedAccountingPointService = sharedAccountingPointService,
             eventRepo = EventRepositoryImpl(),
             metrics = FlexMetrics(SimpleMeterRegistry()),
             partyService = mockPartyService,

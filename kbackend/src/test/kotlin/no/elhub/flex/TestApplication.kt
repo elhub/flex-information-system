@@ -30,10 +30,13 @@ import no.elhub.flex.shared.http.DataFetchError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 fun defaultTestApplication(): TestApplication {
-    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
+    val mockSharedAccountingPointService = mockk<SharedAccountingPointService>().also { svc ->
         coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>()) } returns Unit.right()
+    }
+    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
         coEvery { with(any<FlexPrincipal>()) { svc.getCurrentAccountingPoint(any()) } } returns
             DataFetchError("stub").left()
         coEvery { with(any<FlexPrincipal>()) { svc.getAccountingPointByBusinessId(any()) } } returns
@@ -64,11 +67,12 @@ fun defaultTestApplication(): TestApplication {
                     module {
                         single<MeterRegistry> { SimpleMeterRegistry() }
                         single<AccountingPointService> { mockAccountingPointService }
+                        single<SharedAccountingPointService> { mockSharedAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
                         single { FlexMetrics(get()) }
                         single<PartyService> { mockPartyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo")) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo")) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )

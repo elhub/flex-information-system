@@ -4,11 +4,11 @@ import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.seed
 import no.elhub.flex.auth.model.UserInfo
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.NotFoundError
+import no.elhub.flex.testutil.Triggers
+import no.elhub.flex.testutil.seed
 import java.util.UUID
 
 class AuthRepositoryTest : FunSpec({
