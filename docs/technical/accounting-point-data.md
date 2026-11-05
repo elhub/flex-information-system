@@ -147,7 +147,7 @@ The following participants are involved in the flows:
 
 * `Service Provider` - the external caller
 * `CU Lookup` - the functionality in FIS that provides CU lookup
-* `Batch Sync` - the background sync process that runs on a schedule to keep
+* `Batch Sync` - the synchronisation job that runs on a schedule to keep
   data in sync
 * `AP` - the `flex.accounting_point` table
 * `AP Sync` - the `flex.accounting_point_sync` table
@@ -161,10 +161,11 @@ The following participants are involved in the flows:
 
 ![Accounting point internal lookup flow](../diagrams/accounting-point-sync-lookup.png)
 
-### Background sync flow
+### Synchronisation job flow
 
-The batch size for the background sync is set to a static size of 50.
-A batch will be processed every 5 minutes.
+The synchronisation happens as a scheduled job (defined in `kbackend/jobs`),
+triggered by a Kubernetes CronJob. Each run processes one batch, and the batch
+size is set to a static size of 50.
 
 We can make this better in the future, but for now we can live with this simple
 approach.
