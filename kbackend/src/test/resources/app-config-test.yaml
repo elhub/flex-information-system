@@ -11,6 +11,12 @@ flex:
   jwtSecret: secret
   timezone: Europe/Oslo
 
+docs:
+  baseUrl: https://flex.test/
+
+postgrest:
+  baseUrl: http://postgrest
+
 accountingPointAdapter:
   baseUrl: http://adapter
   apiKey: key

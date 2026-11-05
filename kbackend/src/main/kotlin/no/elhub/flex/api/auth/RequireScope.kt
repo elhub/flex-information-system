@@ -20,16 +20,10 @@ val RequireScope = createRouteScopedPlugin("RequireScope", ::RequireScopeConfig)
     }
 
     on(CallSetup) { call ->
-        val tokenScopes = call.attributes[AccessTokenKey].scope
+        val tokenScopes = call.requireAccessToken()?.scope ?: return@on
 
         if (!tokenScopes.covers(requiredScope)) {
-            call.respond(
-                HttpStatusCode.Forbidden,
-                ErrorMessage(
-                    code = "HTTP403",
-                    message = InsufficientScopeError(requiredScope).message,
-                ),
-            )
+            call.respondInsufficientScope(requiredScope)
         }
     }
 }

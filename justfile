@@ -384,7 +384,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations openapi-to-kbackend-routes sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
@@ -488,6 +488,16 @@ openapi-to-db:
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
+
+openapi-to-kbackend-routes:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    .venv/bin/python3 local/scripts/openapi_to_kbackend_routes.py \
+        --openapi kbackend/data/static/openapi.json \
+        --resources openapi/resources.yml \
+        --module api --package no.elhub.flex.api.routes.data.generated \
+        > kbackend/src/main/kotlin/no/elhub/flex/api/routes/data/generated/GeneratedDataApiRoutes.kt
 
 openapi-to-embed-relations:
     #!/usr/bin/env bash

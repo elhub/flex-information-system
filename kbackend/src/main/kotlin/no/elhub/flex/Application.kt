@@ -7,6 +7,7 @@ import io.ktor.server.netty.EngineMain
 import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.ConfigModule
+import no.elhub.flex.api.config.RequireApiVersion
 import no.elhub.flex.api.config.Tracing
 import no.elhub.flex.api.config.configureDatabase
 import no.elhub.flex.api.config.configureHealth
@@ -62,6 +63,10 @@ fun Application.module() {
     install(FlexAuthentication) {
         jwtSecret = flexConfig.jwtSecret
         excludedPaths += listOf("/healthz", "/metrics")
+    }
+    install(RequireApiVersion) {
+        exemptPaths += listOf("/", "/openapi.json", "/healthz", "/metrics")
+        exemptSuffixes += "/download"
     }
 
     startKoin<FlexApp> {

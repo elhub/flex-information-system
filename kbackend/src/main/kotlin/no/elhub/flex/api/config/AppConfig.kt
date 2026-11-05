@@ -55,3 +55,13 @@ fun ApplicationConfig.attachmentStorageConfig(): AttachmentStorageConfig =
     property("attachmentStorage").getAs()
 
 fun ApplicationConfig.databaseConfig(): DatabaseConfig = property("ktor.database").getAs()
+
+@Serializable
+data class PostgrestConfig(val baseUrl: String)
+
+fun ApplicationConfig.postgrestConfig(): PostgrestConfig = property("postgrest").getAs()
+
+@Serializable
+data class DocsConfig(val baseUrl: String)
+
+fun ApplicationConfig.docsConfig(): DocsConfig = property("docs").getAs()

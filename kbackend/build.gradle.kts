@@ -80,3 +80,11 @@ configurations.all {
         }
     }
 }
+
+// the API documentation serves the OpenAPI document, which lives outside of src/
+tasks.processResources {
+    from("data/static") {
+        include("openapi.json")
+        into("openapi")
+    }
+}

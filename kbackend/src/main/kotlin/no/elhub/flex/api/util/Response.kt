@@ -67,3 +67,10 @@ suspend fun handleError(
         error.code,
     )
 }
+
+private val errorJson = Json { explicitNulls = false }
+
+/** Responds with [error] as JSON. */
+suspend fun ApplicationCall.respondError(status: HttpStatusCode, error: ErrorMessage) {
+    respondText(errorJson.encodeToString(ErrorMessage.serializer(), error), ContentType.Application.Json, status)
+}
