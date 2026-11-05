@@ -7,8 +7,8 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.util.uniqueGsrn
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.testutil.uniqueGsrn
 import java.sql.Timestamp
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours

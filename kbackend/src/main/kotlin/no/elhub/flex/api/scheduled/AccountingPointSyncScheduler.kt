@@ -8,18 +8,20 @@ import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
-import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.util.todayLocalMidnight
-import no.elhub.flex.api.util.withTrace
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.tracing.TraceInfo
+import no.elhub.flex.shared.util.todayLocalMidnight
+import no.elhub.flex.shared.util.withTrace
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 @Single(createdAtStart = true)
 class AccountingPointSyncScheduler(
     private val accountingPointSyncRepository: AccountingPointSyncRepository,
     private val accountingPointService: AccountingPointService,
+    private val sharedAccountingPointService: SharedAccountingPointService,
     private val metrics: FlexMetrics,
     flexConfig: FlexConfig,
 ) {
@@ -45,7 +47,7 @@ class AccountingPointSyncScheduler(
 
                 val accountingPoints = accountingPointService.getByIds(accountingPointIdBatch).bind()
 
-                val earliestStartDates = accountingPointService
+                val earliestStartDates = sharedAccountingPointService
                     .getAccountingPointStartDates(accountingPoints.map { it.id })
                     .bind()
 
@@ -55,7 +57,7 @@ class AccountingPointSyncScheduler(
                             logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
                             val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
                                 ?: Instant.todayLocalMidnight(timezone)
-                            accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
+                            sharedAccountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                             logger.debug { "Accounting point ${accountingPoint.id} completed" }
                         }
                     }.onRight {

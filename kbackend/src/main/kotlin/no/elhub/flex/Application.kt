@@ -16,9 +16,9 @@ import no.elhub.flex.api.config.configureRouting
 import no.elhub.flex.api.config.configureScheduling
 import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.config.flexConfig
-import no.elhub.flex.api.metrics.MetricsModule
 import no.elhub.flex.jobs.runJob
 import no.elhub.flex.shared.SharedModule
+import no.elhub.flex.shared.metrics.MetricsModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.annotation.Module

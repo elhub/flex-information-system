@@ -9,8 +9,8 @@ import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import kotlinx.serialization.json.Json
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
-import no.elhub.flex.api.model.error.AppError
-import no.elhub.flex.api.model.error.InternalServerError
+import no.elhub.flex.shared.error.AppError
+import no.elhub.flex.shared.error.InternalServerError
 
 val logger = KotlinLogging.logger {}
 

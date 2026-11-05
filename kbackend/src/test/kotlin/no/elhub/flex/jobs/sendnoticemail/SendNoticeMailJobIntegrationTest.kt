@@ -7,9 +7,9 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import no.elhub.flex.MailpitTestContainer
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.util.SeedScope
-import no.elhub.flex.api.util.seed
 import no.elhub.flex.jobs.sendnoticemail.email.SmtpMailClient
+import no.elhub.flex.testutil.SeedScope
+import no.elhub.flex.testutil.seed
 
 /** Runs [SendNoticeMailJob] with the real DB repository and SMTP client against Mailpit. */
 class SendNoticeMailJobIntegrationTest : FunSpec({

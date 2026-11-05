@@ -18,14 +18,15 @@ import no.elhub.flex.api.accountingpoint.AccountingPointService
 import no.elhub.flex.api.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.metrics.FlexMetrics
-import no.elhub.flex.api.model.domain.AccountingPoint
-import no.elhub.flex.api.model.domain.AccountingPointId
-import no.elhub.flex.api.model.error.InternalServerError
 import no.elhub.flex.api.util.TEST_JWT_SECRET
+import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
+import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.error.InternalServerError
 import kotlin.time.Clock
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 @Suppress("MagicNumber")
 class AccountingPointSyncSchedulerTest : FunSpec({
@@ -35,10 +36,12 @@ class AccountingPointSyncSchedulerTest : FunSpec({
 
     val syncRepository = mockk<AccountingPointSyncRepository>()
     val accountingPointService = mockk<AccountingPointService>()
+    val sharedAccountingPointService = mockk<SharedAccountingPointService>()
 
     val scheduler = AccountingPointSyncScheduler(
         accountingPointSyncRepository = syncRepository,
         accountingPointService = accountingPointService,
+        sharedAccountingPointService = sharedAccountingPointService,
         metrics = FlexMetrics(SimpleMeterRegistry()),
         flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
     )
@@ -59,18 +62,18 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
                 coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
-                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
+                coEvery { sharedAccountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
             }
-            coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns Unit.right()
-            coEvery { accountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) } returns Unit.right()
+            coEvery { sharedAccountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns Unit.right()
+            coEvery { sharedAccountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) } returns Unit.right()
 
             // when
             scheduler.runBatch()
 
             // then
-            coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) }
-            coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) }
+            coVerify(exactly = 1) { sharedAccountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) }
+            coVerify(exactly = 1) { sharedAccountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) }
         }
 
         test("AP not in earliest start date map: falls back to todayLocalMidnight") {
@@ -81,10 +84,10 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
                 coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
-                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
+                coEvery { sharedAccountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to null).right()
             }
-            coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, capture(validFromSlot)) } returns Unit.right()
+            coEvery { sharedAccountingPointService.synchronizeAccountingPoint(ap1.businessId, capture(validFromSlot)) } returns Unit.right()
 
             // when
             scheduler.runBatch()
@@ -106,7 +109,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coVerify(exactly = 0) { accountingPointService.getByIds(any()) }
             }
-            coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
+            coVerify(exactly = 0) { sharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
         }
 
         test("getBatchForSync failure: no further calls are made") {
@@ -122,7 +125,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coVerify(exactly = 0) { accountingPointService.getByIds(any()) }
             }
-            coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
+            coVerify(exactly = 0) { sharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
         }
 
         test("getByIds failure: no synchronize calls are made") {
@@ -136,7 +139,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             scheduler.runBatch()
 
             // then
-            coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
+            coVerify(exactly = 0) { sharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
         }
 
         test("getAccountingPointStartDates failure: no synchronize calls are made") {
@@ -144,7 +147,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
                 coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
-                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
+                coEvery { sharedAccountingPointService.getAccountingPointStartDates(any()) } returns
                     InternalServerError("trace-id").left()
             }
 
@@ -152,7 +155,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             scheduler.runBatch()
 
             // then
-            coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
+            coVerify(exactly = 0) { sharedAccountingPointService.synchronizeAccountingPoint(any(), any()) }
         }
 
         test("one AP fails to sync: remaining APs in batch are still processed") {
@@ -160,17 +163,17 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
                 coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
-                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
+                coEvery { sharedAccountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
             }
-            coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns InternalServerError("trace-id").left()
-            coEvery { accountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) } returns Unit.right()
+            coEvery { sharedAccountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns InternalServerError("trace-id").left()
+            coEvery { sharedAccountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) } returns Unit.right()
 
             // when
             scheduler.runBatch()
 
             // then — AP 2 was processed despite AP 1 failing
-            coVerify(exactly = 1) { accountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) }
+            coVerify(exactly = 1) { sharedAccountingPointService.synchronizeAccountingPoint(ap2.businessId, any()) }
         }
     }
 })
