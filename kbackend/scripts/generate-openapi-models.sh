@@ -3,7 +3,7 @@ set -euo pipefail
 
 # This script generates API models using the Fabrikt OpenAPI generator.
 #
-# The source spec (backend/data/static/openapi.json) uses OpenAPI 3.1.0 features
+# The source spec (kbackend/data/static/openapi.json) uses OpenAPI 3.1.0 features
 # that the Kaizen parser (used by Fabrikt) does not support. A preprocessed copy
 # is written to a temp file with the following transformations applied:
 #   - openapi version downgraded to 3.0.1
@@ -21,7 +21,7 @@ set -euo pipefail
 #   - format: "bigint" rewritten to format: "int64" so Fabrikt maps the field to kotlin.Long
 
 topdir="$(git rev-parse --show-toplevel)"
-source_spec="backend/data/static/openapi.json"
+source_spec="kbackend/data/static/openapi.json"
 
 # Write temp file inside topdir so it is accessible via the Docker volume mount
 tmp_spec="$(mktemp "$topdir/.fabrikt-preprocessed-XXXXXX.json")"

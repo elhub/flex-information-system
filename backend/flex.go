@@ -9,6 +9,7 @@ import (
 	"flex/data"
 	"flex/event"
 	"flex/grid"
+	"flex/internal/kbackend"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/trace"
@@ -19,6 +20,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	"github.com/cenkalti/backoff/v7"
@@ -114,6 +116,21 @@ func WrapMiddlewareHandler(mid http.Handler) gin.HandlerFunc {
 //
 //nolint:gochecknoglobals
 var NoOpHandler http.Handler = http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
+
+// lookupBoolEnv reads an optional boolean environment variable, false if unset.
+func lookupBoolEnv(lookupenv func(string) (string, bool), name string) (bool, error) {
+	value, exists := lookupenv(name)
+	if !exists || value == "" {
+		return false, nil
+	}
+
+	parsed, err := strconv.ParseBool(value)
+	if err != nil {
+		return false, fmt.Errorf("invalid boolean in %s: %w", name, err)
+	}
+
+	return parsed, nil
+}
 
 // Run is the main entry point for the application.
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx,gocyclo
@@ -221,6 +238,18 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	kbackendUpstream, exists := lookupenv("FLEX_UPSTREAM_KBACKEND")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_UPSTREAM_KBACKEND", errMissingEnv)
+	}
+
+	// While migrating to the Kotlin backend, whole API prefixes can be handed
+	// over to it. Each defaults to false, meaning Go serves the API itself.
+	proxyDataToKbackend, err := lookupBoolEnv(lookupenv, "FLEX_KBACKEND_PROXY_DATA")
+	if err != nil {
+		return err
+	}
+
+	proxyGridToKbackend, err := lookupBoolEnv(lookupenv, "FLEX_KBACKEND_PROXY_GRID")
+	if err != nil {
+		return err
 	}
 
 	baseURL, exists := lookupenv("FLEX_BASE_URL")
@@ -342,6 +371,32 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("could not create grid API module: %w", err)
 	}
 
+	// handlers mounted under the API prefixes; the data API gets the API version
+	// check and per-route metrics from the Go mux unless it is proxied.
+	dataAPIRoute := middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler))
+	gridAPIRoute := gridAPIHandler
+
+	var kbackendProxy http.Handler
+
+	if proxyDataToKbackend || proxyGridToKbackend {
+		kbackendProxy, err = kbackend.NewProxy(kbackendUpstream)
+		if err != nil {
+			return fmt.Errorf("could not create kbackend proxy: %w", err)
+		}
+	}
+
+	if proxyDataToKbackend {
+		slog.InfoContext(ctx, "Data API is proxied to kbackend")
+
+		dataAPIRoute = kbackendProxy
+	}
+
+	if proxyGridToKbackend {
+		slog.InfoContext(ctx, "Grid API is proxied to kbackend")
+
+		gridAPIRoute = kbackendProxy
+	}
+
 	// launch the event worker
 	go func() {
 		select {
@@ -456,14 +511,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v1/*url",
-			WrapHandler(http.StripPrefix("/api/v1", middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler)))), //nolint:contextcheck
+			WrapHandler(http.StripPrefix("/api/v1", dataAPIRoute)), //nolint:contextcheck
 		)
 
 		// grid API endpoint
 		router.Match(
 			[]string{"HEAD", "GET", "OPTIONS"},
 			"/grid/v0/*url",
-			WrapHandler(http.StripPrefix("/grid/v0", gridAPIHandler)), //nolint:contextcheck
+			WrapHandler(http.StripPrefix("/grid/v0", gridAPIRoute)), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
 

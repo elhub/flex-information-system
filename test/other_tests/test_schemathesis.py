@@ -24,7 +24,7 @@ token = client.token
 
 # We are reading the file from local instead of the URL to be able to
 # iterate faster on the OpenAPI file while developing
-openapi_document = open("backend/data/static/openapi.json", "r").read()
+openapi_document = open("kbackend/data/static/openapi.json", "r").read()
 
 
 # Filter function to allow us to precisely pick out relevant checks.

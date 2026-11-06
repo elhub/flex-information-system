@@ -33,7 +33,7 @@ val RequireRole = createRouteScopedPlugin("RequireRole", ::RequireRoleConfig) {
     val allowedRoles = pluginConfig.allowedRoles
 
     on(CallSetup) { call ->
-        val token = call.attributes[AccessTokenKey]
+        val token = call.requireAccessToken() ?: return@on
         if (token.role !in allowedRoles.map { it.roleName }) {
             call.respond(
                 HttpStatusCode.Forbidden,
