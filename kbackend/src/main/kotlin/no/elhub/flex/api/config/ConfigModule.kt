@@ -22,4 +22,10 @@ class ConfigModule {
     @Single(createdAtStart = true)
     fun attachmentStorageConfig(config: ApplicationConfig): AttachmentStorageConfig =
         config.attachmentStorageConfig()
+
+    @Single(createdAtStart = true)
+    fun postgrestConfig(config: ApplicationConfig): PostgrestConfig = config.postgrestConfig()
+
+    @Single(createdAtStart = true)
+    fun docsConfig(config: ApplicationConfig): DocsConfig = config.docsConfig()
 }

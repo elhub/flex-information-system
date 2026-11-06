@@ -4,7 +4,9 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.netty.EngineMain
+import io.ktor.server.plugins.autohead.AutoHeadResponse
 import no.elhub.flex.api.config.ConfigModule
+import no.elhub.flex.api.config.RequireApiVersion
 import no.elhub.flex.auth.AuthModule
 import no.elhub.flex.auth.config.authConfig
 import no.elhub.flex.auth.plugin.configureAuthentication
@@ -51,12 +53,19 @@ class FlexApp
  */
 fun Application.module() {
     install(Tracing.plugin)
+    // HEAD is answered by the GET route, without a body
+    install(AutoHeadResponse)
     configureLogging()
     configureSerialization()
     configureDatabase()
 
     val authConfig = environment.config.authConfig()
     configureAuthentication(authConfig.jwtSecret)
+    install(RequireApiVersion) {
+        exemptPaths += listOf("/", "/openapi.json", "/healthz", "/metrics")
+        exemptPrefixes += "/auth/"
+        exemptSuffixes += "/download"
+    }
 
     startKoin<FlexApp> {
         environmentProperties()

@@ -18,6 +18,12 @@ flex:
 auth:
   jwtSecret: ${FLEX_JWT_SECRET}
 
+docs:
+  baseUrl: ${FLEX_BASE_URL}
+
+postgrest:
+  baseUrl: ${FLEX_POSTGREST_URL}
+
 accountingPointAdapter:
   baseUrl: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
   apiKey: ${ACCOUNTING_POINT_ADAPTER_API_KEY}

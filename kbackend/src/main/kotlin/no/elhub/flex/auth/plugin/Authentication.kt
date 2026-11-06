@@ -154,6 +154,30 @@ fun Application.authenticatedRouting(build: Route.() -> Unit) {
     }
 }
 
+/**
+ * Like [authenticatedRouting], but callers that present no token are let through, to be served as anonymous
+ * (see [callerScopes]). Callers that present an invalid token are still rejected.
+ */
+fun Application.optionalAuthenticatedRouting(build: Route.() -> Unit) {
+    routing {
+        authenticate(FLEX_AUTH, optional = true) { build() }
+    }
+}
+
+/**
+ * The raw JWT of the request, resolved like [FlexAuthenticationProvider] does: the `Authorization: Bearer`
+ * header takes precedence over the session cookie. `null` if the request has neither.
+ *
+ * Meant for forwarding a token that the provider has verified, e.g. to PostgREST.
+ */
+fun ApplicationCall.presentedJwt(): String? {
+    val authHeader = request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
+    return when {
+        authHeader != null -> authHeader.takeIf { it.startsWith(BEARER_PREFIX) }?.removePrefix(BEARER_PREFIX)
+        else -> request.cookies[SESSION_COOKIE_NAME]
+    }
+}
+
 /** The verified [AccessToken] of the caller. Only available on routes declared with [authenticatedRouting]. */
 val ApplicationCall.accessToken: AccessToken
     get() = checkNotNull(principal<AccessToken>()) {

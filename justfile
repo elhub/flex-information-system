@@ -325,7 +325,7 @@ _mkdocs_build_elements:
         >"./docs/auth/v1/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.api.test]' <"backend/data/static/openapi.json" \
+        '.servers = [$servers.api.test]' <"kbackend/data/static/openapi.json" \
         >"./docs/api/v1/openapi.json"
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
         '.servers = [$servers.auth.test]' <"backend/auth/static/openapi.json" \
@@ -384,7 +384,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations openapi-to-kbackend-routes sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
@@ -422,7 +422,7 @@ resources-to-openapi:
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml \
     --scopes-file openapi/scopes.yml \
-    --module api > backend/data/static/openapi.json
+    --module api > kbackend/data/static/openapi.json
 
     .venv/bin/python3 local/scripts/resources_to_openapi.py \
     --common-base-file openapi/openapi-base-common.yml \
@@ -440,9 +440,13 @@ resources-to-openapi:
                 else . end
             )' \
         --indent 4 \
-        < backend/data/static/openapi.json \
+        < kbackend/data/static/openapi.json \
         > openapi/openapi-api-clean.json
-    mv openapi/openapi-api-clean.json backend/data/static/openapi.json
+    mv openapi/openapi-api-clean.json kbackend/data/static/openapi.json
+
+    # TEMPORARY: go:embed cannot reach outside the Go module, so the Go backend
+    # keeps a copy until it is removed.
+    cp kbackend/data/static/openapi.json backend/data/static/openapi.json
 
     jq '( .components.schemas // empty )
             |= walk(
@@ -460,7 +464,7 @@ resources-to-openapi:
     spectral lint \
         --fail-severity warn \
         --verbose \
-        backend/data/static/openapi.json
+        kbackend/data/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
@@ -484,6 +488,16 @@ openapi-to-db:
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
+
+openapi-to-kbackend-routes:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    .venv/bin/python3 local/scripts/openapi_to_kbackend_routes.py \
+        --openapi kbackend/data/static/openapi.json \
+        --resources openapi/resources.yml \
+        --module api --package no.elhub.flex.api.routes.data.generated \
+        > kbackend/src/main/kotlin/no/elhub/flex/api/routes/data/generated/GeneratedDataApiRoutes.kt
 
 openapi-to-embed-relations:
     #!/usr/bin/env bash
@@ -613,7 +627,7 @@ openapi-client-test:
              else .
              end' \
         --indent 4 \
-        < backend/data/static/openapi.json \
+        < kbackend/data/static/openapi.json \
         > openapi/openapi-api-no-default.json
 
     uv run openapi-python-client generate \
@@ -635,13 +649,13 @@ openapi-client-frontend:
           |= if type == "object" and has("parameters")
              then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
              else .
-             end' backend/data/static/openapi.json \
-    | sed 's/_response//g' > backend/data/static/.openapi-frontend-client.json
+             end' kbackend/data/static/openapi.json \
+    | sed 's/_response//g' > kbackend/data/static/.openapi-frontend-client.json
 
     cd frontend
     npx openapi-ts
 
-    rm ../backend/data/static/.openapi-frontend-client.json
+    rm ../kbackend/data/static/.openapi-frontend-client.json
 
     # Replace number and int with z.coerce.number
     sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
