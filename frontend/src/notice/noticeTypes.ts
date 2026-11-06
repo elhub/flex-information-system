@@ -7,6 +7,15 @@ const noticeTypes = [
       "Controllable unit is used in two or more Service Providing Group within the same Product Type. It can only be part of one Service Providing Group within the same Product Type",
   },
   {
+    id: "no.elhub.flex.controllable_unit.cso.no_active_users",
+    shortId: "controllable_unit.cso.no_active_users",
+    label: "Inconsistency: CU's CSO has no active users",
+    description:
+      "The controllable unit is connected to a connecting system operator that has no active users in the system.",
+    action:
+      "Follow up with the connecting system operator to get a user registered, or review the controllable unit.",
+  },
+  {
     id: "no.elhub.flex.accounting_point_grid_location.source_insufficient",
     shortId: "accounting_point_grid_location.source_insufficient",
     label: "Insufficient Grid Location Source",
