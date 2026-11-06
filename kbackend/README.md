@@ -4,6 +4,45 @@ Kotlin/Ktor backend for the Flexibility Information System. This is the primary
 backend, intended to replace the existing Go backend. All new features should be
 implemented here.
 
+## Code structure
+
+The project is split in several packages corresponding to relatively independent
+modules:
+
+| Package  | Purpose                                                                                     |
+|----------|---------------------------------------------------------------------------------------------|
+| `auth`   | Everything related to authentication: plugins, scopes, and the auth API                     |
+| `api`    | Domain logic, DB access and handlers for the data API                                       |
+| `jobs`   | Scheduled jobs that run synchronisation processes or regular actions (like sending e-mails) |
+| `config` | Ktor application setup                                                                      |
+| `shared` | Common code used by several of the packages above                                           |
+
+Code tends to be grouped by resource. Database access is done through
+repository classes so as to gather all SQL code related to a resource in only
+one place.
+
+### Run modes
+
+The same application image can start in two modes, selected by the `JOB`
+environment variable (see `Application.kt`):
+
+- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data
+  and auth APIs.
+- **Job mode** (`JOB` set): the backend does **not** start. Only the selected
+  job runs, then the process exits.
+
+The value of `JOB` must match the name of a job defined in `jobs/Job.kt`.
+Jobs may take their own settings from environment variables.
+
+### Dependency injection
+
+Dependency injection uses [Koin](https://insert-koin.io/) with annotations.
+Every package has a module class annotated with `@Module` and `@ComponentScan`
+that picks up the annotated classes (e.g. `@Single`) in that package.
+
+`AppModule` is the root of normal mode (`FlexApp`). Each job has its own
+`@KoinApplication` so that only the dependencies it needs are started.
+
 ## Code generation
 
 ### API Models
