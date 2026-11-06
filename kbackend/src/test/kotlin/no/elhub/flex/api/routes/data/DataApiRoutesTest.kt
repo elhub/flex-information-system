@@ -416,6 +416,31 @@ class DataApiRoutesTest :
             }
         }
 
+        context("error responses") {
+            test("keep the headers of PostgREST, with the rewritten body") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/product_type")).willReturn(
+                        aResponse()
+                            .withStatus(416)
+                            .withHeader("Content-Range", "*/0")
+                            .withHeader("WWW-Authenticate", "Bearer")
+                            .withBody("""{"code":"PGRST103","message":"Requested range not satisfiable"}"""),
+                    ),
+                )
+
+                val response = app.client.get("/product_type") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.RequestedRangeNotSatisfiable
+                response.headers["Content-Range"] shouldBe "*/0"
+                response.headers["WWW-Authenticate"] shouldBe "Bearer"
+                response.headers["Content-Length"]?.toInt() shouldBe response.bodyAsText().toByteArray().size
+                Json.parseToJsonElement(response.bodyAsText()).jsonObject.getValue("code").jsonPrimitive.content shouldBe "PGRST103"
+            }
+        }
+
         context("unknown routes") {
             test("are a JSON not found, and never reach PostgREST") {
                 for ((path, method) in listOf("/nope" to "GET", "/service_providing_group_product_application_attachment_history" to "GET", "/party" to "PUT", "/rpc/anything" to "GET")) {

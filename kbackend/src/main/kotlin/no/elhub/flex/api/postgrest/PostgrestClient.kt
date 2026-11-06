@@ -160,15 +160,21 @@ class PostgrestClient(config: PostgrestConfig) {
         val body = response.bodyAsChannel().readRemaining(MAX_ERROR_BODY_BYTES).readString()
         val error = rewritePostgrestError(method, response.status, body)
         logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
+        // headers such as WWW-Authenticate and Content-Range still apply, the body is the only thing we replace
+        copyResponseHeaders(call, response)
         call.respondError(response.status, error)
     }
 
-    private suspend fun relay(call: ApplicationCall, response: HttpResponse) {
+    private fun copyResponseHeaders(call: ApplicationCall, response: HttpResponse) {
         response.headers.forEach { name, values ->
             if (name !in notForwardedResponseHeaders) {
                 values.forEach { call.response.header(name, it) }
             }
         }
+    }
+
+    private suspend fun relay(call: ApplicationCall, response: HttpResponse) {
+        copyResponseHeaders(call, response)
 
         if (response.status == HttpStatusCode.NoContent || response.status == HttpStatusCode.NotModified) {
             call.respond(response.status)
