@@ -27,7 +27,7 @@ import io.ktor.server.response.respondBytes
 import io.ktor.server.response.respondText
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
-import no.elhub.flex.api.auth.bearerToken
+import no.elhub.flex.api.auth.presentedJwt
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.util.respondError
@@ -38,8 +38,8 @@ private val logger = KotlinLogging.logger {}
 
 private const val REQUEST_TIMEOUT_MILLIS = 60_000L
 
-/** Headers that describe a single connection, or that we let the HTTP stack manage. */
-private val hopByHopHeaders = setOf(
+/** Headers that describe a single connection, see RFC 9110 section 7.6.1. */
+private val connectionHeaders = listOf(
     HttpHeaders.Connection,
     "Keep-Alive",
     HttpHeaders.ProxyAuthenticate,
@@ -48,18 +48,25 @@ private val hopByHopHeaders = setOf(
     HttpHeaders.Trailer,
     HttpHeaders.TransferEncoding,
     HttpHeaders.Upgrade,
+)
+
+/** Headers that the HTTP client sets by itself, or refuses to have set. */
+private val headersOfHttpClient = HttpHeaders.UnsafeHeadersList + listOf(
     HttpHeaders.Host,
-    HttpHeaders.ContentLength,
-    HttpHeaders.ContentType,
     HttpHeaders.ContentEncoding,
     HttpHeaders.AcceptEncoding,
-).map { it.lowercase() }.toSet()
+)
 
-/** Request headers that are not forwarded, besides the [hopByHopHeaders]. */
-private val notForwardedRequestHeaders = setOf(HttpHeaders.Cookie, "traceparent", "tracestate").map { it.lowercase() }.toSet()
+private fun caseInsensitiveSetOf(names: Collection<String>): Set<String> =
+    sortedSetOf(String.CASE_INSENSITIVE_ORDER).apply { addAll(names) }
 
-/** Response headers that are not forwarded, besides the [hopByHopHeaders]. */
-private val notForwardedResponseHeaders = setOf("traceresponse").map { it.lowercase() }.toSet()
+/** Request headers that are not forwarded. The token is sent as `Authorization` from `presentedJwt`. */
+private val notForwardedRequestHeaders = caseInsensitiveSetOf(
+    connectionHeaders + headersOfHttpClient + listOf(HttpHeaders.Authorization, HttpHeaders.Cookie, "traceparent", "tracestate"),
+)
+
+/** Response headers that are not forwarded. */
+private val notForwardedResponseHeaders = caseInsensitiveSetOf(connectionHeaders + headersOfHttpClient + "traceresponse")
 
 /**
  * Forwards requests to PostgREST and relays the response.
@@ -107,23 +114,21 @@ class PostgrestClient(config: PostgrestConfig) {
         url {
             takeFrom(baseUrl)
             appendPathSegments(request.path.trim('/').split('/'))
-            request.query.forEach { (key, values) -> values.forEach { parameters.append(key, it) } }
+            parameters.appendAll(request.query)
         }
 
-        val overridden = request.headers.keys.map { it.lowercase() }.toSet()
+        val overridden = caseInsensitiveSetOf(request.headers.keys)
         headers {
             call.request.headers.forEach { name, values ->
-                val lower = name.lowercase()
-                if (lower !in hopByHopHeaders && lower !in notForwardedRequestHeaders && lower !in overridden) {
+                if (name !in notForwardedRequestHeaders && name !in overridden) {
                     values.forEach { append(name, it) }
                 }
             }
             request.headers.forEach { (name, value) -> set(name, value) }
 
-            // PostgREST only reads the Authorization header, but sessions are carried by a cookie
-            if (call.request.headers[HttpHeaders.Authorization] == null) {
-                call.bearerToken()?.let { set(HttpHeaders.Authorization, "Bearer $it") }
-            }
+            // PostgREST only reads the Authorization header, but sessions are carried by a cookie.
+            // The token is the one that was verified here, not whatever Authorization header was sent.
+            call.presentedJwt()?.let { set(HttpHeaders.Authorization, "Bearer $it") }
         }
         header("traceparent", traceparent)
 
@@ -144,8 +149,7 @@ class PostgrestClient(config: PostgrestConfig) {
         }
 
         response.headers.forEach { name, values ->
-            val lower = name.lowercase()
-            if (lower !in hopByHopHeaders && lower !in notForwardedResponseHeaders) {
+            if (name !in notForwardedResponseHeaders) {
                 values.forEach { call.response.header(name, it) }
             }
         }

@@ -2,6 +2,9 @@ package no.elhub.flex.api.auth
 
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.auth.AuthScheme
+import io.ktor.http.auth.HeaderValueEncoding
+import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
@@ -13,21 +16,18 @@ import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
  */
 object BearerChallenge {
     /** For requests without credentials: no error code is given. */
-    const val MISSING_TOKEN = "Bearer"
+    const val MISSING_TOKEN = AuthScheme.Bearer
 
     /** For a token that is expired, malformed, or invalid for other reasons. */
     fun invalidToken(description: String): String =
-        """Bearer error="invalid_token", error_description="${quotable(description)}""""
+        render("error" to "invalid_token", "error_description" to description)
 
     /** For a valid token that lacks the [required] scope. */
     fun insufficientScope(required: Scope): String =
-        """Bearer error="insufficient_scope", scope="${quotable(required.toString())}""""
+        render("error" to "insufficient_scope", "scope" to required.toString())
 
-    /** Makes [text] safe inside a quoted string: no quotes, backslashes or control characters. */
-    private fun quotable(text: String): String =
-        text.map { if (it == '"' || it == '\\') '\'' else it }
-            .filter { it in ' '..'~' }
-            .joinToString("")
+    private fun render(vararg parameters: Pair<String, String>): String =
+        HttpAuthHeader.Parameterized(AuthScheme.Bearer, parameters.toMap(), HeaderValueEncoding.QUOTED_ALWAYS).render()
 }
 
 /** Responds with HTTP 401 and the given `WWW-Authenticate` [challenge]. */

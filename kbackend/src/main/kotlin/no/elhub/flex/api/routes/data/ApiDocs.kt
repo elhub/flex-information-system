@@ -9,6 +9,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import no.elhub.flex.api.config.DocsConfig
 import org.koin.core.annotation.Single
 import org.koin.ktor.ext.inject
@@ -35,8 +36,8 @@ class ApiDocs(config: DocsConfig) {
     val openApi: String = run {
         val serverUrl = config.baseUrl.trimEnd('/') + DATA_API_MOUNT_PATH + "/"
         val server = JsonObject(mapOf("url" to JsonPrimitive(serverUrl), "description" to JsonPrimitive(TITLE)))
-        val document = Json.parseToJsonElement(resource("openapi/openapi.json")) as JsonObject
-        Json.encodeToString(JsonObject.serializer(), JsonObject(document + ("servers" to JsonArray(listOf(server)))))
+        val document = Json.parseToJsonElement(resource("openapi/openapi.json")).jsonObject
+        JsonObject(document + ("servers" to JsonArray(listOf(server)))).toString()
     }
 
     private fun resource(path: String): String =

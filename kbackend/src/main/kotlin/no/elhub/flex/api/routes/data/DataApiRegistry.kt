@@ -5,8 +5,8 @@ import io.ktor.http.HttpStatusCode
 import no.elhub.flex.api.auth.Scope
 import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.postgrest.AttachmentReadVariant
+import no.elhub.flex.api.postgrest.DefaultVariant
 import no.elhub.flex.api.postgrest.EventListVariant
-import no.elhub.flex.api.postgrest.PlainVariant
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
 
 /**
@@ -45,5 +45,5 @@ object DataApiRegistry {
     fun servedByPostgrest(routes: List<ApiRoute>): List<Pair<ApiRoute, PostgrestRouteVariant>> =
         routes
             .filter { it !in native && it !in notExposed }
-            .map { it to (variants[it] ?: PlainVariant) }
+            .map { it to (variants[it] ?: DefaultVariant) }
 }

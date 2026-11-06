@@ -150,6 +150,29 @@ class DataApiRoutesTest :
                 postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withHeader("Authorization", equalTo("Bearer $jwt")))
             }
 
+            test("the scheme of the Authorization header is case-insensitive") {
+                postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
+
+                val jwt = token()
+                app.client.get("/product_type") {
+                    header("Authorization", "bearer $jwt")
+                    header("Api-Version", VERSION)
+                }.status shouldBe HttpStatusCode.OK
+
+                postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withHeader("Authorization", equalTo("Bearer $jwt")))
+            }
+
+            test("an Authorization header that is not a bearer token is not sent on") {
+                postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
+
+                app.client.get("/product_type") {
+                    header("Authorization", "Basic dXNlcjpwYXNz")
+                    header("Api-Version", VERSION)
+                }.status shouldBe HttpStatusCode.OK
+
+                postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withoutHeader("Authorization"))
+            }
+
             test("embed becomes select, and valid_at a filter") {
                 postgrest.stubFor(get(urlPathEqualTo("/controllable_unit")).willReturn(aResponse().withBody("[]")))
 

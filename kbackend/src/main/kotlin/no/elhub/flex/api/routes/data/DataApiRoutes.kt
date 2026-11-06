@@ -3,6 +3,7 @@ package no.elhub.flex.api.routes.data
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.ParametersBuilder
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.httpMethod
@@ -18,10 +19,8 @@ import no.elhub.flex.api.auth.respondInsufficientScope
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.postgrest.PostgrestClient
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
-import no.elhub.flex.api.postgrest.Query
 import no.elhub.flex.api.postgrest.RequestRejection
 import no.elhub.flex.api.postgrest.buildPostgrestRequest
-import no.elhub.flex.api.postgrest.newQuery
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
 import no.elhub.flex.api.util.respondError
 import org.koin.ktor.ext.inject
@@ -56,9 +55,7 @@ fun Application.dataApiRoutes() {
 private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: PostgrestClient, variant: PostgrestRouteVariant) {
     val method = call.request.httpMethod
     val path = call.request.path()
-    val query = call.request.queryParameters.toQuery()
-
-    variant.validate(query)?.let { return call.respondRejection(it) }
+    variant.validate(call.request.queryParameters)?.let { return call.respondRejection(it) }
 
     val scopes = call.callerScopes()
     val requiredScope = variant.requiredScope(method, path)
@@ -66,7 +63,8 @@ private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: Postg
         return call.respondInsufficientScope(requiredScope)
     }
 
-    val (upstreamPath, headers) = variant.prepare(path, query)
+    val query = ParametersBuilder().apply { appendAll(call.request.queryParameters) }
+    val (upstreamPath, headers) = variant.rewrite(path, query)
 
     buildPostgrestRequest(method, upstreamPath, query, scopes, headers).fold(
         ifLeft = { call.respondRejection(it) },
@@ -77,16 +75,10 @@ private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: Postg
     )
 }
 
-private suspend fun ApplicationCall.respondRejection(failure: RequestRejection) {
-    failure.wwwAuthenticate?.let { response.header(HttpHeaders.WWWAuthenticate, it) }
+private suspend fun ApplicationCall.respondRejection(rejection: RequestRejection) {
+    rejection.wwwAuthenticate?.let { response.header(HttpHeaders.WWWAuthenticate, it) }
     respondError(
-        failure.status,
-        ErrorMessage(code = "HTTP${failure.status.value}", message = failure.message, details = failure.details),
+        rejection.status,
+        ErrorMessage(code = "HTTP${rejection.status.value}", message = rejection.message, details = rejection.details),
     )
-}
-
-private fun io.ktor.http.Parameters.toQuery(): Query {
-    val query = newQuery()
-    forEach { name, values -> query[name] = values.toMutableList() }
-    return query
 }

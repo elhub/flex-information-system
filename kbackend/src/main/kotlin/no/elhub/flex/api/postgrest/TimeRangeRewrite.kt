@@ -1,69 +1,85 @@
 package no.elhub.flex.api.postgrest
 
-import java.time.LocalDateTime
+import arrow.core.raise.Raise
+import arrow.core.raise.ensure
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.ParametersBuilder
+import java.time.DateTimeException
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeParseException
-
-/** Raised when a time-range shorthand parameter (e.g. `valid_at`, `as_of`) has an invalid value. */
-class InvalidTimeRangeException(val paramName: String) : Exception("invalid datetime format: $paramName")
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.ResolverStyle
+import java.time.temporal.ChronoField
+import java.time.temporal.TemporalQuery
 
 private val rfc3339 = Regex("""^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?(Z|[+-]\d{2}:\d{2})$""")
-private val extendedLocal = Regex("""^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d{1,9})?$""")
 private val knownZones: Set<String> = ZoneId.getAvailableZoneIds()
+
+private const val NANO_DIGITS = 9
+
+/** `YYYY-MM-DD HH:MM:SS[.FFF] <zone>`, strict so that dates like February 30th are rejected. */
+private val extendedFormat: DateTimeFormatter = DateTimeFormatterBuilder()
+    .appendPattern("uuuu-MM-dd HH:mm:ss")
+    .optionalStart()
+    .appendFraction(ChronoField.NANO_OF_SECOND, 1, NANO_DIGITS, true)
+    .optionalEnd()
+    .appendLiteral(' ')
+    .appendZoneRegionId()
+    .toFormatter()
+    .withResolverStyle(ResolverStyle.STRICT)
 
 /**
  * Whether [value] is an accepted datetime: either RFC 3339 (`YYYY-MM-DDTHH:MM:SS[.FFF](Z|±HH:MM)`)
  * or the extended `YYYY-MM-DD HH:MM:SS[.FFF] <IANA timezone name>`.
  */
-fun isValidDatetime(value: String): Boolean {
-    if (rfc3339.matches(value)) {
-        return try {
-            OffsetDateTime.parse(value)
-            true
-        } catch (_: DateTimeParseException) {
-            false
-        }
+fun isValidDatetime(value: String): Boolean = isRfc3339(value) || isExtendedDatetime(value)
+
+private fun isRfc3339(value: String): Boolean =
+    rfc3339.matches(value) && runCatching { OffsetDateTime.parse(value) }.isSuccess
+
+private fun isExtendedDatetime(value: String): Boolean {
+    val zone = try {
+        extendedFormat.parse(value, TemporalQuery { ZoneId.from(it) })
+    } catch (_: DateTimeException) {
+        return false
     }
-
-    val lastSpace = value.lastIndexOf(' ')
-    if (lastSpace == -1) return false
-    if (value.substring(lastSpace + 1) !in knownZones) return false
-
-    val local = value.substring(0, lastSpace)
-    if (!extendedLocal.matches(local)) return false
-
-    return try {
-        LocalDateTime.parse(local.replace(' ', 'T'))
-        true
-    } catch (_: DateTimeParseException) {
-        false
-    }
+    // offsets such as +01:00 parse as zones too, but only named zones are accepted
+    return zone.id in knownZones
 }
 
 /**
  * Rewrites a shorthand parameter (e.g. `valid_at`, or prefixed as `<relation>.valid_at`) into an `and` filter
- * on [fromCol] and an `or` filter on [toCol].
+ * on [fromColumn] and an `or` filter on [toColumn].
  *
- * @throws InvalidTimeRangeException if a value is not a valid datetime
+ * Raises a [RequestRejection] if a value is not a valid datetime.
  */
-fun timeRangeQueryRewrite(query: Query, paramName: String, fromCol: String, toCol: String) {
-    for (key in query.keys.toList()) {
+fun Raise<RequestRejection>.rewriteTimeRange(
+    query: ParametersBuilder,
+    paramName: String,
+    fromColumn: String,
+    toColumn: String,
+) {
+    for (key in query.names().toList()) {
         if (key != paramName && !key.endsWith(".$paramName")) continue
 
-        val keyAnd = key.dropLast(paramName.length) + "and"
-        val value = query.first(key)
+        val value = query[key]
         if (value.isNullOrEmpty()) continue
 
-        if (!isValidDatetime(value)) throw InvalidTimeRangeException(paramName)
+        ensure(isValidDatetime(value)) {
+            RequestRejection(HttpStatusCode.BadRequest, "invalid datetime format: $paramName")
+        }
 
+        val andKey = key.removeSuffix(paramName) + "and"
         query.remove(key)
-        query.add(keyAnd, "($fromCol.lte.$value,or($toCol.gt.$value,$toCol.is.null))")
+        query.append(andKey, "($fromColumn.lte.$value,or($toColumn.gt.$value,$toColumn.is.null))")
     }
 }
 
 /** Rewrites `valid_at` into filters on `valid_from` and `valid_to`. */
-fun validAtQueryRewrite(query: Query) = timeRangeQueryRewrite(query, "valid_at", "valid_from", "valid_to")
+fun Raise<RequestRejection>.rewriteValidAt(query: ParametersBuilder) =
+    rewriteTimeRange(query, "valid_at", "valid_from", "valid_to")
 
 /** Rewrites `as_of` into filters on `recorded_at` and `replaced_at`. */
-fun asOfQueryRewrite(query: Query) = timeRangeQueryRewrite(query, "as_of", "recorded_at", "replaced_at")
+fun Raise<RequestRejection>.rewriteAsOf(query: ParametersBuilder) =
+    rewriteTimeRange(query, "as_of", "recorded_at", "replaced_at")

@@ -33,9 +33,9 @@ class BearerChallengeTest :
                     """Bearer error="insufficient_scope", scope="use:data:entity:lookup""""
             }
 
-            test("descriptions cannot break out of the quoted string") {
-                BearerChallenge.invalidToken("bad \"token\" \\ with\nnewline é") shouldBe
-                    """Bearer error="invalid_token", error_description="bad 'token' ' withnewline """"
+            test("quotes and backslashes in descriptions are escaped") {
+                BearerChallenge.invalidToken("bad \"token\" \\ here") shouldBe
+                    """Bearer error="invalid_token", error_description="bad \"token\" \\ here""""
             }
         }
 

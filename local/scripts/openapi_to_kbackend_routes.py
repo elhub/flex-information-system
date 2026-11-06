@@ -62,7 +62,7 @@ def render_kotlin(routes, embed_mapping, package):
         out.append("        ),")
     out.append("    )")
     out.append("}")
-    print("\n".join(out))
+    return "\n".join(out)
 
 
 @click.command()
@@ -77,7 +77,7 @@ def main(openapi_file, resources_file, module, package):
         resources = yaml.safe_load(f)["resources"]
 
     rels = relationship.collect(resources, module=module)
-    render_kotlin(collect_routes(openapi), build_embed_mapping(rels), package)
+    print(render_kotlin(collect_routes(openapi), build_embed_mapping(rels), package))
 
 
 if __name__ == "__main__":

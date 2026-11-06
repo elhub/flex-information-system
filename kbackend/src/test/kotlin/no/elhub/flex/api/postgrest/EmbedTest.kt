@@ -1,11 +1,11 @@
 package no.elhub.flex.api.postgrest
 
-import io.kotest.assertions.throwables.shouldThrow
+import arrow.core.raise.either
+import io.kotest.assertions.arrow.core.shouldBeLeft
+import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.nulls.shouldBeNull
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpStatusCode
 import no.elhub.flex.api.auth.Scope
@@ -29,9 +29,6 @@ private val testRelations: EmbedRelations = mapOf(
 private fun node(name: String, joinHint: Boolean = false, vararg children: EmbedNode) =
     EmbedNode(name, joinHint, children.toList())
 
-private fun queryOf(vararg pairs: Pair<String, String>): Query =
-    newQuery().also { q -> pairs.forEach { (k, v) -> q.add(k, v) } }
-
 class EmbedTest :
     FunSpec({
         context("parseEmbed") {
@@ -50,7 +47,7 @@ class EmbedTest :
                         listOf(node("a", true, node("b", true, node("c", true, node("d")))))
                     ),
             ) { (_, case) ->
-                parseEmbed(case.first) shouldBe case.second
+                either { parseEmbed(case.first) }.shouldBeRight() shouldBe case.second
             }
 
             withData(
@@ -64,11 +61,11 @@ class EmbedTest :
                 "!(a)",
                 "a!(b))",
             ) { input ->
-                shouldThrow<EmbedException> { parseEmbed(input) }
+                either { parseEmbed(input) }.shouldBeLeft()
             }
         }
 
-        context("applyRewrite") {
+        context("rewriteEmbedAsSelect") {
             withData(
                 nameFn = { it.first },
                 "no nodes leaves no select" to ("" to ""),
@@ -81,26 +78,26 @@ class EmbedTest :
                 "mixed" to ("table_a!,table_b(sub)" to "*,table_a!inner(*),table_b(*,sub(*))"),
             ) { (_, case) ->
                 val query = queryOf("select" to "name,id", "embed" to case.first)
-                applyRewrite(query, parseEmbed(case.first))
+                rewriteEmbedAsSelect(query, either { parseEmbed(case.first) }.shouldBeRight())
 
-                query.first("select").orEmpty() shouldBe case.second
+                query["select"].orEmpty() shouldBe case.second
                 // an empty embed parameter is left alone, otherwise it is consumed
-                query.first("embed") shouldBe if (case.first.isEmpty()) "" else null
+                query["embed"] shouldBe if (case.first.isEmpty()) "" else null
             }
         }
 
-        context("resourceNames") {
+        context("embeddedResources") {
             test("resolves embed names to resources at every level, without duplicates") {
                 val nodes = listOf(
                     node("accounting_point", false, node("metering_grid_area")),
                     node("technical_resource"),
                 )
-                resourceNames("controllable_unit", nodes, testRelations)
+                embeddedResources("controllable_unit", nodes, testRelations)
                     .shouldContainExactly("accounting_point", "accounting_point_metering_grid_area", "technical_resource")
             }
 
             test("embeds resolving to the same resource are deduplicated") {
-                resourceNames(
+                embeddedResources(
                     "controllable_unit_service_provider",
                     listOf(node("end_user"), node("service_provider")),
                     testRelations,
@@ -110,27 +107,28 @@ class EmbedTest :
 
         context("validateRelations") {
             test("accepts known nested relations") {
-                validateRelations(
-                    "controllable_unit",
-                    listOf(node("accounting_point", false, node("metering_grid_area"))),
-                    testRelations,
-                )
+                either {
+                    validateRelations(
+                        "controllable_unit",
+                        listOf(node("accounting_point", false, node("metering_grid_area"))),
+                        testRelations,
+                    )
+                }.shouldBeRight()
             }
 
             test("rejects an unknown relation") {
-                shouldThrow<EmbedException> {
-                    validateRelations("controllable_unit", listOf(node("nonexistent")), testRelations)
-                }.message shouldBe "unknown embed relation: \"nonexistent\" is not embeddable from \"controllable_unit\""
+                either { validateRelations("controllable_unit", listOf(node("nonexistent")), testRelations) }
+                    .shouldBeLeft() shouldBe "unknown embed relation: \"nonexistent\" is not embeddable from \"controllable_unit\""
             }
 
             test("rejects an unknown nested relation") {
-                shouldThrow<EmbedException> {
+                either {
                     validateRelations(
                         "controllable_unit",
                         listOf(node("accounting_point", false, node("nonexistent"))),
                         testRelations,
                     )
-                }
+                }.shouldBeLeft()
             }
         }
 
@@ -139,35 +137,39 @@ class EmbedTest :
 
             test("rewrites embed to select when scopes cover the embedded resources") {
                 val query = queryOf("embed" to "accounting_point")
-                applyEmbed(query, "controllable_unit", "data", testRelations, readData).shouldBeNull()
-                query.first("select") shouldBe "*,accounting_point(*)"
+                either { applyEmbed(query, "controllable_unit", "data", testRelations, readData) }.shouldBeRight()
+                query["select"] shouldBe "*,accounting_point(*)"
             }
 
             test("rejects when an embedded resource is not covered, naming the resolved resource") {
                 val query = queryOf("embed" to "service_provider")
-                val failure = applyEmbed(
-                    query,
-                    "controllable_unit_service_provider",
-                    "data",
-                    testRelations,
-                    listOf(Scope(ScopeVerb.Read, "data:controllable_unit_service_provider")),
-                ).shouldNotBeNull()
+                val failure = either {
+                    applyEmbed(
+                        query,
+                        "controllable_unit_service_provider",
+                        "data",
+                        testRelations,
+                        listOf(Scope(ScopeVerb.Read, "data:controllable_unit_service_provider")),
+                    )
+                }.shouldBeLeft()
 
                 failure.status shouldBe HttpStatusCode.Forbidden
                 failure.message shouldBe "insufficient scope for embedded resource: party"
             }
 
             test("rejects malformed embed") {
-                val failure = applyEmbed(queryOf("embed" to "a!("), "controllable_unit", "data", testRelations, readData)
-                    .shouldNotBeNull()
+                val failure = either {
+                    applyEmbed(queryOf("embed" to "a!("), "controllable_unit", "data", testRelations, readData)
+                }.shouldBeLeft()
 
                 failure.status shouldBe HttpStatusCode.BadRequest
                 failure.message.startsWith("malformed embed parameter: ") shouldBe true
             }
 
             test("rejects unknown relation") {
-                val failure = applyEmbed(queryOf("embed" to "nope"), "controllable_unit", "data", testRelations, readData)
-                    .shouldNotBeNull()
+                val failure = either {
+                    applyEmbed(queryOf("embed" to "nope"), "controllable_unit", "data", testRelations, readData)
+                }.shouldBeLeft()
 
                 failure.status shouldBe HttpStatusCode.BadRequest
             }

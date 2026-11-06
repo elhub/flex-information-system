@@ -2,11 +2,13 @@ package no.elhub.flex.api.auth
 
 import arrow.core.getOrElse
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.auth.AuthScheme
+import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.ApplicationPlugin
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.application.hooks.CallSetup
+import io.ktor.server.auth.parseAuthorizationHeader
 import io.ktor.server.request.uri
 import io.ktor.server.response.respond
 import io.ktor.util.AttributeKey
@@ -50,7 +52,7 @@ val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
 
             // a missing token is not an error here: routes that need one reject the call themselves
             // (see RequireScope and RequireRole), others serve the caller as anonymous
-            val jwt = call.bearerToken()
+            val jwt = call.presentedJwt()
             if (jwt == null) {
                 logger.debug { "No Authorization header or session cookie present" }
                 return@on
@@ -70,12 +72,13 @@ val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
  * The JWT of the request: the `Authorization: Bearer` header takes precedence over the session cookie.
  * `null` if the request has neither.
  */
-fun ApplicationCall.bearerToken(): String? {
-    val authHeader = request.headers["Authorization"]
-    return when {
-        authHeader != null && authHeader.startsWith("Bearer ") -> authHeader.removePrefix("Bearer ")
-        else -> request.cookies[SESSION_COOKIE_NAME]
+fun ApplicationCall.presentedJwt(): String? {
+    // a malformed header is treated like a missing one, so that the session cookie can still be used
+    val header = runCatching { request.parseAuthorizationHeader() }.getOrNull()
+    if (header is HttpAuthHeader.Single && header.authScheme.equals(AuthScheme.Bearer, ignoreCase = true)) {
+        return header.blob
     }
+    return request.cookies[SESSION_COOKIE_NAME]
 }
 
 /** Responds with HTTP 401 and returns `null` if the call carries no verified token; otherwise returns the token. */

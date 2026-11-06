@@ -1,10 +1,12 @@
 package no.elhub.flex.api.postgrest
 
 import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
+import arrow.core.raise.either
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.Parameters
+import io.ktor.http.ParametersBuilder
 import no.elhub.flex.api.auth.Scope
 import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
@@ -15,7 +17,7 @@ import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
  */
 data class PostgrestRequest(
     val path: String,
-    val query: Query,
+    val query: Parameters,
     val headers: Map<String, String>,
 )
 
@@ -30,7 +32,7 @@ data class RequestRejection(
 
 private val singleIdPath = Regex("^/([a-z_]+)/([0-9]+)$")
 
-private const val OBJECT_ACCEPT = "application/vnd.pgrst.object+json"
+private const val SINGLE_OBJECT_MEDIA_TYPE = "application/vnd.pgrst.object+json"
 private const val DATA_ASSET = "data"
 
 /**
@@ -56,36 +58,31 @@ fun defaultRequiredScope(method: HttpMethod, path: String, asset: String = DATA_
 fun buildPostgrestRequest(
     method: HttpMethod,
     path: String,
-    query: Query,
+    query: ParametersBuilder,
     scopes: List<Scope>,
     extraHeaders: Map<String, String> = emptyMap(),
     relations: EmbedRelations = GeneratedDataApiRoutes.embedRelations,
-): Either<RequestRejection, PostgrestRequest> {
+): Either<RequestRejection, PostgrestRequest> = either {
     val headers = linkedMapOf<String, String>()
     var postgrestPath = path
 
     if (method == HttpMethod.Post || method == HttpMethod.Patch) {
-        headers["Accept"] = OBJECT_ACCEPT
+        headers[HttpHeaders.Accept] = SINGLE_OBJECT_MEDIA_TYPE
         headers["Prefer"] = "return=representation"
     }
 
     singleIdPath.matchEntire(path)?.let { match ->
         postgrestPath = "/" + match.groupValues[1]
-        query.set("id", "eq." + match.groupValues[2])
-        headers["Accept"] = OBJECT_ACCEPT
+        query["id"] = "eq." + match.groupValues[2]
+        headers[HttpHeaders.Accept] = SINGLE_OBJECT_MEDIA_TYPE
     }
 
-    applyEmbed(query, mainResource(postgrestPath), DATA_ASSET, relations, scopes)?.let { return it.left() }
-
-    try {
-        validAtQueryRewrite(query)
-        asOfQueryRewrite(query)
-    } catch (e: InvalidTimeRangeException) {
-        return RequestRejection(HttpStatusCode.BadRequest, e.message.orEmpty()).left()
-    }
+    applyEmbed(query, mainResource(postgrestPath), DATA_ASSET, relations, scopes)
+    rewriteValidAt(query)
+    rewriteAsOf(query)
 
     headers.putAll(extraHeaders)
-    return PostgrestRequest(postgrestPath, query, headers).right()
+    PostgrestRequest(postgrestPath, query.build(), headers)
 }
 
 /** The resource a PostgREST path is about; the event RPCs are embedded from `event`. */

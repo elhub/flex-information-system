@@ -2,13 +2,25 @@ package no.elhub.flex.api.postgrest
 
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 
 private val json = Json { ignoreUnknownKeys = true }
+
+/** The fields of an error response from PostgREST. */
+@Serializable
+private data class PostgrestError(
+    val code: String? = null,
+    val message: String? = null,
+    // PostgREST sometimes sends structured values here, which we do not pass on
+    val details: JsonElement? = null,
+    val hint: JsonElement? = null,
+)
 
 /**
  * Turns an error response from PostgREST into our [ErrorMessage].
@@ -17,37 +29,33 @@ private val json = Json { ignoreUnknownKeys = true }
  * reveal too much about PostgREST are replaced by more informative ones.
  */
 fun rewritePostgrestError(method: HttpMethod, status: HttpStatusCode, body: String): ErrorMessage {
-    val parsed = runCatching { json.parseToJsonElement(body) as? JsonObject }.getOrNull()
-    fun field(name: String) = (parsed?.get(name) as? JsonPrimitive)?.contentOrNull
+    val error = runCatching { json.decodeFromString<PostgrestError>(body) }.getOrNull()
 
-    val code = field("code")
-    var message = field("message").orEmpty()
-    var details = field("details")
-    var hint = field("hint")
-
-    if (code.isNullOrEmpty()) {
-        message = "${status.value} ${status.description}"
-        details = null
-        hint = null
-    }
-
-    when (method) {
-        HttpMethod.Patch -> if (message.startsWith("JSON object requested")) {
-            message = "User cannot update this resource"
-        }
-
-        HttpMethod.Post -> when {
-            message.startsWith("new row violates row-level security") -> message = "User cannot create this resource"
-
-            message.startsWith("duplicate key value") ->
-                message = "Duplicate found, please try to update the existing resource instead"
-        }
+    val code = error?.code
+    if (error == null || code.isNullOrEmpty()) {
+        return ErrorMessage(code = "HTTP${status.value}", message = "${status.value} ${status.description}")
     }
 
     return ErrorMessage(
-        code = code.takeUnless { it.isNullOrEmpty() } ?: "HTTP${status.value}",
-        message = message,
-        details = details?.takeIf { it.isNotEmpty() },
-        hint = hint?.takeIf { it.isNotEmpty() },
+        code = code,
+        message = friendlyMessage(method, error.message.orEmpty()),
+        details = error.details.text(),
+        hint = error.hint.text(),
     )
 }
+
+private fun friendlyMessage(method: HttpMethod, message: String): String =
+    when {
+        method == HttpMethod.Patch && message.startsWith("JSON object requested") ->
+            "User cannot update this resource"
+
+        method == HttpMethod.Post && message.startsWith("new row violates row-level security") ->
+            "User cannot create this resource"
+
+        method == HttpMethod.Post && message.startsWith("duplicate key value") ->
+            "Duplicate found, please try to update the existing resource instead"
+
+        else -> message
+    }
+
+private fun JsonElement?.text(): String? = (this as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotEmpty() }
