@@ -20,6 +20,7 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.head
 import io.ktor.client.request.header
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -29,6 +30,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.application.install
+import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.testing.TestApplication
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
@@ -61,6 +63,7 @@ class DataApiRoutesTest :
             app = TestApplication {
                 application {
                     install(Tracing.plugin)
+                    install(AutoHeadResponse)
                     configureSerialization()
                     install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
                     install(RequireApiVersion) { exemptSuffixes += "/download" }
@@ -438,6 +441,43 @@ class DataApiRoutesTest :
                 response.headers["WWW-Authenticate"] shouldBe "Bearer"
                 response.headers["Content-Length"]?.toInt() shouldBe response.bodyAsText().toByteArray().size
                 Json.parseToJsonElement(response.bodyAsText()).jsonObject.getValue("code").jsonPrimitive.content shouldBe "PGRST103"
+            }
+        }
+
+        context("HEAD requests") {
+            test("get the headers of the GET response, without a body") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/product_type")).willReturn(
+                        aResponse().withHeader("Content-Range", "0-0/1").withBody("""[{"id":1}]"""),
+                    ),
+                )
+
+                val response = app.client.head("/product_type") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.headers["Content-Range"] shouldBe "0-0/1"
+                response.bodyAsText() shouldBe ""
+            }
+
+            test("need the read scope, and a rejection has no body") {
+                val response = app.client.head("/product_type") {
+                    header("Authorization", "Bearer ${token(scope = "read:data:party")}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.Forbidden
+                response.bodyAsText() shouldBe ""
+                postgrest.allServeEvents.size shouldBe 0
+            }
+
+            test("an unknown route is a not found without a body") {
+                val response = app.client.head("/nope") { header("Api-Version", VERSION) }
+
+                response.status shouldBe HttpStatusCode.NotFound
+                response.bodyAsText() shouldBe ""
             }
         }
 
