@@ -83,6 +83,15 @@ export function authProvider(queryClient: QueryClient): AuthProvider {
     storageListenerRegistered = true;
     window.addEventListener("storage", (event) => {
       if (event.key !== null && event.key !== sessionInfoKey) return;
+
+      // session removed in another tab (logout or storage cleared)
+      if (!getStorage().getItem(sessionInfoKey)) {
+        queryClient.clear();
+        window.location.hash = "#/login";
+        window.location.reload();
+        return;
+      }
+
       queryClient.invalidateQueries({ queryKey: ["auth"] });
 
       // follow the other tab: unassumed -> assume page, assumed -> dashboard
