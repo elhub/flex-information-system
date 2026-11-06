@@ -14,7 +14,7 @@ private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_u
 
 private data class SeededCu(val cuId: Long, val csoId: Long)
 
-private data class PersistedNotice(val partyId: Long, val status: String)
+private data class PersistedCsoNotice(val partyId: Long, val status: String)
 
 /**
  * Notice: a controllable unit whose connecting system operator has no person member in FIS.
@@ -99,15 +99,15 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
             val cu = seed(Triggers.OFF) { seedCu() }
 
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "active"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
 
             seed(Triggers.OFF) { insertPartyMember(cu.csoId, "user@example.com") }
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "resolved"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
 
             execute("DELETE FROM flex.party_membership WHERE party_id = ${cu.csoId}")
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedNotice(fiso, "active"))
+            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
         }
 
         test("syncing twice does not duplicate the notice") {
@@ -149,10 +149,10 @@ private fun detectedPartiesFor(cuId: Long): List<Long> =
             "WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
     ) { it.getLong(1) }
 
-private fun persistedNoticesFor(cuId: Long): List<PersistedNotice> =
+private fun persistedNoticesFor(cuId: Long): List<PersistedCsoNotice> =
     query(
         "SELECT party_id, status FROM flex.notice WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
-    ) { PersistedNotice(it.getLong(1), it.getString(2)) }
+    ) { PersistedCsoNotice(it.getLong(1), it.getString(2)) }
 
 private fun <T> query(sql: String, map: (java.sql.ResultSet) -> T): List<T> =
     PostgresTestContainer.withConnection { conn ->
