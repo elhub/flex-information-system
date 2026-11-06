@@ -385,6 +385,37 @@ class DataApiRoutesTest :
             }
         }
 
+        context("large responses") {
+            test("a large successful body is relayed in full") {
+                val body = "[" + (1..200_000).joinToString(",") { """{"id":$it}""" } + "]"
+                postgrest.stubFor(get(urlPathEqualTo("/event")).willReturn(aResponse().withBody(body)))
+
+                val response = app.client.get("/event") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.bodyAsText() shouldBe body
+            }
+
+            test("an oversized error body gives the generic error") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/event")).willReturn(
+                        aResponse().withStatus(500).withBody("x".repeat(3 * 1024 * 1024)),
+                    ),
+                )
+
+                val response = app.client.get("/event") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.InternalServerError
+                Json.parseToJsonElement(response.bodyAsText()).jsonObject.getValue("code").jsonPrimitive.content shouldBe "HTTP500"
+            }
+        }
+
         context("unknown routes") {
             test("are a JSON not found, and never reach PostgREST") {
                 for ((path, method) in listOf("/nope" to "GET", "/service_providing_group_product_application_attachment_history" to "GET", "/party" to "PUT", "/rpc/anything" to "GET")) {

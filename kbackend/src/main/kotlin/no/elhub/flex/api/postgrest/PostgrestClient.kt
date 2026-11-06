@@ -7,26 +7,27 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
-import io.ktor.client.request.request
+import io.ktor.client.request.prepareRequest
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsBytes
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.appendPathSegments
+import io.ktor.http.content.OutgoingContent
+import io.ktor.http.contentLength
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondBytes
-import io.ktor.server.response.respondText
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.CancellationException
-import kotlinx.serialization.json.Json
+import kotlinx.io.readString
 import no.elhub.flex.api.auth.presentedJwt
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
@@ -36,7 +37,13 @@ import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}
 
-private const val REQUEST_TIMEOUT_MILLIS = 60_000L
+private const val CONNECT_TIMEOUT_MILLIS = 10_000L
+
+/** How long PostgREST may be silent. This is not a limit on the total time, since responses are streamed. */
+private const val SOCKET_TIMEOUT_MILLIS = 60_000L
+
+/** Error responses are read into memory to be rewritten, so only this much of them (1 MiB) is read. */
+private const val MAX_ERROR_BODY_BYTES = 1L shl 20
 
 /** Headers that describe a single connection, see RFC 9110 section 7.6.1. */
 private val connectionHeaders = listOf(
@@ -71,8 +78,8 @@ private val notForwardedResponseHeaders = caseInsensitiveSetOf(connectionHeaders
 /**
  * Forwards requests to PostgREST and relays the response.
  *
- * Error responses are rewritten with [rewritePostgrestError]. Responses are buffered, which is fine
- * since PostgREST limits how many rows a response can hold.
+ * Successful responses are streamed to the caller, since nothing limits how many rows a response holds.
+ * Error responses are small, and are rewritten with [rewritePostgrestError].
  */
 @Single(createdAtStart = true)
 class PostgrestClient(config: PostgrestConfig) {
@@ -85,20 +92,31 @@ class PostgrestClient(config: PostgrestConfig) {
             customizeClient { useSystemProperties() }
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = REQUEST_TIMEOUT_MILLIS
+            connectTimeoutMillis = CONNECT_TIMEOUT_MILLIS
+            socketTimeoutMillis = SOCKET_TIMEOUT_MILLIS
         }
     }
 
     /** Sends [request] to PostgREST on behalf of [call] and responds to [call] with the result. */
     suspend fun forward(call: ApplicationCall, method: HttpMethod, request: PostgrestRequest, body: ByteArray?) {
+        var streaming = false
         try {
             val traceparent = currentTraceContext().traceInfo.toString()
-            val response = client.request { buildRequest(call, method, request, body, traceparent) }
-            relay(call, method, response)
+            // the response body is only readable inside execute, so the call is responded to in there
+            client.prepareRequest { buildRequest(call, method, request, body, traceparent) }.execute { response ->
+                if (response.status.value >= HttpStatusCode.BadRequest.value) {
+                    relayError(call, method, response)
+                } else {
+                    streaming = true
+                    relay(call, response)
+                }
+            }
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             logger.error(e) { "PostgREST request failed: ${method.value} ${request.path}" }
+            // once the response has started, the status can no longer change: let the connection fail
+            if (streaming) throw e
             call.respondError(HttpStatusCode.BadGateway, ErrorMessage(code = "HTTP502", message = "Bad Gateway"))
         }
     }
@@ -138,27 +156,34 @@ class PostgrestClient(config: PostgrestConfig) {
         }
     }
 
-    private suspend fun relay(call: ApplicationCall, method: HttpMethod, response: HttpResponse) {
-        val status = response.status
+    private suspend fun relayError(call: ApplicationCall, method: HttpMethod, response: HttpResponse) {
+        val body = response.bodyAsChannel().readRemaining(MAX_ERROR_BODY_BYTES).readString()
+        val error = rewritePostgrestError(method, response.status, body)
+        logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
+        call.respondError(response.status, error)
+    }
 
-        if (status.value >= HttpStatusCode.BadRequest.value) {
-            val error = rewritePostgrestError(method, status, response.bodyAsText())
-            logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
-            call.respondError(status, error)
-            return
-        }
-
+    private suspend fun relay(call: ApplicationCall, response: HttpResponse) {
         response.headers.forEach { name, values ->
             if (name !in notForwardedResponseHeaders) {
                 values.forEach { call.response.header(name, it) }
             }
         }
 
-        if (status == HttpStatusCode.NoContent || status == HttpStatusCode.NotModified) {
-            call.respond(status)
+        if (response.status == HttpStatusCode.NoContent || response.status == HttpStatusCode.NotModified) {
+            call.respond(response.status)
             return
         }
 
-        call.respondBytes(response.bodyAsBytes(), ContentType.Application.Json, status)
+        call.respond(StreamedResponse(response, response.bodyAsChannel()))
     }
+}
+
+/** The [body] of [response], passed on as it arrives instead of being read into memory. */
+private class StreamedResponse(response: HttpResponse, private val body: ByteReadChannel) : OutgoingContent.ReadChannelContent() {
+    override val status: HttpStatusCode = response.status
+    override val contentType: ContentType = ContentType.Application.Json
+    override val contentLength: Long? = response.contentLength()
+
+    override fun readFrom(): ByteReadChannel = body
 }
