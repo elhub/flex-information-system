@@ -11,10 +11,10 @@ import no.elhub.flex.shared.accountingpoint.AccountingPointService
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.RepositoryError
-import no.elhub.flex.shared.error.AppError
+import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.tracing.TraceInfo
+import no.elhub.flex.shared.tracing.withTrace
 import no.elhub.flex.shared.util.todayLocalMidnight
-import no.elhub.flex.shared.util.withTrace
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 

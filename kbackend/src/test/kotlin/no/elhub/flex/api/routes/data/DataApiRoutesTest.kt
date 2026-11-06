@@ -37,14 +37,14 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.config.RequireApiVersion
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.postgrest.PostgrestClient
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureSerialization
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
@@ -65,7 +65,7 @@ class DataApiRoutesTest :
                     install(Tracing.plugin)
                     install(AutoHeadResponse)
                     configureSerialization()
-                    install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+                    configureAuthentication(TEST_JWT_SECRET)
                     install(RequireApiVersion) { exemptSuffixes += "/download" }
                     install(Koin) {
                         modules(
@@ -153,27 +153,16 @@ class DataApiRoutesTest :
                 postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withHeader("Authorization", equalTo("Bearer $jwt")))
             }
 
-            test("the scheme of the Authorization header is case-insensitive") {
-                postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
+            test("an Authorization header that is not a Bearer header is rejected, as on the auth endpoints") {
+                for (authorization in listOf("bearer ${token()}", "Basic dXNlcjpwYXNz")) {
+                    val response = app.client.get("/product_type") {
+                        header("Authorization", authorization)
+                        header("Api-Version", VERSION)
+                    }
+                    response.status shouldBe HttpStatusCode.BadRequest
+                }
 
-                val jwt = token()
-                app.client.get("/product_type") {
-                    header("Authorization", "bearer $jwt")
-                    header("Api-Version", VERSION)
-                }.status shouldBe HttpStatusCode.OK
-
-                postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withHeader("Authorization", equalTo("Bearer $jwt")))
-            }
-
-            test("an Authorization header that is not a bearer token is not sent on") {
-                postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
-
-                app.client.get("/product_type") {
-                    header("Authorization", "Basic dXNlcjpwYXNz")
-                    header("Api-Version", VERSION)
-                }.status shouldBe HttpStatusCode.OK
-
-                postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withoutHeader("Authorization"))
+                postgrest.allServeEvents.size shouldBe 0
             }
 
             test("embed becomes select, and valid_at a filter") {
@@ -504,6 +493,7 @@ class DataApiRoutesTest :
                     application {
                         configureSerialization()
                         install(Tracing.plugin)
+                        configureAuthentication(TEST_JWT_SECRET)
                         install(Koin) { modules(module { single { unreachable } }) }
                         dataApiRoutes()
                     }

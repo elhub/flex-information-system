@@ -10,26 +10,26 @@ import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
 import io.ktor.server.routing.RoutingCall
 import io.ktor.utils.io.toByteArray
-import no.elhub.flex.api.auth.AccessTokenKey
-import no.elhub.flex.api.auth.FlexRole
-import no.elhub.flex.api.auth.toFlexPrincipal
 import no.elhub.flex.api.util.FileContent
 import no.elhub.flex.api.util.FileContentType
 import no.elhub.flex.api.util.InvalidFileContent
 import no.elhub.flex.api.util.multipart
 import no.elhub.flex.api.util.pathParameter
-import no.elhub.flex.api.util.respondJson
-import no.elhub.flex.api.util.respondRedirect
+import no.elhub.flex.auth.plugin.FlexRole
+import no.elhub.flex.auth.plugin.accessToken
+import no.elhub.flex.auth.token.toFlexPrincipal
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.NotFoundError
-import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.error.ForbiddenError
-import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.MultipartError
-import no.elhub.flex.shared.error.ParsingError
-import no.elhub.flex.shared.error.ResourceNotFoundError
-import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.ForbiddenError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.MultipartError
+import no.elhub.flex.shared.http.ParsingError
+import no.elhub.flex.shared.http.ResourceNotFoundError
+import no.elhub.flex.shared.http.respondJson
+import no.elhub.flex.shared.http.respondRedirect
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import java.io.IOException
 import java.util.UUID
 
@@ -51,7 +51,7 @@ class AttachmentHandler(
 
     suspend fun download(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             val id = call.pathParameter("id")
                 .map { it.toLongOrNull() }
@@ -95,7 +95,7 @@ class AttachmentHandler(
 
     suspend fun create(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             // extract information from multipart body
             val createBody =
@@ -239,7 +239,7 @@ class AttachmentHandler(
 
     suspend fun delete(call: RoutingCall) {
         either {
-            val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
+            val principal = call.accessToken.toFlexPrincipal()
 
             val id = call.pathParameter("id")
                 .map { it.toLongOrNull() }

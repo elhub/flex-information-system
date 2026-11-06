@@ -7,9 +7,6 @@ import arrow.core.raise.ensure
 import arrow.core.right
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.routing.RoutingCall
-import no.elhub.flex.api.auth.AccessTokenKey
-import no.elhub.flex.api.auth.FlexRole
-import no.elhub.flex.api.auth.toFlexPrincipal
 import no.elhub.flex.api.entity.db.EntityLookupResult
 import no.elhub.flex.api.entity.db.EntityRepository
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequest
@@ -17,13 +14,16 @@ import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequestBusinessI
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequestType
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupResponse
 import no.elhub.flex.api.util.body
-import no.elhub.flex.api.util.handleError
-import no.elhub.flex.api.util.respondJson
-import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.error.AuthenticationError
-import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.ParsingError
-import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.auth.plugin.FlexRole
+import no.elhub.flex.auth.plugin.accessToken
+import no.elhub.flex.auth.token.toFlexPrincipal
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.AuthenticationError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ParsingError
+import no.elhub.flex.shared.http.handleError
+import no.elhub.flex.shared.http.respondJson
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 
 private const val ORGANISATION_ROLE = "flex_organisation"
@@ -37,7 +37,7 @@ private val emailAddress = Regex("^[^@\\s<>]+@[^@\\s<>]+$")
 class EntityLookup(private val repo: EntityRepository) {
 
     suspend fun handle(call: RoutingCall) {
-        val token = call.attributes[AccessTokenKey]
+        val token = call.accessToken
 
         either<AppError, EntityLookupResult> {
             ensure(token.role in allowedRoles) { AuthenticationError("user cannot perform this operation") }

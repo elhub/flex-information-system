@@ -18,13 +18,13 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import no.elhub.flex.api.auth.FlexAuthentication
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.entity.db.EntityLookupResult
 import no.elhub.flex.api.entity.db.EntityRepository
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import org.koin.dsl.module
@@ -57,7 +57,7 @@ class EntityLookupTest :
                 application {
                     install(Tracing.plugin)
                     configureSerialization()
-                    install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+                    configureAuthentication(TEST_JWT_SECRET)
                     install(Koin) {
                         modules(
                             module {

@@ -22,7 +22,7 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
-import no.elhub.flex.shared.error.InternalServerError
+import no.elhub.flex.shared.http.InternalServerError
 import kotlin.time.Clock
 import kotlin.time.Instant
 

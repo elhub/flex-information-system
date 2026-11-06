@@ -2,7 +2,7 @@ package no.elhub.flex.api.attachment
 
 import arrow.core.Either
 import arrow.core.raise.either
-import no.elhub.flex.shared.error.ParsingError
+import no.elhub.flex.shared.http.ParsingError
 
 @ConsistentCopyVisibility
 data class AttachmentFilename private constructor(

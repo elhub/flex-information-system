@@ -12,10 +12,6 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.header
 import io.ktor.server.routing.method
 import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
-import no.elhub.flex.api.auth.callerScopes
-import no.elhub.flex.api.auth.covers
-import no.elhub.flex.api.auth.respondInsufficientScope
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.postgrest.PostgrestClient
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
@@ -23,6 +19,10 @@ import no.elhub.flex.api.postgrest.RequestRejection
 import no.elhub.flex.api.postgrest.buildPostgrestRequest
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
 import no.elhub.flex.api.util.respondError
+import no.elhub.flex.auth.plugin.callerScopes
+import no.elhub.flex.auth.plugin.optionalAuthenticatedRouting
+import no.elhub.flex.auth.plugin.respondInsufficientScope
+import no.elhub.flex.auth.scope.covers
 import org.koin.ktor.ext.inject
 
 /**
@@ -32,7 +32,7 @@ import org.koin.ktor.ext.inject
 fun Application.dataApiRoutes() {
     val postgrest: PostgrestClient by inject()
 
-    routing {
+    optionalAuthenticatedRouting {
         for ((apiRoute, variant) in DataApiRegistry.servedByPostgrest(GeneratedDataApiRoutes.routes)) {
             route(apiRoute.path) {
                 method(apiRoute.method) {

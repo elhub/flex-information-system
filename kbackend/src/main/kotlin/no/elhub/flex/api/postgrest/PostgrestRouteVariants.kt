@@ -4,8 +4,8 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
 
 /** Where in PostgREST a request goes: the [path], and the [headers] to set on it. */
 data class UpstreamTarget(val path: String, val headers: Map<String, String> = emptyMap())

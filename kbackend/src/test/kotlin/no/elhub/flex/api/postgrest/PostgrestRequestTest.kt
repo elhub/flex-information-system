@@ -9,9 +9,9 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
-import no.elhub.flex.api.auth.AnonymousScopes
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
+import no.elhub.flex.auth.plugin.AnonymousScopes
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
 
 private val relations: EmbedRelations = mapOf(
     "controllable_unit" to mapOf("accounting_point" to "accounting_point"),
