@@ -5,9 +5,9 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.api.util.SeedScope
-import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.seed
+import no.elhub.flex.testutil.SeedScope
+import no.elhub.flex.testutil.Triggers
+import no.elhub.flex.testutil.seed
 import java.time.Instant
 
 private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_users"
