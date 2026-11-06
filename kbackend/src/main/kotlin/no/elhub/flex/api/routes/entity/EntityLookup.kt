@@ -16,14 +16,14 @@ import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequest
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequestBusinessIdType
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupRequestType
 import no.elhub.flex.api.model.dto.generated.models.EntityLookupResponse
-import no.elhub.flex.api.model.error.AppError
-import no.elhub.flex.api.model.error.AuthenticationError
-import no.elhub.flex.api.model.error.InternalServerError
-import no.elhub.flex.api.model.error.ParsingError
-import no.elhub.flex.api.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.api.util.body
 import no.elhub.flex.api.util.handleError
 import no.elhub.flex.api.util.respondJson
+import no.elhub.flex.shared.error.AppError
+import no.elhub.flex.shared.error.AuthenticationError
+import no.elhub.flex.shared.error.InternalServerError
+import no.elhub.flex.shared.error.ParsingError
+import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 
 private const val ORGANISATION_ROLE = "flex_organisation"
