@@ -75,7 +75,39 @@ interface FlexEntityIdentity extends FlexIdentityBase {
 
 export type FlexIdentity = FlexPartyIdentity | FlexEntityIdentity;
 
+let storageListenerRegistered = false;
+
 export function authProvider(queryClient: QueryClient): AuthProvider {
+  // when another tab assumes/unassumes a party (or logs out), refresh this tab
+  if (!storageListenerRegistered) {
+    storageListenerRegistered = true;
+    window.addEventListener("storage", (event) => {
+      if (event.key !== null && event.key !== sessionInfoKey) return;
+
+      // session removed in another tab (logout or storage cleared)
+      if (!getStorage().getItem(sessionInfoKey)) {
+        queryClient.clear();
+        window.location.hash = "#/login";
+        window.location.reload();
+        return;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
+
+      // follow the other tab: unassumed -> assume page, assumed -> dashboard
+      try {
+        const before = event.oldValue ? JSON.parse(event.oldValue) : null;
+        const after = event.newValue ? JSON.parse(event.newValue) : null;
+        if (!before || !after) return;
+        if (before.party_id === after.party_id) return;
+        window.location.hash =
+          after.party_id === undefined ? "#/login/assumeParty" : "#/";
+      } catch {
+        // ignore malformed values
+      }
+    });
+  }
+
   const getIdentity = async () => {
     const sessionInfoString = getStorage().getItem(sessionInfoKey);
     if (!sessionInfoString) return Promise.reject();
@@ -108,14 +140,23 @@ export function authProvider(queryClient: QueryClient): AuthProvider {
       if (!sessionInfoString) return Promise.reject();
       const sessionInfo = JSON.parse(sessionInfoString);
 
-      if (party_id !== null && sessionInfo["party_id"] !== undefined) {
-        // we are assuming a party, so we have to be entity
-        return Promise.reject("must be entity when assuming party");
-      }
-
       if (party_id === null && sessionInfo["party_id"] === undefined) {
         // we are entity, so nothing to unassume
         return Promise.resolve({ redirectTo: false });
+      }
+
+      if (party_id !== null && sessionInfo["party_id"] !== undefined) {
+        // the backend only assumes from an entity session, so go back to
+        // entity first. This also covers a stale localStorage (e.g. another
+        // tab assumed a party), where the DELETE can fail because the cookie
+        // is already a bare entity. Then the POST below decides.
+        try {
+          await fetchUtils.fetchJson(`${authURL}/assume`, {
+            method: "DELETE",
+          });
+        } catch {
+          // ignore
+        }
       }
 
       if (party_id !== null) {

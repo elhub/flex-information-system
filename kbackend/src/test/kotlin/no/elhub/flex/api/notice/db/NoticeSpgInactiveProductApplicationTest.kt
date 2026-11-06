@@ -13,8 +13,8 @@ import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProduct
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProductApplicationStatus.TEMPORARY_QUALIFIED
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProductApplicationStatus.VERIFIED
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupStatus
-import no.elhub.flex.api.util.Triggers
-import no.elhub.flex.api.util.seed
+import no.elhub.flex.testutil.Triggers
+import no.elhub.flex.testutil.seed
 
 private const val NOTICE_TYPE =
     "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive"

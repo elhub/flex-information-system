@@ -9,11 +9,11 @@ import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.routing.RoutingCall
-import no.elhub.flex.api.model.error.BadRequestError
-import no.elhub.flex.api.model.error.MissingHeaderError
-import no.elhub.flex.api.model.error.MissingPathParameterError
-import no.elhub.flex.api.model.error.MissingQueryParameterError
-import no.elhub.flex.api.model.error.MultipartError
+import no.elhub.flex.shared.error.BadRequestError
+import no.elhub.flex.shared.error.MissingHeaderError
+import no.elhub.flex.shared.error.MissingPathParameterError
+import no.elhub.flex.shared.error.MissingQueryParameterError
+import no.elhub.flex.shared.error.MultipartError
 
 /** Typed helper to get a header by name. */
 fun ApplicationRequest.header(name: String): Either<MissingHeaderError, String> =
