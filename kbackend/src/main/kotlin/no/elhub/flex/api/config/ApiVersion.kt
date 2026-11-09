@@ -17,6 +17,9 @@ class RequireApiVersionConfig {
     /** Paths that need no version (exact match). */
     val exemptPaths: MutableSet<String> = mutableSetOf()
 
+    /** Path prefixes that need no version. */
+    val exemptPrefixes: MutableSet<String> = mutableSetOf()
+
     /** Path suffixes that need no version. */
     val exemptSuffixes: MutableSet<String> = mutableSetOf()
 }
@@ -30,12 +33,13 @@ class RequireApiVersionConfig {
 val RequireApiVersion: ApplicationPlugin<RequireApiVersionConfig> =
     createApplicationPlugin("RequireApiVersion", ::RequireApiVersionConfig) {
         val exemptPaths = pluginConfig.exemptPaths.toSet()
+        val exemptPrefixes = pluginConfig.exemptPrefixes.toSet()
         val exemptSuffixes = pluginConfig.exemptSuffixes.toSet()
         val current = ApiVersion.entries.last().value
 
         on(CallSetup) { call ->
             val path = call.request.path()
-            if (path in exemptPaths || exemptSuffixes.any { path.endsWith(it) }) return@on
+            if (path in exemptPaths || exemptPrefixes.any { path.startsWith(it) } || exemptSuffixes.any { path.endsWith(it) }) return@on
 
             val requested = call.request.headers[API_VERSION_HEADER]
             if (requested == null || ApiVersion.fromValue(requested) == null) {

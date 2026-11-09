@@ -28,10 +28,10 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.readString
-import no.elhub.flex.api.auth.presentedJwt
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.util.respondError
+import no.elhub.flex.auth.plugin.presentedJwt
 import no.elhub.flex.shared.tracing.currentTraceContext
 import org.koin.core.annotation.Single
 

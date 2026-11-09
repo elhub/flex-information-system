@@ -8,8 +8,8 @@ import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpStatusCode
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
 
 private val testRelations: EmbedRelations = mapOf(
     "controllable_unit" to mapOf(

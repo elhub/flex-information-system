@@ -8,8 +8,10 @@ ktor:
       maximumPoolSize: 5
 
 flex:
-  jwtSecret: secret
   timezone: Europe/Oslo
+
+auth:
+  jwtSecret: secret
 
 docs:
   baseUrl: https://flex.test/

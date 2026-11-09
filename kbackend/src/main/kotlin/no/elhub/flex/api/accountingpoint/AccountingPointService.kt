@@ -6,11 +6,11 @@ import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.NoMatchError
 import no.elhub.flex.shared.db.NotFoundError
-import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.error.EndUserError
-import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.ResourceNotFoundError
-import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.EndUserError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ResourceNotFoundError
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 
 interface AccountingPointService {

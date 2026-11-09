@@ -7,9 +7,9 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
 
 /**
  * What to send to PostgREST: the [path], the [query] and the [headers] that replace

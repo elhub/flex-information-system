@@ -22,6 +22,9 @@ enum class Triggers { ON, OFF }
 /** A seeded system operator party, and a principal that acts as it (resolved through its identity). */
 data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal)
 
+/** A seeded entity with an identity but no assumed party, and a principal that acts as it. */
+data class SeededEntity(val entityId: Long, val principal: FlexPrincipal)
+
 private val orgCounter = AtomicLong(200_000_000L)
 private val glnCounter = AtomicLong(20_000_000L)
 
@@ -159,6 +162,21 @@ class SeedScope(private val conn: Connection) {
             name,
             uniqueOrgNumber(),
         )
+
+    /** Inserts an entity with an identity that has no party, and a principal that acts as the bare entity. */
+    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity {
+        val entityId = insertOrganisationEntity(name)
+        val eid = conn.prepareStatement(
+            "INSERT INTO flex.identity (entity_id) VALUES (?) RETURNING eid::text",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getString(1)
+            }
+        }
+        return SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = eid))
+    }
 
     fun insertFiso(name: String = "Test FISO"): Long =
         insertEntityAndParty(name, "flexibility_information_system_operator", "flex_flexibility_information_system_operator").second

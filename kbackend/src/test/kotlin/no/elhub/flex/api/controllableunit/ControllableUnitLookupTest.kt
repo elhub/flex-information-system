@@ -21,12 +21,8 @@ import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import no.elhub.flex.api.accountingpoint.AccountingPointService
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureLogging
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.api.event.db.EventRepository
 import no.elhub.flex.api.metrics.FlexMetrics
@@ -35,14 +31,18 @@ import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureLogging
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.accountingpoint.model.AccountingPoint
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
-import no.elhub.flex.shared.error.EndUserError
-import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.ResourceNotFoundError
+import no.elhub.flex.shared.http.EndUserError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ResourceNotFoundError
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Clock
@@ -924,7 +924,7 @@ private fun testApp(
     TestApplication {
         application {
             install(Tracing.plugin)
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+            configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
             configureLogging()
             install(Koin) {
@@ -936,7 +936,7 @@ private fun testApp(
                         single<EventRepository> { eventRepo }
                         single { metrics }
                         single<PartyService> { partyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo", TEST_JWT_SECRET)) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo")) }
                     },
                 )
             }

@@ -31,7 +31,7 @@ import no.elhub.flex.shared.controllableunit.model.AccountingPointStartDates
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.LockTimeoutError
 import no.elhub.flex.shared.db.NotFoundError
-import no.elhub.flex.shared.error.InternalServerError
+import no.elhub.flex.shared.http.InternalServerError
 import no.elhub.flex.shared.meteringgridarea.MeteringGridArea
 import no.elhub.flex.shared.meteringgridarea.MeteringGridAreaStatus
 import no.elhub.flex.shared.meteringgridarea.db.MeteringGridAreaRepository

@@ -5,17 +5,18 @@ import io.ktor.server.application.install
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.netty.EngineMain
 import io.ktor.server.plugins.autohead.AutoHeadResponse
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.ConfigModule
 import no.elhub.flex.api.config.RequireApiVersion
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureDatabase
-import no.elhub.flex.api.config.configureHealth
-import no.elhub.flex.api.config.configureLogging
-import no.elhub.flex.api.config.configureMetrics
-import no.elhub.flex.api.config.configureRouting
-import no.elhub.flex.api.config.configureSerialization
-import no.elhub.flex.api.config.flexConfig
+import no.elhub.flex.auth.AuthModule
+import no.elhub.flex.auth.config.authConfig
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureDatabase
+import no.elhub.flex.config.configureErrorHandling
+import no.elhub.flex.config.configureHealth
+import no.elhub.flex.config.configureLogging
+import no.elhub.flex.config.configureMetrics
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.jobs.runJob
 import no.elhub.flex.shared.SharedModule
 import no.elhub.flex.shared.metrics.MetricsModule
@@ -40,7 +41,7 @@ fun main(args: Array<String>) {
     }
 }
 
-@Module(includes = [MetricsModule::class, ConfigModule::class, SharedModule::class])
+@Module(includes = [MetricsModule::class, ConfigModule::class, SharedModule::class, AuthModule::class])
 @ComponentScan("no.elhub.flex.api")
 class AppModule
 
@@ -57,15 +58,14 @@ fun Application.module() {
     install(AutoHeadResponse)
     configureLogging()
     configureSerialization()
+    configureErrorHandling()
     configureDatabase()
 
-    val flexConfig = environment.config.flexConfig()
-    install(FlexAuthentication) {
-        jwtSecret = flexConfig.jwtSecret
-        excludedPaths += listOf("/healthz", "/metrics")
-    }
+    val authConfig = environment.config.authConfig()
+    configureAuthentication(authConfig.jwtSecret)
     install(RequireApiVersion) {
         exemptPaths += listOf("/", "/openapi.json", "/healthz", "/metrics")
+        exemptPrefixes += "/auth/"
         exemptSuffixes += "/download"
     }
 

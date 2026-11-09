@@ -12,7 +12,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import no.elhub.flex.api.util.isValidGsrn
-import no.elhub.flex.shared.error.ParsingError
+import no.elhub.flex.shared.http.ParsingError
 
 /**
  * A validated Global Service Relation Number (GSRN).

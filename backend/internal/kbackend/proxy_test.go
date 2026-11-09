@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 func assertEqual(t *testing.T, name, got, want string) {
@@ -102,4 +104,58 @@ func TestNewProxyInvalidURL(t *testing.T) {
 	if _, err := kbackend.NewProxy("://bad"); err == nil {
 		t.Error("expected error")
 	}
+}
+
+func TestProxyReplacesTraceparentWithGoSpan(t *testing.T) {
+	t.Parallel()
+
+	var got string
+
+	upstream := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+		got = r.Header.Get("Traceparent")
+	}))
+	defer upstream.Close()
+
+	proxy, err := kbackend.NewProxy(upstream.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	traceID, _ := trace.TraceIDFromHex("0af7651916cd43dd8448eb211c80319c")
+	spanID, _ := trace.SpanIDFromHex("b7ad6b7169203331")
+	ctx := trace.ContextWithSpanContext(t.Context(), trace.NewSpanContext(trace.SpanContextConfig{ //nolint:exhaustruct,exhaustruct_v5
+		TraceID: traceID,
+		SpanID:  spanID,
+	}))
+
+	req := httptest.NewRequestWithContext(ctx, http.MethodGet, "/x", nil)
+	// a client-supplied traceparent must not reach Kotlin
+	req.Header.Set("Traceparent", "00-11111111111111111111111111111111-2222222222222222-01")
+
+	proxy.ServeHTTP(httptest.NewRecorder(), req)
+
+	assertEqual(t, "Traceparent", got, "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-00")
+}
+
+func TestProxyDropsClientTraceparentWithoutSpan(t *testing.T) {
+	t.Parallel()
+
+	var got string
+
+	upstream := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+		got = r.Header.Get("Traceparent")
+	}))
+	defer upstream.Close()
+
+	proxy, err := kbackend.NewProxy(upstream.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "/x", nil)
+	req.Header.Set("Traceparent", "00-11111111111111111111111111111111-2222222222222222-01")
+
+	proxy.ServeHTTP(httptest.NewRecorder(), req)
+
+	assertEqual(t, "Traceparent", got, "")
 }

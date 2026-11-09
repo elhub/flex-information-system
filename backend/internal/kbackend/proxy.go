@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 // NewProxy returns a handler that forwards every request, unchanged, to the
@@ -27,6 +29,15 @@ func NewProxy(upstream string) (http.Handler, error) {
 		Rewrite: func(pr *httputil.ProxyRequest) {
 			pr.SetURL(target)
 			pr.SetXForwarded()
+
+			// Incoming traceparent headers are not trusted (see the trace middleware): replace
+			// them with the trace of the Go span so that both backends log the trace ID that
+			// the client gets in the traceresponse header.
+			pr.Out.Header.Del("Traceparent")
+
+			if sc := trace.SpanContextFromContext(pr.In.Context()); sc.IsValid() {
+				pr.Out.Header.Set("Traceparent", "00-"+sc.TraceID().String()+"-"+sc.SpanID().String()+"-"+sc.TraceFlags().String())
+			}
 		},
 		ModifyResponse: func(resp *http.Response) error {
 			// the Go trace middleware already sets this header, so we need to drop

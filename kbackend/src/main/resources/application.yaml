@@ -13,8 +13,10 @@ ktor:
       maximumPoolSize: 10
 
 flex:
-  jwtSecret: ${FLEX_JWT_SECRET}
   timezone: ${FLEX_TIMEZONE:Europe/Oslo}
+
+auth:
+  jwtSecret: ${FLEX_JWT_SECRET}
 
 docs:
   baseUrl: ${FLEX_BASE_URL}

@@ -7,7 +7,6 @@ import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.api.accountingpoint.AccountingPointService
-import no.elhub.flex.api.auth.AccessTokenKey
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepository
@@ -24,15 +23,16 @@ import no.elhub.flex.api.model.dto.toDtos
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.util.asLocalMidnightInstant
 import no.elhub.flex.api.util.body
-import no.elhub.flex.api.util.respondJson
+import no.elhub.flex.auth.plugin.accessToken
 import no.elhub.flex.shared.accountingpoint.model.AccountingPointId
 import no.elhub.flex.shared.auth.FlexPrincipal
-import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.error.BadRequestError
-import no.elhub.flex.shared.error.EndUserError
-import no.elhub.flex.shared.error.InternalServerError
-import no.elhub.flex.shared.error.ResourceNotFoundError
-import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.BadRequestError
+import no.elhub.flex.shared.http.EndUserError
+import no.elhub.flex.shared.http.InternalServerError
+import no.elhub.flex.shared.http.ResourceNotFoundError
+import no.elhub.flex.shared.http.respondJson
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.shared.util.todayLocalMidnight
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -58,7 +58,7 @@ class ControllableUnitLookup(
     private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {
-        val requestingPartyId = call.attributes[AccessTokenKey].partyId
+        val requestingPartyId = call.accessToken.partyId
         var accountingPointBusinessIdForMetrics: String? = null
 
         with(FlexPrincipal.internalData) {
