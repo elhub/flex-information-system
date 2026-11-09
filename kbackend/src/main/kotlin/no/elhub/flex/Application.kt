@@ -12,6 +12,7 @@ import no.elhub.flex.auth.config.authConfig
 import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureDatabase
+import no.elhub.flex.config.configureErrorHandling
 import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMetrics
@@ -57,6 +58,7 @@ fun Application.module() {
     install(AutoHeadResponse)
     configureLogging()
     configureSerialization()
+    configureErrorHandling()
     configureDatabase()
 
     val authConfig = environment.config.authConfig()
