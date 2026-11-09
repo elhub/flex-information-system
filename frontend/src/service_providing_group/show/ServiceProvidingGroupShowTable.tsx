@@ -1,4 +1,10 @@
-import { BodyText, Button, Loader, Tooltip } from "../../components/ui";
+import {
+  BodyText,
+  Button,
+  Dropdown,
+  Loader,
+  Tooltip,
+} from "../../components/ui";
 import {
   ListFilters,
   type ListFiltersState,
@@ -14,7 +20,7 @@ import { usePermissions, useTranslate } from "ra-core";
 import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
+import { IconDots, IconPencil, IconTrash, IconUser } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
@@ -29,35 +35,126 @@ type Props = {
   powerScale: Scale;
 };
 
-const DeleteButton = ({
+const RowActionsMenu = ({
   membershipId,
   spgId,
+  canUpdate,
+  canDelete,
 }: {
   membershipId: number;
   spgId: number;
+  canUpdate: boolean;
+  canDelete: boolean;
 }) => {
+  const translate = useTranslate();
+  const navigate = useNavigate();
   const { mutateAsync: removeMembership } = useRemoveMembershipFromShow(spgId);
+  const editPath = `/service_providing_group/${spgId}/membership/${membershipId}`;
   const { buttonProps, dialog } = useConfirmAction({
-    title: "Delete",
+    title: "Remove from group",
     content:
-      "Are you sure you want to delete this item? This action cannot be undone.",
+      "Are you sure you want to remove this controllable unit from the group? This action cannot be undone. If the membership is no longer active, you can update the valid to date by editing the membership.",
     onConfirmMutation: {
       mutationFn: () => removeMembership(membershipId),
     },
+    secondaryAction: canUpdate
+      ? {
+          label: "Edit membership",
+          onClick: () => navigate(editPath),
+        }
+      : undefined,
   });
+
+  const { permissions } = usePermissions<Permissions>();
+  const canReadHistory = !!permissions?.allow(
+    "service_providing_group_membership_history",
+    "read",
+  );
+  const canReadEvent = !!permissions?.allow("event", "read");
+  const historyFilter = encodeURIComponent(
+    JSON.stringify({ service_providing_group_membership_id: membershipId }),
+  );
+  const eventFilter = encodeURIComponent(
+    JSON.stringify({
+      "subject@eq": `/service_providing_group_membership/${membershipId}`,
+    }),
+  );
+  const hasActions = canUpdate || canDelete;
+
+  if (!hasActions && !canReadHistory && !canReadEvent) return null;
 
   return (
     <>
-      <Button
-        variant="invisible"
-        className="text-semantic-background-action-danger"
-        size="large"
-        icon={IconCrossCircle}
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          e.stopPropagation();
-          buttonProps.onClick();
-        }}
-      />
+      <Dropdown>
+        <Button
+          as={Dropdown.Toggle}
+          variant="invisible"
+          size="small"
+          icon={IconDots}
+          aria-label={translate(
+            "text.resource_show_layout.more_actions_aria_label",
+          )}
+        />
+        <Dropdown.Menu arrow placement="bottom-end">
+          {hasActions && (
+            <>
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.actions_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                {canUpdate && (
+                  <Dropdown.Menu.GroupedList.Item as={RouterLink} to={editPath}>
+                    <div className="flex items-center gap-2">
+                      <IconPencil />
+                      Edit membership
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+                {canDelete && (
+                  <Dropdown.Menu.GroupedList.Item
+                    onClick={() => buttonProps.onClick()}
+                  >
+                    <div className="flex items-center gap-2 text-semantic-background-action-danger">
+                      <IconTrash />
+                      Remove from group
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
+          {(canReadHistory || canReadEvent) && (
+            <>
+              {hasActions && <Dropdown.Menu.Divider />}
+              <Dropdown.Menu.GroupedList.Heading>
+                {translate("text.resource_show_layout.navigate_group_label")}
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList>
+                {canReadHistory && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={RouterLink}
+                    to={`/service_providing_group/${spgId}/membership_history?filter=${historyFilter}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {translate("text.tab.history")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+                {canReadEvent && (
+                  <Dropdown.Menu.GroupedList.Item
+                    as={RouterLink}
+                    to={`/event?filter=${eventFilter}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {translate("text.events")}
+                    </div>
+                  </Dropdown.Menu.GroupedList.Item>
+                )}
+              </Dropdown.Menu.GroupedList>
+            </>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
       {dialog}
     </>
   );
@@ -182,6 +279,10 @@ export const ServiceProvidingGroupShowTable = ({
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
+  );
+  const canUpdate = permissions?.allow(
+    "service_providing_group_membership",
+    "update",
   );
   const canDelete = permissions?.allow(
     "service_providing_group_membership",
@@ -355,19 +456,15 @@ export const ServiceProvidingGroupShowTable = ({
         data={filteredCUs ?? []}
         columns={columns}
         className="w-full"
-        action={
-          canDelete
-            ? {
-                header: "Remove from group",
-                render: (row) =>
-                  row.membershipId !== undefined ? (
-                    <DeleteButton
-                      membershipId={row.membershipId}
-                      spgId={spgId}
-                    />
-                  ) : null,
-              }
-            : undefined
+        rowActions={(row) =>
+          row.membershipId !== undefined ? (
+            <RowActionsMenu
+              membershipId={row.membershipId}
+              spgId={spgId}
+              canUpdate={!!canUpdate}
+              canDelete={!!canDelete}
+            />
+          ) : null
         }
       />
     </div>

@@ -44,8 +44,8 @@ export const ServiceProviderProductApplicationInput = () => {
       <FormContainer>
         <Heading level={3} size="medium">
           {createOrUpdate === "create"
-            ? "Create service provider product application"
-            : "Edit service provider product application"}
+            ? "Create Service Provider Product Application"
+            : "Edit Service Provider Product Application"}
         </Heading>
         <VerticalSpace size="small" />
         <PartyReferenceInput

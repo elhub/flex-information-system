@@ -1,6 +1,7 @@
 import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupMembershipCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
@@ -28,6 +29,7 @@ const fields = getFields(zServiceProvidingGroupMembershipCreateRequest.shape);
 export const ServiceProvidingGroupMembershipInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+  const createOrUpdate = useCreateOrUpdate();
 
   const record = useMemo(
     () => filterRecord({ ...actualRecord, ...overrideRecord }),
@@ -44,7 +46,8 @@ export const ServiceProvidingGroupMembershipInput = () => {
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "update" &&
+            "Edit Service Providing Group Membership"}
         </Heading>
         <div className="flex flex-col gap-3">
           <AutocompleteReferenceInput

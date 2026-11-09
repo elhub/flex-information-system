@@ -1,5 +1,6 @@
 import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
 import { useNavigate } from "react-router-dom";
+import { useCreateOrUpdate } from "../../auth";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { countDefinedValues } from "../../util";
@@ -92,6 +93,8 @@ const ControllableUnitServiceProviderForm = ({
     navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
   };
 
+  const createOrUpdate = useCreateOrUpdate();
+
   const fields = getFields(zControllableUnitServiceProviderCreateRequest.shape);
 
   return (
@@ -104,7 +107,9 @@ const ControllableUnitServiceProviderForm = ({
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "update"
+            ? "Edit Controllable Unit Service Provider"
+            : "Create Controllable Unit Service Provider"}
         </Heading>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
