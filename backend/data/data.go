@@ -380,12 +380,21 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
+// mountPath is the prefix of the data API. The router strips it before the
+// requests reach this handler, but kbackend serves the API under it.
+const mountPath = "/api/v1"
+
 func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) {
 	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
 		Rewrite: func(pr *httputil.ProxyRequest) {
 			pr.Out.URL.Scheme = data.kbackendURL.Scheme
 			pr.Out.URL.Host = data.kbackendURL.Host
-			pr.Out.URL.Path = req.URL.Path
+			pr.Out.URL.Path = mountPath + req.URL.Path
+
+			if req.URL.RawPath != "" {
+				pr.Out.URL.RawPath = mountPath + req.URL.RawPath
+			}
+
 			pr.Out.Host = data.kbackendURL.Host
 
 			// Forward Authorization and Content-Type headers.
