@@ -430,7 +430,7 @@ resources-to-openapi:
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml \
     --scopes-file openapi/scopes.yml \
-    --module grid > backend/grid/static/openapi.json
+    --module grid > kbackend/grid/static/openapi.json
 
     # remove custom fields from the final OpenAPI specification
     jq '( .components.schemas // empty )
@@ -455,9 +455,12 @@ resources-to-openapi:
                 else . end
             )' \
         --indent 4 \
-        < backend/grid/static/openapi.json \
+        < kbackend/grid/static/openapi.json \
         > openapi/openapi-grid-clean.json
-    mv openapi/openapi-grid-clean.json backend/grid/static/openapi.json
+    mv openapi/openapi-grid-clean.json kbackend/grid/static/openapi.json
+
+    # TEMPORARY: same as for the data API
+    cp kbackend/grid/static/openapi.json backend/grid/static/openapi.json
 
     yq -o=json --indent 4 openapi/openapi-auth.yml > backend/auth/static/openapi.json
 
@@ -474,7 +477,7 @@ resources-to-openapi:
     spectral lint \
         --fail-severity warn \
         --verbose \
-        backend/grid/static/openapi.json
+        kbackend/grid/static/openapi.json
 
 resources-to-diagram:
     #!/usr/bin/env bash
@@ -498,6 +501,12 @@ openapi-to-kbackend-routes:
         --resources openapi/resources.yml \
         --module api --package no.elhub.flex.api.routes.data.generated \
         > kbackend/src/main/kotlin/no/elhub/flex/api/routes/data/generated/GeneratedDataApiRoutes.kt
+
+    .venv/bin/python3 local/scripts/openapi_to_kbackend_routes.py \
+        --openapi kbackend/grid/static/openapi.json \
+        --resources openapi/resources.yml \
+        --module grid --name Grid --package no.elhub.flex.api.routes.grid.generated \
+        > kbackend/src/main/kotlin/no/elhub/flex/api/routes/grid/generated/GeneratedGridApiRoutes.kt
 
 openapi-to-embed-relations:
     #!/usr/bin/env bash

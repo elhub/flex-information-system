@@ -7,15 +7,18 @@ import io.ktor.server.routing.routing
 import no.elhub.flex.api.auth.Scope
 import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.auth.requireScope
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
 import org.koin.ktor.ext.inject
 
 /** Registers all `entity` routes on [Application]. */
 fun Application.entityRoutes() {
     routing {
         val lookup: EntityLookup by inject()
-        route("/entity/lookup") {
-            requireScope(Scope(ScopeVerb.Use, "data:entity:lookup"))
-            post { lookup.handle(call) }
+        route(DATA_API_MOUNT_PATH) {
+            route("/entity/lookup") {
+                requireScope(Scope(ScopeVerb.Use, "data:entity:lookup"))
+                post { lookup.handle(call) }
+            }
         }
     }
 }

@@ -9,19 +9,22 @@ import no.elhub.flex.api.auth.Scope
 import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.auth.requireRoles
 import no.elhub.flex.api.auth.requireScope
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
 import org.koin.ktor.ext.inject
 
 /** Registers all `controllable_unit` routes on [Application]. */
 fun Application.controllableUnitRoutes() {
     routing {
         val lookup: ControllableUnitLookup by inject()
-        route("/controllable_unit") {
-            route("/lookup") {
-                requireRoles(FlexRole.SERVICE_PROVIDER, FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR)
-                requireScope(
-                    Scope(ScopeVerb.Use, "data:controllable_unit:lookup")
-                )
-                post { lookup.handle(call) }
+        route(DATA_API_MOUNT_PATH) {
+            route("/controllable_unit") {
+                route("/lookup") {
+                    requireRoles(FlexRole.SERVICE_PROVIDER, FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR)
+                    requireScope(
+                        Scope(ScopeVerb.Use, "data:controllable_unit:lookup")
+                    )
+                    post { lookup.handle(call) }
+                }
             }
         }
     }

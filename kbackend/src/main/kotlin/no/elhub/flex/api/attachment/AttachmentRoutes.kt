@@ -11,6 +11,7 @@ import no.elhub.flex.api.auth.Scope
 import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.auth.requireRoles
 import no.elhub.flex.api.auth.requireScope
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
 import org.koin.ktor.ext.inject
 
 /**
@@ -29,26 +30,28 @@ fun Application.attachmentRoutes(
 
         val handler = AttachmentHandler(baseResource, storage)
 
-        route("/${baseResource}_attachment") {
-            method(HttpMethod.Post) {
-                requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
-                editRoles.takeIf { it.isNotEmpty() }?.let {
-                    requireRoles(*it.toTypedArray())
+        route(DATA_API_MOUNT_PATH) {
+            route("/${baseResource}_attachment") {
+                method(HttpMethod.Post) {
+                    requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
+                    editRoles.takeIf { it.isNotEmpty() }?.let {
+                        requireRoles(*it.toTypedArray())
+                    }
+                    handle { handler.create(call) }
                 }
-                handle { handler.create(call) }
             }
-        }
-        route("/${baseResource}_attachment/{id}") {
-            method(HttpMethod.Delete) {
-                requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
-                editRoles.takeIf { it.isNotEmpty() }?.let {
-                    requireRoles(*it.toTypedArray())
+            route("/${baseResource}_attachment/{id}") {
+                method(HttpMethod.Delete) {
+                    requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
+                    editRoles.takeIf { it.isNotEmpty() }?.let {
+                        requireRoles(*it.toTypedArray())
+                    }
+                    handle { handler.delete(call) }
                 }
-                handle { handler.delete(call) }
-            }
-            route("/download") {
-                requireScope(Scope(ScopeVerb.Read, "attachment:${baseResource}_attachment"))
-                get { handler.download(call) }
+                route("/download") {
+                    requireScope(Scope(ScopeVerb.Read, "attachment:${baseResource}_attachment"))
+                    get { handler.download(call) }
+                }
             }
         }
     }

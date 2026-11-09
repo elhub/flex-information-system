@@ -372,9 +372,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	// handlers mounted under the API prefixes; the data API gets the API version
-	// check and per-route metrics from the Go mux unless it is proxied.
-	dataAPIRoute := middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler))
-	gridAPIRoute := gridAPIHandler
+	// check and per-route metrics from the Go mux unless it is proxied. The
+	// prefixes are stripped, except when proxying: kbackend mounts the APIs
+	// under their prefixes.
+	dataAPIRoute := http.StripPrefix(
+		"/api/v1",
+		middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler)),
+	)
+	gridAPIRoute := http.StripPrefix("/grid/v0", gridAPIHandler)
 
 	var kbackendProxy http.Handler
 
@@ -388,12 +393,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	if proxyDataToKbackend {
 		slog.InfoContext(ctx, "Data API is proxied to kbackend")
 
+		// kbackend mounts the data API under its prefix, so it is not stripped
 		dataAPIRoute = kbackendProxy
 	}
 
 	if proxyGridToKbackend {
 		slog.InfoContext(ctx, "Grid API is proxied to kbackend")
 
+		// kbackend mounts the grid API under its prefix, so it is not stripped
 		gridAPIRoute = kbackendProxy
 	}
 
@@ -511,14 +518,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v1/*url",
-			WrapHandler(http.StripPrefix("/api/v1", dataAPIRoute)), //nolint:contextcheck
+			WrapHandler(dataAPIRoute), //nolint:contextcheck
 		)
 
 		// grid API endpoint
 		router.Match(
 			[]string{"HEAD", "GET", "OPTIONS"},
 			"/grid/v0/*url",
-			WrapHandler(http.StripPrefix("/grid/v0", gridAPIRoute)), //nolint:contextcheck
+			WrapHandler(gridAPIRoute), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
 

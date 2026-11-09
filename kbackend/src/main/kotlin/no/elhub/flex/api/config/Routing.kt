@@ -6,6 +6,8 @@ import no.elhub.flex.api.routes.controllableunit.controllableUnitRoutes
 import no.elhub.flex.api.routes.data.apiDocsRoutes
 import no.elhub.flex.api.routes.data.dataApiRoutes
 import no.elhub.flex.api.routes.entity.entityRoutes
+import no.elhub.flex.api.routes.grid.gridApiDocsRoutes
+import no.elhub.flex.api.routes.grid.gridApiRoutes
 
 /** Defines the endpoints of the application. */
 fun Application.configureRouting() {
@@ -14,4 +16,6 @@ fun Application.configureRouting() {
     entityRoutes()
     apiDocsRoutes()
     dataApiRoutes()
+    gridApiDocsRoutes()
+    gridApiRoutes()
 }

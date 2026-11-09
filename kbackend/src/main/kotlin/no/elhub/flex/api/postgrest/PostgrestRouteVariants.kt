@@ -73,3 +73,28 @@ class AttachmentReadVariant(private val resource: String, private val requiredQu
     override fun rewrite(path: String, query: ParametersBuilder): UpstreamTarget =
         UpstreamTarget(path, mapOf("Accept-Profile" to "attachment"))
 }
+
+private const val GRID_ASSET = "grid"
+private const val DEFAULT_PROXIMITY_LIMIT = "10"
+
+/** Reading the grid API: served from the `grid` schema of PostgREST, with scopes on the `grid` asset. */
+open class GridReadVariant : PostgrestRouteVariant {
+    override fun requiredScope(method: HttpMethod, path: String): Scope = defaultRequiredScope(method, path, GRID_ASSET)
+
+    override fun rewrite(path: String, query: ParametersBuilder): UpstreamTarget =
+        UpstreamTarget(path, mapOf("Accept-Profile" to GRID_ASSET))
+}
+
+/**
+ * `GET /substation`: `order=proximity` targets the `substation_distance` function instead of the table,
+ * which gives the geographical filtering. The result is limited to 10 unless a limit is given.
+ */
+object GridSubstationListVariant : GridReadVariant() {
+    override fun rewrite(path: String, query: ParametersBuilder): UpstreamTarget {
+        if (query["order"] != "proximity") return super.rewrite(path, query)
+
+        query.remove("order")
+        if (query["limit"]?.toIntOrNull() == null) query["limit"] = DEFAULT_PROXIMITY_LIMIT
+        return super.rewrite("/rpc/substation_distance", query)
+    }
+}

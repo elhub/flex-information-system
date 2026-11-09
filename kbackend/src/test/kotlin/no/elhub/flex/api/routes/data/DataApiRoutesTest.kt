@@ -100,7 +100,7 @@ class DataApiRoutesTest :
                 )
 
                 val jwt = token()
-                val response = app.client.get("/controllable_unit?name=eq.x&limit=1") {
+                val response = app.client.get("/api/v1/controllable_unit?name=eq.x&limit=1") {
                     header("Authorization", "Bearer $jwt")
                     header("Api-Version", VERSION)
                     header("Range", "0-0")
@@ -127,7 +127,7 @@ class DataApiRoutesTest :
             test("a single resource is requested as one object by id") {
                 postgrest.stubFor(get(urlPathEqualTo("/controllable_unit")).willReturn(aResponse().withBody("""{"id":12}""")))
 
-                val response = app.client.get("/controllable_unit/12") {
+                val response = app.client.get("/api/v1/controllable_unit/12") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -145,7 +145,7 @@ class DataApiRoutesTest :
                 postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
 
                 val jwt = token()
-                app.client.get("/product_type") {
+                app.client.get("/api/v1/product_type") {
                     header("Cookie", "__Host-flex_session=$jwt")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
@@ -157,7 +157,7 @@ class DataApiRoutesTest :
                 postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
 
                 val jwt = token()
-                app.client.get("/product_type") {
+                app.client.get("/api/v1/product_type") {
                     header("Authorization", "bearer $jwt")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
@@ -168,7 +168,7 @@ class DataApiRoutesTest :
             test("an Authorization header that is not a bearer token is not sent on") {
                 postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/product_type") {
+                app.client.get("/api/v1/product_type") {
                     header("Authorization", "Basic dXNlcjpwYXNz")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
@@ -179,7 +179,7 @@ class DataApiRoutesTest :
             test("embed becomes select, and valid_at a filter") {
                 postgrest.stubFor(get(urlPathEqualTo("/controllable_unit")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/controllable_unit?embed=accounting_point&valid_at=2024-01-15T10:30:00Z") {
+                app.client.get("/api/v1/controllable_unit?embed=accounting_point&valid_at=2024-01-15T10:30:00Z") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
@@ -196,7 +196,7 @@ class DataApiRoutesTest :
             test("a single notice can be read by id") {
                 postgrest.stubFor(get(urlPathEqualTo("/notice")).willReturn(aResponse().withBody("""{"id":22}""")))
 
-                val response = app.client.get("/notice/22") {
+                val response = app.client.get("/api/v1/notice/22") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -213,7 +213,7 @@ class DataApiRoutesTest :
             test("event filters on source go through the event_source function") {
                 postgrest.stubFor(get(urlPathEqualTo("/rpc/event_source")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/event?source=eq./controllable_unit/5") {
+                app.client.get("/api/v1/event?source=eq./controllable_unit/5") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
@@ -231,13 +231,13 @@ class DataApiRoutesTest :
                 )
 
                 val jwt = token(scope = "manage:attachment")
-                app.client.get("/service_providing_group_product_application_attachment") {
+                app.client.get("/api/v1/service_providing_group_product_application_attachment") {
                     header("Authorization", "Bearer $jwt")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.BadRequest
 
                 app.client.get(
-                    "/service_providing_group_product_application_attachment?service_providing_group_product_application_id=eq.1",
+                    "/api/v1/service_providing_group_product_application_attachment?service_providing_group_product_application_id=eq.1",
                 ) {
                     header("Authorization", "Bearer $jwt")
                     header("Api-Version", VERSION)
@@ -250,7 +250,7 @@ class DataApiRoutesTest :
 
                 // data scopes do not give access to attachments
                 app.client.get(
-                    "/service_providing_group_product_application_attachment?service_providing_group_product_application_id=eq.1",
+                    "/api/v1/service_providing_group_product_application_attachment?service_providing_group_product_application_id=eq.1",
                 ) {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
@@ -262,7 +262,7 @@ class DataApiRoutesTest :
             test("POST sends the body and asks for the created object") {
                 postgrest.stubFor(post(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(201).withBody("""{"id":3}""")))
 
-                val response = app.client.post("/party") {
+                val response = app.client.post("/api/v1/party") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                     contentType(ContentType.Application.Json)
@@ -289,7 +289,7 @@ class DataApiRoutesTest :
                     ),
                 )
 
-                val response = app.client.patch("/party/3") {
+                val response = app.client.patch("/api/v1/party/3") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                     contentType(ContentType.Application.Json)
@@ -306,7 +306,7 @@ class DataApiRoutesTest :
             test("DELETE passes on a response without content") {
                 postgrest.stubFor(delete(urlPathEqualTo("/party_membership")).willReturn(aResponse().withStatus(204)))
 
-                val response = app.client.delete("/party_membership/3") {
+                val response = app.client.delete("/api/v1/party_membership/3") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -321,13 +321,13 @@ class DataApiRoutesTest :
             test("anonymous callers can read data, without sending credentials to PostgREST") {
                 postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/product_type") { header("Api-Version", VERSION) }.status shouldBe HttpStatusCode.OK
+                app.client.get("/api/v1/product_type") { header("Api-Version", VERSION) }.status shouldBe HttpStatusCode.OK
 
                 postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withoutHeader("Authorization"))
             }
 
             test("anonymous callers cannot write") {
-                val response = app.client.post("/party") {
+                val response = app.client.post("/api/v1/party") {
                     header("Api-Version", VERSION)
                     contentType(ContentType.Application.Json)
                     setBody("{}")
@@ -338,7 +338,7 @@ class DataApiRoutesTest :
             }
 
             test("a token without enough scope is forbidden") {
-                val response = app.client.get("/party") {
+                val response = app.client.get("/api/v1/party") {
                     header("Authorization", "Bearer ${token(scope = "read:data:product_type")}")
                     header("Api-Version", VERSION)
                 }
@@ -352,7 +352,7 @@ class DataApiRoutesTest :
             }
 
             test("an invalid token is unauthorized") {
-                val response = app.client.get("/product_type") {
+                val response = app.client.get("/api/v1/product_type") {
                     header("Authorization", "Bearer not-a-jwt")
                     header("Api-Version", VERSION)
                 }
@@ -362,7 +362,7 @@ class DataApiRoutesTest :
             }
 
             test("an embedded resource without scope is forbidden, naming the scope in the challenge") {
-                val response = app.client.get("/controllable_unit?embed=accounting_point") {
+                val response = app.client.get("/api/v1/controllable_unit?embed=accounting_point") {
                     header("Authorization", "Bearer ${token(scope = "read:data:controllable_unit")}")
                     header("Api-Version", VERSION)
                 }
@@ -373,7 +373,7 @@ class DataApiRoutesTest :
             }
 
             test("a malformed embed is rejected before reaching PostgREST") {
-                app.client.get("/controllable_unit?embed=a!(") {
+                app.client.get("/api/v1/controllable_unit?embed=a!(") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.BadRequest
@@ -383,8 +383,8 @@ class DataApiRoutesTest :
 
         context("api version") {
             test("is required") {
-                app.client.get("/product_type").status shouldBe HttpStatusCode.BadRequest
-                app.client.get("/product_type") { header("Api-Version", "1999-01-01") }.status shouldBe HttpStatusCode.BadRequest
+                app.client.get("/api/v1/product_type").status shouldBe HttpStatusCode.BadRequest
+                app.client.get("/api/v1/product_type") { header("Api-Version", "1999-01-01") }.status shouldBe HttpStatusCode.BadRequest
             }
         }
 
@@ -393,7 +393,7 @@ class DataApiRoutesTest :
                 val body = "[" + (1..200_000).joinToString(",") { """{"id":$it}""" } + "]"
                 postgrest.stubFor(get(urlPathEqualTo("/event")).willReturn(aResponse().withBody(body)))
 
-                val response = app.client.get("/event") {
+                val response = app.client.get("/api/v1/event") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -409,7 +409,7 @@ class DataApiRoutesTest :
                     ),
                 )
 
-                val response = app.client.get("/event") {
+                val response = app.client.get("/api/v1/event") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -431,7 +431,7 @@ class DataApiRoutesTest :
                     ),
                 )
 
-                val response = app.client.get("/product_type") {
+                val response = app.client.get("/api/v1/product_type") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -452,7 +452,7 @@ class DataApiRoutesTest :
                     ),
                 )
 
-                val response = app.client.head("/product_type") {
+                val response = app.client.head("/api/v1/product_type") {
                     header("Authorization", "Bearer ${token()}")
                     header("Api-Version", VERSION)
                 }
@@ -463,7 +463,7 @@ class DataApiRoutesTest :
             }
 
             test("need the read scope, and a rejection has no body") {
-                val response = app.client.head("/product_type") {
+                val response = app.client.head("/api/v1/product_type") {
                     header("Authorization", "Bearer ${token(scope = "read:data:party")}")
                     header("Api-Version", VERSION)
                 }
@@ -474,7 +474,7 @@ class DataApiRoutesTest :
             }
 
             test("an unknown route is a not found without a body") {
-                val response = app.client.head("/nope") { header("Api-Version", VERSION) }
+                val response = app.client.head("/api/v1/nope") { header("Api-Version", VERSION) }
 
                 response.status shouldBe HttpStatusCode.NotFound
                 response.bodyAsText() shouldBe ""
@@ -485,8 +485,8 @@ class DataApiRoutesTest :
             test("are a JSON not found, and never reach PostgREST") {
                 for ((path, method) in listOf("/nope" to "GET", "/service_providing_group_product_application_attachment_history" to "GET", "/party" to "PUT", "/rpc/anything" to "GET")) {
                     val response = when (method) {
-                        "PUT" -> app.client.post("/party/1/extra") { header("Api-Version", VERSION) }
-                        else -> app.client.get(path) { header("Api-Version", VERSION) }
+                        "PUT" -> app.client.post("/api/v1/party/1/extra") { header("Api-Version", VERSION) }
+                        else -> app.client.get("/api/v1$path") { header("Api-Version", VERSION) }
                     }
 
                     response.status shouldBe HttpStatusCode.NotFound
@@ -494,6 +494,17 @@ class DataApiRoutesTest :
                     body.getValue("code").jsonPrimitive.content shouldBe "HTTP404"
                 }
                 postgrest.allServeEvents.size shouldBe 0
+            }
+        }
+
+        context("the mount path") {
+            test("is required: the routes are not served at the root") {
+                app.client.get("/party") { header("Api-Version", VERSION) }.status shouldBe HttpStatusCode.NotFound
+                postgrest.allServeEvents.size shouldBe 0
+            }
+
+            test("is not part of the not found message") {
+                app.client.get("/api/v1/nope") { header("Api-Version", VERSION) }.bodyAsText() shouldContain "Not Found: GET /nope"
             }
         }
 
@@ -509,7 +520,7 @@ class DataApiRoutesTest :
                     }
                 }
 
-                val response = brokenApp.client.get("/product_type")
+                val response = brokenApp.client.get("/api/v1/product_type")
                 response.status shouldBe HttpStatusCode.BadGateway
                 brokenApp.stop()
             }

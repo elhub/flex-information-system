@@ -53,6 +53,7 @@ fun defaultRequiredScope(method: HttpMethod, path: String, asset: String = DATA_
  * - `?embed` becomes `?select`, after checking that [scopes] cover reading the embedded resources.
  * - `valid_at` and `as_of` become filters on their respective columns.
  *
+ * The scopes for embedded resources are checked under [asset], against [relations].
  * The [query] is modified in-place.
  */
 fun buildPostgrestRequest(
@@ -62,6 +63,7 @@ fun buildPostgrestRequest(
     scopes: List<Scope>,
     extraHeaders: Map<String, String> = emptyMap(),
     relations: EmbedRelations = GeneratedDataApiRoutes.embedRelations,
+    asset: String = DATA_ASSET,
 ): Either<RequestRejection, PostgrestRequest> = either {
     val headers = linkedMapOf<String, String>()
     var postgrestPath = path
@@ -77,7 +79,7 @@ fun buildPostgrestRequest(
         headers[HttpHeaders.Accept] = SINGLE_OBJECT_MEDIA_TYPE
     }
 
-    applyEmbed(query, mainResource(postgrestPath), DATA_ASSET, relations, scopes)
+    applyEmbed(query, mainResource(postgrestPath), asset, relations, scopes)
     rewriteValidAt(query)
     rewriteAsOf(query)
 
@@ -85,8 +87,12 @@ fun buildPostgrestRequest(
     PostgrestRequest(postgrestPath, query.build(), headers)
 }
 
-/** The resource a PostgREST path is about; the event RPCs are embedded from `event`. */
+/** The resource a PostgREST path is about; the event RPCs are embedded from `event`, the distance RPC from `substation`. */
 private fun mainResource(path: String): String {
     val resource = path.trimStart('/').substringBefore('/')
-    return if (path.startsWith("/rpc/event_")) "event" else resource
+    return when {
+        path.startsWith("/rpc/event_") -> "event"
+        path == "/rpc/substation_distance" -> "substation"
+        else -> resource
+    }
 }

@@ -17,6 +17,7 @@ import no.elhub.flex.api.auth.callerScopes
 import no.elhub.flex.api.auth.covers
 import no.elhub.flex.api.auth.respondInsufficientScope
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
+import no.elhub.flex.api.postgrest.EmbedRelations
 import no.elhub.flex.api.postgrest.PostgrestClient
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
 import no.elhub.flex.api.postgrest.RequestRejection
@@ -24,6 +25,8 @@ import no.elhub.flex.api.postgrest.buildPostgrestRequest
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
 import no.elhub.flex.api.util.respondError
 import org.koin.ktor.ext.inject
+
+const val DATA_API_MOUNT_PATH = "/api/v1"
 
 /**
  * Registers the data API routes that are served by PostgREST, as listed by the generated route table
@@ -33,28 +36,42 @@ fun Application.dataApiRoutes() {
     val postgrest: PostgrestClient by inject()
 
     routing {
-        for ((apiRoute, variant) in DataApiRegistry.servedByPostgrest(GeneratedDataApiRoutes.routes)) {
-            route(apiRoute.path) {
-                method(apiRoute.method) {
-                    handle { handlePostgrestRoute(call, postgrest, variant) }
+        route(DATA_API_MOUNT_PATH) {
+            for ((apiRoute, variant) in DataApiRegistry.servedByPostgrest(GeneratedDataApiRoutes.routes)) {
+                route(apiRoute.path) {
+                    method(apiRoute.method) {
+                        handle { handlePostgrestRoute(call, postgrest, variant, mountPath = DATA_API_MOUNT_PATH) }
+                    }
                 }
             }
-        }
 
-        route("{...}") {
-            handle {
-                call.respondError(
-                    HttpStatusCode.NotFound,
-                    ErrorMessage(code = "HTTP404", message = "Not Found: ${call.request.httpMethod.value} ${call.request.path()}"),
-                )
+            route("{...}") {
+                handle {
+                    val path = call.request.path().removePrefix(DATA_API_MOUNT_PATH)
+                    call.respondError(
+                        HttpStatusCode.NotFound,
+                        ErrorMessage(code = "HTTP404", message = "Not Found: ${call.request.httpMethod.value} $path"),
+                    )
+                }
             }
         }
     }
 }
 
-private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: PostgrestClient, variant: PostgrestRouteVariant) {
+/**
+ * Serves [call] through PostgREST, as decided by [variant]. The route is mounted under [mountPath], which is not part
+ * of the path that is scoped and forwarded.
+ */
+internal suspend fun handlePostgrestRoute(
+    call: ApplicationCall,
+    postgrest: PostgrestClient,
+    variant: PostgrestRouteVariant,
+    mountPath: String = "",
+    asset: String = "data",
+    relations: EmbedRelations = GeneratedDataApiRoutes.embedRelations,
+) {
     val method = call.request.httpMethod
-    val path = call.request.path()
+    val path = call.request.path().removePrefix(mountPath)
     variant.validate(call.request.queryParameters)?.let { return call.respondRejection(it) }
 
     val scopes = call.callerScopes()
@@ -66,7 +83,7 @@ private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: Postg
     val query = ParametersBuilder().apply { appendAll(call.request.queryParameters) }
     val (upstreamPath, headers) = variant.rewrite(path, query)
 
-    buildPostgrestRequest(method, upstreamPath, query, scopes, headers).fold(
+    buildPostgrestRequest(method, upstreamPath, query, scopes, headers, relations, asset).fold(
         ifLeft = { call.respondRejection(it) },
         ifRight = { request ->
             val body = if (method == HttpMethod.Post || method == HttpMethod.Patch) call.receive<ByteArray>() else null
@@ -75,7 +92,7 @@ private suspend fun handlePostgrestRoute(call: ApplicationCall, postgrest: Postg
     )
 }
 
-private suspend fun ApplicationCall.respondRejection(rejection: RequestRejection) {
+internal suspend fun ApplicationCall.respondRejection(rejection: RequestRejection) {
     rejection.wwwAuthenticate?.let { response.header(HttpHeaders.WWWAuthenticate, it) }
     respondError(
         rejection.status,

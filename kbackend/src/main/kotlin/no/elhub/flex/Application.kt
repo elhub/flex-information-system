@@ -16,6 +16,8 @@ import no.elhub.flex.api.config.configureMetrics
 import no.elhub.flex.api.config.configureRouting
 import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.config.flexConfig
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
+import no.elhub.flex.api.routes.grid.GRID_API_MOUNT_PATH
 import no.elhub.flex.jobs.runJob
 import no.elhub.flex.shared.SharedModule
 import no.elhub.flex.shared.metrics.MetricsModule
@@ -65,8 +67,16 @@ fun Application.module() {
         excludedPaths += listOf("/healthz", "/metrics")
     }
     install(RequireApiVersion) {
-        exemptPaths += listOf("/", "/openapi.json", "/healthz", "/metrics")
+        exemptPaths += listOf(
+            DATA_API_MOUNT_PATH,
+            "$DATA_API_MOUNT_PATH/",
+            "$DATA_API_MOUNT_PATH/openapi.json",
+            "/healthz",
+            "/metrics",
+        )
         exemptSuffixes += "/download"
+        // the Go backend never required a version for the grid API
+        exemptPrefixes += GRID_API_MOUNT_PATH
     }
 
     startKoin<FlexApp> {
