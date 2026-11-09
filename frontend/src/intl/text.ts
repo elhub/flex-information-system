@@ -27,6 +27,7 @@ export type TextKey =
   | "entity.name"
   | "print"
   | "service_providing_group"
+  | "service_providing_group_membership"
   | "service_providing_group_product_application"
   | "service_provider_product_application"
   | "service_provider"
@@ -39,6 +40,7 @@ export type TextKey =
   | "resource_card.see_system_operator"
   | "resource_card.see_service_provider"
   | "resource_card.see_group"
+  | "resource_card.see_controllable_unit"
   | "events"
   | "print"
   | "tab.summary"
@@ -342,6 +344,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
     service_providing_group: "Service providing group",
+    service_providing_group_membership: "Service providing group membership",
     service_providing_group_product_application:
       "Service providing group product application",
     "resource_show_layout.actions_group_label": "Actions",
@@ -352,6 +355,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_card.see_system_operator": "See system operator",
     "resource_card.see_service_provider": "See service provider",
     "resource_card.see_group": "See group",
+    "resource_card.see_controllable_unit": "See controllable unit",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
     "spg_info_tab.procuring_system_operator": "Procuring system operator",
@@ -707,6 +711,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",
+    service_providing_group_membership: "Medlemskap i fleksibilitetsgruppe",
     service_providing_group_product_application:
       "Fleksibilitetsgruppens produktsøknad",
     "resource_show_layout.actions_group_label": "Handlinger",
@@ -717,6 +722,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_card.see_system_operator": "Se systemoperatør",
     "resource_card.see_service_provider": "Se tjenesteleverandør",
     "resource_card.see_group": "Se gruppe",
+    "resource_card.see_controllable_unit": "Se kontrollerbar enhet",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
     "spg_info_tab.procuring_system_operator": "Anskaffende systemoperatør",
