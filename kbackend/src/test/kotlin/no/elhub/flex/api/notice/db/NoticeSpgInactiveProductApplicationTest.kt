@@ -23,7 +23,7 @@ private const val NOTICE_TYPE =
 private data class DetectedNotice(val partyId: Long, val sourceResource: String, val sourceId: Long)
 
 /** A notice as stored in the notice table by the synchronisation. */
-private data class PersistedNotice(val partyId: Long, val sourceId: Long, val status: String)
+private data class PersistedSpgNotice(val partyId: Long, val sourceId: Long, val status: String)
 
 private data class SeededSpg(val serviceProviderId: Long, val spgId: Long, val applicationIds: List<Long>)
 
@@ -140,7 +140,7 @@ class NoticeSpgInactiveProductApplicationTest : FunSpec({
             syncNotices()
 
             // then
-            persistedNoticeFor(spg.spgId) shouldBe PersistedNotice(spg.serviceProviderId, spg.spgId, "active")
+            persistedNoticeFor(spg.spgId) shouldBe PersistedSpgNotice(spg.serviceProviderId, spg.spgId, "active")
 
             // when
             setApplicationStatus(applicationId, INACTIVE)
@@ -224,11 +224,11 @@ private fun detectedNoticeCountFor(spgId: Long): Int =
             "WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $spgId",
     ) { it.getLong(1) }.size
 
-private fun persistedNoticeFor(spgId: Long): PersistedNotice? =
+private fun persistedNoticeFor(spgId: Long): PersistedSpgNotice? =
     queryNotices(
         "SELECT party_id, source_id, status FROM flex.notice " +
             "WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $spgId",
-    ) { PersistedNotice(it.getLong(1), it.getLong(2), it.getString(3)) }.singleOrNull()
+    ) { PersistedSpgNotice(it.getLong(1), it.getLong(2), it.getString(3)) }.singleOrNull()
 
 private fun persistedNoticeCountFor(spgId: Long): Int =
     queryNotices(

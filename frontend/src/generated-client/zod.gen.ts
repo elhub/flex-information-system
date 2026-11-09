@@ -296,6 +296,15 @@ export const zNoticeDataServiceProvidingGroupGridPrequalificationOutdated =
   });
 
 /**
+ * Format of the data field in a notice with data.kind = notice.data.controllable_unit.cso.no_active_users
+ */
+export const zNoticeDataControllableUnitCsoNoActiveUsers = z.object({
+  kind: z.literal("notice.data.controllable_unit.cso.no_active_users"),
+  controllable_unit_name: z.string().optional(),
+  connecting_system_operator_name: z.string().optional(),
+});
+
+/**
  * Common format of the data field in events concerning update operations.
  */
 export const zEventDataUpdatedFields = z.object({
@@ -1378,6 +1387,7 @@ export const zNoticeData = z.discriminatedUnion("kind", [
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
   zNoticeDataServiceProvidingGroupGridPrequalificationOutdated,
+  zNoticeDataControllableUnitCsoNoActiveUsers,
 ]);
 
 /**
@@ -2689,6 +2699,7 @@ export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataProductTypeNotQualified,
   zNoticeDataControllableUnitProductDuplication,
   zNoticeDataServiceProvidingGroupGridPrequalificationOutdated,
+  zNoticeDataControllableUnitCsoNoActiveUsers,
 ]);
 
 /**
