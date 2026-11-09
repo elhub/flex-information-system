@@ -8,6 +8,7 @@ import no.elhub.flex.api.postgrest.AttachmentReadVariant
 import no.elhub.flex.api.postgrest.DefaultVariant
 import no.elhub.flex.api.postgrest.EventListVariant
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
+import no.elhub.flex.api.routes.ApiRoute
 
 /**
  * Decides how each route of the OpenAPI document is served: proxied to PostgREST unless listed here.

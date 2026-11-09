@@ -1,4 +1,4 @@
-package no.elhub.flex.api.routes.data
+package no.elhub.flex.api.routes
 
 import io.ktor.http.HttpMethod
 

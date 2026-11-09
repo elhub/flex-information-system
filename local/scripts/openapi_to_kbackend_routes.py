@@ -43,7 +43,7 @@ def render_kotlin(routes, embed_mapping, package, name):
     out.append(f"package {package}")
     out.append("")
     out.append("import io.ktor.http.HttpMethod")
-    out.append("import no.elhub.flex.api.routes.data.ApiRoute")
+    out.append("import no.elhub.flex.api.routes.ApiRoute")
     out.append("")
     out.append(
         f"/** The routes and embed relations of the {name.lower()} API, generated from the OpenAPI document. */"

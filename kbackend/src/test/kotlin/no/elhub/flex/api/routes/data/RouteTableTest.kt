@@ -6,6 +6,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import no.elhub.flex.api.routes.ApiRoute
 import no.elhub.flex.api.routes.data.generated.GeneratedDataApiRoutes
 import java.io.File
 

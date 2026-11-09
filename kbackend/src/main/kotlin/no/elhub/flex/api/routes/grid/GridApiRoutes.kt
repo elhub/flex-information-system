@@ -13,9 +13,9 @@ import no.elhub.flex.api.postgrest.GridReadVariant
 import no.elhub.flex.api.postgrest.GridSubstationListVariant
 import no.elhub.flex.api.postgrest.PostgrestClient
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
-import no.elhub.flex.api.routes.data.ApiRoute
-import no.elhub.flex.api.routes.data.handlePostgrestRoute
+import no.elhub.flex.api.routes.ApiRoute
 import no.elhub.flex.api.routes.grid.generated.GeneratedGridApiRoutes
+import no.elhub.flex.api.routes.handlePostgrestRoute
 import no.elhub.flex.api.util.respondError
 import org.koin.ktor.ext.inject
 

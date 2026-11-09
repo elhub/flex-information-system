@@ -3,7 +3,7 @@
 package no.elhub.flex.api.routes.grid.generated
 
 import io.ktor.http.HttpMethod
-import no.elhub.flex.api.routes.data.ApiRoute
+import no.elhub.flex.api.routes.ApiRoute
 
 /** The routes and embed relations of the grid API, generated from the OpenAPI document. */
 object GeneratedGridApiRoutes {

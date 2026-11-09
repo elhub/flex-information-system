@@ -8,8 +8,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.elhub.flex.api.config.DocsConfig
-import no.elhub.flex.api.routes.data.elementsPage
-import no.elhub.flex.api.routes.data.openApiDocument
+import no.elhub.flex.api.routes.elementsPage
+import no.elhub.flex.api.routes.openApiDocument
 import org.koin.core.annotation.Single
 import org.koin.ktor.ext.inject
 
