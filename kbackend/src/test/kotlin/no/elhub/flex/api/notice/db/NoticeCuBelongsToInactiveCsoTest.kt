@@ -12,7 +12,7 @@ import java.time.Instant
 
 private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_users"
 
-private data class SeededCu(val cuId: Long, val csoId: Long)
+private data class SeededCu(val cuId: Long, val csoId: Long, val mgaId: Long)
 
 private data class PersistedCsoNotice(val partyId: Long, val status: String)
 
@@ -82,6 +82,35 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
             detectedPartiesFor(cu.cuId) shouldContainExactlyInAnyOrder fisos
         }
 
+        test("several CUs on one CSO give a single notice on the first CU") {
+            val fiso = seed(Triggers.OFF) { insertFiso() }
+            val (first, second) = seed(Triggers.OFF) {
+                val first = seedCu()
+                val second = addCu(first)
+                first to second
+            }
+
+            detectedPartiesFor(first.cuId) shouldBe listOf(fiso)
+            detectedPartiesFor(second.cuId).shouldBeEmpty()
+        }
+
+        test("notice moves to the next CU when the first is terminated") {
+            val fiso = seed(Triggers.OFF) { insertFiso() }
+            val (first, second) = seed(Triggers.OFF) {
+                val first = seedCu()
+                first to addCu(first)
+            }
+
+            syncNotices()
+            persistedNoticesFor(first.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
+
+            execute("UPDATE flex.controllable_unit SET status = 'terminated' WHERE id = ${first.cuId}")
+            syncNotices()
+
+            persistedNoticesFor(first.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
+            persistedNoticesFor(second.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
+        }
+
         test("only CUs of a CSO without members get a notice") {
             seed(Triggers.OFF) { insertFiso() }
             val withoutUsers = seed(Triggers.OFF) { seedCu() }
@@ -134,7 +163,14 @@ private fun SeedScope.seedCu(
     insertAccountingPointMeteringGridArea(ap, mga)
     val cuId = insertControllableUnit(ap, status = status)
     if (memberEmail != null) insertPartyMember(so.partyId, memberEmail)
-    return SeededCu(cuId, so.partyId)
+    return SeededCu(cuId, so.partyId, mga)
+}
+
+/** Adds another CU on a new accounting point in the same metering grid area as the CSO's first CU. */
+private fun SeedScope.addCu(existing: SeededCu): SeededCu {
+    val ap = insertAccountingPoint()
+    insertAccountingPointMeteringGridArea(ap, existing.mgaId)
+    return SeededCu(insertControllableUnit(ap), existing.csoId, existing.mgaId)
 }
 
 private fun syncNotices() = execute("SELECT flex.notice_sync()")
