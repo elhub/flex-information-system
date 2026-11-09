@@ -124,10 +124,10 @@ class GridApiRoutesTest :
         }
 
         context("substations") {
-            test("ordering by proximity uses the distance function, limited to 10 by default") {
+            test("ordering by proximity with coordinates uses the distance function, limited to 10 by default") {
                 postgrest.stubFor(get(urlPathEqualTo("/rpc/substation_distance")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/grid/v0/substation?order=proximity&lat=1&lon=2") {
+                app.client.get("/grid/v0/substation?order=proximity&longitude=5.3234&latitude=60.3972") {
                     header("Authorization", "Bearer ${token()}")
                 }.status shouldBe HttpStatusCode.OK
 
@@ -135,7 +135,8 @@ class GridApiRoutesTest :
                     getRequestedFor(urlPathEqualTo("/rpc/substation_distance"))
                         .withQueryParam("order", absent())
                         .withQueryParam("limit", equalTo("10"))
-                        .withQueryParam("lat", equalTo("1"))
+                        .withQueryParam("longitude", equalTo("5.3234"))
+                        .withQueryParam("latitude", equalTo("60.3972"))
                         .withHeader("Accept-Profile", equalTo("grid")),
                 )
             }
@@ -143,11 +144,16 @@ class GridApiRoutesTest :
             test("a limit given with proximity is kept") {
                 postgrest.stubFor(get(urlPathEqualTo("/rpc/substation_distance")).willReturn(aResponse().withBody("[]")))
 
-                app.client.get("/grid/v0/substation?order=proximity&limit=3") {
+                app.client.get("/grid/v0/substation?order=proximity&longitude=5.3234&latitude=60.3972&limit=3") {
                     header("Authorization", "Bearer ${token()}")
                 }.status shouldBe HttpStatusCode.OK
 
-                postgrest.verify(getRequestedFor(urlPathEqualTo("/rpc/substation_distance")).withQueryParam("limit", equalTo("3")))
+                postgrest.verify(
+                    getRequestedFor(urlPathEqualTo("/rpc/substation_distance"))
+                        .withQueryParam("limit", equalTo("3"))
+                        .withQueryParam("longitude", equalTo("5.3234"))
+                        .withQueryParam("latitude", equalTo("60.3972")),
+                )
             }
 
             test("without proximity the table is read") {
