@@ -3,7 +3,7 @@
 
 
 -- changeset flex:notice-cu-belongs-to-inactive-cso runOnChange:true endDelimiter:--
--- CUs connected to an inactive CSO should notice the FISO
+-- The first CU connected to a CSO without active users notices the FISO (one notice per CSO)
 CREATE OR REPLACE VIEW notice_cu_belongs_to_inactive_cso
 WITH (security_invoker = false) AS (
     SELECT
@@ -12,12 +12,13 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu_no_users.cu_id AS source_id,
         jsonb_build_object(
+            'kind', 'notice.data.controllable_unit.cso.no_active_users',
             'controllable_unit_name', cu_no_users.cu_name,
             'connecting_system_operator_name', cso.name
         ) AS data, -- noqa
         md5(cu_no_users.cu_id::text) AS deduplication_key -- noqa
     FROM (
-        SELECT
+        SELECT DISTINCT ON (apso.system_operator_id)
             cu.id AS cu_id,
             cu.name AS cu_name,
             apso.system_operator_id AS cso_id
@@ -36,6 +37,7 @@ WITH (security_invoker = false) AS (
                     pm.party_id = apso.system_operator_id
                     AND e.type = 'person'
             )
+        ORDER BY apso.system_operator_id ASC, cu.id ASC
     ) AS cu_no_users
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
