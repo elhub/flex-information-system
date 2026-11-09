@@ -37,14 +37,14 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
         test("CSO without members gives a notice to the FISO") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu() }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso() }
 
             detectedPartiesFor(cu.cuId) shouldBe listOf(fiso)
         }
 
         test("CSO with a person member gives no notice") {
             seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu(memberEmail = "user@example.com") }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso(memberEmail = "user@example.com") }
 
             detectedPartiesFor(cu.cuId).shouldBeEmpty()
         }
@@ -52,7 +52,7 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
         test("CSO whose only member is an organisation gives a notice") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
             val cu = seed(Triggers.OFF) {
-                val cu = seedCu()
+                val cu = addCuWithNewCso()
                 val orgEntity = insertOrganisationEntity()
                 insertPartyMembership(cu.csoId, orgEntity)
                 cu
@@ -63,21 +63,21 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
         test("terminated CU gives no notice") {
             seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu(status = "terminated") }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso(status = "terminated") }
 
             detectedPartiesFor(cu.cuId).shouldBeEmpty()
         }
 
         test("CSO relation that has ended gives no notice") {
             seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu(soValidTo = Instant.parse("2024-06-01T00:00:00Z")) }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso(soValidTo = Instant.parse("2024-06-01T00:00:00Z")) }
 
             detectedPartiesFor(cu.cuId).shouldBeEmpty()
         }
 
         test("every FISO gets a notice") {
             val fisos = seed(Triggers.OFF) { listOf(insertFiso("FISO 1"), insertFiso("FISO 2")) }
-            val cu = seed(Triggers.OFF) { seedCu() }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso() }
 
             detectedPartiesFor(cu.cuId) shouldContainExactlyInAnyOrder fisos
         }
@@ -85,8 +85,8 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
         test("several CUs on one CSO give a single notice on the first CU") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
             val (first, second) = seed(Triggers.OFF) {
-                val first = seedCu()
-                val second = addCu(first)
+                val first = addCuWithNewCso()
+                val second = addCuForSameCso(first)
                 first to second
             }
 
@@ -97,8 +97,8 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
         test("notice moves to the next CU when the first is terminated") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
             val (first, second) = seed(Triggers.OFF) {
-                val first = seedCu()
-                first to addCu(first)
+                val first = addCuWithNewCso()
+                first to addCuForSameCso(first)
             }
 
             syncNotices()
@@ -113,8 +113,8 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
         test("only CUs of a CSO without members get a notice") {
             seed(Triggers.OFF) { insertFiso() }
-            val withoutUsers = seed(Triggers.OFF) { seedCu() }
-            val withUsers = seed(Triggers.OFF) { seedCu(memberEmail = "user@example.com") }
+            val withoutUsers = seed(Triggers.OFF) { addCuWithNewCso() }
+            val withUsers = seed(Triggers.OFF) { addCuWithNewCso(memberEmail = "user@example.com") }
 
             detectedPartiesFor(withoutUsers.cuId).size shouldBe 1
             detectedPartiesFor(withUsers.cuId).shouldBeEmpty()
@@ -125,7 +125,7 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
         test("notice is created, resolved when a user is added, and reactivated when removed") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu() }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso() }
 
             syncNotices()
             persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
@@ -141,7 +141,7 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
         test("syncing twice does not duplicate the notice") {
             seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCu() }
+            val cu = seed(Triggers.OFF) { addCuWithNewCso() }
 
             syncNotices()
             syncNotices()
@@ -151,7 +151,8 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
     }
 })
 
-private fun SeedScope.seedCu(
+/** Adds a CU together with a brand new CSO, metering grid area and accounting point. */
+private fun SeedScope.addCuWithNewCso(
     memberEmail: String? = null,
     status: String = "new",
     soValidTo: Instant? = null,
@@ -166,8 +167,8 @@ private fun SeedScope.seedCu(
     return SeededCu(cuId, so.partyId, mga)
 }
 
-/** Adds another CU on a new accounting point in the same metering grid area as the CSO's first CU. */
-private fun SeedScope.addCu(existing: SeededCu): SeededCu {
+/** Adds one more CU for the CSO of [existing]: new accounting point, but the same metering grid area and CSO. */
+private fun SeedScope.addCuForSameCso(existing: SeededCu): SeededCu {
     val ap = insertAccountingPoint()
     insertAccountingPointMeteringGridArea(ap, existing.mgaId)
     return SeededCu(insertControllableUnit(ap), existing.csoId, existing.mgaId)
