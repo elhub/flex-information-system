@@ -97,13 +97,14 @@ class SeedScope(private val conn: Connection) {
         name: String = "Test CU",
         startDate: LocalDate = LocalDate.of(2024, 1, 1),
         regulationDirection: ControllableUnitRegulationDirection = ControllableUnitRegulationDirection.BOTH,
+        status: String = "new",
     ): Long =
         queryLong(
             """
             INSERT INTO flex.controllable_unit (
-                business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id
+                business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id, status
             )
-            VALUES (?::uuid, ?, ?::date, ?, 1.0, ?)
+            VALUES (?::uuid, ?, ?::date, ?, 1.0, ?, ?)
             RETURNING id
             """.trimIndent(),
             UUID.randomUUID().toString(),
@@ -111,6 +112,7 @@ class SeedScope(private val conn: Connection) {
             startDate.toString(),
             regulationDirection.value,
             accountingPointId,
+            status,
         )
 
     /** Inserts an organisation entity and a party of the given type, returning the entity id and party id. */
@@ -152,14 +154,18 @@ class SeedScope(private val conn: Connection) {
         return SeededSystemOperator(partyId, FlexPrincipal(role = "flex_system_operator", eid = eid))
     }
 
-    /** Inserts an entity with an identity that has no party, and a principal that acts as the bare entity. */
-    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity {
-        val entityId = queryLong(
+    /** Inserts an organisation entity that is not tied to a party. */
+    fun insertOrganisationEntity(name: String = "Org entity ${UUID.randomUUID()}"): Long =
+        queryLong(
             "INSERT INTO flex.entity (name, type, business_id, business_id_type) " +
                 "VALUES (?, 'organisation', ?, 'org') RETURNING id",
             name,
             uniqueOrgNumber(),
         )
+
+    /** Inserts an entity with an identity that has no party, and a principal that acts as the bare entity. */
+    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity {
+        val entityId = insertOrganisationEntity(name)
         val eid = conn.prepareStatement(
             "INSERT INTO flex.identity (entity_id) VALUES (?) RETURNING eid::text",
         ).use { stmt ->
@@ -171,6 +177,9 @@ class SeedScope(private val conn: Connection) {
         }
         return SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = eid))
     }
+
+    fun insertFiso(name: String = "Test FISO"): Long =
+        insertEntityAndParty(name, "flexibility_information_system_operator", "flex_flexibility_information_system_operator").second
 
     fun insertServiceProvidingGroup(
         serviceProviderId: Long = insertServiceProvider(),
@@ -229,10 +238,10 @@ class SeedScope(private val conn: Connection) {
             status.value,
         )
 
-    fun insertMeteringGridArea(name: String = "Test MGA"): Long =
+    fun insertMeteringGridArea(name: String = "Test MGA", businessId: String = uniqueEicY()): Long =
         queryLong(
             "INSERT INTO flex.metering_grid_area (business_id, name) VALUES (?, ?) RETURNING id",
-            uniqueEicY(),
+            businessId,
             name,
         )
 

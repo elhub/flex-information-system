@@ -118,6 +118,9 @@ export type TextKey =
   | "spgpq_conditionally_approve_title"
   | "spgpq_conditionally_approve_description"
   | "spgpq_conditionally_approve_placeholder"
+  | "spgpa_reject_title"
+  | "spgpa_reject_description"
+  | "spgpa_reject_placeholder"
   | "spg_product_application_empty"
   | "spg_activate_group_notice"
   | "spg_activate_group_title"
@@ -442,6 +445,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "This will mark the grid prequalification as conditionally approved. Describe the conditions below. They will be added as a comment visible to all involved parties.",
     spgpq_conditionally_approve_placeholder:
       "Describe the conditions for approval",
+    spgpa_reject_title: "Reject application",
+    spgpa_reject_description:
+      "This will reject the application. The service provider will be notified. Explain below why it is rejected, and state clearly whether the service provider can update the application and request it again, or whether the application will be rejected regardless. The explanation is added as a comment visible to all involved parties.",
+    spgpa_reject_placeholder: "Explain why the application is rejected",
     spg_product_application_empty: "No product applications",
     spg_activate_group_notice:
       "Activating the service providing group will allow it to be used in a product application",
@@ -820,6 +827,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette godkjenner nettprekvalifiseringen med vilkår. Beskriv vilkårene nedenfor. De legges til som en kommentar som er synlig for alle involverte parter.",
     spgpq_conditionally_approve_placeholder:
       "Beskriv vilkårene for godkjenning",
+    spgpa_reject_title: "Avslå søknad",
+    spgpa_reject_description:
+      "Dette avslår søknaden. Tjenesteleverandøren varsles. Forklar nedenfor hvorfor søknaden avslås, og presiser om tjenesteleverandøren kan oppdatere søknaden og be om den på nytt, eller om søknaden vil bli avslått uansett. Forklaringen legges til som en kommentar som er synlig for alle involverte parter.",
+    spgpa_reject_placeholder: "Forklar hvorfor søknaden avslås",
     spg_product_application_empty: "Ingen produktprekvalifiseringer",
     spg_activate_group_notice:
       "Ved å aktivere gruppen vil den være mulig å bruke i en produktprekvalifisering",

@@ -14,7 +14,10 @@ Initially, the status is set to `requested`. The system operator then must
 quickly take over and choose whether the group needs a full prequalification or
 only verification, by setting the status to either `prequalification` or
 `temporary_qualified`. They are responsible for taking to application to either
-`prequalified`, `verified` or `rejected`. If it is rejected, the service
+`prequalified`, `verified` or `rejected`. When rejecting, the system operator
+adds a comment (visible to all involved parties) explaining why, and
+whether the service provider can update the application and propose it again
+or whether it will be rejected regardless. If it is rejected, the service
 provider can then make updates and propose the application again.
 
 While an application is `requested`, the service provider can also withdraw it

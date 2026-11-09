@@ -7,13 +7,17 @@ private val eicYCounter = AtomicLong(1L)
 /**
  * Generates a unique 16-character EIC-Y identifier that passes EIC check-character validation.
  *
- * Format: `10Y` + 12-digit zero-padded counter + 1 check character.
+ * Format: `10Y` + 12-digit zero-padded counter + 1 check character (never `-`).
  */
 @Suppress("MagicNumber")
 fun uniqueEicY(): String {
-    val counter = eicYCounter.getAndIncrement()
-    val prefix = "10Y" + counter.toString().padStart(12, '0')
-    return prefix + eicComputeCheckChar(prefix)
+    while (true) {
+        val counter = eicYCounter.getAndIncrement()
+        val prefix = "10Y" + counter.toString().padStart(12, '0')
+        val check = eicComputeCheckChar(prefix)
+        // The database only accepts [0-9A-Z] as the final character, so skip '-' check characters.
+        if (check != '-') return prefix + check
+    }
 }
 
 /**

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslate } from "ra-core";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useConfirmAction } from "../../../components/ConfirmAction";
@@ -9,8 +10,10 @@ import {
   DateTimePicker,
   FormItem,
   FormItemLabel,
+  Textarea,
 } from "../../../components/ui";
 import {
+  createServiceProvidingGroupProductApplicationComment,
   ServiceProvidingGroupProductApplication,
   ServiceProvidingGroupProductApplicationUpdateRequest,
   updateServiceProvidingGroupProductApplication,
@@ -27,21 +30,29 @@ type ActionConfig = {
   className?: string;
   // whether the SO/FISO must input `complete_at` to confirm this action (cf SPGPA-VAL011)
   requiresCompleteAt: boolean;
+  // whether the SO/FISO must add a comment (visible to all involved parties)
+  requiresComment?: boolean;
+  commentPlaceholder?: string;
 };
 
-const rejectAction: ActionConfig = {
+const getRejectAction = (
+  translate: ReturnType<typeof useTranslate>,
+): ActionConfig => ({
   label: "Reject",
   payload: { status: "rejected" },
-  confirmTitle: "Reject application",
-  confirmContent:
-    "Are you sure you want to reject this application? The service provider will be notified.",
+  confirmTitle: translate("text.spgpa_reject_title"),
+  confirmContent: translate("text.spgpa_reject_description"),
   variant: "secondary",
   requiresCompleteAt: false,
-};
+  requiresComment: true,
+  commentPlaceholder: translate("text.spgpa_reject_placeholder"),
+});
 
 const getActionsForStatus = (
   spgpa: ServiceProvidingGroupProductApplication,
+  translate: ReturnType<typeof useTranslate>,
 ): ActionConfig[] => {
+  const rejectAction = getRejectAction(translate);
   switch (spgpa.status) {
     case "requested":
       return [
@@ -125,6 +136,10 @@ const ActionButton = ({
     config.requiresCompleteAt ? defaultCompleteAt : null,
   );
 
+  const [comment, setComment] = useState("");
+  // content of a comment already saved by an attempt whose status update failed
+  const postedComment = useRef<string | null>(null);
+
   const payload = config.requiresCompleteAt
     ? { ...config.payload, complete_at: completeAt ?? undefined }
     : config.payload;
@@ -137,18 +152,56 @@ const ActionButton = ({
         {config.requiresCompleteAt && (
           <CompleteAtInput value={completeAt} onChange={setCompleteAt} />
         )}
+        {config.requiresComment && (
+          <Textarea
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            placeholder={config.commentPlaceholder}
+            aria-label={config.commentPlaceholder}
+            rows={4}
+            maxLength={2048}
+          />
+        )}
       </div>
     ),
     confirmText: config.label,
-    confirmDisabled: !!config.requiresCompleteAt && !completeAt,
+    confirmDisabled:
+      (!!config.requiresCompleteAt && !completeAt) ||
+      (!!config.requiresComment && !comment.trim()),
     onConfirmMutation: {
-      mutationFn: () => {
-        return updateServiceProvidingGroupProductApplication({
+      // The comment is written first: if it fails, the status is unchanged,
+      // so the action bar (and the draft) stays and the action can be retried.
+      // If the status update fails afterwards, the comment is not posted again
+      // on retry.
+      mutationFn: async () => {
+        const content = comment.trim();
+
+        if (config.requiresComment && postedComment.current !== content) {
+          await createServiceProvidingGroupProductApplicationComment({
+            body: {
+              service_providing_group_product_application_id: spgpaId,
+              content,
+              visibility: "any_involved_party",
+            },
+          }).then(throwOnError);
+          postedComment.current = content;
+        }
+
+        await updateServiceProvidingGroupProductApplication({
           path: { id: spgpaId },
           body: payload,
         }).then(throwOnError);
       },
+      onSuccess: () => {
+        postedComment.current = null;
+        setComment("");
+      },
       onSettled: () => {
+        if (config.requiresComment) {
+          void queryClient.invalidateQueries({
+            queryKey: ["spgpa_comments", spgpaId],
+          });
+        }
         void queryClient.invalidateQueries({
           queryKey: spgpaQueryKey(spgpaId),
         });
@@ -178,7 +231,8 @@ type Props = {
 };
 
 export const SpgpaActionBar = ({ spgpa }: Props) => {
-  const actions = getActionsForStatus(spgpa);
+  const translate = useTranslate();
+  const actions = getActionsForStatus(spgpa, translate);
 
   if (actions.length === 0) {
     return null;
