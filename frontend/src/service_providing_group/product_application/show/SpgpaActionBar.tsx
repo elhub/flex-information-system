@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslate } from "ra-core";
 import { formatISO, parseISO } from "date-fns";
@@ -137,6 +137,8 @@ const ActionButton = ({
   );
 
   const [comment, setComment] = useState("");
+  // content of a comment already saved by an attempt whose status update failed
+  const postedComment = useRef<string | null>(null);
 
   const payload = config.requiresCompleteAt
     ? { ...config.payload, complete_at: completeAt ?? undefined }
@@ -167,23 +169,33 @@ const ActionButton = ({
       (!!config.requiresCompleteAt && !completeAt) ||
       (!!config.requiresComment && !comment.trim()),
     onConfirmMutation: {
+      // The comment is written first: if it fails, the status is unchanged,
+      // so the action bar (and the draft) stays and the action can be retried.
+      // If the status update fails afterwards, the comment is not posted again
+      // on retry.
       mutationFn: async () => {
+        const content = comment.trim();
+
+        if (config.requiresComment && postedComment.current !== content) {
+          await createServiceProvidingGroupProductApplicationComment({
+            body: {
+              service_providing_group_product_application_id: spgpaId,
+              content,
+              visibility: "any_involved_party",
+            },
+          }).then(throwOnError);
+          postedComment.current = content;
+        }
+
         await updateServiceProvidingGroupProductApplication({
           path: { id: spgpaId },
           body: payload,
         }).then(throwOnError);
-
-        if (config.requiresComment) {
-          await createServiceProvidingGroupProductApplicationComment({
-            body: {
-              service_providing_group_product_application_id: spgpaId,
-              content: comment.trim(),
-              visibility: "any_involved_party",
-            },
-          }).then(throwOnError);
-        }
       },
-      onSuccess: () => setComment(""),
+      onSuccess: () => {
+        postedComment.current = null;
+        setComment("");
+      },
       onSettled: () => {
         if (config.requiresComment) {
           void queryClient.invalidateQueries({
