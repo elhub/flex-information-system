@@ -133,7 +133,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
             sequential {
                 gradleVerify {
                     workingDir = "kbackend"
-                    enablePublishMetrics = false
                     dependencyTrackProjectName = "flex-information-system-kbackend"
                 }.buildType.triggerOnVcsChange {
                     triggerRules = """
