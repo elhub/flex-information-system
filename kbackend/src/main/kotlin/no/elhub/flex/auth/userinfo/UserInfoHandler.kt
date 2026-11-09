@@ -8,7 +8,6 @@ import no.elhub.flex.auth.model.dto.generated.models.FlexRole
 import no.elhub.flex.auth.model.dto.generated.models.UserinfoResponse
 import no.elhub.flex.auth.plugin.accessToken
 import no.elhub.flex.auth.token.toFlexPrincipal
-import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.http.InternalServerError
 import no.elhub.flex.shared.http.respondJson
 import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown

@@ -11,12 +11,14 @@ fun makeJwt(
     role: String = "flex_service_provider",
     eid: String = "12345678901",
     scope: String = "use:data:controllable_unit:lookup",
+    partyId: Int = 1,
+    ttlSeconds: Long = 60,
 ): String =
     JWT.create()
         .withClaim("entity_id", 1)
         .withClaim("eid", eid)
-        .withClaim("party_id", 1)
+        .withClaim("party_id", partyId)
         .withClaim("role", role)
         .withClaim("scope", scope)
-        .withExpiresAt(Date(System.currentTimeMillis() + 60_000))
+        .withExpiresAt(Date(System.currentTimeMillis() + ttlSeconds * 1000))
         .sign(Algorithm.HMAC256(TEST_JWT_SECRET))

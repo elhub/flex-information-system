@@ -21,7 +21,6 @@ import no.elhub.flex.shared.http.AppError
 import no.elhub.flex.shared.http.AuthenticationError
 import no.elhub.flex.shared.http.InternalServerError
 import no.elhub.flex.shared.http.ParsingError
-import no.elhub.flex.shared.http.handleError
 import no.elhub.flex.shared.http.respondJson
 import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
@@ -54,7 +53,7 @@ class EntityLookup(private val repo: EntityRepository) {
                 ).mapLeft { InternalServerError(traceIdOrUnknown()) }.bind()
             }
         }.fold(
-            ifLeft = { error -> handleError(call, error) },
+            ifLeft = { error -> error.handle(call) },
             ifRight = { result ->
                 val status = if (result.found) HttpStatusCode.OK else HttpStatusCode.Created
                 EntityLookupResponse(entityId = result.entityId).right().respondJson(call, status)

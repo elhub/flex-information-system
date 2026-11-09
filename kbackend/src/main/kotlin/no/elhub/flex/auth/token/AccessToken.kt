@@ -44,7 +44,7 @@ data class AccessToken(
          * Returns [InvalidTokenError] when the signature is wrong or claims are missing/malformed,
          * [ExpiredTokenError] when the token is syntactically valid but past its expiry.
          */
-        fun parse(jwt: String, secret: String): Either<AuthError, AccessToken> =
+        fun parse(jwt: String, secret: String): Either<TokenError, AccessToken> =
             either {
                 val verifier =
                     try {

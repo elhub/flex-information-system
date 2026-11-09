@@ -474,6 +474,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// routes served by kbackend must be registered before the middleware so they are passed through
 	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
@@ -490,8 +491,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		authRouter.POST("/token",
 			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHandler)),
 			authAPI.PostTokenHandler)
-		authRouter.GET("/session", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:session"}, http.HandlerFunc(authAPI.GetSessionHandler))))
 		authRouter.POST("/assume", WrapHandler(
 			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
 		authRouter.DELETE("/assume", WrapHandler(

@@ -1,11 +1,21 @@
 package no.elhub.flex.shared.http
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.response.respondText
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+
+private val logger = KotlinLogging.logger {}
 
 /** Custom type for all errors in the app. */
 @Serializable(with = AppErrorSerializer::class)
@@ -15,6 +25,31 @@ sealed class AppError {
 
     /** The HTTP status code to return for this error. */
     abstract val code: HttpStatusCode
+
+    /**
+     * Writes this error as the HTTP response.
+     *
+     * By default the body has the shape of the `error_message` schema of the data API (`code` and `message`),
+     * or is empty when the [message] is empty. Error types with another body format override this method.
+     */
+    open suspend fun handle(call: ApplicationCall) {
+        if (message.isNotEmpty()) {
+            call.respondErrorBody(
+                code,
+                buildJsonObject {
+                    put("code", "HTTP${code.value}")
+                    put("message", message)
+                }
+            )
+        } else {
+            call.respondText("", status = code)
+        }
+    }
+}
+
+/** Responds with [body] as JSON and the given [status]. */
+internal suspend fun ApplicationCall.respondErrorBody(status: HttpStatusCode, body: JsonObject) {
+    respondText(Json.encodeToString(JsonObject.serializer(), body), ContentType.Application.Json, status)
 }
 
 /**
@@ -46,6 +81,37 @@ internal object AppErrorSerializer : KSerializer<AppError> {
     }
 }
 
+/**
+ * Error of the auth API, whose body has the shape of the `error_message` schema of that API:
+ * `code`, `message` (the status text), and optionally `details` and `hint`.
+ *
+ * @property detail what went wrong, serialized as `details`
+ * @property hint an optional hint to help resolve the error
+ * @property code the HTTP status code
+ */
+data class AuthError(
+    val detail: String,
+    val hint: String? = null,
+    override val code: HttpStatusCode = HttpStatusCode.BadRequest,
+) : AppError() {
+    override val message: String = code.description
+
+    override suspend fun handle(call: ApplicationCall) {
+        if (code == HttpStatusCode.InternalServerError) {
+            logger.error { "$detail${hint?.let { ": $it" }.orEmpty()}" }
+        }
+        call.respondErrorBody(
+            code,
+            buildJsonObject {
+                put("code", "HTTP${code.value}")
+                put("message", message)
+                if (detail.isNotEmpty()) put("details", detail)
+                if (!hint.isNullOrEmpty()) put("hint", hint)
+            }
+        )
+    }
+}
+
 /** Error indicating an authentication failure. */
 data class AuthenticationError(
     override val message: String = "Unauthorized",
@@ -64,6 +130,19 @@ data class MissingPathParameterError(
 ) : AppError() {
     override val message: String = "Missing path parameter '$name'"
 }
+
+/**
+ * Error indicating a cookie is missing from the request.
+ *
+ * @property name the name of the missing cookie
+ * @property code the HTTP status code
+ */
+data class MissingCookieError(
+    val name: String,
+    override val code: HttpStatusCode = HttpStatusCode.NoContent,
+    // default empty body when returning NoContent
+    override val message: String = ""
+) : AppError()
 
 /**
  * Error indicating a query parameter is missing from the request.
@@ -189,4 +268,9 @@ data class InternalServerError(
 ) : AppError() {
     override val code: HttpStatusCode = HttpStatusCode.InternalServerError
     override val message: String = "An unexpected error occurred. If the issue persist, give this Trace ID to support: $traceId"
+
+    override suspend fun handle(call: ApplicationCall) {
+        logger.error { message }
+        super.handle(call)
+    }
 }

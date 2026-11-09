@@ -25,7 +25,7 @@ import no.elhub.flex.auth.token.MissingTokenError
 private val logger = KotlinLogging.logger {}
 
 /** Name of the session cookie carrying the JWT */
-private const val SESSION_COOKIE_NAME = "__Host-flex_session"
+const val SESSION_COOKIE_NAME = "__Host-flex_session"
 
 private const val BEARER_PREFIX = "Bearer "
 
