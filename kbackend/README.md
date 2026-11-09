@@ -119,15 +119,10 @@ Authentication failures follow
 HTTP 401 with `WWW-Authenticate: Bearer` for a missing token, HTTP 401 with
 `error="invalid_token"` for an invalid or expired one, and HTTP 403 with
 `error="insufficient_scope"` (naming the required scope) when the token lacks
-a scope.
-
-Callers without a token are served as anonymous (scopes `use:auth` and
-`read:data`). Data API routes are declared with `optionalAuthenticatedRouting`,
-which lets callers without a token through but still rejects an invalid one.
-Routes that require a token are declared with `authenticatedRouting` and
-restricted with `requireScope` or `requireRoles`; they respond with HTTP 401
-when there is none. An `Authorization` header that is not a `Bearer` header is
-rejected with HTTP 400.
+a scope. All routes are declared with `authenticatedRouting` and restricted with
+`requireScope` or `requireRoles`; they respond with HTTP 401 when there is no
+token. An `Authorization` header that is not a `Bearer` header is rejected with
+HTTP 400.
 
 PostgREST is reached at `FLEX_POSTGREST_URL`.
 

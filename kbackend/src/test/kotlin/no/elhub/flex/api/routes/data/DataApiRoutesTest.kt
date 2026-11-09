@@ -307,23 +307,11 @@ class DataApiRoutesTest :
         }
 
         context("access") {
-            test("anonymous callers can read data, without sending credentials to PostgREST") {
-                postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
+            test("callers without a token are unauthorized") {
+                val response = app.client.get("/product_type") { header("Api-Version", VERSION) }
 
-                app.client.get("/product_type") { header("Api-Version", VERSION) }.status shouldBe HttpStatusCode.OK
-
-                postgrest.verify(getRequestedFor(urlPathEqualTo("/product_type")).withoutHeader("Authorization"))
-            }
-
-            test("anonymous callers cannot write") {
-                val response = app.client.post("/party") {
-                    header("Api-Version", VERSION)
-                    contentType(ContentType.Application.Json)
-                    setBody("{}")
-                }
-
-                response.status shouldBe HttpStatusCode.Forbidden
-                postgrest.verify(0, postRequestedFor(urlPathEqualTo("/party")))
+                response.status shouldBe HttpStatusCode.Unauthorized
+                postgrest.verify(0, getRequestedFor(urlPathEqualTo("/product_type")))
             }
 
             test("a token without enough scope is forbidden") {
@@ -499,7 +487,7 @@ class DataApiRoutesTest :
                     }
                 }
 
-                val response = brokenApp.client.get("/product_type")
+                val response = brokenApp.client.get("/product_type") { header("Authorization", "Bearer ${token()}") }
                 response.status shouldBe HttpStatusCode.BadGateway
                 brokenApp.stop()
             }
