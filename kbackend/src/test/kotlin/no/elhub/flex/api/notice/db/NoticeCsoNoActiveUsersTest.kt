@@ -60,13 +60,20 @@ class NoticeCsoNoActiveUsersTest : FunSpec({
             detectedPartiesFor(cu.csoId) shouldBe listOf(fiso)
         }
 
-        listOf("new", "inactive", "terminated").forEach { status ->
+        listOf("inactive", "terminated").forEach { status ->
             test("CSO whose only CU is $status gives no notice") {
                 seed(Triggers.OFF) { insertFiso() }
                 val cu = seed(Triggers.OFF) { seedCuWithCso(status = status) }
 
                 detectedPartiesFor(cu.csoId).shouldBeEmpty()
             }
+        }
+
+        test("CSO whose only CU is new gives a notice") {
+            val fiso = seed(Triggers.OFF) { insertFiso() }
+            val cu = seed(Triggers.OFF) { seedCuWithCso(status = "new") }
+
+            detectedPartiesFor(cu.csoId) shouldBe listOf(fiso)
         }
 
         test("CSO relation that has ended gives no notice") {
