@@ -1,114 +1,113 @@
-import { useRecordContext, usePermissions } from "ra-core";
-import { Link } from "react-router-dom";
-import { IconPencil, IconClockReset } from "@elhub/ds-icons";
-import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
+import { IconPencil } from "@elhub/ds-icons";
 import {
-  Show,
-  TextField,
-  ReferenceField,
-  DateField,
-  IdentityField,
-} from "../../components/EDS-ra";
-import { EventButton } from "../../components/EDS-ra/buttons";
+  ShowBase,
+  useGetOne,
+  usePermissions,
+  useRecordContext,
+  useTranslate,
+} from "ra-core";
 import { Permissions } from "../../auth/permissions";
-import { ServiceProvidingGroupMembership } from "../../generated-client";
-import { getFields } from "../../zod";
-import { zServiceProvidingGroupMembershipHistory } from "../../generated-client/zod.gen";
+import { BodyText, Loader } from "../../components/ui";
+import { ResourceShowLayout } from "../../components/ResourceShowLayout";
+import { ServiceProvidingGroupMembershipHistory } from "../../generated-client";
+import { useServiceProvidingGroupMembershipShowSummary } from "./ServiceProvidingGroupMembershipShowSummary";
+import { ServiceProvidingGroupMembershipShowTabs } from "./ServiceProvidingGroupMembershipShowTabs";
 
-const fields = getFields(zServiceProvidingGroupMembershipHistory.shape);
-
-const EditButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupMembership>();
-  if (!record) return null;
-  return (
-    <Button
-      as={Link}
-      to={`/service_providing_group/${record.service_providing_group_id}/membership/${record.id}`}
-      variant="invisible"
-      size="medium"
-      icon={IconPencil}
-    >
-      Edit
-    </Button>
-  );
-};
-
-const HistoryButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupMembership>();
+const ServiceProvidingGroupMembershipShowContent = () => {
+  const record = useRecordContext<ServiceProvidingGroupMembershipHistory>();
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
 
+  const { data: controllableUnit } = useGetOne(
+    "controllable_unit",
+    { id: record?.controllable_unit_id },
+    { enabled: !!record?.controllable_unit_id },
+  );
+  const { data: serviceProvidingGroup } = useGetOne(
+    "service_providing_group",
+    { id: record?.service_providing_group_id },
+    { enabled: !!record?.service_providing_group_id },
+  );
+  const summary = useServiceProvidingGroupMembershipShowSummary({
+    membership: record,
+  });
+
   if (!record) return null;
 
-  const filter =
-    `?filter=` +
-    encodeURIComponent(
-      `{ "service_providing_group_membership_id": ${record.id} }`,
-    );
+  // History records point to the membership they belong to.
+  const isHistoryRecord = record.service_providing_group_membership_id != null;
+  const membershipId =
+    record.service_providing_group_membership_id ?? record.id;
+
+  const canEdit =
+    (permissions?.allow("service_providing_group_membership", "update") ??
+      false) &&
+    !isHistoryRecord;
+  const canViewHistory =
+    permissions?.allow("service_providing_group_membership_history", "read") ??
+    false;
+  const canReadEvents = permissions?.allow("event", "read") ?? false;
+
+  const historyFilter = encodeURIComponent(
+    JSON.stringify({ service_providing_group_membership_id: membershipId }),
+  );
+  const eventsFilter = encodeURIComponent(
+    JSON.stringify({
+      "subject@eq": `/service_providing_group_membership/${membershipId}`,
+    }),
+  );
 
   return (
-    <Button
-      as={Link}
-      to={`/service_providing_group/${record.service_providing_group_id}/membership_history${filter}`}
-      variant="invisible"
-      size="medium"
-      icon={IconClockReset}
-      disabled={
-        !permissions?.allow(
-          "service_providing_group_membership_history",
-          "read",
-        )
+    <ResourceShowLayout
+      secondaryHeaderText={`${translate(
+        "text.service_providing_group_membership",
+      )} #${membershipId}`}
+      mainHeaderText={
+        controllableUnit && serviceProvidingGroup
+          ? `${serviceProvidingGroup.name} - ${controllableUnit.name}`
+          : (serviceProvidingGroup?.name ?? controllableUnit?.name ?? "")
       }
-    >
-      View History
-    </Button>
+      moreActions={[
+        {
+          to: `/service_providing_group/${record.service_providing_group_id}/membership/${membershipId}`,
+          title: translate("text.edit"),
+          icon: <IconPencil />,
+          shouldShow: canEdit,
+        },
+      ]}
+      moreNavigationActions={[
+        {
+          to: `/service_providing_group/${record.service_providing_group_id}/membership_history?filter=${historyFilter}`,
+          title: translate("text.cu_spg_show_history"),
+          shouldShow: canViewHistory,
+        },
+        {
+          to: `/event?filter=${eventsFilter}`,
+          title: translate("text.events"),
+          shouldShow: canReadEvents,
+        },
+      ]}
+      summary={summary}
+      content={
+        <ServiceProvidingGroupMembershipShowTabs
+          controllableUnit={controllableUnit}
+          controllableUnitId={record.controllable_unit_id}
+          serviceProvidingGroup={serviceProvidingGroup}
+          serviceProvidingGroupId={record.service_providing_group_id}
+        />
+      }
+    />
   );
 };
 
 export const ServiceProvidingGroupMembershipShow = () => {
+  const translate = useTranslate();
   return (
-    <Show
-      editButton={<EditButton />}
-      historyButton={<HistoryButton />}
-      eventButton={<EventButton filterOnSubject />}
+    <ShowBase
+      loading={<Loader />}
+      error={<BodyText>{translate("text.generic_error")}</BodyText>}
     >
-      <Heading level={2} size="small" spacing>
-        Basic information
-      </Heading>
-      <Content>
-        <TextField source={fields.id.source} label />
-        <TextField
-          source={fields.service_providing_group_membership_id.source}
-          label
-        />
-        <ReferenceField
-          source={fields.controllable_unit_id.source}
-          reference="controllable_unit"
-          label
-        />
-        <ReferenceField
-          source={fields.service_providing_group_id.source}
-          reference="service_providing_group"
-          label
-        />
-      </Content>
-      <VerticalSpace />
-      <Heading level={2} size="small" spacing>
-        Valid time
-      </Heading>
-      <Content>
-        <DateField source={fields.valid_from.source} showTime label />
-        <DateField source={fields.valid_to.source} showTime label />
-      </Content>
-      <VerticalSpace />
-      <Heading level={2} size="small" spacing>
-        Registration
-      </Heading>
-      <Content>
-        <DateField source={fields.recorded_at.source} showTime label />
-        <IdentityField source={fields.recorded_by.source} label />
-        <DateField source={fields.replaced_at.source} showTime label />
-        <IdentityField source={fields.replaced_by.source} label />
-      </Content>
-    </Show>
+      <ServiceProvidingGroupMembershipShowContent />
+    </ShowBase>
   );
 };

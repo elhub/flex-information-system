@@ -27,6 +27,7 @@ export type TextKey =
   | "entity.name"
   | "print"
   | "service_providing_group"
+  | "service_providing_group_membership"
   | "service_providing_group_product_application"
   | "service_provider_product_application"
   | "service_provider"
@@ -39,6 +40,7 @@ export type TextKey =
   | "resource_card.see_system_operator"
   | "resource_card.see_service_provider"
   | "resource_card.see_group"
+  | "resource_card.see_controllable_unit"
   | "events"
   | "print"
   | "tab.summary"
@@ -61,6 +63,15 @@ export type TextKey =
   | "tab.comments"
   | "tab.attachments"
   | "cu_spg_show_history"
+  | "cusp_create_title"
+  | "cusp_edit_title"
+  | "spa_create_title"
+  | "spa_edit_title"
+  | "spg_membership_edit_title"
+  | "generic_error"
+  | "spg_membership_remove_title"
+  | "spg_membership_remove_confirm"
+  | "spg_membership_edit_action"
   | "table.header.history_id"
   | "cu_spg_id"
   | "cu_spg_empty"
@@ -345,6 +356,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
     service_providing_group: "Service providing group",
+    service_providing_group_membership: "Service providing group membership",
     service_providing_group_product_application:
       "Service providing group product application",
     "resource_show_layout.actions_group_label": "Actions",
@@ -355,6 +367,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_card.see_system_operator": "See system operator",
     "resource_card.see_service_provider": "See service provider",
     "resource_card.see_group": "See group",
+    "resource_card.see_controllable_unit": "See controllable unit",
     "tab.summary": "Summary",
     "spg_info_tab.name": "Name",
     "spg_info_tab.procuring_system_operator": "Procuring system operator",
@@ -375,6 +388,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.comments": "Comments",
     "tab.attachments": "Attachments",
     cu_spg_show_history: "Show history",
+    cusp_create_title: "Create controllable unit service provider",
+    cusp_edit_title: "Edit controllable unit service provider",
+    spa_create_title: "Create service provider product application",
+    spa_edit_title: "Edit service provider product application",
+    spg_membership_edit_title: "Edit service providing group membership",
+    generic_error: "Something went wrong",
+    spg_membership_remove_title: "Remove from group",
+    spg_membership_remove_confirm:
+      "Are you sure you want to remove this controllable unit from the group? This action cannot be undone. If the membership is no longer active, you can update the valid to date by editing the membership.",
+    spg_membership_edit_action: "Edit membership",
     "table.header.history_id": "History ID",
     cu_spg_id: "SPG ID",
     cu_spg_empty: "No service providing groups for this controllable unit.",
@@ -714,6 +737,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",
+    service_providing_group_membership: "Medlemskap i fleksibilitetsgruppe",
     service_providing_group_product_application:
       "Fleksibilitetsgruppens produktsøknad",
     "resource_show_layout.actions_group_label": "Handlinger",
@@ -724,6 +748,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "resource_card.see_system_operator": "Se systemoperatør",
     "resource_card.see_service_provider": "Se tjenesteleverandør",
     "resource_card.see_group": "Se gruppe",
+    "resource_card.see_controllable_unit": "Se kontrollerbar enhet",
     "tab.summary": "Sammendrag",
     "spg_info_tab.name": "Navn",
     "spg_info_tab.procuring_system_operator": "Anskaffende systemoperatør",
@@ -744,6 +769,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.comments": "Kommentarer",
     "tab.attachments": "Vedlegg",
     cu_spg_show_history: "Vis historikk",
+    cusp_create_title: "Opprett tjenesteleverandør for kontrollerbar enhet",
+    cusp_edit_title: "Endre tjenesteleverandør for kontrollerbar enhet",
+    spa_create_title: "Opprett produktsøknad for tjenesteleverandør",
+    spa_edit_title: "Endre produktsøknad for tjenesteleverandør",
+    spg_membership_edit_title: "Endre medlemskap i fleksibilitetsgruppe",
+    generic_error: "Noe gikk galt",
+    spg_membership_remove_title: "Fjern fra gruppe",
+    spg_membership_remove_confirm:
+      "Er du sikker på at du vil fjerne denne kontrollerbare enheten fra gruppen? Denne handlingen kan ikke angres. Hvis medlemskapet ikke lenger er aktivt, kan du oppdatere gyldig til-datoen ved å endre medlemskapet.",
+    spg_membership_edit_action: "Endre medlemskap",
     "table.header.history_id": "Historikk-ID",
     cu_spg_id: "SPG-ID",
     cu_spg_empty:

@@ -9,6 +9,7 @@ type BaseOptions = {
   confirmText?: string;
   cancelText?: string;
   confirmDisabled?: boolean;
+  secondaryAction?: { label: string; onClick: () => void };
 };
 
 type MutationOptions = BaseOptions & {
@@ -38,6 +39,7 @@ export const useConfirmAction = ({
   confirmText,
   cancelText,
   confirmDisabled = false,
+  secondaryAction,
   ...rest
 }: UseConfirmActionOptions) => {
   const [open, setOpen] = useState(false);
@@ -85,6 +87,15 @@ export const useConfirmAction = ({
         >
           {cancelText ?? translate("text.form_toolbar.cancel")}
         </Button>
+        {secondaryAction ? (
+          <Button
+            variant="tertiary"
+            disabled={isPending}
+            onClick={secondaryAction.onClick}
+          >
+            {secondaryAction.label}
+          </Button>
+        ) : null}
         <Button disabled={isPending || confirmDisabled} onClick={confirm}>
           {confirmText ?? translate("text.form_toolbar.confirm")}
         </Button>
