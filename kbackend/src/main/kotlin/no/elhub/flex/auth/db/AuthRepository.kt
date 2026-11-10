@@ -3,6 +3,7 @@ package no.elhub.flex.auth.db
 import arrow.core.Either
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
+import no.elhub.flex.auth.model.EntityIdentity
 import no.elhub.flex.auth.model.UserInfo
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
@@ -22,6 +23,13 @@ interface AuthRepository {
      */
     context(principal: FlexPrincipal)
     suspend fun currentUserInfo(): Either<RepositoryError, UserInfo>
+
+    /**
+     * Gets the entity of a person from their business ID, creating it if it does not exist, with
+     * `auth.get_or_create_entity()`. Meant for the login of a person, who has no identity yet.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getOrCreateEntity(businessId: String, businessIdType: String, name: String): Either<RepositoryError, EntityIdentity>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -58,6 +66,31 @@ class AuthRepositoryImpl : AuthRepository {
                     logger.info { "No identity found for the current principal" }
                     raise(NotFoundError("identity does not exist in database"))
                 }
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getOrCreateEntity(
+        businessId: String,
+        businessIdType: String,
+        name: String,
+    ): Either<RepositoryError, EntityIdentity> =
+        flexTransaction { conn ->
+            either {
+                runCatching {
+                    conn.prepareNamed(
+                        """
+                        SELECT entity_id, external_id
+                        FROM auth.get_or_create_entity(:business_id, :business_id_type, :name)
+                        """,
+                        mapOf("business_id" to businessId, "business_id_type" to businessIdType, "name" to name),
+                    ).querySingle { rs ->
+                        EntityIdentity(entityId = rs.getLong("entity_id"), externalId = rs.getString("external_id"))
+                    }
+                }.getOrElse { e ->
+                    logger.error { "getOrCreateEntity failed: ${e.message}" }
+                    raise(DatabaseError("Failed to get or create the entity"))
+                } ?: raise(DatabaseError("The entity was not returned"))
             }
         }
 }

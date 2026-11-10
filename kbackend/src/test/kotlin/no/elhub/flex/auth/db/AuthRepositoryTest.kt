@@ -6,6 +6,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.auth.model.UserInfo
 import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.testutil.Triggers
 import no.elhub.flex.testutil.seed
@@ -51,6 +52,43 @@ class AuthRepositoryTest : FunSpec({
 
             // then
             result.shouldBeLeft().shouldBe(NotFoundError("identity does not exist in database"))
+        }
+    }
+
+    context("getOrCreateEntity") {
+
+        test("creates an entity of type person that can be found from the identity, as the anonymous principal") {
+            // given
+            val pid = "3${System.nanoTime() % 10_000_000_000L}".take(11)
+
+            // when
+            val created = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity(pid, "pid", "Created Person") }.shouldBeRight()
+
+            // then
+            val info = with(FlexPrincipal(role = "flex_entity", eid = created.externalId)) { repo.currentUserInfo() }.shouldBeRight()
+            info.entityId shouldBe created.entityId
+            info.entityName shouldBe "Created Person"
+            info.partyId shouldBe null
+        }
+
+        test("returns the same entity and identity the second time, without changing the name") {
+            // given
+            val pid = "4${System.nanoTime() % 10_000_000_000L}".take(11)
+            val first = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity(pid, "pid", "First Name") }.shouldBeRight()
+
+            // when
+            val second = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity(pid, "pid", "Other Name") }.shouldBeRight()
+
+            // then
+            second shouldBe first
+        }
+
+        test("returns DatabaseError for a business ID type that does not exist") {
+            // when
+            val result = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity("12345678901", "not a type", "Person") }
+
+            // then
+            result.shouldBeLeft().shouldBe(DatabaseError("Failed to get or create the entity"))
         }
     }
 })

@@ -3,6 +3,8 @@ package no.elhub.flex.api.config
 import io.ktor.server.config.ApplicationConfig
 import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.config.authConfig
+import no.elhub.flex.auth.oidc.OidcConfig
+import no.elhub.flex.auth.oidc.oidcConfig
 import no.elhub.flex.shared.adapter.AdapterClientConfig
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
@@ -15,6 +17,9 @@ class ConfigModule {
 
     @Single(createdAtStart = true)
     fun authConfig(config: ApplicationConfig): AuthConfig = config.authConfig()
+
+    @Single(createdAtStart = true)
+    fun oidcConfig(config: ApplicationConfig): OidcConfig = config.oidcConfig()
 
     @Single(createdAtStart = true)
     fun accountingPointAdapterConfig(config: ApplicationConfig): AccountingPointAdapterConfig =

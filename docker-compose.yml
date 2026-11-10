@@ -60,10 +60,6 @@ services:
     ports:
       - "7001:7001"
     env_file: "./local/backend/test.env"
-    volumes:
-      - type: bind
-        source: ${HOME}/.ca/root/ca.cert.pem
-        target: /etc/ssl/certs/local-root.pem
     depends_on:
       db:
         condition: service_healthy
@@ -71,10 +67,6 @@ services:
         condition: service_started
       kbackend:
         condition: service_started
-      authelia:
-        condition: service_healthy
-    extra_hosts:
-      - "idp.flex.internal:host-gateway"
   s3mock:
     image: adobe/s3mock:latest
     environment:
@@ -92,11 +84,29 @@ services:
     ports:
       - "7002:8080"
     env_file: "./local/kbackend/test.env"
+    environment:
+      # makes the JVM trust the certificates in /certificates (the local CA)
+      USE_SYSTEM_CA_CERTS: "1"
+    # same as the entrypoint of the image, started through the script that adds the certificates to the JVM truststore
+    entrypoint:
+      - /__cacert_entrypoint.sh
+      - java
+      - -cp
+      - "@/app/jib-classpath-file"
+      - no.elhub.flex.ApplicationKt
+    volumes:
+      - type: bind
+        source: ${HOME}/.ca/root/ca.cert.pem
+        target: /certificates/local-root.crt
     depends_on:
       db:
         condition: service_healthy
       s3mock:
         condition: service_healthy
+      authelia:
+        condition: service_healthy
+    extra_hosts:
+      - "idp.flex.internal:host-gateway"
   frontend:
     build: ./frontend
     volumes:

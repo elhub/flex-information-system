@@ -2,12 +2,10 @@ package no.elhub.flex.auth.session
 
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.http.Cookie
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.header
-import io.ktor.util.date.GMTDate
 import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.db.AuthRepository
 import no.elhub.flex.auth.model.dto.generated.models.FlexRole
@@ -70,25 +68,10 @@ class SessionHandler(
             SessionResponse(
                 entityId = token.entityId,
                 entityName = info.entityName,
-                exp = token.exp.toInt(),
+                exp = token.expiryUnixSeconds.toInt(),
                 partyId = token.partyId.takeIf { it != 0 },
                 partyName = info.partyName?.takeIf { it.isNotEmpty() },
                 role = role,
             )
         }.respondJson(call)
-
-    private fun ApplicationCall.unsetSessionCookie() {
-        response.cookies.append(
-            Cookie(
-                name = SESSION_COOKIE_NAME,
-                value = "not.a.session",
-                maxAge = 0,
-                expires = GMTDate.START,
-                path = "/",
-                secure = true,
-                httpOnly = true,
-                extensions = mapOf("SameSite" to "Strict"),
-            ),
-        )
-    }
 }

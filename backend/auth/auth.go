@@ -9,7 +9,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"flex/auth/models"
-	"flex/auth/oidc"
 	"flex/auth/scope"
 	"flex/internal/validate"
 	"flex/pgpool"
@@ -24,12 +23,9 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/lestrrat-go/jwx/v4/jwa"
 	"github.com/lestrrat-go/jwx/v4/jws"
-	"github.com/lestrrat-go/jwx/v4/jwt"
-	"github.com/lestrrat-go/jwx/v4/jwt/openid"
 )
 
 const (
-	callbackPath                    = "/auth/v1/callback"
 	sessionCookieKey                = "__Host-flex_session"
 	defaultFailedLoginResponseDelay = 2 * time.Second
 	maxRequestBodyBytes             = 1024
@@ -43,7 +39,6 @@ type API struct {
 	db                       *pgpool.Pool
 	jwtSecret                []byte
 	tokenDurationSeconds     int
-	oidcProvider             *oidc.Provider
 	ctxKey                   string
 	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
 	defaultAnonymousScopes   scope.List    // default scopes for an anonymous user
@@ -56,7 +51,6 @@ func NewAPI(
 	self string,
 	db *pgpool.Pool,
 	jwtSecret string,
-	oidcProvider *oidc.Provider,
 	ctxKey string,
 	isLoginLimitingDisabled bool,
 ) *API {
@@ -68,7 +62,6 @@ func NewAPI(
 		db:                       db,
 		jwtSecret:                []byte(jwtSecret),
 		tokenDurationSeconds:     3600,
-		oidcProvider:             oidcProvider,
 		ctxKey:                   ctxKey,
 		failedLoginResponseDelay: failedLoginResponseDelay,
 		defaultAnonymousScopes: scope.List{
@@ -254,227 +247,6 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 			ErrorDescription: fmt.Sprintf("unsupported grant type: %s", tokenPayload.GrantType),
 		})
 	}
-}
-
-type loginCookie struct {
-	*oidc.AuthorizationDetails
-
-	ReturnURL string `json:"return_url"`
-}
-
-// GetLoginHandler starts the authorization code flow with the external identity provider.
-// It pushes an authorization request to the external identity provider before
-// redirecting the user to the external identity provider.
-func (auth *API) GetLoginHandler(ctx *gin.Context) {
-	url, authDetails, err := auth.oidcProvider.AuthURL(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not get url for authorization server", err))
-	}
-
-	returnURL := ctx.Query("return_url")
-	if returnURL == "" {
-		returnURL = "/#/login/assumeParty"
-	}
-
-	if !strings.HasPrefix(returnURL, "/#/") {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "return_url must be a relative path in the frontend", nil))
-		return
-	}
-
-	loginCookie := loginCookie{
-		authDetails,
-		returnURL,
-	}
-
-	loginCookiePayload, _ := json.Marshal(loginCookie)
-
-	// we don't really need to sign the cookie, but we are doing it just to make sure that there is no tampering
-	signedLoginCookie, err := jws.Sign(loginCookiePayload, jws.WithKey(jwa.HS256(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not sign login cookie", err))
-		return
-	}
-
-	// We need to set lax mode to allow the cookie to be sent when a user is navigating to the origin site from an external site
-	ctx.SetSameSite(http.SameSiteLaxMode)
-
-	// We need to allow for slow logins, so we set a fairly long max age for the cookie
-	// Slow logins are typically on first user login (if they need to set up MFA etc in IDP)
-	// 10 minutes should be more than enough for that, and if the user takes longer than that,
-	// they can just try logging in again, which will set a new cookie.
-	maxAge := 600
-	ctx.SetCookie("flex_login", string(signedLoginCookie), maxAge, callbackPath, "", true, true)
-
-	ctx.Redirect(http.StatusFound, url)
-}
-
-// GetCallbackHandler handles the callback from the external identity provider.
-// It exchanges the authorization code for an access token and sets the session cookie.
-func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
-	code := ctx.Query("code")
-	if code == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no code in callback", nil))
-		return
-	}
-
-	returnedState := ctx.Query("state")
-	if returnedState == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no state in callback", nil))
-		return
-	}
-
-	issuer := ctx.Query("iss")
-	if issuer != "" {
-		// Not all IDps send the issuer in the callback, so we ignore it if it is not present.
-		// We will check the issuer in the id_token later.
-		// If the issuer is present, it must match the issuer of the IDP.
-		if issuer != auth.oidcProvider.Issuer() {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid issuer in callback", nil))
-			return
-		}
-	}
-
-	loginCookieStr, err := ctx.Cookie("flex_login")
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "missing login cookie", err))
-		return
-	}
-
-	loginCookiePayload, err := jws.Verify([]byte(loginCookieStr), jws.WithKey(jwa.HS256(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid cookie", err))
-		return
-	}
-
-	var loginCookie loginCookie
-
-	err = json.Unmarshal(loginCookiePayload, &loginCookie)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "malformed cookie", err))
-		return
-	}
-
-	ok, err := auth.oidcProvider.Verify(loginCookie.StateVerifier, returnedState)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "malformed state in callback", err))
-		return
-	}
-
-	if !ok {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "invalid state in callback", err))
-		return
-	}
-
-	tokenResponse, err := auth.oidcProvider.Exchange(ctx, code, loginCookie.CodeVerifier)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "error in code exchange", err))
-		return
-	}
-
-	idToken, ok := tokenResponse.Extra("id_token").(string)
-	if !ok {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no id_token in token response", nil))
-		return
-	}
-
-	keySet, err := auth.oidcProvider.GetKeySet(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not get key set", err))
-		return
-	}
-
-	token := openid.New()
-
-	_, err = jwt.ParseString(
-		idToken,
-		jwt.WithToken(token),
-		jwt.WithKeySet(keySet),
-		jwt.WithIssuer(auth.oidcProvider.Issuer()),
-		jwt.WithAudience(auth.oidcProvider.ClientID()),
-	)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid id_token", err))
-		return
-	}
-
-	var returnedNonce string
-
-	returnedNonce, err = jwt.Get[string](token, "nonce")
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no nonce in id_token", err))
-		return
-	}
-
-	ok, err = auth.oidcProvider.Verify(loginCookie.NonceVerifier, returnedNonce)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "malformed nonce in callback", err))
-		return
-	}
-
-	if !ok {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "invalid nonce in callback", err))
-		return
-	}
-
-	id, idType, name := oidc.GetUserData(token)
-
-	slog.DebugContext(ctx, "callback", "token", idToken, "id", id)
-
-	if idType == "email" && id != strings.ToLower(id) {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "email address must be lowercase",
-		})
-		return
-	}
-
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not begin tx in callback handler", err))
-		return
-	}
-	defer tx.Commit(ctx)
-
-	entityID, eid, err := models.GetOrCreateEntity(ctx, tx, id, idType, name)
-	if err != nil {
-		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "id", id, "idType", idType, "error", err)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "you are not a registered user",
-		})
-
-		return
-	}
-
-	accessToken := accessToken{
-		EntityID:       entityID,
-		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
-		ExternalID:     eid,
-		PartyID:        0,
-		Role:           "flex_entity",
-		Scope:          auth.defaultEntityScopes,
-	}
-
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not sign access token", err))
-		return
-	}
-
-	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie(sessionCookieKey, string(signedAccessToken), auth.tokenDurationSeconds, "/", "", true, true)
-	ctx.SetCookie("flex_login", "not.a.login", -1, callbackPath, "", true, true)
-
-	ctx.Redirect(http.StatusFound, loginCookie.ReturnURL)
-}
-
-// GetLogoutHandler unsets the __Host-flex_session cookie.
-func (auth *API) GetLogoutHandler(ctx *gin.Context) {
-	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie(sessionCookieKey, "not.a.session", -1, "/", "", true, true)
-
-	endSessionURL := auth.oidcProvider.EndSessionURL()
-	ctx.Redirect(http.StatusFound, endSessionURL)
 }
 
 // sessionInfo is the response from assume and session.

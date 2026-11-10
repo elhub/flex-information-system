@@ -13,6 +13,13 @@ flex:
 auth:
   jwtSecret: secret
 
+oidc:
+  issuer: https://idp.test
+  clientId: client
+  clientSecret: client-secret
+  redirectUrl: https://flex.test/auth/v1/callback
+  postLogoutRedirectUrl: https://flex.test/#/login
+
 docs:
   baseUrl: https://flex.test/
 

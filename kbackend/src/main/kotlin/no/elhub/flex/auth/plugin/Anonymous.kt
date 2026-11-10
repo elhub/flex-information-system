@@ -4,6 +4,7 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.principal
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
+import no.elhub.flex.auth.scope.covers
 import no.elhub.flex.auth.token.AccessToken
 
 /** The role of callers that present no token. */
@@ -23,3 +24,12 @@ val AnonymousScopes: List<Scope> = listOf(
  * Only meaningful on routes declared with [optionalAuthenticatedRouting].
  */
 fun ApplicationCall.callerScopes(): List<Scope> = principal<AccessToken>()?.scope ?: AnonymousScopes
+
+/**
+ * Checks that the caller has the [required] scope, and responds with HTTP 403 if not. Returns whether the caller has it.
+ */
+suspend fun ApplicationCall.requireCallerScope(required: Scope): Boolean {
+    if (callerScopes().covers(required)) return true
+    respondInsufficientScope(required)
+    return false
+}

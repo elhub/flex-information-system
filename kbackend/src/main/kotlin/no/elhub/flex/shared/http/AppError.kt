@@ -112,6 +112,32 @@ data class AuthError(
     }
 }
 
+/**
+ * Error of the auth API whose body has the shape of the `oauth_error_message` schema of that API
+ * ([RFC 6749 section 5.2](https://www.rfc-editor.org/rfc/rfc6749#section-5.2)): `error` and `error_description`.
+ *
+ * @property error the OAuth error code, e.g. `invalid_client`
+ * @property description what went wrong, serialized as `error_description`
+ * @property code the HTTP status code
+ */
+data class OAuthError(
+    val error: String,
+    val description: String,
+    override val code: HttpStatusCode = HttpStatusCode.BadRequest,
+) : AppError() {
+    override val message: String = description
+
+    override suspend fun handle(call: ApplicationCall) {
+        call.respondErrorBody(
+            code,
+            buildJsonObject {
+                put("error", error)
+                put("error_description", description)
+            }
+        )
+    }
+}
+
 /** Error indicating an authentication failure. */
 data class AuthenticationError(
     override val message: String = "Unauthorized",

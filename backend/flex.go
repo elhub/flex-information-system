@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"flex/auth"
-	"flex/auth/oidc"
 	"flex/auth/scope"
 	"flex/data"
 	"flex/event"
@@ -261,31 +260,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	dataAPIBaseURL := baseURL + "api/v1/"
 	gridAPIBaseURL := baseURL + "grid/v0/"
 
-	oidcIssuer, exists := lookupenv("FLEX_OIDC_ISSUER")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_OIDC_ISSUER", errMissingEnv)
-	}
-
-	oidcClientID, exists := lookupenv("FLEX_OIDC_CLIENT_ID")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_OIDC_CLIENT_ID", errMissingEnv)
-	}
-
-	oidcClientSecret, exists := lookupenv("FLEX_OIDC_CLIENT_SECRET")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_OIDC_CLIENT_SECRET", errMissingEnv)
-	}
-
-	oidcRedirectURL, exists := lookupenv("FLEX_OIDC_REDIRECT_URL")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_OIDC_REDIRECT_URL", errMissingEnv)
-	}
-
-	postLogoutRedirectURI, exists := lookupenv("FLEX_OIDC_POST_LOGOUT_REDIRECT_URL")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
-	}
-
 	isLoginLimitingDisabled := false
 
 	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
@@ -327,26 +301,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	defer dbPool.Close()
 
-	// Using the OIDC issuer as a "feature flag" to enable/disable OIDC stuff
-	// TODO remove once in production
-	oidcProvider := &oidc.Provider{}
-
-	if oidcIssuer != "" {
-		slog.DebugContext(ctx, "Creating OIDC provider for issuer "+oidcIssuer)
-
-		oidcProvider, err = oidc.NewProvider(ctx, oidcIssuer, oidcClientID, oidcClientSecret, jwtSecret, oidcRedirectURL, postLogoutRedirectURI)
-		if err != nil {
-			return fmt.Errorf("could not create OIDC provider: %w", err)
-		}
-	}
-
 	slog.DebugContext(ctx, "Creating auth API")
 
 	authAPI := auth.NewAPI(
 		authAPIBaseURL,
 		dbPool,
 		jwtSecret,
-		oidcProvider,
 		requestDetailsContextKey,
 		isLoginLimitingDisabled,
 	)
@@ -482,6 +442,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// routes served by kbackend must be registered before the middleware so they are passed through
 	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
 	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
+	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy)) //nolint:contextcheck
+	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))   //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
@@ -502,15 +465,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
 		authRouter.DELETE("/assume", WrapHandler(
 			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.DeleteAssumeHandler))))
-		authRouter.GET("/login",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:login"}, NoOpHandler)),
-			authAPI.GetLoginHandler)
-		authRouter.GET("/callback",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:callback"}, NoOpHandler)),
-			authAPI.GetCallbackHandler)
-		authRouter.GET("/logout",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:logout"}, NoOpHandler)),
-			authAPI.GetLogoutHandler)
 
 		// data API endpoint
 		router.Match(
