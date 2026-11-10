@@ -111,13 +111,13 @@ class CallbackHandler(
 private fun LoginCookieError.toAuthError() =
     when (this) {
         is InvalidLoginCookieError -> AuthError("invalid cookie", message)
-        is MalformedLoginCookieError -> AuthError("malformed cookie", message)
+        is MalformedLoginCookieError -> AuthError("malformed cookie", message, HttpStatusCode.InternalServerError)
     }
 
 private fun VerificationError.toAuthError(what: String) =
     when (this) {
-        is MalformedMessageError -> AuthError("malformed $what in callback", message)
-        is HashMismatchError -> AuthError("invalid $what in callback")
+        is MalformedMessageError -> AuthError("malformed $what in callback", message, HttpStatusCode.InternalServerError)
+        is HashMismatchError -> AuthError("invalid $what in callback", null, HttpStatusCode.InternalServerError)
     }
 
 private fun TokenExchangeError.toAuthError() =

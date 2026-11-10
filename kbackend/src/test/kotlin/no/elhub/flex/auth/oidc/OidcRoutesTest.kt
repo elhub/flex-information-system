@@ -419,10 +419,10 @@ class OidcRoutesTest : FunSpec({
                 val cookie = LoginCookie.parse(login.cookie, TEST_JWT_SECRET).shouldBeRight().toCookie("another secret").value
                 CallbackArguments(state = login.state, cookie = cookie)
             }
-            failure("when the state is not the one of the login", HttpStatusCode.BadRequest, "invalid state in callback") { _, login ->
+            failure("when the state is not the one of the login", HttpStatusCode.InternalServerError, "invalid state in callback") { _, login ->
                 CallbackArguments(state = Verifier.fromRandom(TEST_JWT_SECRET).hash, cookie = login.cookie)
             }
-            failure("when the state is not a hash", HttpStatusCode.BadRequest, "invalid state in callback") { _, login ->
+            failure("when the state is not a hash", HttpStatusCode.InternalServerError, "invalid state in callback") { _, login ->
                 CallbackArguments(state = "not a hash!", cookie = login.cookie)
             }
             failure("when the token endpoint fails", HttpStatusCode.InternalServerError, "error in code exchange") { provider, login ->
@@ -445,7 +445,7 @@ class OidcRoutesTest : FunSpec({
                 provider.stubTokenWithIdToken(provider.idToken(nonce = null))
                 CallbackArguments(state = login.state, cookie = login.cookie)
             }
-            failure("when the nonce of the ID token is not the one of the login", HttpStatusCode.BadRequest, "invalid nonce in callback") { provider, login ->
+            failure("when the nonce of the ID token is not the one of the login", HttpStatusCode.InternalServerError, "invalid nonce in callback") { provider, login ->
                 provider.stubTokenWithIdToken(provider.idToken(nonce = Verifier.fromRandom(TEST_JWT_SECRET).hash))
                 CallbackArguments(state = login.state, cookie = login.cookie)
             }
@@ -456,7 +456,7 @@ class OidcRoutesTest : FunSpec({
                 val first = startLogin(provider, http)
                 val second = startLogin(provider, http)
 
-                http.callback(state = second.state, loginCookie = first.cookie).status shouldBe HttpStatusCode.BadRequest
+                http.callback(state = second.state, loginCookie = first.cookie).status shouldBe HttpStatusCode.InternalServerError
             }
         }
 
