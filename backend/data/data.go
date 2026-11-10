@@ -58,7 +58,7 @@ func NewAPIHandler(
 
 	data := &api{
 		postgRESTURL: postgRESTURL,
-		kbackend:     kbackend,
+		kbackend:     withMountPath(kbackend),
 		db:           db,
 		mux:          mux,
 		ctxKey:       ctxKey,
@@ -361,6 +361,25 @@ func NewAPIHandler(
 
 func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
+}
+
+// mountPath is the prefix of the data API. The router strips it before the
+// requests reach this handler, but kbackend serves the API under it.
+const mountPath = "/api/v1"
+
+// withMountPath puts the mount path back on the requests for next, which is
+// used for the routes that are proxied to kbackend one by one.
+func withMountPath(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		req = req.Clone(req.Context())
+		req.URL.Path = mountPath + req.URL.Path
+
+		if req.URL.RawPath != "" {
+			req.URL.RawPath = mountPath + req.URL.RawPath
+		}
+
+		next.ServeHTTP(w, req)
+	})
 }
 
 func requireQueryParameter(name string, next http.Handler) http.Handler {

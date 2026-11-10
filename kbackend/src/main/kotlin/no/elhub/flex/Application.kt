@@ -7,6 +7,7 @@ import io.ktor.server.netty.EngineMain
 import io.ktor.server.plugins.autohead.AutoHeadResponse
 import no.elhub.flex.api.config.ConfigModule
 import no.elhub.flex.api.config.RequireApiVersion
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
 import no.elhub.flex.auth.AuthModule
 import no.elhub.flex.auth.config.authConfig
 import no.elhub.flex.auth.plugin.configureAuthentication
@@ -64,8 +65,12 @@ fun Application.module() {
     val authConfig = environment.config.authConfig()
     configureAuthentication(authConfig.jwtSecret)
     install(RequireApiVersion) {
-        exemptPaths += listOf("/", "/openapi.json", "/healthz", "/metrics")
-        exemptPrefixes += "/auth/"
+        pathPrefixes += DATA_API_MOUNT_PATH
+        exemptPaths += listOf(
+            DATA_API_MOUNT_PATH,
+            "$DATA_API_MOUNT_PATH/",
+            "$DATA_API_MOUNT_PATH/openapi.json",
+        )
         exemptSuffixes += "/download"
     }
 

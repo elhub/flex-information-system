@@ -46,7 +46,7 @@ class EntityLookupTest :
             makeJwt(role = role, scope = scope)
 
         suspend fun lookup(token: String?, json: String) =
-            app.client.post("/entity/lookup") {
+            app.client.post("/api/v1/entity/lookup") {
                 token?.let { header("Authorization", "Bearer $it") }
                 contentType(ContentType.Application.Json)
                 setBody(json)

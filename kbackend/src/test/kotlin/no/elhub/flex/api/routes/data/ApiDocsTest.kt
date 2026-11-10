@@ -29,7 +29,10 @@ class ApiDocsTest :
             app = TestApplication {
                 application {
                     // the documentation needs no Api-Version, like in the real application
-                    install(RequireApiVersion) { exemptPaths += listOf("/", "/openapi.json") }
+                    install(RequireApiVersion) {
+                        pathPrefixes += DATA_API_MOUNT_PATH
+                        exemptPaths += listOf("/api/v1", "/api/v1/", "/api/v1/openapi.json")
+                    }
                     install(Koin) { modules(module { single { docs } }) }
                     apiDocsRoutes()
                 }
@@ -39,7 +42,7 @@ class ApiDocsTest :
         afterSpec { app.stop() }
 
         test("serves the OpenAPI document with the public server URL") {
-            val response = app.client.get("/openapi.json")
+            val response = app.client.get("/api/v1/openapi.json")
 
             response.status shouldBe HttpStatusCode.OK
             response.contentType()?.withoutParameters() shouldBe ContentType.Application.Json
@@ -55,12 +58,19 @@ class ApiDocsTest :
         }
 
         test("serves the documentation page") {
-            val response = app.client.get("/")
+            val response = app.client.get("/api/v1/")
 
             response.status shouldBe HttpStatusCode.OK
             response.contentType()?.withoutParameters() shouldBe ContentType.Text.Html
             val page = response.bodyAsText()
             page shouldContain "<title>Flex Data API</title>"
             page shouldContain """apiDescriptionUrl="openapi.json""""
+        }
+
+        test("the path without a trailing slash redirects to the documentation page") {
+            val response = app.createClient { followRedirects = false }.get("/api/v1")
+
+            response.status shouldBe HttpStatusCode.MovedPermanently
+            response.headers["Location"] shouldBe "/api/v1/"
         }
     })

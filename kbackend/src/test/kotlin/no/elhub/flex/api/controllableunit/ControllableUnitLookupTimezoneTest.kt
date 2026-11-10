@@ -137,7 +137,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
             authenticatedRouting {
-                post("/controllable_unit/lookup") { lookup.handle(call) }
+                post("/api/v1/controllable_unit/lookup") { lookup.handle(call) }
             }
         }
     }
@@ -254,7 +254,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             seedAccountingPoint(gsrn, cuStartDate)
             stubAdapter(gsrn, endUserOrg, expectedValidFrom, mgaBusinessId)
 
-            testApp().client.post("/controllable_unit/lookup") {
+            testApp().client.post("/api/v1/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Bearer ${makeJwt()}")
                 setBody("""{"end_user":"$endUserOrg","accounting_point":"$gsrn"}""")
@@ -273,7 +273,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             seedAccountingPoint(gsrn, cuStartDate = null)
             stubAdapter(gsrn, endUserOrg, expectedValidFrom, mgaBusinessId)
 
-            testApp().client.post("/controllable_unit/lookup") {
+            testApp().client.post("/api/v1/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Bearer ${makeJwt()}")
                 setBody("""{"end_user":"$endUserOrg","accounting_point":"$gsrn"}""")

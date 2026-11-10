@@ -80,10 +80,14 @@ configurations.all {
     }
 }
 
-// the API documentation serves the OpenAPI document, which lives outside of src/
+// the API documentation serves the OpenAPI documents, which live outside of src/
 tasks.processResources {
     from("data/static") {
         include("openapi.json")
-        into("openapi")
+        into("openapi/data")
+    }
+    from("grid/static") {
+        include("openapi.json")
+        into("openapi/grid")
     }
 }
