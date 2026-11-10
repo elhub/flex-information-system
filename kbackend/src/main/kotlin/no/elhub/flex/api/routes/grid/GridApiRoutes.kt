@@ -34,10 +34,7 @@ private val variants: Map<ApiRoute, PostgrestRouteVariant> = mapOf(
 fun servedGridRoutes(routes: List<ApiRoute>): List<Pair<ApiRoute, PostgrestRouteVariant>> =
     routes.filter { it !in documentationRoutes }.map { it to (variants[it] ?: GridReadVariant()) }
 
-/**
- * Registers the grid API routes, as listed by the generated route table, and a JSON 404 for everything
- * else under the mount path.
- */
+/** Registers the grid API routes, as listed by the generated route table. */
 fun Application.gridApiRoutes() {
     val postgrest: PostgrestClient by inject()
 
@@ -57,16 +54,6 @@ fun Application.gridApiRoutes() {
                             )
                         }
                     }
-                }
-            }
-
-            route("{...}") {
-                handle {
-                    val path = call.request.path().removePrefix(GRID_API_MOUNT_PATH)
-                    call.respondError(
-                        HttpStatusCode.NotFound,
-                        ErrorMessage(code = "HTTP404", message = "Not Found: ${call.request.httpMethod.value} $path"),
-                    )
                 }
             }
         }

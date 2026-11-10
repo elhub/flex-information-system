@@ -20,7 +20,7 @@ private const val DATA_ASSET = "data"
 
 /**
  * Registers the data API routes that are served by PostgREST, as listed by the generated route table
- * and the [DataApiRegistry], and a JSON 404 for everything else.
+ * and the [DataApiRegistry].
  */
 fun Application.dataApiRoutes() {
     val postgrest: PostgrestClient by inject()
@@ -41,16 +41,6 @@ fun Application.dataApiRoutes() {
                             )
                         }
                     }
-                }
-            }
-
-            route("{...}") {
-                handle {
-                    val path = call.request.path().removePrefix(DATA_API_MOUNT_PATH)
-                    call.respondError(
-                        HttpStatusCode.NotFound,
-                        ErrorMessage(code = "HTTP404", message = "Not Found: ${call.request.httpMethod.value} $path"),
-                    )
                 }
             }
         }

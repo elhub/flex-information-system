@@ -43,6 +43,7 @@ import no.elhub.flex.api.config.RequireApiVersion
 import no.elhub.flex.api.config.Tracing
 import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.postgrest.PostgrestClient
+import no.elhub.flex.api.routes.notFoundRoute
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
 import org.koin.dsl.module
@@ -66,7 +67,10 @@ class DataApiRoutesTest :
                     install(AutoHeadResponse)
                     configureSerialization()
                     install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
-                    install(RequireApiVersion) { exemptSuffixes += "/download" }
+                    install(RequireApiVersion) {
+                        pathPrefixes += DATA_API_MOUNT_PATH
+                        exemptSuffixes += "/download"
+                    }
                     install(Koin) {
                         modules(
                             module {
@@ -76,6 +80,7 @@ class DataApiRoutesTest :
                         )
                     }
                     dataApiRoutes()
+                    notFoundRoute()
                 }
             }
         }
@@ -503,8 +508,8 @@ class DataApiRoutesTest :
                 postgrest.allServeEvents.size shouldBe 0
             }
 
-            test("is not part of the not found message") {
-                app.client.get("/api/v1/nope") { header("Api-Version", VERSION) }.bodyAsText() shouldContain "Not Found: GET /nope"
+            test("is part of the not found message") {
+                app.client.get("/api/v1/nope") { header("Api-Version", VERSION) }.bodyAsText() shouldContain "Not Found: GET /api/v1/nope"
             }
         }
 
@@ -517,6 +522,7 @@ class DataApiRoutesTest :
                         install(Tracing.plugin)
                         install(Koin) { modules(module { single { unreachable } }) }
                         dataApiRoutes()
+                        notFoundRoute()
                     }
                 }
 

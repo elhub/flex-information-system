@@ -29,7 +29,10 @@ class ApiDocsTest :
             app = TestApplication {
                 application {
                     // the documentation needs no Api-Version, like in the real application
-                    install(RequireApiVersion) { exemptPaths += listOf("/api/v1", "/api/v1/", "/api/v1/openapi.json") }
+                    install(RequireApiVersion) {
+                        pathPrefixes += DATA_API_MOUNT_PATH
+                        exemptPaths += listOf("/api/v1", "/api/v1/", "/api/v1/openapi.json")
+                    }
                     install(Koin) { modules(module { single { docs } }) }
                     apiDocsRoutes()
                 }

@@ -33,6 +33,8 @@ import no.elhub.flex.api.config.RequireApiVersion
 import no.elhub.flex.api.config.Tracing
 import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.postgrest.PostgrestClient
+import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
+import no.elhub.flex.api.routes.notFoundRoute
 import no.elhub.flex.api.util.TEST_JWT_SECRET
 import no.elhub.flex.api.util.makeJwt
 import org.koin.dsl.module
@@ -55,7 +57,7 @@ class GridApiRoutesTest :
                     install(Tracing.plugin)
                     configureSerialization()
                     install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
-                    install(RequireApiVersion) { exemptPrefixes += GRID_API_MOUNT_PATH }
+                    install(RequireApiVersion) { pathPrefixes += DATA_API_MOUNT_PATH }
                     install(Koin) {
                         modules(
                             module {
@@ -67,6 +69,7 @@ class GridApiRoutesTest :
                     }
                     gridApiDocsRoutes()
                     gridApiRoutes()
+                    notFoundRoute()
                 }
             }
         }
@@ -188,13 +191,13 @@ class GridApiRoutesTest :
         }
 
         context("unknown routes") {
-            test("are a JSON not found without the mount path in the message") {
+            test("are a JSON not found") {
                 for (response in listOf(app.client.get("/grid/v0/nope"), app.client.post("/grid/v0/line"))) {
                     response.status shouldBe HttpStatusCode.NotFound
                     val body = Json.parseToJsonElement(response.bodyAsText()).jsonObject
                     body.getValue("code").jsonPrimitive.content shouldBe "HTTP404"
                 }
-                app.client.get("/grid/v0/nope").bodyAsText() shouldContain "Not Found: GET /nope"
+                app.client.get("/grid/v0/nope").bodyAsText() shouldContain "Not Found: GET /grid/v0/nope"
                 postgrest.allServeEvents.size shouldBe 0
             }
         }

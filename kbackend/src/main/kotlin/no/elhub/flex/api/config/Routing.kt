@@ -8,6 +8,7 @@ import no.elhub.flex.api.routes.data.dataApiRoutes
 import no.elhub.flex.api.routes.entity.entityRoutes
 import no.elhub.flex.api.routes.grid.gridApiDocsRoutes
 import no.elhub.flex.api.routes.grid.gridApiRoutes
+import no.elhub.flex.api.routes.notFoundRoute
 
 /** Defines the endpoints of the application. */
 fun Application.configureRouting() {
@@ -18,4 +19,5 @@ fun Application.configureRouting() {
     dataApiRoutes()
     gridApiDocsRoutes()
     gridApiRoutes()
+    notFoundRoute()
 }
