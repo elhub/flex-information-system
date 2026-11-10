@@ -53,6 +53,8 @@ const RowActionsMenu = ({
   const { buttonProps, dialog } = useConfirmAction({
     title: translate("text.spg_membership_remove_title"),
     content: translate("text.spg_membership_remove_confirm"),
+    confirmText: translate("text.spg_membership_remove_confirm_action"),
+    confirmVariant: "caution",
     onConfirmMutation: {
       mutationFn: () => removeMembership(membershipId),
     },

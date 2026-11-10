@@ -7,6 +7,7 @@ type BaseOptions = {
   title: string;
   content?: ReactNode;
   confirmText?: string;
+  confirmVariant?: "primary" | "caution";
   cancelText?: string;
   confirmDisabled?: boolean;
   secondaryAction?: { label: string; onClick: () => void };
@@ -37,6 +38,7 @@ export const useConfirmAction = ({
   title,
   content,
   confirmText,
+  confirmVariant = "primary",
   cancelText,
   confirmDisabled = false,
   secondaryAction,
@@ -96,7 +98,11 @@ export const useConfirmAction = ({
             {secondaryAction.label}
           </Button>
         ) : null}
-        <Button disabled={isPending || confirmDisabled} onClick={confirm}>
+        <Button
+          variant={confirmVariant}
+          disabled={isPending || confirmDisabled}
+          onClick={confirm}
+        >
           {confirmText ?? translate("text.form_toolbar.confirm")}
         </Button>
       </Modal.Footer>
