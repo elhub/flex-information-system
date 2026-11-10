@@ -1,4 +1,10 @@
-import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
+import {
+  Form,
+  useGetIdentity,
+  useRecordContext,
+  useTranslate,
+  UserIdentity,
+} from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { useCreateOrUpdate } from "../../auth";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
@@ -75,6 +81,7 @@ const ControllableUnitServiceProviderForm = ({
   cuIDAsNumber: boolean;
   identity: UserIdentity | undefined;
 }) => {
+  const translate = useTranslate();
   const navigate = useNavigate();
   const isServiceProvider = identity?.role == "flex_service_provider";
   const recordWithPartyId = isServiceProvider
@@ -108,8 +115,8 @@ const ControllableUnitServiceProviderForm = ({
       <FormContainer>
         <Heading level={3} size="medium">
           {createOrUpdate === "update"
-            ? "Edit Controllable Unit Service Provider"
-            : "Create Controllable Unit Service Provider"}
+            ? translate("text.cusp_edit_title")
+            : translate("text.cusp_create_title")}
         </Heading>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>

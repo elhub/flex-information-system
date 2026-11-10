@@ -1,4 +1,4 @@
-import { Form, useGetIdentity, useRecordContext } from "ra-core";
+import { Form, useGetIdentity, useRecordContext, useTranslate } from "ra-core";
 import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
@@ -13,6 +13,7 @@ import { SystemOperatorProductTypesInput } from "../product_type/components";
 
 // common layout to create and edit pages
 export const ServiceProviderProductApplicationInput = () => {
+  const translate = useTranslate();
   const currentRecord = useRecordContext();
   const createOrUpdate = useCreateOrUpdate();
 
@@ -44,8 +45,8 @@ export const ServiceProviderProductApplicationInput = () => {
       <FormContainer>
         <Heading level={3} size="medium">
           {createOrUpdate === "create"
-            ? "Create Service Provider Product Application"
-            : "Edit Service Provider Product Application"}
+            ? translate("text.spa_create_title")
+            : translate("text.spa_edit_title")}
         </Heading>
         <VerticalSpace size="small" />
         <PartyReferenceInput

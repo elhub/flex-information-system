@@ -51,15 +51,14 @@ const RowActionsMenu = ({
   const { mutateAsync: removeMembership } = useRemoveMembershipFromShow(spgId);
   const editPath = `/service_providing_group/${spgId}/membership/${membershipId}`;
   const { buttonProps, dialog } = useConfirmAction({
-    title: "Remove from group",
-    content:
-      "Are you sure you want to remove this controllable unit from the group? This action cannot be undone. If the membership is no longer active, you can update the valid to date by editing the membership.",
+    title: translate("text.spg_membership_remove_title"),
+    content: translate("text.spg_membership_remove_confirm"),
     onConfirmMutation: {
       mutationFn: () => removeMembership(membershipId),
     },
     secondaryAction: canUpdate
       ? {
-          label: "Edit membership",
+          label: translate("text.spg_membership_edit_action"),
           onClick: () => navigate(editPath),
         }
       : undefined,
@@ -106,7 +105,7 @@ const RowActionsMenu = ({
                   <Dropdown.Menu.GroupedList.Item as={RouterLink} to={editPath}>
                     <div className="flex items-center gap-2">
                       <IconPencil />
-                      Edit membership
+                      {translate("text.spg_membership_edit_action")}
                     </div>
                   </Dropdown.Menu.GroupedList.Item>
                 )}
@@ -116,7 +115,7 @@ const RowActionsMenu = ({
                   >
                     <div className="flex items-center gap-2 text-semantic-background-action-danger">
                       <IconTrash />
-                      Remove from group
+                      {translate("text.spg_membership_remove_title")}
                     </div>
                   </Dropdown.Menu.GroupedList.Item>
                 )}

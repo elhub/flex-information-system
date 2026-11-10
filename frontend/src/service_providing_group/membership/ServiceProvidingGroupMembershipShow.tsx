@@ -100,11 +100,14 @@ const ServiceProvidingGroupMembershipShowContent = () => {
   );
 };
 
-export const ServiceProvidingGroupMembershipShow = () => (
-  <ShowBase
-    loading={<Loader />}
-    error={<BodyText>Something went wrong</BodyText>}
-  >
-    <ServiceProvidingGroupMembershipShowContent />
-  </ShowBase>
-);
+export const ServiceProvidingGroupMembershipShow = () => {
+  const translate = useTranslate();
+  return (
+    <ShowBase
+      loading={<Loader />}
+      error={<BodyText>{translate("text.generic_error")}</BodyText>}
+    >
+      <ServiceProvidingGroupMembershipShowContent />
+    </ShowBase>
+  );
+};
