@@ -21,7 +21,7 @@ WITH (security_invoker = false) AS (
                     cu.accounting_point_id = apso.accounting_point_id
                     AND apso.valid_time_range @> current_timestamp
         WHERE
-            cu.status != 'terminated' AND cu.status != 'inactive'
+            cu.status = 'active'
             AND NOT EXISTS (
                 SELECT 1
                 FROM flex.party_membership AS pm
