@@ -71,6 +71,7 @@ export type TextKey =
   | "generic_error"
   | "spg_membership_remove_title"
   | "spg_membership_remove_confirm"
+  | "spg_membership_remove_confirm_action"
   | "spg_membership_edit_action"
   | "table.header.history_id"
   | "cu_spg_id"
@@ -394,9 +395,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spa_edit_title: "Edit service provider product application",
     spg_membership_edit_title: "Edit service providing group membership",
     generic_error: "Something went wrong",
-    spg_membership_remove_title: "Remove from group",
+    spg_membership_remove_title: "Delete membership",
     spg_membership_remove_confirm:
-      "Are you sure you want to remove this controllable unit from the group? This action cannot be undone. If the membership is no longer active, you can update the valid to date by editing the membership.",
+      "Only delete this membership if it was registered by mistake. To end a membership that has been active, edit it and set a valid to date instead. Deleting cannot be undone.",
+    spg_membership_remove_confirm_action: "Delete membership",
     spg_membership_edit_action: "Edit membership",
     "table.header.history_id": "History ID",
     cu_spg_id: "SPG ID",
@@ -775,9 +777,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spa_edit_title: "Endre produktsøknad for tjenesteleverandør",
     spg_membership_edit_title: "Endre medlemskap i fleksibilitetsgruppe",
     generic_error: "Noe gikk galt",
-    spg_membership_remove_title: "Fjern fra gruppe",
+    spg_membership_remove_title: "Slett medlemskap",
     spg_membership_remove_confirm:
-      "Er du sikker på at du vil fjerne denne kontrollerbare enheten fra gruppen? Denne handlingen kan ikke angres. Hvis medlemskapet ikke lenger er aktivt, kan du oppdatere gyldig til-datoen ved å endre medlemskapet.",
+      "Slett kun dette medlemskapet hvis det er registrert ved en feil. For å avslutte et medlemskap som har vært aktivt, endre det og sett en gyldig til-dato i stedet. Sletting kan ikke angres.",
+    spg_membership_remove_confirm_action: "Slett medlemskap",
     spg_membership_edit_action: "Endre medlemskap",
     "table.header.history_id": "Historikk-ID",
     cu_spg_id: "SPG-ID",
