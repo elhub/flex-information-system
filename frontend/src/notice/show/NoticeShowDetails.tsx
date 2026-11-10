@@ -231,43 +231,7 @@ const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
   );
 };
 
-// component to show details of a notice of type
-// no.elhub.flex.party.connecting_system_operator.no_active_users
-const NoticeCsoNoActiveUsers = ({ notice }: NoticeShowDetailsProps) => {
-  const translate = useTranslate();
-  const csoId = Number(notice.source?.split("/")[2]);
-  const { data: cso } = useGetOne(
-    "party",
-    { id: csoId },
-    { enabled: Number.isInteger(csoId) },
-  );
-  const search = new URLSearchParams({
-    filtered: "1",
-    "f.status@in": "active",
-    "f.accounting_point.system_operator_id@in": String(csoId),
-  }).toString();
-  return (
-    <>
-      <LabelValue
-        label="Connecting system operator"
-        value={cso?.name}
-        link={Number.isInteger(csoId) ? `/party/${csoId}/show` : undefined}
-        linkText="Go to party"
-      />
-      <VerticalSpace />
-      {Number.isInteger(csoId) && (
-        <Button as={RouterLink} to={`/controllable_unit?${search}`}>
-          {translate("text.notice_cso_no_active_users_button")}
-        </Button>
-      )}
-    </>
-  );
-};
-
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
-  "no.elhub.flex.party.connecting_system_operator.no_active_users": (
-    notice,
-  ) => <NoticeCsoNoActiveUsers notice={notice} />,
   "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
     (notice) => (
       <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
