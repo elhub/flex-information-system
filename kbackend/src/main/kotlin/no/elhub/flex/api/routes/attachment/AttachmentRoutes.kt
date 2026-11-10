@@ -2,7 +2,7 @@ package no.elhub.flex.api.routes.attachment
 
 import io.ktor.server.application.Application
 import no.elhub.flex.api.attachment.attachmentRoutes
-import no.elhub.flex.api.auth.FlexRole
+import no.elhub.flex.auth.plugin.FlexRole
 
 /** Defines routes for all attachments. */
 fun Application.attachmentRoutes() {

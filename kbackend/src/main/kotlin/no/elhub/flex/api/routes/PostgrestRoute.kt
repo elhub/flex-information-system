@@ -8,9 +8,6 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import io.ktor.server.request.receive
 import io.ktor.server.response.header
-import no.elhub.flex.api.auth.callerScopes
-import no.elhub.flex.api.auth.covers
-import no.elhub.flex.api.auth.respondInsufficientScope
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.postgrest.EmbedRelations
 import no.elhub.flex.api.postgrest.PostgrestClient
@@ -18,6 +15,9 @@ import no.elhub.flex.api.postgrest.PostgrestRouteVariant
 import no.elhub.flex.api.postgrest.RequestRejection
 import no.elhub.flex.api.postgrest.buildPostgrestRequest
 import no.elhub.flex.api.util.respondError
+import no.elhub.flex.auth.plugin.callerScopes
+import no.elhub.flex.auth.plugin.respondInsufficientScope
+import no.elhub.flex.auth.scope.covers
 
 /**
  * Serves [call] through PostgREST, as decided by [variant]. The route is mounted under [mountPath], which is not part

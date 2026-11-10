@@ -17,8 +17,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import no.elhub.flex.api.config.RequireApiVersion
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
+import no.elhub.flex.config.configureSerialization
 
 class NotFoundRouteTest :
     FunSpec({

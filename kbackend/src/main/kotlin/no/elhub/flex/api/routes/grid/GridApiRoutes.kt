@@ -1,14 +1,9 @@
 package no.elhub.flex.api.routes.grid
 
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
-import io.ktor.server.request.httpMethod
-import io.ktor.server.request.path
 import io.ktor.server.routing.method
 import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
-import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.postgrest.GridReadVariant
 import no.elhub.flex.api.postgrest.GridSubstationListVariant
 import no.elhub.flex.api.postgrest.PostgrestClient
@@ -16,7 +11,7 @@ import no.elhub.flex.api.postgrest.PostgrestRouteVariant
 import no.elhub.flex.api.routes.ApiRoute
 import no.elhub.flex.api.routes.grid.generated.GeneratedGridApiRoutes
 import no.elhub.flex.api.routes.handlePostgrestRoute
-import no.elhub.flex.api.util.respondError
+import no.elhub.flex.auth.plugin.authenticatedRouting
 import org.koin.ktor.ext.inject
 
 const val GRID_API_MOUNT_PATH = "/grid/v0"
@@ -38,7 +33,7 @@ fun servedGridRoutes(routes: List<ApiRoute>): List<Pair<ApiRoute, PostgrestRoute
 fun Application.gridApiRoutes() {
     val postgrest: PostgrestClient by inject()
 
-    routing {
+    authenticatedRouting {
         route(GRID_API_MOUNT_PATH) {
             for ((apiRoute, variant) in servedGridRoutes(GeneratedGridApiRoutes.routes)) {
                 route(apiRoute.path) {

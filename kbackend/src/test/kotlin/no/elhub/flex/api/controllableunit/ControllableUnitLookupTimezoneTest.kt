@@ -13,7 +13,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.application.install
 import io.ktor.server.routing.post
-import io.ktor.server.routing.routing
 import io.ktor.server.testing.TestApplication
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
@@ -24,19 +23,20 @@ import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.accountingpoint.AccountingPointServiceImpl
 import no.elhub.flex.api.accountingpoint.db.AccountingPointRepositoryImpl
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.AccountingPointAdapterConfig
 import no.elhub.flex.api.config.FlexConfig
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.api.event.db.EventRepositoryImpl
 import no.elhub.flex.api.metrics.FlexMetrics
 import no.elhub.flex.api.model.domain.Party
 import no.elhub.flex.api.party.PartyService
 import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
+import no.elhub.flex.auth.plugin.authenticatedRouting
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
 import no.elhub.flex.shared.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.shared.accountingpoint.db.SubstationRepositoryImpl
@@ -106,7 +106,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 apiKey = "test-api-key",
                 syncEnabled = true,
             ),
-            flexConfig = FlexConfig("Europe/Oslo", TEST_JWT_SECRET),
+            flexConfig = FlexConfig("Europe/Oslo"),
         )
     }
 
@@ -134,9 +134,9 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     fun testApp() = TestApplication {
         application {
             install(Tracing.plugin)
-            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+            configureAuthentication(TEST_JWT_SECRET)
             configureSerialization()
-            routing {
+            authenticatedRouting {
                 post("/api/v1/controllable_unit/lookup") { lookup.handle(call) }
             }
         }

@@ -1,9 +1,6 @@
 package no.elhub.flex.api.routes.data
 
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
 import no.elhub.flex.api.postgrest.AttachmentReadVariant
 import no.elhub.flex.api.postgrest.DefaultVariant
 import no.elhub.flex.api.postgrest.EventListVariant

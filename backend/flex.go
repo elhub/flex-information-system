@@ -351,12 +351,19 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		isLoginLimitingDisabled,
 	)
 
+	slog.DebugContext(ctx, "Creating kbackend proxy")
+
+	kbackendProxy, err := kbackend.NewProxy(kbackendUpstream)
+	if err != nil {
+		return fmt.Errorf("could not create kbackend proxy: %w", err)
+	}
+
 	slog.DebugContext(ctx, "Creating data API")
 
 	dataAPIHandler, err := data.NewAPIHandler(
 		dataAPIBaseURL,
 		postgRESTUpstream,
-		kbackendUpstream,
+		kbackendProxy,
 		dbPool,
 		requestDetailsContextKey,
 	)
@@ -380,15 +387,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler)),
 	)
 	gridAPIRoute := http.StripPrefix("/grid/v0", gridAPIHandler)
-
-	var kbackendProxy http.Handler
-
-	if proxyDataToKbackend || proxyGridToKbackend {
-		kbackendProxy, err = kbackend.NewProxy(kbackendUpstream)
-		if err != nil {
-			return fmt.Errorf("could not create kbackend proxy: %w", err)
-		}
-	}
 
 	if proxyDataToKbackend {
 		slog.InfoContext(ctx, "Data API is proxied to kbackend")
@@ -480,6 +478,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
 	router.Use(middleware.Prometheus)
+
+	// routes served by kbackend must be registered before the middleware so they are passed through
+	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
+
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
@@ -495,11 +498,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		authRouter.POST("/token",
 			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHandler)),
 			authAPI.PostTokenHandler)
-		authRouter.GET("/userinfo",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:userinfo"}, NoOpHandler)),
-			authAPI.GetUserInfoHandler)
-		authRouter.GET("/session", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:session"}, http.HandlerFunc(authAPI.GetSessionHandler))))
 		authRouter.POST("/assume", WrapHandler(
 			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
 		authRouter.DELETE("/assume", WrapHandler(

@@ -26,17 +26,17 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import no.elhub.flex.api.auth.FlexAuthentication
 import no.elhub.flex.api.config.DocsConfig
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.config.RequireApiVersion
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureSerialization
 import no.elhub.flex.api.postgrest.PostgrestClient
 import no.elhub.flex.api.routes.data.DATA_API_MOUNT_PATH
 import no.elhub.flex.api.routes.notFoundRoute
-import no.elhub.flex.api.util.TEST_JWT_SECRET
-import no.elhub.flex.api.util.makeJwt
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
+import no.elhub.flex.auth.util.makeJwt
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureSerialization
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.io.File
@@ -56,7 +56,7 @@ class GridApiRoutesTest :
                 application {
                     install(Tracing.plugin)
                     configureSerialization()
-                    install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
+                    configureAuthentication(TEST_JWT_SECRET)
                     install(RequireApiVersion) { pathPrefixes += DATA_API_MOUNT_PATH }
                     install(Koin) {
                         modules(
@@ -171,6 +171,14 @@ class GridApiRoutesTest :
         }
 
         context("authorization") {
+            test("callers without a token are unauthorized") {
+                val response = app.client.get("/grid/v0/line")
+
+                response.status shouldBe HttpStatusCode.Unauthorized
+                response.headers["WWW-Authenticate"] shouldBe "Bearer"
+                postgrest.allServeEvents.size shouldBe 0
+            }
+
             test("the data scope does not give access to the grid") {
                 val response = app.client.get("/grid/v0/line") { header("Authorization", "Bearer ${token(scope = "read:data")}") }
 

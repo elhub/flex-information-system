@@ -5,10 +5,10 @@ import arrow.core.raise.ensure
 import arrow.core.raise.withError
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
-import no.elhub.flex.api.auth.BearerChallenge
-import no.elhub.flex.api.auth.Scope
-import no.elhub.flex.api.auth.ScopeVerb
-import no.elhub.flex.api.auth.covers
+import no.elhub.flex.auth.plugin.BearerChallenge
+import no.elhub.flex.auth.scope.Scope
+import no.elhub.flex.auth.scope.ScopeVerb
+import no.elhub.flex.auth.scope.covers
 
 /**
  * Maps (parent resource -> embed name -> actual resource name).

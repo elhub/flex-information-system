@@ -1,5 +1,12 @@
-import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
+import {
+  Form,
+  useGetIdentity,
+  useRecordContext,
+  useTranslate,
+  UserIdentity,
+} from "ra-core";
 import { useNavigate } from "react-router-dom";
+import { useCreateOrUpdate } from "../../auth";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { countDefinedValues } from "../../util";
@@ -74,6 +81,7 @@ const ControllableUnitServiceProviderForm = ({
   cuIDAsNumber: boolean;
   identity: UserIdentity | undefined;
 }) => {
+  const translate = useTranslate();
   const navigate = useNavigate();
   const isServiceProvider = identity?.role == "flex_service_provider";
   const recordWithPartyId = isServiceProvider
@@ -92,6 +100,8 @@ const ControllableUnitServiceProviderForm = ({
     navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
   };
 
+  const createOrUpdate = useCreateOrUpdate();
+
   const fields = getFields(zControllableUnitServiceProviderCreateRequest.shape);
 
   return (
@@ -104,7 +114,9 @@ const ControllableUnitServiceProviderForm = ({
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "update"
+            ? translate("text.cusp_edit_title")
+            : translate("text.cusp_create_title")}
         </Heading>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>

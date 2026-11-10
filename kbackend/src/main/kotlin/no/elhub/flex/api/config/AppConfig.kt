@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FlexConfig(
     val timezone: String,
-    val jwtSecret: String,
 ) {
     init {
         TimeZone.of(timezone)
@@ -34,18 +33,6 @@ data class AttachmentStorageConfig(
     val secretKey: String,
 )
 
-@Serializable
-data class DatabaseConfig(
-    val url: String,
-    val driverClass: String = "org.postgresql.Driver",
-    val username: String,
-    val password: String,
-    val hikari: Hikari = Hikari(),
-) {
-    @Serializable
-    data class Hikari(val maximumPoolSize: Int = 10)
-}
-
 fun ApplicationConfig.flexConfig(): FlexConfig = property("flex").getAs()
 
 fun ApplicationConfig.accountingPointAdapterConfig(): AccountingPointAdapterConfig =
@@ -53,8 +40,6 @@ fun ApplicationConfig.accountingPointAdapterConfig(): AccountingPointAdapterConf
 
 fun ApplicationConfig.attachmentStorageConfig(): AttachmentStorageConfig =
     property("attachmentStorage").getAs()
-
-fun ApplicationConfig.databaseConfig(): DatabaseConfig = property("ktor.database").getAs()
 
 @Serializable
 data class PostgrestConfig(val baseUrl: String)

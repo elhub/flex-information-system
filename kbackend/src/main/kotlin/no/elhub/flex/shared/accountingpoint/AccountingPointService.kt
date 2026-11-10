@@ -25,11 +25,11 @@ import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
 import no.elhub.flex.shared.db.RepositoryError
-import no.elhub.flex.shared.error.AppError
-import no.elhub.flex.shared.error.DataFetchError
-import no.elhub.flex.shared.error.InternalServerError
+import no.elhub.flex.shared.http.AppError
+import no.elhub.flex.shared.http.DataFetchError
+import no.elhub.flex.shared.http.InternalServerError
 import no.elhub.flex.shared.meteringgridarea.db.MeteringGridAreaRepository
-import no.elhub.flex.shared.util.TraceIdUtil.Companion.traceIdOrUnknown
+import no.elhub.flex.shared.tracing.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 import no.elhub.flex.shared.adapter.NotFoundError as AdapterNotFoundError
