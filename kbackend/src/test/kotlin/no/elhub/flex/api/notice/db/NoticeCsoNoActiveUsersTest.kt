@@ -10,17 +10,17 @@ import no.elhub.flex.testutil.Triggers
 import no.elhub.flex.testutil.seed
 import java.time.Instant
 
-private const val NOTICE_TYPE = "no.elhub.flex.controllable_unit.cso.no_active_users"
+private const val NOTICE_TYPE = "no.elhub.flex.party.connecting_system_operator.no_active_users"
 
 private data class SeededCu(val cuId: Long, val csoId: Long, val mgaId: Long)
 
 private data class PersistedCsoNotice(val partyId: Long, val status: String)
 
 /**
- * Notice: a controllable unit whose connecting system operator has no person member in FIS.
- * The notice is targeted at every FISO party.
+ * Notice: a connecting system operator (CSO) with active controllable units but no person member in FIS.
+ * The notice has the CSO as source and is targeted at every FISO party.
  */
-class NoticeCuBelongsToInactiveCsoTest : FunSpec({
+class NoticeCsoNoActiveUsersTest : FunSpec({
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
@@ -35,89 +35,84 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
 
     context("detection") {
 
-        test("CSO without members gives a notice to the FISO") {
+        test("CSO with an active CU and no members gives a notice to the FISO") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
             val cu = seed(Triggers.OFF) { seedCuWithCso() }
 
-            detectedPartiesFor(cu.cuId) shouldBe listOf(fiso)
+            detectedPartiesFor(cu.csoId) shouldBe listOf(fiso)
         }
 
         test("CSO with a person member gives no notice") {
             seed(Triggers.OFF) { insertFiso() }
             val cu = seed(Triggers.OFF) { seedCuWithCso(memberEmail = "user@example.com") }
 
-            detectedPartiesFor(cu.cuId).shouldBeEmpty()
+            detectedPartiesFor(cu.csoId).shouldBeEmpty()
         }
 
         test("CSO whose only member is an organisation gives a notice") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
             val cu = seed(Triggers.OFF) {
                 val cu = seedCuWithCso()
-                val orgEntity = insertOrganisationEntity()
-                insertPartyMembership(cu.csoId, orgEntity)
+                insertPartyMembership(cu.csoId, insertOrganisationEntity())
                 cu
             }
 
-            detectedPartiesFor(cu.cuId) shouldBe listOf(fiso)
+            detectedPartiesFor(cu.csoId) shouldBe listOf(fiso)
         }
 
-        test("terminated CU gives no notice") {
-            seed(Triggers.OFF) { insertFiso() }
-            val cu = seed(Triggers.OFF) { seedCuWithCso(status = "terminated") }
+        listOf("new", "inactive", "terminated").forEach { status ->
+            test("CSO whose only CU is $status gives no notice") {
+                seed(Triggers.OFF) { insertFiso() }
+                val cu = seed(Triggers.OFF) { seedCuWithCso(status = status) }
 
-            detectedPartiesFor(cu.cuId).shouldBeEmpty()
+                detectedPartiesFor(cu.csoId).shouldBeEmpty()
+            }
         }
 
         test("CSO relation that has ended gives no notice") {
             seed(Triggers.OFF) { insertFiso() }
             val cu = seed(Triggers.OFF) { seedCuWithCso(soValidTo = Instant.parse("2024-06-01T00:00:00Z")) }
 
-            detectedPartiesFor(cu.cuId).shouldBeEmpty()
+            detectedPartiesFor(cu.csoId).shouldBeEmpty()
         }
 
         test("every FISO gets a notice") {
             val fisos = seed(Triggers.OFF) { listOf(insertFiso("FISO 1"), insertFiso("FISO 2")) }
             val cu = seed(Triggers.OFF) { seedCuWithCso() }
 
-            detectedPartiesFor(cu.cuId) shouldContainExactlyInAnyOrder fisos
+            detectedPartiesFor(cu.csoId) shouldContainExactlyInAnyOrder fisos
         }
 
-        test("several CUs on one CSO give a single notice on the first CU") {
+        test("several active CUs on one CSO give a single notice") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
-            val (first, second) = seed(Triggers.OFF) {
+            val first = seed(Triggers.OFF) {
                 val first = seedCuWithCso()
-                val second = seedCu(first.csoId, first.mgaId)
-                first to second
+                seedCu(first.csoId, first.mgaId)
+                seedCu(first.csoId, first.mgaId)
+                first
             }
 
-            detectedPartiesFor(first.cuId) shouldBe listOf(fiso)
-            detectedPartiesFor(second.cuId).shouldBeEmpty()
+            detectedPartiesFor(first.csoId) shouldBe listOf(fiso)
         }
 
-        test("notice moves to the next CU when the first is terminated") {
+        test("an inactive CU does not hide an active one") {
             val fiso = seed(Triggers.OFF) { insertFiso() }
-            val (first, second) = seed(Triggers.OFF) {
-                val first = seedCuWithCso()
-                first to seedCu(first.csoId, first.mgaId)
+            val first = seed(Triggers.OFF) {
+                val first = seedCuWithCso(status = "inactive")
+                seedCu(first.csoId, first.mgaId)
+                first
             }
 
-            syncNotices()
-            persistedNoticesFor(first.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
-
-            execute("UPDATE flex.controllable_unit SET status = 'terminated' WHERE id = ${first.cuId}")
-            syncNotices()
-
-            persistedNoticesFor(first.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
-            persistedNoticesFor(second.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
+            detectedPartiesFor(first.csoId) shouldBe listOf(fiso)
         }
 
-        test("only CUs of a CSO without members get a notice") {
+        test("only the CSO without members gets a notice") {
             seed(Triggers.OFF) { insertFiso() }
             val withoutUsers = seed(Triggers.OFF) { seedCuWithCso() }
             val withUsers = seed(Triggers.OFF) { seedCuWithCso(memberEmail = "user@example.com") }
 
-            detectedPartiesFor(withoutUsers.cuId).size shouldBe 1
-            detectedPartiesFor(withUsers.cuId).shouldBeEmpty()
+            detectedPartiesFor(withoutUsers.csoId).size shouldBe 1
+            detectedPartiesFor(withUsers.csoId).shouldBeEmpty()
         }
     }
 
@@ -128,15 +123,15 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
             val cu = seed(Triggers.OFF) { seedCuWithCso() }
 
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
+            persistedNoticesFor(cu.csoId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
 
             seed(Triggers.OFF) { insertPartyMember(cu.csoId, "user@example.com") }
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
+            persistedNoticesFor(cu.csoId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
 
             execute("DELETE FROM flex.party_membership WHERE party_id = ${cu.csoId}")
             syncNotices()
-            persistedNoticesFor(cu.cuId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
+            persistedNoticesFor(cu.csoId) shouldBe listOf(PersistedCsoNotice(fiso, "active"))
         }
 
         test("syncing twice does not duplicate the notice") {
@@ -146,7 +141,30 @@ class NoticeCuBelongsToInactiveCsoTest : FunSpec({
             syncNotices()
             syncNotices()
 
-            persistedNoticesFor(cu.cuId).size shouldBe 1
+            persistedNoticesFor(cu.csoId).size shouldBe 1
+        }
+
+        test("notice stays the same row when another CU is added") {
+            seed(Triggers.OFF) { insertFiso() }
+            val cu = seed(Triggers.OFF) { seedCuWithCso() }
+            syncNotices()
+            val before = persistedNoticeIdsFor(cu.csoId)
+
+            seed(Triggers.OFF) { seedCu(cu.csoId, cu.mgaId) }
+            syncNotices()
+
+            persistedNoticeIdsFor(cu.csoId) shouldBe before
+        }
+
+        test("notice is resolved when the CSO has no active CU left") {
+            val fiso = seed(Triggers.OFF) { insertFiso() }
+            val cu = seed(Triggers.OFF) { seedCuWithCso() }
+            syncNotices()
+
+            execute("UPDATE flex.controllable_unit SET status = 'inactive' WHERE id = ${cu.cuId}")
+            syncNotices()
+
+            persistedNoticesFor(cu.csoId) shouldBe listOf(PersistedCsoNotice(fiso, "resolved"))
         }
     }
 })
@@ -164,7 +182,7 @@ private fun SeedScope.seedCso(memberEmail: String? = null, soValidTo: Instant? =
 }
 
 /** Seeds a CU on a new accounting point in the metering grid area [mgaId], so its CSO is the owner of [mgaId]. */
-private fun SeedScope.seedCu(csoId: Long, mgaId: Long, status: String = "new"): SeededCu {
+private fun SeedScope.seedCu(csoId: Long, mgaId: Long, status: String = "active"): SeededCu {
     val ap = insertAccountingPoint()
     insertAccountingPointMeteringGridArea(ap, mgaId)
     return SeededCu(insertControllableUnit(ap, status = status), csoId, mgaId)
@@ -173,7 +191,7 @@ private fun SeedScope.seedCu(csoId: Long, mgaId: Long, status: String = "new"): 
 /** Seeds a new CSO with one CU. */
 private fun SeedScope.seedCuWithCso(
     memberEmail: String? = null,
-    status: String = "new",
+    status: String = "active",
     soValidTo: Instant? = null,
 ): SeededCu {
     val cso = seedCso(memberEmail, soValidTo)
@@ -186,16 +204,19 @@ private fun execute(sql: String) {
     PostgresTestContainer.withConnection { conn -> conn.createStatement().use { it.execute(sql) } }
 }
 
-private fun detectedPartiesFor(cuId: Long): List<Long> =
+private fun detectedPartiesFor(csoId: Long): List<Long> =
     query(
-        "SELECT party_id FROM flex.notice_cu_belongs_to_inactive_cso " +
-            "WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
+        "SELECT party_id FROM flex.notice_cso_no_active_users " +
+            "WHERE source_resource = 'party' AND type = '$NOTICE_TYPE'::ltree AND source_id = $csoId",
     ) { it.getLong(1) }
 
-private fun persistedNoticesFor(cuId: Long): List<PersistedCsoNotice> =
+private fun persistedNoticesFor(csoId: Long): List<PersistedCsoNotice> =
     query(
-        "SELECT party_id, status FROM flex.notice WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $cuId",
+        "SELECT party_id, status FROM flex.notice WHERE source_resource = 'party' AND type = '$NOTICE_TYPE'::ltree AND source_id = $csoId",
     ) { PersistedCsoNotice(it.getLong(1), it.getString(2)) }
+
+private fun persistedNoticeIdsFor(csoId: Long): List<Long> =
+    query("SELECT id FROM flex.notice WHERE type = '$NOTICE_TYPE'::ltree AND source_id = $csoId") { it.getLong(1) }
 
 private fun <T> query(sql: String, map: (java.sql.ResultSet) -> T): List<T> =
     PostgresTestContainer.withConnection { conn ->

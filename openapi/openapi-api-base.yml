@@ -556,27 +556,6 @@ components:
             under the system operator since the grid prequalification.
           type: number
           example: 75.5
-    notice_data_controllable_unit_cso_no_active_users:
-      type: object
-      description: >-
-        Format of the data field in a notice with data.kind =
-        notice.data.controllable_unit.cso.no_active_users
-      required:
-        - kind
-      properties:
-        kind:
-          description: Identifies the notice data schema for discriminated union deserialization.
-          type: string
-          const: notice.data.controllable_unit.cso.no_active_users
-        controllable_unit_name:
-          description: Name of the controllable unit.
-          type: string
-          example: Heat pump
-        connecting_system_operator_name:
-          description: >-
-            Name of the connecting system operator that has no active users.
-          type: string
-          example: Grid Company AS
     notice_data:
       oneOf:
         - $ref: "#/components/schemas/notice_data_valid_time_outside_contract"
@@ -586,7 +565,6 @@ components:
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
         - $ref: "#/components/schemas/notice_data_controllable_unit_product_duplication"
         - $ref: "#/components/schemas/notice_data_service_providing_group_grid_prequalification_outdated"
-        - $ref: "#/components/schemas/notice_data_controllable_unit_cso_no_active_users"
       discriminator:
         propertyName: kind
         mapping:
@@ -598,7 +576,6 @@ components:
           notice.data.controllable_unit.product_duplication: "#/components/schemas/notice_data_controllable_unit_product_duplication"
           # yamllint disable-line rule:line-length
           notice.data.service_providing_group_grid_prequalification.outdated: "#/components/schemas/notice_data_service_providing_group_grid_prequalification_outdated"
-          notice.data.controllable_unit.cso.no_active_users: "#/components/schemas/notice_data_controllable_unit_cso_no_active_users"
     event_data_updated_fields:
       type: object
       description: >-
