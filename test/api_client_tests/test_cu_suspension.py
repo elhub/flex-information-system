@@ -426,17 +426,16 @@ def test_cus_so(data):
 
     assert not isinstance(u, ErrorMessage)
 
-    spgpa = create_service_providing_group_product_application.sync(
-        client=client_sp,
-        body=ServiceProvidingGroupProductApplicationCreateRequest(
-            service_providing_group_id=cast(int, spg.id),
-            procuring_system_operator_id=so2_id,
-            product_type_ids=pt_ids,
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
-        ),
-    )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    for pt_id in pt_ids:
+        spgpa = create_service_providing_group_product_application.sync(
+            client=client_sp,
+            body=ServiceProvidingGroupProductApplicationCreateRequest(
+                service_providing_group_id=cast(int, spg.id),
+                procuring_system_operator_id=so2_id,
+                product_type_ids=[pt_id],
+            ),
+        )
+        assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so2,

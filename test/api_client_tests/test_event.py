@@ -48,7 +48,6 @@ from flex.models import (
     ServiceProvidingGroupGridSuspensionCreateRequest,
     ServiceProvidingGroupGridSuspensionReason,
     ServiceProvidingGroupGridSuspensionResponse,
-    ServiceProvidingGroupProductApplicationRampingCapability,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
 )
@@ -452,10 +451,6 @@ def test_event_sp(sts):
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so_id,
             product_type_ids=[1],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.NEVER,
-            ramping_description="No ramping capability",
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

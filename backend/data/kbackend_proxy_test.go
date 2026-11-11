@@ -44,11 +44,15 @@ func TestKbackendProxiedRoutesKeepThePrefix(t *testing.T) {
 
 	const attachment = "/api/v1/service_providing_group_product_application_attachment"
 
+	const spgpa = "/api/v1/service_providing_group_product_application"
+
 	tests := []struct {
 		method string
 		url    string
 	}{
 		{http.MethodPost, "/api/v1/controllable_unit/lookup"},
+		{http.MethodPost, spgpa},
+		{http.MethodPatch, spgpa + "/12"},
 		{http.MethodPost, attachment},
 		{http.MethodDelete, attachment + "/12"},
 		{http.MethodGet, attachment + "/12/download?inline=true"},

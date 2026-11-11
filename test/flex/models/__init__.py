@@ -298,6 +298,12 @@ from .service_providing_group_summary_response_technical_resource_by_technology_
     ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
 )
 from .service_providing_group_update_request import ServiceProvidingGroupUpdateRequest
+from .spgpa_application_details_fcr_d import SpgpaApplicationDetailsFcrD
+from .spgpa_application_details_fcr_n import SpgpaApplicationDetailsFcrN
+from .spgpa_application_details_mfrr import SpgpaApplicationDetailsMfrr
+from .spgpa_assessment_details_fcr_d import SpgpaAssessmentDetailsFcrD
+from .spgpa_assessment_details_fcr_n import SpgpaAssessmentDetailsFcrN
+from .spgpa_ramping_capability import SpgpaRampingCapability
 from .system_operator_product_type_create_request import SystemOperatorProductTypeCreateRequest
 from .system_operator_product_type_history_response import SystemOperatorProductTypeHistoryResponse
 from .system_operator_product_type_response import SystemOperatorProductTypeResponse
@@ -498,6 +504,12 @@ __all__ = (
     "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology",
     "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty",
     "ServiceProvidingGroupUpdateRequest",
+    "SpgpaApplicationDetailsFcrD",
+    "SpgpaApplicationDetailsFcrN",
+    "SpgpaApplicationDetailsMfrr",
+    "SpgpaAssessmentDetailsFcrD",
+    "SpgpaAssessmentDetailsFcrN",
+    "SpgpaRampingCapability",
     "SystemOperatorProductTypeCreateRequest",
     "SystemOperatorProductTypeHistoryResponse",
     "SystemOperatorProductTypeResponse",

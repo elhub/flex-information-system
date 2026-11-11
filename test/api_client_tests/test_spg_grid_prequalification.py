@@ -290,7 +290,7 @@ def data():
     )
     assert not isinstance(u, ErrorMessage)
 
-    pt_ids = [5, 6, 7, 3]
+    pt_ids = [5, 4, 7, 3]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -509,8 +509,6 @@ def test_spggp_so(data):
             service_providing_group_id=spg_id,
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -660,8 +658,6 @@ def _apply_and_start_processing(client_sp, client_fiso, spg_id, so_id, pt_id):
             service_providing_group_id=spg_id,
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_id],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

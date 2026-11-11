@@ -9,12 +9,14 @@ import no.elhub.flex.api.routes.entity.entityRoutes
 import no.elhub.flex.api.routes.grid.gridApiDocsRoutes
 import no.elhub.flex.api.routes.grid.gridApiRoutes
 import no.elhub.flex.api.routes.notFoundRoute
+import no.elhub.flex.api.routes.productapplication.productApplicationRoutes
 
 /** Registers the routes of the data API. */
 fun Application.apiRoutes() {
     controllableUnitRoutes()
     attachmentRoutes()
     entityRoutes()
+    productApplicationRoutes()
     apiDocsRoutes()
     dataApiRoutes()
     gridApiDocsRoutes()

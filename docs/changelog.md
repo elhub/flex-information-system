@@ -3,6 +3,30 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 2026-11-11
+
+* **Added product-specific details to the _Service Providing Group Product Application_ resource.**
+    * Added `application_details` (written by the service provider) and
+      `assessment_details` (written by the procuring system operator). Both are
+      objects whose variant is selected by `kind`, which is the `business_id`
+      of the product type. See the
+      [resource documentation](resources/service_providing_group_product_application.md#product-specific-details).
+    * Variants are available for _Manual Frequency Restoration_ (existing
+      fields), _Frequency Containment Normal_ (FCR-N) and _Frequency Containment
+      Disturbance_ (FCR-D).
+    * An application must now be for **exactly one** product type
+      (`product_type_ids` must contain one element).
+* **Deprecated the fields `maximum_active_power_up`, `maximum_active_power_down`, `ramping_capability`, `ramping_description` and `additional_information` of the _Service Providing Group Product Application_ resource.**
+    * Use `application_details` instead. The fields are kept in sync with
+      `application_details` for _Manual Frequency Restoration_ applications
+      during a transition period, and are removed later. They are no longer
+      accepted for other product types.
+    * `maximum_active_power_up` and `maximum_active_power_down` are no longer
+      required and may be `null` in responses.
+* **Added the product type _Frequency Containment Disturbance_ (`automatic_frequency_containment_disturbance`).**
+  The product type `automatic_frequency_containment` is now _Frequency
+  Containment Normal_ (FCR-N) only.
+
 ## 2026-10-13
 
 * **Removed the `client_credentials` grant type from the `/token` endpoint of the auth API.**

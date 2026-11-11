@@ -274,3 +274,26 @@ data class InternalServerError(
         super.handle(call)
     }
 }
+
+/**
+ * An error raised by the database, with the shape of the errors of PostgREST: the SQL state is the `code`.
+ */
+data class DatabaseRejection(
+    val sqlState: String,
+    override val message: String,
+    override val code: HttpStatusCode,
+    val details: String? = null,
+    val hint: String? = null,
+) : AppError() {
+    override suspend fun handle(call: ApplicationCall) {
+        call.respondErrorBody(
+            code,
+            buildJsonObject {
+                put("code", sqlState)
+                put("message", message)
+                details?.let { put("details", it) }
+                hint?.let { put("hint", it) }
+            },
+        )
+    }
+}

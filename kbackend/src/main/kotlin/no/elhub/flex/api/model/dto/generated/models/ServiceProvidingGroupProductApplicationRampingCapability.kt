@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 
 /**
  * Whether the service providing group can ramp in accordance with the product requirements during
- * both activation and deactivation.
+ * both activation and deactivation. Deprecated: use `application_details` instead.
  */
 public enum class ServiceProvidingGroupProductApplicationRampingCapability(
   public val `value`: String,

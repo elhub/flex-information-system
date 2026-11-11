@@ -32,6 +32,12 @@ from flex.models import (
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
     ServiceProvidingGroupProductApplicationRampingCapability,
+    SpgpaApplicationDetailsFcrD,
+    SpgpaApplicationDetailsFcrN,
+    SpgpaApplicationDetailsMfrr,
+    SpgpaAssessmentDetailsFcrD,
+    SpgpaAssessmentDetailsFcrN,
+    SpgpaRampingCapability,
     ErrorMessage,
     EmptyObject,
     ControllableUnitStatus,
@@ -75,6 +81,48 @@ from flex import AuthenticatedClient
 import datetime
 import pytest
 from typing import cast
+
+
+def mfrr_details(**kwargs):
+    args = {
+        "kind": "manual_frequency_restoration",
+        "maximum_active_power_up": 3.5,
+        "maximum_active_power_down": 3.5,
+        "ramping_capability": SpgpaRampingCapability.ALWAYS,
+        "ramping_description": "Units are connected one by one.",
+    }
+    args.update(kwargs)
+    return SpgpaApplicationDetailsMfrr(**args)
+
+
+def fcr_n_details(**kwargs):
+    args = {
+        "kind": "automatic_frequency_containment",
+        "service_provider_contact_information": "Kari Nordmann, +47 000 00 000",
+        "technical_contact_information": "Ola Nordmann, +47 000 00 000",
+        "limited_energy_reservoir": True,
+        "variable_production_consumption": False,
+        "planned_prequalification_test_date": datetime.date(2026, 12, 1),
+        "maximum_active_power_up": 1000,
+        "maximum_active_power_down": 1000,
+    }
+    args.update(kwargs)
+    return SpgpaApplicationDetailsFcrN(**args)
+
+
+def fcr_d_details(**kwargs):
+    args = {
+        "kind": "automatic_frequency_containment_disturbance",
+        "service_provider_contact_information": "Kari Nordmann, +47 000 00 000",
+        "technical_contact_information": "Ola Nordmann, +47 000 00 000",
+        "limited_energy_reservoir": False,
+        "variable_production_consumption": True,
+        "planned_prequalification_test_date": datetime.date(2026, 12, 1),
+        "maximum_active_power_up": 800,
+        "maximum_active_power_down": 600,
+    }
+    args.update(kwargs)
+    return SpgpaApplicationDetailsFcrD(**args)
 
 
 @pytest.fixture()
@@ -206,8 +254,9 @@ def data():
 
     # apply for some product types for both SO and qualify the applications
 
-    # random choice of product type. 8 is required for a few tests
-    pt_ids = [5, 7, 8]
+    # 8 (mFRR), 6 (FCR-N) and 10 (FCR-D) have product-specific details, the
+    # others have none. The first is used as the default product type
+    pt_ids = [8, 5, 7, 6, 10]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -272,8 +321,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -287,8 +335,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -314,8 +361,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -327,8 +372,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
@@ -420,7 +463,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            additional_information="test by FISO",
+            application_details=mfrr_details(additional_information="test by FISO"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -564,7 +607,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_sp,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            maximum_active_power_up=2.0,
+            application_details=mfrr_details(maximum_active_power_up=2.0),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -584,40 +627,6 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # SPGPA-VAL007 - ramping for manual congestion(product type 1)
-    u = update_service_providing_group_product_application.sync(
-        client=client_fiso,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[8],
-            ramping_description="Description",
-        ),
-    )
-    # missing ramping capability
-    assert isinstance(u, ErrorMessage)
-
-    u = update_service_providing_group_product_application.sync(
-        client=client_fiso,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[8],
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
-        ),
-    )
-    # missing ramping description
-    assert isinstance(u, ErrorMessage)
-
-    u = update_service_providing_group_product_application.sync(
-        client=client_fiso,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[8],
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
-            ramping_description="Description",
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -646,8 +655,6 @@ def test_spgpa_product_type_ids_not_empty(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -659,8 +666,7 @@ def test_spgpa_product_type_ids_not_empty(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -689,8 +695,7 @@ def test_spgpa_val011_complete_at_required(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -733,8 +738,7 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -747,8 +751,7 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -760,8 +763,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0], pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -773,8 +774,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -795,8 +794,6 @@ def test_spgpa_no_duplicate_product_types(data):
         id=cast(int, spgpa2.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             product_type_ids=[pt_ids[2]],
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
-            ramping_description="test ramping description",
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -809,8 +806,7 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
@@ -822,8 +818,7 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa4, ServiceProvidingGroupProductApplicationResponse)
@@ -898,8 +893,7 @@ def test_spgpa_sp_inactive(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_ids[0],
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            application_details=mfrr_details(),
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -926,7 +920,7 @@ def test_spgpa_sp_inactive(data):
         client=client_sp,
         id=spgpa_id,
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            maximum_active_power_up=2.0,
+            application_details=mfrr_details(maximum_active_power_up=2.0),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -960,3 +954,466 @@ def test_spgpa_sp_inactive(data):
     assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
     u = sp_set_status(ServiceProvidingGroupProductApplicationStatus.REQUESTED)
     assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+
+
+def _create(client, spg_id, so_id, pt_ids, **kwargs):
+    return create_service_providing_group_product_application.sync(
+        client=client,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_id,
+            procuring_system_operator_id=so_id,
+            product_type_ids=pt_ids,
+            **kwargs,
+        ),
+    )
+
+
+def _update(client, spgpa_id, **kwargs):
+    return update_service_providing_group_product_application.sync(
+        client=client,
+        id=spgpa_id,
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(**kwargs),
+    )
+
+
+# SPGPA-VAL012
+def test_spgpa_val012_exactly_one_product_type(data):
+    (_, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+    mfrr, fcr_n = pt_ids[0], pt_ids[3]
+
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr, fcr_n],
+        application_details=mfrr_details(),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "exactly one product type" in e.message
+
+    # also on update
+    spgpa = _create(
+        client_sp, spg_ids[0], so_ids[0], [mfrr], application_details=mfrr_details()
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    u = _update(client_sp, cast(int, spgpa.id), product_type_ids=[mfrr, fcr_n])
+    assert isinstance(u, ErrorMessage)
+    assert "exactly one product type" in u.message
+
+
+# SPGPA-VAL013
+def test_spgpa_val013_application_details_kind_and_presence(data):
+    (_, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+    mfrr, no_variant, fcr_n = pt_ids[0], pt_ids[1], pt_ids[3]
+
+    # required when the product type has an application variant
+    e = _create(client_sp, spg_ids[0], so_ids[0], [mfrr])
+    assert isinstance(e, ErrorMessage)
+    assert "application_details is required" in e.message
+
+    # the kind must be the product type
+    e = _create(
+        client_sp, spg_ids[0], so_ids[0], [fcr_n], application_details=mfrr_details()
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "application_details.kind must be automatic_frequency_containment" in (
+        e.message
+    )
+
+    # not allowed when the product type has no application variant
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [no_variant],
+        application_details=mfrr_details(),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "application_details is not allowed" in e.message
+
+    # but then it is fine without
+    spgpa = _create(client_sp, spg_ids[0], so_ids[0], [no_variant])
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert spgpa.application_details is None
+    assert spgpa.assessment_details is None
+
+    # the deprecated columns are only for mFRR
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[1],
+        [no_variant],
+        maximum_active_power_up=1.0,
+        maximum_active_power_down=1.0,
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "deprecated" in e.message
+
+
+def test_spgpa_val013_application_details_fields(data):
+    (_, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+    mfrr, fcr_n, fcr_d = pt_ids[0], pt_ids[3], pt_ids[4]
+
+    # out of range and wrong precision
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr],
+        application_details=mfrr_details(maximum_active_power_up=-1),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "application_details.maximum_active_power_up must be at least 0" in (
+        e.message
+    )
+
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr],
+        application_details=mfrr_details(maximum_active_power_up=1.0005),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "must be a multiple of 0.001" in e.message
+
+    # string limits
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr],
+        application_details=mfrr_details(additional_information="x" * 513),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "at most 512" in e.message
+
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr],
+        application_details=mfrr_details(ramping_description=""),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "application_details.ramping_description" in e.message
+
+    # all errors are reported at once
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [fcr_d],
+        application_details=fcr_d_details(
+            maximum_active_power_up=-1, technical_contact_information=""
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert "maximum_active_power_up" in e.message
+    assert "technical_contact_information" in e.message
+
+    # FCR-N is symmetric, FCR-D is not
+    e = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [fcr_n],
+        application_details=fcr_n_details(maximum_active_power_down=900),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert (
+        "maximum_active_power_up and application_details.maximum_active_power_down must be equal"
+        in (e.message)
+    )
+
+
+def test_spgpa_val013_missing_and_unknown_fields(data):
+    (_, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+    fcr_n = pt_ids[3]
+
+    # the typed client cannot send these, so the raw request is used
+    def raw_create(application_details):
+        return client_sp.get_httpx_client().post(
+            "/service_providing_group_product_application",
+            json={
+                "service_providing_group_id": spg_ids[0],
+                "procuring_system_operator_id": so_ids[0],
+                "product_type_ids": [fcr_n],
+                "application_details": application_details,
+            },
+        )
+
+    valid = fcr_n_details().to_dict()
+    valid["planned_prequalification_test_date"] = "2026-12-01"
+
+    r = raw_create({**valid, "approved_maximum_active_power_up": 1})
+    assert r.status_code == 400
+    assert "approved_maximum_active_power_up" in r.json()["message"]
+
+    r = raw_create({k: v for k, v in valid.items() if k != "limited_energy_reservoir"})
+    assert r.status_code == 400
+    assert "limited_energy_reservoir" in r.json()["message"]
+
+    r = raw_create({**valid, "limited_energy_reservoir": "yes"})
+    assert r.status_code == 400
+    assert "limited_energy_reservoir" in r.json()["message"]
+
+    r = raw_create({**valid, "planned_prequalification_test_date": "2026-02-31"})
+    assert r.status_code == 400
+    assert "2026-02-31" in r.json()["message"]
+
+    r = raw_create({**valid, "maximum_active_power_up": "1000"})
+    assert r.status_code == 400
+
+    # other properties of the request are checked too
+    r = client_sp.get_httpx_client().post(
+        "/service_providing_group_product_application",
+        json={
+            "service_providing_group_id": spg_ids[0],
+            "procuring_system_operator_id": so_ids[0],
+            "product_type_ids": [fcr_n],
+            "application_details": valid,
+            "id": 1,
+        },
+    )
+    assert r.status_code == 400
+
+    r = raw_create(valid)
+    assert r.status_code == 201
+
+
+def test_spgpa_fcr_n(data):
+    (sts, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+    fcr_n = pt_ids[3]
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+
+    spgpa = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [fcr_n],
+        application_details=fcr_n_details(),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(spgpa.application_details, SpgpaApplicationDetailsFcrN)
+    assert spgpa.application_details.maximum_active_power_up == 1000
+    assert spgpa.application_details.planned_prequalification_test_date == (
+        datetime.date(2026, 12, 1)
+    )
+    assert spgpa.assessment_details is None
+    # FCR is not mFRR: the deprecated columns stay empty
+    assert spgpa.maximum_active_power_up is None
+    assert spgpa.ramping_capability is None
+
+    spgpa_id = cast(int, spgpa.id)
+
+    # the SP cannot write the assessment
+    u = _update(
+        client_sp,
+        spgpa_id,
+        assessment_details=SpgpaAssessmentDetailsFcrN(
+            kind="automatic_frequency_containment",
+            approved_maximum_active_power_up=900,
+            approved_maximum_active_power_down=900,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # the SO can
+    client_so = so_clients[0]
+    u = _update(
+        client_so,
+        spgpa_id,
+        assessment_details=SpgpaAssessmentDetailsFcrN(
+            kind="automatic_frequency_containment",
+            approved_maximum_active_power_up=900,
+            approved_maximum_active_power_down=900,
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(u.assessment_details, SpgpaAssessmentDetailsFcrN)
+    assert u.assessment_details.approved_maximum_active_power_up == 900
+    assert isinstance(u.application_details, SpgpaApplicationDetailsFcrN)
+
+    # the SO cannot write the application details
+    u = _update(client_so, spgpa_id, application_details=fcr_n_details())
+    assert isinstance(u, ErrorMessage)
+
+    # the kind of the assessment must be the one of the product type
+    u = _update(
+        client_so,
+        spgpa_id,
+        assessment_details=SpgpaAssessmentDetailsFcrD(
+            kind="automatic_frequency_containment_disturbance",
+            approved_maximum_active_power_up=700,
+            approved_maximum_active_power_down=500,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+    assert "assessment_details.kind must be automatic_frequency_containment" in (
+        u.message
+    )
+
+    # FCR-N assessment is symmetric too
+    u = _update(
+        client_so,
+        spgpa_id,
+        assessment_details=SpgpaAssessmentDetailsFcrN(
+            kind="automatic_frequency_containment",
+            approved_maximum_active_power_up=900,
+            approved_maximum_active_power_down=800,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+    assert "must be equal" in u.message
+
+    # an unrelated update does not touch the details
+    u = _update(
+        client_fiso,
+        spgpa_id,
+        status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        complete_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(u.application_details, SpgpaApplicationDetailsFcrN)
+    assert isinstance(u.assessment_details, SpgpaAssessmentDetailsFcrN)
+
+
+def test_spgpa_fcr_d(data):
+    (_, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+    fcr_d = pt_ids[4]
+
+    spgpa = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [fcr_d],
+        application_details=fcr_d_details(),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(spgpa.application_details, SpgpaApplicationDetailsFcrD)
+    # up and down can differ for FCR-D
+    assert spgpa.application_details.maximum_active_power_up == 800
+    assert spgpa.application_details.maximum_active_power_down == 600
+
+    u = _update(
+        so_clients[0],
+        cast(int, spgpa.id),
+        assessment_details=SpgpaAssessmentDetailsFcrD(
+            kind="automatic_frequency_containment_disturbance",
+            approved_maximum_active_power_up=700,
+            approved_maximum_active_power_down=500,
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(u.assessment_details, SpgpaAssessmentDetailsFcrD)
+    assert u.assessment_details.approved_maximum_active_power_down == 500
+
+
+def test_spgpa_mfrr_has_no_assessment(data):
+    (_, spg_ids, _, client_sp, so_clients, so_ids, pt_ids) = data
+
+    spgpa = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [pt_ids[0]],
+        application_details=mfrr_details(additional_information="Weekdays only."),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(spgpa.application_details, SpgpaApplicationDetailsMfrr)
+    assert spgpa.assessment_details is None
+
+    u = _update(
+        so_clients[0],
+        cast(int, spgpa.id),
+        assessment_details=SpgpaAssessmentDetailsFcrN(
+            kind="automatic_frequency_containment",
+            approved_maximum_active_power_up=1,
+            approved_maximum_active_power_down=1,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+    assert "assessment_details" in u.message
+
+
+# transition period: the deprecated mFRR columns are kept in sync
+def test_spgpa_mfrr_legacy_columns_sync(data):
+    (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+    mfrr = pt_ids[0]
+    client_fiso = sts.get_client(TestEntityClient.TEST, "FISO")
+
+    # details are copied to the deprecated columns
+    spgpa = _create(
+        client_sp,
+        spg_ids[0],
+        so_ids[0],
+        [mfrr],
+        application_details=mfrr_details(
+            maximum_active_power_up=2.5, additional_information="Info"
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert spgpa.maximum_active_power_up == 2.5
+    assert spgpa.maximum_active_power_down == 3.5
+    assert spgpa.ramping_capability == "always"
+    assert spgpa.additional_information == "Info"
+
+    # the deprecated columns are copied to the details
+    spgpa2 = _create(
+        client_sp,
+        spg_ids[1],
+        so_ids[0],
+        [mfrr],
+        maximum_active_power_up=1.5,
+        maximum_active_power_down=1.5,
+        ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.NEVER,
+        ramping_description="No ramping",
+    )
+    assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
+    details = spgpa2.application_details
+    assert isinstance(details, SpgpaApplicationDetailsMfrr)
+    assert details.kind == "manual_frequency_restoration"
+    assert details.maximum_active_power_up == 1.5
+    assert details.ramping_capability == SpgpaRampingCapability.NEVER
+    assert details.ramping_description == "No ramping"
+
+    # updates go both ways
+    u = _update(client_sp, cast(int, spgpa2.id), maximum_active_power_up=2.0)
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(u.application_details, SpgpaApplicationDetailsMfrr)
+    assert u.application_details.maximum_active_power_up == 2.0
+    assert u.application_details.maximum_active_power_down == 1.5
+
+    u = _update(
+        client_sp,
+        cast(int, spgpa2.id),
+        application_details=mfrr_details(
+            maximum_active_power_up=4.0, maximum_active_power_down=5.0
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+    assert u.maximum_active_power_up == 4.0
+    assert u.maximum_active_power_down == 5.0
+
+    # both at once is fine when they agree, and a conflict when they do not
+    u = _update(
+        client_fiso,
+        cast(int, spgpa2.id),
+        maximum_active_power_up=6.0,
+        application_details=mfrr_details(
+            maximum_active_power_up=6.0, maximum_active_power_down=5.0
+        ),
+    )
+    assert isinstance(u, ServiceProvidingGroupProductApplicationResponse)
+
+    u = _update(
+        client_fiso,
+        cast(int, spgpa2.id),
+        maximum_active_power_up=7.0,
+        application_details=mfrr_details(
+            maximum_active_power_up=8.0, maximum_active_power_down=5.0
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+    assert "conflict" in u.message

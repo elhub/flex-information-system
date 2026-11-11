@@ -552,6 +552,8 @@ def generate_openapi_document(
                     resource["properties"][field]["readOnly"] = data["readOnly"]
                 if data.get("x-no-update") is not None:
                     resource["properties"][field]["x-no-update"] = data["x-no-update"]
+                if data.get("deprecated") is not None:
+                    resource["properties"][field]["deprecated"] = data["deprecated"]
                 if "nullable" in data:
                     if data["nullable"]:
                         # OAS 3.1: express nullability via oneOf instead of nullable:true
@@ -563,6 +565,10 @@ def generate_openapi_document(
                             ],
                             "nullable": True,
                         }
+                        if data.get("deprecated"):
+                            resource["properties"][field]["description"] = data[
+                                "description"
+                            ]
                         if data.get("default") is not None:
                             resource["properties"][field]["default"] = data["default"]
                         if data.get("x-filter") is not None:
@@ -572,6 +578,10 @@ def generate_openapi_document(
                         if data.get("x-no-update") is not None:
                             resource["properties"][field]["x-no-update"] = data[
                                 "x-no-update"
+                            ]
+                        if data.get("deprecated") is not None:
+                            resource["properties"][field]["deprecated"] = data[
+                                "deprecated"
                             ]
                         if "required" in data:
                             resource["properties"][field]["required"] = data["required"]

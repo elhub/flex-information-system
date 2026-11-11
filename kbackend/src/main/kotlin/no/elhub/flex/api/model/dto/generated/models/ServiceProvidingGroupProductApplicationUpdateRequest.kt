@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class ServiceProvidingGroupProductApplicationUpdateRequest(
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   @SerialName("product_type_ids")
   public val productTypeIds: List<Long>? = null,
@@ -28,19 +28,21 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
       ServiceProvidingGroupProductApplicationStatus.REQUESTED,
   /**
    * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * Deprecated: use `application_details` instead.
    */
   @Contextual
   @SerialName("maximum_active_power_up")
   public val maximumActivePowerUp: BigDecimal? = null,
   /**
    * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * Deprecated: use `application_details` instead.
    */
   @Contextual
   @SerialName("maximum_active_power_down")
   public val maximumActivePowerDown: BigDecimal? = null,
   /**
    * Free text field for extra information about the application if needed (bidding periods,
-   * unavailabilities, etc).
+   * unavailabilities, etc). Deprecated: use `application_details` instead.
    */
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
@@ -56,13 +58,12 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
   public val verifiedAt: Instant? = null,
   /**
    * Whether the service providing group can ramp in accordance with the product requirements during
-   * both activation and deactivation.
+   * both activation and deactivation. Deprecated: use `application_details` instead.
    */
   @SerialName("ramping_capability")
   public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability? = null,
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency
-   * Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
    */
   @SerialName("ramping_description")
   public val rampingDescription: String? = null,
@@ -71,4 +72,16 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
    */
   @SerialName("complete_at")
   public val completeAt: Instant? = null,
+  /**
+   * Product-specific application details, written by the service provider. The variant is selected
+   * by `kind`, which is the business ID of the product type of the application.
+   */
+  @SerialName("application_details")
+  public val applicationDetails: SpgpaApplicationDetails? = null,
+  /**
+   * Product-specific assessment details, written by the procuring system operator. The variant is
+   * selected by `kind`, which must be the same as the `kind` of the application details.
+   */
+  @SerialName("assessment_details")
+  public val assessmentDetails: SpgpaAssessmentDetails? = null,
 )

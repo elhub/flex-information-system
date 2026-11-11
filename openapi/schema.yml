@@ -115,6 +115,12 @@ $defs:
         type: boolean
         description: Whether the field value may be null.
 
+      deprecated:
+        type: boolean
+        description: >-
+          If true, the field is deprecated and will be removed in a later
+          version. Forwarded to the OpenAPI specification.
+
       required:
         type: boolean
         description: >-

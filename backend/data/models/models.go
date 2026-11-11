@@ -576,8 +576,8 @@ type ApiServiceProvidingGroupProductApplication struct {
 	ProcuringSystemOperatorID int
 	ProductTypeIds            []int
 	Status                    string
-	MaximumActivePowerUp      float64
-	MaximumActivePowerDown    float64
+	MaximumActivePowerUp      *float64
+	MaximumActivePowerDown    *float64
 	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
@@ -585,6 +585,8 @@ type ApiServiceProvidingGroupProductApplication struct {
 	RampingDescription        *string
 	CreatedAt                 pgtype.Timestamptz
 	CompleteAt                pgtype.Timestamptz
+	ApplicationDetails        []byte
+	AssessmentDetails         []byte
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
 }
@@ -648,8 +650,8 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ProcuringSystemOperatorID                 int
 	ProductTypeIds                            []int
 	Status                                    string
-	MaximumActivePowerUp                      float64
-	MaximumActivePowerDown                    float64
+	MaximumActivePowerUp                      *float64
+	MaximumActivePowerDown                    *float64
 	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz
@@ -657,6 +659,8 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	RampingDescription                        *string
 	CreatedAt                                 pgtype.Timestamptz
 	CompleteAt                                pgtype.Timestamptz
+	ApplicationDetails                        []byte
+	AssessmentDetails                         []byte
 	RecordedBy                                int
 	RecordedAt                                pgtype.Timestamptz
 	ReplacedBy                                *int

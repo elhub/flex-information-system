@@ -305,9 +305,10 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_membership_history/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_providing_group_product_application", dataListPostgRESTHandler)
-	mux.Handle("POST /service_providing_group_product_application", dataPostgRESTHandler)
+	// writes handled by the Kotlin backend, which validates the product-specific details
+	mux.Handle("POST /service_providing_group_product_application", data.kbackend)
 	mux.Handle("GET /service_providing_group_product_application/{id}", dataPostgRESTHandler)
-	mux.Handle("PATCH /service_providing_group_product_application/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_product_application/{id}", data.kbackend)
 
 	mux.Handle("GET /service_providing_group_product_application_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_product_application_history/{id}", dataPostgRESTHandler)

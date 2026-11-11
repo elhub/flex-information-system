@@ -11,12 +11,15 @@ import no.elhub.flex.api.routes.ApiRoute
  * Decides how each route of the OpenAPI document is served: proxied to PostgREST unless listed here.
  */
 object DataApiRegistry {
+    private const val SPGPA = "service_providing_group_product_application"
     private const val ATTACHMENT = "service_providing_group_product_application_attachment"
 
     /** Routes implemented in kbackend itself. */
     val native: Set<ApiRoute> = setOf(
         ApiRoute(HttpMethod.Post, "/controllable_unit/lookup"),
         ApiRoute(HttpMethod.Post, "/entity/lookup"),
+        ApiRoute(HttpMethod.Post, "/$SPGPA"),
+        ApiRoute(HttpMethod.Patch, "/$SPGPA/{id}"),
         ApiRoute(HttpMethod.Post, "/$ATTACHMENT"),
         ApiRoute(HttpMethod.Delete, "/$ATTACHMENT/{id}"),
         ApiRoute(HttpMethod.Get, "/$ATTACHMENT/{id}/download"),

@@ -3999,7 +3999,9 @@ resources:
           nb: Kjøpende systemoperatør
           nn: Kjøpande systemoperatør
       product_type_ids:
-        description: References to the product types.
+        description: >-
+          References to the product types. An application is for exactly one
+          product type.
         type: array
         items:
           format: bigint
@@ -4009,7 +4011,7 @@ resources:
           resource: product_type
           field: id
           cardinality: many-to-one
-        example: [2, 4, 5]
+        example: [8]
         x-intl:
           en: Product types
           nb: Produkttyper
@@ -4098,6 +4100,9 @@ resources:
       maximum_active_power_up:
         description: >-
           The maximum active power applied for in regulation direction up. Stored in kilowatts.
+          Deprecated: use `application_details` instead.
+        deprecated: true
+        nullable: true
         format: decimal
         type: number
         minimum: 0
@@ -4111,6 +4116,9 @@ resources:
       maximum_active_power_down:
         description: >-
           The maximum active power applied for in regulation direction down. Stored in kilowatts.
+          Deprecated: use `application_details` instead.
+        deprecated: true
+        nullable: true
         format: decimal
         type: number
         minimum: 0
@@ -4124,6 +4132,8 @@ resources:
       additional_information:
         description: >-
           Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+          Deprecated: use `application_details` instead.
+        deprecated: true
         format: text
         type: string
         maxLength: 512
@@ -4155,6 +4165,8 @@ resources:
       ramping_capability:
         description: >-
           Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+          Deprecated: use `application_details` instead.
+        deprecated: true
         format: text
         type: string
         nullable: true
@@ -4181,7 +4193,9 @@ resources:
           nn: Rampingevne
       ramping_description:
         description: >-
-          Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+          Free text description of ramping details.
+          Deprecated: use `application_details` instead.
+        deprecated: true
         format: text
         type: string
         nullable: true
@@ -4211,6 +4225,37 @@ resources:
           en: Complete at
           nb: Fullført
           nn: Fullført
+      application_details:
+        description: >-
+          Product-specific details of the application, written by the service
+          provider. The variant is selected by `kind`, which must be the
+          business ID of the product type of the application. Required for
+          product types that have an application variant, and null otherwise.
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/spgpa_application_details"
+          - type: "null"
+        nullable: true
+        x-intl:
+          en: Application details
+          nb: Søknadsdetaljer
+          nn: Søknadsdetaljar
+      assessment_details:
+        description: >-
+          Product-specific response from the procuring system operator, for
+          example the approved values. The `kind` must be the same as in
+          `application_details`. Null until the procuring system operator
+          responds, and always null for product types without an assessment
+          variant.
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/spgpa_assessment_details"
+          - type: "null"
+        nullable: true
+        x-intl:
+          en: Assessment details
+          nb: Vurderingsdetaljer
+          nn: Vurderingsdetaljar
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS
