@@ -25,6 +25,7 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readBuffer
 import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.readString
@@ -157,7 +158,7 @@ class PostgrestClient(config: PostgrestConfig) {
     }
 
     private suspend fun relayError(call: ApplicationCall, method: HttpMethod, response: HttpResponse) {
-        val body = response.bodyAsChannel().readRemaining(MAX_ERROR_BODY_BYTES).readString()
+        val body = response.bodyAsChannel().readBuffer(MAX_ERROR_BODY_BYTES).readString()
         val error = rewritePostgrestError(method, response.status, body)
         logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
         // headers such as WWW-Authenticate and Content-Range still apply, the body is the only thing we replace

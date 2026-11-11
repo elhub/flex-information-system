@@ -125,6 +125,6 @@ for instance the
 Developers can also track actual changes in the API by checking whether the
 OpenAPI specification files on our open source repository have been updated:
 
-* [Data API specification](https://github.com/elhub/flex-information-system/blob/main/backend/data/static/openapi.json)
+* [Data API specification](https://github.com/elhub/flex-information-system/blob/main/kbackend/data/static/openapi.json)
 * [Auth API specification](https://github.com/elhub/flex-information-system/blob/main/backend/auth/static/openapi.json)
-* [Grid API specification](https://github.com/elhub/flex-information-system/blob/main/backend/grid/static/openapi.json)
+* [Grid API specification](https://github.com/elhub/flex-information-system/blob/main/kbackend/grid/static/openapi.json)

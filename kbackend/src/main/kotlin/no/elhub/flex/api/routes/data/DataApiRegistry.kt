@@ -1,13 +1,11 @@
 package no.elhub.flex.api.routes.data
 
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import no.elhub.flex.api.postgrest.AttachmentReadVariant
 import no.elhub.flex.api.postgrest.DefaultVariant
 import no.elhub.flex.api.postgrest.EventListVariant
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
-import no.elhub.flex.auth.scope.Scope
-import no.elhub.flex.auth.scope.ScopeVerb
+import no.elhub.flex.api.routes.ApiRoute
 
 /**
  * Decides how each route of the OpenAPI document is served: proxied to PostgREST unless listed here.
