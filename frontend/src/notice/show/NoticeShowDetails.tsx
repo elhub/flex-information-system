@@ -231,7 +231,26 @@ const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
   );
 };
 
+const NoticeCsoNoActiveUsers = ({ notice }: NoticeShowDetailsProps) => {
+  const translate = useTranslate();
+  const csoId = Number(notice.source?.split("/")[2]);
+  if (!Number.isInteger(csoId)) return null;
+  const search = new URLSearchParams({
+    filtered: "1",
+    "f.status@in": "active",
+    "f.accounting_point.system_operator_id@in": String(csoId),
+  }).toString();
+  return (
+    <Button as={RouterLink} to={`/controllable_unit?${search}`}>
+      {translate("text.notice_cso_no_active_users_button")}
+    </Button>
+  );
+};
+
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
+  "no.elhub.flex.party.connecting_system_operator.no_active_users": (
+    notice,
+  ) => <NoticeCsoNoActiveUsers notice={notice} />,
   "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
     (notice) => (
       <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
