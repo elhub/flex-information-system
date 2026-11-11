@@ -20,6 +20,7 @@ export const TextAreaInput = ({
   disabled,
   description,
   descriptionOverride,
+  overrideLabel,
   warning,
   infoElement,
   ...rest
@@ -41,6 +42,7 @@ export const TextAreaInput = ({
       error={fieldState.error?.message}
       description={description}
       descriptionOverride={descriptionOverride}
+      overrideLabel={overrideLabel}
       warning={warning}
       infoElement={infoElement}
     >

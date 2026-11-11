@@ -51,6 +51,8 @@ export const BaseInput = ({
   const isFilterInput = useContext(FilterInputContext);
   const resource = useResourceContext({ resource: resourceProp });
   const formattedSource = source.split("@")[0];
+  // permissions are defined on the top-level field of nested sources
+  const permissionSource = formattedSource.split(".")[0];
 
   const { permissions } = usePermissions<Permissions>();
   const createOrUpdate = useCreateOrUpdate();
@@ -68,7 +70,7 @@ export const BaseInput = ({
   const isPermissionDisabled =
     createOrUpdate != null &&
     permissions?.allow(
-      `${resource}.${formattedSource}` as PermissionTarget,
+      `${resource}.${permissionSource}` as PermissionTarget,
       createOrUpdate,
     ) === false;
 

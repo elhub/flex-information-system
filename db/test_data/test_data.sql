@@ -617,6 +617,7 @@ DECLARE
   so_id bigint;
 
   pt_id bigint;
+  pt_ids bigint[];
 
   so_mga_business_id text;
   so_mga_id bigint;
@@ -774,14 +775,21 @@ BEGIN
   FROM flex.product_type AS pt
   WHERE pt.business_id = 'manual_congestion';
 
-  -- Product type
+  -- Product types: manual congestion and the ones with application details
+  SELECT array_agg(pt.id ORDER BY pt.id) INTO pt_ids
+  FROM flex.product_type AS pt
+  WHERE pt.business_id IN (
+    'manual_congestion',
+    'manual_frequency_restoration',
+    'automatic_frequency_containment',
+    'automatic_frequency_containment_disturbance'
+  );
+
   INSERT INTO flex.system_operator_product_type (
     system_operator_id,
     product_type_id
-  ) VALUES (
-    so_id,
-    pt_id
-  );
+  )
+  SELECT so_id, unnest(pt_ids);
 
   so_mga_business_id := test_data.forge_valid_eic(42, in_entity_name);
 
@@ -1022,7 +1030,7 @@ BEGIN
   INSERT INTO flex.service_provider_product_application (
     service_provider_id, system_operator_id, product_type_ids
   ) VALUES (
-    sp_id, so_id, array[pt_id]
+    sp_id, so_id, pt_ids
   ) RETURNING id INTO sppa_id;
 
   UPDATE flex.service_provider_product_application
@@ -1054,6 +1062,44 @@ BEGIN
   UPDATE flex.service_providing_group_product_application
   SET status = 'prequalification', complete_at = CURRENT_TIMESTAMP
   WHERE service_providing_group_id = spg_id;
+
+  -- SPG product applications with details, one per product type with a variant
+
+  INSERT INTO flex.service_providing_group_product_application (
+    service_providing_group_id,
+    procuring_system_operator_id,
+    product_type_ids,
+    application_details
+  )
+  SELECT
+    spg_id,
+    so_id,
+    array[pt.id],
+    CASE pt.business_id
+      WHEN 'manual_frequency_restoration' THEN jsonb_build_object(
+        'kind', pt.business_id,
+        'maximum_active_power_up', 7,
+        'maximum_active_power_down', 7,
+        'ramping_capability', 'always',
+        'ramping_description', 'Ramping details'
+      )
+      ELSE jsonb_build_object(
+        'kind', pt.business_id,
+        'service_provider_contact_information', 'sp@example.com',
+        'technical_contact_information', 'tech@example.com',
+        'limited_energy_reservoir', false,
+        'variable_production_consumption', false,
+        'planned_prequalification_test_date', '2030-01-01',
+        'maximum_active_power_up', 5,
+        'maximum_active_power_down', 5
+      )
+    END
+  FROM flex.product_type AS pt
+  WHERE pt.business_id IN (
+    'manual_frequency_restoration',
+    'automatic_frequency_containment',
+    'automatic_frequency_containment_disturbance'
+  );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 

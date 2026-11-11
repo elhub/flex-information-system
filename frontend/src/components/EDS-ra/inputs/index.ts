@@ -9,6 +9,7 @@ export {
 } from "./AutocompleteInput";
 export { AutocompleteReferenceInput } from "./AutocompleteReferenceInput";
 export { BaseInput, type BaseInputProps } from "./BaseInput";
+export { BooleanInput } from "./BooleanInput";
 export { DateInput } from "./DateInput";
 export { DateTimeInput } from "./DateTimeInput";
 export { EnumArrayInput } from "./EnumArrayInput";

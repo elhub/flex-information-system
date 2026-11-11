@@ -150,6 +150,24 @@ export type TextKey =
   | "spgpa_draft_status_label"
   | "spgpa_draft_status_tooltip"
   | "spgpa_delete_draft"
+  | "select_placeholder"
+  | "boolean_yes"
+  | "boolean_no"
+  | "spgpa_service_provider_contact_information"
+  | "spgpa_service_provider_contact_information_description"
+  | "spgpa_technical_contact_information"
+  | "spgpa_technical_contact_information_description"
+  | "spgpa_limited_energy_reservoir"
+  | "spgpa_limited_energy_reservoir_description"
+  | "spgpa_variable_production_consumption"
+  | "spgpa_variable_production_consumption_description"
+  | "spgpa_planned_prequalification_test_date"
+  | "spgpa_planned_prequalification_test_date_description"
+  | "spgpa_maximum_active_power"
+  | "spgpa_maximum_active_power_description"
+  | "spgpa_maximum_active_power_up_description"
+  | "spgpa_maximum_active_power_down_description"
+  | "spgpa_ramping_capability_description"
   | "spgpa_draft_autosaved"
   | "spgpa_hide_prequalified"
   | "spgpa_snapshot_total_capacity"
@@ -498,6 +516,35 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_draft_status_tooltip:
       "Saved only in this browser. This draft is private and is not visible to others.",
     spgpa_delete_draft: "Delete draft",
+    select_placeholder: "Select...",
+    boolean_yes: "Yes",
+    boolean_no: "No",
+    spgpa_service_provider_contact_information:
+      "Service provider contact information",
+    spgpa_service_provider_contact_information_description:
+      "Contact information for the service provider.",
+    spgpa_technical_contact_information: "Technical contact information",
+    spgpa_technical_contact_information_description:
+      "Contact information for the technical contact person.",
+    spgpa_limited_energy_reservoir: "Limited energy reservoir",
+    spgpa_limited_energy_reservoir_description:
+      "Whether the service providing group has a limited energy reservoir.",
+    spgpa_variable_production_consumption: "Variable production or consumption",
+    spgpa_variable_production_consumption_description:
+      "Whether the service providing group has variable production or consumption.",
+    spgpa_planned_prequalification_test_date:
+      "Planned prequalification test date",
+    spgpa_planned_prequalification_test_date_description:
+      "The planned date of the prequalification test.",
+    spgpa_maximum_active_power: "Maximum active power",
+    spgpa_maximum_active_power_description:
+      "The maximum active power applied for. The same value applies in both regulation directions (up and down).",
+    spgpa_maximum_active_power_up_description:
+      "The maximum active power applied for in regulation direction up.",
+    spgpa_maximum_active_power_down_description:
+      "The maximum active power applied for in regulation direction down.",
+    spgpa_ramping_capability_description:
+      "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
     spgpa_draft_autosaved: "Draft autosaved",
     spg_manage_members_heading: "Manage members of %{name}",
     spg_manage_members_heading_no_name: "Manage members",
@@ -893,6 +940,35 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_draft_status_tooltip:
       "Lagret kun i denne nettleseren. Dette utkastet er privat og ikke synlig for andre.",
     spgpa_delete_draft: "Slett utkast",
+    select_placeholder: "Velg...",
+    boolean_yes: "Ja",
+    boolean_no: "Nei",
+    spgpa_service_provider_contact_information:
+      "Kontaktinformasjon til tjenesteleverandør",
+    spgpa_service_provider_contact_information_description:
+      "Kontaktinformasjon til tjenesteleverandøren.",
+    spgpa_technical_contact_information: "Teknisk kontaktinformasjon",
+    spgpa_technical_contact_information_description:
+      "Kontaktinformasjon til teknisk kontaktperson.",
+    spgpa_limited_energy_reservoir: "Begrenset energireservoar",
+    spgpa_limited_energy_reservoir_description:
+      "Om fleksibilitetsgruppen har et begrenset energireservoar.",
+    spgpa_variable_production_consumption: "Variabel produksjon eller forbruk",
+    spgpa_variable_production_consumption_description:
+      "Om fleksibilitetsgruppen har variabel produksjon eller variabelt forbruk.",
+    spgpa_planned_prequalification_test_date:
+      "Planlagt dato for prekvalifiseringstest",
+    spgpa_planned_prequalification_test_date_description:
+      "Planlagt dato for prekvalifiseringstesten.",
+    spgpa_maximum_active_power: "Maksimal aktiv effekt",
+    spgpa_maximum_active_power_description:
+      "Maksimal aktiv effekt det søkes om. Samme verdi gjelder i begge reguleringsretninger (opp og ned).",
+    spgpa_maximum_active_power_up_description:
+      "Maksimal aktiv effekt det søkes om i reguleringsretning opp.",
+    spgpa_maximum_active_power_down_description:
+      "Maksimal aktiv effekt det søkes om i reguleringsretning ned.",
+    spgpa_ramping_capability_description:
+      "Om fleksibilitetsgruppen kan rampe i henhold til produktkravene ved både aktivering og deaktivering.",
     spgpa_draft_autosaved: "Utkast lagret automatisk",
     spg_manage_members_heading: "Administrer medlemmer for %{name}",
     spg_manage_members_heading_no_name: "Administrer medlemmer",

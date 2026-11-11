@@ -5,8 +5,11 @@ import type { ServiceProvidingGroupProductApplicationCreateRequest } from "../ge
 const DRAFT_KEY_PREFIX = "Flex.spgpa_draft.";
 const DRAFT_TTL_DAYS = 7;
 
-type DraftValues =
-  Partial<ServiceProvidingGroupProductApplicationCreateRequest>;
+// the details are stored as in the form, which can differ from the API format
+type DraftValues = Omit<
+  Partial<ServiceProvidingGroupProductApplicationCreateRequest>,
+  "application_details"
+> & { application_details?: Record<string, unknown> };
 
 export type SpgpaDraft = {
   spgId: number;

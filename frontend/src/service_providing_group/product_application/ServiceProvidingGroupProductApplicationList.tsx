@@ -17,6 +17,7 @@ import type { SpgpaDraft } from "../../hooks/useSpgpaDrafts";
 import type { ServiceProvidingGroupProductApplication } from "../../generated-client";
 import { formatScaled, KILO } from "../../utils/scales";
 import { toDateTimeString } from "../../util";
+import { detailsPower } from "./spgpaDetails";
 import { DRAFT_STATUS, spgpaStatusVariantMap } from "./spgpaStatus";
 import { useServiceProvidingGroupProductApplicationList } from "./useServiceProvidingGroupProductApplicationList";
 
@@ -47,8 +48,7 @@ const draftToRow = (draft: SpgpaDraft, index: number): Row =>
     service_providing_group: { name: draft.spgName },
     procuring_system_operator: { name: draft.systemOperatorName },
     product_type_ids: draft.values.product_type_ids ?? [],
-    maximum_active_power_up: draft.values.maximum_active_power_up,
-    maximum_active_power_down: draft.values.maximum_active_power_down,
+    application_details: draft.values.application_details,
     status: DRAFT_STATUS,
     __draft: draft,
   }) as unknown as Row;
@@ -174,13 +174,13 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       header: translate(
         "field.service_providing_group_product_application.maximum_active_power_up",
       ),
-      render: (row) => formatPower(row.maximum_active_power_up),
+      render: (row) => formatPower(detailsPower(row.application_details).up),
     },
     {
       header: translate(
         "field.service_providing_group_product_application.maximum_active_power_down",
       ),
-      render: (row) => formatPower(row.maximum_active_power_down),
+      render: (row) => formatPower(detailsPower(row.application_details).down),
     },
     {
       header: translate("field.controllable_unit.maximum_active_power"),

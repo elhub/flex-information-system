@@ -18,6 +18,7 @@ import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { ServiceProvidingGroupStatus } from "../../generated-client";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
+import { detailsPower } from "../product_application/spgpaDetails";
 import { DRAFT_STATUS } from "../product_application/spgpaStatus";
 
 type Props = {
@@ -105,8 +106,10 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
         __draftId: d.draftId,
         procuringSystemOperatorName: d.systemOperatorName ?? "",
         productTypeIds: d.values.product_type_ids ?? [],
-        maximumActivePowerUp: d.values.maximum_active_power_up ?? 0,
-        maximumActivePowerDown: d.values.maximum_active_power_down ?? 0,
+        maximumActivePowerUp:
+          detailsPower(d.values.application_details).up ?? 0,
+        maximumActivePowerDown:
+          detailsPower(d.values.application_details).down ?? 0,
         status: DRAFT_STATUS,
       }));
 

@@ -7,7 +7,14 @@ import {
   useRecordContext,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import { Tag, Tooltip } from "../components/ui";
+import { useInput, useTranslate } from "ra-core";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  Tag,
+  Tooltip,
+} from "../components/ui";
 import {
   listSystemOperatorProductType,
   ProductType,
@@ -16,6 +23,7 @@ import {
   ArrayInput,
   ArrayInputOption,
   ArrayInputProps,
+  BaseInput,
   BaseInputProps,
 } from "../components/EDS-ra/inputs";
 import { useQuery } from "@tanstack/react-query";
@@ -149,11 +157,10 @@ type SystemOperatorProductTypesInputProps = Pick<
   systemOperatorSource: string;
 };
 
-export const SystemOperatorProductTypesInput = ({
-  systemOperatorSource,
-  source,
-  ...rest
-}: SystemOperatorProductTypesInputProps) => {
+const useResetOnSystemOperatorChange = (
+  systemOperatorSource: string,
+  source: string,
+) => {
   const { setValue, watch, getValues } = useFormContext();
   const systemOperatorID = watch(systemOperatorSource);
   const previousSystemOperatorID = useRef(systemOperatorID);
@@ -167,6 +174,19 @@ export const SystemOperatorProductTypesInput = ({
     }
   }, [systemOperatorID, getValues, setValue, source]);
 
+  return systemOperatorID;
+};
+
+export const SystemOperatorProductTypesInput = ({
+  systemOperatorSource,
+  source,
+  ...rest
+}: SystemOperatorProductTypesInputProps) => {
+  const systemOperatorID = useResetOnSystemOperatorChange(
+    systemOperatorSource,
+    source,
+  );
+
   return (
     <ProductTypeArrayInput
       systemOperatorId={systemOperatorID}
@@ -174,5 +194,60 @@ export const SystemOperatorProductTypesInput = ({
       {...rest}
       status={"active"}
     />
+  );
+};
+
+// input component to select ONE product type, restricted to the active
+// product types of a system operator referenced by another form field. The
+// form value is still an array with a single id, as in the API.
+export const SystemOperatorProductTypeInput = ({
+  systemOperatorSource,
+  source,
+  required,
+  tooltip,
+  description,
+}: SystemOperatorProductTypesInputProps) => {
+  const translate = useTranslate();
+  const systemOperatorID = useResetOnSystemOperatorChange(
+    systemOperatorSource,
+    source,
+  );
+  const { data: productTypes } = useGetProductTypesBySystemOperator(
+    systemOperatorID,
+    "active",
+  );
+  const { id, field, fieldState } = useInput({ source });
+
+  const selected: number | undefined = Array.isArray(field.value)
+    ? field.value[0]
+    : undefined;
+
+  return (
+    <BaseInput
+      source={source}
+      required={required}
+      tooltip={tooltip}
+      id={id}
+      error={fieldState.error?.message}
+      description={description}
+    >
+      <Select
+        className="min-w-48"
+        value={selected === undefined ? "" : String(selected)}
+        onValueChange={(value: string) => field.onChange([Number(value)])}
+        placeholder={translate("text.select_placeholder")}
+      >
+        <SelectContent>
+          {productTypes
+            ?.slice()
+            .sort((a, b) => a.id - b.id)
+            .map((pt) => (
+              <SelectItem key={pt.id} value={String(pt.id)}>
+                {displayProductType(pt)}
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
+    </BaseInput>
   );
 };

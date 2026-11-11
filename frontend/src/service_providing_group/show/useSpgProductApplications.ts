@@ -11,8 +11,8 @@ export type SpgProductApplicationRow = {
   id: number;
   procuringSystemOperatorName: string;
   productTypeIds: number[];
-  maximumActivePowerUp: number;
-  maximumActivePowerDown: number;
+  maximumActivePowerUp: number | undefined;
+  maximumActivePowerDown: number | undefined;
   status: ServiceProvidingGroupProductApplicationStatus | typeof DRAFT_STATUS;
 };
 
@@ -46,8 +46,8 @@ const fetchSpgProductApplications = async (
       partyMap[a.procuring_system_operator_id] ??
       String(a.procuring_system_operator_id),
     productTypeIds: a.product_type_ids,
-    maximumActivePowerUp: a.maximum_active_power_up,
-    maximumActivePowerDown: a.maximum_active_power_down,
+    maximumActivePowerUp: a.application_details?.maximum_active_power_up,
+    maximumActivePowerDown: a.application_details?.maximum_active_power_down,
     status: a.status,
   }));
 };

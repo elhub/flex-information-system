@@ -32,6 +32,7 @@ export const EnumInput = ({
   placeholder = "Select...",
   description,
   descriptionOverride,
+  overrideLabel,
   ...rest
 }: EnumInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -48,7 +49,7 @@ export const EnumInput = ({
   const isPermissionDisabled =
     createOrUpdate != null &&
     permissions?.allow(
-      `${resource}.${source.split("@")[0]}` as PermissionTarget,
+      `${resource}.${source.split("@")[0].split(".")[0]}` as PermissionTarget,
       createOrUpdate,
     ) === false;
   const isEffectivelyDisabled = disabled || readOnly || isPermissionDisabled;
@@ -76,6 +77,7 @@ export const EnumInput = ({
       error={fieldState.error?.message}
       description={description}
       descriptionOverride={descriptionOverride}
+      overrideLabel={overrideLabel}
     >
       <div className="flex items-center gap-3">
         <Select

@@ -424,6 +424,8 @@ export type FieldLabel =
   | "service_providing_group_power_per_substation.service_providing_group_id"
   | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application.additional_information"
+  | "service_providing_group_product_application.application_details"
+  | "service_providing_group_product_application.assessment_details"
   | "service_providing_group_product_application.complete_at"
   | "service_providing_group_product_application.created_at"
   | "service_providing_group_product_application.id"
@@ -459,6 +461,8 @@ export type FieldLabel =
   | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
+  | "service_providing_group_product_application_history.application_details"
+  | "service_providing_group_product_application_history.assessment_details"
   | "service_providing_group_product_application_history.complete_at"
   | "service_providing_group_product_application_history.created_at"
   | "service_providing_group_product_application_history.id"
@@ -1216,6 +1220,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
     "service_providing_group_product_application.complete_at": "Complete at",
+    "service_providing_group_product_application.application_details":
+      "Application details",
+    "service_providing_group_product_application.assessment_details":
+      "Assessment details",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1244,6 +1252,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Created at",
     "service_providing_group_product_application_history.complete_at":
       "Complete at",
+    "service_providing_group_product_application_history.application_details":
+      "Application details",
+    "service_providing_group_product_application_history.assessment_details":
+      "Assessment details",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1986,6 +1998,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskrivelse",
     "service_providing_group_product_application.created_at": "Opprettet",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.application_details":
+      "Søknadsdetaljer",
+    "service_providing_group_product_application.assessment_details":
+      "Vurderingsdetaljer",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2014,6 +2030,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Opprettet",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.application_details":
+      "Søknadsdetaljer",
+    "service_providing_group_product_application_history.assessment_details":
+      "Vurderingsdetaljer",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2755,6 +2775,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskriving",
     "service_providing_group_product_application.created_at": "Oppretta",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.application_details":
+      "Søknadsdetaljar",
+    "service_providing_group_product_application.assessment_details":
+      "Vurderingsdetaljar",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2783,6 +2807,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Oppretta",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.application_details":
+      "Søknadsdetaljar",
+    "service_providing_group_product_application_history.assessment_details":
+      "Vurderingsdetaljar",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

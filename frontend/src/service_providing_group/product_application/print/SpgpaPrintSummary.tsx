@@ -1,7 +1,6 @@
 import { LabelValue } from "../../../components/LabelValue";
-import { KILO } from "../../../utils/scales";
+import { useSpgpaDetailsSummary } from "../useSpgpaDetailsSummary";
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
-import { useTranslateEnum } from "../../../intl/intl";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -18,7 +17,7 @@ export const SpgpaPrintSummary = ({
   psoName,
   productTypeNames,
 }: Props) => {
-  const translateEnum = useTranslateEnum();
+  const detailsFields = useSpgpaDetailsSummary(spgpa.application_details);
 
   return (
     <div className="flex flex-col gap-4">
@@ -32,42 +31,10 @@ export const SpgpaPrintSummary = ({
 
       <LabelValue size="small" label="Product types" value={productTypeNames} />
 
-      <LabelValue
-        size="small"
-        label="Max active power (up)"
-        value={spgpa.maximum_active_power_up}
-        unit="W"
-        storageScale={KILO}
-      />
-
-      <LabelValue
-        size="small"
-        label="Max active power (down)"
-        value={spgpa.maximum_active_power_down}
-        unit="W"
-        storageScale={KILO}
-      />
-
-      {spgpa.ramping_capability && (
-        <LabelValue
-          size="small"
-          labelKey="service_providing_group_product_application.ramping_capability"
-          value={translateEnum(
-            `service_providing_group_product_application.ramping_capability.${spgpa.ramping_capability}`,
-          )}
-        />
-      )}
-
-      {spgpa.ramping_description && (
-        <LabelValue
-          size="small"
-          labelKey="service_providing_group_product_application.ramping_description"
-          value={
-            <span className="whitespace-pre-wrap">
-              {spgpa.ramping_description}
-            </span>
-          }
-        />
+      {detailsFields.map(({ shouldShow, ...field }, index) =>
+        (shouldShow ?? true) ? (
+          <LabelValue key={index} size="small" {...field} />
+        ) : null,
       )}
 
       <LabelValue
@@ -76,18 +43,6 @@ export const SpgpaPrintSummary = ({
         value={spgpa.prequalified_at}
       />
       <LabelValue size="small" label="Verified at" value={spgpa.verified_at} />
-
-      {spgpa.additional_information && (
-        <LabelValue
-          size="small"
-          label="Additional information"
-          value={
-            <span className="whitespace-pre-wrap">
-              {spgpa.additional_information}
-            </span>
-          }
-        />
-      )}
     </div>
   );
 };

@@ -23,6 +23,7 @@ export const UnitInput = ({
   disabled,
   description,
   descriptionOverride,
+  overrideLabel,
   ...rest
 }: UnitInputProps) => {
   const baseUnit = units[0];
@@ -88,6 +89,7 @@ export const UnitInput = ({
       error={fieldState.error?.message}
       description={description}
       descriptionOverride={descriptionOverride}
+      overrideLabel={overrideLabel}
     >
       <div className="flex items-center gap-2">
         <div className="w-48">

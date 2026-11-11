@@ -24,6 +24,7 @@ export const DateInput = ({
   disabled,
   description,
   descriptionOverride,
+  overrideLabel,
   outputFormat = "date",
   clearable,
   ...rest
@@ -55,6 +56,7 @@ export const DateInput = ({
       error={fieldState.error?.message}
       description={description}
       descriptionOverride={descriptionOverride}
+      overrideLabel={overrideLabel}
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <Datepicker
