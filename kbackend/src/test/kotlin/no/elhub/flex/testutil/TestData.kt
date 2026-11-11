@@ -25,6 +25,21 @@ data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal)
 /** A seeded party with an identity, and a principal that acts as it. */
 data class SeededParty(val entityId: Long, val partyId: Long, val principal: FlexPrincipal)
 
+/**
+ * Someone who calls the API: an identity of [entityId] that has assumed [partyId], or none for a bare entity.
+ * [ownerEntityId] is the entity that owns the party. [eid] is what a token refers to.
+ */
+data class SeededActor(
+    val entityId: Long,
+    val partyId: Long?,
+    val role: String,
+    val eid: String,
+    val ownerEntityId: Long? = null,
+)
+
+/** A seeded entity client, with the UUID that it is known by outside the database. */
+data class SeededEntityClient(val id: Long, val clientId: String)
+
 /** A seeded entity with an identity but no assumed party, and a principal that acts as it. */
 data class SeededEntity(val entityId: Long, val principal: FlexPrincipal)
 
@@ -34,7 +49,7 @@ private val glnCounter = AtomicLong(20_000_000L)
 private fun uniqueOrgNumber(): String = orgCounter.getAndIncrement().toString()
 
 @Suppress("MagicNumber")
-private fun uniqueGln(): String {
+fun uniqueGln(): String {
     val prefix = "7081" + glnCounter.getAndIncrement().toString().padStart(8, '0')
     return prefix + gs1CheckDigit(prefix)
 }
@@ -136,20 +151,101 @@ class SeedScope(private val conn: Connection) {
             "$name - ENT",
             uniqueOrgNumber(),
         )
-        val (businessId, businessIdType) =
-            if (type == "end_user") UUID.randomUUID().toString() to "uuid" else uniqueGln() to "gln"
-        val partyId = queryLong(
+        return entityId to insertParty(entityId, name, type, role)
+    }
+
+    /** Inserts a party owned by [ownerEntityId], with a business id that fits the [type]. */
+    fun insertParty(ownerEntityId: Long, name: String, type: String, role: String): Long {
+        val (businessId, businessIdType) = when (type) {
+            "end_user" -> UUID.randomUUID().toString() to "uuid"
+            "organisation" -> uniqueOrgNumber() to "org"
+            else -> uniqueGln() to "gln"
+        }
+        return queryLong(
             "INSERT INTO flex.party (entity_id, name, type, role, business_id, business_id_type) " +
                 "VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
-            entityId,
+            ownerEntityId,
             name,
             type,
             role,
             businessId,
             businessIdType,
         )
-        return entityId to partyId
     }
+
+    /** Inserts an entity of any type, with the given business id. */
+    fun insertEntity(name: String, type: String, businessId: String, businessIdType: String): Long =
+        queryLong(
+            "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (?, ?, ?, ?) RETURNING id",
+            name,
+            type,
+            businessId,
+            businessIdType,
+        )
+
+    /** Inserts an identity and returns its external id. */
+    fun insertIdentity(entityId: Long, partyId: Long? = null, clientId: Long? = null): String =
+        conn.prepareStatement(
+            "INSERT INTO flex.identity (entity_id, party_id, client_id) VALUES (?, ?, ?) RETURNING eid::text",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.setObject(2, partyId)
+            stmt.setObject(3, clientId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getString(1)
+            }
+        }
+
+    /**
+     * Inserts a party of [role] with an actor that has assumed it. By default the party is owned by a new
+     * organisation entity and the actor is a new person entity; pass [ownerEntityId] or [entityId] to reuse entities.
+     * As in production, the actor's entity is a member of the party, with [scopes], unless [member] is false.
+     * With [clientId] the actor acts as that entity client, which makes it a non-human actor.
+     */
+    fun insertActor(
+        role: TestPartyRole,
+        name: String = "Test ${role.abbreviation}",
+        ownerEntityId: Long = insertOrganisationEntity("$name - ENT"),
+        entityId: Long = insertPersonEntity("$name - person"),
+        member: Boolean = true,
+        scopes: List<String> = listOf("manage:data", "manage:auth"),
+        clientId: Long? = null,
+    ): SeededActor {
+        val partyId = insertParty(ownerEntityId, name, role.type, role.role)
+        if (member) insertPartyMembership(partyId, entityId, scopes)
+        return SeededActor(entityId, partyId, role.role, insertIdentity(entityId, partyId, clientId), ownerEntityId)
+    }
+
+    /** Inserts an actor that is a bare entity (the role `flex_entity`). With [clientId] it acts as that entity client. */
+    fun insertEntityActor(
+        entityId: Long = insertPersonEntity("Test entity"),
+        clientId: Long? = null,
+    ): SeededActor = SeededActor(entityId, null, "flex_entity", insertIdentity(entityId, null, clientId))
+
+    /** Inserts a person entity with a unique email address as business id. */
+    fun insertPersonEntity(name: String = "Test person"): Long =
+        insertPerson("person-${UUID.randomUUID()}@example.com", name = name)
+
+    fun insertEntityClient(
+        entityId: Long,
+        name: String = "Test client",
+        scopes: List<String> = listOf("manage:data", "manage:auth"),
+        partyId: Long? = null,
+    ): SeededEntityClient =
+        conn.prepareStatement(
+            "INSERT INTO flex.entity_client (entity_id, name, scopes, party_id) " +
+                "VALUES (?, ?, ?::flex.scope[], ?) RETURNING id, client_id::text",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.setString(2, name)
+            stmt.setString(3, scopes.joinToString(",", "{", "}"))
+            stmt.setObject(4, partyId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                SeededEntityClient(rs.getLong(1), rs.getString(2))
+            }
+        }
 
     fun insertServiceProvider(name: String = "Test SP"): Long =
         insertEntityAndParty(name, "service_provider", "flex_service_provider").second
@@ -352,14 +448,14 @@ class SeedScope(private val conn: Connection) {
             status,
         )
 
-    fun insertPartyMembership(partyId: Long, entityId: Long) {
+    fun insertPartyMembership(partyId: Long, entityId: Long, scopes: List<String> = listOf("manage:auth")): Long =
         queryLong(
             "INSERT INTO flex.party_membership (party_id, entity_id, scopes) " +
-                "VALUES (?, ?, '{manage:auth}'::flex.scope[]) RETURNING party_id",
+                "VALUES (?, ?, ?::flex.scope[]) RETURNING id",
             partyId,
             entityId,
+            scopes.joinToString(",", "{", "}"),
         )
-    }
 
     /** Creates a person entity with the given business id and makes it a member of [partyId]. */
     fun insertPartyMember(partyId: Long, businessId: String, businessIdType: String = "email", name: String = "Person $businessId") {
