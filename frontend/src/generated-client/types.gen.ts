@@ -438,24 +438,6 @@ export type NoticeDataServiceProvidingGroupGridPrequalificationOutdated = {
   maximum_active_power_diff?: number;
 };
 
-/**
- * Format of the data field in a notice with data.kind = notice.data.controllable_unit.cso.no_active_users
- */
-export type NoticeDataControllableUnitCsoNoActiveUsers = {
-  /**
-   * Identifies the notice data schema for discriminated union deserialization.
-   */
-  kind: "notice.data.controllable_unit.cso.no_active_users";
-  /**
-   * Name of the controllable unit.
-   */
-  controllable_unit_name?: string;
-  /**
-   * Name of the connecting system operator that has no active users.
-   */
-  connecting_system_operator_name?: string;
-};
-
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -477,10 +459,7 @@ export type NoticeData =
     } & NoticeDataControllableUnitProductDuplication)
   | ({
       kind: "notice.data.service_providing_group_grid_prequalification.outdated";
-    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated)
-  | ({
-      kind: "notice.data.controllable_unit.cso.no_active_users";
-    } & NoticeDataControllableUnitCsoNoActiveUsers);
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -4895,10 +4874,7 @@ export type NoticeDataWritable =
     } & NoticeDataControllableUnitProductDuplication)
   | ({
       kind: "notice.data.service_providing_group_grid_prequalification.outdated";
-    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated)
-  | ({
-      kind: "notice.data.controllable_unit.cso.no_active_users";
-    } & NoticeDataControllableUnitCsoNoActiveUsers);
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * An empty object

@@ -231,32 +231,7 @@ const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
   );
 };
 
-// component to show details of a notice of type
-// no.elhub.flex.controllable_unit.cso.no_active_users
-const NoticeCuCsoNoActiveUsers = ({ notice }: NoticeShowDetailsProps) => {
-  const cuId = Number(notice.source?.split("/")[2]);
-  return (
-    <>
-      <LabelValue
-        label="Controllable unit"
-        value={notice.data.controllable_unit_name}
-        link={
-          Number.isInteger(cuId) ? `/controllable_unit/${cuId}/show` : undefined
-        }
-        linkText="Go to controllable unit"
-      />
-      <LabelValue
-        label="Connecting system operator"
-        value={notice.data.connecting_system_operator_name}
-      />
-    </>
-  );
-};
-
 const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
-  "no.elhub.flex.controllable_unit.cso.no_active_users": (notice) => (
-    <NoticeCuCsoNoActiveUsers notice={notice} />
-  ),
   "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
     (notice) => (
       <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
