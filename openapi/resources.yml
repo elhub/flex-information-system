@@ -4132,6 +4132,16 @@ resources:
           en: Additional information
           nb: Tilleggsinformasjon
           nn: Tilleggsinformasjon
+      requested_at:
+        description: When the product application was put to requested.
+        format: date-time
+        type: string
+        nullable: true
+        example: "2022-08-08T12:00:00+02"
+        x-intl:
+          en: Requested at
+          nb: Tidspunkt for forespørsel
+          nn: Tidpunkt for forespørsel
       prequalified_at:
         description: When the product application was last prequalified.
         format: date-time

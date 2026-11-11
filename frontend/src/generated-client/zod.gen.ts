@@ -1123,6 +1123,7 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
     .lte(999999.999)
     .optional(),
   additional_information: z.string().max(512).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
   ramping_capability:
@@ -1142,6 +1143,7 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
   maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
   maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
   ramping_capability:
@@ -2071,6 +2073,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
   maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
   ramping_capability:
@@ -2545,6 +2548,7 @@ export const zServiceProvidingGroupProductApplicationHistory = z.object({
   maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
   maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
   ramping_capability:
@@ -3178,6 +3182,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
   maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
   ramping_capability:
@@ -3602,6 +3607,7 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
     maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
     maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
     additional_information: z.string().max(512).optional(),
+    requested_at: z.iso.datetime({ offset: true }).optional(),
     prequalified_at: z.iso.datetime({ offset: true }).optional(),
     verified_at: z.iso.datetime({ offset: true }).optional(),
     ramping_capability:

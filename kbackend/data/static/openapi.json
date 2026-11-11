@@ -6260,6 +6260,13 @@
                         "maxLength": 512,
                         "nullable": true
                     },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
                         "format": "date-time",
@@ -6359,6 +6366,13 @@
                         "type": "string",
                         "maxLength": 512,
                         "nullable": true
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
@@ -6473,6 +6487,13 @@
                         "type": "string",
                         "maxLength": 512,
                         "nullable": true
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
@@ -9561,6 +9582,13 @@
                         "type": "string",
                         "maxLength": 512,
                         "nullable": true
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",

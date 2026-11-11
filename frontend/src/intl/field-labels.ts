@@ -436,6 +436,7 @@ export type FieldLabel =
   | "service_providing_group_product_application.ramping_description"
   | "service_providing_group_product_application.recorded_at"
   | "service_providing_group_product_application.recorded_by"
+  | "service_providing_group_product_application.requested_at"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
@@ -473,6 +474,7 @@ export type FieldLabel =
   | "service_providing_group_product_application_history.recorded_by"
   | "service_providing_group_product_application_history.replaced_at"
   | "service_providing_group_product_application_history.replaced_by"
+  | "service_providing_group_product_application_history.requested_at"
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
@@ -1207,6 +1209,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maximum active power (down)",
     "service_providing_group_product_application.additional_information":
       "Additional information",
+    "service_providing_group_product_application.requested_at": "Requested at",
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
@@ -1232,6 +1235,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maximum active power (down)",
     "service_providing_group_product_application_history.additional_information":
       "Additional information",
+    "service_providing_group_product_application_history.requested_at":
+      "Requested at",
     "service_providing_group_product_application_history.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
@@ -1977,6 +1982,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_product_application.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2002,6 +2009,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2746,6 +2755,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_product_application.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2771,6 +2782,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":

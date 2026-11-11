@@ -49,6 +49,8 @@ class ServiceProvidingGroupProductApplicationResponse:
             recorded_by (int): The identity that recorded the resource. Example: 145.
             additional_information (None | str | Unset): Free text field for extra information about the application if
                 needed (bidding periods, unavailabilities, etc).
+            requested_at (datetime.datetime | None | Unset): When the product application was put to requested. Example:
+                2022-08-08T12:00:00+02.
             prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
@@ -78,6 +80,7 @@ class ServiceProvidingGroupProductApplicationResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     additional_information: None | str | Unset = UNSET
+    requested_at: datetime.datetime | None | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
@@ -118,6 +121,14 @@ class ServiceProvidingGroupProductApplicationResponse:
             additional_information = UNSET
         else:
             additional_information = self.additional_information
+
+        requested_at: None | str | Unset
+        if isinstance(self.requested_at, Unset):
+            requested_at = UNSET
+        elif isinstance(self.requested_at, datetime.datetime):
+            requested_at = self.requested_at.isoformat()
+        else:
+            requested_at = self.requested_at
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
@@ -215,6 +226,8 @@ class ServiceProvidingGroupProductApplicationResponse:
         )
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if requested_at is not UNSET:
+            field_dict["requested_at"] = requested_at
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
@@ -276,6 +289,23 @@ class ServiceProvidingGroupProductApplicationResponse:
             return cast(None | str | Unset, data)
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
+        def _parse_requested_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                requested_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return requested_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        requested_at = _parse_requested_at(d.pop("requested_at", UNSET))
 
         def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -452,6 +482,7 @@ class ServiceProvidingGroupProductApplicationResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             additional_information=additional_information,
+            requested_at=requested_at,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
             ramping_capability=ramping_capability,

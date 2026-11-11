@@ -796,7 +796,17 @@
                                 }
                             }
                         },
-                        "description": "Unauthorized\n\nReturned when the client is not logged in."
+                        "description": "Unauthorized\n\nReturned when the client is not logged in, or when the token is invalid or expired."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/oauth_error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request\n\nReturned when the Authorization header is not a Bearer header."
                     },
                     "500": {
                         "content": {

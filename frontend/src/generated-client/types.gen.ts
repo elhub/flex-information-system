@@ -3025,6 +3025,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    */
   additional_information?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -3072,6 +3076,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
   additional_information?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -3124,6 +3132,10 @@ export type ServiceProvidingGroupProductApplication = {
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
   additional_information?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -4547,6 +4559,10 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   additional_information?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -5776,6 +5792,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   additional_information?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -6722,6 +6742,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
   additional_information?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the product application was last prequalified.
    */
