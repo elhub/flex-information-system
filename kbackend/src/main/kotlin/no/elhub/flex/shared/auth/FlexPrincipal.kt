@@ -14,6 +14,9 @@ data class FlexPrincipal(
     val eid: String,
 ) {
     companion object {
+        /** The principal of callers without identity, e.g. during login. It has no eid, so no entity settings are applied. */
+        val anonymous = FlexPrincipal(role = "flex_anonymous", eid = "")
+
         /** A system principal for the notification pipeline, using role `flex_internal_event_notification` and eid `"0"`. */
         val internalEventNotification = FlexPrincipal(role = "flex_internal_event_notification", eid = "0")
 

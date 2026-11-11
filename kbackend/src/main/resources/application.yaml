@@ -18,6 +18,13 @@ flex:
 auth:
   jwtSecret: ${FLEX_JWT_SECRET}
 
+oidc:
+  issuer: ${FLEX_OIDC_ISSUER}
+  clientId: ${FLEX_OIDC_CLIENT_ID}
+  clientSecret: ${FLEX_OIDC_CLIENT_SECRET}
+  redirectUrl: ${FLEX_OIDC_REDIRECT_URL}
+  postLogoutRedirectUrl: ${FLEX_OIDC_POST_LOGOUT_REDIRECT_URL}
+
 docs:
   baseUrl: ${FLEX_BASE_URL}
 

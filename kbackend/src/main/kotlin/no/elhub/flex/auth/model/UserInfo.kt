@@ -16,3 +16,12 @@ data class UserInfo(
     val partyId: Long?,
     val partyName: String?,
 )
+
+/**
+ * The entity of a person and the external ID of its identity (without party), as returned by
+ * `auth.get_or_create_entity()`.
+ */
+data class EntityIdentity(
+    val entityId: Long,
+    val externalId: String,
+)

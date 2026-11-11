@@ -4,7 +4,11 @@ import io.ktor.server.application.Application
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import no.elhub.flex.auth.oidc.CallbackHandler
+import no.elhub.flex.auth.oidc.LoginHandler
+import no.elhub.flex.auth.oidc.LogoutHandler
 import no.elhub.flex.auth.plugin.authenticatedRouting
+import no.elhub.flex.auth.plugin.optionalAuthenticatedRouting
 import no.elhub.flex.auth.plugin.requireScope
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
@@ -24,7 +28,21 @@ fun Application.authRoutes() {
         }
     }
 
-    // no auth plugin: the session endpoints reads the cookie itself
+    // TODO: consider removing token/scope check for these endpoints?
+    //       callers come there without token and are let through as anonymous / default scopes
+    //       this is just here to copy the previously existing behaviour in Go
+    optionalAuthenticatedRouting {
+        val login: LoginHandler by inject()
+        val callback: CallbackHandler by inject()
+        val logout: LogoutHandler by inject()
+        route("/auth/v1") {
+            get("/login") { login.handle(call) }
+            get("/callback") { callback.handle(call) }
+            get("/logout") { logout.handle(call) }
+        }
+    }
+
+    // no auth plugin: the session endpoint reads the cookie itself
     routing {
         val session: SessionHandler by inject()
         get("/auth/v1/session") { session.handle(call) }
