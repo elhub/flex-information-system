@@ -125,3 +125,58 @@ Each API serves an Elements page and its OpenAPI document under its own path:
 The documents are bundled at build time from `data/static/openapi.json` and
 `grid/static/openapi.json`. The `servers` entry of each is set to
 `FLEX_BASE_URL` plus the path of the API, which is the URL its clients use.
+
+## Testing
+
+### Unit and repository tests
+
+```bash
+./gradlew test
+```
+
+Repository and job tests use Testcontainers for Postgres, so Docker must be
+running. They seed their own data (see `testutil/TestData.kt`).
+
+### API tests
+
+The API tests run the data API in-process on top of real Postgres and
+[PostgREST](https://postgrest.org/) containers. They replace the Python tests
+in `test/api_client_tests`, one resource at a time, with the same scenarios.
+
+```bash
+./gradlew apiTest
+```
+
+Docker must be running. The first run pulls `postgrest/postgrest`.
+
+Run a single class or test:
+
+```bash
+./gradlew apiTest --tests 'no.elhub.flex.api.producttype.ProductTypeApiTest'
+```
+
+`./gradlew check` runs both `test` and `apiTest`. In CI the API tests run as a
+separate "API tests" step of the kbackend build.
+
+#### How they work
+
+- The tests live in the `apiTest` source set (`src/apiTest`) and can use the
+  classes from `src/test`, such as `PostgresTestContainer` and `makeJwt`.
+- `PostgresTestContainer` applies the Liquibase migrations once per run.
+  `PostgrestTestContainer` starts PostgREST on top of it with the same settings
+  as `docker-compose.yml`.
+- `apiTestApplication()` starts the backend's data routes in-process
+- The tests run one after another against the same database.
+
+#### Writing a test
+
+- One class per API resource, named `<Resource>ApiTest`
+- Each test seeds the data it needs with `seed { ... }`. Generic helpers belong
+  in `SeedScope` (`testutil/TestData.kt`) so other classes can reuse them;
+  helpers that only one class needs stay in that class.
+- Truncate the tables the class touches in `beforeEach`, for example
+  `beforeEach { truncate("flex.product_type", "flex.party", "flex.entity") }`.
+  `CASCADE` also clears the tables that reference them. Seed inside the test or
+  in `beforeEach`
+- Use `// RLS: <ID>` comments so the tests can be matched against the RLS
+policies they cover.

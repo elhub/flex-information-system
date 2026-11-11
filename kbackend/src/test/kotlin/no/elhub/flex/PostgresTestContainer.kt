@@ -8,6 +8,7 @@ import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.DirectoryResourceAccessor
 import no.elhub.flex.shared.db.FlexTransaction
 import org.jetbrains.exposed.v1.jdbc.Database
+import org.testcontainers.containers.Network
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 import org.testcontainers.utility.MountableFile
@@ -25,6 +26,11 @@ import java.sql.DriverManager
  * is wired up.
  */
 object PostgresTestContainer {
+
+    /** Network the container is attached to, so that other containers (e.g. PostgREST) can reach it as [NETWORK_ALIAS]. */
+    val network: Network = Network.newNetwork()
+
+    const val NETWORK_ALIAS = "db"
 
     private val container: PostgreSQLContainer =
         PostgreSQLContainer(
@@ -50,6 +56,8 @@ object PostgresTestContainer {
                 MountableFile.forHostPath(findInitSql().absolutePath),
                 "/docker-entrypoint-initdb.d/init.sql",
             )
+            .withNetwork(network)
+            .withNetworkAliases(NETWORK_ALIAS)
             .withReuse(false)
 
     private val jdbcUrl: String
@@ -58,8 +66,8 @@ object PostgresTestContainer {
     private val flexUsername = "flex"
     private val flexPassword = "flex_password"
 
-    private val authenticatorUsername = "flex_authenticator"
-    private val authenticatorPassword = "authenticator_password"
+    const val AUTHENTICATOR_USERNAME = "flex_authenticator"
+    const val AUTHENTICATOR_PASSWORD = "authenticator_password"
 
     /** Exposed [Database] connected to the test container. */
     val database: Database
@@ -70,8 +78,8 @@ object PostgresTestContainer {
         database = Database.connect(
             url = jdbcUrl,
             driver = "org.postgresql.Driver",
-            user = authenticatorUsername,
-            password = authenticatorPassword,
+            user = AUTHENTICATOR_USERNAME,
+            password = AUTHENTICATOR_PASSWORD,
         )
         FlexTransaction.init(database)
     }

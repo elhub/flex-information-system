@@ -12,10 +12,11 @@ fun makeJwt(
     eid: String = "12345678901",
     scope: String = "use:data:controllable_unit:lookup",
     partyId: Int = 1,
+    entityId: Int = 1,
     ttlSeconds: Long = 60,
 ): String =
     JWT.create()
-        .withClaim("entity_id", 1)
+        .withClaim("entity_id", entityId)
         .withClaim("eid", eid)
         .withClaim("party_id", partyId)
         .withClaim("role", role)

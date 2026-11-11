@@ -91,3 +91,26 @@ tasks.processResources {
         into("openapi/grid")
     }
 }
+
+// API tests run the data API in-process against real Postgres and PostgREST containers.
+// They are kept apart from the unit tests so that `./gradlew test` stays fast; `check` runs both.
+val apiTest: SourceSet by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+    runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+}
+
+configurations["apiTestImplementation"].extendsFrom(configurations.testImplementation.get())
+configurations["apiTestRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
+
+val apiTestTask = tasks.register<Test>("apiTest") {
+    description = "Runs the API tests against Postgres and PostgREST containers."
+    group = "verification"
+    testClassesDirs = apiTest.output.classesDirs
+    classpath = apiTest.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter(tasks.test)
+}
+
+tasks.check {
+    dependsOn(apiTestTask)
+}

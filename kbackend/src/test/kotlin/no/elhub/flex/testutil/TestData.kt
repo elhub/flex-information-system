@@ -22,6 +22,9 @@ enum class Triggers { ON, OFF }
 /** A seeded system operator party, and a principal that acts as it (resolved through its identity). */
 data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal)
 
+/** A seeded party with an identity, and a principal that acts as it. */
+data class SeededParty(val entityId: Long, val partyId: Long, val principal: FlexPrincipal)
+
 /** A seeded entity with an identity but no assumed party, and a principal that acts as it. */
 data class SeededEntity(val entityId: Long, val principal: FlexPrincipal)
 
@@ -56,6 +59,16 @@ fun <T> seed(triggers: Triggers = Triggers.ON, block: SeedScope.() -> T): T =
         conn.commit()
         result
     }
+
+/**
+ * Empties [tables] and, through CASCADE, every table that references them. Call it from a `beforeEach`
+ * with the tables the test class seeds, so that data does not leak from one test into the next.
+ */
+fun truncate(vararg tables: String) {
+    PostgresTestContainer.withConnection { conn ->
+        conn.createStatement().use { it.execute("TRUNCATE ${tables.joinToString()} CASCADE") }
+    }
+}
 
 /**
  * Insert helpers for test data. Every helper inserts one row and returns its id.
@@ -123,14 +136,17 @@ class SeedScope(private val conn: Connection) {
             "$name - ENT",
             uniqueOrgNumber(),
         )
+        val (businessId, businessIdType) =
+            if (type == "end_user") UUID.randomUUID().toString() to "uuid" else uniqueGln() to "gln"
         val partyId = queryLong(
             "INSERT INTO flex.party (entity_id, name, type, role, business_id, business_id_type) " +
-                "VALUES (?, ?, ?, ?, ?, 'gln') RETURNING id",
+                "VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
             entityId,
             name,
             type,
             role,
-            uniqueGln(),
+            businessId,
+            businessIdType,
         )
         return entityId to partyId
     }
@@ -138,9 +154,9 @@ class SeedScope(private val conn: Connection) {
     fun insertServiceProvider(name: String = "Test SP"): Long =
         insertEntityAndParty(name, "service_provider", "flex_service_provider").second
 
-    /** Inserts a system operator party with an identity, so that a principal for it can be used in RLS tests. */
-    fun insertSystemOperator(name: String = "Test SO"): SeededSystemOperator {
-        val (entityId, partyId) = insertEntityAndParty(name, "system_operator", "flex_system_operator")
+    /** Inserts a party of the given type and role with an identity, so that a principal for it can be used in RLS and API tests. */
+    fun insertPartyWithIdentity(name: String, type: String, role: String): SeededParty {
+        val (entityId, partyId) = insertEntityAndParty(name, type, role)
         val eid = conn.prepareStatement(
             "INSERT INTO flex.identity (entity_id, party_id) VALUES (?, ?) RETURNING eid::text",
         ).use { stmt ->
@@ -151,7 +167,13 @@ class SeedScope(private val conn: Connection) {
                 rs.getString(1)
             }
         }
-        return SeededSystemOperator(partyId, FlexPrincipal(role = "flex_system_operator", eid = eid))
+        return SeededParty(entityId, partyId, FlexPrincipal(role = role, eid = eid))
+    }
+
+    /** Inserts a system operator party with an identity, so that a principal for it can be used in RLS tests. */
+    fun insertSystemOperator(name: String = "Test SO"): SeededSystemOperator {
+        val party = insertPartyWithIdentity(name, "system_operator", "flex_system_operator")
+        return SeededSystemOperator(party.partyId, party.principal)
     }
 
     /** Inserts an organisation entity that is not tied to a party. */

@@ -161,14 +161,15 @@ class PostgrestClient(config: PostgrestConfig) {
         val body = response.bodyAsChannel().readBuffer(MAX_ERROR_BODY_BYTES).readString()
         val error = rewritePostgrestError(method, response.status, body)
         logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
-        // headers such as WWW-Authenticate and Content-Range still apply, the body is the only thing we replace
-        copyResponseHeaders(call, response)
+        // headers such as WWW-Authenticate and Content-Range still apply, the body is the only thing we replace,
+        // so the length of the original body must not be sent along with the rewritten one
+        copyResponseHeaders(call, response, skip = HttpHeaders.ContentLength)
         call.respondError(response.status, error)
     }
 
-    private fun copyResponseHeaders(call: ApplicationCall, response: HttpResponse) {
+    private fun copyResponseHeaders(call: ApplicationCall, response: HttpResponse, skip: String? = null) {
         response.headers.forEach { name, values ->
-            if (name !in notForwardedResponseHeaders) {
+            if (name !in notForwardedResponseHeaders && !name.equals(skip, ignoreCase = true)) {
                 values.forEach { call.response.header(name, it) }
             }
         }
