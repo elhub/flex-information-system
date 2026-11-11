@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.ArtifactRule
+import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.KubeCluster
 import no.elhub.devxp.build.configuration.pipeline.dsl.elhubProject
@@ -135,7 +136,17 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     workingDir = "kbackend"
                     analyzeDependencies = false
                     dependencyTrackProjectName = "flex-information-system-kbackend"
-                }.buildType.triggerOnVcsChange {
+                }.buildType.apply {
+                    // runs after the unit tests, against Postgres and PostgREST containers
+                    steps {
+                        gradle {
+                            name = "API tests"
+                            tasks = "apiTest"
+                            workingDir = "kbackend"
+                            useGradleWrapper = true
+                        }
+                    }
+                }.triggerOnVcsChange {
                     triggerRules = """
                         -:*
                         +:kbackend/**
