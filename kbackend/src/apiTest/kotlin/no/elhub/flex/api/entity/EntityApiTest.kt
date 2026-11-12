@@ -16,9 +16,9 @@ import no.elhub.flex.testutil.TestPartyRole
 import no.elhub.flex.testutil.randomEmail
 import no.elhub.flex.testutil.randomGsrn
 import no.elhub.flex.testutil.randomOrg
-import no.elhub.flex.testutil.randomPid
 import no.elhub.flex.testutil.seed
 import no.elhub.flex.testutil.truncate
+import no.elhub.flex.testutil.uniquePid
 import no.elhub.flex.token
 
 private fun newEntity(
@@ -54,11 +54,11 @@ class EntityApiTest :
             context("creating an organisation") {
                 val invalid = mapOf(
                     "a PID as the business id of an organisation" to
-                        newEntity(randomPid(), EntityBusinessIdType.PID, EntityType.ORGANISATION),
+                        newEntity(uniquePid(), EntityBusinessIdType.PID, EntityType.ORGANISATION),
                     "a GSRN with the id type PID" to
                         newEntity(randomGsrn(), EntityBusinessIdType.PID, EntityType.ORGANISATION),
                     "a PID with the id type ORG" to
-                        newEntity(randomPid(), EntityBusinessIdType.ORG, EntityType.ORGANISATION),
+                        newEntity(uniquePid(), EntityBusinessIdType.ORG, EntityType.ORGANISATION),
                     "an organisation number with the id type PID" to
                         newEntity(randomOrg(), EntityBusinessIdType.PID, EntityType.ORGANISATION),
                 )
@@ -92,7 +92,7 @@ class EntityApiTest :
                     "an organisation number with the id type PID" to
                         newEntity(randomOrg(), EntityBusinessIdType.PID, EntityType.PERSON),
                     "an email with the id type PID" to newEntity(randomEmail(), EntityBusinessIdType.PID, EntityType.PERSON),
-                    "a PID with the id type EMAIL" to newEntity(randomPid(), EntityBusinessIdType.EMAIL, EntityType.PERSON),
+                    "a PID with the id type EMAIL" to newEntity(uniquePid(), EntityBusinessIdType.EMAIL, EntityType.PERSON),
                 ) + listOf(
                     "plainaddress",
                     "@missingusername.com",
@@ -123,7 +123,7 @@ class EntityApiTest :
 
                 test("succeeds with a PID, which is masked in the response") {
                     val fiso = seed { insertActor(TestPartyRole.FISO) }
-                    val pid = randomPid()
+                    val pid = uniquePid()
 
                     val response = api.post("/entity", fiso.token(), newEntity(pid, EntityBusinessIdType.PID, EntityType.PERSON))
 
