@@ -53,30 +53,9 @@ type oauthErrorMessage struct {
 // oauthError is a type that represents the OAuth 2.0 error codes.
 type oauthError string
 
-//nolint:unused
 const (
-	// oauthErrorAccessDenied is the access_denied error code.
-	oauthErrorAccessDenied oauthError = "access_denied"
-	// oauthErrorInvalidClient is the invalid_client error code.
-	oauthErrorInvalidClient oauthError = "invalid_client"
-	// oauthErrorInvalidGrant is the invalid_grant error code.
-	oauthErrorInvalidGrant oauthError = "invalid_grant"
 	// oauthErrorInvalidRequest is the invalid_request error code.
 	oauthErrorInvalidRequest oauthError = "invalid_request"
-	// oauthErrorInvalidScope is the invalid_scope error code.
-	oauthErrorInvalidScope oauthError = "invalid_scope"
-	// oauthErrorInvalidTarget is the invalid_target error code.
-	oauthErrorInvalidTarget oauthError = "invalid_target"
-	// oauthErrorServerError is the server_error error code.
-	oauthErrorServerError oauthError = "server_error"
-	// oauthErrorTemporarilyUnavailable is the temporarily_unavailable error code.
-	oauthErrorTemporarilyUnavailable oauthError = "temporarily_unavailable"
-	// oauthErrorUnauthorizedClient is the unauthorized_client error code.
-	oauthErrorUnauthorizedClient oauthError = "unauthorized_client"
-	// oauthErrorUnsupportedGrantType is the unsupported_grant_type error code.
-	oauthErrorUnsupportedGrantType oauthError = "unsupported_grant_type"
-	// oauthErrorUnsupportedResponseType is the unsupported_response_type error code.
-	oauthErrorUnsupportedResponseType oauthError = "unsupported_response_type"
 )
 
 // wwwAuthenticateKey is the key for the www-Authenticate header.
@@ -85,14 +64,11 @@ const wwwAuthenticateKey string = "WWW-Authenticate"
 // wwwAuthenticateErrorCode is a type that represents the error codes for the www-Authenticate header.
 type wwwAuthenticateErrorCode string
 
-//nolint:unused
 const (
 	// wwwInvalidRequest is the error code for an invalid request.
 	wwwInvalidRequest wwwAuthenticateErrorCode = "invalid_request"
 	// wwwInvalidToken is the error code for an invalid token.
 	wwwInvalidToken wwwAuthenticateErrorCode = "invalid_token"
-	// wwwInsufficientScope is the error code for insufficient scope.
-	wwwInsufficientScope wwwAuthenticateErrorCode = "insufficient_scope"
 )
 
 // wwwAuthenticate is a type that represents the www-Authenticate header value.

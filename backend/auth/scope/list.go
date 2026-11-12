@@ -2,7 +2,6 @@ package scope
 
 import (
 	"encoding/json"
-	"slices"
 	"strings"
 )
 
@@ -67,39 +66,4 @@ func (l *List) UnmarshalJSON(data []byte) error {
 	*l = scopes
 
 	return nil
-}
-
-// ListFromStrings creates a List from a slice of scope strings.
-// Each string should be in the format "verb:asset1:asset2:...".
-func ListFromStrings(scopes []string) (List, error) {
-	list := make(List, len(scopes))
-	for idx, scopeStr := range scopes {
-		scope, err := FromString(scopeStr)
-		if err != nil {
-			return nil, err
-		}
-
-		list[idx] = scope
-	}
-
-	return list, nil
-}
-
-// ListIntersection returns the intersection between lists a and b.
-// If there is no intersection, the result is an empty list.
-func ListIntersection(a, b List) List {
-	var intersections List
-	for _, scopeA := range a {
-		for _, scopeB := range b {
-			if ok, intersection := Intersection(scopeA, scopeB); ok {
-				intersections = append(intersections, intersection)
-			}
-		}
-	}
-	if len(intersections) == 0 {
-		return intersections
-	}
-
-	slices.SortFunc(intersections, Compare)
-	return slices.CompactFunc(intersections, Equal)
 }

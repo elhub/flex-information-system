@@ -1,10 +1,13 @@
 package no.elhub.flex.auth
 
 import io.ktor.server.application.Application
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import no.elhub.flex.auth.assume.AssumeHandler
+import no.elhub.flex.auth.assume.UnassumeHandler
 import no.elhub.flex.auth.oidc.CallbackHandler
 import no.elhub.flex.auth.oidc.LoginHandler
 import no.elhub.flex.auth.oidc.LogoutHandler
@@ -48,7 +51,11 @@ fun Application.authRoutes() {
     routing {
         val session: SessionHandler by inject()
         val token: TokenHandler by inject()
+        val assume: AssumeHandler by inject()
+        val unassume: UnassumeHandler by inject()
         get("/auth/v1/session") { session.handle(call) }
         post("/auth/v1/token") { token.handle(call) }
+        post("/auth/v1/assume") { assume.handle(call) }
+        delete("/auth/v1/assume") { unassume.handle(call) }
     }
 }

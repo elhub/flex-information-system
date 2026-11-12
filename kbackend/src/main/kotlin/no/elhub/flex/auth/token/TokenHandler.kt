@@ -27,7 +27,8 @@ import no.elhub.flex.auth.model.dto.generated.models.TokenResponseTokenType
 import no.elhub.flex.auth.plugin.AnonymousScopes
 import no.elhub.flex.auth.plugin.BearerChallenge
 import no.elhub.flex.auth.plugin.SESSION_COOKIE_NAME
-import no.elhub.flex.auth.scope.DefaultOwnedPartyScopes
+import no.elhub.flex.auth.plugin.callerToken
+import no.elhub.flex.auth.plugin.ensureCallerScope
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
 import no.elhub.flex.auth.scope.covers
@@ -47,7 +48,6 @@ private val logger = KotlinLogging.logger {}
 
 private val REQUIRED_SCOPE = Scope(ScopeVerb.Use, "auth:token")
 
-private const val MILLIS_PER_SECOND = 1000L
 private const val BEARER_PREFIX = "Bearer "
 private const val ASSUME_PARTY_SCOPE_PREFIX = "assume:party:"
 private const val ENTITY_ROLE = "flex_entity"
@@ -65,14 +65,8 @@ class TokenHandler(
 
     suspend fun handle(call: ApplicationCall) {
         either {
-            // The authentication plugin is not used: it answers 401 to an invalid token, where this endpoint answers
-            // 400 as the OAuth token endpoints do, so the handler reads the token of the caller itself.
-            val caller = callerToken(call)
-
-            if (!(caller?.scope ?: AnonymousScopes).covers(REQUIRED_SCOPE)) {
-                call.response.header(HttpHeaders.WWWAuthenticate, BearerChallenge.insufficientScope(REQUIRED_SCOPE))
-                raise(AuthError("insufficient scope", code = HttpStatusCode.Forbidden))
-            }
+            val caller = callerToken(call, config.jwtSecret)
+            ensureCallerScope(call, caller, REQUIRED_SCOPE)
 
             // like a form binding, a body that is not a form is the same as an empty form
             val form = Either.catch { call.receiveParameters() }.getOrElse { Parameters.Empty }
@@ -246,7 +240,7 @@ class TokenHandler(
                     partyId = partyId.toInt(),
                     role = assumedParty.role,
                     scope = entityClient.scopes.intersection(assumedParty.partyScopes()),
-                    expiryUnixSeconds = newExpiryUnixSeconds(),
+                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
                 )
             } else {
                 logger.info {
@@ -259,38 +253,11 @@ class TokenHandler(
                     partyId = 0,
                     role = ENTITY_ROLE,
                     scope = entityClient.scopes,
-                    expiryUnixSeconds = newExpiryUnixSeconds(),
+                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
                 )
             }
 
         return token.toTokenResponse()
-    }
-
-    /**
-     * The token of the caller: the one of the `Authorization: Bearer` header, which takes precedence, or of the
-     * session cookie. `null` for an anonymous caller. Raises HTTP 400 if the token is not valid.
-     *
-     * Necessary because the errors in this OAuth 2 flow must be reported in a specific way,
-     * different from endpoints with the auth plugin.
-     */
-    private fun Raise<AppError>.callerToken(call: ApplicationCall): AccessToken? {
-        val authHeader = call.request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
-        val jwt =
-            if (authHeader != null) {
-                if (!authHeader.startsWith(BEARER_PREFIX)) {
-                    val description = "missing Bearer in Authorization header"
-                    call.response.header(HttpHeaders.WWWAuthenticate, BearerChallenge.invalidRequest(description))
-                    raise(OAuthError("invalid_request", description))
-                }
-                authHeader.removePrefix(BEARER_PREFIX)
-            } else {
-                call.request.cookies[SESSION_COOKIE_NAME]
-            } ?: return null
-
-        return AccessToken.parse(jwt, config.jwtSecret).getOrElse {
-            call.response.header(HttpHeaders.WWWAuthenticate, BearerChallenge.invalidToken("invalid bearer token"))
-            raise(OAuthError("invalid_request", "unable to verify and validate token"))
-        }
     }
 
     private fun AccessToken.toTokenResponse() =
@@ -298,16 +265,9 @@ class TokenHandler(
             accessToken = sign(config.jwtSecret),
             issuedTokenType = TokenResponseIssuedTokenType.URN_IETF_PARAMS_OAUTH_TOKEN_TYPE_ACCESS_TOKEN,
             tokenType = TokenResponseTokenType.BEARER,
-            expiresIn = (expiryUnixSeconds - nowUnixSeconds()).toInt(),
+            expiresIn = expiresIn(),
         )
 }
-
-/** The scopes of the party: those of the membership, or the default ones when the entity owns the party. */
-private fun AssumedParty.partyScopes(): List<Scope> = scopes ?: DefaultOwnedPartyScopes
-
-private fun nowUnixSeconds(): Long = System.currentTimeMillis() / MILLIS_PER_SECOND
-
-private fun newExpiryUnixSeconds(): Long = nowUnixSeconds() + AccessToken.DURATION_SECONDS
 
 /** Returns the ID of the party in a scope like `assume:party:123`, or `null` if the scope has another format. */
 private fun scopeToPartyId(scope: String): Int? =

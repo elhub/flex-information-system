@@ -1,5 +1,6 @@
 package no.elhub.flex.auth.model
 
+import no.elhub.flex.auth.scope.DefaultOwnedPartyScopes
 import no.elhub.flex.auth.scope.Scope
 
 /**
@@ -55,7 +56,10 @@ data class AssumedParty(
     val externalId: String,
     val role: String,
     val scopes: List<Scope>?,
-)
+) {
+    /** The scopes of the party: those of the membership, or the default ones when the database gives none. */
+    fun partyScopes(): List<Scope> = scopes ?: DefaultOwnedPartyScopes
+}
 
 /**
  * The entity of a person and the external ID of its identity (without party), as returned by

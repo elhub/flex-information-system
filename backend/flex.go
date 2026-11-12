@@ -239,17 +239,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	dataAPIBaseURL := baseURL + "api/v1/"
 	gridAPIBaseURL := baseURL + "grid/v0/"
 
-	isLoginLimitingDisabled := false
-
-	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
-	if exists {
-		isLoginLimitingDisabled = true
-
-		slog.InfoContext(ctx, "Disabled login limiting")
-	} else {
-		slog.InfoContext(ctx, "Default login limiting")
-	}
-
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -283,10 +272,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.DebugContext(ctx, "Creating auth API")
 
 	authAPI := auth.NewAPI(
-		dbPool,
 		jwtSecret,
 		requestDetailsContextKey,
-		isLoginLimitingDisabled,
 	)
 
 	slog.DebugContext(ctx, "Creating kbackend proxy")
@@ -418,12 +405,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(middleware.Prometheus)
 
 	// routes served by kbackend must be registered before the middleware so they are passed through
-	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
-	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))    //nolint:contextcheck
-	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))   //nolint:contextcheck
-	router.POST("/auth/v1/token", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy))  //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy))  //nolint:contextcheck
+	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.POST("/auth/v1/token", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.POST("/auth/v1/assume", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.DELETE("/auth/v1/assume", WrapHandler(kbackendProxy)) //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
@@ -437,10 +426,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, openapi.ElementsHandlerFunc("Auth API"))))
 		authRouter.GET("/openapi.json",
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
-		authRouter.POST("/assume", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
-		authRouter.DELETE("/assume", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.DeleteAssumeHandler))))
 
 		// data API endpoint
 		router.Match(
