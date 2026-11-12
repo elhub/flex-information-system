@@ -287,6 +287,18 @@ class AuthRepositoryImpl : AuthRepository {
         }
 }
 
-/** Reads a `text[]` column of scope strings, `null` if the column is null. */
-private fun ResultSet.getScopes(column: String): List<Scope>? =
-    (getArray(column)?.array as Array<*>?)?.map { Scope.fromString(it as String) ?: error("invalid scope '$it'") }
+/**
+ * Reads a `text[]` column of scope strings, `null` if the column is null.
+ * Throws if a scope is not valid, which the repository functions report as a [DatabaseError].
+ */
+@Suppress("UNCHECKED_CAST") // the compiler cannot check the element type of the array cast
+private fun ResultSet.getScopes(column: String): List<Scope>? {
+    // JDBC gives a handle to the SQL array, it is not a raw array
+    val sqlArray = getArray(column) ?: return null
+    return try {
+        // first extract the underlying Java array as a String[], which is the same type as Kotlin's Array<String>
+        (sqlArray.array as Array<String>).map { Scope.fromString(it) ?: error("invalid scope '$it'") }
+    } finally {
+        sqlArray.free()
+    }
+}
