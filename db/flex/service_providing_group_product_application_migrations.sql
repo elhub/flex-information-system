@@ -311,7 +311,7 @@ ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
 ALTER TABLE flex.service_providing_group_product_application_history
 ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
 
--- changeset flex:spgpa-requested-at-new-insert-func runOnChange: false endDelimiter:--
+-- changeset flex:spgpa-requested-at-new-insert-func runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION flex.spgpa_set_requested_at()
 RETURNS trigger
 SECURITY INVOKER
@@ -323,9 +323,9 @@ BEGIN
         IF current_role IN ('flex_flexibility_information_system_operator',
                             'flex_system_operator') THEN
             NEW.requested_at := coalesce(NEW.requested_at, current_timestamp);
-ELSE
+        ELSE
             NEW.requested_at := current_timestamp;
-END IF;
+        END IF;
 
     ELSIF NEW.requested_at IS DISTINCT FROM OLD.requested_at THEN
         -- manual edit: only FISO/PSO, and their value wins even on a move into requested
@@ -333,18 +333,17 @@ END IF;
                                 'flex_system_operator') THEN
             RAISE sqlstate 'PT403' USING
                 message = 'Only FISO or PSO can edit requested_at';
-END IF;
+        END IF;
 
     ELSIF NEW.status = 'requested'
         AND OLD.status IS DISTINCT FROM 'requested' THEN
         -- moved into requested (rejected/inactive -> requested) with no manual value: reset
         NEW.requested_at := current_timestamp;
-END IF;
+    END IF;
 
-RETURN NEW;
+    RETURN NEW;
 END;
 $$;
-
 
 -- changeset flex:spgpa-set-requested-at-on-insert runOnChange:false endDelimiter:;
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_set_requested_at
