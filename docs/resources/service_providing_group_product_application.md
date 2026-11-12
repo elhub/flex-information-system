@@ -169,3 +169,4 @@ For party type abbreviations, check
 | recorded_by                  |      |     |    |    | R    | R  | R   |    |     |
 | created_at                   |      |     |    |    | R    | R  | R   |    |     |
 | complete_at                  |      |     |    |    | RU   | RU | R   |    |     |
+| requested_at                 |      |     |    |    | RU   | RU | R   |    |     |

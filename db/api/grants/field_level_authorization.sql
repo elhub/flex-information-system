@@ -5318,7 +5318,8 @@ GRANT SELECT (
     recorded_at,
     recorded_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
@@ -5333,7 +5334,8 @@ GRANT UPDATE (
     verified_at,
     ramping_capability,
     ramping_description,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
@@ -5354,7 +5356,8 @@ GRANT SELECT (
     recorded_at,
     recorded_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_system_operator;
@@ -5364,7 +5367,8 @@ GRANT UPDATE (
     status,
     prequalified_at,
     verified_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_system_operator;
@@ -5399,7 +5403,8 @@ GRANT SELECT (
     recorded_at,
     recorded_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -5439,7 +5444,8 @@ GRANT SELECT (
     recorded_by,
     replaced_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_flexibility_information_system_operator;
@@ -5463,7 +5469,8 @@ GRANT SELECT (
     recorded_by,
     replaced_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_system_operator;
@@ -5487,7 +5494,8 @@ GRANT SELECT (
     recorded_by,
     replaced_by,
     created_at,
-    complete_at
+    complete_at,
+    requested_at
 ) ON TABLE
 api.service_providing_group_product_application_history
 TO flex_service_provider;
