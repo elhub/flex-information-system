@@ -307,7 +307,7 @@ CHECK (
 ALTER TABLE flex.service_providing_group_product_application
 ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
 
--- changeset flex:spgpa-add-new-column-requested-at runOnChange:false endDelimiter:;
+-- changeset flex:spgpa-add-new-column-requested-at-history-table runOnChange:false endDelimiter:;
 ALTER TABLE flex.service_providing_group_product_application_history
 ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
 
@@ -346,7 +346,7 @@ END;
 $$;
 
 
--- changeset flex:spgpa-set-requested-at runOnChange:false endDelimiter:;
+-- changeset flex:spgpa-set-requested-at-on-insert runOnChange:false endDelimiter:;
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_set_requested_at
 BEFORE INSERT OR UPDATE ON flex.service_providing_group_product_application
 FOR EACH ROW
