@@ -10,7 +10,6 @@ import (
 	"flex/grid"
 	"flex/internal/kbackend"
 	"flex/internal/middleware"
-	"flex/internal/openapi"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"fmt"
@@ -440,11 +439,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(middleware.Prometheus)
 
 	// routes served by kbackend must be registered before the middleware so they are passed through
-	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
-	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))    //nolint:contextcheck
-	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))      //nolint:contextcheck
+	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))        //nolint:contextcheck
+	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))       //nolint:contextcheck
+	router.GET("/auth/v1/", WrapHandler(kbackendProxy))             //nolint:contextcheck
+	router.GET("/auth/v1/openapi.json", WrapHandler(kbackendProxy)) //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
@@ -454,10 +455,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// Endpoints
 	//nolint:contextcheck
 	{
-		authRouter.GET("/",
-			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, openapi.ElementsHandlerFunc("Auth API"))))
-		authRouter.GET("/openapi.json",
-			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
 		authRouter.POST("/token",
 			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHandler)),
 			authAPI.PostTokenHandler)

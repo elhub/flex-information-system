@@ -54,7 +54,7 @@ be edited by hand.
 | API  | Source                              | Package                                  |
 |------|-------------------------------------|------------------------------------------|
 | data | `kbackend/data/static/openapi.json` | `no.elhub.flex.api.model.dto.generated`  |
-| auth | `backend/auth/static/openapi.json`  | `no.elhub.flex.auth.model.dto.generated` |
+| auth | `kbackend/auth/static/openapi.json` | `no.elhub.flex.auth.model.dto.generated` |
 
 The documents are produced from the files in `openapi/`, so generate them first
 (`just openapi` does everything in the right order). To only run the model
@@ -121,10 +121,12 @@ Each API serves an Elements page and its OpenAPI document under its own path:
 |------|--------------------|-----------------------------|
 | Data | `GET /api/v1/`     | `GET /api/v1/openapi.json`  |
 | Grid | `GET /grid/v0/`    | `GET /grid/v0/openapi.json` |
+| Auth | `GET /auth/v1/`    | `GET /auth/v1/openapi.json` |
 
 The documents are bundled at build time from `data/static/openapi.json` and
-`grid/static/openapi.json`. The `servers` entry of each is set to
-`FLEX_BASE_URL` plus the path of the API, which is the URL its clients use.
+`grid/static/openapi.json` and `auth/static/openapi.json`. The `servers` entry
+of each is set to `FLEX_BASE_URL` plus the path of the API, which is the URL
+its clients use.
 
 ## Testing
 

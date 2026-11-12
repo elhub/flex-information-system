@@ -18,6 +18,8 @@ import org.koin.ktor.ext.inject
 
 /** Registers the routes of the auth API (`/auth/v1`) on [Application]. */
 fun Application.authRoutes() {
+    authApiDocsRoutes()
+
     authenticatedRouting {
         val userInfo: UserInfoHandler by inject()
         route("/auth/v1") {
