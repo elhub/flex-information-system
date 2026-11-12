@@ -5,10 +5,6 @@ import kotlin.random.Random
 /** A string of [length] random digits. */
 fun randomNumber(length: Int): String = (1..length).joinToString("") { Random.nextInt(10).toString() }
 
-/** A random value shaped like a person id (PID). */
-@Suppress("MagicNumber")
-fun randomPid(): String = "0" + randomNumber(10)
-
 /** A random value shaped like an organisation number. */
 @Suppress("MagicNumber")
 fun randomOrg(): String = "8" + randomNumber(8)

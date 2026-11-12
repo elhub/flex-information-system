@@ -12,9 +12,15 @@ import no.elhub.flex.shared.auth.FlexPrincipal
 import java.sql.Connection
 import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
+
+private val osloZone: ZoneId = ZoneId.of("Europe/Oslo")
+
+/** The start of the given date in Oslo, which is what the valid times of timelines must be aligned to. */
+fun osloMidnight(date: String): Instant = LocalDate.parse(date).atStartOfDay(osloZone).toInstant()
 
 /** Whether database triggers are active while seeding. */
 enum class Triggers { ON, OFF }
@@ -227,7 +233,10 @@ class SeedScope(private val conn: Connection) {
     fun insertPersonEntity(name: String = "Test person"): Long =
         insertPerson("person-${UUID.randomUUID()}@example.com", name = name)
 
-    /** Renames a party, which archives its previous revision in the history. */
+    /**
+     * Renames a party, which archives its previous revision in the history. A revision is only archived when the
+     * change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
     fun renameParty(partyId: Long, name: String) {
         conn.prepareStatement("UPDATE flex.party SET name = ? WHERE id = ?").use { stmt ->
             stmt.setString(1, name)
@@ -236,7 +245,11 @@ class SeedScope(private val conn: Connection) {
         }
     }
 
-    /** Changes the scopes of a party membership, which archives its previous revision in the history. */
+    /**
+     * Changes the scopes of a party membership, which archives its previous revision in the history. A revision is
+     * only archived when the change is made in another transaction than the insert, so call this in a [seed] block
+     * of its own.
+     */
     fun updatePartyMembershipScopes(membershipId: Long, scopes: List<String>) {
         conn.prepareStatement("UPDATE flex.party_membership SET scopes = ?::flex.scope[] WHERE id = ?").use { stmt ->
             stmt.setString(1, scopes.joinToString(",", "{", "}"))
@@ -385,7 +398,7 @@ class SeedScope(private val conn: Connection) {
     fun insertAccountingPointMeteringGridArea(
         accountingPointId: Long,
         meteringGridAreaId: Long,
-        validFrom: Instant = Instant.parse("2024-01-01T00:00:00Z"),
+        validFrom: Instant = osloMidnight("2024-01-01"),
         validTo: Instant? = null,
     ): Long =
         queryLong(
@@ -402,7 +415,7 @@ class SeedScope(private val conn: Connection) {
     fun insertMeteringGridAreaSystemOperator(
         meteringGridAreaId: Long,
         systemOperatorId: Long,
-        validFrom: Instant = Instant.parse("2024-01-01T00:00:00Z"),
+        validFrom: Instant = osloMidnight("2024-01-01"),
         validTo: Instant? = null,
     ): Long =
         queryLong(
@@ -414,6 +427,114 @@ class SeedScope(private val conn: Connection) {
             validFrom.atOffset(ZoneOffset.UTC),
             validTo?.atOffset(ZoneOffset.UTC),
         )
+
+    /** Inserts a party of [role], owned by a new organisation entity. */
+    fun insertParty(role: TestPartyRole, name: String = "Test ${role.abbreviation}"): Long =
+        insertParty(insertOrganisationEntity("$name - ENT"), name, role.type, role.role)
+
+    private fun insertTimeline(table: String, columns: String, values: List<Any?>, validFrom: Instant, validTo: Instant?): Long =
+        queryLong(
+            "INSERT INTO flex.$table ($columns, valid_time_range) " +
+                "VALUES (${values.joinToString { "?" }}, tstzrange(?::timestamptz, ?::timestamptz, '[)')) RETURNING id",
+            *values.toTypedArray(),
+            validFrom.atOffset(ZoneOffset.UTC),
+            validTo?.atOffset(ZoneOffset.UTC),
+        )
+
+    /** Gives the metering grid area a price area, which is the bidding zone of its accounting points. */
+    fun insertMeteringGridAreaPriceArea(
+        meteringGridAreaId: Long,
+        priceArea: String = "NO3",
+        validFrom: Instant = osloMidnight("2023-10-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "metering_grid_area_price_area",
+        "metering_grid_area_id, price_area",
+        listOf(meteringGridAreaId, priceArea),
+        validFrom,
+        validTo,
+    )
+
+    fun insertAccountingPointEnergySupplier(
+        accountingPointId: Long,
+        energySupplierId: Long,
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "accounting_point_energy_supplier",
+        "accounting_point_id, energy_supplier_id",
+        listOf(accountingPointId, energySupplierId),
+        validFrom,
+        validTo,
+    )
+
+    fun insertAccountingPointEndUser(
+        accountingPointId: Long,
+        endUserId: Long,
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "accounting_point_end_user",
+        "accounting_point_id, end_user_id",
+        listOf(accountingPointId, endUserId),
+        validFrom,
+        validTo,
+    )
+
+    /** The balance responsible party of an energy supplier in a metering grid area. [energyDirection] is production or consumption. */
+    @Suppress("LongParameterList")
+    fun insertEnergySupplierBalanceResponsibility(
+        meteringGridAreaId: Long,
+        energySupplierId: Long,
+        balanceResponsiblePartyId: Long,
+        energyDirection: String = "production",
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "energy_supplier_balance_responsibility",
+        "metering_grid_area_id, energy_supplier_id, balance_responsible_party_id, energy_direction",
+        listOf(meteringGridAreaId, energySupplierId, balanceResponsiblePartyId, energyDirection),
+        validFrom,
+        validTo,
+    )
+
+    /** A contract that makes the service provider the provider of the controllable unit in the given period. */
+    @Suppress("LongParameterList")
+    fun insertControllableUnitServiceProvider(
+        controllableUnitId: Long,
+        serviceProviderId: Long,
+        endUserId: Long,
+        contractReference: String = "Test contract",
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "controllable_unit_service_provider",
+        "controllable_unit_id, service_provider_id, end_user_id, contract_reference",
+        listOf(controllableUnitId, serviceProviderId, endUserId, contractReference),
+        validFrom,
+        validTo,
+    )
+
+    fun insertSystemOperatorProductType(systemOperatorId: Long, productTypeId: Long, status: String = "active"): Long =
+        queryLong(
+            "INSERT INTO flex.system_operator_product_type (system_operator_id, product_type_id, status) " +
+                "VALUES (?, ?, ?) RETURNING id",
+            systemOperatorId,
+            productTypeId,
+            status,
+        )
+
+    /**
+     * Changes the status, which archives the previous revision in the history. A revision is only archived when the
+     * change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun updateSystemOperatorProductTypeStatus(id: Long, status: String) {
+        conn.prepareStatement("UPDATE flex.system_operator_product_type SET status = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, status)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
 
     fun insertProductType(name: String = "Test product type"): Long =
         queryLong(

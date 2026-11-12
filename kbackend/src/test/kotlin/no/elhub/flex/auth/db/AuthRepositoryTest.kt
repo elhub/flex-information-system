@@ -10,6 +10,7 @@ import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.testutil.Triggers
 import no.elhub.flex.testutil.seed
+import no.elhub.flex.testutil.uniquePid
 import java.util.UUID
 
 class AuthRepositoryTest : FunSpec({
@@ -59,7 +60,7 @@ class AuthRepositoryTest : FunSpec({
 
         test("creates an entity of type person that can be found from the identity, as the anonymous principal") {
             // given
-            val pid = "3${System.nanoTime() % 10_000_000_000L}".take(11)
+            val pid = uniquePid()
 
             // when
             val created = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity(pid, "pid", "Created Person") }.shouldBeRight()
@@ -73,7 +74,7 @@ class AuthRepositoryTest : FunSpec({
 
         test("returns the same entity and identity the second time, without changing the name") {
             // given
-            val pid = "4${System.nanoTime() % 10_000_000_000L}".take(11)
+            val pid = uniquePid()
             val first = with(FlexPrincipal.anonymous) { repo.getOrCreateEntity(pid, "pid", "First Name") }.shouldBeRight()
 
             // when

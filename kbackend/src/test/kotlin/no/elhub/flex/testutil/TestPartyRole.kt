@@ -18,9 +18,16 @@ enum class TestPartyRole(val abbreviation: String, val type: String, val role: S
         val common: List<TestPartyRole> = entries
 
         /**
+         * The roles that have grants on the data views. An organisation only has grants on the views of entities,
+         * entity clients, identities, parties and party memberships (and their histories), so the API denies it the
+         * other views although it inherits `flex_common`.
+         */
+        val rolesWithDataGrants: List<TestPartyRole> = common - ORG
+
+        /**
          * The common roles that have no row level access of their own beyond `flex_common` and `flex_entity`.
          * The FISO and the organisation have policies of their own.
          */
-        val withoutRla: List<TestPartyRole> = common - FISO - ORG
+        val withoutRla: List<TestPartyRole> = rolesWithDataGrants - FISO
     }
 }

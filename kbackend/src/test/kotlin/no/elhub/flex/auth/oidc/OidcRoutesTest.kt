@@ -41,15 +41,11 @@ import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.testutil.uniquePid
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.security.MessageDigest
 import java.util.Base64
-import java.util.concurrent.atomic.AtomicLong
-
-private val pidCounter = AtomicLong(30_000_000_000L + System.nanoTime() % 1_000_000L)
-
-private fun uniquePid(): String = pidCounter.getAndIncrement().toString()
 
 private fun testApp(oidcProvider: OidcProvider, repository: AuthRepository): TestApplication =
     TestApplication {
