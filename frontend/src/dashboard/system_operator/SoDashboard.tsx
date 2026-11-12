@@ -21,7 +21,13 @@ export const SoDashboard = () => {
 
   const spgpa = activeItems
     .filter((item) => item.kind === "spg_product_application")
-    .map((item) => ({ ...item, secondaryLabel: undefined }));
+    .map((item) => ({ ...item, secondaryLabel: undefined }))
+    // oldest requested first, so the table works as a queue
+    .sort(
+      (a, b) =>
+        new Date(a.timestamp ?? 0).getTime() -
+        new Date(b.timestamp ?? 0).getTime(),
+    );
 
   const spggp = activeItems
     .filter((item) => item.kind === "spg_grid_prequalification")
@@ -45,7 +51,9 @@ export const SoDashboard = () => {
               label={translate("text.dashboard.spg_product_application")}
               items={spgpa}
               empty={null}
-              timestampLabel={translate("text.dashboard.created_at")}
+              timestampLabel={translate(
+                "field.service_providing_group_product_application.requested_at",
+              )}
             />
             <SOApplicationsTable
               label={translate("text.dashboard.spg_grid_prequalification")}
