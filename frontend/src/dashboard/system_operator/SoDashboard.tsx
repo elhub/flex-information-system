@@ -21,13 +21,7 @@ export const SoDashboard = () => {
 
   const spgpa = activeItems
     .filter((item) => item.kind === "spg_product_application")
-    .map((item) => ({ ...item, secondaryLabel: undefined }))
-    // oldest requested first, so the table works as a queue
-    .sort(
-      (a, b) =>
-        new Date(a.timestamp ?? 0).getTime() -
-        new Date(b.timestamp ?? 0).getTime(),
-    );
+    .map((item) => ({ ...item, secondaryLabel: undefined }));
 
   const spggp = activeItems
     .filter((item) => item.kind === "spg_grid_prequalification")
