@@ -59,11 +59,6 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
   /**
-   * When the product application was put to requested.
-   */
-  @SerialName("requested_at")
-  public val requestedAt: Instant? = null,
-  /**
    * When the product application was last prequalified.
    */
   @SerialName("prequalified_at")
@@ -95,6 +90,11 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    */
   @SerialName("complete_at")
   public val completeAt: Instant? = null,
+  /**
+   * When the product application was put to requested.
+   */
+  @SerialName("requested_at")
+  public val requestedAt: Instant? = null,
   /**
    * When the resource was recorded (created or updated) in the system.
    */
