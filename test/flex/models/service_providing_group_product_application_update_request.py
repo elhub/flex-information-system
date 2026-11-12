@@ -31,8 +31,6 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 Stored in kilowatts. Example: 150.5.
             additional_information (None | str | Unset): Free text field for extra information about the application if
                 needed (bidding periods, unavailabilities, etc).
-            requested_at (datetime.datetime | None | Unset): When the product application was put to requested. Example:
-                2022-08-08T12:00:00+02.
             prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
@@ -43,6 +41,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 We ensure linearity on a minute resolution..
             complete_at (datetime.datetime | None | Unset): When the application was last marked complete by the procuring
                 system operator. Example: 2022-08-08T12:00:00+02.
+            requested_at (datetime.datetime | None | Unset): When the product application was put to requested. Example:
+                2022-08-08T12:00:00+02.
     """
 
     product_type_ids: list[int] | Unset = UNSET
@@ -50,12 +50,12 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     maximum_active_power_up: float | Unset = UNSET
     maximum_active_power_down: float | Unset = UNSET
     additional_information: None | str | Unset = UNSET
-    requested_at: datetime.datetime | None | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
     complete_at: datetime.datetime | None | Unset = UNSET
+    requested_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -76,14 +76,6 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             additional_information = UNSET
         else:
             additional_information = self.additional_information
-
-        requested_at: None | str | Unset
-        if isinstance(self.requested_at, Unset):
-            requested_at = UNSET
-        elif isinstance(self.requested_at, datetime.datetime):
-            requested_at = self.requested_at.isoformat()
-        else:
-            requested_at = self.requested_at
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
@@ -123,6 +115,14 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         else:
             complete_at = self.complete_at
 
+        requested_at: None | str | Unset
+        if isinstance(self.requested_at, Unset):
+            requested_at = UNSET
+        elif isinstance(self.requested_at, datetime.datetime):
+            requested_at = self.requested_at.isoformat()
+        else:
+            requested_at = self.requested_at
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -136,8 +136,6 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             field_dict["maximum_active_power_down"] = maximum_active_power_down
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
-        if requested_at is not UNSET:
-            field_dict["requested_at"] = requested_at
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
@@ -148,6 +146,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             field_dict["ramping_description"] = ramping_description
         if complete_at is not UNSET:
             field_dict["complete_at"] = complete_at
+        if requested_at is not UNSET:
+            field_dict["requested_at"] = requested_at
 
         return field_dict
 
@@ -175,23 +175,6 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             return cast(None | str | Unset, data)
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
-
-        def _parse_requested_at(data: object) -> datetime.datetime | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                requested_at_type_0 = datetime.datetime.fromisoformat(data)
-
-                return requested_at_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(datetime.datetime | None | Unset, data)
-
-        requested_at = _parse_requested_at(d.pop("requested_at", UNSET))
 
         def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -272,18 +255,35 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
 
         complete_at = _parse_complete_at(d.pop("complete_at", UNSET))
 
+        def _parse_requested_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                requested_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return requested_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        requested_at = _parse_requested_at(d.pop("requested_at", UNSET))
+
         service_providing_group_product_application_update_request = cls(
             product_type_ids=product_type_ids,
             status=status,
             maximum_active_power_up=maximum_active_power_up,
             maximum_active_power_down=maximum_active_power_down,
             additional_information=additional_information,
-            requested_at=requested_at,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
             ramping_capability=ramping_capability,
             ramping_description=ramping_description,
             complete_at=complete_at,
+            requested_at=requested_at,
         )
 
         service_providing_group_product_application_update_request.additional_properties = d

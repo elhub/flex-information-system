@@ -19,13 +19,13 @@ WITH (security_invoker = true) AS (
         maximum_active_power_up,
         maximum_active_power_down,
         additional_information,
-        requested_at,
         prequalified_at,
         verified_at,
         ramping_capability,
         ramping_description,
         created_at,
-        complete_at
+        complete_at,
+        requested_at
     FROM flex.service_providing_group_product_application
 );
 -- changeset flex:api-service-providing-group-product-application-history-create endDelimiter:-- runOnChange:true
@@ -48,13 +48,13 @@ WITH (
         maximum_active_power_up,
         maximum_active_power_down,
         additional_information,
-        requested_at,
         prequalified_at,
         verified_at,
         ramping_capability,
         ramping_description,
         created_at,
-        complete_at
+        complete_at,
+        requested_at
     FROM flex.service_providing_group_product_application
     UNION ALL
     SELECT
@@ -71,12 +71,12 @@ WITH (
         maximum_active_power_up,
         maximum_active_power_down,
         additional_information,
-        requested_at,
         prequalified_at,
         verified_at,
         ramping_capability,
         ramping_description,
         created_at,
-        complete_at
+        complete_at,
+        requested_at
     FROM flex.service_providing_group_product_application_history
 );

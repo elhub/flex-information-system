@@ -882,8 +882,6 @@ export const tooltips = {
     "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
   "service_providing_group_product_application.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
-  "service_providing_group_product_application.requested_at":
-    "When the product application was put to requested.",
   "service_providing_group_product_application.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application.verified_at":
@@ -896,6 +894,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -916,8 +916,6 @@ export const tooltips = {
     "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
   "service_providing_group_product_application_history.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
-  "service_providing_group_product_application_history.requested_at":
-    "When the product application was put to requested.",
   "service_providing_group_product_application_history.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application_history.verified_at":
@@ -930,6 +928,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application_history.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application_history.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

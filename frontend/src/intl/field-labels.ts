@@ -1209,7 +1209,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maximum active power (down)",
     "service_providing_group_product_application.additional_information":
       "Additional information",
-    "service_providing_group_product_application.requested_at": "Requested at",
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
@@ -1219,6 +1218,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
     "service_providing_group_product_application.complete_at": "Complete at",
+    "service_providing_group_product_application.requested_at": "Requested at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1235,8 +1235,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maximum active power (down)",
     "service_providing_group_product_application_history.additional_information":
       "Additional information",
-    "service_providing_group_product_application_history.requested_at":
-      "Requested at",
     "service_providing_group_product_application_history.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
@@ -1249,6 +1247,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Created at",
     "service_providing_group_product_application_history.complete_at":
       "Complete at",
+    "service_providing_group_product_application_history.requested_at":
+      "Requested at",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1982,8 +1982,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
-    "service_providing_group_product_application.requested_at":
-      "Tidspunkt for forespørsel",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -1993,6 +1991,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskrivelse",
     "service_providing_group_product_application.created_at": "Opprettet",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2009,8 +2009,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
-    "service_providing_group_product_application_history.requested_at":
-      "Tidspunkt for forespørsel",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2023,6 +2021,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Opprettet",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2755,8 +2755,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
-    "service_providing_group_product_application.requested_at":
-      "Tidpunkt for forespørsel",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2766,6 +2764,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskriving",
     "service_providing_group_product_application.created_at": "Oppretta",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2782,8 +2782,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
-    "service_providing_group_product_application_history.requested_at":
-      "Tidpunkt for forespørsel",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2796,6 +2794,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Oppretta",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

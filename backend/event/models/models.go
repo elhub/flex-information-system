@@ -579,13 +579,13 @@ type ApiServiceProvidingGroupProductApplication struct {
 	MaximumActivePowerUp      float64
 	MaximumActivePowerDown    float64
 	AdditionalInformation     *string
-	RequestedAt               pgtype.Timestamptz
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
 	RampingCapability         *string
 	RampingDescription        *string
 	CreatedAt                 pgtype.Timestamptz
 	CompleteAt                pgtype.Timestamptz
+	RequestedAt               pgtype.Timestamptz
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
 }
@@ -652,13 +652,13 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	MaximumActivePowerUp                      float64
 	MaximumActivePowerDown                    float64
 	AdditionalInformation                     *string
-	RequestedAt                               pgtype.Timestamptz
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz
 	RampingCapability                         *string
 	RampingDescription                        *string
 	CreatedAt                                 pgtype.Timestamptz
 	CompleteAt                                pgtype.Timestamptz
+	RequestedAt                               pgtype.Timestamptz
 	RecordedBy                                int
 	RecordedAt                                pgtype.Timestamptz
 	ReplacedBy                                *int

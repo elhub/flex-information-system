@@ -3025,10 +3025,6 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -3045,6 +3041,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3077,10 +3077,6 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -3097,6 +3093,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3133,10 +3133,6 @@ export type ServiceProvidingGroupProductApplication = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -3157,6 +3153,10 @@ export type ServiceProvidingGroupProductApplication = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4559,10 +4559,6 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -4583,6 +4579,10 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -5792,10 +5792,6 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -5812,6 +5808,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * Embedded service_providing_group
    */
@@ -6743,10 +6743,6 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    */
   additional_information?: string;
   /**
-   * When the product application was put to requested.
-   */
-  requested_at?: string;
-  /**
    * When the product application was last prequalified.
    */
   prequalified_at?: string;
@@ -6763,6 +6759,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * Reference to the resource that was updated.
    */
