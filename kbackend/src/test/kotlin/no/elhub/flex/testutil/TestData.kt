@@ -313,6 +313,14 @@ class SeedScope(private val conn: Connection) {
     fun insertIdentityOf(entityId: Long): SeededEntity =
         SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = insertIdentity(entityId)))
 
+    /** Deletes the entity client. The identities that were created for it are kept, like when a client is deleted. */
+    fun deleteEntityClient(clientId: Long) {
+        conn.prepareStatement("DELETE FROM flex.entity_client WHERE id = ?").use { stmt ->
+            stmt.setLong(1, clientId)
+            stmt.executeUpdate()
+        }
+    }
+
     /** Reads the business ID of the party, e.g. its GLN. */
     fun partyBusinessId(partyId: Long): String =
         conn.prepareStatement("SELECT business_id FROM flex.party WHERE id = ?").use { stmt ->

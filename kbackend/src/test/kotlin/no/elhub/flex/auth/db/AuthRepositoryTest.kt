@@ -304,4 +304,40 @@ class AuthRepositoryTest : FunSpec({
             result.shouldBeLeft().shouldBe(NotFoundError("party does not exist or cannot be assumed"))
         }
     }
+
+    context("isClient") {
+
+        test("is false for the identity of a person") {
+            val entity = seed(Triggers.OFF) { insertEntityIdentity("Not A Client") }
+
+            val result = with(FlexPrincipal.anonymous) { repo.isClient(entity.principal.eid) }
+
+            result.shouldBeRight() shouldBe false
+        }
+
+        test("is true for the identity of an entity client") {
+            val client = seed(Triggers.OFF) { insertEntityClient() }
+            val identity = with(FlexPrincipal.anonymous) { repo.entityClientByClientId(client.clientId) }.shouldBeRight()
+
+            val result = with(FlexPrincipal.anonymous) { repo.isClient(identity.externalId) }
+
+            result.shouldBeRight() shouldBe true
+        }
+
+        test("is still true after the entity client is deleted") {
+            val client = seed(Triggers.OFF) { insertEntityClient() }
+            val identity = with(FlexPrincipal.anonymous) { repo.entityClientByClientId(client.clientId) }.shouldBeRight()
+            seed(Triggers.OFF) { deleteEntityClient(client.id) }
+
+            val result = with(FlexPrincipal.anonymous) { repo.isClient(identity.externalId) }
+
+            result.shouldBeRight() shouldBe true
+        }
+
+        test("is false for an identity that does not exist") {
+            val result = with(FlexPrincipal.anonymous) { repo.isClient(UUID.randomUUID().toString()) }
+
+            result.shouldBeRight() shouldBe false
+        }
+    }
 })

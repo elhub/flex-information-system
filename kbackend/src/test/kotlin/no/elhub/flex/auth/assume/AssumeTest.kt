@@ -16,10 +16,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
+import io.ktor.http.content.ChannelWriterContent
 import io.ktor.http.contentType
 import io.ktor.http.setCookie
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
+import io.ktor.utils.io.writeStringUtf8
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.int
@@ -161,6 +163,36 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
+        test("a form without Content-Length is read like any other") {
+            val (entity, partyId) = seedMember()
+            val app = testApp()
+
+            val response = app.assumeChunked(entityCookie(entity.entityId, entity.principal.eid), "party_id=$partyId")
+
+            response.status shouldBe HttpStatusCode.OK
+            response.json()["party_id"]?.jsonPrimitive?.int shouldBe partyId.toInt()
+            app.stop()
+        }
+
+        test("a form of more than 1 KiB is read as an empty one, with or without Content-Length") {
+            val app = testApp()
+            val cookie = entityCookie(1, "eid")
+            val bigForm = "party_id=1&padding=${"x".repeat(2000)}"
+
+            val chunked = app.assumeChunked(cookie, bigForm)
+            val sized = app.client.post("/auth/v1/assume") {
+                header(HttpHeaders.Cookie, "$SESSION_COOKIE=$cookie")
+                contentType(ContentType.Application.FormUrlEncoded)
+                setBody(bigForm)
+            }
+
+            listOf(chunked, sized).forEach { response ->
+                response.status shouldBe HttpStatusCode.BadRequest
+                response.json().oauthError() shouldBe ("invalid_request" to "party_id is required")
+            }
+            app.stop()
+        }
+
         test("a missing party_id returns 400 invalid_request") {
             val app = testApp()
 
@@ -289,6 +321,33 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
+        test("a party token of an entity client that was deleted still can not unassume") {
+            val (client, partyId) = seed(Triggers.OFF) {
+                val partyId = insertServiceProvider("Deleted Client SP")
+                val client = insertEntityClient()
+                insertPartyMembership(partyId, client.entityId)
+                client to partyId
+            }
+            val clientEid = with(FlexPrincipal.anonymous) { repository.entityClientByClientId(client.clientId) }.shouldBeRight().externalId
+            val assumed = with(FlexPrincipal("flex_entity", clientEid)) { repository.assumeParty(partyId) }.shouldBeRight()
+            val partyCookie = AccessToken(
+                entityId = client.entityId.toInt(),
+                externalId = assumed.externalId,
+                partyId = partyId.toInt(),
+                role = assumed.role,
+                scope = assumed.partyScopes(),
+                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
+            ).sign(TEST_JWT_SECRET)
+            seed(Triggers.OFF) { deleteEntityClient(client.id) }
+            val app = testApp()
+
+            val response = app.unassume(partyCookie)
+
+            response.status shouldBe HttpStatusCode.BadRequest
+            response.json().oauthError() shouldBe ("invalid_request" to "party cannot be unassumed")
+            app.stop()
+        }
+
         test("an identity that does not exist returns 500 server_error") {
             val app = testApp()
 
@@ -362,6 +421,13 @@ private suspend fun TestApplication.assume(
     ) {
         cookie?.let { header(HttpHeaders.Cookie, "$SESSION_COOKIE=$it") }
         bearer?.let { header(HttpHeaders.Authorization, "Bearer $it") }
+    }
+
+/** Posts the form as a chunked request: there is no `Content-Length` header. */
+private suspend fun TestApplication.assumeChunked(cookie: String, form: String): HttpResponse =
+    client.post("/auth/v1/assume") {
+        header(HttpHeaders.Cookie, "$SESSION_COOKIE=$cookie")
+        setBody(ChannelWriterContent({ writeStringUtf8(form) }, ContentType.Application.FormUrlEncoded))
     }
 
 private suspend fun TestApplication.unassume(cookie: String?, bearer: String? = null): HttpResponse =

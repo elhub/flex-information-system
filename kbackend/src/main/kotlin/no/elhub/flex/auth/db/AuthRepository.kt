@@ -16,6 +16,7 @@ import no.elhub.flex.shared.db.NoMatchError
 import no.elhub.flex.shared.db.NotFoundError
 import no.elhub.flex.shared.db.RepositoryError
 import no.elhub.flex.shared.db.prepareNamed
+import no.elhub.flex.shared.db.queryRequiredSingle
 import no.elhub.flex.shared.db.querySingle
 import org.koin.core.annotation.Single
 import java.sql.ResultSet
@@ -49,6 +50,12 @@ interface AuthRepository {
      */
     context(principal: FlexPrincipal)
     suspend fun entityIdentityOfExternalId(externalId: String): Either<RepositoryError, BareEntityIdentity>
+
+    /**
+     * Whether the identity [externalId] logged in with an entity client, with `auth.is_client()`.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun isClient(externalId: String): Either<RepositoryError, Boolean>
 
     /**
      * Gets the entity client with the given client ID with `auth.entity_client_by_client_id()`.
@@ -173,6 +180,22 @@ class AuthRepositoryImpl : AuthRepository {
                 }
 
                 row ?: raise(NotFoundError("identity does not exist in database"))
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun isClient(externalId: String): Either<RepositoryError, Boolean> =
+        flexTransaction { conn ->
+            either {
+                runCatching {
+                    conn.prepareNamed(
+                        "SELECT auth.is_client(:external_id) AS is_client",
+                        mapOf("external_id" to externalId),
+                    ).queryRequiredSingle { rs -> rs.getBoolean("is_client") }
+                }.getOrElse { e ->
+                    logger.error { "isClient failed: ${e.message}" }
+                    raise(DatabaseError("Failed to check whether the identity is a client"))
+                }
             }
         }
 

@@ -7,10 +7,12 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.request.contentLength
 import io.ktor.server.request.contentType
-import io.ktor.server.request.receiveParameters
+import io.ktor.server.request.receiveChannel
+import io.ktor.utils.io.readRemaining
+import kotlinx.io.readByteArray
 import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.db.AuthRepository
 import no.elhub.flex.auth.model.dto.generated.models.FlexRole
@@ -37,6 +39,20 @@ private val REQUIRED_SCOPE = Scope(ScopeVerb.Manage, "auth:assume")
 
 private const val MAX_REQUEST_BODY_BYTES = 1024L
 
+/**
+ * The URL-encoded form of the request. A form of more than [maxBytes] bytes is read as an empty
+ * one. The limit is on the bytes that are read, so it holds without `Content-Length` too
+ * (chunked requests).
+ */
+private suspend fun ApplicationCall.receiveBoundedForm(maxBytes: Long): Parameters {
+    // one more byte than the limit tells if the body is too big, without reading all of it
+    val body = receiveChannel().readRemaining(maxBytes + 1).readByteArray()
+    if (body.size > maxBytes) {
+        return Parameters.Empty
+    }
+    return body.decodeToString().parseUrlEncodedParameters()
+}
+
 private const val ENTITY_ROLE = "flex_entity"
 
 /**
@@ -60,12 +76,7 @@ class AssumeHandler(
             }
 
             // a form that is too big is read as an empty one
-            val form =
-                if ((call.request.contentLength() ?: 0L) > MAX_REQUEST_BODY_BYTES) {
-                    Parameters.Empty
-                } else {
-                    call.receiveParameters()
-                }
+            val form = call.receiveBoundedForm(MAX_REQUEST_BODY_BYTES)
 
             val partyIdStr = form["party_id"]?.takeIf { it.isNotEmpty() }
                 ?: raise(OAuthError("invalid_request", "party_id is required"))
@@ -153,7 +164,13 @@ class UnassumeHandler(
                 .bind()
 
             // entity clients cannot unassume, they have to log in again
-            ensure(identity.clientId == null) {
+            val isClient = with(FlexPrincipal.anonymous) { repository.isClient(receivedToken.externalId) }
+                .mapLeft { e ->
+                    logger.warn { "could not check the identity in unassume handler: ${e.message}" }
+                    serverError("could not check whether the party can be unassumed")
+                }
+                .bind()
+            ensure(!isClient) {
                 OAuthError("invalid_request", "party cannot be unassumed")
             }
 
