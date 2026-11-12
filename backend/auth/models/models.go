@@ -120,58 +120,6 @@ func GetEntityClientByUUID(
 	return entityID, eid, pubKeyPEM, scopes, nil
 }
 
-// EntityClient is the full model of an entity client record.
-type EntityClient struct {
-	ID         int
-	EntityID   int
-	ExternalID string
-	ClientID   string
-	PartyID    *int
-	Scopes     scope.List
-	Name       *string
-	PublicKey  *string
-}
-
-// GetEntityClientByClientID gets the full entity client record identified by its client ID.
-func GetEntityClientByClientID(
-	ctx context.Context,
-	tx pgx.Tx,
-	clientID string,
-) (EntityClient, error) {
-	var (
-		ec           EntityClient
-		scopeStrings []string
-	)
-
-	err := tx.QueryRow(
-		ctx,
-		"select id, entity_id, external_id, client_id, party_id, scopes, name, public_key"+
-			" from auth.entity_client_by_client_id($1)",
-		clientID,
-	).Scan(
-		&ec.ID,
-		&ec.EntityID,
-		&ec.ExternalID,
-		&ec.ClientID,
-		&ec.PartyID,
-		&scopeStrings,
-		&ec.Name,
-		&ec.PublicKey,
-	)
-	if err != nil {
-		return EntityClient{}, fmt.Errorf("failed to get entity client: %w", err)
-	}
-
-	scopes, err := scope.ListFromStrings(scopeStrings)
-	if err != nil {
-		return EntityClient{}, fmt.Errorf("failed to parse scopes: %w", err)
-	}
-
-	ec.Scopes = scopes
-
-	return ec, nil
-}
-
 // AssumeParty checks if a entity is allowed to assume a party and returns details.
 // Scopes are returned when the party is assumed through membership.
 func AssumeParty(
@@ -254,50 +202,6 @@ func PartyOfIdentity(
 	).Scan(&partyID)
 	if err != nil {
 		return 0, fmt.Errorf("failed to get party of identity: %w", err)
-	}
-
-	return partyID, nil
-}
-
-//
-
-const getAssumablePartyID = `select
-	p.id as party_id
-from flex.entity as e
-	inner join flex.party_membership as pm on e.id = pm.entity_id
-	inner join flex.party as p on pm.party_id = p.id
-where e.id = $1
-	and p.business_id = $2
-	and p.type = $3
-union all
-select
-	p.id as party_id
-from flex.party as p
-where p.entity_id = $1
-	and p.business_id = $2
-	and p.type = $3
-limit 1`
-
-// GetAssumablePartyID returns the party ID of the given party business ID and type if the
-// given entity can assume it (i.e., owns it or is a member of it).
-func GetAssumablePartyID(
-	ctx context.Context,
-	tx pgx.Tx,
-	entityID int,
-	partyBusinessID string,
-	partyType string,
-) (int, error) {
-	var partyID int
-
-	err := tx.QueryRow(
-		ctx,
-		getAssumablePartyID,
-		entityID,
-		partyBusinessID,
-		partyType,
-	).Scan(&partyID)
-	if err != nil {
-		return 0, fmt.Errorf("failed to get party ID: %w", err)
 	}
 
 	return partyID, nil

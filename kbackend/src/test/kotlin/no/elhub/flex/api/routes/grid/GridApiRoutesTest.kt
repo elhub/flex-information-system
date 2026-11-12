@@ -26,7 +26,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import no.elhub.flex.api.config.DocsConfig
+import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.config.PostgrestConfig
 import no.elhub.flex.api.config.RequireApiVersion
 import no.elhub.flex.api.postgrest.PostgrestClient
@@ -51,7 +51,7 @@ class GridApiRoutesTest :
         beforeSpec {
             postgrest.start()
             val client = PostgrestClient(PostgrestConfig(postgrest.baseUrl()))
-            val docs = GridApiDocs(DocsConfig("https://flex.test/"))
+            val docs = GridApiDocs(FlexConfig("Europe/Oslo", "https://flex.test/"))
             app = TestApplication {
                 application {
                     install(Tracing.plugin)

@@ -79,44 +79,6 @@ const (
 	oauthErrorUnsupportedResponseType oauthError = "unsupported_response_type"
 )
 
-// grantType is a type that represents the grant types.
-type grantType string
-
-//nolint:gosec
-const (
-	// grantTypeClientCredentials is the client_credentials grant type.
-	grantTypeClientCredentials grantType = "client_credentials"
-	// grantTypeTokenExchange is the token_exchange grant type.
-	grantTypeTokenExchange grantType = "urn:ietf:params:oauth:grant-type:token-exchange"
-	// grantTypeJWTBearer is the jwt_bearer grant type.
-	grantTypeJWTBearer grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer"
-)
-
-// tokenType is a type that represents the token types.
-type tokenType string
-
-//nolint:gosec,unused
-const (
-	// tokenTypeJWT is the Bearer token type.
-	tokenTypeJWT tokenType = "urn:ietf:params:oauth:token-type:jwt"
-	// tokenTypeAccess is the Access Token token type.
-	tokenTypeAccess tokenType = "urn:ietf:params:oauth:token-type:access_token"
-	// tokenTypeRefresh is the Refresh Token token type.
-	tokenTypeRefresh tokenType = "urn:ietf:params:oauth:token-type:refresh_token"
-	// tokenTypeID is the ID Token token type.
-	tokenTypeID tokenType = "urn:ietf:params:oauth:token-type:id_token"
-)
-
-// accessTokenType is a type that represents the access token types.
-// as specified by https://www.rfc-editor.org/rfc/rfc6749#section-7.1
-// Specifies the method of using the access token issued.
-type accessTokenType string
-
-const (
-	// accessTokenTypeBearer is the Bearer access token type.
-	accessTokenTypeBearer accessTokenType = "Bearer"
-)
-
 // wwwAuthenticateKey is the key for the www-Authenticate header.
 const wwwAuthenticateKey string = "WWW-Authenticate"
 

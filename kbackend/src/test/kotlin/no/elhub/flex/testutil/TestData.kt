@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong
 enum class Triggers { ON, OFF }
 
 /** A seeded system operator party, and a principal that acts as it (resolved through its identity). */
-data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal)
+data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal, val entityId: Long)
 
 /** A seeded party with an identity, and a principal that acts as it. */
 data class SeededParty(val entityId: Long, val partyId: Long, val principal: FlexPrincipal)
@@ -37,8 +37,8 @@ data class SeededActor(
     val ownerEntityId: Long? = null,
 )
 
-/** A seeded entity client, with the UUID that it is known by outside the database. */
-data class SeededEntityClient(val id: Long, val clientId: String)
+/** A seeded entity client of [entityId], with the UUID that it is known by outside the database (the `iss` of its grants). */
+data class SeededEntityClient(val id: Long, val clientId: String, val entityId: Long)
 
 /** A seeded entity with an identity but no assumed party, and a principal that acts as it. */
 data class SeededEntity(val entityId: Long, val principal: FlexPrincipal)
@@ -245,23 +245,29 @@ class SeedScope(private val conn: Connection) {
         }
     }
 
+    /**
+     * Inserts an entity client for the entity, restricted to [partyId] if given, with the PEM [publicKey] to verify its
+     * grants. The identity of the client is created when the client is first used, like in production.
+     */
     fun insertEntityClient(
-        entityId: Long,
+        entityId: Long = insertOrganisationEntity("Client entity ${UUID.randomUUID()}"),
         name: String = "Test client",
         scopes: List<String> = listOf("manage:data", "manage:auth"),
         partyId: Long? = null,
+        publicKey: String? = null,
     ): SeededEntityClient =
         conn.prepareStatement(
-            "INSERT INTO flex.entity_client (entity_id, name, scopes, party_id) " +
-                "VALUES (?, ?, ?::flex.scope[], ?) RETURNING id, client_id::text",
+            "INSERT INTO flex.entity_client (entity_id, name, scopes, party_id, public_key) " +
+                "VALUES (?, ?, ?::flex.scope[], ?, ?) RETURNING id, client_id::text",
         ).use { stmt ->
             stmt.setLong(1, entityId)
             stmt.setString(2, name)
             stmt.setString(3, scopes.joinToString(",", "{", "}"))
             stmt.setObject(4, partyId)
+            stmt.setString(5, publicKey)
             stmt.executeQuery().use { rs ->
                 rs.next()
-                SeededEntityClient(rs.getLong(1), rs.getString(2))
+                SeededEntityClient(rs.getLong(1), rs.getString(2), entityId)
             }
         }
 
@@ -287,7 +293,7 @@ class SeedScope(private val conn: Connection) {
     /** Inserts a system operator party with an identity, so that a principal for it can be used in RLS tests. */
     fun insertSystemOperator(name: String = "Test SO"): SeededSystemOperator {
         val party = insertPartyWithIdentity(name, "system_operator", "flex_system_operator")
-        return SeededSystemOperator(party.partyId, party.principal)
+        return SeededSystemOperator(party.partyId, party.principal, party.entityId)
     }
 
     /** Inserts an organisation entity that is not tied to a party. */
@@ -300,19 +306,22 @@ class SeedScope(private val conn: Connection) {
         )
 
     /** Inserts an entity with an identity that has no party, and a principal that acts as the bare entity. */
-    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity {
-        val entityId = insertOrganisationEntity(name)
-        val eid = conn.prepareStatement(
-            "INSERT INTO flex.identity (entity_id) VALUES (?) RETURNING eid::text",
-        ).use { stmt ->
-            stmt.setLong(1, entityId)
+    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity =
+        insertIdentityOf(insertOrganisationEntity(name))
+
+    /** Inserts an identity that has no party for an existing entity, and a principal that acts as the bare entity. */
+    fun insertIdentityOf(entityId: Long): SeededEntity =
+        SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = insertIdentity(entityId)))
+
+    /** Reads the business ID of the party, e.g. its GLN. */
+    fun partyBusinessId(partyId: Long): String =
+        conn.prepareStatement("SELECT business_id FROM flex.party WHERE id = ?").use { stmt ->
+            stmt.setLong(1, partyId)
             stmt.executeQuery().use { rs ->
                 rs.next()
                 rs.getString(1)
             }
         }
-        return SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = eid))
-    }
 
     fun insertFiso(name: String = "Test FISO"): Long =
         insertEntityAndParty(name, "flexibility_information_system_operator", "flex_flexibility_information_system_operator").second

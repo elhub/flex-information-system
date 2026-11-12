@@ -1,5 +1,7 @@
 package no.elhub.flex.auth.model
 
+import no.elhub.flex.auth.scope.Scope
+
 /**
  * The identity of the current user, as resolved from the database by `auth.current_user_info()`.
  *
@@ -15,6 +17,44 @@ data class UserInfo(
     val entityName: String,
     val partyId: Long?,
     val partyName: String?,
+)
+
+/**
+ * The identity of an entity without party association, as returned by `auth.entity_identity_of_external_id()`.
+ *
+ * @property externalId the external ID of the identity without party
+ * @property clientId the entity client the identity logged in with, or `null` for a person
+ * @property scopes the scopes of the entity client, or `null` for a person
+ */
+data class BareEntityIdentity(
+    val externalId: String,
+    val clientId: String?,
+    val scopes: List<Scope>?,
+)
+
+/** An entity client, as returned by `auth.entity_client_by_client_id()`. */
+data class EntityClient(
+    val id: Long,
+    val entityId: Long,
+    val externalId: String,
+    val clientId: String,
+    val partyId: Long?,
+    val scopes: List<Scope>,
+    val name: String?,
+    val publicKey: String?,
+)
+
+/**
+ * The party assumed by an entity, as returned by `auth.assume_party()`.
+ *
+ * @property scopes the scopes of the entity for the party (those of the membership, or the default
+ * ones of an owner), or `null` if the database gives none
+ */
+data class AssumedParty(
+    val entityId: Long,
+    val externalId: String,
+    val role: String,
+    val scopes: List<Scope>?,
 )
 
 /**
