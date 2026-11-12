@@ -17,7 +17,7 @@ class ProductTypeApiTest :
         // RLS: PT-COM001 grants SELECT to flex_common, which every party role inherits
         context("a party of any role") {
             // the organisation inherits flex_common too, but has no grant on the product_type view, see below
-            for (role in TestPartyRole.common - TestPartyRole.ORG) {
+            for (role in TestPartyRole.rolesWithDataGrants) {
                 test("${role.type} can list and read product types") {
                     val productTypeId = seed { insertProductType("Common product type") }
                     val actor = seed { insertActor(role) }

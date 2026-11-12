@@ -173,10 +173,6 @@ separate "API tests" step of the kbackend build.
 - One class per API resource, named `<Resource>ApiTest`. Extend `ApiSpec`,
   which starts the application and gives the test an `api` client, for example
   `api.get("/party", actor.token())`.
-- Seed an actor with `insertActor(TestPartyRole.SO)` (a party of that role, and
-  a person who has assumed it and is a member of it) or `insertEntityActor()`
-  (an entity that has not assumed a party). `actor.token(scope)` gives a token
-  that makes the call act as that actor; the test chooses the scope.
 - Each test seeds the data it needs with `seed { ... }`. Generic helpers belong
   in `SeedScope` (`testutil/TestData.kt`) so other classes can reuse them;
   helpers that only one class needs stay in that class.
@@ -186,8 +182,3 @@ separate "API tests" step of the kbackend build.
   in `beforeEach`
 - Use `// RLS: <ID>` comments so the tests can be matched against the RLS
 policies they cover.
-- Assert the exact status code of every response, also for denied calls. Two
-  codes are quirks of PostgREST that the tests pin on purpose, see
-  `HIDDEN_BY_RLS` (406 for a row that row level security hides) and
-  `MUTATION_DENIED_BY_RLS` (401 for a PATCH or DELETE it denies on
-  `entity_client`).
