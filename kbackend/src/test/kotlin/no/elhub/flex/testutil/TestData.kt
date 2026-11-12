@@ -227,6 +227,24 @@ class SeedScope(private val conn: Connection) {
     fun insertPersonEntity(name: String = "Test person"): Long =
         insertPerson("person-${UUID.randomUUID()}@example.com", name = name)
 
+    /** Renames a party, which archives its previous revision in the history. */
+    fun renameParty(partyId: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.party SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, partyId)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Changes the scopes of a party membership, which archives its previous revision in the history. */
+    fun updatePartyMembershipScopes(membershipId: Long, scopes: List<String>) {
+        conn.prepareStatement("UPDATE flex.party_membership SET scopes = ?::flex.scope[] WHERE id = ?").use { stmt ->
+            stmt.setString(1, scopes.joinToString(",", "{", "}"))
+            stmt.setLong(2, membershipId)
+            stmt.executeUpdate()
+        }
+    }
+
     fun insertEntityClient(
         entityId: Long,
         name: String = "Test client",

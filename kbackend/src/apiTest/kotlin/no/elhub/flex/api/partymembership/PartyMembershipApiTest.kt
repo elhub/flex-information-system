@@ -3,6 +3,7 @@ package no.elhub.flex.api.partymembership
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpStatusCode
 import no.elhub.flex.ApiSpec
@@ -56,9 +57,15 @@ class PartyMembershipApiTest :
                 updated.status shouldBe HttpStatusCode.OK
                 updated.body<PartyMembershipResponse>().scopes shouldBe listOf(AuthScope.READ_DATA)
 
-                val history = api.get("/party_membership_history", fiso.token(), "party_membership_id" to "eq.$membershipId")
-                    .body<List<PartyMembershipHistoryResponse>>()
+                // the view of the history also lists the current membership, so only archived revisions are requested
+                val history = api.get(
+                    "/party_membership_history",
+                    fiso.token(),
+                    "party_membership_id" to "eq.$membershipId",
+                    "replaced_at" to "not.is.null",
+                ).body<List<PartyMembershipHistoryResponse>>()
                 history.shouldNotBeEmpty()
+                history.forEach { it.replacedAt.shouldNotBeNull() }
                 val historyRow = api.get("/party_membership_history/${history.first().id}", fiso.token())
                 historyRow.status shouldBe HttpStatusCode.OK
                 historyRow.body<PartyMembershipHistoryResponse>().partyMembershipId shouldBe membershipId
@@ -118,7 +125,12 @@ class PartyMembershipApiTest :
                 api.delete("/party_membership/$membership", token).status shouldBe HttpStatusCode.NoContent
 
                 // RLS: PTYM-ORG002 covers the history of memberships on such parties, also after deletion
-                val history = api.get("/party_membership_history", token, "party_membership_id" to "eq.$membership")
+                val history = api.get(
+                    "/party_membership_history",
+                    token,
+                    "party_membership_id" to "eq.$membership",
+                    "replaced_at" to "not.is.null",
+                )
                 history.status shouldBe HttpStatusCode.OK
                 history.body<List<PartyMembershipHistoryResponse>>().shouldNotBeEmpty()
 
@@ -177,14 +189,23 @@ class PartyMembershipApiTest :
                 }
 
                 // RLS: PTYM-COM002
-                test("${role.type} can read the history of the memberships of its own party") {
+                test("${role.type} can read the archived revisions of the memberships of its own party") {
                     val actor = seed { insertActor(role) }
                     val membership = seed { insertPartyMembership(actor.partyId!!, insertPersonEntity()) }
+                    // only an update or delete archives a revision, and the view lists the current membership too
+                    seed { updatePartyMembershipScopes(membership, listOf("read:data")) }
 
-                    val history = api.get("/party_membership_history", actor.token(), "party_membership_id" to "eq.$membership")
+                    val history = api.get(
+                        "/party_membership_history",
+                        actor.token(),
+                        "party_membership_id" to "eq.$membership",
+                        "replaced_at" to "not.is.null",
+                    )
 
                     history.status shouldBe HttpStatusCode.OK
-                    history.body<List<PartyMembershipHistoryResponse>>().shouldNotBeEmpty()
+                    val revisions = history.body<List<PartyMembershipHistoryResponse>>()
+                    revisions.shouldNotBeEmpty()
+                    revisions.forEach { it.replacedAt.shouldNotBeNull() }
                 }
             }
 

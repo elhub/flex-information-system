@@ -14,10 +14,13 @@ enum class TestPartyRole(val abbreviation: String, val type: String, val role: S
     ;
 
     companion object {
-        /** The roles that inherit `flex_common`, i.e. every party role except the organisation. */
-        val common: List<TestPartyRole> = entries - ORG
+        /** The roles that inherit `flex_common`, which is every party role. */
+        val common: List<TestPartyRole> = entries
 
-        /** The common roles that have no row level access of their own beyond `flex_common` and `flex_entity`. */
-        val withoutRla: List<TestPartyRole> = common - FISO
+        /**
+         * The common roles that have no row level access of their own beyond `flex_common` and `flex_entity`.
+         * The FISO and the organisation have policies of their own.
+         */
+        val withoutRla: List<TestPartyRole> = common - FISO - ORG
     }
 }

@@ -4,6 +4,7 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpStatusCode
 import no.elhub.flex.ApiSpec
@@ -104,13 +105,21 @@ class PartyApiTest :
         context("a party of any role") {
             for (role in TestPartyRole.common) {
                 // RLS: PTY-COM001
-                test("${role.type} can read the history of a party that it can read") {
+                test("${role.type} can read the archived revisions of a party that it can read") {
                     val actor = seed { insertActor(role) }
+                    // the view of the history also lists the current party, so an archived revision is needed
+                    seed { renameParty(actor.partyId!!, "Renamed ${role.abbreviation}") }
 
-                    val list = api.get("/party_history", actor.token(), "party_id" to "eq.${actor.partyId}")
+                    val list = api.get(
+                        "/party_history",
+                        actor.token(),
+                        "party_id" to "eq.${actor.partyId}",
+                        "replaced_at" to "not.is.null",
+                    )
                     list.status shouldBe HttpStatusCode.OK
                     val history = list.body<List<PartyHistoryResponse>>()
                     history.shouldNotBeEmpty()
+                    history.forEach { it.replacedAt.shouldNotBeNull() }
 
                     val read = api.get("/party_history/${history.first().id}", actor.token())
                     read.status shouldBe HttpStatusCode.OK

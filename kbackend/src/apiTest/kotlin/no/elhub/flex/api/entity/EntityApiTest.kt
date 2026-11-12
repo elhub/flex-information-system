@@ -162,7 +162,7 @@ class EntityApiTest :
 
         context("a party of any role") {
             // a FISO sees every entity, see above
-            for (role in TestPartyRole.withoutRla) {
+            for (role in TestPartyRole.common - TestPartyRole.FISO) {
                 // RLS: ENT-COM001
                 test("${role.type} sees all organisation entities, but not other persons") {
                     val actor = seed { insertActor(role) }
@@ -191,13 +191,18 @@ class EntityApiTest :
             }
 
             // RLS: ENT-COM003
-            test("can read the entity that owns its party") {
-                val so = seed { insertActor(TestPartyRole.SO) }
+            test("can read the entity that owns its party, also when that is a person") {
+                // a person owner is not visible through ENT-COM001, which only covers organisations
+                val owner = seed { insertPersonEntity("Party owner") }
+                val so = seed { insertActor(TestPartyRole.SO, ownerEntityId = owner) }
+                val ownerOfOtherParty = seed { insertPersonEntity("Owner of another party") }
+                seed { insertActor(TestPartyRole.SO, name = "Other SO", ownerEntityId = ownerOfOtherParty) }
 
-                val response = api.get("/entity/${so.ownerEntityId}", so.token())
+                val response = api.get("/entity/$owner", so.token())
 
                 response.status shouldBe HttpStatusCode.OK
-                response.body<EntityResponse>().id shouldBe so.ownerEntityId
+                response.body<EntityResponse>().id shouldBe owner
+                api.get("/entity/$ownerOfOtherParty", so.token()).status shouldBe HIDDEN_BY_RLS
             }
 
             // there is no row level access beyond ENT-COM001 and ENT-ENT001 for these roles
