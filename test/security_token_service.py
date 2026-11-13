@@ -66,15 +66,6 @@ class TestEntityClient(Enum):
     TEST = "Test"
     COMMON = "Common"
     TEST_ORG = "TestAS"
-    # entity_client restricted to the "Test SP" party (see justfile/test_data.sql)
-    TEST_SP = "TestSP"
-    # narrowly scoped clients used by the scope tests (see justfile/test_data.sql)
-    TEST_SCOPES = "TestScopes"  # use:data manage:auth
-    TEST_PARTY_MEMBERSHIP_ONLY = (
-        "TestPartyMembershipOnly"  # manage:data:party_membership manage:auth
-    )
-    TEST_GRID = "TestGrid"  # read:grid manage:auth
-    TEST_DATA_ONLY = "TestDataOnly"  # read:data manage:auth
 
     # name prefix used to create the parties in the DB
     def party_name_prefix(self):
@@ -104,16 +95,6 @@ class TestEntityClient(Enum):
                 return "df8bee5f-6e60-4a21-8927-e5bcdd4ce768"
             case TestEntityClient.TEST_ORG:
                 return "eed86ad4-9d5c-4d83-a93a-e7675e13a977"
-            case TestEntityClient.TEST_SP:
-                return "85f46ccc-1b07-4591-b830-d2cf4e206e5d"
-            case TestEntityClient.TEST_SCOPES:
-                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a01"
-            case TestEntityClient.TEST_PARTY_MEMBERSHIP_ONLY:
-                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a02"
-            case TestEntityClient.TEST_GRID:
-                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a03"
-            case TestEntityClient.TEST_DATA_ONLY:
-                return "5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a04"
 
 
 """
