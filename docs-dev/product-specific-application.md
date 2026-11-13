@@ -17,18 +17,17 @@
 >   typed Fabrikt variants and extra rules (ranges, lengths, FCR-N equality),
 >   then writes through the `api` view with the role of the caller, so RLS,
 >   field-level grants and the other triggers still apply.
-> * The database only keeps **structural** checks (VAL012 and VAL013): exactly one
->   product type, and details that have the kind of the product type and exist
->   only for product types with a variant. They use the generated table
->   `flex.product_variant` (from `openapi/product-variants.yml`). There is no
->   generic JSON validator in SQL.
+> * All validation of the details (VAL012 and VAL013) is done by the endpoint,
+>   and there is no trigger or lookup table for it in the database. The variants
+>   of each product type are derived from the generated models
+>   (`ProductVariants`). There is no generic JSON validator in SQL.
 > * The **sync of the deprecated mFRR columns** is done by the endpoint, not by
 >   triggers. Writing the old columns for mFRR updates `application_details`, and
 >   the other way around. Direct SQL does not sync them.
-> * The `oneOf` lists and mappings in `openapi-api-base.yml` are written by hand,
->   and the generator checks that they match `openapi/product-variants.yml`.
+> * The `oneOf` lists and mappings in `openapi-api-base.yml` are written by hand.
 > * Existing rows are only validated again when `product_type_ids`,
->   `application_details` or `assessment_details` change.
+>   `application_details`, assessment details or the deprecated columns are in
+>   the request.
 > * Product types without a variant (including mFRR-D) have no details, and the
 >   deprecated columns are not accepted for them.
 
@@ -165,23 +164,9 @@ in `db/flex/reference_data/product_type.csv`.
 | `automatic_frequency_containment`             | `spgpa_application_details_fcr_n` | `spgpa_assessment_details_fcr_n` |
 | `automatic_frequency_containment_disturbance` | `spgpa_application_details_fcr_d` | `spgpa_assessment_details_fcr_d` |
 
-This connection is defined once, in a small build-time file, for example
-`openapi/product-variants.yml`:
-
-```yaml
-- kind: manual_frequency_restoration
-  application: spgpa_application_details_mfrr
-- kind: automatic_frequency_containment
-  application: spgpa_application_details_fcr_n
-  assessment: spgpa_assessment_details_fcr_n
-- kind: automatic_frequency_containment_disturbance
-  application: spgpa_application_details_fcr_d
-  assessment: spgpa_assessment_details_fcr_d
-```
-
-The generators use it for the `oneOf` lists and discriminator mappings, the
-database validation, the table above in the resource docs, and the frontend
-map from `kind` to section components.
+This connection is defined by the `oneOf` list and the discriminator mapping
+of `spgpa_application_details` and `spgpa_assessment_details` in
+`openapi-api-base.yml`. The endpoint reads it from the generated models.
 
 ### Fields per variant
 

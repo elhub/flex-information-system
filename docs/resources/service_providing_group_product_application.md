@@ -40,14 +40,13 @@ The system also checks this regularly, so any missing grid prequalifications are
 
 ## Product-specific details
 
-An application is for **exactly one product type**. The product-specific
-information is stored in two objects, whose variant is selected by the `kind`
-property. The `kind` is the `business_id` of the product type.
-
-* `application_details`: what the service provider asks for.
-* `assessment_details`: the response of the procuring system operator, for
-  example the approved values. It is `null` until the system operator
-  responds.
+An application is for exactly one product type. The product-specific
+information is in `application_details` (written by the service provider) and
+`assessment_details` (written by the procuring system operator). The variant of
+each is selected by `kind`, which is the `business_id` of the product type. The
+fields of the variants are documented in the
+[API documentation](../api/v1/index.html#/operations/create_service_providing_group_product_application).
+An update of either object replaces the whole object.
 
 | `kind` (product type)                         | Application details variant       | Assessment details variant       |
 |-----------------------------------------------|-----------------------------------|----------------------------------|
@@ -55,31 +54,13 @@ property. The `kind` is the `business_id` of the product type.
 | `automatic_frequency_containment`             | `spgpa_application_details_fcr_n` | `spgpa_assessment_details_fcr_n` |
 | `automatic_frequency_containment_disturbance` | `spgpa_application_details_fcr_d` | `spgpa_assessment_details_fcr_d` |
 
-`application_details` is required for product types that have an application
-variant, and must be `null` otherwise. `assessment_details` must be `null` for
-product types without an assessment variant, and its `kind` must be the same as
-the `kind` of `application_details`. Each object is validated against its
-variant: all required properties must be present, no other properties are
-allowed, and types, ranges, lengths and enumerations must be respected. The
-fields of the variants are documented in the
-[API documentation](../api/v1/index.html#/operations/create_service_providing_group_product_application).
-
-The maximum active power is given for both regulation directions (`up` and
-`down`). For FCR-N the values must be equal, both in the application and in the
-assessment.
-
-An update of `application_details` or `assessment_details` replaces the whole
-object. Each role only writes its own object (see field level authorization).
-
 !!! warning "Deprecated fields"
 
     The fields `maximum_active_power_up`, `maximum_active_power_down`,
     `ramping_capability`, `ramping_description` and `additional_information`
     are deprecated and replaced by `application_details`. During a transition
     period, they are kept in sync with `application_details` for
-    `manual_frequency_restoration` applications: writing either one updates the
-    other, and writing both with different values is rejected. They are not
-    accepted for other product types.
+    `manual_frequency_restoration` applications.
 
 ## Relevant links
 
@@ -125,7 +106,8 @@ object. Each role only writes its own object (see field level authorization).
 | SPGPA-VAL010        | Product types can be applied for only once per SPG and system operator.                                                          | DONE   |
 | SPGPA-VAL011        | When `status` is different from `requested` or `rejected`, then `complete_at` must be set in the resource or by the request.     | DONE   |
 | SPGPA-VAL012        | `product_type_ids` must contain exactly one product type.                                                                        | DONE   |
-| SPGPA-VAL013        | `application_details` and `assessment_details` must follow the variant of the product type, see below.                           | DONE   |
+| SPGPA-VAL013        | `application_details` and `assessment_details` must follow the variant of the product type, and have the same `kind`.            | DONE   |
+| SPGPA-VAL014        | The deprecated fields are only accepted for `manual_frequency_restoration`, and must not conflict with `application_details`.    | DONE   |
 
 ## Notifications
 

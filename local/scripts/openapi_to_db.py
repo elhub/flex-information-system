@@ -16,9 +16,6 @@ output_file_backend_schema = "backend/api.sql"
 output_file_embedding_api = f"{DB_DIR}/api/embedding/embedding.sql"
 output_file_embedding_api_history = f"{DB_DIR}/api/embedding/embedding_history.sql"
 output_file_embedding_grid = f"{DB_DIR}/grid/embedding/embedding.sql"
-base_file = "openapi/openapi-api-base.yml"
-product_variants_file = "openapi/product-variants.yml"
-output_file_product_variant = f"{DB_DIR}/flex/product_variant.sql"
 # ------------------------------------------------------------------------------
 
 # this part generates the api.sql input file for sqlc in the backend
@@ -89,83 +86,6 @@ CREATE TABLE api.{resource}_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );\
-"""
-
-
-# ------------------------------------------------------------------------------
-
-# this part generates the table linking each product type to the variants of the
-# product-specific details of the service providing group product application.
-# The details themselves are validated by the write endpoint of the backend,
-# which uses the typed models generated from the same OpenAPI components. The
-# database only checks which product types have details, and their kind.
-
-
-def check_variants_consistency(schemas, variants):
-    # the discriminator mappings of the unions must match the variants file
-    for union, key in [
-        ("spgpa_application_details", "application"),
-        ("spgpa_assessment_details", "assessment"),
-    ]:
-        expected = {
-            v["kind"]: f"#/components/schemas/{v[key]}" for v in variants if key in v
-        }
-        actual = schemas[union]["discriminator"]["mapping"]
-        if expected != actual:
-            raise ValueError(
-                f"discriminator mapping of {union} does not match "
-                f"{product_variants_file}: {actual} != {expected}"
-            )
-        listed = [o["$ref"] for o in schemas[union]["oneOf"]]
-        if sorted(listed) != sorted(expected.values()):
-            raise ValueError(f"oneOf of {union} does not match {product_variants_file}")
-    # the kind of each variant must be the kind it is connected to
-    for v in variants:
-        for key in ["application", "assessment"]:
-            if key in v:
-                const = schemas[v[key]]["properties"]["kind"]["const"]
-                if const != v["kind"]:
-                    raise ValueError(
-                        f"kind of {v[key]} is {const}, expected {v['kind']}"
-                    )
-
-
-def product_variant_sql():
-    with open(base_file) as f:
-        schemas = yaml.safe_load(f)["components"]["schemas"]
-    with open(product_variants_file) as f:
-        variants = yaml.safe_load(f)
-
-    check_variants_consistency(schemas, variants)
-
-    values = ",\n".join(
-        f"    ('{v['kind']}', "
-        + (f"'{v['application']}'" if "application" in v else "NULL")
-        + ", "
-        + (f"'{v['assessment']}'" if "assessment" in v else "NULL")
-        + ")"
-        for v in variants
-    )
-
-    return f"""\
---liquibase formatted sql
--- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
--- noqa: disable=all
-
--- changeset flex:product-variant-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS flex.product_variant (
-    kind text PRIMARY KEY,
-    application_variant text NULL,
-    assessment_variant text NULL
-);
-
--- changeset flex:product-variant-data runOnChange:true endDelimiter:--
-DELETE FROM flex.product_variant;
-
-INSERT INTO flex.product_variant (
-    kind, application_variant, assessment_variant
-) VALUES
-{values};
 """
 
 
@@ -328,9 +248,6 @@ if __name__ == "__main__":
                     "resource_view.j2.sql",
                     f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
                 )
-
-        with open(output_file_product_variant, "w") as f:
-            f.write(product_variant_sql())
 
         # generate embedding functions for all FK relationships with cardinality
         api_rels = relationship.collect(resources, module="api")

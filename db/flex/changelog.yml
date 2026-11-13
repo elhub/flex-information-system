@@ -348,9 +348,6 @@ databaseChangeLog:
       file: ./service_providing_group_product_application_migrations.sql
       relativeToChangelogFile: true
   - include:
-      file: ./product_variant.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./service_providing_group_product_application_details.sql
       relativeToChangelogFile: true
   - include:
