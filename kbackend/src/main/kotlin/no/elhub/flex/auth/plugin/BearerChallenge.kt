@@ -19,6 +19,10 @@ object BearerChallenge {
     /** For requests without credentials: no error code is given. */
     const val MISSING_TOKEN = AuthScheme.Bearer
 
+    /** For a request whose `Authorization` header is not a bearer one. */
+    fun invalidRequest(description: String): String =
+        render("error" to "invalid_request", "error_description" to description)
+
     /** For a token that is expired, malformed, or invalid for other reasons. */
     fun invalidToken(description: String): String =
         render("error" to "invalid_token", "error_description" to description)

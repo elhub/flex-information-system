@@ -82,8 +82,3 @@ func (a accessToken) Sign(options ...jws.SignOption) ([]byte, error) {
 
 	return token, nil
 }
-
-// newUnixExpirationTime returns a unixTime with the current time plus the given duration in seconds.
-func newUnixExpirationTime(tokenDurationSeconds int) unixTime {
-	return unixTime{time.Now().Add(time.Duration(tokenDurationSeconds) * time.Second)}
-}

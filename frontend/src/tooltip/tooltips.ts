@@ -894,6 +894,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -926,6 +928,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application_history.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application_history.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

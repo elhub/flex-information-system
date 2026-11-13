@@ -81,4 +81,9 @@ public data class ServiceProvidingGroupProductApplicationCreateRequest(
    */
   @SerialName("complete_at")
   public val completeAt: Instant? = null,
+  /**
+   * When the product application was put to requested.
+   */
+  @SerialName("requested_at")
+  public val requestedAt: Instant? = null,
 )

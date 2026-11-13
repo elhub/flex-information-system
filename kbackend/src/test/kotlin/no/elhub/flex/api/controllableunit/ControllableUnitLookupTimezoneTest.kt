@@ -106,7 +106,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 apiKey = "test-api-key",
                 syncEnabled = true,
             ),
-            flexConfig = FlexConfig("Europe/Oslo"),
+            flexConfig = FlexConfig("Europe/Oslo", "https://flex.test/"),
         )
     }
 

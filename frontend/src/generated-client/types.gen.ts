@@ -3041,6 +3041,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3089,6 +3093,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3145,6 +3153,10 @@ export type ServiceProvidingGroupProductApplication = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4568,6 +4580,10 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   complete_at?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -5793,6 +5809,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   complete_at?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * Embedded service_providing_group
    */
   service_providing_group?: ServiceProvidingGroupWritable | null;
@@ -6739,6 +6759,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * Reference to the resource that was updated.
    */
