@@ -93,6 +93,7 @@ export const zAuthScope = z.enum([
   "read:data:service_providing_group_grid_prequalification_comment",
   "read:data:service_providing_group_grid_prequalification_comment_history",
   "read:data:service_providing_group_grid_prequalification_history",
+  "read:data:service_providing_group_grid_prequalification_substation_power",
   "read:data:service_providing_group_grid_suspension",
   "read:data:service_providing_group_grid_suspension_comment",
   "read:data:service_providing_group_grid_suspension_comment_history",
@@ -1528,6 +1529,24 @@ export const zServiceProvidingGroupPowerPerSubstation = z.object({
 });
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export const zServiceProvidingGroupGridPrequalificationSubstationPower =
+  z.object({
+    service_providing_group_grid_prequalification_id: z.coerce
+      .number()
+      .readonly(),
+    substation_business_id: z.string().readonly(),
+    substation_name: z.string().readonly(),
+    controllable_unit_count: z.coerce.number().readonly(),
+    maximum_active_power: z.coerce.number().readonly(),
+    total_approved_maximum_active_power: z.coerce.number().readonly(),
+    service_providing_group_grid_prequalification: z
+      .lazy((): any => zServiceProvidingGroupGridPrequalification)
+      .nullish(),
+  });
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export const zServiceProvidingGroupSummary = z.object({
@@ -1627,6 +1646,9 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+  substation_power: z
+    .array(zServiceProvidingGroupGridPrequalificationSubstationPower)
+    .nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
   comment: z
@@ -2778,6 +2800,16 @@ export const zServiceProvidingGroupPowerPerSubstationWritable = z.object({
 });
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export const zServiceProvidingGroupGridPrequalificationSubstationPowerWritable =
+  z.object({
+    service_providing_group_grid_prequalification: z
+      .lazy((): any => zServiceProvidingGroupGridPrequalificationWritable)
+      .nullish(),
+  });
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export const zServiceProvidingGroupSummaryWritable = z.object({
@@ -2838,6 +2870,9 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  substation_power: z
+    .array(zServiceProvidingGroupGridPrequalificationSubstationPowerWritable)
+    .nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
   comment: z
@@ -4486,6 +4521,26 @@ export const zReadServiceProvidingGroupPowerPerSubstationQuery = z.object({
  */
 export const zReadServiceProvidingGroupPowerPerSubstationResponse =
   zServiceProvidingGroupPowerPerSubstation;
+
+export const zListServiceProvidingGroupGridPrequalificationSubstationPowerQuery =
+  z.object({
+    service_providing_group_grid_prequalification_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    substation_business_id: z.string().optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupGridPrequalificationSubstationPowerResponse =
+  z.union([
+    z.array(zServiceProvidingGroupGridPrequalificationSubstationPower),
+    z.array(zServiceProvidingGroupGridPrequalificationSubstationPower),
+  ]);
 
 export const zReadServiceProvidingGroupSummaryPath = z.object({
   id: z.coerce.number(),

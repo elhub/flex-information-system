@@ -10,15 +10,24 @@ import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../ServiceProvidingGroupGridPrequalificationHistoryList";
 import { Permissions } from "../../../auth/permissions";
 import { SpgpqChangesTab } from "./SpgpqChangesTab";
+import { SpgpqPowerPerSubstationTab } from "./SpgpqPowerPerSubstationTab";
+import type { Scale } from "../../../utils/scales";
 
 type Props = {
   spgId: number;
   spgpqId: number;
   spg: ServiceProvidingGroup | undefined;
   spgpq: ServiceProvidingGroupGridPrequalification;
+  powerScale: Scale;
 };
 
-export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
+export const SpgpqShowTabs = ({
+  spgId,
+  spgpqId,
+  spg,
+  spgpq,
+  powerScale,
+}: Props) => {
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -33,6 +42,13 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
     identity?.role === "flex_flexibility_information_system_operator";
   const canViewComments =
     isImpactedSystemOperator || isSpgServiceProvider || isFiso;
+
+  const showPowerPerSubstation =
+    (isImpactedSystemOperator || isFiso) &&
+    !!permissions?.allow(
+      "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+      "read",
+    );
 
   const showChanges = isImpactedSystemOperator || isFiso;
   // changes can only be approved when the grid prequalification is approved
@@ -55,6 +71,12 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
         {showChanges && (
           <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
         )}
+        {showPowerPerSubstation && (
+          <Tabs.Tab
+            label={translate("text.tab.power_per_substation")}
+            value="power_per_substation"
+          />
+        )}
         {canViewComments && (
           <Tabs.Tab label={translate("text.tab.comments")} value="comments" />
         )}
@@ -75,6 +97,14 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
             key={`${spgpq.id}-${spgpq.prequalified_at}`}
             spgpq={spgpq}
             canApprove={canApproveChanges}
+          />
+        </Tabs.Panel>
+      )}
+      {showPowerPerSubstation && (
+        <Tabs.Panel value="power_per_substation">
+          <SpgpqPowerPerSubstationTab
+            spgpqId={spgpqId}
+            powerScale={powerScale}
           />
         </Tabs.Panel>
       )}

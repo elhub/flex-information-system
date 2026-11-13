@@ -480,6 +480,15 @@ type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ReplacedAt                                  pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupGridPrequalificationSubstationPower struct {
+	ServiceProvidingGroupGridPrequalificationID int
+	SubstationBusinessID                        []byte
+	SubstationName                              []byte
+	ControllableUnitCount                       []byte
+	MaximumActivePower                          []byte
+	TotalApprovedMaximumActivePower             []byte
+}
+
 type ApiServiceProvidingGroupGridSuspension struct {
 	ID                       int
 	ImpactedSystemOperatorID int

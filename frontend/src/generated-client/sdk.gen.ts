@@ -248,6 +248,9 @@ import type {
   ListServiceProvidingGroupGridPrequalificationHistoryErrors,
   ListServiceProvidingGroupGridPrequalificationHistoryResponses,
   ListServiceProvidingGroupGridPrequalificationResponses,
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerData,
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
   ListServiceProvidingGroupGridSuspensionCommentData,
   ListServiceProvidingGroupGridSuspensionCommentErrors,
   ListServiceProvidingGroupGridSuspensionCommentHistoryData,
@@ -1385,6 +1388,33 @@ export const readServiceProvidingGroupPowerPerSubstation = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/service_providing_group_power_per_substation/{id}",
+    ...options,
+  });
+
+/**
+ * List Service Providing Group Grid Prequalification Substation Power
+ *
+ * List [Service Providing Group Grid Prequalification Substation Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_power/)
+ */
+export const listServiceProvidingGroupGridPrequalificationSubstationPower = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    ListServiceProvidingGroupGridPrequalificationSubstationPowerData,
+    ThrowOnError
+  >,
+): RequestResult<
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
+  ThrowOnError
+> =>
+  (options?.client ?? client).get<
+    ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
+    ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_grid_prequalification_substation_power",
     ...options,
   });
 
