@@ -164,6 +164,8 @@ public enum class AuthScope(
   READ_DATA_SERVICE_PROVIDING_GROUP_GRID_PREQUALIFICATION_COMMENT_HISTORY("read:data:service_providing_group_grid_prequalification_comment_history"),
   @SerialName("read:data:service_providing_group_grid_prequalification_history")
   READ_DATA_SERVICE_PROVIDING_GROUP_GRID_PREQUALIFICATION_HISTORY("read:data:service_providing_group_grid_prequalification_history"),
+  @SerialName("read:data:service_providing_group_grid_prequalification_substation_power")
+  READ_DATA_SERVICE_PROVIDING_GROUP_GRID_PREQUALIFICATION_SUBSTATION_POWER("read:data:service_providing_group_grid_prequalification_substation_power"),
   @SerialName("read:data:service_providing_group_grid_suspension")
   READ_DATA_SERVICE_PROVIDING_GROUP_GRID_SUSPENSION("read:data:service_providing_group_grid_suspension"),
   @SerialName("read:data:service_providing_group_grid_suspension_comment")

@@ -35,6 +35,10 @@
             "description": "Service Providing Group Power Per Substation"
         },
         {
+            "name": "service_providing_group_grid_prequalification_substation_power",
+            "description": "Service Providing Group Grid Prequalification Substation Power"
+        },
+        {
             "name": "service_providing_group_summary",
             "description": "Service Providing Group Summary"
         },
@@ -313,6 +317,7 @@
                     "read:data:service_providing_group_grid_prequalification_comment",
                     "read:data:service_providing_group_grid_prequalification_comment_history",
                     "read:data:service_providing_group_grid_prequalification_history",
+                    "read:data:service_providing_group_grid_prequalification_substation_power",
                     "read:data:service_providing_group_grid_suspension",
                     "read:data:service_providing_group_grid_suspension_comment",
                     "read:data:service_providing_group_grid_suspension_comment_history",
@@ -2357,6 +2362,70 @@
                     "substations"
                 ]
             },
+            "service_providing_group_grid_prequalification_substation_power_response": {
+                "summary": "Response - Service Providing Group Grid Prequalification Substation Power",
+                "description": "Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.",
+                "type": "object",
+                "properties": {
+                    "service_providing_group_grid_prequalification_id": {
+                        "description": "The ID of the service providing group grid prequalification.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "substation_business_id": {
+                        "description": "Business ID of the substation.",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    "substation_name": {
+                        "description": "Name of the substation.",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "Substation A"
+                    },
+                    "controllable_unit_count": {
+                        "description": "Number of controllable units currently in the service providing group at the substation.",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 3
+                    },
+                    "maximum_active_power": {
+                        "description": "Sum of the maximum active power of the controllable units currently in the service providing group at the substation, in kW.",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 120
+                    },
+                    "total_approved_maximum_active_power": {
+                        "description": "Total approved flexible power at the substation, in kW. It is the sum of the maximum active power of the controllable units of all service providing groups with an approved or conditionally approved grid prequalification for the same impacted system operator, each controllable unit counted once. Controllable units added to a group after its approval are not included until the changes are approved. Controllable units without a substation are not included. Zero when nothing is approved.",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 310
+                    },
+                    "service_providing_group_grid_prequalification": {
+                        "description": "Embedded service_providing_group_grid_prequalification",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "service_providing_group_grid_prequalification_id",
+                    "substation_business_id",
+                    "substation_name",
+                    "controllable_unit_count",
+                    "maximum_active_power",
+                    "total_approved_maximum_active_power"
+                ]
+            },
             "service_providing_group_summary_response": {
                 "summary": "Response - Service Providing Group Summary",
                 "description": "Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.",
@@ -3020,6 +3089,21 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "substation_power": {
+                        "description": "Embedded service_providing_group_grid_prequalification_substation_power",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "service_providing_group": {
                         "description": "Embedded service_providing_group",
@@ -14662,6 +14746,195 @@
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }
+                ]
+            }
+        },
+        "/service_providing_group_grid_prequalification_substation_power": {
+            "summary": "Service Providing Group Grid Prequalification Substation Power",
+            "description": "",
+            "get": {
+                "operationId": "list_service_providing_group_grid_prequalification_substation_power",
+                "summary": "List Service Providing Group Grid Prequalification Substation Power",
+                "description": "List [Service Providing Group Grid Prequalification Substation Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_power/)",
+                "tags": [
+                    "service_providing_group_grid_prequalification_substation_power"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the service providing group grid prequalification.",
+                        "name": "service_providing_group_grid_prequalification_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "substation_business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somesubstation_business_id",
+                        "description": "Business ID of the substation."
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_prequalification_substation_power"
+                        ]
+                    },
+                    {}
                 ]
             }
         },

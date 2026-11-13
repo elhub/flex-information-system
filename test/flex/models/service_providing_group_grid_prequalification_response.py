@@ -17,6 +17,9 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_grid_prequalification_comment_response import (
         ServiceProvidingGroupGridPrequalificationCommentResponse,
     )
+    from ..models.service_providing_group_grid_prequalification_substation_power_response import (
+        ServiceProvidingGroupGridPrequalificationSubstationPowerResponse,
+    )
     from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
 
@@ -39,6 +42,8 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         prequalified_at (datetime.datetime | None | Unset): When the current grid prequalification was last approved.
             Example: 2023-01-08T10:00:00+01.
+        substation_power (list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse] | None | Unset):
+            Embedded service_providing_group_grid_prequalification_substation_power
         service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
         impacted_system_operator (None | PartyResponse | Unset): Embedded party
         comment (list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset): Embedded
@@ -52,6 +57,7 @@ class ServiceProvidingGroupGridPrequalificationResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     prequalified_at: datetime.datetime | None | Unset = UNSET
+    substation_power: list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse] | None | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     impacted_system_operator: None | PartyResponse | Unset = UNSET
     comment: list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset = UNSET
@@ -80,6 +86,18 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             prequalified_at = self.prequalified_at.isoformat()
         else:
             prequalified_at = self.prequalified_at
+
+        substation_power: list[dict[str, Any]] | None | Unset
+        if isinstance(self.substation_power, Unset):
+            substation_power = UNSET
+        elif isinstance(self.substation_power, list):
+            substation_power = []
+            for substation_power_type_0_item_data in self.substation_power:
+                substation_power_type_0_item = substation_power_type_0_item_data.to_dict()
+                substation_power.append(substation_power_type_0_item)
+
+        else:
+            substation_power = self.substation_power
 
         service_providing_group: dict[str, Any] | None | Unset
         if isinstance(self.service_providing_group, Unset):
@@ -123,6 +141,8 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         )
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
+        if substation_power is not UNSET:
+            field_dict["substation_power"] = substation_power
         if service_providing_group is not UNSET:
             field_dict["service_providing_group"] = service_providing_group
         if impacted_system_operator is not UNSET:
@@ -137,6 +157,9 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         from ..models.party_response import PartyResponse  # noqa: PLC0415
         from ..models.service_providing_group_grid_prequalification_comment_response import (
             ServiceProvidingGroupGridPrequalificationCommentResponse,  # noqa: PLC0415
+        )
+        from ..models.service_providing_group_grid_prequalification_substation_power_response import (
+            ServiceProvidingGroupGridPrequalificationSubstationPowerResponse,  # noqa: PLC0415
         )
         from ..models.service_providing_group_response import ServiceProvidingGroupResponse  # noqa: PLC0415
 
@@ -169,6 +192,34 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
+
+        def _parse_substation_power(
+            data: object,
+        ) -> list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                substation_power_type_0 = []
+                _substation_power_type_0 = data
+                for substation_power_type_0_item_data in _substation_power_type_0:
+                    substation_power_type_0_item = (
+                        ServiceProvidingGroupGridPrequalificationSubstationPowerResponse.from_dict(
+                            substation_power_type_0_item_data
+                        )
+                    )
+
+                    substation_power_type_0.append(substation_power_type_0_item)
+
+                return substation_power_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse] | None | Unset, data)
+
+        substation_power = _parse_substation_power(d.pop("substation_power", UNSET))
 
         def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
             if data is None:
@@ -238,6 +289,7 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             prequalified_at=prequalified_at,
+            substation_power=substation_power,
             service_providing_group=service_providing_group,
             impacted_system_operator=impacted_system_operator,
             comment=comment,

@@ -626,6 +626,100 @@ resources:
                 min: 30
                 max: 80
 
+  - id: service_providing_group_grid_prequalification_substation_power
+    acronym: SPGGPPPS
+    name: Service Providing Group Grid Prequalification Substation Power
+    summary: Service Providing Group Grid Prequalification Substation Power
+    description: >-
+      Flexible power per substation for a service providing group grid
+      prequalification, together with the total approved flexible power of the
+      substation across all approved grid prequalifications of the same
+      impacted system operator.
+    x-intl:
+      en: Service Providing Group Grid Prequalification Substation Power
+      nb: Effekt per transformatorstasjon for nettprekvalifisering av fleksibilitetsgruppe
+      nn: Effekt per transformatorstasjon for nettprekvalifisering av fleksibilitetsgruppe
+    operations:
+      - list
+    history: []
+    history_rls: false
+    generate_views: false
+    comments: false
+    module: api
+    audit: false
+    properties:
+      service_providing_group_grid_prequalification_id:
+        description: >-
+          The ID of the service providing group grid prequalification.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: service_providing_group_grid_prequalification
+          field: id
+          cardinality: many-to-one
+        example: 4
+        x-intl:
+          en: Service Providing Group Grid Prequalification ID
+          nb: Nettprekvalifisering-ID for fleksibilitetsgruppe
+          nn: Nettprekvalifisering-ID for fleksibilitetsgruppe
+      substation_business_id:
+        description: >-
+          Business ID of the substation.
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        x-intl:
+          en: Substation Business ID
+          nb: Forretnings-ID for transformatorstasjon
+          nn: Forretnings-ID for transformatorstasjon
+      substation_name:
+        description: >-
+          Name of the substation.
+        type: string
+        readOnly: true
+        example: "Substation A"
+        x-intl:
+          en: Substation Name
+          nb: Navn på transformatorstasjon
+          nn: Navn på transformatorstasjon
+      controllable_unit_count:
+        description: >-
+          Number of controllable units currently in the service providing group at the substation.
+        type: integer
+        readOnly: true
+        example: 3
+        x-intl:
+          en: Controllable unit count
+          nb: Antall styrbare enheter
+          nn: Antall styrbare enheter
+      maximum_active_power:
+        description: >-
+          Sum of the maximum active power of the controllable units currently in the service providing group at the substation, in kW.
+        type: number
+        readOnly: true
+        example: 120
+        x-intl:
+          en: Maximum active power
+          nb: Maksimal aktiv effekt
+          nn: Maksimal aktiv effekt
+      total_approved_maximum_active_power:
+        description: >-
+          Total approved flexible power at the substation, in kW. It is the sum of the maximum active power of
+          the controllable units of all service providing groups with an approved or conditionally approved
+          grid prequalification for the same impacted system operator, each controllable unit counted once.
+          Controllable units added to a group after its approval are not included until the changes are
+          approved. Controllable units without a substation are not included. Zero when nothing is approved.
+        type: number
+        readOnly: true
+        example: 310
+        x-intl:
+          en: Total approved maximum active power
+          nb: Total godkjent maksimal aktiv effekt
+          nn: Total godkjent maksimal aktiv effekt
+
   - id: service_providing_group_summary
     acronym: SPGSU
     name: Service Providing Group Summary

@@ -79,6 +79,7 @@ export type TextKey =
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
+  | "table.header.total_approved_flexible_power"
   | "table.header.aggregated_rated_power"
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
@@ -405,6 +406,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_spg_id: "SPG ID",
     cu_spg_empty: "No service providing groups for this controllable unit.",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
+    "table.header.total_approved_flexible_power":
+      "Total approved flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
@@ -791,6 +794,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
+    "table.header.total_approved_flexible_power":
+      "Total godkjent fleksibel effekt",
     "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",

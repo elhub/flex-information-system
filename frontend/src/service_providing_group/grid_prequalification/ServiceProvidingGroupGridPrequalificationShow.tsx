@@ -12,6 +12,11 @@ import { spgpqStatusVariantMap } from "./spgpqStatus";
 import { useTranslateEnum } from "../../intl/intl";
 import type { EnumLabel } from "../../intl/enum-labels";
 import { IconPencil } from "@elhub/ds-icons";
+import { useState } from "react";
+import { ScaleToggle } from "../../components/ScaleToggle";
+import { KILO, MEGA, Scale } from "../../utils/scales";
+
+const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const spgpqId = Number(useParams<{ id: string }>().id);
@@ -19,6 +24,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
   const { data: identity } = useGetIdentity();
+  const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
   const { data: spgpq, isPending, error } = useSpgpqRecord(spgpqId);
   const spg = useServiceProvidingGroup(spgpq?.service_providing_group_id);
@@ -69,6 +75,14 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
       secondaryHeaderText={`Grid Prequalification #${spgpq.id}`}
       mainHeaderText={`${spg.data?.name ?? ""}`}
       status={spgpqStatus}
+      displayControls={
+        <ScaleToggle
+          unit="W"
+          options={POWER_SCALE_OPTIONS}
+          value={powerScale}
+          onChange={setPowerScale}
+        />
+      }
       workflowActions={canUpdateStatus && <SpgpqActionBar spgpq={spgpq} />}
       moreActions={[
         {
@@ -92,6 +106,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
           spgpqId={spgpq.id}
           spg={spg.data}
           spgpq={spgpq}
+          powerScale={powerScale}
         />
       }
     />

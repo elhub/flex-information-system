@@ -107,6 +107,7 @@ export type AuthScope =
   | "read:data:service_providing_group_grid_prequalification_comment"
   | "read:data:service_providing_group_grid_prequalification_comment_history"
   | "read:data:service_providing_group_grid_prequalification_history"
+  | "read:data:service_providing_group_grid_prequalification_substation_power"
   | "read:data:service_providing_group_grid_suspension"
   | "read:data:service_providing_group_grid_suspension_comment"
   | "read:data:service_providing_group_grid_suspension_comment_history"
@@ -1183,6 +1184,40 @@ export type ServiceProvidingGroupPowerPerSubstation = {
 };
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export type ServiceProvidingGroupGridPrequalificationSubstationPower = {
+  /**
+   * The ID of the service providing group grid prequalification.
+   */
+  readonly service_providing_group_grid_prequalification_id: number;
+  /**
+   * Business ID of the substation.
+   */
+  readonly substation_business_id: string;
+  /**
+   * Name of the substation.
+   */
+  readonly substation_name: string;
+  /**
+   * Number of controllable units currently in the service providing group at the substation.
+   */
+  readonly controllable_unit_count: number;
+  /**
+   * Sum of the maximum active power of the controllable units currently in the service providing group at the substation, in kW.
+   */
+  readonly maximum_active_power: number;
+  /**
+   * Total approved flexible power at the substation, in kW. It is the sum of the maximum active power of the controllable units of all service providing groups with an approved or conditionally approved grid prequalification for the same impacted system operator, each controllable unit counted once. Controllable units added to a group after its approval are not included until the changes are approved. Controllable units without a substation are not included. Zero when nothing is approved.
+   */
+  readonly total_approved_maximum_active_power: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummary = {
@@ -1475,6 +1510,10 @@ export type ServiceProvidingGroupGridPrequalification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification_substation_power
+   */
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPower> | null;
   /**
    * Embedded service_providing_group
    */
@@ -5060,6 +5099,16 @@ export type ServiceProvidingGroupPowerPerSubstationWritable = {
 };
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export type ServiceProvidingGroupGridPrequalificationSubstationPowerWritable = {
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummaryWritable = {
@@ -5168,6 +5217,10 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    * When the current grid prequalification was last approved.
    */
   prequalified_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_substation_power
+   */
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPowerWritable> | null;
   /**
    * Embedded service_providing_group
    */
@@ -8903,6 +8956,92 @@ export type ReadServiceProvidingGroupPowerPerSubstationResponses = {
 
 export type ReadServiceProvidingGroupPowerPerSubstationResponse =
   ReadServiceProvidingGroupPowerPerSubstationResponses[keyof ReadServiceProvidingGroupPowerPerSubstationResponses];
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The ID of the service providing group grid prequalification.
+     */
+    service_providing_group_grid_prequalification_id?: string;
+    /**
+     * Business ID of the substation.
+     */
+    substation_business_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_grid_prequalification_substation_power";
+};
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Not Acceptable
+     */
+    406: ErrorMessage;
+    /**
+     * Range Not Satisfiable
+     */
+    416: ErrorMessage;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerError =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors];
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses =
+  {
+    /**
+     * OK
+     */
+    200: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
+    /**
+     * Partial Content
+     */
+    206: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
+  };
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponse =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses];
 
 export type ReadServiceProvidingGroupSummaryData = {
   body?: never;
