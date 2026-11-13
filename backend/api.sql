@@ -580,6 +580,7 @@ CREATE TABLE api.service_providing_group_product_application (
     ramping_description text NULL,
     created_at timestamp with time zone NOT NULL,
     complete_at timestamp with time zone NULL,
+    requested_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -599,6 +600,7 @@ CREATE TABLE api.service_providing_group_product_application_history (
     ramping_description text NULL,
     created_at timestamp with time zone NOT NULL,
     complete_at timestamp with time zone NULL,
+    requested_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

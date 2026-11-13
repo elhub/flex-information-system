@@ -4211,6 +4211,16 @@ resources:
           en: Complete at
           nb: Fullført
           nn: Fullført
+      requested_at:
+        description: When the product application was put to requested.
+        format: date-time
+        type: string
+        nullable: true
+        example: "2022-08-08T12:00:00+02"
+        x-intl:
+          en: Requested at
+          nb: Tidspunkt for forespørsel
+          nn: Tidpunkt for forespørsel
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

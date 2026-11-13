@@ -6298,6 +6298,13 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -6394,6 +6401,13 @@
                     },
                     "complete_at": {
                         "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
@@ -6515,6 +6529,13 @@
                     },
                     "complete_at": {
                         "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
@@ -9603,6 +9624,13 @@
                     },
                     "complete_at": {
                         "description": "When the application was last marked complete by the procuring system operator.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2022-08-08T12:00:00+02"
+                    },
+                    "requested_at": {
+                        "description": "When the product application was put to requested.",
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,

@@ -105,6 +105,12 @@ export const useSpgpaShowSummary = ({
     },
     {
       tooltip: true,
+      shouldShow: !!spgpa.requested_at,
+      labelKey: "service_providing_group_product_application.requested_at",
+      value: toDateTimeString(spgpa.requested_at),
+    },
+    {
+      tooltip: true,
       shouldShow: !!spgpa.prequalified_at,
       labelKey: "service_providing_group_product_application.prequalified_at",
       value: toDateTimeString(spgpa.prequalified_at),

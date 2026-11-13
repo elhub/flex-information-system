@@ -1129,6 +1129,7 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
     zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
   ramping_description: z.string().optional(),
   complete_at: z.iso.datetime({ offset: true }).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
 });
 
 /**
@@ -1148,6 +1149,7 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
     zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
   ramping_description: z.string().optional(),
   complete_at: z.iso.datetime({ offset: true }).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
 });
 
 /**
@@ -2078,6 +2080,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   ramping_description: z.string().optional(),
   created_at: z.iso.datetime({ offset: true }).readonly(),
   complete_at: z.iso.datetime({ offset: true }).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_providing_group: zServiceProvidingGroup.nullish(),
@@ -2552,6 +2555,7 @@ export const zServiceProvidingGroupProductApplicationHistory = z.object({
   ramping_description: z.string().optional(),
   created_at: z.iso.datetime({ offset: true }).readonly(),
   complete_at: z.iso.datetime({ offset: true }).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_providing_group_product_application_id: z.coerce.number(),
@@ -3184,6 +3188,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
     zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
   ramping_description: z.string().optional(),
   complete_at: z.iso.datetime({ offset: true }).optional(),
+  requested_at: z.iso.datetime({ offset: true }).optional(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   procuring_system_operator: zPartyWritable.nullish(),
   attachment: z
@@ -3608,6 +3613,7 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
       zServiceProvidingGroupProductApplicationRampingCapability.nullish(),
     ramping_description: z.string().optional(),
     complete_at: z.iso.datetime({ offset: true }).optional(),
+    requested_at: z.iso.datetime({ offset: true }).optional(),
     service_providing_group_product_application_id: z.coerce.number(),
     replaced_by: z.coerce.number().optional(),
     replaced_at: z.iso.datetime({ offset: true }).optional(),

@@ -59,6 +59,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             We ensure linearity on a minute resolution..
         complete_at (datetime.datetime | None | Unset): When the application was last marked complete by the procuring
             system operator. Example: 2022-08-08T12:00:00+02.
+        requested_at (datetime.datetime | None | Unset): When the product application was put to requested. Example:
+            2022-08-08T12:00:00+02.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -88,6 +90,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
     complete_at: datetime.datetime | None | Unset = UNSET
+    requested_at: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     service_providing_group_history: list[ServiceProvidingGroupHistoryResponse] | None | Unset = UNSET
@@ -162,6 +165,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             complete_at = self.complete_at.isoformat()
         else:
             complete_at = self.complete_at
+
+        requested_at: None | str | Unset
+        if isinstance(self.requested_at, Unset):
+            requested_at = UNSET
+        elif isinstance(self.requested_at, datetime.datetime):
+            requested_at = self.requested_at.isoformat()
+        else:
+            requested_at = self.requested_at
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -256,6 +267,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             field_dict["ramping_description"] = ramping_description
         if complete_at is not UNSET:
             field_dict["complete_at"] = complete_at
+        if requested_at is not UNSET:
+            field_dict["requested_at"] = requested_at
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -394,6 +407,23 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         complete_at = _parse_complete_at(d.pop("complete_at", UNSET))
+
+        def _parse_requested_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                requested_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return requested_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        requested_at = _parse_requested_at(d.pop("requested_at", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -549,6 +579,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             ramping_capability=ramping_capability,
             ramping_description=ramping_description,
             complete_at=complete_at,
+            requested_at=requested_at,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
             service_providing_group_history=service_providing_group_history,

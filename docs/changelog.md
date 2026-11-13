@@ -25,3 +25,7 @@ This changelog tracks all changes that are visible in our API.
 
 * **Initial public release of the Flexibility Information System API.**
   All endpoints are available under `Api-Version: 2026-06-08`.
+
+## 2026-12-11
+
+* **Added `requested_at` field to the _Service Providing Group Product Application_ resource.**

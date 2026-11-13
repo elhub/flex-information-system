@@ -436,6 +436,7 @@ export type FieldLabel =
   | "service_providing_group_product_application.ramping_description"
   | "service_providing_group_product_application.recorded_at"
   | "service_providing_group_product_application.recorded_by"
+  | "service_providing_group_product_application.requested_at"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
@@ -473,6 +474,7 @@ export type FieldLabel =
   | "service_providing_group_product_application_history.recorded_by"
   | "service_providing_group_product_application_history.replaced_at"
   | "service_providing_group_product_application_history.replaced_by"
+  | "service_providing_group_product_application_history.requested_at"
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
@@ -1216,6 +1218,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
     "service_providing_group_product_application.complete_at": "Complete at",
+    "service_providing_group_product_application.requested_at": "Requested at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1244,6 +1247,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Created at",
     "service_providing_group_product_application_history.complete_at":
       "Complete at",
+    "service_providing_group_product_application_history.requested_at":
+      "Requested at",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1986,6 +1991,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskrivelse",
     "service_providing_group_product_application.created_at": "Opprettet",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2014,6 +2021,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Opprettet",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2755,6 +2764,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskriving",
     "service_providing_group_product_application.created_at": "Oppretta",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2783,6 +2794,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Oppretta",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
