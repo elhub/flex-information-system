@@ -72,7 +72,7 @@ fun defaultTestApplication(): TestApplication {
                         single<EventRepository> { mockEventRepo }
                         single { FlexMetrics(get()) }
                         single<PartyService> { mockPartyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo", "https://flex.test/")) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo")) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )

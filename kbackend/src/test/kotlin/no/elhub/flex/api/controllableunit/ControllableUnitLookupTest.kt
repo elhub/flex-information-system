@@ -936,7 +936,7 @@ private fun testApp(
                         single<EventRepository> { eventRepo }
                         single { metrics }
                         single<PartyService> { partyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo", "https://flex.test/")) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", "", syncEnabled), FlexConfig("Europe/Oslo")) }
                     },
                 )
             }

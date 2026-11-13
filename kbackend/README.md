@@ -108,13 +108,10 @@ Authentication failures follow
 HTTP 401 with `WWW-Authenticate: Bearer` for a missing token, HTTP 401 with
 `error="invalid_token"` for an invalid or expired one, and HTTP 403 with
 `error="insufficient_scope"` (naming the required scope) when the token lacks
-a scope. Most routes are declared with `authenticatedRouting` and restricted
-with `requireScope` or `requireRoles`; they respond with HTTP 401 when there is
-no token. An `Authorization` header that is not a `Bearer` header is rejected
-with HTTP 400. Some authentication endpoints handling tokens (e.g. `token` or
-`assume`) have a different error handling logic because they follow the OAuth
-flow. They are then declared in a plain `routing` block and read the token on
-their own.
+a scope. All routes are declared with `authenticatedRouting` and restricted with
+`requireScope` or `requireRoles`; they respond with HTTP 401 when there is no
+token. An `Authorization` header that is not a `Bearer` header is rejected with
+HTTP 400.
 
 ### API documentation
 
