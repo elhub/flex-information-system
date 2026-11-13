@@ -28,6 +28,9 @@ data class AccessToken(
     val scope: List<Scope>,
     val expiryUnixSeconds: Long,
 ) {
+    /** The number of seconds until the token expires. */
+    fun expiresIn(): Int = (expiryUnixSeconds - nowUnixSeconds()).toInt()
+
     /** Returns true when the token's expiry time is in the past. */
     fun isExpired(): Boolean = Date(expiryUnixSeconds * MILLIS_PER_SECOND).before(Date())
 
@@ -54,6 +57,12 @@ data class AccessToken(
 
         /** The role of a token that has not assumed a party. */
         private const val ENTITY_ROLE = "flex_entity"
+
+        /** The current time as a Unix timestamp (seconds). */
+        fun nowUnixSeconds(): Long = System.currentTimeMillis() / MILLIS_PER_SECOND
+
+        /** The expiry time of a token issued now, as a Unix timestamp (seconds). */
+        fun newExpiryUnixSeconds(): Long = nowUnixSeconds() + DURATION_SECONDS
 
         /**
          * Verifies [jwt] with HS256 using [secret], then parses the claims into an [AccessToken].

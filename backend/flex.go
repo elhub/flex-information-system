@@ -95,27 +95,6 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 	}
 }
 
-// WrapMiddlewareHandler allows us to use a http.Handler middleware with Gin.
-// It is somewhere between WrapHandler and WrapMiddleware.
-//
-// Use NoOpHandler as a placeholder for the "next" handler since GIN does not work that way.
-func WrapMiddlewareHandler(mid http.Handler) gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		mid.ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
-
-		if ctx.Writer.Written() {
-			ctx.Abort()
-		}
-	}
-}
-
-// NoOpHandler is a http.Handler that does nothing.
-// Useful for using stdlib middleware in gin routers.
-// Stdlib middleware requires a "next".
-//
-//nolint:gochecknoglobals
-var NoOpHandler http.Handler = http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
-
 // lookupBoolEnv reads an optional boolean environment variable, false if unset.
 func lookupBoolEnv(lookupenv func(string) (string, bool), name string) (bool, error) {
 	value, exists := lookupenv(name)
@@ -260,17 +239,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	dataAPIBaseURL := baseURL + "api/v1/"
 	gridAPIBaseURL := baseURL + "grid/v0/"
 
-	isLoginLimitingDisabled := false
-
-	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
-	if exists {
-		isLoginLimitingDisabled = true
-
-		slog.InfoContext(ctx, "Disabled login limiting")
-	} else {
-		slog.InfoContext(ctx, "Default login limiting")
-	}
-
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -304,11 +272,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.DebugContext(ctx, "Creating auth API")
 
 	authAPI := auth.NewAPI(
-		authAPIBaseURL,
-		dbPool,
 		jwtSecret,
 		requestDetailsContextKey,
-		isLoginLimitingDisabled,
 	)
 
 	slog.DebugContext(ctx, "Creating kbackend proxy")
@@ -440,11 +405,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(middleware.Prometheus)
 
 	// routes served by kbackend must be registered before the middleware so they are passed through
-	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))  //nolint:contextcheck
-	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))    //nolint:contextcheck
-	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy)) //nolint:contextcheck
-	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy))  //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy))  //nolint:contextcheck
+	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.POST("/auth/v1/token", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.POST("/auth/v1/assume", WrapHandler(kbackendProxy))   //nolint:contextcheck
+	router.DELETE("/auth/v1/assume", WrapHandler(kbackendProxy)) //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
@@ -458,13 +426,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, openapi.ElementsHandlerFunc("Auth API"))))
 		authRouter.GET("/openapi.json",
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
-		authRouter.POST("/token",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHandler)),
-			authAPI.PostTokenHandler)
-		authRouter.POST("/assume", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
-		authRouter.DELETE("/assume", WrapHandler(
-			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.DeleteAssumeHandler))))
 
 		// data API endpoint
 		router.Match(

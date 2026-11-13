@@ -9,6 +9,7 @@ ktor:
 
 flex:
   timezone: Europe/Oslo
+  baseUrl: https://flex.test/
 
 auth:
   jwtSecret: secret
@@ -19,9 +20,6 @@ oidc:
   clientSecret: client-secret
   redirectUrl: https://flex.test/auth/v1/callback
   postLogoutRedirectUrl: https://flex.test/#/login
-
-docs:
-  baseUrl: https://flex.test/
 
 postgrest:
   baseUrl: http://postgrest
