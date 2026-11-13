@@ -11,9 +11,9 @@ fun systemToken(
     ttlSeconds: Long = 60,
 ): AccessToken = AccessToken(
     entityId = 1,
-    extId = "0",
+    externalId = "0",
     partyId = 0,
     role = role,
     scope = scope.mapNotNull { Scope.fromString(it) },
-    exp = Date(System.currentTimeMillis() + ttlSeconds * 1000L).time / 1000L,
+    expiryUnixSeconds = Date(System.currentTimeMillis() + ttlSeconds * 1000L).time / 1000L,
 )

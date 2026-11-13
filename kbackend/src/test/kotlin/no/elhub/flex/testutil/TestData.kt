@@ -12,15 +12,39 @@ import no.elhub.flex.shared.auth.FlexPrincipal
 import java.sql.Connection
 import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
+
+private val osloZone: ZoneId = ZoneId.of("Europe/Oslo")
+
+/** The start of the given date in Oslo, which is what the valid times of timelines must be aligned to. */
+fun osloMidnight(date: String): Instant = LocalDate.parse(date).atStartOfDay(osloZone).toInstant()
 
 /** Whether database triggers are active while seeding. */
 enum class Triggers { ON, OFF }
 
 /** A seeded system operator party, and a principal that acts as it (resolved through its identity). */
-data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal)
+data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal, val entityId: Long)
+
+/** A seeded party with an identity, and a principal that acts as it. */
+data class SeededParty(val entityId: Long, val partyId: Long, val principal: FlexPrincipal)
+
+/**
+ * Someone who calls the API: an identity of [entityId] that has assumed [partyId], or none for a bare entity.
+ * [ownerEntityId] is the entity that owns the party. [eid] is what a token refers to.
+ */
+data class SeededActor(
+    val entityId: Long,
+    val partyId: Long?,
+    val role: String,
+    val eid: String,
+    val ownerEntityId: Long? = null,
+)
+
+/** A seeded entity client of [entityId], with the UUID that it is known by outside the database (the `iss` of its grants). */
+data class SeededEntityClient(val id: Long, val clientId: String, val entityId: Long)
 
 /** A seeded entity with an identity but no assumed party, and a principal that acts as it. */
 data class SeededEntity(val entityId: Long, val principal: FlexPrincipal)
@@ -31,7 +55,7 @@ private val glnCounter = AtomicLong(20_000_000L)
 private fun uniqueOrgNumber(): String = orgCounter.getAndIncrement().toString()
 
 @Suppress("MagicNumber")
-private fun uniqueGln(): String {
+fun uniqueGln(): String {
     val prefix = "7081" + glnCounter.getAndIncrement().toString().padStart(8, '0')
     return prefix + gs1CheckDigit(prefix)
 }
@@ -56,6 +80,16 @@ fun <T> seed(triggers: Triggers = Triggers.ON, block: SeedScope.() -> T): T =
         conn.commit()
         result
     }
+
+/**
+ * Empties [tables] and, through CASCADE, every table that references them. Call it from a `beforeEach`
+ * with the tables the test class seeds, so that data does not leak from one test into the next.
+ */
+fun truncate(vararg tables: String) {
+    PostgresTestContainer.withConnection { conn ->
+        conn.createStatement().use { it.execute("TRUNCATE ${tables.joinToString()} CASCADE") }
+    }
+}
 
 /**
  * Insert helpers for test data. Every helper inserts one row and returns its id.
@@ -123,24 +157,139 @@ class SeedScope(private val conn: Connection) {
             "$name - ENT",
             uniqueOrgNumber(),
         )
-        val partyId = queryLong(
+        return entityId to insertParty(entityId, name, type, role)
+    }
+
+    /** Inserts a party owned by [ownerEntityId], with a business id that fits the [type]. */
+    fun insertParty(ownerEntityId: Long, name: String, type: String, role: String): Long {
+        val (businessId, businessIdType) = when (type) {
+            "end_user" -> UUID.randomUUID().toString() to "uuid"
+            "organisation" -> uniqueOrgNumber() to "org"
+            else -> uniqueGln() to "gln"
+        }
+        return queryLong(
             "INSERT INTO flex.party (entity_id, name, type, role, business_id, business_id_type) " +
-                "VALUES (?, ?, ?, ?, ?, 'gln') RETURNING id",
-            entityId,
+                "VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
+            ownerEntityId,
             name,
             type,
             role,
-            uniqueGln(),
+            businessId,
+            businessIdType,
         )
-        return entityId to partyId
     }
+
+    /** Inserts an entity of any type, with the given business id. */
+    fun insertEntity(name: String, type: String, businessId: String, businessIdType: String): Long =
+        queryLong(
+            "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (?, ?, ?, ?) RETURNING id",
+            name,
+            type,
+            businessId,
+            businessIdType,
+        )
+
+    /** Inserts an identity and returns its external id. */
+    fun insertIdentity(entityId: Long, partyId: Long? = null, clientId: Long? = null): String =
+        conn.prepareStatement(
+            "INSERT INTO flex.identity (entity_id, party_id, client_id) VALUES (?, ?, ?) RETURNING eid::text",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.setObject(2, partyId)
+            stmt.setObject(3, clientId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getString(1)
+            }
+        }
+
+    /**
+     * Inserts a party of [role] with an actor that has assumed it. By default the party is owned by a new
+     * organisation entity and the actor is a new person entity; pass [ownerEntityId] or [entityId] to reuse entities.
+     * As in production, the actor's entity is a member of the party, with [scopes], unless [member] is false.
+     * With [clientId] the actor acts as that entity client, which makes it a non-human actor.
+     */
+    fun insertActor(
+        role: TestPartyRole,
+        name: String = "Test ${role.abbreviation}",
+        ownerEntityId: Long = insertOrganisationEntity("$name - ENT"),
+        entityId: Long = insertPersonEntity("$name - person"),
+        member: Boolean = true,
+        scopes: List<String> = listOf("manage:data", "manage:auth"),
+        clientId: Long? = null,
+    ): SeededActor {
+        val partyId = insertParty(ownerEntityId, name, role.type, role.role)
+        if (member) insertPartyMembership(partyId, entityId, scopes)
+        return SeededActor(entityId, partyId, role.role, insertIdentity(entityId, partyId, clientId), ownerEntityId)
+    }
+
+    /** Inserts an actor that is a bare entity (the role `flex_entity`). With [clientId] it acts as that entity client. */
+    fun insertEntityActor(
+        entityId: Long = insertPersonEntity("Test entity"),
+        clientId: Long? = null,
+    ): SeededActor = SeededActor(entityId, null, "flex_entity", insertIdentity(entityId, null, clientId))
+
+    /** Inserts a person entity with a unique email address as business id. */
+    fun insertPersonEntity(name: String = "Test person"): Long =
+        insertPerson("person-${UUID.randomUUID()}@example.com", name = name)
+
+    /**
+     * Renames a party, which archives its previous revision in the history. A revision is only archived when the
+     * change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameParty(partyId: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.party SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, partyId)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Changes the scopes of a party membership, which archives its previous revision in the history. A revision is
+     * only archived when the change is made in another transaction than the insert, so call this in a [seed] block
+     * of its own.
+     */
+    fun updatePartyMembershipScopes(membershipId: Long, scopes: List<String>) {
+        conn.prepareStatement("UPDATE flex.party_membership SET scopes = ?::flex.scope[] WHERE id = ?").use { stmt ->
+            stmt.setString(1, scopes.joinToString(",", "{", "}"))
+            stmt.setLong(2, membershipId)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Inserts an entity client for the entity, restricted to [partyId] if given, with the PEM [publicKey] to verify its
+     * grants. The identity of the client is created when the client is first used, like in production.
+     */
+    fun insertEntityClient(
+        entityId: Long = insertOrganisationEntity("Client entity ${UUID.randomUUID()}"),
+        name: String = "Test client",
+        scopes: List<String> = listOf("manage:data", "manage:auth"),
+        partyId: Long? = null,
+        publicKey: String? = null,
+    ): SeededEntityClient =
+        conn.prepareStatement(
+            "INSERT INTO flex.entity_client (entity_id, name, scopes, party_id, public_key) " +
+                "VALUES (?, ?, ?::flex.scope[], ?, ?) RETURNING id, client_id::text",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.setString(2, name)
+            stmt.setString(3, scopes.joinToString(",", "{", "}"))
+            stmt.setObject(4, partyId)
+            stmt.setString(5, publicKey)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                SeededEntityClient(rs.getLong(1), rs.getString(2), entityId)
+            }
+        }
 
     fun insertServiceProvider(name: String = "Test SP"): Long =
         insertEntityAndParty(name, "service_provider", "flex_service_provider").second
 
-    /** Inserts a system operator party with an identity, so that a principal for it can be used in RLS tests. */
-    fun insertSystemOperator(name: String = "Test SO"): SeededSystemOperator {
-        val (entityId, partyId) = insertEntityAndParty(name, "system_operator", "flex_system_operator")
+    /** Inserts a party of the given type and role with an identity, so that a principal for it can be used in RLS and API tests. */
+    fun insertPartyWithIdentity(name: String, type: String, role: String): SeededParty {
+        val (entityId, partyId) = insertEntityAndParty(name, type, role)
         val eid = conn.prepareStatement(
             "INSERT INTO flex.identity (entity_id, party_id) VALUES (?, ?) RETURNING eid::text",
         ).use { stmt ->
@@ -151,7 +300,13 @@ class SeedScope(private val conn: Connection) {
                 rs.getString(1)
             }
         }
-        return SeededSystemOperator(partyId, FlexPrincipal(role = "flex_system_operator", eid = eid))
+        return SeededParty(entityId, partyId, FlexPrincipal(role = role, eid = eid))
+    }
+
+    /** Inserts a system operator party with an identity, so that a principal for it can be used in RLS tests. */
+    fun insertSystemOperator(name: String = "Test SO"): SeededSystemOperator {
+        val party = insertPartyWithIdentity(name, "system_operator", "flex_system_operator")
+        return SeededSystemOperator(party.partyId, party.principal, party.entityId)
     }
 
     /** Inserts an organisation entity that is not tied to a party. */
@@ -164,19 +319,30 @@ class SeedScope(private val conn: Connection) {
         )
 
     /** Inserts an entity with an identity that has no party, and a principal that acts as the bare entity. */
-    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity {
-        val entityId = insertOrganisationEntity(name)
-        val eid = conn.prepareStatement(
-            "INSERT INTO flex.identity (entity_id) VALUES (?) RETURNING eid::text",
-        ).use { stmt ->
-            stmt.setLong(1, entityId)
+    fun insertEntityIdentity(name: String = "Test Entity"): SeededEntity =
+        insertIdentityOf(insertOrganisationEntity(name))
+
+    /** Inserts an identity that has no party for an existing entity, and a principal that acts as the bare entity. */
+    fun insertIdentityOf(entityId: Long): SeededEntity =
+        SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = insertIdentity(entityId)))
+
+    /** Deletes the entity client. The identities that were created for it are kept, like when a client is deleted. */
+    fun deleteEntityClient(clientId: Long) {
+        conn.prepareStatement("DELETE FROM flex.entity_client WHERE id = ?").use { stmt ->
+            stmt.setLong(1, clientId)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Reads the business ID of the party, e.g. its GLN. */
+    fun partyBusinessId(partyId: Long): String =
+        conn.prepareStatement("SELECT business_id FROM flex.party WHERE id = ?").use { stmt ->
+            stmt.setLong(1, partyId)
             stmt.executeQuery().use { rs ->
                 rs.next()
                 rs.getString(1)
             }
         }
-        return SeededEntity(entityId, FlexPrincipal(role = "flex_entity", eid = eid))
-    }
 
     fun insertFiso(name: String = "Test FISO"): Long =
         insertEntityAndParty(name, "flexibility_information_system_operator", "flex_flexibility_information_system_operator").second
@@ -249,7 +415,7 @@ class SeedScope(private val conn: Connection) {
     fun insertAccountingPointMeteringGridArea(
         accountingPointId: Long,
         meteringGridAreaId: Long,
-        validFrom: Instant = Instant.parse("2024-01-01T00:00:00Z"),
+        validFrom: Instant = osloMidnight("2024-01-01"),
         validTo: Instant? = null,
     ): Long =
         queryLong(
@@ -266,7 +432,7 @@ class SeedScope(private val conn: Connection) {
     fun insertMeteringGridAreaSystemOperator(
         meteringGridAreaId: Long,
         systemOperatorId: Long,
-        validFrom: Instant = Instant.parse("2024-01-01T00:00:00Z"),
+        validFrom: Instant = osloMidnight("2024-01-01"),
         validTo: Instant? = null,
     ): Long =
         queryLong(
@@ -278,6 +444,114 @@ class SeedScope(private val conn: Connection) {
             validFrom.atOffset(ZoneOffset.UTC),
             validTo?.atOffset(ZoneOffset.UTC),
         )
+
+    /** Inserts a party of [role], owned by a new organisation entity. */
+    fun insertParty(role: TestPartyRole, name: String = "Test ${role.abbreviation}"): Long =
+        insertParty(insertOrganisationEntity("$name - ENT"), name, role.type, role.role)
+
+    private fun insertTimeline(table: String, columns: String, values: List<Any?>, validFrom: Instant, validTo: Instant?): Long =
+        queryLong(
+            "INSERT INTO flex.$table ($columns, valid_time_range) " +
+                "VALUES (${values.joinToString { "?" }}, tstzrange(?::timestamptz, ?::timestamptz, '[)')) RETURNING id",
+            *values.toTypedArray(),
+            validFrom.atOffset(ZoneOffset.UTC),
+            validTo?.atOffset(ZoneOffset.UTC),
+        )
+
+    /** Gives the metering grid area a price area, which is the bidding zone of its accounting points. */
+    fun insertMeteringGridAreaPriceArea(
+        meteringGridAreaId: Long,
+        priceArea: String = "NO3",
+        validFrom: Instant = osloMidnight("2023-10-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "metering_grid_area_price_area",
+        "metering_grid_area_id, price_area",
+        listOf(meteringGridAreaId, priceArea),
+        validFrom,
+        validTo,
+    )
+
+    fun insertAccountingPointEnergySupplier(
+        accountingPointId: Long,
+        energySupplierId: Long,
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "accounting_point_energy_supplier",
+        "accounting_point_id, energy_supplier_id",
+        listOf(accountingPointId, energySupplierId),
+        validFrom,
+        validTo,
+    )
+
+    fun insertAccountingPointEndUser(
+        accountingPointId: Long,
+        endUserId: Long,
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "accounting_point_end_user",
+        "accounting_point_id, end_user_id",
+        listOf(accountingPointId, endUserId),
+        validFrom,
+        validTo,
+    )
+
+    /** The balance responsible party of an energy supplier in a metering grid area. [energyDirection] is production or consumption. */
+    @Suppress("LongParameterList")
+    fun insertEnergySupplierBalanceResponsibility(
+        meteringGridAreaId: Long,
+        energySupplierId: Long,
+        balanceResponsiblePartyId: Long,
+        energyDirection: String = "production",
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "energy_supplier_balance_responsibility",
+        "metering_grid_area_id, energy_supplier_id, balance_responsible_party_id, energy_direction",
+        listOf(meteringGridAreaId, energySupplierId, balanceResponsiblePartyId, energyDirection),
+        validFrom,
+        validTo,
+    )
+
+    /** A contract that makes the service provider the provider of the controllable unit in the given period. */
+    @Suppress("LongParameterList")
+    fun insertControllableUnitServiceProvider(
+        controllableUnitId: Long,
+        serviceProviderId: Long,
+        endUserId: Long,
+        contractReference: String = "Test contract",
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ): Long = insertTimeline(
+        "controllable_unit_service_provider",
+        "controllable_unit_id, service_provider_id, end_user_id, contract_reference",
+        listOf(controllableUnitId, serviceProviderId, endUserId, contractReference),
+        validFrom,
+        validTo,
+    )
+
+    fun insertSystemOperatorProductType(systemOperatorId: Long, productTypeId: Long, status: String = "active"): Long =
+        queryLong(
+            "INSERT INTO flex.system_operator_product_type (system_operator_id, product_type_id, status) " +
+                "VALUES (?, ?, ?) RETURNING id",
+            systemOperatorId,
+            productTypeId,
+            status,
+        )
+
+    /**
+     * Changes the status, which archives the previous revision in the history. A revision is only archived when the
+     * change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun updateSystemOperatorProductTypeStatus(id: Long, status: String) {
+        conn.prepareStatement("UPDATE flex.system_operator_product_type SET status = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, status)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
 
     fun insertProductType(name: String = "Test product type"): Long =
         queryLong(
@@ -330,14 +604,14 @@ class SeedScope(private val conn: Connection) {
             status,
         )
 
-    fun insertPartyMembership(partyId: Long, entityId: Long) {
+    fun insertPartyMembership(partyId: Long, entityId: Long, scopes: List<String> = listOf("manage:auth")): Long =
         queryLong(
             "INSERT INTO flex.party_membership (party_id, entity_id, scopes) " +
-                "VALUES (?, ?, '{manage:auth}'::flex.scope[]) RETURNING party_id",
+                "VALUES (?, ?, ?::flex.scope[]) RETURNING id",
             partyId,
             entityId,
+            scopes.joinToString(",", "{", "}"),
         )
-    }
 
     /** Creates a person entity with the given business id and makes it a member of [partyId]. */
     fun insertPartyMember(partyId: Long, businessId: String, businessIdType: String = "email", name: String = "Person $businessId") {

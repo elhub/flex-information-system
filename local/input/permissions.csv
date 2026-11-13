@@ -282,6 +282,7 @@ service_providing_group_product_application;recorded_at;api;;;;;R;;R;R;;;;;
 service_providing_group_product_application;recorded_by;api;;;;;R;;R;R;;;;;
 service_providing_group_product_application;created_at;api;;;;;R;;R;R;;;;;
 service_providing_group_product_application;complete_at;api;;;;;RU;;RU;R;;;;;
+service_providing_group_product_application;requested_at;api;;;;;RU;;RU;R;;;;;
 service_providing_group_product_application_comment;;api;;;;;;;;;;;;R;
 service_providing_group_product_application_comment;id;api;;R;R;R;R;R;R;R;R;;;;
 service_providing_group_product_application_comment;service_providing_group_product_application_id;api;;R;R;R;RC;R;RC;RC;R;;;;

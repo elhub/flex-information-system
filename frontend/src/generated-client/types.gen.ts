@@ -438,24 +438,6 @@ export type NoticeDataServiceProvidingGroupGridPrequalificationOutdated = {
   maximum_active_power_diff?: number;
 };
 
-/**
- * Format of the data field in a notice with data.kind = notice.data.controllable_unit.cso.no_active_users
- */
-export type NoticeDataControllableUnitCsoNoActiveUsers = {
-  /**
-   * Identifies the notice data schema for discriminated union deserialization.
-   */
-  kind: "notice.data.controllable_unit.cso.no_active_users";
-  /**
-   * Name of the controllable unit.
-   */
-  controllable_unit_name?: string;
-  /**
-   * Name of the connecting system operator that has no active users.
-   */
-  connecting_system_operator_name?: string;
-};
-
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -477,10 +459,184 @@ export type NoticeData =
     } & NoticeDataControllableUnitProductDuplication)
   | ({
       kind: "notice.data.service_providing_group_grid_prequalification.outdated";
-    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated)
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
+
+/**
+ * Maximum active power, in kilowatts.
+ */
+export type SpgpaMaximumActivePower = number;
+
+/**
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+ */
+export type SpgpaRampingCapability = "always" | "partial" | "never";
+
+/**
+ * Product-specific application details for Manual Frequency Restoration (mFRR), written by the service provider. Has no assessment details.
+ */
+export type SpgpaApplicationDetailsMfrr = {
+  /**
+   * Identifies the product type of the application details.
+   */
+  kind: "manual_frequency_restoration";
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: SpgpaMaximumActivePower;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: SpgpaMaximumActivePower;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+   */
+  ramping_capability: SpgpaRampingCapability;
+  /**
+   * Free text description of ramping details.
+   */
+  ramping_description: string;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
+};
+
+/**
+ * Product-specific application details for Frequency Containment Reserve Normal (FCR-N), written by the service provider. Answered by `spgpa_assessment_details_fcr_n`. FCR-N is symmetric, so the maximum active power up and down must be equal.
+ */
+export type SpgpaApplicationDetailsFcrN = {
+  /**
+   * Identifies the product type of the application details.
+   */
+  kind: "automatic_frequency_containment";
+  /**
+   * Contact information for the service provider.
+   */
+  service_provider_contact_information: string;
+  /**
+   * Contact information for the technical contact person.
+   */
+  technical_contact_information: string;
+  /**
+   * Whether the service providing group has a limited energy reservoir.
+   */
+  limited_energy_reservoir: boolean;
+  /**
+   * Whether the service providing group has variable production or consumption.
+   */
+  variable_production_consumption: boolean;
+  /**
+   * The planned date of the prequalification test.
+   */
+  planned_prequalification_test_date: string;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Must be equal to the value down.
+   */
+  maximum_active_power_up: SpgpaMaximumActivePower;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Must be equal to the value up.
+   */
+  maximum_active_power_down: SpgpaMaximumActivePower;
+};
+
+/**
+ * Product-specific application details for Frequency Containment Reserve Disturbance (FCR-D), written by the service provider. Answered by `spgpa_assessment_details_fcr_d`.
+ */
+export type SpgpaApplicationDetailsFcrD = {
+  /**
+   * Identifies the product type of the application details.
+   */
+  kind: "automatic_frequency_containment_disturbance";
+  /**
+   * Contact information for the service provider.
+   */
+  service_provider_contact_information: string;
+  /**
+   * Contact information for the technical contact person.
+   */
+  technical_contact_information: string;
+  /**
+   * Whether the service providing group has a limited energy reservoir.
+   */
+  limited_energy_reservoir: boolean;
+  /**
+   * Whether the service providing group has variable production or consumption.
+   */
+  variable_production_consumption: boolean;
+  /**
+   * The planned date of the prequalification test.
+   */
+  planned_prequalification_test_date: string;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: SpgpaMaximumActivePower;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: SpgpaMaximumActivePower;
+};
+
+/**
+ * Product-specific application details, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type of the application.
+ */
+export type SpgpaApplicationDetails =
   | ({
-      kind: "notice.data.controllable_unit.cso.no_active_users";
-    } & NoticeDataControllableUnitCsoNoActiveUsers);
+      kind: "manual_frequency_restoration";
+    } & SpgpaApplicationDetailsMfrr)
+  | ({
+      kind: "automatic_frequency_containment";
+    } & SpgpaApplicationDetailsFcrN)
+  | ({
+      kind: "automatic_frequency_containment_disturbance";
+    } & SpgpaApplicationDetailsFcrD);
+
+/**
+ * Product-specific assessment details for FCR-N, written by the procuring system operator. Answers `spgpa_application_details_fcr_n`. FCR-N is symmetric, so the approved maximum active power up and down must be equal.
+ */
+export type SpgpaAssessmentDetailsFcrN = {
+  /**
+   * Identifies the product type of the assessment details.
+   */
+  kind: "automatic_frequency_containment";
+  /**
+   * The maximum active power approved in regulation direction up. Stored in kilowatts. Must be equal to the value down.
+   */
+  approved_maximum_active_power_up: SpgpaMaximumActivePower;
+  /**
+   * The maximum active power approved in regulation direction down. Stored in kilowatts. Must be equal to the value up.
+   */
+  approved_maximum_active_power_down: SpgpaMaximumActivePower;
+};
+
+/**
+ * Product-specific assessment details for FCR-D, written by the procuring system operator. Answers `spgpa_application_details_fcr_d`.
+ */
+export type SpgpaAssessmentDetailsFcrD = {
+  /**
+   * Identifies the product type of the assessment details.
+   */
+  kind: "automatic_frequency_containment_disturbance";
+  /**
+   * The maximum active power approved in regulation direction up. Stored in kilowatts.
+   */
+  approved_maximum_active_power_up: SpgpaMaximumActivePower;
+  /**
+   * The maximum active power approved in regulation direction down. Stored in kilowatts.
+   */
+  approved_maximum_active_power_down: SpgpaMaximumActivePower;
+};
+
+/**
+ * Product-specific assessment details, written by the procuring system operator. The variant is selected by `kind`, which must be the same as the `kind` of the application details.
+ */
+export type SpgpaAssessmentDetails =
+  | ({
+      kind: "automatic_frequency_containment";
+    } & SpgpaAssessmentDetailsFcrN)
+  | ({
+      kind: "automatic_frequency_containment_disturbance";
+    } & SpgpaAssessmentDetailsFcrD);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -747,7 +903,9 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "inactive";
 
 /**
- * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+ *
+ * @deprecated
  */
 export type ServiceProvidingGroupProductApplicationRampingCapability =
   "always" | "partial" | "never";
@@ -3029,20 +3187,26 @@ export type ServiceProviderProductSuspensionComment = {
  */
 export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -3053,15 +3217,34 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
 };
 
 /**
@@ -3077,20 +3260,26 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    */
   procuring_system_operator_id: number;
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_up: number;
+  maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_down: number;
+  maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -3101,15 +3290,34 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
 };
 
 /**
@@ -3129,20 +3337,26 @@ export type ServiceProvidingGroupProductApplication = {
    */
   procuring_system_operator_id: number;
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_up: number;
+  maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_down: number;
+  maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -3153,9 +3367,16 @@ export type ServiceProvidingGroupProductApplication = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
@@ -3166,6 +3387,18 @@ export type ServiceProvidingGroupProductApplication = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4551,20 +4784,26 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   procuring_system_operator_id: number;
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_up: number;
+  maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_down: number;
+  maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -4575,9 +4814,16 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
@@ -4588,6 +4834,18 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4895,10 +5153,7 @@ export type NoticeDataWritable =
     } & NoticeDataControllableUnitProductDuplication)
   | ({
       kind: "notice.data.service_providing_group_grid_prequalification.outdated";
-    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated)
-  | ({
-      kind: "notice.data.controllable_unit.cso.no_active_users";
-    } & NoticeDataControllableUnitCsoNoActiveUsers);
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * An empty object
@@ -5783,20 +6038,26 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   procuring_system_operator_id: number;
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_up: number;
+  maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_down: number;
+  maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -5807,15 +6068,34 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
   /**
    * Embedded service_providing_group
    */
@@ -6730,20 +7010,26 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    */
   procuring_system_operator_id: number;
   /**
-   * References to the product types.
+   * References to the product types. An application is for exactly one product type.
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_up: number;
+  maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
-  maximum_active_power_down: number;
+  maximum_active_power_down?: number;
   /**
-   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   additional_information?: string;
   /**
@@ -6754,15 +7040,34 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
+   */
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details. Deprecated: use `application_details` instead.
+   *
+   * @deprecated
    */
   ramping_description?: string;
   /**
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
+   * Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.
+   */
+  application_details?: SpgpaApplicationDetails | null;
+  /**
+   * Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.
+   */
+  assessment_details?: SpgpaAssessmentDetails | null;
   /**
    * Reference to the resource that was updated.
    */
@@ -17210,7 +17515,7 @@ export type ListServiceProvidingGroupProductApplicationData = {
      */
     procuring_system_operator_id?: string;
     /**
-     * References to the product types.
+     * References to the product types. An application is for exactly one product type.
      */
     product_type_ids?: string;
     /**
@@ -17470,7 +17775,7 @@ export type ListServiceProvidingGroupProductApplicationHistoryData = {
      */
     procuring_system_operator_id?: string;
     /**
-     * References to the product types.
+     * References to the product types. An application is for exactly one product type.
      */
     product_type_ids?: string;
     /**

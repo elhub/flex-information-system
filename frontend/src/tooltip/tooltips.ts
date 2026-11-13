@@ -873,27 +873,33 @@ export const tooltips = {
   "service_providing_group_product_application.procuring_system_operator_id":
     "Reference to the procuring system operator.",
   "service_providing_group_product_application.product_type_ids":
-    "References to the product types.",
+    "References to the product types. An application is for exactly one product type.",
   "service_providing_group_product_application.status":
     "The status of the application.",
   "service_providing_group_product_application.maximum_active_power_up":
-    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application.maximum_active_power_down":
-    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application.additional_information":
-    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.",
   "service_providing_group_product_application.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application.verified_at":
     "When the product application was last verified.",
   "service_providing_group_product_application.ramping_capability":
-    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
+    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application.ramping_description":
-    "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+    "Free text description of ramping details. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application.created_at":
     "When the application was first created.",
   "service_providing_group_product_application.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application.requested_at":
+    "When the product application was put to requested.",
+  "service_providing_group_product_application.application_details":
+    "Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.",
+  "service_providing_group_product_application.assessment_details":
+    "Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -905,27 +911,33 @@ export const tooltips = {
   "service_providing_group_product_application_history.procuring_system_operator_id":
     "Reference to the procuring system operator.",
   "service_providing_group_product_application_history.product_type_ids":
-    "References to the product types.",
+    "References to the product types. An application is for exactly one product type.",
   "service_providing_group_product_application_history.status":
     "The status of the application.",
   "service_providing_group_product_application_history.maximum_active_power_up":
-    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application_history.maximum_active_power_down":
-    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application_history.additional_information":
-    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). Deprecated: use `application_details` instead.",
   "service_providing_group_product_application_history.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application_history.verified_at":
     "When the product application was last verified.",
   "service_providing_group_product_application_history.ramping_capability":
-    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
+    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application_history.ramping_description":
-    "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+    "Free text description of ramping details. Deprecated: use `application_details` instead.",
   "service_providing_group_product_application_history.created_at":
     "When the application was first created.",
   "service_providing_group_product_application_history.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application_history.requested_at":
+    "When the product application was put to requested.",
+  "service_providing_group_product_application_history.application_details":
+    "Product-specific details of the application, written by the service provider. The variant is selected by `kind`, which must be the business ID of the product type of the application. Required for product types that have an application variant, and null otherwise.",
+  "service_providing_group_product_application_history.assessment_details":
+    "Product-specific response from the procuring system operator, for example the approved values. The `kind` must be the same as in `application_details`. Null until the procuring system operator responds, and always null for product types without an assessment variant.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

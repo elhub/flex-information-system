@@ -45,7 +45,9 @@ export const SoDashboard = () => {
               label={translate("text.dashboard.spg_product_application")}
               items={spgpa}
               empty={null}
-              timestampLabel={translate("text.dashboard.created_at")}
+              timestampLabel={translate(
+                "field.service_providing_group_product_application.requested_at",
+              )}
             />
             <SOApplicationsTable
               label={translate("text.dashboard.spg_grid_prequalification")}

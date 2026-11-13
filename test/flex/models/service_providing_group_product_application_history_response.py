@@ -67,6 +67,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             ensure linearity on a minute resolution..
         complete_at (datetime.datetime | None | Unset): When the application was last marked complete by the procuring
             system operator. Example: 2022-08-08T12:00:00+02.
+        requested_at (datetime.datetime | None | Unset): When the product application was put to requested. Example:
+            2022-08-08T12:00:00+02.
         application_details (None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN |
             SpgpaApplicationDetailsMfrr | Unset): Product-specific details of the application, written by the service
             provider. The variant is selected by `kind`, which must be the business ID of the product type of the
@@ -104,6 +106,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
     complete_at: datetime.datetime | None | Unset = UNSET
+    requested_at: datetime.datetime | None | Unset = UNSET
     application_details: (
         None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN | SpgpaApplicationDetailsMfrr | Unset
     ) = UNSET
@@ -196,6 +199,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             complete_at = self.complete_at.isoformat()
         else:
             complete_at = self.complete_at
+
+        requested_at: None | str | Unset
+        if isinstance(self.requested_at, Unset):
+            requested_at = UNSET
+        elif isinstance(self.requested_at, datetime.datetime):
+            requested_at = self.requested_at.isoformat()
+        else:
+            requested_at = self.requested_at
 
         application_details: dict[str, Any] | None | Unset
         if isinstance(self.application_details, Unset):
@@ -314,6 +325,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             field_dict["ramping_description"] = ramping_description
         if complete_at is not UNSET:
             field_dict["complete_at"] = complete_at
+        if requested_at is not UNSET:
+            field_dict["requested_at"] = requested_at
         if application_details is not UNSET:
             field_dict["application_details"] = application_details
         if assessment_details is not UNSET:
@@ -475,6 +488,23 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         complete_at = _parse_complete_at(d.pop("complete_at", UNSET))
+
+        def _parse_requested_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                requested_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return requested_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        requested_at = _parse_requested_at(d.pop("requested_at", UNSET))
 
         def _parse_application_details(
             data: object,
@@ -695,6 +725,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             ramping_capability=ramping_capability,
             ramping_description=ramping_description,
             complete_at=complete_at,
+            requested_at=requested_at,
             application_details=application_details,
             assessment_details=assessment_details,
             replaced_by=replaced_by,

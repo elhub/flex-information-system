@@ -20,6 +20,23 @@ fun uniqueEicY(): String {
     }
 }
 
+private val eicXCounter = AtomicLong(1L)
+
+/**
+ * Generates a unique 16-character EIC-X identifier that passes EIC check-character validation.
+ *
+ * Format: `11X7` + 11-digit zero-padded counter + 1 check character (never `-`).
+ */
+@Suppress("MagicNumber")
+fun uniqueEicX(): String {
+    while (true) {
+        val counter = eicXCounter.getAndIncrement()
+        val prefix = "11X7" + counter.toString().padStart(11, '0')
+        val check = eicComputeCheckChar(prefix)
+        if (check != '-') return prefix + check
+    }
+}
+
 /**
  * Computes the EIC check character for a 15-character EIC prefix.
  *

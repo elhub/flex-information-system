@@ -14,29 +14,55 @@ import java.util.Date
  * Represents the payload of a Flex access JWT.
  *
  * @property entityId the internal entity ID of the token holder
- * @property extId the external / identity provider ID
+ * @property externalId the external / identity provider ID
  * @property partyId the internal party ID (0 for system roles)
  * @property role the Flex role of the token holder
  * @property scope the list of granted scopes
- * @property exp the expiry time as a Unix timestamp (seconds)
+ * @property expiryUnixSeconds the expiry time as a Unix timestamp (seconds)
  */
 data class AccessToken(
     val entityId: Int,
-    val extId: String,
+    val externalId: String,
     val partyId: Int = 0,
     val role: String,
     val scope: List<Scope>,
-    val exp: Long,
+    val expiryUnixSeconds: Long,
 ) {
+    /** The number of seconds until the token expires. */
+    fun expiresIn(): Int = (expiryUnixSeconds - nowUnixSeconds()).toInt()
+
     /** Returns true when the token's expiry time is in the past. */
-    fun isExpired(): Boolean = Date(exp * MILLIS_PER_SECOND).before(Date())
+    fun isExpired(): Boolean = Date(expiryUnixSeconds * MILLIS_PER_SECOND).before(Date())
+
+    /**
+     * Signs this token with HS256 using [secret], the inverse of [parse].
+     * `party_id` is left out when there is no party.
+     * */
+    fun sign(secret: String): String =
+        JWT.create()
+            .withClaim("entity_id", entityId)
+            .withClaim("eid", externalId)
+            .apply { if (partyId != 0) withClaim("party_id", partyId) }
+            .withClaim("role", role)
+            .withClaim("scope", scope.joinToString(" "))
+            .withExpiresAt(Date(expiryUnixSeconds * MILLIS_PER_SECOND))
+            .sign(Algorithm.HMAC256(secret))
 
     companion object {
         @Suppress("MagicNumber")
         private const val MILLIS_PER_SECOND = 1000L
 
+        /** How long the access tokens issued by the auth API are valid. */
+        const val DURATION_SECONDS = 3600L
+
         /** The role of a token that has not assumed a party. */
         private const val ENTITY_ROLE = "flex_entity"
+
+        /** The current time as a Unix timestamp (seconds). */
+        fun nowUnixSeconds(): Long = System.currentTimeMillis() / MILLIS_PER_SECOND
+
+        /** The expiry time of a token issued now, as a Unix timestamp (seconds). */
+        fun newExpiryUnixSeconds(): Long = nowUnixSeconds() + DURATION_SECONDS
 
         /**
          * Verifies [jwt] with HS256 using [secret], then parses the claims into an [AccessToken].
@@ -62,7 +88,7 @@ data class AccessToken(
 
                 val entityId = decoded.getClaim("entity_id").asInt()
                     ?: raise(InvalidTokenError("missing entity_id claim"))
-                val extId = decoded.getClaim("eid").asString()
+                val externalId = decoded.getClaim("eid").asString()
                     ?: raise(InvalidTokenError("missing eid claim"))
                 val partyId = decoded.getClaim("party_id").asInt() ?: 0
                 val role = decoded.getClaim("role").asString()
@@ -72,22 +98,14 @@ data class AccessToken(
                 val scope = scopeClaim.split(" ").map { part ->
                     Scope.fromString(part) ?: raise(InvalidTokenError("invalid scope '$part'"))
                 }
-                val exp = decoded.expiresAt?.time?.div(MILLIS_PER_SECOND)
+                val expiryUnixSeconds = decoded.expiresAt?.time?.div(MILLIS_PER_SECOND)
                     ?: raise(InvalidTokenError("missing exp claim"))
 
-                val token = AccessToken(
-                    entityId = entityId,
-                    extId = extId,
-                    partyId = partyId,
-                    role = role,
-                    scope = scope,
-                    exp = exp,
-                )
+                val token = AccessToken(entityId, externalId, partyId, role, scope, expiryUnixSeconds)
 
                 ensure(!token.isExpired()) { ExpiredTokenError }
-
                 ensure(token.entityId > 0) { InvalidTokenError("entity_id must be positive") }
-                ensure(token.extId.isNotBlank()) { InvalidTokenError("eid must not be blank") }
+                ensure(token.externalId.isNotBlank()) { InvalidTokenError("eid must not be blank") }
                 ensure(token.role.isNotBlank()) { InvalidTokenError("role must not be blank") }
                 ensure(token.role == ENTITY_ROLE || token.partyId > 0) {
                     InvalidTokenError("party_id must be positive unless the role is $ENTITY_ROLE")
@@ -99,4 +117,4 @@ data class AccessToken(
 }
 
 /** Derives a [FlexPrincipal] from this [AccessToken], extracting only the fields needed for RLS. */
-fun AccessToken.toFlexPrincipal(): FlexPrincipal = FlexPrincipal(role = role, eid = extId)
+fun AccessToken.toFlexPrincipal(): FlexPrincipal = FlexPrincipal(role, externalId)

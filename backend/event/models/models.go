@@ -585,6 +585,7 @@ type ApiServiceProvidingGroupProductApplication struct {
 	RampingDescription        *string
 	CreatedAt                 pgtype.Timestamptz
 	CompleteAt                pgtype.Timestamptz
+	RequestedAt               pgtype.Timestamptz
 	ApplicationDetails        []byte
 	AssessmentDetails         []byte
 	RecordedBy                int
@@ -659,6 +660,7 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	RampingDescription                        *string
 	CreatedAt                                 pgtype.Timestamptz
 	CompleteAt                                pgtype.Timestamptz
+	RequestedAt                               pgtype.Timestamptz
 	ApplicationDetails                        []byte
 	AssessmentDetails                         []byte
 	RecordedBy                                int

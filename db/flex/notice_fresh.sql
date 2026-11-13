@@ -17,7 +17,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     SELECT * FROM notice_cu_maximum_active_power_ratio
 
     UNION ALL
-    SELECT * FROM notice_cu_belongs_to_inactive_cso
+    SELECT * FROM notice_cso_no_active_users
 
     -- Controllable Unit duplication of CU in SPG with same product
     UNION ALL

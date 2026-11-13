@@ -11,7 +11,6 @@ from ..models.notice_status import NoticeStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.notice_data_controllable_unit_cso_no_active_users import NoticeDataControllableUnitCsoNoActiveUsers
     from ..models.notice_data_controllable_unit_product_duplication import NoticeDataControllableUnitProductDuplication
     from ..models.notice_data_party_incompatible import NoticeDataPartyIncompatible
     from ..models.notice_data_party_missing import NoticeDataPartyMissing
@@ -42,10 +41,10 @@ class NoticeResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
-        data (None | NoticeDataControllableUnitCsoNoActiveUsers | NoticeDataControllableUnitProductDuplication |
-            NoticeDataPartyIncompatible | NoticeDataPartyMissing | NoticeDataPartyOutdated |
-            NoticeDataProductTypeNotQualified | NoticeDataServiceProvidingGroupGridPrequalificationOutdated |
-            NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
+        data (None | NoticeDataControllableUnitProductDuplication | NoticeDataPartyIncompatible | NoticeDataPartyMissing
+            | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
+            NoticeDataServiceProvidingGroupGridPrequalificationOutdated | NoticeDataValidTimeOutsideContract | Unset): The
+            data of the notice.
         party (None | PartyResponse | Unset): Embedded party
     """
 
@@ -58,7 +57,6 @@ class NoticeResponse:
     source: None | str | Unset = UNSET
     data: (
         None
-        | NoticeDataControllableUnitCsoNoActiveUsers
         | NoticeDataControllableUnitProductDuplication
         | NoticeDataPartyIncompatible
         | NoticeDataPartyMissing
@@ -72,9 +70,6 @@ class NoticeResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.notice_data_controllable_unit_cso_no_active_users import (
-            NoticeDataControllableUnitCsoNoActiveUsers,  # noqa: PLC0415
-        )
         from ..models.notice_data_controllable_unit_product_duplication import (
             NoticeDataControllableUnitProductDuplication,  # noqa: PLC0415
         )
@@ -123,8 +118,6 @@ class NoticeResponse:
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataServiceProvidingGroupGridPrequalificationOutdated):
             data = self.data.to_dict()
-        elif isinstance(self.data, NoticeDataControllableUnitCsoNoActiveUsers):
-            data = self.data.to_dict()
         else:
             data = self.data
 
@@ -159,9 +152,6 @@ class NoticeResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.notice_data_controllable_unit_cso_no_active_users import (
-            NoticeDataControllableUnitCsoNoActiveUsers,  # noqa: PLC0415
-        )
         from ..models.notice_data_controllable_unit_product_duplication import (
             NoticeDataControllableUnitProductDuplication,  # noqa: PLC0415
         )
@@ -201,7 +191,6 @@ class NoticeResponse:
             data: object,
         ) -> (
             None
-            | NoticeDataControllableUnitCsoNoActiveUsers
             | NoticeDataControllableUnitProductDuplication
             | NoticeDataPartyIncompatible
             | NoticeDataPartyMissing
@@ -273,17 +262,8 @@ class NoticeResponse:
                 return componentsschemasnotice_data_type_6
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                componentsschemasnotice_data_type_7 = NoticeDataControllableUnitCsoNoActiveUsers.from_dict(data)
-
-                return componentsschemasnotice_data_type_7
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
             return cast(
                 None
-                | NoticeDataControllableUnitCsoNoActiveUsers
                 | NoticeDataControllableUnitProductDuplication
                 | NoticeDataPartyIncompatible
                 | NoticeDataPartyMissing

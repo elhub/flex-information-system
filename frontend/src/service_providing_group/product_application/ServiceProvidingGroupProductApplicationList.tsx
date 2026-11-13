@@ -206,6 +206,19 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     },
     {
       header: translate(
+        "field.service_providing_group_product_application.requested_at",
+      ),
+      sortField: "requested_at",
+      sortType: "date",
+      render: (row) =>
+        row.requested_at ? (
+          <BodyText size="small">{toDateTimeString(row.requested_at)}</BodyText>
+        ) : (
+          <Dash />
+        ),
+    },
+    {
+      header: translate(
         "field.service_providing_group_product_application.complete_at",
       ),
       sortField: "complete_at",

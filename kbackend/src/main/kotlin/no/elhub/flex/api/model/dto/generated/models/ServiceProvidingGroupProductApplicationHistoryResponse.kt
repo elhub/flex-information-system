@@ -91,6 +91,11 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
   @SerialName("complete_at")
   public val completeAt: Instant? = null,
   /**
+   * When the product application was put to requested.
+   */
+  @SerialName("requested_at")
+  public val requestedAt: Instant? = null,
+  /**
    * Product-specific application details, written by the service provider. The variant is selected
    * by `kind`, which is the business ID of the product type of the application.
    */

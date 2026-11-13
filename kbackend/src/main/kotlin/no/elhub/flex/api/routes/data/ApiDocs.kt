@@ -7,7 +7,7 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import no.elhub.flex.api.config.DocsConfig
+import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.routes.elementsPage
 import no.elhub.flex.api.routes.openApiDocument
 import org.koin.core.annotation.Single
@@ -19,7 +19,7 @@ private const val TITLE = "Flex Data API"
  * The interactive documentation of the data API: the OpenAPI document and an Elements page showing it.
  */
 @Single(createdAtStart = true)
-class ApiDocs(config: DocsConfig) {
+class ApiDocs(config: FlexConfig) {
     val page: String = elementsPage(TITLE)
 
     /** The OpenAPI document with `servers` replaced by the public URL of the API. */

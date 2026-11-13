@@ -331,7 +331,6 @@ databaseChangeLog:
   - include:
       file: ./notice_fresh.sql
       relativeToChangelogFile: true
-
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true

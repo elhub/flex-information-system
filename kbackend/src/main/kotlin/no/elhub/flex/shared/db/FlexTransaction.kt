@@ -52,9 +52,9 @@ object FlexTransaction {
      * outermost [flexTransaction] call. Exposed itself joins the outer transaction when
      * `useNestedTransactions` is false (the default).
      *
-     * When the principal's [FlexPrincipal.eid] is `"0"` the caller is a system role and all
-     * entity IDs are set to `0`. Otherwise `auth.eid_details($eid)` is called to resolve them
-     * from the identity table.
+     * When the principal's [FlexPrincipal.eid] is empty (anonymous) no entity settings are applied.
+     * When it is `"0"` the caller is a system role and all entity IDs are set to `0`. Otherwise
+     * `auth.eid_details($eid)` is called to resolve them from the identity table.
      *
      * If [block] returns a [Either.Left] the transaction is **rolled back** and the [Either.Left]
      * value is returned to the caller. A [Either.Right] result commits the transaction normally.
@@ -90,6 +90,11 @@ object FlexTransaction {
 
     private fun applyPreamble(conn: Connection, principal: FlexPrincipal) {
         conn.prepareStatement("SET LOCAL ROLE \"${principal.role}\"").use { it.execute() }
+
+        if (principal.eid.isEmpty()) {
+            // no identity (anonymous): there are no entity settings to apply
+            return
+        }
 
         if (principal.eid == "0") {
             conn.prepareStatement(

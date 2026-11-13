@@ -90,7 +90,6 @@ from .identity_response import IdentityResponse
 from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
 from .metering_grid_area_status import MeteringGridAreaStatus
-from .notice_data_controllable_unit_cso_no_active_users import NoticeDataControllableUnitCsoNoActiveUsers
 from .notice_data_controllable_unit_product_duplication import NoticeDataControllableUnitProductDuplication
 from .notice_data_party_incompatible import NoticeDataPartyIncompatible
 from .notice_data_party_missing import NoticeDataPartyMissing
@@ -392,7 +391,6 @@ __all__ = (
     "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",
     "MeteringGridAreaStatus",
-    "NoticeDataControllableUnitCsoNoActiveUsers",
     "NoticeDataControllableUnitProductDuplication",
     "NoticeDataPartyIncompatible",
     "NoticeDataPartyMissing",

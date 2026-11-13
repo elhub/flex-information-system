@@ -5,6 +5,8 @@ import io.kotest.matchers.shouldBe
 import io.ktor.server.config.yaml.YamlConfig
 import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.config.authConfig
+import no.elhub.flex.auth.oidc.OidcConfig
+import no.elhub.flex.auth.oidc.oidcConfig
 import no.elhub.flex.config.DatabaseConfig
 import no.elhub.flex.config.databaseConfig
 
@@ -23,11 +25,21 @@ class AppConfigTest : FunSpec({
     }
 
     test("flex config") {
-        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo")
+        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo", baseUrl = "https://flex.test/")
     }
 
     test("auth config") {
         config.authConfig() shouldBe AuthConfig(jwtSecret = "secret")
+    }
+
+    test("oidc config") {
+        config.oidcConfig() shouldBe OidcConfig(
+            issuer = "https://idp.test",
+            clientId = "client",
+            clientSecret = "client-secret",
+            redirectUrl = "https://flex.test/auth/v1/callback",
+            postLogoutRedirectUrl = "https://flex.test/#/login",
+        )
     }
 
     test("accounting point adapter config") {

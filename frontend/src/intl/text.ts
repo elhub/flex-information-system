@@ -273,6 +273,7 @@ export type TextKey =
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
   | "notice_spg_product_applications_button"
+  | "notice_cso_no_active_users_button"
   | "notice_spg_membership_button"
   | "notice_spggp_outdated_button"
   | "notice_spggp_outdated_heading"
@@ -653,6 +654,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
     notice_spg_product_applications_button: "Go to product applications",
+    notice_cso_no_active_users_button: "Show controllable units",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
     notice_see_party_button: "See party",
@@ -1049,6 +1051,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
     notice_spg_product_applications_button: "Gå til søknader",
+    notice_cso_no_active_users_button: "Vis kontrollerbare enheter",
     notice_see_party_button: "Gå til parten",
     notice_see_source_button: "Gå til kilden",
     notice_details: "Merknadsdetaljer",
