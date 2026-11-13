@@ -662,3 +662,84 @@ func TestScopeJSONRoundTrip(t *testing.T) {
 		})
 	}
 }
+
+//nolint:funlen,exhaustruct
+func TestIntersection(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		a, b   scope.Scope
+		wantOk bool
+		want   scope.Scope
+	}{
+		{
+			name:   "a covers b, same asset, different verb",
+			a:      scope.Scope{Verb: scope.Manage, Asset: "foo"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "foo"},
+			wantOk: true,
+			want:   scope.Scope{Verb: scope.Read, Asset: "foo"},
+		},
+		{
+			name:   "b covers a, same asset, different verb",
+			a:      scope.Scope{Verb: scope.Read, Asset: "foo"},
+			b:      scope.Scope{Verb: scope.Manage, Asset: "foo"},
+			wantOk: true,
+			want:   scope.Scope{Verb: scope.Read, Asset: "foo"},
+		},
+		{
+			name:   "a covers b, a is parent asset",
+			a:      scope.Scope{Verb: scope.Manage, Asset: "foo"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "foo:bar"},
+			wantOk: true,
+			want:   scope.Scope{Verb: scope.Read, Asset: "foo:bar"},
+		},
+		{
+			name:   "b covers a, b is parent asset with higher privilege",
+			a:      scope.Scope{Verb: scope.Read, Asset: "foo:bar"},
+			b:      scope.Scope{Verb: scope.Manage, Asset: "foo"},
+			wantOk: true,
+			want:   scope.Scope{Verb: scope.Read, Asset: "foo:bar"},
+		},
+		{
+			name:   "scopes does not cover each other, but still intersect",
+			a:      scope.Scope{Verb: scope.Manage, Asset: "foo:bar:baz"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "foo"},
+			wantOk: true,
+			want:   scope.Scope{Verb: scope.Read, Asset: "foo:bar:baz"},
+		},
+		{
+			name:   "intersection only full access parts",
+			a:      scope.Scope{Verb: scope.Read, Asset: "foo_bar"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "foo"},
+			wantOk: false,
+			want:   scope.Scope{},
+		},
+		{
+			name:   "no intersection, different assets",
+			a:      scope.Scope{Verb: scope.Read, Asset: "foo"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "bar"},
+			wantOk: false,
+			want:   scope.Scope{},
+		},
+		{
+			name:   "no intersection, different asset hierarchies",
+			a:      scope.Scope{Verb: scope.Read, Asset: "foo:bar"},
+			b:      scope.Scope{Verb: scope.Read, Asset: "foo:baz"},
+			wantOk: false,
+			want:   scope.Scope{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			ok, got := scope.Intersection(tt.a, tt.b)
+			if ok != tt.wantOk {
+				t.Errorf("Intersection() ok = %v, want %v", ok, tt.wantOk)
+			}
+			if got != tt.want {
+				t.Errorf("Intersection() got = %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}

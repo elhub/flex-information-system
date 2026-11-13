@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FlexConfig(
     val timezone: String,
-    val baseUrl: String,
 ) {
     init {
         TimeZone.of(timezone)
@@ -46,3 +45,8 @@ fun ApplicationConfig.attachmentStorageConfig(): AttachmentStorageConfig =
 data class PostgrestConfig(val baseUrl: String)
 
 fun ApplicationConfig.postgrestConfig(): PostgrestConfig = property("postgrest").getAs()
+
+@Serializable
+data class DocsConfig(val baseUrl: String)
+
+fun ApplicationConfig.docsConfig(): DocsConfig = property("docs").getAs()

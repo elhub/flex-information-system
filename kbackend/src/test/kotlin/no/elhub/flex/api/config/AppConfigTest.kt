@@ -25,7 +25,7 @@ class AppConfigTest : FunSpec({
     }
 
     test("flex config") {
-        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo", baseUrl = "https://flex.test/")
+        config.flexConfig() shouldBe FlexConfig(timezone = "Europe/Oslo")
     }
 
     test("auth config") {

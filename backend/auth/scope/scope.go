@@ -1,6 +1,7 @@
 package scope
 
 import (
+	"cmp"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -122,4 +123,44 @@ func (s *Scope) UnmarshalJSON(data []byte) error {
 	*s = parsedScope
 
 	return nil
+}
+
+// Intersection reports if scopes a and b intersect and returns the intersection if they do.
+// An intersection is the part of the asset that is common to both scopes, with the less permissive verb.
+//
+//nolint:varnamelen,exhaustruct
+func Intersection(a, b Scope) (bool, Scope) {
+	if a.Asset == b.Asset {
+		return true, Scope{Verb: min(a.Verb, b.Verb), Asset: a.Asset}
+	}
+
+	if strings.HasPrefix(a.Asset, b.Asset+":") {
+		return true, Scope{Verb: min(a.Verb, b.Verb), Asset: a.Asset}
+	}
+
+	if strings.HasPrefix(b.Asset, a.Asset+":") {
+		return true, Scope{Verb: min(a.Verb, b.Verb), Asset: b.Asset}
+	}
+
+	return false, Scope{}
+}
+
+// Equal reports if scopes a and b are Equal.
+// Useful e.g. for use with slices.CompactFunc.
+func Equal(a, b Scope) bool {
+	return a.Verb == b.Verb && a.Asset == b.Asset
+}
+
+// Compare is a comparison function used to Compare two scopes.
+// The result is -1 when a < b, +1 when a > b and 0 when a == b
+// or a and b are incomparable in the sense of a strict weak ordering
+//
+// The sort order is set asset part first, then the verb.
+//
+// Useful e.g. for use with slices.SortFunc.
+func Compare(a, b Scope) int {
+	if a.Asset == b.Asset {
+		return cmp.Compare(int(a.Verb), int(b.Verb))
+	}
+	return cmp.Compare(a.Asset, b.Asset)
 }
