@@ -6,7 +6,7 @@ import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import no.elhub.flex.api.config.DocsConfig
+import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.routes.elementsPage
 import no.elhub.flex.api.routes.openApiDocument
 import no.elhub.flex.auth.plugin.optionalAuthenticatedRouting
@@ -27,7 +27,7 @@ private val DOCS_SCOPE = Scope(ScopeVerb.Read, "auth:openapi")
  * showing it.
  */
 @Single(createdAtStart = true)
-class AuthApiDocs(config: DocsConfig) {
+class AuthApiDocs(config: FlexConfig) {
     val page: String = elementsPage(TITLE)
 
     /** The OpenAPI document with `servers` replaced by the public URL of the API. */

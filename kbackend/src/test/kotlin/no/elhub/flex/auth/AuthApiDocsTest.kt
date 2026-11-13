@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import no.elhub.flex.api.config.DocsConfig
+import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.auth.util.makeJwt
@@ -30,7 +30,7 @@ class AuthApiDocsTest :
         lateinit var app: TestApplication
 
         beforeSpec {
-            val docs = AuthApiDocs(DocsConfig("https://flex.test/"))
+            val docs = AuthApiDocs(FlexConfig("Europe/Oslo", "https://flex.test/"))
             app = TestApplication {
                 application {
                     configureSerialization()
