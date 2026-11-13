@@ -124,6 +124,15 @@ backend:
     cd backend
     air
 
+# start kbackend in dev mode
+kbackend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    docker compose stop kbackend || true
+    set -a; source ./local/kbackend/dev.env; set +a
+    cd kbackend
+    ./gradlew run --args="-port=7002"
+
 # start frontend in dev mode
 frontend:
     #!/usr/bin/env bash
