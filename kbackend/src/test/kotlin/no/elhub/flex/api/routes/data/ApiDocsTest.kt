@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import no.elhub.flex.api.config.DocsConfig
+import no.elhub.flex.api.config.FlexConfig
 import no.elhub.flex.api.config.RequireApiVersion
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -25,7 +25,7 @@ class ApiDocsTest :
         lateinit var app: TestApplication
 
         beforeSpec {
-            val docs = ApiDocs(DocsConfig("https://flex.test/"))
+            val docs = ApiDocs(FlexConfig("Europe/Oslo", "https://flex.test/"))
             app = TestApplication {
                 application {
                     // the documentation needs no Api-Version, like in the real application
