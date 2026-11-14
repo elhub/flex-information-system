@@ -90,6 +90,10 @@ tasks.processResources {
         include("openapi.json")
         into("openapi/grid")
     }
+    from("auth/static") {
+        include("openapi.json")
+        into("openapi/auth")
+    }
 }
 
 // API tests run the data API in-process against real Postgres and PostgREST containers.
