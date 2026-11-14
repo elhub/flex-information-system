@@ -4,7 +4,7 @@ set -euo pipefail
 # This script generates API models using the Fabrikt OpenAPI generator, for each API spec:
 #
 #   - the data API:  kbackend/data/static/openapi.json -> no.elhub.flex.api.model.dto.generated
-#   - the auth API:  backend/auth/static/openapi.json -> no.elhub.flex.auth.model.dto.generated
+#   - the auth API:  kbackend/auth/static/openapi.json -> no.elhub.flex.auth.model.dto.generated
 #
 # The source specs use OpenAPI 3.1.0 features that the Kaizen parser (used by Fabrikt)
 # does not support. A preprocessed copy is written to a temp file with the following
@@ -146,6 +146,6 @@ sed -i 's/) : notice_data$/) : NoticeData/' \
 	"$topdir/kbackend/src/main/kotlin/no/elhub/flex/api/model/dto/generated/models/NoticeData"*.kt
 
 generate_models \
-	"backend/auth/static/openapi.json" \
+	"kbackend/auth/static/openapi.json" \
 	"no.elhub.flex.auth.model.dto.generated" \
 	"kbackend/src/main/kotlin/no/elhub/flex/auth/model/dto/generated"

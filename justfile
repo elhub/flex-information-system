@@ -337,7 +337,7 @@ _mkdocs_build_elements:
         '.servers = [$servers.api.test]' <"kbackend/data/static/openapi.json" \
         >"./docs/api/v1/openapi.json"
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.auth.test]' <"backend/auth/static/openapi.json" \
+        '.servers = [$servers.auth.test]' <"kbackend/auth/static/openapi.json" \
         >"./docs/auth/v1/openapi.json"
 
 # deploy documentation to GitHub Pages
@@ -471,7 +471,7 @@ resources-to-openapi:
     # TEMPORARY: same as for the data API
     cp kbackend/grid/static/openapi.json backend/grid/static/openapi.json
 
-    yq -o=json --indent 4 openapi/openapi-auth.yml > backend/auth/static/openapi.json
+    yq -o=json --indent 4 openapi/openapi-auth.yml > kbackend/auth/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
@@ -481,7 +481,7 @@ resources-to-openapi:
     spectral lint \
         --fail-severity warn \
         --verbose \
-        backend/auth/static/openapi.json
+        kbackend/auth/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
