@@ -6,6 +6,10 @@ export type TextKey =
   | "list_filter.reset_filters"
   | "list_filter.clear_filters"
   | "delete"
+  | "yes"
+  | "notification.event_category"
+  | "notification.event_category.comment"
+  | "no"
   | "delete_confirm"
   | "dashboard.application"
   | "dashboard.sp_product_application"
@@ -355,6 +359,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     service_provider: "Service provider",
     system_operator: "System operator",
     delete: "Delete",
+    yes: "Yes",
+    "notification.event_category": "Event category",
+    "notification.event_category.comment": "Comment",
+    no: "No",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
     service_providing_group: "Service providing group",
@@ -738,6 +746,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     service_provider: "Tjenesteleverandør",
     system_operator: "Systemoperatør",
     delete: "Slett",
+    yes: "Ja",
+    "notification.event_category": "Hendelseskategori",
+    "notification.event_category.comment": "Kommentar",
+    no: "Nei",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",
