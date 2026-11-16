@@ -126,6 +126,79 @@ class SeedScope(private val conn: Connection) {
             quality.name.lowercase(),
         )
 
+    /**
+     * Renames the grid location, which archives the previous revision in the history. A revision is only archived when
+     * the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameGridLocation(id: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.accounting_point_grid_location SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Seeds an accounting point in a new metering grid area, which the system operator [owner] owns from 2024-01-01.
+     * That makes [owner] the CSO of the accounting point.
+     */
+    fun insertAccountingPointOwnedBy(owner: Long): Long {
+        val meteringGridArea = insertMeteringGridArea()
+        insertMeteringGridAreaSystemOperator(meteringGridArea, owner)
+        return insertAccountingPoint().also { insertAccountingPointMeteringGridArea(it, meteringGridArea) }
+    }
+
+    /**
+     * Puts a controllable unit at the accounting point in a new service providing group, and returns the group.
+     * This is the chain that links the accounting point to the system operators that the group is prequalified or
+     * has applied for:
+     *
+     *     accounting point <- controllable unit <- membership -> service providing group
+     *                                                              |- grid prequalification: impacted system operator (ISO)
+     *                                                              `- product application: procuring system operator (PSO)
+     *
+     * Seed it with [Triggers.OFF]. The triggers would require what the policies do not read: an active unit with a
+     * contract, an end user and a technical resource, and for a product application also an active group, a product
+     * type that the system operator has activated and a qualified service provider application.
+     */
+    fun insertGroupWithControllableUnitAt(accountingPoint: Long): Long {
+        val group = insertServiceProvidingGroup(insertParty(TestPartyRole.SP, "Group SP"))
+        insertMembership(insertControllableUnit(accountingPoint), group)
+        return group
+    }
+
+    /** Inserts a substation, with a cluster of its own, and returns its business ID. Grid locations refer to it. */
+    fun insertSubstation(): UUID {
+        val businessId = UUID.randomUUID()
+        val clusterId = queryLong(
+            """
+            INSERT INTO flex.substation_cluster (name, business_id, averaged_position, area)
+            VALUES (
+                ?,
+                ?,
+                ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326),
+                ST_SetSRID(ST_GeomFromText('POLYGON((9 59, 11 59, 11 61, 9 61, 9 59))'), 4326)
+            )
+            RETURNING id
+            """.trimIndent(),
+            "Test substation cluster",
+            UUID.randomUUID().toString(),
+        )
+        queryLong(
+            """
+            INSERT INTO flex.substation (
+                name, business_id, kind, primary_concessionaire, substation_cluster_id, voltage_levels, position
+            )
+            VALUES (?, ?, 'transformer', 'concessionaire', ?, ARRAY[132.0], ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326))
+            RETURNING id
+            """.trimIndent(),
+            "Test substation",
+            businessId.toString(),
+            clusterId,
+        )
+        return businessId
+    }
+
     fun insertControllableUnit(
         accountingPointId: Long,
         name: String = "Test CU",

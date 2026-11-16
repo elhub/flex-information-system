@@ -11,14 +11,29 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.path
 import io.ktor.server.testing.TestApplication
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.testutil.SeededActor
+import java.math.BigDecimal
+
+/** The data API sends and receives a decimal as a JSON number. */
+private object JsonNumberBigDecimalSerializer : KSerializer<BigDecimal> {
+    override val descriptor = PrimitiveSerialDescriptor("BigDecimal", PrimitiveKind.DOUBLE)
+    override fun serialize(encoder: Encoder, value: BigDecimal) = encoder.encodeDouble(value.toDouble())
+    override fun deserialize(decoder: Decoder): BigDecimal = BigDecimal.valueOf(decoder.decodeDouble())
+}
 
 val apiJson = Json {
     ignoreUnknownKeys = true
     encodeDefaults = false
     explicitNulls = false
+    serializersModule = SerializersModule { contextual(BigDecimal::class, JsonNumberBigDecimalSerializer) }
 }
 
 /** PostgREST answers 406 when a single resource is requested and row level security leaves no row for it. */
