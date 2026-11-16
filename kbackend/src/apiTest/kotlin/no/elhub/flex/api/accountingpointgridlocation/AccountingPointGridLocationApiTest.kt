@@ -164,7 +164,10 @@ class AccountingPointGridLocationApiTest :
                 val other = seed { insertAccountingPointOwnedBy(insertParty(TestPartyRole.SO, "Other SO")) }
                 val substation = seed { insertSubstation() }
 
-                api.post("/accounting_point_grid_location", so.token(), createRequest(own, substation)).status shouldBe HttpStatusCode.Created
+                val created = api.post("/accounting_point_grid_location", so.token(), createRequest(own, substation))
+                created.status shouldBe HttpStatusCode.Created
+                // the database sets the source from the caller, and the protection of the location depends on it
+                created.body<AccountingPointGridLocationResponse>().source?.value shouldBe "cso"
                 api.post("/accounting_point_grid_location", so.token(), createRequest(other, substation)).status shouldBe HttpStatusCode.Forbidden
             }
 
@@ -212,6 +215,31 @@ class AccountingPointGridLocationApiTest :
 
                 api.patch("/accounting_point_grid_location/$procured", pso.token(), AccountingPointGridLocationUpdateRequest(name = "Updated by PSO"))
                     .status shouldBe HttpStatusCode.OK
+            }
+
+            // RLS: APGL-VAL001
+            test("cannot update a grid location that the CSO has set") {
+                val pso = seed { insertActor(TestPartyRole.SO) }
+                val fiso = seed { insertActor(TestPartyRole.FISO) }
+                val accountingPoint = seed { insertAccountingPointOwnedBy(insertParty(TestPartyRole.SO, "CSO")) }
+                val location = seed { insertGridLocationAt(accountingPoint, AccountingPointGridLocationSource.CSO) }
+                seed { renameGridLocation(location, "Original name") }
+                // the product application makes the SO a PSO of the accounting point
+                // triggers off: only the linking rows are needed, see insertGroupWithControllableUnitAt
+                seed(Triggers.OFF) {
+                    val group = insertGroupWithControllableUnitAt(accountingPoint)
+                    insertServiceProvidingGroupProductApplication(group, pso.partyId!!, listOf(insertProductType()))
+                }
+
+                val response = api.patch(
+                    "/accounting_point_grid_location/$location",
+                    pso.token(),
+                    AccountingPointGridLocationUpdateRequest(name = "Updated by PSO"),
+                )
+
+                response.status shouldBe HttpStatusCode.BadRequest
+                val unchanged = api.get("/accounting_point_grid_location/$location", fiso.token())
+                unchanged.body<AccountingPointGridLocationResponse>().name shouldBe "Original name"
             }
 
             // RLS: APGL-COM001
