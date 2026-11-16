@@ -4,13 +4,11 @@ import (
 	"context"
 	"errors"
 	"flex/auth"
-	"flex/auth/scope"
 	"flex/data"
 	"flex/event"
 	"flex/grid"
 	"flex/internal/kbackend"
 	"flex/internal/middleware"
-	"flex/internal/openapi"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"fmt"
@@ -235,7 +233,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
 	}
 
-	authAPIBaseURL := baseURL + "auth/v1/"
 	dataAPIBaseURL := baseURL + "api/v1/"
 	gridAPIBaseURL := baseURL + "grid/v0/"
 
@@ -405,44 +402,34 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(middleware.Prometheus)
 
 	// routes served by kbackend must be registered before the middleware so they are passed through
-	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy))  //nolint:contextcheck
-	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))   //nolint:contextcheck
-	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))     //nolint:contextcheck
-	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy))  //nolint:contextcheck
-	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))    //nolint:contextcheck
-	router.POST("/auth/v1/token", WrapHandler(kbackendProxy))    //nolint:contextcheck
-	router.POST("/auth/v1/assume", WrapHandler(kbackendProxy))   //nolint:contextcheck
-	router.DELETE("/auth/v1/assume", WrapHandler(kbackendProxy)) //nolint:contextcheck
+	router.GET("/auth/v1/userinfo", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/session", WrapHandler(kbackendProxy))      //nolint:contextcheck
+	router.GET("/auth/v1/login", WrapHandler(kbackendProxy))        //nolint:contextcheck
+	router.GET("/auth/v1/callback", WrapHandler(kbackendProxy))     //nolint:contextcheck
+	router.GET("/auth/v1/logout", WrapHandler(kbackendProxy))       //nolint:contextcheck
+	router.POST("/auth/v1/token", WrapHandler(kbackendProxy))       //nolint:contextcheck
+	router.POST("/auth/v1/assume", WrapHandler(kbackendProxy))      //nolint:contextcheck
+	router.DELETE("/auth/v1/assume", WrapHandler(kbackendProxy))    //nolint:contextcheck
+	router.GET("/auth/v1/", WrapHandler(kbackendProxy))             //nolint:contextcheck
+	router.GET("/auth/v1/openapi.json", WrapHandler(kbackendProxy)) //nolint:contextcheck
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
-	// auth API endpoints
-	authRouter := router.Group("/auth/v1")
+	// data API endpoint
+	router.Match(
+		[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		"/api/v1/*url",
+		WrapHandler(dataAPIRoute), //nolint:contextcheck
+	)
 
-	// Endpoints
-	//nolint:contextcheck
-	{
-		authRouter.GET("/",
-			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, openapi.ElementsHandlerFunc("Auth API"))))
-		authRouter.GET("/openapi.json",
-			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
+	// grid API endpoint
+	router.Match(
+		[]string{"HEAD", "GET", "OPTIONS"},
+		"/grid/v0/*url",
+		WrapHandler(gridAPIRoute), //nolint:contextcheck
+	)
 
-		// data API endpoint
-		router.Match(
-			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-			"/api/v1/*url",
-			WrapHandler(dataAPIRoute), //nolint:contextcheck
-		)
-
-		// grid API endpoint
-		router.Match(
-			[]string{"HEAD", "GET", "OPTIONS"},
-			"/grid/v0/*url",
-			WrapHandler(gridAPIRoute), //nolint:contextcheck
-		)
-	} //end:nolint:contextcheck
-
-	slog.InfoContext(ctx, "Running server on server on"+addr)
+	slog.InfoContext(ctx, "Running server on "+addr)
 
 	err = router.RunWithContext(ctx)
 	if err != nil {
