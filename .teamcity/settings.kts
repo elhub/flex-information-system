@@ -89,6 +89,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
             sequential {
                 npmVerify {
                     workingDir = "frontend"
+                    // vite-plugin-checker v1 requires Node ^22.22.0 || >=24.11.0 (devxp default is 22.20)
+                    dockerImage = "docker.jfrog.elhub.cloud/node:24"
                     sonarScanSettings = {
                         sonarProjectSources = "frontend/src"
                         workingDir = "frontend"
