@@ -5,6 +5,8 @@ import no.elhub.flex.api.postgrest.AttachmentReadVariant
 import no.elhub.flex.api.postgrest.DefaultVariant
 import no.elhub.flex.api.postgrest.EventListVariant
 import no.elhub.flex.api.postgrest.PostgrestRouteVariant
+import no.elhub.flex.api.productapplication.ProductApplicationRepositoryImpl
+import no.elhub.flex.api.productapplication.ProductApplicationWriteVariant
 import no.elhub.flex.api.routes.ApiRoute
 
 /**
@@ -12,6 +14,7 @@ import no.elhub.flex.api.routes.ApiRoute
  */
 object DataApiRegistry {
     private const val ATTACHMENT = "service_providing_group_product_application_attachment"
+    private const val PRODUCT_APPLICATION = "service_providing_group_product_application"
 
     /** Routes implemented in kbackend itself. */
     val native: Set<ApiRoute> = setOf(
@@ -31,12 +34,16 @@ object DataApiRegistry {
         ApiRoute(HttpMethod.Get, "/${ATTACHMENT}_history/{id}"),
     )
 
+    private val productApplicationWrite = ProductApplicationWriteVariant(ProductApplicationRepositoryImpl())
+
     /** Routes served by PostgREST with a deviation from the generic pipeline. */
     val variants: Map<ApiRoute, PostgrestRouteVariant> = mapOf(
         ApiRoute(HttpMethod.Get, "/event") to EventListVariant,
         ApiRoute(HttpMethod.Get, "/$ATTACHMENT") to
             AttachmentReadVariant(ATTACHMENT, "service_providing_group_product_application_id"),
         ApiRoute(HttpMethod.Get, "/$ATTACHMENT/{id}") to AttachmentReadVariant(ATTACHMENT, null),
+        ApiRoute(HttpMethod.Post, "/$PRODUCT_APPLICATION") to productApplicationWrite,
+        ApiRoute(HttpMethod.Patch, "/$PRODUCT_APPLICATION/{id}") to productApplicationWrite,
     )
 
     /** The routes served by PostgREST, with their variants. */

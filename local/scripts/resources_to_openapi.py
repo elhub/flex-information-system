@@ -573,6 +573,8 @@ def generate_openapi_document(
                             resource["properties"][field]["x-no-update"] = data[
                                 "x-no-update"
                             ]
+                        if data.get("deprecated"):
+                            resource["properties"][field]["deprecated"] = True
                         if "required" in data:
                             resource["properties"][field]["required"] = data["required"]
                         continue

@@ -28,6 +28,8 @@ data class RequestRejection(
     val details: String? = null,
     /** The `WWW-Authenticate` header to respond with, if any. */
     val wwwAuthenticate: String? = null,
+    /** The error code to respond with, if not the generic one of the status. */
+    val code: String? = null,
 )
 
 private val singleIdPath = Regex("^/([a-z_]+)/([0-9]+)$")

@@ -831,6 +831,262 @@
                     }
                 }
             },
+            "spgpa_maximum_active_power": {
+                "description": "Maximum active power in kilowatts.",
+                "format": "decimal",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 999999.999,
+                "multipleOf": 0.001,
+                "example": 150.5
+            },
+            "spgpa_ramping_capability": {
+                "description": "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "always",
+                    "partial",
+                    "never"
+                ],
+                "example": "always"
+            },
+            "spgpa_application_details_mfrr": {
+                "type": "object",
+                "description": "Application details for the product type with business ID manual_frequency_restoration (mFRR). This product type has no assessment details.",
+                "required": [
+                    "kind",
+                    "maximum_active_power_up",
+                    "maximum_active_power_down",
+                    "ramping_capability",
+                    "ramping_description"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the application details schema. Equals the business ID of the product type.",
+                        "type": "string",
+                        "const": "manual_frequency_restoration"
+                    },
+                    "maximum_active_power_up": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "maximum_active_power_down": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "ramping_capability": {
+                        "$ref": "#/components/schemas/spgpa_ramping_capability"
+                    },
+                    "ramping_description": {
+                        "description": "Free text description of ramping details.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Units are (dis)connected one by one to achieve a stepwise profile."
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 512
+                    }
+                }
+            },
+            "spgpa_application_details_fcr_n": {
+                "type": "object",
+                "description": "Application details for the product type with business ID automatic_frequency_containment (FCR-N). Answered by spgpa_assessment_details_fcr_n. The maximum active power in directions up and down must be equal.",
+                "required": [
+                    "kind",
+                    "service_provider_contact_information",
+                    "technical_contact_information",
+                    "limited_energy_reservoir",
+                    "variable_production_consumption",
+                    "planned_prequalification_test_date",
+                    "maximum_active_power_up",
+                    "maximum_active_power_down"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the application details schema. Equals the business ID of the product type.",
+                        "type": "string",
+                        "const": "automatic_frequency_containment"
+                    },
+                    "service_provider_contact_information": {
+                        "description": "Contact information of the service provider.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Kari Nordmann, +47 ..."
+                    },
+                    "technical_contact_information": {
+                        "description": "Contact information of the technical contact person.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Ola Nordmann, +47 ..."
+                    },
+                    "limited_energy_reservoir": {
+                        "description": "Whether the service providing group has a limited energy reservoir.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "variable_production_consumption": {
+                        "description": "Whether the service providing group has variable production or consumption.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "planned_prequalification_test_date": {
+                        "description": "The planned date of the prequalification test.",
+                        "format": "date",
+                        "type": "string",
+                        "example": "2026-12-01"
+                    },
+                    "maximum_active_power_up": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "maximum_active_power_down": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    }
+                }
+            },
+            "spgpa_application_details_fcr_d": {
+                "type": "object",
+                "description": "Application details for the product type with business ID automatic_frequency_containment_disturbance (FCR-D). Answered by spgpa_assessment_details_fcr_d.",
+                "required": [
+                    "kind",
+                    "service_provider_contact_information",
+                    "technical_contact_information",
+                    "limited_energy_reservoir",
+                    "variable_production_consumption",
+                    "planned_prequalification_test_date",
+                    "maximum_active_power_up",
+                    "maximum_active_power_down"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the application details schema. Equals the business ID of the product type.",
+                        "type": "string",
+                        "const": "automatic_frequency_containment_disturbance"
+                    },
+                    "service_provider_contact_information": {
+                        "description": "Contact information of the service provider.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Kari Nordmann, +47 ..."
+                    },
+                    "technical_contact_information": {
+                        "description": "Contact information of the technical contact person.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Ola Nordmann, +47 ..."
+                    },
+                    "limited_energy_reservoir": {
+                        "description": "Whether the service providing group has a limited energy reservoir.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "variable_production_consumption": {
+                        "description": "Whether the service providing group has variable production or consumption.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "planned_prequalification_test_date": {
+                        "description": "The planned date of the prequalification test.",
+                        "format": "date",
+                        "type": "string",
+                        "example": "2026-12-01"
+                    },
+                    "maximum_active_power_up": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "maximum_active_power_down": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    }
+                }
+            },
+            "spgpa_application_details": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/spgpa_application_details_mfrr"
+                    },
+                    {
+                        "$ref": "#/components/schemas/spgpa_application_details_fcr_n"
+                    },
+                    {
+                        "$ref": "#/components/schemas/spgpa_application_details_fcr_d"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                        "manual_frequency_restoration": "#/components/schemas/spgpa_application_details_mfrr",
+                        "automatic_frequency_containment": "#/components/schemas/spgpa_application_details_fcr_n",
+                        "automatic_frequency_containment_disturbance": "#/components/schemas/spgpa_application_details_fcr_d"
+                    }
+                }
+            },
+            "spgpa_assessment_details_fcr_n": {
+                "type": "object",
+                "description": "Assessment details of the procuring system operator for the product type with business ID automatic_frequency_containment (FCR-N). Answers spgpa_application_details_fcr_n. The approved maximum active power in directions up and down must be equal.",
+                "required": [
+                    "kind",
+                    "approved_maximum_active_power_up",
+                    "approved_maximum_active_power_down"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the assessment details schema. Equals the kind of the application details.",
+                        "type": "string",
+                        "const": "automatic_frequency_containment"
+                    },
+                    "approved_maximum_active_power_up": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "approved_maximum_active_power_down": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    }
+                }
+            },
+            "spgpa_assessment_details_fcr_d": {
+                "type": "object",
+                "description": "Assessment details of the procuring system operator for the product type with business ID automatic_frequency_containment_disturbance (FCR-D). Answers spgpa_application_details_fcr_d.",
+                "required": [
+                    "kind",
+                    "approved_maximum_active_power_up",
+                    "approved_maximum_active_power_down"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the assessment details schema. Equals the kind of the application details.",
+                        "type": "string",
+                        "const": "automatic_frequency_containment_disturbance"
+                    },
+                    "approved_maximum_active_power_up": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    },
+                    "approved_maximum_active_power_down": {
+                        "$ref": "#/components/schemas/spgpa_maximum_active_power"
+                    }
+                }
+            },
+            "spgpa_assessment_details": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/spgpa_assessment_details_fcr_n"
+                    },
+                    {
+                        "$ref": "#/components/schemas/spgpa_assessment_details_fcr_d"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                        "automatic_frequency_containment": "#/components/schemas/spgpa_assessment_details_fcr_n",
+                        "automatic_frequency_containment_disturbance": "#/components/schemas/spgpa_assessment_details_fcr_d"
+                    }
+                }
+            },
             "event_data_updated_fields": {
                 "type": "object",
                 "description": "Common format of the data field in events concerning update operations.",
@@ -1301,6 +1557,7 @@
             },
             "service_providing_group_product_application_ramping_capability": {
                 "description": "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
+                "deprecated": true,
                 "format": "text",
                 "type": "string",
                 "nullable": true,
@@ -6169,8 +6426,36 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "application_details": {
+                        "description": "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_application_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "assessment_details": {
+                        "description": "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_assessment_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "maximum_active_power_up": {
                         "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6180,6 +6465,8 @@
                     },
                     "maximum_active_power_down": {
                         "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6189,6 +6476,7 @@
                     },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -6217,10 +6505,12 @@
                                 "type": "null"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "deprecated": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -6275,8 +6565,36 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "application_details": {
+                        "description": "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_application_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "assessment_details": {
+                        "description": "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_assessment_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "maximum_active_power_up": {
                         "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6286,6 +6604,8 @@
                     },
                     "maximum_active_power_down": {
                         "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6295,6 +6615,7 @@
                     },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -6323,10 +6644,12 @@
                                 "type": "null"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "deprecated": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -6350,9 +6673,7 @@
                 "required": [
                     "service_providing_group_id",
                     "procuring_system_operator_id",
-                    "product_type_ids",
-                    "maximum_active_power_up",
-                    "maximum_active_power_down"
+                    "product_type_ids"
                 ]
             },
             "service_providing_group_product_application_response": {
@@ -6395,8 +6716,36 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "application_details": {
+                        "description": "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_application_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "assessment_details": {
+                        "description": "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_assessment_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "maximum_active_power_up": {
                         "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6406,6 +6755,8 @@
                     },
                     "maximum_active_power_down": {
                         "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6415,6 +6766,7 @@
                     },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -6443,10 +6795,12 @@
                                 "type": "null"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "deprecated": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -6548,8 +6902,6 @@
                     "procuring_system_operator_id",
                     "product_type_ids",
                     "status",
-                    "maximum_active_power_up",
-                    "maximum_active_power_down",
                     "created_at",
                     "recorded_at",
                     "recorded_by"
@@ -9470,8 +9822,36 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "application_details": {
+                        "description": "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_application_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "assessment_details": {
+                        "description": "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/spgpa_assessment_details"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "maximum_active_power_up": {
                         "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -9481,6 +9861,8 @@
                     },
                     "maximum_active_power_down": {
                         "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+                        "deprecated": true,
+                        "nullable": true,
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -9490,6 +9872,7 @@
                     },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -9518,10 +9901,12 @@
                                 "type": "null"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "deprecated": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
+                        "deprecated": true,
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -9649,8 +10034,6 @@
                     "procuring_system_operator_id",
                     "product_type_ids",
                     "status",
-                    "maximum_active_power_up",
-                    "maximum_active_power_down",
                     "created_at",
                     "recorded_at",
                     "recorded_by",

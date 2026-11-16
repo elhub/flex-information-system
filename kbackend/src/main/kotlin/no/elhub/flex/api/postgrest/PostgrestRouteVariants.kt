@@ -1,9 +1,12 @@
 package no.elhub.flex.api.postgrest
 
+import arrow.core.Either
+import arrow.core.right
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
+import io.ktor.server.application.ApplicationCall
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
 
@@ -22,6 +25,14 @@ interface PostgrestRouteVariant {
 
     /** Rewrites [query] in-place; returns where in PostgREST the request goes. */
     fun rewrite(path: String, query: ParametersBuilder): UpstreamTarget = UpstreamTarget(path)
+
+    /** Rewrites the [body] of a `POST` or `PATCH` request, or rejects the request. */
+    suspend fun rewriteBody(
+        call: ApplicationCall,
+        method: HttpMethod,
+        path: String,
+        body: ByteArray,
+    ): Either<RequestRejection, ByteArray> = body.right()
 }
 
 /** The generic pipeline, with no deviations. */

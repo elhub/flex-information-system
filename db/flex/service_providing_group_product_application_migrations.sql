@@ -350,3 +350,76 @@ CREATE OR REPLACE TRIGGER service_providing_group_product_application_set_reques
 BEFORE INSERT OR UPDATE ON flex.service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION flex.spgpa_set_requested_at();
+
+-- changeset flex:spgpa-add-details-columns runOnChange:false endDelimiter:;
+-- product-specific details, validated by the data API (not by the database)
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS application_details jsonb NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS assessment_details jsonb NULL;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS application_details jsonb NULL;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS assessment_details jsonb NULL;
+
+-- changeset flex:spgpa-legacy-columns-nullable runOnChange:false endDelimiter:;
+-- the legacy columns are deprecated, and only used by mFRR applications
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN maximum_active_power_up DROP NOT NULL,
+ALTER COLUMN maximum_active_power_down DROP NOT NULL;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ALTER COLUMN maximum_active_power_up DROP NOT NULL,
+ALTER COLUMN maximum_active_power_down DROP NOT NULL;
+
+-- changeset flex:spgpa-drop-ramping-triggers runOnChange:false endDelimiter:;
+-- SPGPA-VAL007 and SPGPA-VAL008 are replaced by SPGPA-VAL013, which is done by the data API
+DROP TRIGGER IF EXISTS spg_product_application_ramping_capability_required_check
+ON flex.service_providing_group_product_application;
+DROP FUNCTION IF EXISTS spg_product_application_ramping_capability_required_check;
+
+DROP TRIGGER IF EXISTS spg_product_application_ramping_description_check
+ON flex.service_providing_group_product_application;
+DROP FUNCTION IF EXISTS spg_product_application_ramping_description_check;
+
+-- changeset flex:spgpa-backfill-application-details runOnChange:false endDelimiter:;
+-- move the legacy columns of mFRR applications into application_details,
+-- also in history so nothing is lost when the columns are removed
+SELECT public.disable_triggers();
+
+UPDATE flex.service_providing_group_product_application
+SET
+    application_details = jsonb_strip_nulls(jsonb_build_object(
+        'kind', 'manual_frequency_restoration',
+        'maximum_active_power_up', maximum_active_power_up,
+        'maximum_active_power_down', maximum_active_power_down,
+        'ramping_capability', ramping_capability,
+        'ramping_description', ramping_description,
+        'additional_information', additional_information
+    ))
+WHERE application_details IS NULL
+    AND product_type_ids = array(
+        SELECT id FROM flex.product_type
+        WHERE business_id = 'manual_frequency_restoration'
+    );
+
+UPDATE flex.service_providing_group_product_application_history
+SET
+    application_details = jsonb_strip_nulls(jsonb_build_object(
+        'kind', 'manual_frequency_restoration',
+        'maximum_active_power_up', maximum_active_power_up,
+        'maximum_active_power_down', maximum_active_power_down,
+        'ramping_capability', ramping_capability,
+        'ramping_description', ramping_description,
+        'additional_information', additional_information
+    ))
+WHERE application_details IS NULL
+    AND product_type_ids = array(
+        SELECT id FROM flex.product_type
+        WHERE business_id = 'manual_frequency_restoration'
+    );
+
+SELECT public.enable_triggers();

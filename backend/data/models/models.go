@@ -576,8 +576,10 @@ type ApiServiceProvidingGroupProductApplication struct {
 	ProcuringSystemOperatorID int
 	ProductTypeIds            []int
 	Status                    string
-	MaximumActivePowerUp      float64
-	MaximumActivePowerDown    float64
+	ApplicationDetails        []byte
+	AssessmentDetails         []byte
+	MaximumActivePowerUp      *float64
+	MaximumActivePowerDown    *float64
 	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
@@ -649,8 +651,10 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ProcuringSystemOperatorID                 int
 	ProductTypeIds                            []int
 	Status                                    string
-	MaximumActivePowerUp                      float64
-	MaximumActivePowerDown                    float64
+	ApplicationDetails                        []byte
+	AssessmentDetails                         []byte
+	MaximumActivePowerUp                      *float64
+	MaximumActivePowerDown                    *float64
 	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz

@@ -296,6 +296,88 @@ export const zNoticeDataServiceProvidingGroupGridPrequalificationOutdated =
   });
 
 /**
+ * Maximum active power in kilowatts.
+ */
+export const zSpgpaMaximumActivePower = z.coerce
+  .number()
+  .gte(0)
+  .lte(999999.999);
+
+/**
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+ */
+export const zSpgpaRampingCapability = z.enum(["always", "partial", "never"]);
+
+/**
+ * Application details for the product type with business ID manual_frequency_restoration (mFRR). This product type has no assessment details.
+ */
+export const zSpgpaApplicationDetailsMfrr = z.object({
+  kind: z.literal("manual_frequency_restoration"),
+  maximum_active_power_up: zSpgpaMaximumActivePower,
+  maximum_active_power_down: zSpgpaMaximumActivePower,
+  ramping_capability: zSpgpaRampingCapability,
+  ramping_description: z.string(),
+  additional_information: z.string().max(512).optional(),
+});
+
+/**
+ * Application details for the product type with business ID automatic_frequency_containment (FCR-N). Answered by spgpa_assessment_details_fcr_n. The maximum active power in directions up and down must be equal.
+ */
+export const zSpgpaApplicationDetailsFcrN = z.object({
+  kind: z.literal("automatic_frequency_containment"),
+  service_provider_contact_information: z.string(),
+  technical_contact_information: z.string(),
+  limited_energy_reservoir: z.boolean(),
+  variable_production_consumption: z.boolean(),
+  planned_prequalification_test_date: z.iso.date(),
+  maximum_active_power_up: zSpgpaMaximumActivePower,
+  maximum_active_power_down: zSpgpaMaximumActivePower,
+});
+
+/**
+ * Application details for the product type with business ID automatic_frequency_containment_disturbance (FCR-D). Answered by spgpa_assessment_details_fcr_d.
+ */
+export const zSpgpaApplicationDetailsFcrD = z.object({
+  kind: z.literal("automatic_frequency_containment_disturbance"),
+  service_provider_contact_information: z.string(),
+  technical_contact_information: z.string(),
+  limited_energy_reservoir: z.boolean(),
+  variable_production_consumption: z.boolean(),
+  planned_prequalification_test_date: z.iso.date(),
+  maximum_active_power_up: zSpgpaMaximumActivePower,
+  maximum_active_power_down: zSpgpaMaximumActivePower,
+});
+
+export const zSpgpaApplicationDetails = z.discriminatedUnion("kind", [
+  zSpgpaApplicationDetailsMfrr,
+  zSpgpaApplicationDetailsFcrN,
+  zSpgpaApplicationDetailsFcrD,
+]);
+
+/**
+ * Assessment details of the procuring system operator for the product type with business ID automatic_frequency_containment (FCR-N). Answers spgpa_application_details_fcr_n. The approved maximum active power in directions up and down must be equal.
+ */
+export const zSpgpaAssessmentDetailsFcrN = z.object({
+  kind: z.literal("automatic_frequency_containment"),
+  approved_maximum_active_power_up: zSpgpaMaximumActivePower,
+  approved_maximum_active_power_down: zSpgpaMaximumActivePower,
+});
+
+/**
+ * Assessment details of the procuring system operator for the product type with business ID automatic_frequency_containment_disturbance (FCR-D). Answers spgpa_application_details_fcr_d.
+ */
+export const zSpgpaAssessmentDetailsFcrD = z.object({
+  kind: z.literal("automatic_frequency_containment_disturbance"),
+  approved_maximum_active_power_up: zSpgpaMaximumActivePower,
+  approved_maximum_active_power_down: zSpgpaMaximumActivePower,
+});
+
+export const zSpgpaAssessmentDetails = z.discriminatedUnion("kind", [
+  zSpgpaAssessmentDetailsFcrN,
+  zSpgpaAssessmentDetailsFcrD,
+]);
+
+/**
  * Common format of the data field in events concerning update operations.
  */
 export const zEventDataUpdatedFields = z.object({
@@ -598,6 +680,8 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
 
 /**
  * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+ *
+ * @deprecated
  */
 export const zServiceProvidingGroupProductApplicationRampingCapability = z.enum(
   ["always", "partial", "never"],
@@ -1116,6 +1200,8 @@ export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
 export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
   status: zServiceProvidingGroupProductApplicationStatus.optional(),
+  application_details: zSpgpaApplicationDetails.nullish(),
+  assessment_details: zSpgpaAssessmentDetails.nullish(),
   maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
   maximum_active_power_down: z.coerce
     .number()
@@ -1140,8 +1226,14 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus.optional(),
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  application_details: zSpgpaApplicationDetails.nullish(),
+  assessment_details: zSpgpaAssessmentDetails.nullish(),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_down: z.coerce
+    .number()
+    .gte(0)
+    .lte(999999.999)
+    .optional(),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -2070,8 +2162,14 @@ export const zServiceProvidingGroupProductApplication = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  application_details: zSpgpaApplicationDetails.nullish(),
+  assessment_details: zSpgpaAssessmentDetails.nullish(),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_down: z.coerce
+    .number()
+    .gte(0)
+    .lte(999999.999)
+    .optional(),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -2545,8 +2643,14 @@ export const zServiceProvidingGroupProductApplicationHistory = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  application_details: zSpgpaApplicationDetails.nullish(),
+  assessment_details: zSpgpaAssessmentDetails.nullish(),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_down: z.coerce
+    .number()
+    .gte(0)
+    .lte(999999.999)
+    .optional(),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -3179,8 +3283,14 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  application_details: zSpgpaApplicationDetails.nullish(),
+  assessment_details: zSpgpaAssessmentDetails.nullish(),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_down: z.coerce
+    .number()
+    .gte(0)
+    .lte(999999.999)
+    .optional(),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -3604,8 +3714,18 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
     procuring_system_operator_id: z.coerce.number(),
     product_type_ids: z.array(z.coerce.number()),
     status: zServiceProvidingGroupProductApplicationStatus,
-    maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-    maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+    application_details: zSpgpaApplicationDetails.nullish(),
+    assessment_details: zSpgpaAssessmentDetails.nullish(),
+    maximum_active_power_up: z.coerce
+      .number()
+      .gte(0)
+      .lte(999999.999)
+      .optional(),
+    maximum_active_power_down: z.coerce
+      .number()
+      .gte(0)
+      .lte(999999.999)
+      .optional(),
     additional_information: z.string().max(512).optional(),
     prequalified_at: z.iso.datetime({ offset: true }).optional(),
     verified_at: z.iso.datetime({ offset: true }).optional(),

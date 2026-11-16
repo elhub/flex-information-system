@@ -206,8 +206,9 @@ def data():
 
     # apply for some product types for both SO and qualify the applications
 
-    # random choice of product type. 8 is required for a few tests
-    pt_ids = [5, 7, 8]
+    # random choice of product types, which have no product-specific details.
+    # 8 (mFRR), 6 (FCR-N) and 10 (FCR-D) have details and are required for a few tests
+    pt_ids = [5, 7, 8, 6, 10]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -272,8 +273,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -287,8 +286,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -314,8 +311,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -327,8 +322,6 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
@@ -420,7 +413,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            additional_information="test by FISO",
+            complete_at=datetime.datetime.fromisoformat("2024-01-02T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -616,6 +609,8 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             product_type_ids=[8],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
             ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
             ramping_description="Description",
         ),
@@ -646,8 +641,6 @@ def test_spgpa_product_type_ids_not_empty(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -659,8 +652,6 @@ def test_spgpa_product_type_ids_not_empty(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -689,8 +680,6 @@ def test_spgpa_val011_complete_at_required(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -733,8 +722,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -747,21 +734,17 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(e, ErrorMessage)
 
-    # overlapping subset also fails
+    # more than one product type fails (SPGPA-VAL012), also when overlapping
     e = create_service_providing_group_product_application.sync(
         client=client_sp,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0], pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -773,8 +756,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[1]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -795,6 +776,8 @@ def test_spgpa_no_duplicate_product_types(data):
         id=cast(int, spgpa2.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             product_type_ids=[pt_ids[2]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
             ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
             ramping_description="test ramping description",
         ),
@@ -809,8 +792,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
@@ -822,8 +803,6 @@ def test_spgpa_no_duplicate_product_types(data):
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa4, ServiceProvidingGroupProductApplicationResponse)
@@ -898,8 +877,6 @@ def test_spgpa_sp_inactive(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_ids[0],
             product_type_ids=[pt_ids[0]],
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

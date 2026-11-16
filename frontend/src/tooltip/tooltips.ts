@@ -876,6 +876,10 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application.status":
     "The status of the application.",
+  "service_providing_group_product_application.application_details":
+    "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+  "service_providing_group_product_application.assessment_details":
+    "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
   "service_providing_group_product_application.maximum_active_power_up":
     "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
   "service_providing_group_product_application.maximum_active_power_down":
@@ -910,6 +914,10 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application_history.status":
     "The status of the application.",
+  "service_providing_group_product_application_history.application_details":
+    "The product-specific details of the application, written by the service provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the product type has application details.",
+  "service_providing_group_product_application_history.assessment_details":
+    "The product-specific response of the procuring system operator to the application details. The variant is selected by `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator responds.",
   "service_providing_group_product_application_history.maximum_active_power_up":
     "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
   "service_providing_group_product_application_history.maximum_active_power_down":

@@ -20,7 +20,6 @@ from flex.models import (
     ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
-    ServiceProvidingGroupProductApplicationRampingCapability,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupResponse,
@@ -316,10 +315,6 @@ def test_ap_so(sts):
             service_providing_group_id=cast(int, spg_pso.id),
             procuring_system_operator_id=pso_id,
             product_type_ids=[1],
-            maximum_active_power_up=1.0,
-            maximum_active_power_down=1.0,
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.NEVER,
-            ramping_description="No ramping capability",
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

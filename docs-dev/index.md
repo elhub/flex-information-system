@@ -67,10 +67,12 @@ This will give you a fresh set of containers.
 This starts the `test` environment at
 [https://test.flex.internal:6443](https://test.flex.internal:6443).
 
-To start the `dev` environment, first stop the backend container with
-`docker compose stop backend` and run `just frontend` for frontend and
-`just backend` for the backend (in separate terminals). The dev environment is
-available at [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
+To start the `dev` environment, run `just frontend` for frontend,
+`just backend` for the backend and `just kbackend` for the Kotlin backend (in
+separate terminals). Each of them stops its corresponding container. The Kotlin
+backend serves the auth endpoints, so it must run with the dev configuration
+(`local/kbackend/dev.env`) for login to redirect back to dev. The dev
+environment is available at [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
 
 ## Code generation
 

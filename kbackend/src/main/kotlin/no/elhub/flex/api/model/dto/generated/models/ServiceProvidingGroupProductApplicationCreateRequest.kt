@@ -36,18 +36,22 @@ public data class ServiceProvidingGroupProductApplicationCreateRequest(
   @SerialName("status")
   public val status: ServiceProvidingGroupProductApplicationStatus =
       ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+  @SerialName("application_details")
+  public val applicationDetails: SpgpaApplicationDetails? = null,
+  @SerialName("assessment_details")
+  public val assessmentDetails: SpgpaAssessmentDetails? = null,
   /**
    * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   @Contextual
   @SerialName("maximum_active_power_up")
-  public val maximumActivePowerUp: BigDecimal,
+  public val maximumActivePowerUp: BigDecimal? = null,
   /**
    * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   @Contextual
   @SerialName("maximum_active_power_down")
-  public val maximumActivePowerDown: BigDecimal,
+  public val maximumActivePowerDown: BigDecimal? = null,
   /**
    * Free text field for extra information about the application if needed (bidding periods,
    * unavailabilities, etc).

@@ -269,6 +269,8 @@ service_providing_group_product_application;service_providing_group_id;api;;;;;R
 service_providing_group_product_application;procuring_system_operator_id;api;;;;;R;;R;RC;;;;;
 service_providing_group_product_application;product_type_ids;api;;;;;RU;;RU;RCU;;;;;
 service_providing_group_product_application;status;api;;;;;RU;;RU;RCU;;;;;
+service_providing_group_product_application;application_details;api;;;;;RU;;R;RCU;;;;;
+service_providing_group_product_application;assessment_details;api;;;;;RU;;RU;R;;;;;
 service_providing_group_product_application;maximum_active_power_up;api;;;;;RU;;R;RCU;;;;;
 service_providing_group_product_application;maximum_active_power_down;api;;;;;RU;;R;RCU;;;;;
 service_providing_group_product_application;additional_information;api;;;;;RU;;R;RCU;;;;;

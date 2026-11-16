@@ -424,6 +424,8 @@ export type FieldLabel =
   | "service_providing_group_power_per_substation.service_providing_group_id"
   | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application.additional_information"
+  | "service_providing_group_product_application.application_details"
+  | "service_providing_group_product_application.assessment_details"
   | "service_providing_group_product_application.complete_at"
   | "service_providing_group_product_application.created_at"
   | "service_providing_group_product_application.id"
@@ -460,6 +462,8 @@ export type FieldLabel =
   | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
+  | "service_providing_group_product_application_history.application_details"
+  | "service_providing_group_product_application_history.assessment_details"
   | "service_providing_group_product_application_history.complete_at"
   | "service_providing_group_product_application_history.created_at"
   | "service_providing_group_product_application_history.id"
@@ -1203,6 +1207,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.application_details":
+      "Application details",
+    "service_providing_group_product_application.assessment_details":
+      "Assessment details",
     "service_providing_group_product_application.maximum_active_power_up":
       "Maximum active power (up)",
     "service_providing_group_product_application.maximum_active_power_down":
@@ -1229,6 +1237,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.application_details":
+      "Application details",
+    "service_providing_group_product_application_history.assessment_details":
+      "Assessment details",
     "service_providing_group_product_application_history.maximum_active_power_up":
       "Maximum active power (up)",
     "service_providing_group_product_application_history.maximum_active_power_down":
@@ -1976,6 +1988,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.application_details":
+      "Søknadsdetaljer",
+    "service_providing_group_product_application.assessment_details":
+      "Vurderingsdetaljer",
     "service_providing_group_product_application.maximum_active_power_up":
       "Maksimal aktiv effekt (opp)",
     "service_providing_group_product_application.maximum_active_power_down":
@@ -2003,6 +2019,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.application_details":
+      "Søknadsdetaljer",
+    "service_providing_group_product_application_history.assessment_details":
+      "Vurderingsdetaljer",
     "service_providing_group_product_application_history.maximum_active_power_up":
       "Maksimal aktiv effekt (opp)",
     "service_providing_group_product_application_history.maximum_active_power_down":
@@ -2749,6 +2769,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.application_details":
+      "Søknadsdetaljar",
+    "service_providing_group_product_application.assessment_details":
+      "Vurderingsdetaljar",
     "service_providing_group_product_application.maximum_active_power_up":
       "Maksimal aktiv effekt (opp)",
     "service_providing_group_product_application.maximum_active_power_down":
@@ -2776,6 +2800,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.application_details":
+      "Søknadsdetaljar",
+    "service_providing_group_product_application_history.assessment_details":
+      "Vurderingsdetaljar",
     "service_providing_group_product_application_history.maximum_active_power_up":
       "Maksimal aktiv effekt (opp)",
     "service_providing_group_product_application_history.maximum_active_power_down":

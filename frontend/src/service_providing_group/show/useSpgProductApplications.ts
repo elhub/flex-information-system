@@ -11,8 +11,8 @@ export type SpgProductApplicationRow = {
   id: number;
   procuringSystemOperatorName: string;
   productTypeIds: number[];
-  maximumActivePowerUp: number;
-  maximumActivePowerDown: number;
+  maximumActivePowerUp: number | undefined;
+  maximumActivePowerDown: number | undefined;
   status: ServiceProvidingGroupProductApplicationStatus | typeof DRAFT_STATUS;
 };
 

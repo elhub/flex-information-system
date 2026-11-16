@@ -22,6 +22,11 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_product_application_comment_history_response import (
         ServiceProvidingGroupProductApplicationCommentHistoryResponse,
     )
+    from ..models.spgpa_application_details_fcr_d import SpgpaApplicationDetailsFcrD
+    from ..models.spgpa_application_details_fcr_n import SpgpaApplicationDetailsFcrN
+    from ..models.spgpa_application_details_mfrr import SpgpaApplicationDetailsMfrr
+    from ..models.spgpa_assessment_details_fcr_d import SpgpaAssessmentDetailsFcrD
+    from ..models.spgpa_assessment_details_fcr_n import SpgpaAssessmentDetailsFcrN
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationHistoryResponse")
@@ -38,15 +43,23 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
         status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example:
             prequalification.
-        maximum_active_power_up (float): The maximum active power applied for in regulation direction up. Stored in
-            kilowatts. Example: 150.5.
-        maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
-            kilowatts. Example: 150.5.
         created_at (datetime.datetime): When the application was first created. Example: 2022-01-08T12:00:00+02.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_product_application_id (int): Reference to the resource that was updated. Example: 48.
+        application_details (None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN |
+            SpgpaApplicationDetailsMfrr | Unset): The product-specific details of the application, written by the service
+            provider. The variant is selected by `kind`, which is the business ID of the product type. Required when the
+            product type has application details.
+        assessment_details (None | SpgpaAssessmentDetailsFcrD | SpgpaAssessmentDetailsFcrN | Unset): The product-
+            specific response of the procuring system operator to the application details. The variant is selected by
+            `kind`, which must equal the `kind` of the application details. Unset until the procuring system operator
+            responds.
+        maximum_active_power_up (float | None | Unset): The maximum active power applied for in regulation direction up.
+            Stored in kilowatts. Example: 150.5.
+        maximum_active_power_down (float | None | Unset): The maximum active power applied for in regulation direction
+            down. Stored in kilowatts. Example: 150.5.
         additional_information (None | str | Unset): Free text field for extra information about the application if
             needed (bidding periods, unavailabilities, etc).
         prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
@@ -78,12 +91,16 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     procuring_system_operator_id: int
     product_type_ids: list[int]
     status: ServiceProvidingGroupProductApplicationStatus
-    maximum_active_power_up: float
-    maximum_active_power_down: float
     created_at: datetime.datetime
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_product_application_id: int
+    application_details: (
+        None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN | SpgpaApplicationDetailsMfrr | Unset
+    ) = UNSET
+    assessment_details: None | SpgpaAssessmentDetailsFcrD | SpgpaAssessmentDetailsFcrN | Unset = UNSET
+    maximum_active_power_up: float | None | Unset = UNSET
+    maximum_active_power_down: float | None | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
@@ -100,6 +117,12 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.spgpa_application_details_fcr_d import SpgpaApplicationDetailsFcrD  # noqa: PLC0415
+        from ..models.spgpa_application_details_fcr_n import SpgpaApplicationDetailsFcrN  # noqa: PLC0415
+        from ..models.spgpa_application_details_mfrr import SpgpaApplicationDetailsMfrr  # noqa: PLC0415
+        from ..models.spgpa_assessment_details_fcr_d import SpgpaAssessmentDetailsFcrD  # noqa: PLC0415
+        from ..models.spgpa_assessment_details_fcr_n import SpgpaAssessmentDetailsFcrN  # noqa: PLC0415
+
         id = self.id
 
         service_providing_group_id = self.service_providing_group_id
@@ -110,10 +133,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         status = self.status.value
 
-        maximum_active_power_up = self.maximum_active_power_up
-
-        maximum_active_power_down = self.maximum_active_power_down
-
         created_at = self.created_at.isoformat()
 
         recorded_at = self.recorded_at.isoformat()
@@ -121,6 +140,40 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         recorded_by = self.recorded_by
 
         service_providing_group_product_application_id = self.service_providing_group_product_application_id
+
+        application_details: dict[str, Any] | None | Unset
+        if isinstance(self.application_details, Unset):
+            application_details = UNSET
+        elif isinstance(self.application_details, SpgpaApplicationDetailsMfrr):
+            application_details = self.application_details.to_dict()
+        elif isinstance(self.application_details, SpgpaApplicationDetailsFcrN):
+            application_details = self.application_details.to_dict()
+        elif isinstance(self.application_details, SpgpaApplicationDetailsFcrD):
+            application_details = self.application_details.to_dict()
+        else:
+            application_details = self.application_details
+
+        assessment_details: dict[str, Any] | None | Unset
+        if isinstance(self.assessment_details, Unset):
+            assessment_details = UNSET
+        elif isinstance(self.assessment_details, SpgpaAssessmentDetailsFcrN):
+            assessment_details = self.assessment_details.to_dict()
+        elif isinstance(self.assessment_details, SpgpaAssessmentDetailsFcrD):
+            assessment_details = self.assessment_details.to_dict()
+        else:
+            assessment_details = self.assessment_details
+
+        maximum_active_power_up: float | None | Unset
+        if isinstance(self.maximum_active_power_up, Unset):
+            maximum_active_power_up = UNSET
+        else:
+            maximum_active_power_up = self.maximum_active_power_up
+
+        maximum_active_power_down: float | None | Unset
+        if isinstance(self.maximum_active_power_down, Unset):
+            maximum_active_power_down = UNSET
+        else:
+            maximum_active_power_down = self.maximum_active_power_down
 
         additional_information: None | str | Unset
         if isinstance(self.additional_information, Unset):
@@ -247,14 +300,20 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
                 "procuring_system_operator_id": procuring_system_operator_id,
                 "product_type_ids": product_type_ids,
                 "status": status,
-                "maximum_active_power_up": maximum_active_power_up,
-                "maximum_active_power_down": maximum_active_power_down,
                 "created_at": created_at,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
                 "service_providing_group_product_application_id": service_providing_group_product_application_id,
             }
         )
+        if application_details is not UNSET:
+            field_dict["application_details"] = application_details
+        if assessment_details is not UNSET:
+            field_dict["assessment_details"] = assessment_details
+        if maximum_active_power_up is not UNSET:
+            field_dict["maximum_active_power_up"] = maximum_active_power_up
+        if maximum_active_power_down is not UNSET:
+            field_dict["maximum_active_power_down"] = maximum_active_power_down
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
         if prequalified_at is not UNSET:
@@ -296,6 +355,11 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         from ..models.service_providing_group_product_application_comment_history_response import (
             ServiceProvidingGroupProductApplicationCommentHistoryResponse,  # noqa: PLC0415
         )
+        from ..models.spgpa_application_details_fcr_d import SpgpaApplicationDetailsFcrD  # noqa: PLC0415
+        from ..models.spgpa_application_details_fcr_n import SpgpaApplicationDetailsFcrN  # noqa: PLC0415
+        from ..models.spgpa_application_details_mfrr import SpgpaApplicationDetailsMfrr  # noqa: PLC0415
+        from ..models.spgpa_assessment_details_fcr_d import SpgpaAssessmentDetailsFcrD  # noqa: PLC0415
+        from ..models.spgpa_assessment_details_fcr_n import SpgpaAssessmentDetailsFcrN  # noqa: PLC0415
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -308,10 +372,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         status = ServiceProvidingGroupProductApplicationStatus(d.pop("status"))
 
-        maximum_active_power_up = d.pop("maximum_active_power_up")
-
-        maximum_active_power_down = d.pop("maximum_active_power_down")
-
         created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
         recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
@@ -319,6 +379,89 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         service_providing_group_product_application_id = d.pop("service_providing_group_product_application_id")
+
+        def _parse_application_details(
+            data: object,
+        ) -> None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN | SpgpaApplicationDetailsMfrr | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasspgpa_application_details_type_0 = SpgpaApplicationDetailsMfrr.from_dict(data)
+
+                return componentsschemasspgpa_application_details_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasspgpa_application_details_type_1 = SpgpaApplicationDetailsFcrN.from_dict(data)
+
+                return componentsschemasspgpa_application_details_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasspgpa_application_details_type_2 = SpgpaApplicationDetailsFcrD.from_dict(data)
+
+                return componentsschemasspgpa_application_details_type_2
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                None | SpgpaApplicationDetailsFcrD | SpgpaApplicationDetailsFcrN | SpgpaApplicationDetailsMfrr | Unset,
+                data,
+            )
+
+        application_details = _parse_application_details(d.pop("application_details", UNSET))
+
+        def _parse_assessment_details(
+            data: object,
+        ) -> None | SpgpaAssessmentDetailsFcrD | SpgpaAssessmentDetailsFcrN | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasspgpa_assessment_details_type_0 = SpgpaAssessmentDetailsFcrN.from_dict(data)
+
+                return componentsschemasspgpa_assessment_details_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasspgpa_assessment_details_type_1 = SpgpaAssessmentDetailsFcrD.from_dict(data)
+
+                return componentsschemasspgpa_assessment_details_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | SpgpaAssessmentDetailsFcrD | SpgpaAssessmentDetailsFcrN | Unset, data)
+
+        assessment_details = _parse_assessment_details(d.pop("assessment_details", UNSET))
+
+        def _parse_maximum_active_power_up(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        maximum_active_power_up = _parse_maximum_active_power_up(d.pop("maximum_active_power_up", UNSET))
+
+        def _parse_maximum_active_power_down(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        maximum_active_power_down = _parse_maximum_active_power_down(d.pop("maximum_active_power_down", UNSET))
 
         def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
@@ -567,12 +710,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
-            maximum_active_power_up=maximum_active_power_up,
-            maximum_active_power_down=maximum_active_power_down,
             created_at=created_at,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
+            application_details=application_details,
+            assessment_details=assessment_details,
+            maximum_active_power_up=maximum_active_power_up,
+            maximum_active_power_down=maximum_active_power_down,
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,

@@ -4095,9 +4095,39 @@ resources:
           en: Status
           nb: Status
           nn: Status
+      application_details:
+        description: >-
+          The product-specific details of the application, written by the service provider.
+          The variant is selected by `kind`, which is the business ID of the product type.
+          Required when the product type has application details.
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/spgpa_application_details"
+          - type: "null"
+        nullable: true
+        x-intl:
+          en: Application details
+          nb: Søknadsdetaljer
+          nn: Søknadsdetaljar
+      assessment_details:
+        description: >-
+          The product-specific response of the procuring system operator to the application details.
+          The variant is selected by `kind`, which must equal the `kind` of the application details.
+          Unset until the procuring system operator responds.
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/spgpa_assessment_details"
+          - type: "null"
+        nullable: true
+        x-intl:
+          en: Assessment details
+          nb: Vurderingsdetaljer
+          nn: Vurderingsdetaljar
       maximum_active_power_up:
         description: >-
-          The maximum active power applied for in regulation direction up. Stored in kilowatts.
+          Deprecated, use `application_details`. The maximum active power applied for in regulation direction up. Stored in kilowatts.
+        deprecated: true
+        nullable: true
         format: decimal
         type: number
         minimum: 0
@@ -4110,7 +4140,9 @@ resources:
           nn: Maksimal aktiv effekt (opp)
       maximum_active_power_down:
         description: >-
-          The maximum active power applied for in regulation direction down. Stored in kilowatts.
+          Deprecated, use `application_details`. The maximum active power applied for in regulation direction down. Stored in kilowatts.
+        deprecated: true
+        nullable: true
         format: decimal
         type: number
         minimum: 0
@@ -4123,7 +4155,8 @@ resources:
           nn: Maksimal aktiv effekt (ned)
       additional_information:
         description: >-
-          Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+          Deprecated, use `application_details`. Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+        deprecated: true
         format: text
         type: string
         maxLength: 512
@@ -4154,7 +4187,9 @@ resources:
           nn: Verifisert
       ramping_capability:
         description: >-
-          Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
+          Deprecated, use `application_details`. Whether the service providing group can ramp
+          in accordance with the product requirements during both activation and deactivation.
+        deprecated: true
         format: text
         type: string
         nullable: true
@@ -4181,7 +4216,8 @@ resources:
           nn: Rampingevne
       ramping_description:
         description: >-
-          Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+          Deprecated, use `application_details`. Free text description of ramping details. Only supported for product Manual Frequency Restoration (mFRR).
+        deprecated: true
         format: text
         type: string
         nullable: true

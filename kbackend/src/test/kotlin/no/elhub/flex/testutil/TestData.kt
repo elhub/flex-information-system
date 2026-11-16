@@ -553,11 +553,22 @@ class SeedScope(private val conn: Connection) {
         }
     }
 
-    fun insertProductType(name: String = "Test product type"): Long =
+    fun insertProductType(name: String = "Test product type", businessId: String = UUID.randomUUID().toString()): Long =
         queryLong(
             "INSERT INTO flex.product_type (business_id, name, service) VALUES (?, ?, 'test') RETURNING id",
-            UUID.randomUUID().toString(),
+            businessId,
             name,
+        )
+
+    /** Qualifies the service provider for the product types at the system operator. */
+    fun insertServiceProviderProductApplication(serviceProviderId: Long, systemOperatorId: Long, productTypeIds: List<Long>): Long =
+        queryLong(
+            "INSERT INTO flex.service_provider_product_application " +
+                "(service_provider_id, system_operator_id, product_type_ids, status, qualified_at) " +
+                "VALUES (?, ?, ?::bigint[], 'qualified', current_timestamp) RETURNING id",
+            serviceProviderId,
+            systemOperatorId,
+            conn.createArrayOf("bigint", productTypeIds.toTypedArray()),
         )
 
     /**

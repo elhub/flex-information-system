@@ -210,34 +210,33 @@ def data():
         )
         assert not isinstance(u, ErrorMessage)
 
-        # create and qualify the application
+        # create and qualify an application for each product type
 
-        spgpa = create_service_providing_group_product_application.sync(
-            client=client_sp,
-            body=ServiceProvidingGroupProductApplicationCreateRequest(
-                service_providing_group_id=spg.id,
-                procuring_system_operator_id=so_id,
-                product_type_ids=pt_ids,
-                maximum_active_power_up=3.5,
-                maximum_active_power_down=3.5,
-            ),
-        )
-        assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+        for pt_id in pt_ids:
+            spgpa = create_service_providing_group_product_application.sync(
+                client=client_sp,
+                body=ServiceProvidingGroupProductApplicationCreateRequest(
+                    service_providing_group_id=spg.id,
+                    procuring_system_operator_id=so_id,
+                    product_type_ids=[pt_id],
+                ),
+            )
+            assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
-        u = update_service_providing_group_product_application.sync(
-            client=client_so,
-            id=cast(int, spgpa.id),
-            body=ServiceProvidingGroupProductApplicationUpdateRequest(
-                status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-                prequalified_at=datetime.datetime.fromisoformat(
-                    "2024-01-01T00:00:00+01:00"
+            u = update_service_providing_group_product_application.sync(
+                client=client_so,
+                id=cast(int, spgpa.id),
+                body=ServiceProvidingGroupProductApplicationUpdateRequest(
+                    status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+                    prequalified_at=datetime.datetime.fromisoformat(
+                        "2024-01-01T00:00:00+01:00"
+                    ),
+                    complete_at=datetime.datetime.fromisoformat(
+                        "2024-01-01T00:00:00+01:00"
+                    ),
                 ),
-                complete_at=datetime.datetime.fromisoformat(
-                    "2024-01-01T00:00:00+01:00"
-                ),
-            ),
-        )
-        assert not (isinstance(u, ErrorMessage))
+            )
+            assert not (isinstance(u, ErrorMessage))
 
     # we need 2 different SOs
 
@@ -254,7 +253,7 @@ def data():
     common_pt_id = 5
 
     setup_dependencies(client_so, so_id, [3, 4, 5])
-    setup_dependencies(client_other_so, other_so_id, [5, 6])
+    setup_dependencies(client_other_so, other_so_id, [5, 7])
 
     unqualified_pt_id = 1
 

@@ -431,9 +431,7 @@ def test_cus_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so2_id,
-            product_type_ids=pt_ids,
-            maximum_active_power_up=3.5,
-            maximum_active_power_down=3.5,
+            product_type_ids=[pt_ids[0]],
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

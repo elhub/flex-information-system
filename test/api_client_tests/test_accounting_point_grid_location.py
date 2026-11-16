@@ -22,7 +22,6 @@ from flex.models import (
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplicationRampingCapability,
     ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
@@ -342,10 +341,6 @@ def test_apgl_so_procuring(sts):
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=pso_id,
             product_type_ids=[1],
-            maximum_active_power_up=1.0,
-            maximum_active_power_down=1.0,
-            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.NEVER,
-            ramping_description="No ramping capability",
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

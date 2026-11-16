@@ -52,6 +52,8 @@ func TestKbackendProxiedRoutesKeepThePrefix(t *testing.T) {
 		{http.MethodPost, attachment},
 		{http.MethodDelete, attachment + "/12"},
 		{http.MethodGet, attachment + "/12/download?inline=true"},
+		{http.MethodPost, "/api/v1/service_providing_group_product_application"},
+		{http.MethodPatch, "/api/v1/service_providing_group_product_application/12"},
 	}
 
 	for _, test := range tests {

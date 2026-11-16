@@ -1,5 +1,6 @@
 package no.elhub.flex.api.routes
 
+import arrow.core.getOrElse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.ParametersBuilder
@@ -47,7 +48,13 @@ suspend fun handlePostgrestRoute(
     buildPostgrestRequest(method, upstreamPath, query, scopes, headers, relations, asset).fold(
         ifLeft = { call.respondRejection(it) },
         ifRight = { request ->
-            val body = if (method == HttpMethod.Post || method == HttpMethod.Patch) call.receive<ByteArray>() else null
+            val body = if (method == HttpMethod.Post || method == HttpMethod.Patch) {
+                variant.rewriteBody(call, method, path, call.receive<ByteArray>()).getOrElse {
+                    return call.respondRejection(it)
+                }
+            } else {
+                null
+            }
             postgrest.forward(call, method, request, body)
         },
     )
@@ -57,6 +64,10 @@ suspend fun ApplicationCall.respondRejection(rejection: RequestRejection) {
     rejection.wwwAuthenticate?.let { response.header(HttpHeaders.WWWAuthenticate, it) }
     respondError(
         rejection.status,
-        ErrorMessage(code = "HTTP${rejection.status.value}", message = rejection.message, details = rejection.details),
+        ErrorMessage(
+            code = rejection.code ?: "HTTP${rejection.status.value}",
+            message = rejection.message,
+            details = rejection.details,
+        ),
     )
 }

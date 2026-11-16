@@ -29,3 +29,13 @@ This changelog tracks all changes that are visible in our API.
 ## 2026-12-11
 
 * **Added `requested_at` field to the _Service Providing Group Product Application_ resource.**
+* **Added `application_details` and `assessment_details` fields to the _Service Providing Group Product Application_ resource.**
+  They hold the product-specific details of the application (written by the service provider) and
+  the response of the procuring system operator, as an object where `kind` is the business ID of the product type.
+  The supported kinds are `manual_frequency_restoration`, `automatic_frequency_containment` (FCR-N) and
+  `automatic_frequency_containment_disturbance` (FCR-D, new product type).
+* **Deprecated the `maximum_active_power_up`, `maximum_active_power_down`, `additional_information`,
+  `ramping_capability` and `ramping_description` fields of the _Service Providing Group Product Application_ resource.**
+  Use `application_details` instead. The fields are now optional, only supported for
+  `manual_frequency_restoration`, and kept in sync with `application_details` for that product type.
+  An application must now have exactly one product type.

@@ -26,6 +26,10 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
   @SerialName("status")
   public val status: ServiceProvidingGroupProductApplicationStatus =
       ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+  @SerialName("application_details")
+  public val applicationDetails: SpgpaApplicationDetails? = null,
+  @SerialName("assessment_details")
+  public val assessmentDetails: SpgpaAssessmentDetails? = null,
   /**
    * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */

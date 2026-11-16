@@ -772,7 +772,7 @@ BEGIN
 
   SELECT id INTO pt_id
   FROM flex.product_type AS pt
-  WHERE pt.business_id = 'manual_congestion';
+  WHERE pt.business_id = 'manual_frequency_restoration';
 
   -- Product type
   INSERT INTO flex.system_operator_product_type (
