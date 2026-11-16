@@ -230,6 +230,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return err
 	}
 
+	// event worker is handed over to kbackend the same way as API endpoints:
+	// when true, Go does not run it because kbackend will run an instance
+	eventWorkerInKbackend, err := lookupBoolEnv(lookupenv, "FLEX_KBACKEND_EVENT_WORKER")
+	if err != nil {
+		return err
+	}
+
 	baseURL, exists := lookupenv("FLEX_BASE_URL")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
@@ -328,26 +335,30 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	// launch the event worker
-	go func() {
-		select {
-		case <-ctx.Done():
-			slog.InfoContext(ctx, "context canceled, stopping event worker")
-			return
-		default:
-			slog.InfoContext(ctx, "Launching the event worker...")
-
-			eventWorker, err := event.NewWorker(dbPool, requestDetailsContextKey)
-			if err != nil {
-				slog.ErrorContext(ctx, "failed to create event worker", "error", err.Error())
+	if eventWorkerInKbackend {
+		slog.InfoContext(ctx, "Event worker is handled by kbackend, not launching it")
+	} else {
+		go func() {
+			select {
+			case <-ctx.Done():
+				slog.InfoContext(ctx, "context canceled, stopping event worker")
 				return
-			}
+			default:
+				slog.InfoContext(ctx, "Launching the event worker...")
 
-			err = eventWorker.Start(ctx)
-			if err != nil {
-				slog.InfoContext(ctx, "event worker stopped", "error", err.Error())
+				eventWorker, err := event.NewWorker(dbPool, requestDetailsContextKey)
+				if err != nil {
+					slog.ErrorContext(ctx, "failed to create event worker", "error", err.Error())
+					return
+				}
+
+				err = eventWorker.Start(ctx)
+				if err != nil {
+					slog.InfoContext(ctx, "event worker stopped", "error", err.Error())
+				}
 			}
-		}
-	}()
+		}()
+	}
 
 	// finally the web server pointing to the handlers defined in the API service
 

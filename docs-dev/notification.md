@@ -190,14 +190,14 @@ table. We are using triggers to make the event handling transparent to the
 application code changing the data. Also, PostgREST is limited in its ability to
 customize transactions.
 
-To read the data from the event table to create notifications, poll based worker
-in the backend to identify recipients and insert notifications. The worker is
-defined in the `worker` package and is concurrency safe due to the use of the
-`FOR UPDATE SKIP LOCKED` pattern.
+To read the data from the event table to create notifications, a poll based
+worker identifies recipients and inserts notifications. The worker is defined in
+the `event-worker` job of the Kotlin backend. The worker is concurrency safe due
+to the use of the `FOR UPDATE SKIP LOCKED` pattern.
 
-We are doing this in an external worker since to allow for
-flexibility to add other notification mechanisms as well as being able to
-offload the "identify recipients" read load to a future read replica database.
+We are doing this in an external worker since to allow for flexibility to add
+other notification mechanisms as well as being able to offload the
+"identify recipients" read load to a future read replica database.
 
 The worker runs as the `flex_internal_event_notification` database role, which
 has open RLS policies to be able to read tables it needs to determine who should
