@@ -133,6 +133,9 @@ export type TextKey =
   | "spgpa_reject_title"
   | "spgpa_reject_description"
   | "spgpa_reject_placeholder"
+  | "spgpa_resend_label"
+  | "spgpa_resend_title"
+  | "spgpa_resend_description"
   | "spg_product_application_empty"
   | "spg_activate_group_notice"
   | "spg_activate_group_title"
@@ -475,6 +478,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_reject_description:
       "This will reject the application. The service provider will be notified. Explain below why it is rejected, and state clearly whether the service provider can update the application and request it again, or whether the application will be rejected regardless. The explanation is added as a comment visible to all involved parties.",
     spgpa_reject_placeholder: "Explain why the application is rejected",
+    spgpa_resend_label: "Resend application",
+    spgpa_resend_title: "Resend application",
+    spgpa_resend_description:
+      "This sets the application back to Requested and notifies the system operator, who will process it again. Make sure you have updated the application according to the rejection comment before continuing.",
     spg_product_application_empty: "No product applications",
     spg_activate_group_notice:
       "Activating the service providing group will allow it to be used in a product application",
@@ -871,6 +878,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_reject_description:
       "Dette avslår søknaden. Tjenesteleverandøren varsles. Forklar nedenfor hvorfor søknaden avslås, og presiser om tjenesteleverandøren kan oppdatere søknaden og be om den på nytt, eller om søknaden vil bli avslått uansett. Forklaringen legges til som en kommentar som er synlig for alle involverte parter.",
     spgpa_reject_placeholder: "Forklar hvorfor søknaden avslås",
+    spgpa_resend_label: "Send søknad på nytt",
+    spgpa_resend_title: "Send søknad på nytt",
+    spgpa_resend_description:
+      "Dette setter søknaden tilbake til Forespurt og varsler systemoperatøren, som vil behandle den på nytt. Sørg for at du har oppdatert søknaden i tråd med kommentaren til avslaget før du fortsetter.",
     spg_product_application_empty: "Ingen produktprekvalifiseringer",
     spg_activate_group_notice:
       "Ved å aktivere gruppen vil den være mulig å bruke i en produktprekvalifisering",

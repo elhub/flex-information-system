@@ -3,7 +3,6 @@ package no.elhub.flex
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
-import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
@@ -27,10 +26,7 @@ import no.elhub.flex.auth.util.makeJwt
 import no.elhub.flex.testutil.SeededActor
 import java.math.BigDecimal
 
-/**
- * The data API sends and receives a decimal as a JSON number. This is why the app's `BigDecimalSerializer` is not
- * reused: it writes a JSON string.
- */
+/** The data API sends and receives a decimal as a JSON number. */
 @OptIn(ExperimentalSerializationApi::class)
 private object JsonNumberBigDecimalSerializer : KSerializer<BigDecimal> {
     override val descriptor = PrimitiveSerialDescriptor("BigDecimal", PrimitiveKind.STRING)
