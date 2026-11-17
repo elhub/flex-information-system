@@ -1,8 +1,7 @@
-import { useGetIdentity, useTranslate, useUpdate } from "ra-core";
+import { useGetIdentity, useGetOne, useTranslate, useUpdate } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
 import {
-  IconDots,
   IconCheckCircle,
   IconStopWatch15,
   IconValidationCheck,
@@ -10,7 +9,7 @@ import {
 import { StatusBadge } from "../components/StatusBadge";
 import { ResourceListLayout } from "../components/list/ResourceListLayout";
 import type { ListColumn, ListFilterDef } from "../components/list/types";
-import { BodyText, Button, Dropdown } from "../components/ui";
+import { BodyText, Button, Tooltip } from "../components/ui";
 import { toDateTimeString } from "../util";
 import type { Notification } from "../generated-client";
 import { EVENT_CATEGORIES, useEventTypeLabel } from "../event/eventTypes";
@@ -19,7 +18,7 @@ import {
   useNotificationList,
 } from "./useNotificationList";
 
-const RowActionsMenu = ({
+const AcknowledgeAction = ({
   notification,
   canAcknowledge,
 }: {
@@ -28,103 +27,97 @@ const RowActionsMenu = ({
 }) => {
   const translate = useTranslate();
   const queryClient = useQueryClient();
-  const [update] = useUpdate();
-  const event = notification.event;
-  const [, resource, resourceId] = event?.source.split("/") ?? [];
-  const isDelete = event?.type.endsWith(".delete") ?? false;
-  const hasResource = !!resource && !!resourceId;
+  const [update, { isPending }] = useUpdate();
+
+  if (!canAcknowledge || notification.acknowledged) {
+    return null;
+  }
 
   return (
-    <div className="flex items-center justify-end gap-1">
-      <Dropdown>
-        <Button
-          as={Dropdown.Toggle}
-          variant="invisible"
-          size="small"
-          icon={IconDots}
-          aria-label={translate(
-            "text.resource_show_layout.more_actions_aria_label",
-          )}
-        />
-        <Dropdown.Menu arrow placement="bottom-end">
-          {canAcknowledge && !notification.acknowledged && (
-            <>
-              <Dropdown.Menu.GroupedList.Heading>
-                {translate("text.resource_show_layout.actions_group_label")}
-              </Dropdown.Menu.GroupedList.Heading>
-              <Dropdown.Menu.GroupedList>
-                <Dropdown.Menu.GroupedList.Item
-                  onClick={() =>
-                    update(
-                      "notification",
-                      {
-                        id: notification.id,
-                        data: { acknowledged: true },
-                        previousData: notification,
-                      },
-                      {
-                        mutationMode: "pessimistic",
-                        onSuccess: () =>
-                          queryClient.invalidateQueries({
-                            queryKey: ["notification"],
-                          }),
-                      },
-                    )
-                  }
-                >
-                  <div className="flex items-center gap-2">
-                    <IconValidationCheck />
-                    {translate("text.notification.acknowledge")}
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              </Dropdown.Menu.GroupedList>
-              <Dropdown.Menu.Divider />
-            </>
-          )}
-          <Dropdown.Menu.GroupedList.Heading>
-            {translate("text.resource_show_layout.navigate_group_label")}
-          </Dropdown.Menu.GroupedList.Heading>
-          <Dropdown.Menu.GroupedList>
-            <Dropdown.Menu.GroupedList.Item
-              as={RouterLink}
-              to={`/notification/${notification.id}/show`}
-            >
-              <div className="flex items-center gap-2">
-                {translate("text.notification.details")}
-              </div>
-            </Dropdown.Menu.GroupedList.Item>
-            {hasResource &&
-              (isDelete ? (
-                <Dropdown.Menu.GroupedList.Item
-                  aria-disabled="true"
-                  className="cursor-not-allowed opacity-60"
-                  onClick={(e: React.MouseEvent) => e.preventDefault()}
-                >
-                  <div className="flex flex-col">
-                    {translate("text.notification.go_to_resource")}
-                    <BodyText size="small">
-                      {translate("text.notification.resource_deleted")}
-                    </BodyText>
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              ) : (
-                <Dropdown.Menu.GroupedList.Item
-                  as={RouterLink}
-                  to={`/${resource}/${resourceId}/show`}
-                >
-                  <div className="flex items-center gap-2">
-                    {translate("text.notification.go_to_resource")}
-                  </div>
-                </Dropdown.Menu.GroupedList.Item>
-              ))}
-          </Dropdown.Menu.GroupedList>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
+    <Tooltip content={translate("text.notification.mark_as_acknowledged")}>
+      <Button
+        variant="invisible"
+        size="small"
+        icon={IconValidationCheck}
+        aria-label={translate("text.notification.mark_as_acknowledged")}
+        disabled={isPending}
+        onClick={() =>
+          update(
+            "notification",
+            {
+              id: notification.id,
+              data: { acknowledged: true },
+              previousData: notification,
+            },
+            {
+              mutationMode: "pessimistic",
+              onSuccess: () =>
+                queryClient.invalidateQueries({
+                  queryKey: ["notification"],
+                }),
+            },
+          )
+        }
+      />
+    </Tooltip>
   );
 };
 
 const Dash = () => <BodyText size="small">-</BodyText>;
+
+const SourceButton = ({ notification }: { notification: Notification }) => {
+  const translate = useTranslate();
+  const event = notification.event;
+  const [, resource, resourceId] = event?.source.split("/") ?? [];
+  const isDeleteEvent = event?.type.endsWith(".delete") ?? false;
+  const hasSource = !!resource && !!resourceId;
+
+  const { error } = useGetOne(
+    resource ?? "",
+    { id: resourceId },
+    {
+      enabled: hasSource && !isDeleteEvent,
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  if (!event || !hasSource) {
+    return <Dash />;
+  }
+
+  const label = translate(`text.notification.source.${resource}`, {
+    _: translate("text.notification.resource"),
+  });
+
+  // PostgREST answers 406 when a single-object request matches no row (also
+  // when the row is hidden by access rules), 404 for unknown routes.
+  const errorStatus = (error as { status?: number } | null)?.status;
+  const isGone = isDeleteEvent || errorStatus === 404 || errorStatus === 406;
+
+  if (isGone) {
+    return (
+      <Tooltip content={translate("text.notification.resource_deleted")}>
+        <span className="inline-block">
+          <Button variant="primary" size="small" disabled>
+            {label}
+          </Button>
+        </span>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Button
+      as={RouterLink}
+      to={`/${resource}/${resourceId}/show`}
+      variant="primary"
+      size="small"
+    >
+      {label}
+    </Button>
+  );
+};
 
 export const NotificationList = () => {
   const translate = useTranslate();
@@ -136,7 +129,6 @@ export const NotificationList = () => {
     {
       type: "singleselect",
       source: "acknowledged",
-      className: "w-32",
       label: translate("text.notification.status"),
       options: [
         { value: "true", label: translate("text.notification.acknowledged") },
@@ -191,11 +183,6 @@ export const NotificationList = () => {
         ),
     },
     {
-      header: translate("field.event.source"),
-      render: (n) =>
-        n.event ? <BodyText size="small">{n.event.source}</BodyText> : <Dash />,
-    },
-    {
       header: translate("field.event.time"),
       sortField: "event(time)",
       sortType: "date",
@@ -205,6 +192,10 @@ export const NotificationList = () => {
         ) : (
           <Dash />
         ),
+    },
+    {
+      header: translate("text.resource_show_layout.navigate_group_label"),
+      render: (n) => <SourceButton notification={n} />,
     },
     {
       header: translate("text.notification.status"),
@@ -220,6 +211,18 @@ export const NotificationList = () => {
         />
       ),
     },
+    {
+      header: translate("text.notification.acknowledge"),
+      render: (n) => (
+        <AcknowledgeAction
+          notification={n}
+          canAcknowledge={
+            identity?.partyID != null &&
+            Number(n.party_id) === Number(identity.partyID)
+          }
+        />
+      ),
+    },
   ];
 
   return (
@@ -228,15 +231,7 @@ export const NotificationList = () => {
       list={list}
       columns={columns}
       filters={filters}
-      rowActions={(n) => (
-        <RowActionsMenu
-          notification={n}
-          canAcknowledge={
-            identity?.partyID != null &&
-            Number(n.party_id) === Number(identity.partyID)
-          }
-        />
-      )}
+      rowLink={(n) => `/notification/${n.id}/show`}
     />
   );
 };

@@ -13,11 +13,25 @@ export type TextKey =
   | "notification.status"
   | "notification.acknowledged"
   | "notification.resource_deleted"
-  | "notification.go_to_resource"
+  | "notification.resource"
   | "notification.acknowledge"
+  | "notification.mark_as_acknowledged"
   | "notification.event_category.comment"
   | "notification.event_category.attachment"
   | "notification.recipient"
+  | "notification.source.accounting_point"
+  | "notification.source.controllable_unit"
+  | "notification.source.controllable_unit_suspension"
+  | "notification.source.notice"
+  | "notification.source.party"
+  | "notification.source.service_provider_product_application"
+  | "notification.source.service_provider_product_suspension"
+  | "notification.source.service_providing_group"
+  | "notification.source.service_providing_group_grid_prequalification"
+  | "notification.source.service_providing_group_grid_suspension"
+  | "notification.source.service_providing_group_product_application"
+  | "notification.source.service_providing_group_product_suspension"
+  | "notification.source.system_operator_product_type"
   | "no"
   | "delete_confirm"
   | "dashboard.application"
@@ -536,12 +550,34 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.not_acknowledged": "Not acknowledged",
     "notification.status": "Status",
     "notification.acknowledged": "Acknowledged",
+    "notification.mark_as_acknowledged": "Mark as acknowledged",
     "notification.resource_deleted": "Resource deleted",
-    "notification.go_to_resource": "Go to resource",
+    "notification.resource": "Resource",
     "notification.acknowledge": "Acknowledge",
     "notification.event_category.comment": "Comment",
     "notification.event_category.attachment": "Attachment",
     "notification.recipient": "Recipient",
+    "notification.source.accounting_point": "Accounting point",
+    "notification.source.controllable_unit": "Controllable unit",
+    "notification.source.controllable_unit_suspension":
+      "Controllable unit suspension",
+    "notification.source.notice": "Notice",
+    "notification.source.party": "Party",
+    "notification.source.service_provider_product_application":
+      "Service provider product application",
+    "notification.source.service_provider_product_suspension":
+      "Service provider product suspension",
+    "notification.source.service_providing_group": "Service providing group",
+    "notification.source.service_providing_group_grid_prequalification":
+      "Grid prequalification",
+    "notification.source.service_providing_group_grid_suspension":
+      "Grid suspension",
+    "notification.source.service_providing_group_product_application":
+      "Product application",
+    "notification.source.service_providing_group_product_suspension":
+      "Product suspension",
+    "notification.source.system_operator_product_type":
+      "System operator product type",
     no: "No",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
@@ -1036,13 +1072,35 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.not_acknowledged": "Ikke kvittert",
     "notification.status": "Status",
     "notification.acknowledged": "Kvittert",
+    "notification.mark_as_acknowledged": "Marker som kvittert",
     "notification.resource_deleted": "Ressursen er slettet",
-    "notification.go_to_resource": "Gå til ressurs",
+    "notification.resource": "Ressurs",
     "notification.acknowledge": "Kvitter",
     "notification.event_category.comment": "Kommentar",
     "notification.event_category.attachment": "Vedlegg",
     no: "Nei",
     "notification.recipient": "Mottaker",
+    "notification.source.accounting_point": "Målepunkt",
+    "notification.source.controllable_unit": "Kontrollerbar enhet",
+    "notification.source.controllable_unit_suspension":
+      "Suspensjon av kontrollerbar enhet",
+    "notification.source.notice": "Varsel",
+    "notification.source.party": "Aktør",
+    "notification.source.service_provider_product_application":
+      "Produktsøknad for tjenesteleverandør",
+    "notification.source.service_provider_product_suspension":
+      "Produktsuspensjon for tjenesteleverandør",
+    "notification.source.service_providing_group": "Tjenesteleverende gruppe",
+    "notification.source.service_providing_group_grid_prequalification":
+      "Nettforhåndskvalifisering",
+    "notification.source.service_providing_group_grid_suspension":
+      "Nettsuspensjon",
+    "notification.source.service_providing_group_product_application":
+      "Produktsøknad",
+    "notification.source.service_providing_group_product_suspension":
+      "Produktsuspensjon",
+    "notification.source.system_operator_product_type":
+      "Systemoperatørens produkttype",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",
