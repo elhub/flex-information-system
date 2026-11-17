@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  EVENT_CATEGORIES,
   EVENT_CATEGORY_FILTER_SOURCE,
+  eventTypeIdsForCategories,
   toQueryFilters,
 } from "./useNotificationList";
 
@@ -19,7 +19,7 @@ describe("notification list", () => {
     });
     expect(result).toEqual({
       acknowledged: "false",
-      "event.type@in": EVENT_CATEGORIES.comment.join(","),
+      "event.type@in": eventTypeIdsForCategories(["comment"]).join(","),
     });
   });
 });

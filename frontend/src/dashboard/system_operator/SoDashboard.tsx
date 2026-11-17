@@ -4,6 +4,7 @@ import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { DashboardLayout } from "../DashboardLayout";
 import { SoStatCards } from "./SoStatCards";
 import { SOApplicationsTable } from "./SoApplicationsTable";
+import { UnhandledCommentsPanel } from "../shared/UnhandledCommentsPanel";
 
 export const SoDashboard = () => {
   const translate = useTranslate();
@@ -30,6 +31,7 @@ export const SoDashboard = () => {
   return (
     <DashboardLayout
       statCards={<SoStatCards />}
+      extra={<UnhandledCommentsPanel />}
       activeTable={
         activeItems.length == 0 ? (
           translate("text.dashboard.no_active_applications")

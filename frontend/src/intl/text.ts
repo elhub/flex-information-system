@@ -9,6 +9,8 @@ export type TextKey =
   | "yes"
   | "notification.event_category"
   | "notification.event_category.comment"
+  | "notification.event_category.attachment"
+  | "notification.recipient"
   | "no"
   | "delete_confirm"
   | "dashboard.application"
@@ -18,6 +20,64 @@ export type TextKey =
   | "dashboard.recorded_at"
   | "dashboard.created_at"
   | "dashboard.no_active_applications"
+  | "dashboard.unacknowledged_comments"
+  | "event_type.controllable_unit_suspension_comment.create"
+  | "event_type.controllable_unit_suspension_comment.update"
+  | "event_type.service_provider_product_application_comment.create"
+  | "event_type.service_provider_product_application_comment.update"
+  | "event_type.service_provider_product_suspension_comment.create"
+  | "event_type.service_provider_product_suspension_comment.update"
+  | "event_type.service_providing_group_grid_prequalification_comment.create"
+  | "event_type.service_providing_group_grid_prequalification_comment.update"
+  | "event_type.service_providing_group_grid_suspension_comment.create"
+  | "event_type.service_providing_group_grid_suspension_comment.update"
+  | "event_type.service_providing_group_product_application_comment.create"
+  | "event_type.service_providing_group_product_application_comment.update"
+  | "event_type.service_providing_group_product_suspension_comment.create"
+  | "event_type.service_providing_group_product_suspension_comment.update"
+  | "event_type.accounting_point_grid_location.create"
+  | "event_type.accounting_point_grid_location.update"
+  | "event_type.controllable_unit.create"
+  | "event_type.controllable_unit.update"
+  | "event_type.controllable_unit_service_provider.create"
+  | "event_type.controllable_unit_service_provider.update"
+  | "event_type.controllable_unit_service_provider.delete"
+  | "event_type.controllable_unit_suspension.create"
+  | "event_type.controllable_unit_suspension.update"
+  | "event_type.controllable_unit_suspension.delete"
+  | "event_type.notice.create"
+  | "event_type.notice.update"
+  | "event_type.party.create"
+  | "event_type.party.update"
+  | "event_type.party_membership.create"
+  | "event_type.party_membership.delete"
+  | "event_type.service_provider_product_application.create"
+  | "event_type.service_provider_product_application.update"
+  | "event_type.service_provider_product_suspension.create"
+  | "event_type.service_provider_product_suspension.update"
+  | "event_type.service_provider_product_suspension.delete"
+  | "event_type.service_providing_group.create"
+  | "event_type.service_providing_group.update"
+  | "event_type.service_providing_group_grid_prequalification.create"
+  | "event_type.service_providing_group_grid_prequalification.update"
+  | "event_type.service_providing_group_grid_suspension.create"
+  | "event_type.service_providing_group_grid_suspension.update"
+  | "event_type.service_providing_group_grid_suspension.delete"
+  | "event_type.service_providing_group_membership.create"
+  | "event_type.service_providing_group_membership.update"
+  | "event_type.service_providing_group_membership.delete"
+  | "event_type.service_providing_group_product_application.create"
+  | "event_type.service_providing_group_product_application.update"
+  | "event_type.service_providing_group_product_application_attachment.create"
+  | "event_type.service_providing_group_product_application_attachment.delete"
+  | "event_type.service_providing_group_product_suspension.create"
+  | "event_type.service_providing_group_product_suspension.update"
+  | "event_type.service_providing_group_product_suspension.delete"
+  | "event_type.system_operator_product_type.create"
+  | "event_type.system_operator_product_type.update"
+  | "event_type.technical_resource.create"
+  | "event_type.technical_resource.update"
+  | "event_type.technical_resource.delete"
   | "entity_role"
   | "edit"
   | "create"
@@ -340,6 +400,110 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.recorded_at": "Recorded at",
     "dashboard.created_at": "Created at",
     "dashboard.no_active_applications": "No active applications.",
+    "dashboard.unacknowledged_comments": "Unacknowledged comments",
+    "event_type.controllable_unit_suspension_comment.create":
+      "Controllable unit suspension comment created",
+    "event_type.controllable_unit_suspension_comment.update":
+      "Controllable unit suspension comment updated",
+    "event_type.service_provider_product_application_comment.create":
+      "SP product application comment created",
+    "event_type.service_provider_product_application_comment.update":
+      "SP product application comment updated",
+    "event_type.service_provider_product_suspension_comment.create":
+      "SP product suspension comment created",
+    "event_type.service_provider_product_suspension_comment.update":
+      "SP product suspension comment updated",
+    "event_type.service_providing_group_grid_prequalification_comment.create":
+      "SPG grid prequalification comment created",
+    "event_type.service_providing_group_grid_prequalification_comment.update":
+      "SPG grid prequalification comment updated",
+    "event_type.service_providing_group_grid_suspension_comment.create":
+      "SPG grid suspension comment created",
+    "event_type.service_providing_group_grid_suspension_comment.update":
+      "SPG grid suspension comment updated",
+    "event_type.service_providing_group_product_application_comment.create":
+      "SPG product application comment created",
+    "event_type.service_providing_group_product_application_comment.update":
+      "SPG product application comment updated",
+    "event_type.service_providing_group_product_suspension_comment.create":
+      "SPG product suspension comment created",
+    "event_type.service_providing_group_product_suspension_comment.update":
+      "SPG product suspension comment updated",
+    "event_type.accounting_point_grid_location.create":
+      "Accounting point grid location created",
+    "event_type.accounting_point_grid_location.update":
+      "Accounting point grid location updated",
+    "event_type.controllable_unit.create": "Controllable unit created",
+    "event_type.controllable_unit.update": "Controllable unit updated",
+    "event_type.controllable_unit_service_provider.create":
+      "Controllable unit service provider relation created",
+    "event_type.controllable_unit_service_provider.update":
+      "Controllable unit service provider relation updated",
+    "event_type.controllable_unit_service_provider.delete":
+      "Controllable unit service provider relation deleted",
+    "event_type.controllable_unit_suspension.create":
+      "Controllable unit suspension created",
+    "event_type.controllable_unit_suspension.update":
+      "Controllable unit suspension updated",
+    "event_type.controllable_unit_suspension.delete":
+      "Controllable unit suspension deleted",
+    "event_type.notice.create": "Notice created",
+    "event_type.notice.update": "Notice updated",
+    "event_type.party.create": "Party created",
+    "event_type.party.update": "Party updated",
+    "event_type.party_membership.create": "Party membership created",
+    "event_type.party_membership.delete": "Party membership deleted",
+    "event_type.service_provider_product_application.create":
+      "SP product application created",
+    "event_type.service_provider_product_application.update":
+      "SP product application updated",
+    "event_type.service_provider_product_suspension.create":
+      "SP product suspension created",
+    "event_type.service_provider_product_suspension.update":
+      "SP product suspension updated",
+    "event_type.service_provider_product_suspension.delete":
+      "SP product suspension deleted",
+    "event_type.service_providing_group.create":
+      "Service providing group created",
+    "event_type.service_providing_group.update":
+      "Service providing group updated",
+    "event_type.service_providing_group_grid_prequalification.create":
+      "SPG grid prequalification created",
+    "event_type.service_providing_group_grid_prequalification.update":
+      "SPG grid prequalification updated",
+    "event_type.service_providing_group_grid_suspension.create":
+      "SPG grid suspension created",
+    "event_type.service_providing_group_grid_suspension.update":
+      "SPG grid suspension updated",
+    "event_type.service_providing_group_grid_suspension.delete":
+      "SPG grid suspension deleted",
+    "event_type.service_providing_group_membership.create":
+      "SPG membership created",
+    "event_type.service_providing_group_membership.update":
+      "SPG membership updated",
+    "event_type.service_providing_group_membership.delete":
+      "SPG membership deleted",
+    "event_type.service_providing_group_product_application.create":
+      "SPG product application created",
+    "event_type.service_providing_group_product_application.update":
+      "SPG product application updated",
+    "event_type.service_providing_group_product_application_attachment.create":
+      "SPG product application attachment created",
+    "event_type.service_providing_group_product_application_attachment.delete":
+      "SPG product application attachment deleted",
+    "event_type.service_providing_group_product_suspension.create":
+      "SPG product suspension created",
+    "event_type.service_providing_group_product_suspension.update":
+      "SPG product suspension updated",
+    "event_type.service_providing_group_product_suspension.delete":
+      "SPG product suspension deleted",
+    "event_type.system_operator_product_type.create":
+      "System operator product type created",
+    "event_type.system_operator_product_type.update":
+      "System operator product type updated",
+    "event_type.technical_resource.create": "Technical resource created",
+    "event_type.technical_resource.update": "Technical resource updated",
+    "event_type.technical_resource.delete": "Technical resource deleted",
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
@@ -362,6 +526,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     yes: "Yes",
     "notification.event_category": "Event category",
     "notification.event_category.comment": "Comment",
+    "notification.event_category.attachment": "Attachment",
+    "notification.recipient": "Recipient",
     no: "No",
     delete_confirm:
       "Are you sure you want to delete this item? This action cannot be undone.",
@@ -737,6 +903,110 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.recorded_at": "Registrert",
     "dashboard.created_at": "Opprettet",
     "dashboard.no_active_applications": "Ingen aktive søknader.",
+    "dashboard.unacknowledged_comments": "Ubehandlede kommentarer",
+    "event_type.controllable_unit_suspension_comment.create":
+      "Kommentar til suspendering av kontrollerbar enhet opprettet",
+    "event_type.controllable_unit_suspension_comment.update":
+      "Kommentar til suspendering av kontrollerbar enhet oppdatert",
+    "event_type.service_provider_product_application_comment.create":
+      "Kommentar til SP-produktsøknad opprettet",
+    "event_type.service_provider_product_application_comment.update":
+      "Kommentar til SP-produktsøknad oppdatert",
+    "event_type.service_provider_product_suspension_comment.create":
+      "Kommentar til SP-produktsuspendering opprettet",
+    "event_type.service_provider_product_suspension_comment.update":
+      "Kommentar til SP-produktsuspendering oppdatert",
+    "event_type.service_providing_group_grid_prequalification_comment.create":
+      "Kommentar til SPG-nettprekvalifisering opprettet",
+    "event_type.service_providing_group_grid_prequalification_comment.update":
+      "Kommentar til SPG-nettprekvalifisering oppdatert",
+    "event_type.service_providing_group_grid_suspension_comment.create":
+      "Kommentar til SPG-nettsuspendering opprettet",
+    "event_type.service_providing_group_grid_suspension_comment.update":
+      "Kommentar til SPG-nettsuspendering oppdatert",
+    "event_type.service_providing_group_product_application_comment.create":
+      "Kommentar til SPG-produktsøknad opprettet",
+    "event_type.service_providing_group_product_application_comment.update":
+      "Kommentar til SPG-produktsøknad oppdatert",
+    "event_type.service_providing_group_product_suspension_comment.create":
+      "Kommentar til SPG-produktsuspendering opprettet",
+    "event_type.service_providing_group_product_suspension_comment.update":
+      "Kommentar til SPG-produktsuspendering oppdatert",
+    "event_type.accounting_point_grid_location.create":
+      "Nettlokasjon for avregningspunkt opprettet",
+    "event_type.accounting_point_grid_location.update":
+      "Nettlokasjon for avregningspunkt oppdatert",
+    "event_type.controllable_unit.create": "Kontrollerbar enhet opprettet",
+    "event_type.controllable_unit.update": "Kontrollerbar enhet oppdatert",
+    "event_type.controllable_unit_service_provider.create":
+      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør opprettet",
+    "event_type.controllable_unit_service_provider.update":
+      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør oppdatert",
+    "event_type.controllable_unit_service_provider.delete":
+      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør slettet",
+    "event_type.controllable_unit_suspension.create":
+      "Suspendering av kontrollerbar enhet opprettet",
+    "event_type.controllable_unit_suspension.update":
+      "Suspendering av kontrollerbar enhet oppdatert",
+    "event_type.controllable_unit_suspension.delete":
+      "Suspendering av kontrollerbar enhet slettet",
+    "event_type.notice.create": "Varsel opprettet",
+    "event_type.notice.update": "Varsel oppdatert",
+    "event_type.party.create": "Aktør opprettet",
+    "event_type.party.update": "Aktør oppdatert",
+    "event_type.party_membership.create": "Aktørmedlemskap opprettet",
+    "event_type.party_membership.delete": "Aktørmedlemskap slettet",
+    "event_type.service_provider_product_application.create":
+      "SP-produktsøknad opprettet",
+    "event_type.service_provider_product_application.update":
+      "SP-produktsøknad oppdatert",
+    "event_type.service_provider_product_suspension.create":
+      "SP-produktsuspendering opprettet",
+    "event_type.service_provider_product_suspension.update":
+      "SP-produktsuspendering oppdatert",
+    "event_type.service_provider_product_suspension.delete":
+      "SP-produktsuspendering slettet",
+    "event_type.service_providing_group.create":
+      "Tjenesteleverende gruppe opprettet",
+    "event_type.service_providing_group.update":
+      "Tjenesteleverende gruppe oppdatert",
+    "event_type.service_providing_group_grid_prequalification.create":
+      "SPG-nettprekvalifisering opprettet",
+    "event_type.service_providing_group_grid_prequalification.update":
+      "SPG-nettprekvalifisering oppdatert",
+    "event_type.service_providing_group_grid_suspension.create":
+      "SPG-nettsuspendering opprettet",
+    "event_type.service_providing_group_grid_suspension.update":
+      "SPG-nettsuspendering oppdatert",
+    "event_type.service_providing_group_grid_suspension.delete":
+      "SPG-nettsuspendering slettet",
+    "event_type.service_providing_group_membership.create":
+      "SPG-medlemskap opprettet",
+    "event_type.service_providing_group_membership.update":
+      "SPG-medlemskap oppdatert",
+    "event_type.service_providing_group_membership.delete":
+      "SPG-medlemskap slettet",
+    "event_type.service_providing_group_product_application.create":
+      "SPG-produktsøknad opprettet",
+    "event_type.service_providing_group_product_application.update":
+      "SPG-produktsøknad oppdatert",
+    "event_type.service_providing_group_product_application_attachment.create":
+      "Vedlegg til SPG-produktsøknad opprettet",
+    "event_type.service_providing_group_product_application_attachment.delete":
+      "Vedlegg til SPG-produktsøknad slettet",
+    "event_type.service_providing_group_product_suspension.create":
+      "SPG-produktsuspendering opprettet",
+    "event_type.service_providing_group_product_suspension.update":
+      "SPG-produktsuspendering oppdatert",
+    "event_type.service_providing_group_product_suspension.delete":
+      "SPG-produktsuspendering slettet",
+    "event_type.system_operator_product_type.create":
+      "Produkttype for systemoperatør opprettet",
+    "event_type.system_operator_product_type.update":
+      "Produkttype for systemoperatør oppdatert",
+    "event_type.technical_resource.create": "Teknisk ressurs opprettet",
+    "event_type.technical_resource.update": "Teknisk ressurs oppdatert",
+    "event_type.technical_resource.delete": "Teknisk ressurs slettet",
     entity_role: "Entitet",
     edit: "Endre",
     print: "Skriv ut",
@@ -749,7 +1019,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     yes: "Ja",
     "notification.event_category": "Hendelseskategori",
     "notification.event_category.comment": "Kommentar",
+    "notification.event_category.attachment": "Vedlegg",
     no: "Nei",
+    "notification.recipient": "Mottaker",
     delete_confirm:
       "Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.",
     service_providing_group: "Fleksibilitetsgruppe",

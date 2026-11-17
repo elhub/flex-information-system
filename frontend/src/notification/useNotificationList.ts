@@ -3,41 +3,63 @@ import { useGetIdentity } from "ra-core";
 import { listNotification } from "../generated-client";
 import type { Notification } from "../generated-client";
 import { getCountAndData } from "../util";
+import eventTypes from "../event/eventTypes";
 import { buildListQuery } from "../components/list/postgrest";
 import { useListState } from "../components/list/useListState";
-import type { ListFilters, ListInterface } from "../components/list/types";
+import type {
+  ListFilters,
+  ListInterface,
+  ListSort,
+} from "../components/list/types";
 
 // Filter on a category of event types. It is translated to an exact match on
 // event.type in the query, since event.type is an ltree and does not support ilike.
 export const EVENT_CATEGORY_FILTER_SOURCE = "event_category@in";
 const EVENT_TYPE_QUERY_SOURCE = "event.type@in";
 
-const COMMENT_RESOURCES = [
-  "controllable_unit_suspension_comment",
-  "service_provider_product_application_comment",
-  "service_provider_product_suspension_comment",
-  "service_providing_group_grid_prequalification_comment",
-  "service_providing_group_grid_suspension_comment",
-  "service_providing_group_product_application_comment",
-  "service_providing_group_product_suspension_comment",
-];
-
-export const EVENT_CATEGORIES: Record<string, string[]> = {
-  comment: COMMENT_RESOURCES.flatMap((resource) =>
-    ["create", "update"].map((op) => `no.elhub.flex.${resource}.${op}`),
-  ),
-};
+export const eventTypeIdsForCategories = (categories: string[]) =>
+  eventTypes
+    .filter((et) => et.category && categories.includes(et.category))
+    .map((et) => et.id);
 
 export const toQueryFilters = (filters: ListFilters): ListFilters => {
   const { [EVENT_CATEGORY_FILTER_SOURCE]: categories, ...rest } = filters;
   if (!categories) return rest;
-  const types = categories
-    .split(",")
-    .flatMap((category) => EVENT_CATEGORIES[category] ?? []);
+  const types = eventTypeIdsForCategories(categories.split(","));
   return { ...rest, [EVENT_TYPE_QUERY_SOURCE]: types.join(",") };
 };
 
 type Query = NonNullable<Parameters<typeof listNotification>[0]>["query"];
+
+type NotificationQueryParams = {
+  filters: ListFilters;
+  sort: ListSort;
+  page: number;
+  perPage: number;
+};
+
+export const notificationQueryKey = (params: NotificationQueryParams) =>
+  ["notification", "list", params] as const;
+
+export const fetchNotifications = ({
+  filters,
+  sort,
+  page,
+  perPage,
+}: NotificationQueryParams) =>
+  listNotification({
+    query: {
+      ...buildListQuery({
+        filters: toQueryFilters(filters),
+        sort,
+        page,
+        perPage,
+      }),
+      // inner-join the event so the event type filter drops other rows
+      embed: "event!,party",
+    } as Query,
+    headers: { Prefer: "count=exact" },
+  }).then(getCountAndData);
 
 export const useNotificationList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -62,21 +84,8 @@ export const useNotificationList = () => {
   const { filters, sort, page, perPage } = state;
 
   const query = useQuery({
-    queryKey: ["notification", "list", { filters, sort, page, perPage }],
-    queryFn: () =>
-      listNotification({
-        query: {
-          ...buildListQuery({
-            filters: toQueryFilters(filters),
-            sort,
-            page,
-            perPage,
-          }),
-          // inner-join the event so the event type filter drops other rows
-          embed: "event!,party",
-        } as Query,
-        headers: { Prefer: "count=exact" },
-      }).then(getCountAndData),
+    queryKey: notificationQueryKey({ filters, sort, page, perPage }),
+    queryFn: () => fetchNotifications({ filters, sort, page, perPage }),
     placeholderData: keepPreviousData,
     enabled: !isIdentityPending,
   });

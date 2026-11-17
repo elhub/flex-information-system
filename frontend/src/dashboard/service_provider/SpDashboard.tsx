@@ -3,6 +3,7 @@ import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { DashboardLayout } from "../DashboardLayout";
 import { SpStatCards } from "./SpStatCards";
 import { SpApplicationsTable } from "./SpApplicationsTable";
+import { UnhandledCommentsPanel } from "../shared/UnhandledCommentsPanel";
 
 export const SpDashboard = () => {
   const { activeItems, resolvedItems, isLoading, error } =
@@ -15,6 +16,7 @@ export const SpDashboard = () => {
     <div className="flex flex-col gap-4">
       <DashboardLayout
         statCards={<SpStatCards />}
+        extra={<UnhandledCommentsPanel />}
         activeTable={
           <SpApplicationsTable
             items={activeItems}
