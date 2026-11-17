@@ -8,6 +8,13 @@ export type TextKey =
   | "delete"
   | "yes"
   | "notification.event_category"
+  | "notification.details"
+  | "notification.not_acknowledged"
+  | "notification.status"
+  | "notification.acknowledged"
+  | "notification.resource_deleted"
+  | "notification.go_to_resource"
+  | "notification.acknowledge"
   | "notification.event_category.comment"
   | "notification.event_category.attachment"
   | "notification.recipient"
@@ -525,6 +532,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete: "Delete",
     yes: "Yes",
     "notification.event_category": "Event category",
+    "notification.details": "Details",
+    "notification.not_acknowledged": "Not acknowledged",
+    "notification.status": "Status",
+    "notification.acknowledged": "Acknowledged",
+    "notification.resource_deleted": "Resource deleted",
+    "notification.go_to_resource": "Go to resource",
+    "notification.acknowledge": "Acknowledge",
     "notification.event_category.comment": "Comment",
     "notification.event_category.attachment": "Attachment",
     "notification.recipient": "Recipient",
@@ -1018,6 +1032,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     delete: "Slett",
     yes: "Ja",
     "notification.event_category": "Hendelseskategori",
+    "notification.details": "Detaljer",
+    "notification.not_acknowledged": "Ikke kvittert",
+    "notification.status": "Status",
+    "notification.acknowledged": "Kvittert",
+    "notification.resource_deleted": "Ressursen er slettet",
+    "notification.go_to_resource": "Gå til ressurs",
+    "notification.acknowledge": "Kvitter",
     "notification.event_category.comment": "Kommentar",
     "notification.event_category.attachment": "Vedlegg",
     no: "Nei",
