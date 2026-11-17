@@ -223,13 +223,15 @@ class TechnicalResourceApiTest :
 
             test("cannot create or update a technical resource after the contract has ended") {
                 val sp = seed { insertActor(TestPartyRole.SP) }
-                val unit = seed { insertControllableUnitAtNewAccountingPoint() }
+                val unit = seed(Triggers.OFF) { insertControllableUnitAtNewAccountingPoint() }
                 seed { insertPartyRelatedToControllableUnit(TestPartyRole.SP, sp.partyId!!, unit, validTo = jul1) }
-                val technicalResource = seed { insertTechnicalResource(unit.id, "Original name") }
+                // the resource was recorded during the contract, so that the service provider still sees it
+                val technicalResource = seed(Triggers.OFF) { insertTechnicalResourceWithRevisions(unit.id, listOf(NameRevision("Original name", jun1))) }
 
+                api.get("/technical_resource/$technicalResource", sp.token()).status shouldBe HttpStatusCode.OK
                 api.post("/technical_resource", sp.token(), createRequest(unit.id)).status shouldBe HttpStatusCode.Forbidden
                 api.patch("/technical_resource/$technicalResource", sp.token(), TechnicalResourceUpdateRequest(name = "Updated by SP"))
-                    .status shouldBe HIDDEN_BY_RLS
+                    .status shouldBe HttpStatusCode.Unauthorized
 
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
                 api.get("/technical_resource/$technicalResource", fiso.token()).body<TechnicalResourceResponse>().name shouldBe "Original name"

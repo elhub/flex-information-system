@@ -181,13 +181,16 @@ class ControllableUnitSuspensionCommentApiTest :
         // RLS: CUSC-SP003
         // The revisions of a comment follow the latest visibility of the comment.
         context("the archived revisions of a comment") {
-            test("with the visibility same_party are read by the party that wrote it, and not by the other party") {
+            // The comment was shared when it was written, and is made private later, which also hides the revisions from
+            // when it was shared. A policy that checked the visibility of each revision would show them to the other party.
+            test("of a comment that was made same_party are read by the party that wrote it, and not by the other party") {
                 val parties = seed { insertSuspensionWithParties() }
-                val comment = seed { insertControllableUnitSuspensionComment(parties.suspension, parties.iso, "same_party", "Before") }
+                val comment = seed { insertControllableUnitSuspensionComment(parties.suspension, parties.iso, "any_involved_party", "Before") }
                 seed { changeCommentContent(comment, "After") }
+                seed { changeCommentVisibility(comment, "same_party") }
 
                 val own = api.get("/controllable_unit_suspension_comment_history", parties.iso.token(), "replaced_at" to "not.is.null")
-                own.body<List<ControllableUnitSuspensionCommentHistoryResponse>>().map { it.content } shouldBe listOf("Before")
+                own.body<List<ControllableUnitSuspensionCommentHistoryResponse>>().map { it.content } shouldContainExactlyInAnyOrder listOf("Before", "After")
                 api.get("/controllable_unit_suspension_comment_history", parties.sp.token(), "replaced_at" to "not.is.null")
                     .body<List<ControllableUnitSuspensionCommentHistoryResponse>>() shouldBe emptyList()
             }

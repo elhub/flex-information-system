@@ -283,7 +283,8 @@ class ControllableUnitServiceProviderApiTest :
                     insertUnitOwnedBy(endUser).also { insertControllableUnitServiceProvider(it.id, sp.partyId!!, endUser, validFrom = jan1) }
                 }
 
-                val response = api.post("/controllable_unit_service_provider", sp.token(), createRequest(unit.id, sp.partyId!!, endUser, inDays(1)))
+                // the new contract starts inside the window of 2 to 4 weeks ahead, so only the duplicate check can reject it
+                val response = api.post("/controllable_unit_service_provider", sp.token(), createRequest(unit.id, sp.partyId!!, endUser, inDays(16)))
 
                 response.status shouldBe HttpStatusCode.BadRequest
             }

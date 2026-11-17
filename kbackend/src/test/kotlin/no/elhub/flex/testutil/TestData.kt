@@ -474,6 +474,15 @@ class SeedScope(private val conn: Connection) {
         }
     }
 
+    /** Changes the visibility of the comment, which archives the previous revision. Call it in a [seed] block of its own. */
+    fun changeCommentVisibility(id: Long, visibility: String) {
+        conn.prepareStatement("UPDATE flex.controllable_unit_suspension_comment SET visibility = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, visibility)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
     /** Inserts an organisation entity and a party of the given type, returning the entity id and party id. */
     private fun insertEntityAndParty(name: String, type: String, role: String): Pair<Long, Long> {
         val entityId = queryLong(
