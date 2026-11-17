@@ -248,9 +248,9 @@ import type {
   ListServiceProvidingGroupGridPrequalificationHistoryErrors,
   ListServiceProvidingGroupGridPrequalificationHistoryResponses,
   ListServiceProvidingGroupGridPrequalificationResponses,
-  ListServiceProvidingGroupGridPrequalificationSubstationPowerData,
-  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
-  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
+  ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerData,
+  ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors,
+  ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses,
   ListServiceProvidingGroupGridSuspensionCommentData,
   ListServiceProvidingGroupGridSuspensionCommentErrors,
   ListServiceProvidingGroupGridSuspensionCommentHistoryData,
@@ -1392,31 +1392,30 @@ export const readServiceProvidingGroupPowerPerSubstation = <
   });
 
 /**
- * List Service Providing Group Grid Prequalification Substation Power
+ * List Service Providing Group Grid Prequalification Substation Approved Power
  *
- * List [Service Providing Group Grid Prequalification Substation Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_power/)
+ * List [Service Providing Group Grid Prequalification Substation Approved Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_approved_power/)
  */
-export const listServiceProvidingGroupGridPrequalificationSubstationPower = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<
-    ListServiceProvidingGroupGridPrequalificationSubstationPowerData,
+export const listServiceProvidingGroupGridPrequalificationSubstationApprovedPower =
+  <ThrowOnError extends boolean = false>(
+    options?: Options<
+      ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerData,
+      ThrowOnError
+    >,
+  ): RequestResult<
+    ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses,
+    ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors,
     ThrowOnError
-  >,
-): RequestResult<
-  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
-  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
-  ThrowOnError
-> =>
-  (options?.client ?? client).get<
-    ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses,
-    ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors,
-    ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/service_providing_group_grid_prequalification_substation_power",
-    ...options,
-  });
+  > =>
+    (options?.client ?? client).get<
+      ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses,
+      ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors,
+      ThrowOnError
+    >({
+      security: [{ scheme: "bearer", type: "http" }],
+      url: "/service_providing_group_grid_prequalification_substation_approved_power",
+      ...options,
+    });
 
 /**
  * Read Service Providing Group Summary

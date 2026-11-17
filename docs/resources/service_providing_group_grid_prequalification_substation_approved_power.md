@@ -1,4 +1,4 @@
-# Service Providing Group Grid Prequalification Substation Power
+# Service Providing Group Grid Prequalification Substation Approved Power
 
 Flexible power per substation for a service providing group grid
 prequalification, together with the total approved flexible power for each
@@ -24,8 +24,8 @@ not included.
 
 ## Relevant links
 
-* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_grid_prequalification_substation_power)
-* [Download docx](../download/service_providing_group_grid_prequalification_substation_power.docx)
+* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_grid_prequalification_substation_approved_power)
+* [Download docx](../download/service_providing_group_grid_prequalification_substation_approved_power.docx)
 
 ## Fields
 

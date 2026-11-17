@@ -2,8 +2,8 @@
 -- Manually managed file
 -- noqa: disable=all
 
--- changeset flex:service-providing-group-grid-prequalification-substation-power-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW service_providing_group_grid_prequalification_substation_power
+-- changeset flex:service-providing-group-grid-prequalification-substation-approved-power-create runOnChange:true endDelimiter:--
+CREATE OR REPLACE VIEW service_providing_group_grid_prequalification_substation_approved_power
 -- security_invoker: RLS applies, so an SO only sees its own grid
 -- prequalifications and the CUs it is CSO of
 WITH (security_invoker = true) AS (
@@ -66,5 +66,5 @@ WITH (security_invoker = true) AS (
     GROUP BY own.gp_id, own.so_id, own.business_id
 );
 
--- changeset flex:service-providing-group-grid-prequalification-substation-power-grants runOnChange:true endDelimiter:;
-GRANT SELECT ON TABLE service_providing_group_grid_prequalification_substation_power TO flex_common;
+-- changeset flex:service-providing-group-grid-prequalification-substation-approved-power-grants runOnChange:true endDelimiter:;
+GRANT SELECT ON TABLE service_providing_group_grid_prequalification_substation_approved_power TO flex_common;

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { listServiceProvidingGroupGridPrequalificationSubstationPower } from "../../../generated-client";
+import { listServiceProvidingGroupGridPrequalificationSubstationApprovedPower } from "../../../generated-client";
 import { throwOnError } from "../../../util";
 
-export type SpgpqSubstationPowerRow = {
+export type SpgpqSubstationApprovedPowerRow = {
   id: string;
   substationBusinessId: string;
   substationName: string;
@@ -11,11 +11,11 @@ export type SpgpqSubstationPowerRow = {
   totalApprovedMaximumActivePowerSum: number;
 };
 
-export const fetchSpgpqSubstationPower = async (
+export const fetchSpgpqSubstationApprovedPower = async (
   spgpqId: number,
-): Promise<SpgpqSubstationPowerRow[]> => {
+): Promise<SpgpqSubstationApprovedPowerRow[]> => {
   const data =
-    await listServiceProvidingGroupGridPrequalificationSubstationPower({
+    await listServiceProvidingGroupGridPrequalificationSubstationApprovedPower({
       query: {
         service_providing_group_grid_prequalification_id: `eq.${spgpqId}`,
         order: "substation_name.asc",
@@ -32,12 +32,12 @@ export const fetchSpgpqSubstationPower = async (
   }));
 };
 
-export const useSpgpqSubstationPower = (spgpqId: number | undefined) =>
+export const useSpgpqSubstationApprovedPower = (spgpqId: number | undefined) =>
   useQuery({
     queryKey: [
-      "service_providing_group_grid_prequalification_substation_power",
+      "service_providing_group_grid_prequalification_substation_approved_power",
       spgpqId,
     ],
-    queryFn: () => fetchSpgpqSubstationPower(spgpqId ?? 0),
+    queryFn: () => fetchSpgpqSubstationApprovedPower(spgpqId ?? 0),
     enabled: !!spgpqId,
   });

@@ -262,7 +262,7 @@ func NewAPIHandler(
 
 	mux.Handle("GET /service_providing_group_power_per_substation/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_grid_prequalification_substation_power", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification_substation_approved_power", dataListPostgRESTHandler)
 
 	mux.Handle("GET /service_providing_group_grid_prequalification", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group_grid_prequalification", dataPostgRESTHandler)

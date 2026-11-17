@@ -175,8 +175,8 @@ from .service_providing_group_grid_prequalification_history_response import (
 )
 from .service_providing_group_grid_prequalification_response import ServiceProvidingGroupGridPrequalificationResponse
 from .service_providing_group_grid_prequalification_status import ServiceProvidingGroupGridPrequalificationStatus
-from .service_providing_group_grid_prequalification_substation_power_response import (
-    ServiceProvidingGroupGridPrequalificationSubstationPowerResponse,
+from .service_providing_group_grid_prequalification_substation_approved_power_response import (
+    ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse,
 )
 from .service_providing_group_grid_prequalification_update_request import (
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
@@ -445,7 +445,7 @@ __all__ = (
     "ServiceProvidingGroupGridPrequalificationHistoryResponse",
     "ServiceProvidingGroupGridPrequalificationResponse",
     "ServiceProvidingGroupGridPrequalificationStatus",
-    "ServiceProvidingGroupGridPrequalificationSubstationPowerResponse",
+    "ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse",
     "ServiceProvidingGroupGridPrequalificationUpdateRequest",
     "ServiceProvidingGroupGridSuspensionCommentCreateRequest",
     "ServiceProvidingGroupGridSuspensionCommentHistoryResponse",

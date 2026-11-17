@@ -626,17 +626,17 @@ resources:
                 min: 30
                 max: 80
 
-  - id: service_providing_group_grid_prequalification_substation_power
+  - id: service_providing_group_grid_prequalification_substation_approved_power
     acronym: SPGGPPPS
-    name: Service Providing Group Grid Prequalification Substation Power
-    summary: Service Providing Group Grid Prequalification Substation Power
+    name: Service Providing Group Grid Prequalification Substation Approved Power
+    summary: Service Providing Group Grid Prequalification Substation Approved Power
     description: >-
       Flexible power per substation for a service providing group grid
       prequalification, together with the total approved flexible power of the
       substation across all approved grid prequalifications of the same
       impacted system operator.
     x-intl:
-      en: Service Providing Group Grid Prequalification Substation Power
+      en: Service Providing Group Grid Prequalification Substation Approved Power
       nb: Effekt per transformatorstasjon for nettprekvalifisering av fleksibilitetsgruppe
       nn: Effekt per transformatorstasjon for nettprekvalifisering av fleksibilitetsgruppe
     operations:

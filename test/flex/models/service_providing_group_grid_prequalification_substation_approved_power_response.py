@@ -14,11 +14,11 @@ if TYPE_CHECKING:
     )
 
 
-T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationSubstationPowerResponse")
+T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse")
 
 
 @_attrs_define
-class ServiceProvidingGroupGridPrequalificationSubstationPowerResponse:
+class ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse:
     """Response schema - Flexible power per substation for a service providing group grid prequalification, together with
     the total approved flexible power of the substation across all approved grid prequalifications of the same impacted
     system operator.
@@ -138,7 +138,7 @@ class ServiceProvidingGroupGridPrequalificationSubstationPowerResponse:
             d.pop("service_providing_group_grid_prequalification", UNSET)
         )
 
-        service_providing_group_grid_prequalification_substation_power_response = cls(
+        service_providing_group_grid_prequalification_substation_approved_power_response = cls(
             service_providing_group_grid_prequalification_id=service_providing_group_grid_prequalification_id,
             substation_business_id=substation_business_id,
             substation_name=substation_name,
@@ -148,8 +148,8 @@ class ServiceProvidingGroupGridPrequalificationSubstationPowerResponse:
             service_providing_group_grid_prequalification=service_providing_group_grid_prequalification,
         )
 
-        service_providing_group_grid_prequalification_substation_power_response.additional_properties = d
-        return service_providing_group_grid_prequalification_substation_power_response
+        service_providing_group_grid_prequalification_substation_approved_power_response.additional_properties = d
+        return service_providing_group_grid_prequalification_substation_approved_power_response
 
     @property
     def additional_keys(self) -> list[str]:

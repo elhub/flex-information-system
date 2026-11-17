@@ -480,7 +480,7 @@ type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ReplacedAt                                  pgtype.Timestamptz
 }
 
-type ApiServiceProvidingGroupGridPrequalificationSubstationPower struct {
+type ApiServiceProvidingGroupGridPrequalificationSubstationApprov struct {
 	ServiceProvidingGroupGridPrequalificationID int
 	SubstationBusinessID                        []byte
 	SubstationName                              []byte

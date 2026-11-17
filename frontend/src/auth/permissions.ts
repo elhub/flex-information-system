@@ -399,13 +399,13 @@ export type PermissionTarget =
   | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
   | "service_providing_group_grid_prequalification_history.service_providing_group_id"
   | "service_providing_group_grid_prequalification_history.status"
-  | "service_providing_group_grid_prequalification_substation_power"
-  | "service_providing_group_grid_prequalification_substation_power.controllable_unit_count"
-  | "service_providing_group_grid_prequalification_substation_power.maximum_active_power"
-  | "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id"
-  | "service_providing_group_grid_prequalification_substation_power.substation_business_id"
-  | "service_providing_group_grid_prequalification_substation_power.substation_name"
-  | "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power"
+  | "service_providing_group_grid_prequalification_substation_approved_power"
+  | "service_providing_group_grid_prequalification_substation_approved_power.controllable_unit_count"
+  | "service_providing_group_grid_prequalification_substation_approved_power.maximum_active_power"
+  | "service_providing_group_grid_prequalification_substation_approved_power.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_grid_prequalification_substation_approved_power.substation_business_id"
+  | "service_providing_group_grid_prequalification_substation_approved_power.substation_name"
+  | "service_providing_group_grid_prequalification_substation_approved_power.total_approved_maximum_active_power"
   | "service_providing_group_grid_suspension"
   | "service_providing_group_grid_suspension.id"
   | "service_providing_group_grid_suspension.impacted_system_operator_id"
@@ -7756,36 +7756,37 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.controllable_unit_count",
+        "service_providing_group_grid_prequalification_substation_approved_power.controllable_unit_count",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_grid_prequalification_substation_power",
+        "service_providing_group_grid_prequalification_substation_approved_power.maximum_active_power",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id",
+        "service_providing_group_grid_prequalification_substation_approved_power",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.substation_business_id",
+        "service_providing_group_grid_prequalification_substation_approved_power.service_providing_group_grid_prequalification_id",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.substation_name",
+        "service_providing_group_grid_prequalification_substation_approved_power.substation_business_id",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+        "service_providing_group_grid_prequalification_substation_approved_power.substation_name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_approved_power.total_approved_maximum_active_power",
       operation: "read",
     },
     {
@@ -12419,36 +12420,37 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.controllable_unit_count",
+        "service_providing_group_grid_prequalification_substation_approved_power.controllable_unit_count",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_grid_prequalification_substation_power",
+        "service_providing_group_grid_prequalification_substation_approved_power.maximum_active_power",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id",
+        "service_providing_group_grid_prequalification_substation_approved_power",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.substation_business_id",
+        "service_providing_group_grid_prequalification_substation_approved_power.service_providing_group_grid_prequalification_id",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.substation_name",
+        "service_providing_group_grid_prequalification_substation_approved_power.substation_business_id",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+        "service_providing_group_grid_prequalification_substation_approved_power.substation_name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_approved_power.total_approved_maximum_active_power",
       operation: "read",
     },
     {
