@@ -29,10 +29,11 @@ compatible provider. We believe that IDPorten is the most likely candidate for a
 production system. In test we are using Oracle Cloud Identity and
 Access Management (IAM).
 
-The OpenID connect flow is based on redirects between the portal and the Idenity
-provider, and as part of the process, the Flexibility Information System will
-obtain the identity of the user from the Identity provider and issue an access
-token for the portal.
+The OpenID Connect flow is based on redirects between the portal and the
+Identity provider, and as part of the process, the Flexibility Information
+System will obtain the identity of the user from the Identity provider and issue
+an access token for the portal. To keep the user logged in without having to
+regularly go through the OIDC login flow, we use refresh tokens.
 
 ## Client Credentials
 
@@ -82,6 +83,12 @@ language/system of choice. Here are a few examples/guides:
 
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
+
+!!! note "Refreshing"
+
+    The refresh token mechanism is dedicated to clients logging in through the
+    portal, for a better user experience. Clients using JWT Bearer are machine
+    users and can just re-authenticate when their access token expires.
 
 ## Token exchange
 

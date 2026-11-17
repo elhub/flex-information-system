@@ -50,7 +50,12 @@ note over AUTH
 
 end note
 
-return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session\nUnset <:fortune_cookie:> flex_login
+note over AUTH
+    A new refresh token family is created
+    and the hash of the refresh token is stored.
+end note
+
+return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session\nSet <:cookie:> __Host-flex_refresh\nUnset <:fortune_cookie:> flex_login
 
 UA -> PORTAL: Follow redirect to portal
 PORTAL -> AUTH: Check active sessions\nGET /auth/v1/session\n<:cookie:> __Host-flex_session
