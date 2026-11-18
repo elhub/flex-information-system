@@ -12,14 +12,21 @@ export type TextKey =
   | "notification.not_acknowledged"
   | "notification.status"
   | "notification.acknowledged"
-  | "notification.resource_deleted"
+  | "notification.show_acknowledged"
   | "notification.resource"
   | "notification.acknowledge"
+  | "notification.acknowledged_at_by"
   | "notification.mark_as_acknowledged"
+  | "notification.event_category.all"
   | "notification.event_category.comment"
   | "notification.event_category.attachment"
   | "notification.recipient"
   | "notification.source.accounting_point"
+  | "notification.source.accounting_point_grid_location"
+  | "notification.source.controllable_unit_service_provider"
+  | "notification.source.party_membership"
+  | "notification.source.service_providing_group_membership"
+  | "notification.source.technical_resource"
   | "notification.source.controllable_unit"
   | "notification.source.controllable_unit_suspension"
   | "notification.source.notice"
@@ -423,108 +430,107 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.no_active_applications": "No active applications.",
     "dashboard.unacknowledged_comments": "Unacknowledged comments",
     "event_type.controllable_unit_suspension_comment.create":
-      "Controllable unit suspension comment created",
+      "New comment on controllable unit suspension",
     "event_type.controllable_unit_suspension_comment.update":
-      "Controllable unit suspension comment updated",
+      "Comment edited on controllable unit suspension",
     "event_type.service_provider_product_application_comment.create":
-      "SP product application comment created",
+      "New comment on SP product application",
     "event_type.service_provider_product_application_comment.update":
-      "SP product application comment updated",
+      "Comment edited on SP product application",
     "event_type.service_provider_product_suspension_comment.create":
-      "SP product suspension comment created",
+      "New comment on SP product suspension",
     "event_type.service_provider_product_suspension_comment.update":
-      "SP product suspension comment updated",
+      "Comment edited on SP product suspension",
     "event_type.service_providing_group_grid_prequalification_comment.create":
-      "SPG grid prequalification comment created",
+      "New comment on SPG grid prequalification",
     "event_type.service_providing_group_grid_prequalification_comment.update":
-      "SPG grid prequalification comment updated",
+      "Comment edited on SPG grid prequalification",
     "event_type.service_providing_group_grid_suspension_comment.create":
-      "SPG grid suspension comment created",
+      "New comment on SPG grid suspension",
     "event_type.service_providing_group_grid_suspension_comment.update":
-      "SPG grid suspension comment updated",
+      "Comment edited on SPG grid suspension",
     "event_type.service_providing_group_product_application_comment.create":
-      "SPG product application comment created",
+      "New comment on SPG product application",
     "event_type.service_providing_group_product_application_comment.update":
-      "SPG product application comment updated",
+      "Comment edited on SPG product application",
     "event_type.service_providing_group_product_suspension_comment.create":
-      "SPG product suspension comment created",
+      "New comment on SPG product suspension",
     "event_type.service_providing_group_product_suspension_comment.update":
-      "SPG product suspension comment updated",
+      "Comment edited on SPG product suspension",
     "event_type.accounting_point_grid_location.create":
-      "Accounting point grid location created",
+      "New accounting point grid location",
     "event_type.accounting_point_grid_location.update":
-      "Accounting point grid location updated",
-    "event_type.controllable_unit.create": "Controllable unit created",
-    "event_type.controllable_unit.update": "Controllable unit updated",
+      "Changes to accounting point grid location",
+    "event_type.controllable_unit.create": "New controllable unit",
+    "event_type.controllable_unit.update": "Changes to controllable unit",
     "event_type.controllable_unit_service_provider.create":
-      "Controllable unit service provider relation created",
+      "New controllable unit service provider relation",
     "event_type.controllable_unit_service_provider.update":
-      "Controllable unit service provider relation updated",
+      "Changes to controllable unit's service provider",
     "event_type.controllable_unit_service_provider.delete":
-      "Controllable unit service provider relation deleted",
+      "Service provider removed from controllable unit",
     "event_type.controllable_unit_suspension.create":
-      "Controllable unit suspension created",
+      "New controllable unit suspension",
     "event_type.controllable_unit_suspension.update":
-      "Controllable unit suspension updated",
+      "Changes to controllable unit suspension",
     "event_type.controllable_unit_suspension.delete":
-      "Controllable unit suspension deleted",
-    "event_type.notice.create": "Notice created",
-    "event_type.notice.update": "Notice updated",
-    "event_type.party.create": "Party created",
-    "event_type.party.update": "Party updated",
-    "event_type.party_membership.create": "Party membership created",
-    "event_type.party_membership.delete": "Party membership deleted",
+      "Controllable unit suspension removed",
+    "event_type.notice.create": "New notice",
+    "event_type.notice.update": "Changes to notice",
+    "event_type.party.create": "New party",
+    "event_type.party.update": "Changes to party",
+    "event_type.party_membership.create": "New party membership",
+    "event_type.party_membership.delete": "Party membership removed",
     "event_type.service_provider_product_application.create":
-      "SP product application created",
+      "New SP product application",
     "event_type.service_provider_product_application.update":
-      "SP product application updated",
+      "Changes to SP product application",
     "event_type.service_provider_product_suspension.create":
-      "SP product suspension created",
+      "New SP product suspension",
     "event_type.service_provider_product_suspension.update":
-      "SP product suspension updated",
+      "Changes to SP product suspension",
     "event_type.service_provider_product_suspension.delete":
-      "SP product suspension deleted",
-    "event_type.service_providing_group.create":
-      "Service providing group created",
+      "SP product suspension removed",
+    "event_type.service_providing_group.create": "New service providing group",
     "event_type.service_providing_group.update":
-      "Service providing group updated",
+      "Changes to service providing group",
     "event_type.service_providing_group_grid_prequalification.create":
-      "SPG grid prequalification created",
+      "New SPG grid prequalification",
     "event_type.service_providing_group_grid_prequalification.update":
-      "SPG grid prequalification updated",
+      "Changes to SPG grid prequalification",
     "event_type.service_providing_group_grid_suspension.create":
-      "SPG grid suspension created",
+      "New SPG grid suspension",
     "event_type.service_providing_group_grid_suspension.update":
-      "SPG grid suspension updated",
+      "Changes to SPG grid suspension",
     "event_type.service_providing_group_grid_suspension.delete":
-      "SPG grid suspension deleted",
+      "SPG grid suspension removed",
     "event_type.service_providing_group_membership.create":
-      "SPG membership created",
+      "New SPG membership",
     "event_type.service_providing_group_membership.update":
-      "SPG membership updated",
+      "Changes to SPG membership",
     "event_type.service_providing_group_membership.delete":
-      "SPG membership deleted",
+      "SPG membership removed",
     "event_type.service_providing_group_product_application.create":
-      "SPG product application created",
+      "New SPG product application",
     "event_type.service_providing_group_product_application.update":
-      "SPG product application updated",
+      "Changes to SPG product application",
     "event_type.service_providing_group_product_application_attachment.create":
-      "SPG product application attachment created",
+      "New SPG product application attachment",
     "event_type.service_providing_group_product_application_attachment.delete":
-      "SPG product application attachment deleted",
+      "Attachment removed from SPG product application",
     "event_type.service_providing_group_product_suspension.create":
-      "SPG product suspension created",
+      "New SPG product suspension",
     "event_type.service_providing_group_product_suspension.update":
-      "SPG product suspension updated",
+      "Changes to SPG product suspension",
     "event_type.service_providing_group_product_suspension.delete":
-      "SPG product suspension deleted",
+      "SPG product suspension removed",
     "event_type.system_operator_product_type.create":
-      "System operator product type created",
+      "New system operator product type",
     "event_type.system_operator_product_type.update":
-      "System operator product type updated",
-    "event_type.technical_resource.create": "Technical resource created",
-    "event_type.technical_resource.update": "Technical resource updated",
-    "event_type.technical_resource.delete": "Technical resource deleted",
+      "Changes to system operator product type",
+    "event_type.technical_resource.create": "New technical resource",
+    "event_type.technical_resource.update": "Changes to technical resource",
+    "event_type.technical_resource.delete": "Technical resource removed",
     entity_role: "Entity",
     "entity.see_more": "See entity",
     "entity.client": "Clients",
@@ -550,10 +556,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.not_acknowledged": "Not acknowledged",
     "notification.status": "Status",
     "notification.acknowledged": "Acknowledged",
+    "notification.show_acknowledged": "Show acknowledged",
     "notification.mark_as_acknowledged": "Mark as acknowledged",
-    "notification.resource_deleted": "Resource deleted",
     "notification.resource": "Resource",
     "notification.acknowledge": "Acknowledge",
+    "notification.acknowledged_at_by": "Acknowledged %{time} by %{name}",
+    "notification.event_category.all": "All",
     "notification.event_category.comment": "Comment",
     "notification.event_category.attachment": "Attachment",
     "notification.recipient": "Recipient",
@@ -561,6 +569,14 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.source.controllable_unit": "Controllable unit",
     "notification.source.controllable_unit_suspension":
       "Controllable unit suspension",
+    "notification.source.accounting_point_grid_location":
+      "Accounting point grid location",
+    "notification.source.controllable_unit_service_provider":
+      "Controllable unit service provider",
+    "notification.source.party_membership": "Party membership",
+    "notification.source.service_providing_group_membership":
+      "Group membership",
+    "notification.source.technical_resource": "Technical resource",
     "notification.source.notice": "Notice",
     "notification.source.party": "Party",
     "notification.source.service_provider_product_application":
@@ -955,108 +971,107 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.no_active_applications": "Ingen aktive søknader.",
     "dashboard.unacknowledged_comments": "Ubehandlede kommentarer",
     "event_type.controllable_unit_suspension_comment.create":
-      "Kommentar til suspendering av kontrollerbar enhet opprettet",
+      "Ny kommentar på suspendering av kontrollerbar enhet",
     "event_type.controllable_unit_suspension_comment.update":
-      "Kommentar til suspendering av kontrollerbar enhet oppdatert",
+      "Kommentar endret på suspendering av kontrollerbar enhet",
     "event_type.service_provider_product_application_comment.create":
-      "Kommentar til SP-produktsøknad opprettet",
+      "Ny kommentar på SP-produktsøknad",
     "event_type.service_provider_product_application_comment.update":
-      "Kommentar til SP-produktsøknad oppdatert",
+      "Kommentar endret på SP-produktsøknad",
     "event_type.service_provider_product_suspension_comment.create":
-      "Kommentar til SP-produktsuspendering opprettet",
+      "Ny kommentar på SP-produktsuspendering",
     "event_type.service_provider_product_suspension_comment.update":
-      "Kommentar til SP-produktsuspendering oppdatert",
+      "Kommentar endret på SP-produktsuspendering",
     "event_type.service_providing_group_grid_prequalification_comment.create":
-      "Kommentar til SPG-nettprekvalifisering opprettet",
+      "Ny kommentar på SPG-nettprekvalifisering",
     "event_type.service_providing_group_grid_prequalification_comment.update":
-      "Kommentar til SPG-nettprekvalifisering oppdatert",
+      "Kommentar endret på SPG-nettprekvalifisering",
     "event_type.service_providing_group_grid_suspension_comment.create":
-      "Kommentar til SPG-nettsuspendering opprettet",
+      "Ny kommentar på SPG-nettsuspendering",
     "event_type.service_providing_group_grid_suspension_comment.update":
-      "Kommentar til SPG-nettsuspendering oppdatert",
+      "Kommentar endret på SPG-nettsuspendering",
     "event_type.service_providing_group_product_application_comment.create":
-      "Kommentar til SPG-produktsøknad opprettet",
+      "Ny kommentar på SPG-produktsøknad",
     "event_type.service_providing_group_product_application_comment.update":
-      "Kommentar til SPG-produktsøknad oppdatert",
+      "Kommentar endret på SPG-produktsøknad",
     "event_type.service_providing_group_product_suspension_comment.create":
-      "Kommentar til SPG-produktsuspendering opprettet",
+      "Ny kommentar på SPG-produktsuspendering",
     "event_type.service_providing_group_product_suspension_comment.update":
-      "Kommentar til SPG-produktsuspendering oppdatert",
+      "Kommentar endret på SPG-produktsuspendering",
     "event_type.accounting_point_grid_location.create":
-      "Nettlokasjon for avregningspunkt opprettet",
+      "Ny nettlokasjon for avregningspunkt",
     "event_type.accounting_point_grid_location.update":
-      "Nettlokasjon for avregningspunkt oppdatert",
-    "event_type.controllable_unit.create": "Kontrollerbar enhet opprettet",
-    "event_type.controllable_unit.update": "Kontrollerbar enhet oppdatert",
+      "Endringer i nettlokasjon for avregningspunkt",
+    "event_type.controllable_unit.create": "Ny kontrollerbar enhet",
+    "event_type.controllable_unit.update": "Endringer i kontrollerbar enhet",
     "event_type.controllable_unit_service_provider.create":
-      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør opprettet",
+      "Ny relasjon mellom kontrollerbar enhet og tjenesteleverandør",
     "event_type.controllable_unit_service_provider.update":
-      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør oppdatert",
+      "Endringer i tjenesteleverandør for kontrollerbar enhet",
     "event_type.controllable_unit_service_provider.delete":
-      "Relasjon mellom kontrollerbar enhet og tjenesteleverandør slettet",
+      "Tjenesteleverandør fjernet fra kontrollerbar enhet",
     "event_type.controllable_unit_suspension.create":
-      "Suspendering av kontrollerbar enhet opprettet",
+      "Ny suspendering av kontrollerbar enhet",
     "event_type.controllable_unit_suspension.update":
-      "Suspendering av kontrollerbar enhet oppdatert",
+      "Endringer i suspendering av kontrollerbar enhet",
     "event_type.controllable_unit_suspension.delete":
-      "Suspendering av kontrollerbar enhet slettet",
-    "event_type.notice.create": "Varsel opprettet",
-    "event_type.notice.update": "Varsel oppdatert",
-    "event_type.party.create": "Aktør opprettet",
-    "event_type.party.update": "Aktør oppdatert",
-    "event_type.party_membership.create": "Aktørmedlemskap opprettet",
-    "event_type.party_membership.delete": "Aktørmedlemskap slettet",
+      "Suspendering av kontrollerbar enhet fjernet",
+    "event_type.notice.create": "Nytt varsel",
+    "event_type.notice.update": "Endringer i varsel",
+    "event_type.party.create": "Ny aktør",
+    "event_type.party.update": "Endringer i aktør",
+    "event_type.party_membership.create": "Nytt aktørmedlemskap",
+    "event_type.party_membership.delete": "Aktørmedlemskap fjernet",
     "event_type.service_provider_product_application.create":
-      "SP-produktsøknad opprettet",
+      "Ny SP-produktsøknad",
     "event_type.service_provider_product_application.update":
-      "SP-produktsøknad oppdatert",
+      "Endringer i SP-produktsøknad",
     "event_type.service_provider_product_suspension.create":
-      "SP-produktsuspendering opprettet",
+      "Ny SP-produktsuspendering",
     "event_type.service_provider_product_suspension.update":
-      "SP-produktsuspendering oppdatert",
+      "Endringer i SP-produktsuspendering",
     "event_type.service_provider_product_suspension.delete":
-      "SP-produktsuspendering slettet",
-    "event_type.service_providing_group.create":
-      "Tjenesteleverende gruppe opprettet",
+      "SP-produktsuspendering fjernet",
+    "event_type.service_providing_group.create": "Ny tjenesteleverende gruppe",
     "event_type.service_providing_group.update":
-      "Tjenesteleverende gruppe oppdatert",
+      "Endringer i tjenesteleverende gruppe",
     "event_type.service_providing_group_grid_prequalification.create":
-      "SPG-nettprekvalifisering opprettet",
+      "Ny SPG-nettprekvalifisering",
     "event_type.service_providing_group_grid_prequalification.update":
-      "SPG-nettprekvalifisering oppdatert",
+      "Endringer i SPG-nettprekvalifisering",
     "event_type.service_providing_group_grid_suspension.create":
-      "SPG-nettsuspendering opprettet",
+      "Ny SPG-nettsuspendering",
     "event_type.service_providing_group_grid_suspension.update":
-      "SPG-nettsuspendering oppdatert",
+      "Endringer i SPG-nettsuspendering",
     "event_type.service_providing_group_grid_suspension.delete":
-      "SPG-nettsuspendering slettet",
+      "SPG-nettsuspendering fjernet",
     "event_type.service_providing_group_membership.create":
-      "SPG-medlemskap opprettet",
+      "Nytt SPG-medlemskap",
     "event_type.service_providing_group_membership.update":
-      "SPG-medlemskap oppdatert",
+      "Endringer i SPG-medlemskap",
     "event_type.service_providing_group_membership.delete":
-      "SPG-medlemskap slettet",
+      "SPG-medlemskap fjernet",
     "event_type.service_providing_group_product_application.create":
-      "SPG-produktsøknad opprettet",
+      "Ny SPG-produktsøknad",
     "event_type.service_providing_group_product_application.update":
-      "SPG-produktsøknad oppdatert",
+      "Endringer i SPG-produktsøknad",
     "event_type.service_providing_group_product_application_attachment.create":
-      "Vedlegg til SPG-produktsøknad opprettet",
+      "Nytt vedlegg til SPG-produktsøknad",
     "event_type.service_providing_group_product_application_attachment.delete":
-      "Vedlegg til SPG-produktsøknad slettet",
+      "Vedlegg fjernet fra SPG-produktsøknad",
     "event_type.service_providing_group_product_suspension.create":
-      "SPG-produktsuspendering opprettet",
+      "Ny SPG-produktsuspendering",
     "event_type.service_providing_group_product_suspension.update":
-      "SPG-produktsuspendering oppdatert",
+      "Endringer i SPG-produktsuspendering",
     "event_type.service_providing_group_product_suspension.delete":
-      "SPG-produktsuspendering slettet",
+      "SPG-produktsuspendering fjernet",
     "event_type.system_operator_product_type.create":
-      "Produkttype for systemoperatør opprettet",
+      "Ny produkttype for systemoperatør",
     "event_type.system_operator_product_type.update":
-      "Produkttype for systemoperatør oppdatert",
-    "event_type.technical_resource.create": "Teknisk ressurs opprettet",
-    "event_type.technical_resource.update": "Teknisk ressurs oppdatert",
-    "event_type.technical_resource.delete": "Teknisk ressurs slettet",
+      "Endringer i produkttype for systemoperatør",
+    "event_type.technical_resource.create": "Ny teknisk ressurs",
+    "event_type.technical_resource.update": "Endringer i teknisk ressurs",
+    "event_type.technical_resource.delete": "Teknisk ressurs fjernet",
     entity_role: "Entitet",
     edit: "Endre",
     print: "Skriv ut",
@@ -1072,10 +1087,12 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.not_acknowledged": "Ikke kvittert",
     "notification.status": "Status",
     "notification.acknowledged": "Kvittert",
+    "notification.show_acknowledged": "Vis kvitterte",
     "notification.mark_as_acknowledged": "Marker som kvittert",
-    "notification.resource_deleted": "Ressursen er slettet",
     "notification.resource": "Ressurs",
     "notification.acknowledge": "Kvitter",
+    "notification.acknowledged_at_by": "Kvittert %{time} av %{name}",
+    "notification.event_category.all": "Alle",
     "notification.event_category.comment": "Kommentar",
     "notification.event_category.attachment": "Vedlegg",
     no: "Nei",
@@ -1084,6 +1101,14 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.source.controllable_unit": "Kontrollerbar enhet",
     "notification.source.controllable_unit_suspension":
       "Suspensjon av kontrollerbar enhet",
+    "notification.source.accounting_point_grid_location":
+      "Nettplassering for målepunkt",
+    "notification.source.controllable_unit_service_provider":
+      "Tjenesteleverandør for kontrollerbar enhet",
+    "notification.source.party_membership": "Aktørmedlemskap",
+    "notification.source.service_providing_group_membership":
+      "Gruppemedlemskap",
+    "notification.source.technical_resource": "Teknisk ressurs",
     "notification.source.notice": "Varsel",
     "notification.source.party": "Aktør",
     "notification.source.service_provider_product_application":

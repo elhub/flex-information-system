@@ -11,6 +11,9 @@ type EventType = {
   id: string;
   label: TextKey;
   category?: EventCategory;
+  // Which URI of the event a notification links to. Defaults to the subject.
+  // Use "source" when the subject has no page of its own, e.g. comments.
+  navigateTo?: "source" | "subject";
 };
 
 const eventTypes: EventType[] = [
@@ -18,77 +21,91 @@ const eventTypes: EventType[] = [
     id: "no.elhub.flex.controllable_unit_suspension_comment.create",
     label: "event_type.controllable_unit_suspension_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.controllable_unit_suspension_comment.update",
     label: "event_type.controllable_unit_suspension_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_provider_product_application_comment.create",
     label: "event_type.service_provider_product_application_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_provider_product_application_comment.update",
     label: "event_type.service_provider_product_application_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension_comment.create",
     label: "event_type.service_provider_product_suspension_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension_comment.update",
     label: "event_type.service_provider_product_suspension_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_prequalification_comment.create",
     label:
       "event_type.service_providing_group_grid_prequalification_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_prequalification_comment.update",
     label:
       "event_type.service_providing_group_grid_prequalification_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_suspension_comment.create",
     label: "event_type.service_providing_group_grid_suspension_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_suspension_comment.update",
     label: "event_type.service_providing_group_grid_suspension_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_application_comment.create",
     label:
       "event_type.service_providing_group_product_application_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_application_comment.update",
     label:
       "event_type.service_providing_group_product_application_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_suspension_comment.create",
     label:
       "event_type.service_providing_group_product_suspension_comment.create",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_suspension_comment.update",
     label:
       "event_type.service_providing_group_product_suspension_comment.update",
     category: "comment",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.accounting_point_grid_location.create",
@@ -272,6 +289,32 @@ export const useEventTypeLabel = () => {
     const eventType = eventTypes.find((et) => et.id === id);
     return eventType ? translate(`text.${eventType.label}`) : id;
   };
+};
+
+export type NotificationTarget = {
+  resource: string;
+  path: string;
+};
+
+const parseUri = (uri?: string): NotificationTarget | null => {
+  if (!uri) return null;
+  const [, resource, resourceId] = uri.split("/");
+  if (!resource || !resourceId) return null;
+  return { resource, path: `/${resource}/${resourceId}/show` };
+};
+
+export const getNotificationTarget = (
+  event?: null | {
+    type: string;
+    source?: string;
+    subject?: string;
+  },
+): NotificationTarget | null => {
+  if (!event) return null;
+  const navigateTo =
+    eventTypes.find((et) => et.id === event.type)?.navigateTo ?? "subject";
+  const primary = navigateTo === "source" ? event.source : event.subject;
+  return parseUri(primary) ?? parseUri(event.source);
 };
 
 export default eventTypes;
