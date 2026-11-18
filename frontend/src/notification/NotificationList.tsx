@@ -154,7 +154,7 @@ const NotificationItem = ({
     <Link
       as={RouterLink}
       to={titleLink}
-      className={`after:absolute after:inset-0 after:content-[''] ${
+      className={`text-black after:absolute after:inset-0 after:content-[''] ${
         acknowledged ? "font-normal" : "font-bold"
       }`}
     >
@@ -163,7 +163,7 @@ const NotificationItem = ({
   );
 
   return (
-    <li className="relative flex list-none flex-col gap-1 border-t border-semantic-border px-4 py-3 first:rounded-t-lg first:border-t-0 last:rounded-b-lg hover:bg-semantic-background-success focus-within:z-20">
+    <li className="relative flex list-none flex-col gap-1 border-t border-semantic-border px-4 py-3 first:rounded-t-lg first:border-t-0 last:rounded-b-lg hover:bg-semantic-background-overlay focus-within:z-20">
       <div className="flex items-center gap-3">
         {title}
         <div className="relative z-10 ml-auto flex items-center gap-3">
@@ -255,7 +255,7 @@ export const NotificationList = () => {
     Number(n.party_id) === Number(identity.partyID);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 max-w-7xl w-full mx-auto">
       <div className="mb-4 flex items-center justify-between gap-2">
         <Heading level={2} size="large">
           {translate("text.header_nav_notifications")}
