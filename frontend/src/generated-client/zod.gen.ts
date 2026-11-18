@@ -93,7 +93,7 @@ export const zAuthScope = z.enum([
   "read:data:service_providing_group_grid_prequalification_comment",
   "read:data:service_providing_group_grid_prequalification_comment_history",
   "read:data:service_providing_group_grid_prequalification_history",
-  "read:data:service_providing_group_grid_prequalification_substation_approved_power",
+  "read:data:service_providing_group_grid_prequalification_substation_power",
   "read:data:service_providing_group_grid_suspension",
   "read:data:service_providing_group_grid_suspension_comment",
   "read:data:service_providing_group_grid_suspension_comment_history",
@@ -1531,7 +1531,7 @@ export const zServiceProvidingGroupPowerPerSubstation = z.object({
 /**
  * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
  */
-export const zServiceProvidingGroupGridPrequalificationSubstationApprovedPower =
+export const zServiceProvidingGroupGridPrequalificationSubstationPower =
   z.object({
     service_providing_group_grid_prequalification_id: z.coerce
       .number()
@@ -1646,8 +1646,8 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
-  substation_approved_power: z
-    .array(zServiceProvidingGroupGridPrequalificationSubstationApprovedPower)
+  substation_power: z
+    .array(zServiceProvidingGroupGridPrequalificationSubstationPower)
     .nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
@@ -2802,7 +2802,7 @@ export const zServiceProvidingGroupPowerPerSubstationWritable = z.object({
 /**
  * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
  */
-export const zServiceProvidingGroupGridPrequalificationSubstationApprovedPowerWritable =
+export const zServiceProvidingGroupGridPrequalificationSubstationPowerWritable =
   z.object({
     service_providing_group_grid_prequalification: z
       .lazy((): any => zServiceProvidingGroupGridPrequalificationWritable)
@@ -2870,10 +2870,8 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  substation_approved_power: z
-    .array(
-      zServiceProvidingGroupGridPrequalificationSubstationApprovedPowerWritable,
-    )
+  substation_power: z
+    .array(zServiceProvidingGroupGridPrequalificationSubstationPowerWritable)
     .nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
@@ -4524,7 +4522,7 @@ export const zReadServiceProvidingGroupPowerPerSubstationQuery = z.object({
 export const zReadServiceProvidingGroupPowerPerSubstationResponse =
   zServiceProvidingGroupPowerPerSubstation;
 
-export const zListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerQuery =
+export const zListServiceProvidingGroupGridPrequalificationSubstationPowerQuery =
   z.object({
     service_providing_group_grid_prequalification_id: z
       .string()
@@ -4538,10 +4536,10 @@ export const zListServiceProvidingGroupGridPrequalificationSubstationApprovedPow
     embed: z.string().optional(),
   });
 
-export const zListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse =
+export const zListServiceProvidingGroupGridPrequalificationSubstationPowerResponse =
   z.union([
-    z.array(zServiceProvidingGroupGridPrequalificationSubstationApprovedPower),
-    z.array(zServiceProvidingGroupGridPrequalificationSubstationApprovedPower),
+    z.array(zServiceProvidingGroupGridPrequalificationSubstationPower),
+    z.array(zServiceProvidingGroupGridPrequalificationSubstationPower),
   ]);
 
 export const zReadServiceProvidingGroupSummaryPath = z.object({

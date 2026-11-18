@@ -309,9 +309,6 @@ databaseChangeLog:
   - include:
       file: ./service_providing_group_power_per_substation.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./service_providing_group_grid_prequalification_substation_approved_power.sql
-      relativeToChangelogFile: true
   # notice
   - includeAll:
       path: ./notice/
@@ -319,6 +316,10 @@ databaseChangeLog:
       maxDepth: 1
   - include:
       file: ./notice.sql
+      relativeToChangelogFile: true
+  # uses spg_cu_snapshot from the notice files
+  - include:
+      file: ./service_providing_group_grid_prequalification_substation_power.sql
       relativeToChangelogFile: true
   # history
   - includeAll:

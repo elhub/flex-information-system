@@ -132,19 +132,21 @@ class SeedScope(private val conn: Connection) {
         startDate: LocalDate = LocalDate.of(2024, 1, 1),
         regulationDirection: ControllableUnitRegulationDirection = ControllableUnitRegulationDirection.BOTH,
         status: String = "new",
+        maximumActivePower: Double = 1.0,
     ): Long =
         queryLong(
             """
             INSERT INTO flex.controllable_unit (
                 business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id, status
             )
-            VALUES (?::uuid, ?, ?::date, ?, 1.0, ?, ?)
+            VALUES (?::uuid, ?, ?::date, ?, ?, ?, ?)
             RETURNING id
             """.trimIndent(),
             UUID.randomUUID().toString(),
             name,
             startDate.toString(),
             regulationDirection.value,
+            maximumActivePower,
             accountingPointId,
             status,
         )
@@ -403,6 +405,21 @@ class SeedScope(private val conn: Connection) {
             impactedSystemOperatorId,
             status.value,
         )
+
+    /**
+     * Approves the grid prequalification as of now (`prequalified_at`), like the SO does when it approves
+     * the grid prequalification or the changes to it. Call it in a seed block of its own, so that the
+     * record time of other rows is clearly before or after the approval.
+     */
+    fun approveGridPrequalification(gridPrequalificationId: Long) {
+        conn.prepareStatement(
+            "UPDATE flex.service_providing_group_grid_prequalification " +
+                "SET status = 'approved', prequalified_at = current_timestamp WHERE id = ?",
+        ).use { stmt ->
+            stmt.setLong(1, gridPrequalificationId)
+            stmt.executeUpdate()
+        }
+    }
 
     fun insertMeteringGridArea(name: String = "Test MGA", businessId: String = uniqueEicY()): Long =
         queryLong(

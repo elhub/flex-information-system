@@ -48,11 +48,11 @@ public data class ServiceProvidingGroupGridPrequalificationResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Embedded service_providing_group_grid_prequalification_substation_approved_power
+   * Embedded service_providing_group_grid_prequalification_substation_power
    */
-  @SerialName("substation_approved_power")
-  public val substationApprovedPower:
-      List<ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse>? = null,
+  @SerialName("substation_power")
+  public val substationPower:
+      List<ServiceProvidingGroupGridPrequalificationSubstationPowerResponse>? = null,
   /**
    * Response schema - Group of controllable units
    */

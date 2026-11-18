@@ -1,13 +1,13 @@
 import { beforeEach, expect, it, vi } from "vitest";
-import { fetchSpgpqSubstationApprovedPower } from "./useSpgpqSubstationApprovedPower";
-import { listServiceProvidingGroupGridPrequalificationSubstationApprovedPower } from "../../../generated-client";
+import { fetchSpgpqSubstationPower } from "./useSpgpqSubstationPower";
+import { listServiceProvidingGroupGridPrequalificationSubstationPower } from "../../../generated-client";
 
 vi.mock("../../../generated-client", () => ({
-  listServiceProvidingGroupGridPrequalificationSubstationApprovedPower: vi.fn(),
+  listServiceProvidingGroupGridPrequalificationSubstationPower: vi.fn(),
 }));
 
 const mockedList = vi.mocked(
-  listServiceProvidingGroupGridPrequalificationSubstationApprovedPower,
+  listServiceProvidingGroupGridPrequalificationSubstationPower,
 );
 
 beforeEach(() => {
@@ -29,7 +29,7 @@ it("filters on the grid prequalification and maps rows", async () => {
     error: undefined,
   } as unknown as Awaited<ReturnType<typeof mockedList>>);
 
-  const rows = await fetchSpgpqSubstationApprovedPower(1);
+  const rows = await fetchSpgpqSubstationPower(1);
 
   expect(mockedList).toHaveBeenCalledWith({
     query: {
@@ -54,5 +54,5 @@ it("returns no rows for an empty list", async () => {
     data: [],
     error: undefined,
   } as unknown as Awaited<ReturnType<typeof mockedList>>);
-  expect(await fetchSpgpqSubstationApprovedPower(1)).toEqual([]);
+  expect(await fetchSpgpqSubstationPower(1)).toEqual([]);
 });

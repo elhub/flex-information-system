@@ -626,7 +626,7 @@ resources:
                 min: 30
                 max: 80
 
-  - id: service_providing_group_grid_prequalification_substation_approved_power
+  - id: service_providing_group_grid_prequalification_substation_power
     acronym: SPGGPPPS
     name: Service Providing Group Grid Prequalification Substation Approved Power
     summary: Service Providing Group Grid Prequalification Substation Approved Power

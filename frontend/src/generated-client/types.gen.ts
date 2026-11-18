@@ -107,7 +107,7 @@ export type AuthScope =
   | "read:data:service_providing_group_grid_prequalification_comment"
   | "read:data:service_providing_group_grid_prequalification_comment_history"
   | "read:data:service_providing_group_grid_prequalification_history"
-  | "read:data:service_providing_group_grid_prequalification_substation_approved_power"
+  | "read:data:service_providing_group_grid_prequalification_substation_power"
   | "read:data:service_providing_group_grid_suspension"
   | "read:data:service_providing_group_grid_suspension_comment"
   | "read:data:service_providing_group_grid_suspension_comment_history"
@@ -1186,7 +1186,7 @@ export type ServiceProvidingGroupPowerPerSubstation = {
 /**
  * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
  */
-export type ServiceProvidingGroupGridPrequalificationSubstationApprovedPower = {
+export type ServiceProvidingGroupGridPrequalificationSubstationPower = {
   /**
    * The ID of the service providing group grid prequalification.
    */
@@ -1511,9 +1511,9 @@ export type ServiceProvidingGroupGridPrequalification = {
    */
   readonly recorded_by: number;
   /**
-   * Embedded service_providing_group_grid_prequalification_substation_approved_power
+   * Embedded service_providing_group_grid_prequalification_substation_power
    */
-  substation_approved_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationApprovedPower> | null;
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPower> | null;
   /**
    * Embedded service_providing_group
    */
@@ -5101,13 +5101,12 @@ export type ServiceProvidingGroupPowerPerSubstationWritable = {
 /**
  * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
  */
-export type ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerWritable =
-  {
-    /**
-     * Embedded service_providing_group_grid_prequalification
-     */
-    service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
-  };
+export type ServiceProvidingGroupGridPrequalificationSubstationPowerWritable = {
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
+};
 
 /**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
@@ -5219,9 +5218,9 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    */
   prequalified_at?: string;
   /**
-   * Embedded service_providing_group_grid_prequalification_substation_approved_power
+   * Embedded service_providing_group_grid_prequalification_substation_power
    */
-  substation_approved_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerWritable> | null;
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPowerWritable> | null;
   /**
    * Embedded service_providing_group
    */
@@ -8958,44 +8957,43 @@ export type ReadServiceProvidingGroupPowerPerSubstationResponses = {
 export type ReadServiceProvidingGroupPowerPerSubstationResponse =
   ReadServiceProvidingGroupPowerPerSubstationResponses[keyof ReadServiceProvidingGroupPowerPerSubstationResponses];
 
-export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerData =
-  {
-    body?: never;
-    path?: never;
-    query?: {
-      /**
-       * The ID of the service providing group grid prequalification.
-       */
-      service_providing_group_grid_prequalification_id?: string;
-      /**
-       * Business ID of the substation.
-       */
-      substation_business_id?: string;
-      /**
-       * Filtering Columns
-       */
-      select?: string;
-      /**
-       * Ordering
-       */
-      order?: string;
-      /**
-       * Limiting and Pagination
-       */
-      offset?: string;
-      /**
-       * Limiting and Pagination
-       */
-      limit?: string;
-      /**
-       * Comma-separated list of related resources to embed in the response.
-       */
-      embed?: string;
-    };
-    url: "/service_providing_group_grid_prequalification_substation_approved_power";
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The ID of the service providing group grid prequalification.
+     */
+    service_providing_group_grid_prequalification_id?: string;
+    /**
+     * Business ID of the substation.
+     */
+    substation_business_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
+  url: "/service_providing_group_grid_prequalification_substation_power";
+};
 
-export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors =
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors =
   {
     /**
      * Bad Request
@@ -9027,23 +9025,23 @@ export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPower
     500: ErrorMessage;
   };
 
-export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerError =
-  ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors[keyof ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerErrors];
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerError =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors];
 
-export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses =
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses =
   {
     /**
      * OK
      */
-    200: Array<ServiceProvidingGroupGridPrequalificationSubstationApprovedPower>;
+    200: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
     /**
      * Partial Content
      */
-    206: Array<ServiceProvidingGroupGridPrequalificationSubstationApprovedPower>;
+    206: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
   };
 
-export type ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse =
-  ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses[keyof ListServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponses];
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponse =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses];
 
 export type ReadServiceProvidingGroupSummaryData = {
   body?: never;

@@ -1,9 +1,9 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-service-providing-group-grid-prequalification-substation-approved-power-create endDelimiter:-- runOnChange:true
+-- changeset flex:api-service-providing-group-grid-prequalification-substation-power-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.service_providing_group_grid_prequalification_substation_approved_power
+api.service_providing_group_grid_prequalification_substation_power
 WITH (security_invoker = true) AS (
     -- RLS: SPGGPPPS-FISO001
     SELECT
@@ -13,7 +13,7 @@ WITH (security_invoker = true) AS (
         approved_power.controllable_unit_count,
         approved_power.maximum_active_power,
         approved_power.total_approved_maximum_active_power
-    FROM flex.service_providing_group_grid_prequalification_substation_approved_power
+    FROM flex.service_providing_group_grid_prequalification_substation_power
             AS approved_power
     WHERE current_role = 'flex_flexibility_information_system_operator'
     UNION ALL
@@ -27,7 +27,7 @@ WITH (security_invoker = true) AS (
         approved_power.controllable_unit_count,
         approved_power.maximum_active_power,
         approved_power.total_approved_maximum_active_power
-    FROM flex.service_providing_group_grid_prequalification_substation_approved_power
+    FROM flex.service_providing_group_grid_prequalification_substation_power
             AS approved_power
     WHERE
         current_role = 'flex_system_operator'

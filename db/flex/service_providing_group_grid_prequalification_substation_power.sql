@@ -2,8 +2,8 @@
 -- Manually managed file
 -- noqa: disable=all
 
--- changeset flex:service-providing-group-grid-prequalification-substation-approved-power-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW service_providing_group_grid_prequalification_substation_approved_power
+-- changeset flex:service-providing-group-grid-prequalification-substation-power-create runOnChange:true endDelimiter:--
+CREATE OR REPLACE VIEW service_providing_group_grid_prequalification_substation_power
 -- security_invoker: RLS applies, so an SO only sees its own grid
 -- prequalifications and the CUs it is CSO of
 WITH (security_invoker = true) AS (
@@ -15,7 +15,7 @@ WITH (security_invoker = true) AS (
             gp.impacted_system_operator_id AS so_id,
             gp.status,
             gp.prequalified_at,
-            LOWER(spgm.valid_time_range) AS member_since,
+            gp.service_providing_group_id AS spg_id,
             cu.id AS cu_id,
             cu.maximum_active_power AS power,
             apgl.business_id,
@@ -36,17 +36,26 @@ WITH (security_invoker = true) AS (
 
     total_approved AS (
         -- per SO and substation, over all approved SPGGPs. A CU in several
-        -- approved SPGs is counted once, and CUs added after the approval
-        -- are left out until the changes are approved (prequalified_at)
+        -- approved SPGs is counted once. Only CUs that were members of the SPG
+        -- (known and valid) at prequalified_at count, so CUs added after the
+        -- approval are left out until the changes are approved
+        -- (prequalified_at moves).
         SELECT
             so_id,
             business_id,
             SUM(power) AS power
         FROM (
-            SELECT DISTINCT so_id, business_id, cu_id, power
-            FROM member
-            WHERE status IN ('approved', 'conditionally_approved')
-                AND member_since <= prequalified_at
+            SELECT DISTINCT
+                m.so_id,
+                m.business_id,
+                m.cu_id,
+                m.power
+            FROM member AS m
+                CROSS JOIN LATERAL flex.spg_cu_snapshot(
+                    m.spg_id, m.so_id, m.prequalified_at
+                ) AS snap
+            WHERE m.status IN ('approved', 'conditionally_approved')
+                AND snap.controllable_unit_id = m.cu_id
         ) AS approved_cu
         GROUP BY so_id, business_id
     )
@@ -66,5 +75,5 @@ WITH (security_invoker = true) AS (
     GROUP BY own.gp_id, own.so_id, own.business_id
 );
 
--- changeset flex:service-providing-group-grid-prequalification-substation-approved-power-grants runOnChange:true endDelimiter:;
-GRANT SELECT ON TABLE service_providing_group_grid_prequalification_substation_approved_power TO flex_common;
+-- changeset flex:service-providing-group-grid-prequalification-substation-power-grants runOnChange:true endDelimiter:;
+GRANT SELECT ON TABLE service_providing_group_grid_prequalification_substation_power TO flex_common;

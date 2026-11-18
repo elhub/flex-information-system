@@ -3,9 +3,9 @@ import { Loader } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import {
-  SpgpqSubstationApprovedPowerRow,
-  useSpgpqSubstationApprovedPower,
-} from "./useSpgpqSubstationApprovedPower";
+  SpgpqSubstationPowerRow,
+  useSpgpqSubstationPower,
+} from "./useSpgpqSubstationPower";
 
 type Props = {
   spgpqId: number;
@@ -14,12 +14,12 @@ type Props = {
 
 export const SpgpqPowerPerSubstationTab = ({ spgpqId, powerScale }: Props) => {
   const translate = useTranslate();
-  const { data, isLoading, error } = useSpgpqSubstationApprovedPower(spgpqId);
+  const { data, isLoading, error } = useSpgpqSubstationPower(spgpqId);
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
 
-  const columns: Column<SpgpqSubstationApprovedPowerRow>[] = [
+  const columns: Column<SpgpqSubstationPowerRow>[] = [
     {
       key: "substationName",
       header: translate("text.table.header.substation"),

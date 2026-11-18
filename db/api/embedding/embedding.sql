@@ -248,10 +248,10 @@ api.power_per_substation(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_grid_prequalification_substation_approved_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification runOnChange:true endDelimiter:--
+-- changeset flex:service_providing_group_grid_prequalification_substation_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification runOnChange:true endDelimiter:--
 -- noqa: disable=LT05
 CREATE OR REPLACE FUNCTION api.service_providing_group_grid_prequalification(
-    api.service_providing_group_grid_prequalification_substation_approved_power
+    api.service_providing_group_grid_prequalification_substation_power
 )
 RETURNS SETOF api.service_providing_group_grid_prequalification ROWS 1 AS $$
   select *
@@ -260,28 +260,28 @@ RETURNS SETOF api.service_providing_group_grid_prequalification ROWS 1 AS $$
 $$ STABLE LANGUAGE sql;
 -- noqa: enable=LT05
 
--- changeset flex:service_providing_group_grid_prequalification_substation_approved_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification-grant runOnChange:true endDelimiter:--
+-- changeset flex:service_providing_group_grid_prequalification_substation_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.service_providing_group_grid_prequalification(
-    api.service_providing_group_grid_prequalification_substation_approved_power
+    api.service_providing_group_grid_prequalification_substation_power
 )
 TO flex_common, flex_entity;
 
--- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_approved_power runOnChange:true endDelimiter:--
+-- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_power runOnChange:true endDelimiter:--
 -- noqa: disable=LT05
-CREATE OR REPLACE FUNCTION api.substation_approved_power(
+CREATE OR REPLACE FUNCTION api.substation_power(
     api.service_providing_group_grid_prequalification
 )
-RETURNS SETOF api.service_providing_group_grid_prequalification_substation_approved_power AS $$
+RETURNS SETOF api.service_providing_group_grid_prequalification_substation_power AS $$
   select *
-  from api.service_providing_group_grid_prequalification_substation_approved_power
+  from api.service_providing_group_grid_prequalification_substation_power
   where service_providing_group_grid_prequalification_id = $1.id
 $$ STABLE LANGUAGE sql;
 -- noqa: enable=LT05
 
--- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_approved_power-grant runOnChange:true endDelimiter:--
+-- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_power-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
-api.substation_approved_power(
+api.substation_power(
     api.service_providing_group_grid_prequalification
 )
 TO flex_common, flex_entity;

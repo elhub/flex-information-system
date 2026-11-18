@@ -35,7 +35,7 @@
             "description": "Service Providing Group Power Per Substation"
         },
         {
-            "name": "service_providing_group_grid_prequalification_substation_approved_power",
+            "name": "service_providing_group_grid_prequalification_substation_power",
             "description": "Service Providing Group Grid Prequalification Substation Approved Power"
         },
         {
@@ -317,7 +317,7 @@
                     "read:data:service_providing_group_grid_prequalification_comment",
                     "read:data:service_providing_group_grid_prequalification_comment_history",
                     "read:data:service_providing_group_grid_prequalification_history",
-                    "read:data:service_providing_group_grid_prequalification_substation_approved_power",
+                    "read:data:service_providing_group_grid_prequalification_substation_power",
                     "read:data:service_providing_group_grid_suspension",
                     "read:data:service_providing_group_grid_suspension_comment",
                     "read:data:service_providing_group_grid_suspension_comment_history",
@@ -2362,7 +2362,7 @@
                     "substations"
                 ]
             },
-            "service_providing_group_grid_prequalification_substation_approved_power_response": {
+            "service_providing_group_grid_prequalification_substation_power_response": {
                 "summary": "Response - Service Providing Group Grid Prequalification Substation Approved Power",
                 "description": "Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.",
                 "type": "object",
@@ -3090,13 +3090,13 @@
                         "readOnly": true,
                         "example": 145
                     },
-                    "substation_approved_power": {
-                        "description": "Embedded service_providing_group_grid_prequalification_substation_approved_power",
+                    "substation_power": {
+                        "description": "Embedded service_providing_group_grid_prequalification_substation_power",
                         "oneOf": [
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_approved_power_response"
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
                                 }
                             },
                             {
@@ -14749,15 +14749,15 @@
                 ]
             }
         },
-        "/service_providing_group_grid_prequalification_substation_approved_power": {
+        "/service_providing_group_grid_prequalification_substation_power": {
             "summary": "Service Providing Group Grid Prequalification Substation Approved Power",
             "description": "",
             "get": {
-                "operationId": "list_service_providing_group_grid_prequalification_substation_approved_power",
+                "operationId": "list_service_providing_group_grid_prequalification_substation_power",
                 "summary": "List Service Providing Group Grid Prequalification Substation Approved Power",
-                "description": "List [Service Providing Group Grid Prequalification Substation Approved Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_approved_power/)",
+                "description": "List [Service Providing Group Grid Prequalification Substation Approved Power](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_substation_power/)",
                 "tags": [
-                    "service_providing_group_grid_prequalification_substation_approved_power"
+                    "service_providing_group_grid_prequalification_substation_power"
                 ],
                 "parameters": [
                     {
@@ -14829,7 +14829,7 @@
                             "application/json": {
                                 "schema": {
                                     "items": {
-                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_approved_power_response"
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
                                     },
                                     "type": "array"
                                 }
@@ -14842,7 +14842,7 @@
                             "application/json": {
                                 "schema": {
                                     "items": {
-                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_approved_power_response"
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_substation_power_response"
                                     },
                                     "type": "array"
                                 }
@@ -14931,7 +14931,7 @@
                 "security": [
                     {
                         "bearerAuth": [
-                            "read:data:service_providing_group_grid_prequalification_substation_approved_power"
+                            "read:data:service_providing_group_grid_prequalification_substation_power"
                         ]
                     },
                     {}

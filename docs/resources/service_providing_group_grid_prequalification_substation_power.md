@@ -1,4 +1,4 @@
-# Service Providing Group Grid Prequalification Substation Approved Power
+# Service Providing Group Grid Prequalification Substation Power
 
 Flexible power per substation for a service providing group grid
 prequalification, together with the total approved flexible power for each
@@ -11,9 +11,14 @@ active power of the controllable units that:
 * are current members of a service providing group with a grid prequalification
   for the impacted system operator in status `approved` or
   `conditionally_approved`, and
-* became members of the group before or at the time of the approval of that grid
-  prequalification (`prequalified_at`), so that controllable units added after the
-  approval are not counted until the changes are approved, and
+* were members of the group, both known to the system (record time) and valid
+  (valid time), at the time of the approval of that grid prequalification
+  (`prequalified_at`). Controllable units added after the approval are
+  therefore not counted until the changes are approved, which moves
+  `prequalified_at`, even if the membership is registered with an earlier
+  valid time. A membership that is edited after the approval still counts. This
+  is the same membership logic as in the notice that a grid prequalification is
+  outdated, and
 * have the impacted system operator as system operator of their accounting point,
   and
 * are located at the substation.
@@ -24,8 +29,8 @@ not included.
 
 ## Relevant links
 
-* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_grid_prequalification_substation_approved_power)
-* [Download docx](../download/service_providing_group_grid_prequalification_substation_approved_power.docx)
+* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_grid_prequalification_substation_power)
+* [Download docx](../download/service_providing_group_grid_prequalification_substation_power.docx)
 
 ## Fields
 

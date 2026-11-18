@@ -7,8 +7,8 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_grid_prequalification_substation_approved_power_response import (
-    ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse,
+from ...models.service_providing_group_grid_prequalification_substation_power_response import (
+    ServiceProvidingGroupGridPrequalificationSubstationPowerResponse,
 )
 from ...types import UNSET, Response, Unset
 
@@ -44,7 +44,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/service_providing_group_grid_prequalification_substation_approved_power",
+        "url": "/service_providing_group_grid_prequalification_substation_power",
         "params": params,
     }
 
@@ -57,14 +57,14 @@ def _parse_response(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
     | None
 ):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse.from_dict(
+            response_200_item = ServiceProvidingGroupGridPrequalificationSubstationPowerResponse.from_dict(
                 response_200_item_data
             )
 
@@ -76,7 +76,7 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse.from_dict(
+            response_206_item = ServiceProvidingGroupGridPrequalificationSubstationPowerResponse.from_dict(
                 response_206_item_data
             )
 
@@ -144,10 +144,7 @@ def _parse_response(
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[
-    EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -168,16 +165,13 @@ def sync_detailed(
     limit: str | Unset = UNSET,
     embed: str | Unset = UNSET,
 ) -> Response[
-    EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
 ]:
     """List Service Providing Group Grid Prequalification Substation Approved Power
 
      List [Service Providing Group Grid Prequalification Substation Approved
     Power](https://elhub.github.io/flex-information-
-    system/resources/service_providing_group_grid_prequalification_substation_approved_power/)
+    system/resources/service_providing_group_grid_prequalification_substation_power/)
 
     Args:
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -193,7 +187,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -227,14 +221,14 @@ def sync(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
     | None
 ):
     """List Service Providing Group Grid Prequalification Substation Approved Power
 
      List [Service Providing Group Grid Prequalification Substation Approved
     Power](https://elhub.github.io/flex-information-
-    system/resources/service_providing_group_grid_prequalification_substation_approved_power/)
+    system/resources/service_providing_group_grid_prequalification_substation_power/)
 
     Args:
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -250,7 +244,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
     """
 
     return sync_detailed(
@@ -276,16 +270,13 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
     embed: str | Unset = UNSET,
 ) -> Response[
-    EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
 ]:
     """List Service Providing Group Grid Prequalification Substation Approved Power
 
      List [Service Providing Group Grid Prequalification Substation Approved
     Power](https://elhub.github.io/flex-information-
-    system/resources/service_providing_group_grid_prequalification_substation_approved_power/)
+    system/resources/service_providing_group_grid_prequalification_substation_power/)
 
     Args:
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -301,7 +292,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -333,14 +324,14 @@ async def asyncio(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+    | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
     | None
 ):
     """List Service Providing Group Grid Prequalification Substation Approved Power
 
      List [Service Providing Group Grid Prequalification Substation Approved
     Power](https://elhub.github.io/flex-information-
-    system/resources/service_providing_group_grid_prequalification_substation_approved_power/)
+    system/resources/service_providing_group_grid_prequalification_substation_power/)
 
     Args:
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -356,7 +347,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationSubstationPowerResponse]
     """
 
     return (

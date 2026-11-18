@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * approved grid prequalifications of the same impacted system operator.
  */
 @Serializable
-public data class ServiceProvidingGroupGridPrequalificationSubstationApprovedPowerResponse(
+public data class ServiceProvidingGroupGridPrequalificationSubstationPowerResponse(
   /**
    * The ID of the service providing group grid prequalification.
    */

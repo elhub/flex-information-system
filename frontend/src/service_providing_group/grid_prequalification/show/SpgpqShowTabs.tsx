@@ -46,7 +46,7 @@ export const SpgpqShowTabs = ({
   const showPowerPerSubstation =
     (isImpactedSystemOperator || isFiso) &&
     !!permissions?.allow(
-      "service_providing_group_grid_prequalification_substation_approved_power.total_approved_maximum_active_power",
+      "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
       "read",
     );
 
