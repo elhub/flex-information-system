@@ -24,7 +24,7 @@ describe("getNotificationTarget", () => {
       }),
     ).toEqual({
       resource: "service_providing_group_product_application",
-      path: "/service_providing_group_product_application/7/show",
+      path: "/service_providing_group_product_application/7/show?tab=comments",
     });
   });
 

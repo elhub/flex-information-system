@@ -107,11 +107,6 @@ const useMenuItems = () => {
             ]
           : []),
         {
-          label: translate("text.header_nav_notifications"),
-          to: "/notification",
-          resource: "notification",
-        },
-        {
           label: translate("text.header_nav_notices"),
           to: "/notice",
           resource: "notice",

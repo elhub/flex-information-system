@@ -14,6 +14,8 @@ type EventType = {
   // Which URI of the event a notification links to. Defaults to the subject.
   // Use "source" when the subject has no page of its own, e.g. comments.
   navigateTo?: "source" | "subject";
+  // Tab to open on the target show page, added as `?tab=<tab>`.
+  tab?: string;
 };
 
 const eventTypes: EventType[] = [
@@ -34,12 +36,14 @@ const eventTypes: EventType[] = [
     label: "event_type.service_provider_product_application_comment.create",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_provider_product_application_comment.update",
     label: "event_type.service_provider_product_application_comment.update",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension_comment.create",
@@ -59,6 +63,7 @@ const eventTypes: EventType[] = [
       "event_type.service_providing_group_grid_prequalification_comment.create",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_prequalification_comment.update",
@@ -66,6 +71,7 @@ const eventTypes: EventType[] = [
       "event_type.service_providing_group_grid_prequalification_comment.update",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_providing_group_grid_suspension_comment.create",
@@ -85,6 +91,7 @@ const eventTypes: EventType[] = [
       "event_type.service_providing_group_product_application_comment.create",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_application_comment.update",
@@ -92,6 +99,7 @@ const eventTypes: EventType[] = [
       "event_type.service_providing_group_product_application_comment.update",
     category: "comment",
     navigateTo: "source",
+    tab: "comments",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_suspension_comment.create",
@@ -311,10 +319,16 @@ export const getNotificationTarget = (
   },
 ): NotificationTarget | null => {
   if (!event) return null;
-  const navigateTo =
-    eventTypes.find((et) => et.id === event.type)?.navigateTo ?? "subject";
-  const primary = navigateTo === "source" ? event.source : event.subject;
-  return parseUri(primary) ?? parseUri(event.source);
+  const eventType = eventTypes.find((et) => et.id === event.type);
+  const primary =
+    eventType?.navigateTo === "source" ? event.source : event.subject;
+  const target = parseUri(primary);
+  if (target) {
+    return eventType?.tab
+      ? { ...target, path: `${target.path}?tab=${eventType.tab}` }
+      : target;
+  }
+  return parseUri(event.source);
 };
 
 export default eventTypes;

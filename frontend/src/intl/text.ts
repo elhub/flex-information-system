@@ -48,7 +48,6 @@ export type TextKey =
   | "dashboard.recorded_at"
   | "dashboard.created_at"
   | "dashboard.no_active_applications"
-  | "dashboard.unacknowledged_comments"
   | "event_type.controllable_unit_suspension_comment.create"
   | "event_type.controllable_unit_suspension_comment.update"
   | "event_type.service_provider_product_application_comment.create"
@@ -428,7 +427,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.recorded_at": "Recorded at",
     "dashboard.created_at": "Created at",
     "dashboard.no_active_applications": "No active applications.",
-    "dashboard.unacknowledged_comments": "Unacknowledged comments",
     "event_type.controllable_unit_suspension_comment.create":
       "New comment on controllable unit suspension",
     "event_type.controllable_unit_suspension_comment.update":
@@ -562,7 +560,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.acknowledge": "Acknowledge",
     "notification.acknowledged_at_by": "Acknowledged %{time} by %{name}",
     "notification.event_category.all": "All",
-    "notification.event_category.comment": "Comment",
+    "notification.event_category.comment": "Comments",
     "notification.event_category.attachment": "Attachment",
     "notification.recipient": "Recipient",
     "notification.source.accounting_point": "Accounting point",
@@ -969,7 +967,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     "dashboard.recorded_at": "Registrert",
     "dashboard.created_at": "Opprettet",
     "dashboard.no_active_applications": "Ingen aktive søknader.",
-    "dashboard.unacknowledged_comments": "Ubehandlede kommentarer",
     "event_type.controllable_unit_suspension_comment.create":
       "Ny kommentar på suspendering av kontrollerbar enhet",
     "event_type.controllable_unit_suspension_comment.update":
@@ -1093,7 +1090,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.acknowledge": "Kvitter",
     "notification.acknowledged_at_by": "Kvittert %{time} av %{name}",
     "notification.event_category.all": "Alle",
-    "notification.event_category.comment": "Kommentar",
+    "notification.event_category.comment": "Kommentarer",
     "notification.event_category.attachment": "Vedlegg",
     no: "Nei",
     "notification.recipient": "Mottaker",

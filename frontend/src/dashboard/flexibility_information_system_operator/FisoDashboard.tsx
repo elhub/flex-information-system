@@ -2,7 +2,6 @@ import { IconWarningTriangle } from "@elhub/ds-icons";
 import { Alert, BodyText, Loader } from "../../components/ui";
 import { useNotices } from "../hooks/useNotices";
 import { StatCard } from "../shared/StatCard";
-import { UnhandledCommentsPanel } from "../shared/UnhandledCommentsPanel";
 import { useGetIdentity } from "ra-core";
 
 export const FisoDashboard = () => {
@@ -46,7 +45,6 @@ export const FisoDashboard = () => {
         actionLabel="View"
         actionTo={`/notice?${noticeQueryParams?.toString() || ""}`}
       />
-      <UnhandledCommentsPanel />
     </div>
   );
 };

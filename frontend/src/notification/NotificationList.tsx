@@ -149,31 +149,24 @@ const NotificationItem = ({
   const { event, acknowledged } = notification;
   const target = getNotificationTarget(event);
   const titleLink = target?.path ?? `/notification/${notification.id}/show`;
-  const titleTooltip = target
-    ? translate(`text.notification.source.${target.resource}`, {
-        _: translate("text.notification.resource"),
-      })
-    : undefined;
 
   const title = (
     <Link
       as={RouterLink}
       to={titleLink}
-      className={acknowledged ? "font-normal" : "font-bold"}
+      className={`after:absolute after:inset-0 after:content-[''] ${
+        acknowledged ? "font-normal" : "font-bold"
+      }`}
     >
-      {event ? eventTypeLabel(event.type) : "-"} #{notification.id}
+      {event ? eventTypeLabel(event.type) : "-"}
     </Link>
   );
 
   return (
-    <li className="flex list-none flex-col gap-1 border-t border-semantic-border px-4 py-3 first:border-t-0">
+    <li className="relative flex list-none flex-col gap-1 border-t border-semantic-border px-4 py-3 first:rounded-t-lg first:border-t-0 last:rounded-b-lg hover:bg-semantic-background-success focus-within:z-20">
       <div className="flex items-center gap-3">
-        {titleTooltip ? (
-          <Tooltip content={titleTooltip}>{title}</Tooltip>
-        ) : (
-          title
-        )}
-        <div className="ml-auto flex items-center gap-3">
+        {title}
+        <div className="relative z-10 ml-auto flex items-center gap-3">
           {canAcknowledge && !acknowledged && (
             <Button
               variant="tertiary"
@@ -187,13 +180,6 @@ const NotificationItem = ({
             </Button>
           )}
           {acknowledged && <AcknowledgedInfo notification={notification} />}
-          {!acknowledged && (
-            <span
-              className="h-2.5 w-2.5 shrink-0 rounded-full bg-semantic-border-information"
-              role="img"
-              aria-label={translate("text.notification.not_acknowledged")}
-            />
-          )}
           <NotificationActionsMenu notification={notification} />
         </div>
       </div>
@@ -229,7 +215,7 @@ const NotificationItems = ({
     return <BodyText>{translate("text.simple_table.no_results")}</BodyText>;
 
   return (
-    <ul className="m-0 flex list-none flex-col overflow-hidden rounded-lg border border-semantic-border p-0">
+    <ul className="m-0 flex list-none flex-col rounded-lg border border-semantic-border p-0">
       {list.rows.map((n) => (
         <NotificationItem
           key={n.id}
