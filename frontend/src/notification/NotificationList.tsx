@@ -71,7 +71,7 @@ const NotificationActionsMenu = ({
         )}
       />
       <Dropdown.Menu arrow placement="bottom-end">
-        <Dropdown.Menu.GroupedList.Heading>
+        <Dropdown.Menu.GroupedList.Heading className="whitespace-nowrap">
           {translate("text.resource_show_layout.navigate_group_label")}
         </Dropdown.Menu.GroupedList.Heading>
         <Dropdown.Menu.GroupedList>
@@ -99,6 +99,7 @@ const AcknowledgedCheck = ({
   const translate = useTranslate();
   return (
     <Tooltip
+      className="w-48"
       content={translate("text.notification.acknowledged_at_by", {
         time: toDateTimeString(notification.recorded_at),
         name,
@@ -154,7 +155,7 @@ const NotificationItem = ({
     <Link
       as={RouterLink}
       to={titleLink}
-      className={`text-black after:absolute after:inset-0 after:content-[''] ${
+      className={`text-black hover:text-black after:absolute after:inset-0 after:content-[''] ${
         acknowledged ? "font-normal" : "font-bold"
       }`}
     >
@@ -287,11 +288,11 @@ export const NotificationList = () => {
             size="small"
             position="right"
             className="ml-auto"
-            checked={list.filters.acknowledged === "true"}
+            checked={list.filters.acknowledged !== "false"}
             onChange={(e) =>
               list.setFilter(
                 "acknowledged",
-                e.target.checked ? "true" : "false",
+                e.target.checked ? undefined : "false",
               )
             }
           >

@@ -118,10 +118,12 @@ const eventTypes: EventType[] = [
   {
     id: "no.elhub.flex.accounting_point_grid_location.create",
     label: "event_type.accounting_point_grid_location.create",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.accounting_point_grid_location.update",
     label: "event_type.accounting_point_grid_location.update",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.controllable_unit.create",
