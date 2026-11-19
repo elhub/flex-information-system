@@ -12,6 +12,7 @@ import no.elhub.flex.HIDDEN_BY_RLS
 import no.elhub.flex.api.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProductApplicationAttachmentContentType
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProductApplicationAttachmentResponse
+import no.elhub.flex.testutil.SeedScope
 import no.elhub.flex.testutil.SeededActor
 import no.elhub.flex.testutil.TestPartyRole
 import no.elhub.flex.testutil.Triggers
@@ -47,6 +48,20 @@ private fun minimalPdf(minimumSizeBytes: Int = 0): ByteArray {
     return pdf + ByteArray(maxOf(0, minimumSizeBytes - pdf.size)) { ' '.code.toByte() }
 }
 
+/**
+ * A product application of the group of a service provider, to a system operator. Seed it with [Triggers.OFF]: the
+ * triggers would require an active group with a member and a product type that the system operator has registered,
+ * which the attachments do not depend on.
+ */
+private fun SeedScope.insertServiceProvidingGroupProductApplicationOf(
+    serviceProvider: Long = insertParty(TestPartyRole.SP),
+    systemOperator: Long = insertParty(TestPartyRole.SO),
+): Long = insertServiceProvidingGroupProductApplication(
+    insertServiceProvidingGroup(serviceProvider),
+    systemOperator,
+    listOf(insertProductType()),
+)
+
 private suspend fun ApiClient.uploadPdf(token: String, application: Long, fileName: String = "test.pdf", bytes: ByteArray = minimalPdf()) =
     upload(PATH, token, listOf(APPLICATION_FIELD to application.toString()), fileName, "application/pdf", bytes)
 
@@ -65,13 +80,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
             // RLS: SPGPAA-FISO001
             test("can upload a PDF to the application of any group") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
 
                 val response = api.uploadPdf(fiso.attachmentToken(), application, "hello.pdf")
 
@@ -84,13 +93,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("can upload more than one file to the same application") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
 
                 val first = api.uploadPdf(fiso.attachmentToken(), application, "first.pdf")
                 val second = api.uploadPdf(fiso.attachmentToken(), application, "second.pdf")
@@ -105,13 +108,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
             // The file is a valid PDF, so that only its size can make the upload fail.
             test("cannot upload a file that is larger than 20 MB") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
 
                 val response = api.uploadPdf(fiso.attachmentToken(), application, "big.pdf", minimalPdf(MAXIMUM_FILE_SIZE_BYTES + 1))
 
@@ -120,15 +117,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("is redirected to the file when it downloads an attachment") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val attachment = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplicationAttachment(
-                        insertServiceProvidingGroupProductApplication(
-                            insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                            insertParty(TestPartyRole.SO),
-                            listOf(insertProductType()),
-                        ),
-                    )
-                }
+                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(insertServiceProvidingGroupProductApplicationOf()) }
 
                 val response = api.get("$PATH/$attachment/download", fiso.attachmentToken())
 
@@ -146,15 +135,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("can delete an attachment, which can no longer be downloaded") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val attachment = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplicationAttachment(
-                        insertServiceProvidingGroupProductApplication(
-                            insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                            insertParty(TestPartyRole.SO),
-                            listOf(insertProductType()),
-                        ),
-                    )
-                }
+                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(insertServiceProvidingGroupProductApplicationOf()) }
 
                 api.delete("$PATH/$attachment", fiso.attachmentToken()).status shouldBe HttpStatusCode.NoContent
 
@@ -172,13 +153,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
         context("a service provider") {
             test("can upload a PDF to the application of its group") {
                 val sp = seed { insertActor(TestPartyRole.SP) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(sp.partyId!!),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf(serviceProvider = sp.partyId!!) }
 
                 val response = api.uploadPdf(sp.attachmentToken(), application, "sp.pdf")
 
@@ -188,13 +163,7 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("cannot upload a PDF to the application of the group of another service provider") {
                 val sp = seed { insertActor(TestPartyRole.SP) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP, "Other SP")),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf(serviceProvider = insertParty(TestPartyRole.SP, "Other SP")) }
 
                 val response = api.uploadPdf(sp.attachmentToken(), application)
 
@@ -203,30 +172,14 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("can delete an attachment of the application of its group") {
                 val sp = seed { insertActor(TestPartyRole.SP) }
-                val attachment = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplicationAttachment(
-                        insertServiceProvidingGroupProductApplication(
-                            insertServiceProvidingGroup(sp.partyId!!),
-                            insertParty(TestPartyRole.SO),
-                            listOf(insertProductType()),
-                        ),
-                    )
-                }
+                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(insertServiceProvidingGroupProductApplicationOf(serviceProvider = sp.partyId!!)) }
 
                 api.delete("$PATH/$attachment", sp.attachmentToken()).status shouldBe HttpStatusCode.NoContent
             }
 
             test("cannot delete an attachment of the application of the group of another service provider") {
                 val sp = seed { insertActor(TestPartyRole.SP) }
-                val attachment = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplicationAttachment(
-                        insertServiceProvidingGroupProductApplication(
-                            insertServiceProvidingGroup(insertParty(TestPartyRole.SP, "Other SP")),
-                            insertParty(TestPartyRole.SO),
-                            listOf(insertProductType()),
-                        ),
-                    )
-                }
+                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(insertServiceProvidingGroupProductApplicationOf(serviceProvider = insertParty(TestPartyRole.SP, "Other SP"))) }
 
                 // the policy hides the attachment from the service provider, so there is nothing to delete
                 api.delete("$PATH/$attachment", sp.attachmentToken()).status shouldBe HttpStatusCode.NotFound
@@ -241,14 +194,8 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
                 val sp = seed { insertActor(TestPartyRole.SP) }
                 val so = seed { insertActor(TestPartyRole.SO) }
                 val outsider = seed { insertActor(TestPartyRole.SO, "Outsider SO") }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(sp.partyId!!),
-                        so.partyId!!,
-                        listOf(insertProductType()),
-                    )
-                }
-                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(application) }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf(sp.partyId!!, so.partyId!!) }
+                val attachment = seed { insertServiceProvidingGroupProductApplicationAttachment(application) }
 
                 for (party in listOf(sp, so)) {
                     val list = api.get(PATH, party.attachmentToken(), APPLICATION_FIELD to "eq.$application")
@@ -267,17 +214,11 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
         }
 
         // The route only lets the FISO and the service provider change attachments.
-        for (role in TestPartyRole.rolesWithDataGrants - setOf(TestPartyRole.FISO, TestPartyRole.SP)) {
+        for (role in TestPartyRole.common - setOf(TestPartyRole.FISO, TestPartyRole.SP)) {
             test("${role.type} cannot upload or delete an attachment") {
                 val actor = seed { insertActor(role) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
-                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(application) }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
+                val attachment = seed { insertServiceProvidingGroupProductApplicationAttachment(application) }
 
                 val upload: ApiResponse = api.uploadPdf(actor.attachmentToken(), application)
                 val delete: ApiResponse = api.delete("$PATH/$attachment", actor.attachmentToken())
@@ -292,14 +233,8 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
         context("a token") {
             test("that can only read attachments can read them, and cannot upload or delete one") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
-                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(application) }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
+                val attachment = seed { insertServiceProvidingGroupProductApplicationAttachment(application) }
                 val token = fiso.token(scope = "read:data read:attachment")
 
                 api.get("$PATH/$attachment/download", token).status shouldBe HttpStatusCode.Found
@@ -310,14 +245,8 @@ class ServiceProvidingGroupProductApplicationAttachmentApiTest :
 
             test("without the scope for attachments cannot do anything with one") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
-                val application = seed(Triggers.OFF) {
-                    insertServiceProvidingGroupProductApplication(
-                        insertServiceProvidingGroup(insertParty(TestPartyRole.SP)),
-                        insertParty(TestPartyRole.SO),
-                        listOf(insertProductType()),
-                    )
-                }
-                val attachment = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationAttachment(application) }
+                val application = seed(Triggers.OFF) { insertServiceProvidingGroupProductApplicationOf() }
+                val attachment = seed { insertServiceProvidingGroupProductApplicationAttachment(application) }
 
                 api.get("$PATH/$attachment/download", fiso.token()).status shouldBe HttpStatusCode.Forbidden
                 api.get("$PATH/$attachment", fiso.token()).status shouldBe HttpStatusCode.Forbidden

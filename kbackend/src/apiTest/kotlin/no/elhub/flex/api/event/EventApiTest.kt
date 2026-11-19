@@ -61,10 +61,10 @@ private class ServiceProviderWorld(
 )
 
 /**
- * Seeds one of each resource of the service provider, which is what the system operator is the owner of the accounting
- * point, the impacted system operator and the procuring system operator of. The triggers record an event for each. The
- * comments are written by [author], one that only the party of the author sees and one that the involved parties see.
- * The unit is looked up too, which is recorded as an event that is not about a resource.
+ * Seeds one of each resource of the service provider. The system operator is the CSO, the ISO and the PSO of all of
+ * them, and the triggers record an event for each. The comments are written by [author]: one that only the party of
+ * the author sees and one that the involved parties see. The unit is looked up too, which is recorded as an event that
+ * is not about a resource.
  *
  * The order is that of the dependencies between the resources:
  *
@@ -212,7 +212,7 @@ class EventApiTest :
                 after.has("create", "technical_resource", technicalResource) shouldBe true
             }
 
-            test("sees the creation of its resources, but not the comments for the system operator only, nor the lookups") {
+            test("sees the creation of its resources, but not the comments that only the FISO sees, nor the lookups") {
                 val fiso = seed { insertActor(TestPartyRole.FISO) }
                 val serviceProvider = seed { insertActor(TestPartyRole.SP) }
                 val otherServiceProvider = seed { insertActor(TestPartyRole.SP, "Other SP") }
@@ -310,6 +310,13 @@ class EventApiTest :
 
             resourcesOfWorld.filter { resource -> events.none { it.type == "no.elhub.flex.$resource.create" } } shouldBe emptyList()
             events.any { it.id == world.lookup } shouldBe false
+        }
+
+        // The organisation has no grant on the events.
+        test("an organisation cannot list the events") {
+            val org = seed { insertActor(TestPartyRole.ORG) }
+
+            api.get(PATH, org.token()).status shouldBe HttpStatusCode.Forbidden
         }
 
         test("an anonymous caller cannot list the events") {

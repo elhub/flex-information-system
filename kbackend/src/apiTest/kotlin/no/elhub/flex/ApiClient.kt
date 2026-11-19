@@ -1,7 +1,7 @@
 package no.elhub.flex
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.apache5.Apache5
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.header
@@ -77,13 +77,10 @@ class ApiResponse(val status: HttpStatusCode, val text: String, val headers: Hea
 /**
  * Calls the data API of the application under test. A null token means that the call is anonymous.
  * A redirect is not followed, so that a test can look at the response that redirects.
- *
- * The CIO engine is used because the Apache engine refuses a response that has the Content-Length header twice, which
- * is how the server answers a request that it has relayed from PostgREST.
  */
 class ApiClient(private val baseUrl: String) : AutoCloseable {
 
-    private val client = HttpClient(CIO) { followRedirects = false }
+    private val client = HttpClient(Apache5) { followRedirects = false }
 
     override fun close() = client.close()
 

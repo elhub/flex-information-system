@@ -172,7 +172,7 @@ class ControllableUnitLookupApiTest :
                     val fiso = seed { insertActor(TestPartyRole.FISO) }
                     val endUser = seed { insertPersonEndUser(BIRTH_DATE) }
                     val controllableUnitBusinessId = UUID.randomUUID().toString()
-                    // the status of a new controllable unit must be new, which Triggers.OFF skips the check of
+                    // a unit can only be inserted as new; Triggers.OFF lets it start as terminated
                     seed(Triggers.OFF) {
                         val accountingPoint = insertAccountingPoint().also { insertAccountingPointEndUser(it, endUser) }
                         insertControllableUnit(accountingPoint, status = "terminated", businessId = controllableUnitBusinessId)
@@ -198,7 +198,7 @@ class ControllableUnitLookupApiTest :
                         insertAccountingPoint(accountingPointBusinessId).also { insertAccountingPointEndUser(it, endUser) }
                     }
                     val controllableUnits = seed { List(2) { insertControllableUnit(accountingPoint, "CU $it") } }
-                    // the status of a new controllable unit must be new, which Triggers.OFF skips the check of
+                    // a unit can only be inserted as new; Triggers.OFF lets it start as terminated
                     seed(Triggers.OFF) { insertControllableUnit(accountingPoint, "Terminated CU", status = "terminated") }
 
                     val response = api.post(
@@ -276,6 +276,7 @@ class ControllableUnitLookupApiTest :
                 }
 
                 api.post(PATH, fiso.token(), ControllableUnitLookupRequest(BIRTH_DATE, controllableUnit = controllableUnitBusinessId))
+                    .status shouldBe HttpStatusCode.OK
 
                 val lookups = api.get("/event", fiso.token(), "type" to "eq.no.elhub.flex.controllable_unit.lookup").body<List<EventResponse>>()
                 lookups.map { it.source to it.subject } shouldBe listOf("/accounting_point/$accountingPoint" to "/controllable_unit/$controllableUnit")
@@ -290,6 +291,7 @@ class ControllableUnitLookupApiTest :
                 }
 
                 api.post(PATH, fiso.token(), ControllableUnitLookupRequest(BIRTH_DATE, accountingPoint = accountingPointBusinessId))
+                    .status shouldBe HttpStatusCode.OK
 
                 val lookups = api.get("/event", fiso.token(), "type" to "eq.no.elhub.flex.controllable_unit.lookup").body<List<EventResponse>>()
                 lookups.map { it.source to it.subject } shouldBe listOf("/accounting_point/$accountingPoint" to null)
@@ -335,7 +337,7 @@ class ControllableUnitLookupApiTest :
 
         // Only the FISO and the service provider can look up controllable units. The accounting point is the end user's, so that
         // only the role can make the lookup fail.
-        for (role in TestPartyRole.rolesWithDataGrants - setOf(TestPartyRole.FISO, TestPartyRole.SP)) {
+        for (role in TestPartyRole.common - setOf(TestPartyRole.FISO, TestPartyRole.SP)) {
             test("${role.type} cannot look up a controllable unit") {
                 val actor = seed { insertActor(role) }
                 val accountingPointBusinessId = seed { insertAccountingPointOfPersonEndUser() }
