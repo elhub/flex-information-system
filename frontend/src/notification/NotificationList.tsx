@@ -15,6 +15,7 @@ import {
   Button,
   Dropdown,
   FilterPanel,
+  FormItem,
   Heading,
   Link,
   Loader,
@@ -283,21 +284,21 @@ export const NotificationList = () => {
               </FilterPanel.Chip>
             ))}
           </FilterPanel>
-          <Switch
-            id="notification-acknowledged"
-            size="small"
-            position="right"
-            className="ml-auto"
-            checked={list.filters.acknowledged !== "false"}
-            onChange={(e) =>
-              list.setFilter(
-                "acknowledged",
-                e.target.checked ? undefined : "false",
-              )
-            }
-          >
-            {translate("text.notification.show_acknowledged")}
-          </Switch>
+          <FormItem id="notification-acknowledged" className="ml-auto">
+            <Switch
+              size="small"
+              position="right"
+              checked={list.filters.acknowledged !== "false"}
+              onChange={(e) =>
+                list.setFilter(
+                  "acknowledged",
+                  e.target.checked ? undefined : "false",
+                )
+              }
+            >
+              {translate("text.notification.show_acknowledged")}
+            </Switch>
+          </FormItem>
         </div>
         <NotificationItems
           list={list}

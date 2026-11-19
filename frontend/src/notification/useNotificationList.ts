@@ -12,8 +12,6 @@ import type {
   ListSort,
 } from "../components/list/types";
 
-// Filter on a category of event types. The notification query cannot filter on
-// event.type without embedding the event, so it is applied on the frontend.
 export const EVENT_CATEGORY_FILTER_SOURCE = "event_category@in";
 
 export const eventTypeIdsForCategories = (categories: string[]) =>
