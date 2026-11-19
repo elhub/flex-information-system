@@ -33,8 +33,6 @@ import java.util.UUID
 /**
  * `GET /auth/v1/userinfo` through the whole chain: a signed token is verified, the identity is read
  * from a real database as the role of the token, and the response is serialized.
- *
- * Port of the userinfo tests of `test/auth_tests/test_userinfo.py`, which run against the deployed stack.
  */
 class UserInfoTest : FunSpec({
 

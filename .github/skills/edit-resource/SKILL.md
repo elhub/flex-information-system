@@ -100,32 +100,38 @@ the `models.sql` file).
 If the user mentions notifications, this should be part of the workflow.
 Otherwise, this can be done as a separate task.
 
-A Kotlin backend is being developed in parallel, but it has not yet taken over, so it should not be
-modified as part of this workflow.
+A Kotlin backend (`kbackend`) is being developed in parallel. It serves the auth API, and the data
+and grid APIs when proxying is enabled (`FLEX_KBACKEND_PROXY_DATA` and `FLEX_KBACKEND_PROXY_GRID`,
+on in `local/backend/dev.env` and off in `test.env`). The Go backend remains the default and still
+runs the event worker. The Kotlin backend should not be modified as part of this workflow, except
+for its API tests (see below).
 
 ### Tests
 
-Tests to be edited are the Python API tests in `test/api_client_tests`.
-They use the auto-generated Python API client from `test/flex`, auto-generated from the OpenAPI
-specification, which allows for easy and up-to-date API tests.
+Tests to be edited are the Kotlin API tests in `kbackend/src/apiTest`, which run the data API
+in-process on top of real Postgres and PostgREST containers. See `kbackend/README.md` (section
+"API tests") for how they work and how to write them.
 
 API tests should be added or modified for any change that impacts the API contract, such as field
 changes, validation rules, or permissions.
 
-`just test --api` should always pass after editing or creating a resource.
+`./gradlew apiTest` (from `kbackend`) should always pass after editing or creating a resource.
 
-There is usually one file per resource to test.
-A setup fixture is used to create any necessary data that might be needed in all the tests in the
-file, such as creating dependent resources, etc.
+There is one `<Resource>ApiTest` class per resource to test.
+Each test seeds the data it needs with `seed { ... }`, using the shared helpers in
+`kbackend/src/test/kotlin/no/elhub/flex/testutil/TestData.kt` where possible.
 
 Tests should cover the happy path for all allowed operations (e.g., create, read, update, delete),
 but also some error cases based on the validation rules and RLS policies defined on the resource
 (for instance, a resource depending on some qualification or status to be at the right place in
 order to be created or edited, or the user having a specific role).
+Add `// RLS: <POLICY_KEY>` comments in the tests for the RLS policies they cover, and check the
+coverage with `just coverage`.
 
 There should be some test data for each resource in the database (`db/test_data/test_data.sql`).
-It should be modified when needed, so that the tests have the necessary data to run, if it is data
-that cannot be created in a fixture.
+It populates the local and test environments, and should be modified when needed so that the
+frontend and manual testing have data for the resource. The API tests do not use it, as they seed
+their own data.
 
 ### Frontend
 

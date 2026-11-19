@@ -145,8 +145,8 @@ running. They seed their own data (see `testutil/TestData.kt`).
 ### API tests
 
 The API tests run the data API in-process on top of real Postgres and
-[PostgREST](https://postgrest.org/) containers. They replace the Python tests
-in `test/api_client_tests`, one resource at a time, with the same scenarios.
+[PostgREST](https://postgrest.org/) containers. There is one test class per API
+resource, covering its endpoints and RLS policies.
 
 ```bash
 ./gradlew apiTest
@@ -189,4 +189,5 @@ separate "API tests" step of the kbackend build.
   `CASCADE` also clears the tables that reference them. Seed inside the test or
   in `beforeEach`
 - Use `// RLS: <ID>` comments so the tests can be matched against the RLS
-policies they cover.
+policies they cover. `just coverage` (from the repository root) lists the
+policies that are covered.
