@@ -2,7 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetIdentity } from "ra-core";
 import type { ListFilters } from "../components/list/types";
 import {
+  categoriesFromFilters,
   EVENT_CATEGORY_FILTER_SOURCE,
+  eventTypeIdsForCategories,
+  hasEventOfTypes,
   NotificationQueryParams,
   Query,
   toQueryFilters,
@@ -11,24 +14,26 @@ import { listNotification } from "../generated-client";
 import { buildListQuery } from "../components/list/postgrest";
 import { throwOnError } from "../util";
 
-// Cheap existence check: no count, no party embed and a single row, so that
-// the database can stop at the first match.
-export const fetchHasNotification = ({
+const fetchHasNotification = async ({
   filters,
-}: Pick<NotificationQueryParams, "filters">) =>
-  listNotification({
+}: Pick<NotificationQueryParams, "filters">) => {
+  const notifications = await listNotification({
     query: {
       ...buildListQuery({
         filters: toQueryFilters(filters),
         sort: { field: "id", order: "desc" },
         page: 1,
-        perPage: 1,
+        perPage: 3000,
       }),
-      embed: "event!",
+      select: "event_id",
     } as Query,
-  })
-    .then(throwOnError)
-    .then((data) => data.length > 0);
+  }).then(throwOnError);
+
+  if (notifications.length === 0) return false;
+  const categories = categoriesFromFilters(filters);
+  const ids = notifications.map((n) => n.event_id);
+  return hasEventOfTypes(ids, eventTypeIdsForCategories(categories));
+};
 
 export const useUnacknowledgedComments = ({
   enabled = true,
@@ -48,6 +53,7 @@ export const useUnacknowledgedComments = ({
   const { data } = useQuery({
     queryKey: ["notification", "unacknowledged-comments", filters],
     queryFn: () => fetchHasNotification({ filters }),
+    staleTime: 60_000,
     enabled: enabled && !isIdentityPending && !!identity?.partyID,
   });
 
