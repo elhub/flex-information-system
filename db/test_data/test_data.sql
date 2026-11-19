@@ -657,22 +657,7 @@ BEGIN
   INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
   (entity_id_person, entity_first_name || ' Person Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
-  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
-  (entity_id_person, entity_first_name || ' Scopes Client', '{use:data, manage:auth}'::text[]),
-  (entity_id_person, entity_first_name || ' Party Membership Only Client', '{manage:data:party_membership, manage:auth}'::text[]),
-  (entity_id_person, entity_first_name || ' Grid Client', '{read:grid, manage:auth}'::text[]),
-  (entity_id_person, entity_first_name || ' Data Only Client', '{read:data, manage:auth}'::text[]);
-
-  -- a human identity for the person entity (what an OIDC login creates), so
-  -- tests can act as a human; the eid is derived from the entity name, see
-  -- SecurityTokenService.get_human_client
-  INSERT INTO flex.identity (entity_id, eid)
-  VALUES (
-    entity_id_person,
-    public.uuid_generate_v5(
-      public.uuid_ns_url(), 'flex-test-human:' || entity_first_name
-    )
-  );
+  (entity_id_org, entity_first_name || ' Organisation Client', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
 
   -- end user parties
 

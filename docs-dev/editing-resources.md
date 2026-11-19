@@ -174,15 +174,16 @@ Once the resource and its permissions are edited, one can run the various
 generation mechanisms through the associated `just` recipes (see the `justfile`
 to find them). Then, in this updated state, the project should be testable.
 
-Resource-related tests are made using the generated API client, by adding a new
-file to the `test/api_client_tests` directory. All the endpoints can be called
-through the generated API client, and authentication is done automatically with
-a security token service object created in the setup function at the top of each
-test file.
+Resource-related tests are the API tests in the Kotlin backend, with one
+`<Resource>ApiTest` class per resource in `kbackend/src/apiTest`. Each test seeds
+the data it needs and calls the API as the relevant party. Add `// RLS: <ID>`
+comments for the RLS policies covered by the tests, and run `just coverage` to
+check which policies are still untested.
 
 If you are adding a new resource, do not forget to add data related to this
-resource in the test data package (`db/test_data`) and add the endpoint prefix
-to the Schemathesis test file (`test/other_tests/test_schemathesis.py`).
+resource in the test data package (`db/test_data`). The API tests do not use it,
+as they seed their own data; it is what populates the local and test
+environments.
 
 ## Updating the UI
 

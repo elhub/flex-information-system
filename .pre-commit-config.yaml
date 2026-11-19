@@ -44,9 +44,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: "(test/flex/.*)|(docs/.*)"
+        exclude: "docs/.*"
       - id: end-of-file-fixer
-        exclude: "(test/flex/.*)|(local/scripts/templates/.*)"
+        exclude: "local/scripts/templates/.*"
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-added-large-files
@@ -120,7 +120,7 @@ repos:
     hooks:
       - id: markdownlint-cli2
         language_version: lts
-        exclude: ^(docs/resources/.*)|(docs/tables/.*)|(test/flex/.*)|(\.github/.*)$
+        exclude: ^(docs/resources/.*)|(docs/tables/.*)|(\.github/.*)$
   #
   ## SQL
   #
@@ -289,17 +289,12 @@ repos:
     rev: "v0.15.20"
     hooks:
       - id: ruff-format
-        exclude: "test/flex/.*"
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-        # test/flex is excluded because it is a generated directory
-        exclude: "test/flex/.*"
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.411
     hooks:
       - id: pyright
-        # test/flex is excluded because it is a generated directory
-        exclude: "test/flex/.*"
 
   #
   ## TOML
@@ -308,12 +303,10 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-        exclude: "test/flex/.*"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-toml
-        exclude: "test/flex/.*"
 
   #
   ## OpenAPI

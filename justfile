@@ -77,10 +77,6 @@ load: liquibase
         "Test SO Client|0191f286-2405-4c79-896c-cef7a6e42456|test"
         "Test SP Client|85f46ccc-1b07-4591-b830-d2cf4e206e5d|test"
         "Test Organisation Client|eed86ad4-9d5c-4d83-a93a-e7675e13a977|test"
-        "Test Scopes Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a01|test"
-        "Test Party Membership Only Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a02|test"
-        "Test Grid Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a03|test"
-        "Test Data Only Client|5a1c6d5e-2f0b-4b0e-9a55-0d3f1c8f7a04|test"
     )
 
     for client in "${CLIENTS[@]}";
@@ -207,33 +203,6 @@ venv:
 _keypair:
     ./local/scripts/generate_keypair.sh ./test/keys/ test
     ./local/scripts/generate_keypair.sh ./test/keys/ common
-
-test-local *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    uv run --env-file .env test/test.py {{args}}
-
-test-dev *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://dev.flex.internal:5443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    uv run test/test.py {{args}}
-
-test *args:
-    @just test-local {{args}}
-
-# directly use pytest
-# e.g. just pytest test/api_client_tests/test_cu.py
-pytest *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-
-    uv run pytest -v test/security_token_service.py {{args}}
 
 # Test migrations resetting the database to a given revision, and running the migrations on the current branch
 test-migrations revision="main":
@@ -393,7 +362,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations openapi-to-kbackend-routes sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations openapi-to-kbackend-routes sqlc openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
@@ -621,38 +590,6 @@ openapi-client-adapter:
     mv ./out/openapi-client-adapter/flex/types.py local/adapter/client/types.py
 
     uv run ruff format local/adapter/client
-
-openapi-client-test:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    mkdir -p ./out
-    rm -rf test/flex ./out/openapi-client
-
-    # We are removing default values from the OpenAPI spec since openapi-python-client
-    # assumes that the client should use the default value if it is not provided.
-    # Our interpretation of the default value is that it is a value that the
-    # _server_ uses if the client does not provide a value.
-    # We also remove the ApiVersion header parameter: it is injected centrally by
-    # SecurityTokenService on every client, so it must not appear as a required
-    # argument on every generated function.
-
-    jq '( .components.schemas // empty, .paths[].get.parameters // empty )
-            |= walk(if type == "object" then del(.default) else . end)
-        | del(.components.parameters.ApiVersion)
-        | .paths[][]
-          |= if type == "object" and has("parameters")
-             then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
-             else .
-             end' \
-        --indent 4 \
-        < kbackend/data/static/openapi.json \
-        > openapi/openapi-api-no-default.json
-
-    uv run openapi-python-client generate \
-        --path ./openapi/openapi-api-no-default.json \
-        --output-path ./out/openapi-client \
-        --config ./openapi/openapi-client-config.yml
-    mv ./out/openapi-client/flex test/flex
 
 openapi-client-frontend:
     #!/usr/bin/env bash

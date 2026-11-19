@@ -1,3 +1,0 @@
-[checks]
-not_a_server_error.enabled = false
-unsupported_method.enabled = false
