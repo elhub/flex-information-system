@@ -111,6 +111,14 @@ CREATE TABLE api.service_providing_group_power_per_substation (
     service_providing_group_id bigint NOT NULL,
     substations jsonb [] NOT NULL
 );
+CREATE TABLE api.service_providing_group_grid_prequalification_substation_power (
+    service_providing_group_grid_prequalification_id bigint NOT NULL,
+    substation_business_id jsonb NOT NULL,
+    substation_name jsonb NOT NULL,
+    controllable_unit_count jsonb NOT NULL,
+    maximum_active_power jsonb NOT NULL,
+    total_approved_maximum_active_power jsonb NOT NULL
+);
 CREATE TABLE api.service_providing_group_summary (
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,

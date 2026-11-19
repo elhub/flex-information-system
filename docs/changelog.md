@@ -3,6 +3,13 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 2026-12-14
+
+* **Added the _Service Providing Group Grid Prequalification Substation Power_ resource.**
+  The `GET /service_providing_group_grid_prequalification_substation_power` list endpoint gives the
+  flexible power per substation of a grid prequalification, with the total approved power of the
+  substation for the impacted system operator. It requires the `read:data:service_providing_group_grid_prequalification_substation_power` scope.
+
 ## 2026-10-13
 
 * **Removed the `client_credentials` grant type from the `/token` endpoint of the auth API.**

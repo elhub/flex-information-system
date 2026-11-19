@@ -105,6 +105,9 @@ class AuthScope(StrEnum):
     READDATASERVICE_PROVIDING_GROUP_GRID_PREQUALIFICATION_HISTORY = (
         "read:data:service_providing_group_grid_prequalification_history"
     )
+    READDATASERVICE_PROVIDING_GROUP_GRID_PREQUALIFICATION_SUBSTATION_POWER = (
+        "read:data:service_providing_group_grid_prequalification_substation_power"
+    )
     READDATASERVICE_PROVIDING_GROUP_GRID_SUSPENSION = "read:data:service_providing_group_grid_suspension"
     READDATASERVICE_PROVIDING_GROUP_GRID_SUSPENSION_COMMENT = (
         "read:data:service_providing_group_grid_suspension_comment"
