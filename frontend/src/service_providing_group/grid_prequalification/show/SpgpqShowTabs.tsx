@@ -1,8 +1,10 @@
 import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
+import { useQuery } from "@tanstack/react-query";
 import { Tabs } from "../../../components/ui";
 import { SpgInfoTab } from "../../shared/SpgInfoTab";
 import { SpgpqCommentFeed } from "./SpgpqCommentFeed";
 import {
+  listServiceProvidingGroupProductApplication,
   ServiceProvidingGroup,
   ServiceProvidingGroupGridPrequalification,
 } from "../../../generated-client";
@@ -11,6 +13,7 @@ import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../Service
 import { Permissions } from "../../../auth/permissions";
 import { SpgpqChangesTab } from "./SpgpqChangesTab";
 import { SpgpqPowerPerSubstationTab } from "./SpgpqPowerPerSubstationTab";
+import { throwOnError } from "../../../util";
 import type { Scale } from "../../../utils/scales";
 
 type Props = {
@@ -40,11 +43,29 @@ export const SpgpqShowTabs = ({
   const isSpgServiceProvider = spg?.service_provider_id === identity?.partyID;
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
+  const isSystemOperator = identity?.role === "flex_system_operator";
+  // a PSO of the SPG sees the power per substation of all its grid
+  // prequalifications
+  const { data: pso } = useQuery({
+    queryKey: ["spgpq-pso", spgId, identity?.partyID],
+    enabled: isSystemOperator && identity?.partyID !== undefined,
+    queryFn: () =>
+      listServiceProvidingGroupProductApplication({
+        query: {
+          service_providing_group_id: `eq.${spgId}`,
+          procuring_system_operator_id: `eq.${identity?.partyID}`,
+          limit: "1",
+        },
+      })
+        .then(throwOnError)
+        .then((r) => r.length > 0),
+  });
+  const isPso = !!pso;
   const canViewComments =
     isImpactedSystemOperator || isSpgServiceProvider || isFiso;
 
   const showPowerPerSubstation =
-    (isImpactedSystemOperator || isFiso) &&
+    (isImpactedSystemOperator || isPso || isFiso) &&
     !!permissions?.allow(
       "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
       "read",

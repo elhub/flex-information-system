@@ -19,34 +19,37 @@ WITH (security_invoker = true) AS (
             cu.id AS cu_id,
             cu.maximum_active_power AS power,
             apgl.business_id,
-            apgl.name
+            apgl.name,
+            ap_so.accounting_point_id IS NOT NULL AS is_cso
         FROM flex.service_providing_group_grid_prequalification AS gp
             INNER JOIN flex.service_providing_group_membership AS spgm
                 ON gp.service_providing_group_id = spgm.service_providing_group_id
                     AND spgm.valid_time_range @> current_timestamp
             INNER JOIN flex.controllable_unit AS cu
                 ON spgm.controllable_unit_id = cu.id
-            INNER JOIN flex.accounting_point_system_operator AS ap_so
+            LEFT JOIN flex.accounting_point_system_operator AS ap_so
                 ON cu.accounting_point_id = ap_so.accounting_point_id
                     AND ap_so.system_operator_id = gp.impacted_system_operator_id
                     AND ap_so.valid_time_range @> current_timestamp
             INNER JOIN flex.accounting_point_grid_location AS apgl
                 ON cu.accounting_point_id = apgl.accounting_point_id
+        -- the impacted SO sees the CUs it is CSO of; a PSO of the SPG sees
+        -- all CUs of the group
+        WHERE ap_so.accounting_point_id IS NOT NULL
+            OR flex.current_party_is_pso_in_spg(gp.service_providing_group_id)
     ),
 
     total_approved AS (
-        -- per SO and substation, over all approved SPGGPs. A CU in several
+        -- per substation, over all approved SPGGPs. A CU in several
         -- approved SPGs is counted once. Only CUs that were members of the SPG
         -- (known and valid) at prequalified_at count, so CUs added after the
         -- approval are left out until the changes are approved
         -- (prequalified_at moves).
         SELECT
-            so_id,
             business_id,
             SUM(power) AS power
         FROM (
             SELECT DISTINCT
-                m.so_id,
                 m.business_id,
                 m.cu_id,
                 m.power
@@ -54,10 +57,11 @@ WITH (security_invoker = true) AS (
                 CROSS JOIN LATERAL flex.spg_cu_snapshot(
                     m.spg_id, m.so_id, m.prequalified_at
                 ) AS snap
-            WHERE m.status IN ('approved', 'conditionally_approved')
+            WHERE m.is_cso
+                AND m.status IN ('approved', 'conditionally_approved')
                 AND snap.controllable_unit_id = m.cu_id
         ) AS approved_cu
-        GROUP BY so_id, business_id
+        GROUP BY business_id
     )
 
     SELECT
@@ -70,8 +74,7 @@ WITH (security_invoker = true) AS (
         COALESCE(MAX(total.power), 0) AS total_approved_maximum_active_power
     FROM member AS own
         LEFT JOIN total_approved AS total
-            ON own.so_id = total.so_id
-                AND own.business_id = total.business_id
+            ON own.business_id = total.business_id
     GROUP BY own.gp_id, own.so_id, own.business_id
 );
 

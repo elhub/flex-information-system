@@ -31,5 +31,16 @@ WITH (security_invoker = true) AS (
             AS approved_power
     WHERE
         current_role = 'flex_system_operator'
-        AND approved_power.impacted_system_operator_id = (SELECT flex.current_party())
+        AND (
+            approved_power.impacted_system_operator_id = (SELECT flex.current_party())
+            -- RLS: SPGGPPPS-SO002 (PSO of the SPG)
+            OR EXISTS (
+                SELECT 1
+                FROM flex.service_providing_group_grid_prequalification AS gp
+                WHERE
+                    gp.id
+                    = approved_power.service_providing_group_grid_prequalification_id
+                    AND flex.current_party_is_pso_in_spg(gp.service_providing_group_id)
+            )
+        )
 );

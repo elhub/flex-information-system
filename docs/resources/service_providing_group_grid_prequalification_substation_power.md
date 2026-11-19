@@ -98,6 +98,7 @@ No policies.
 | Policy key   | Policy                                                                                                          | Status |
 |--------------|-----------------------------------------------------------------------------------------------------------------|--------|
 | SPGGPPPS-SO001 | Read power per substation for SPG grid prequalifications where they are the impacted system operator. | DONE   |
+| SPGGPPPS-SO002 | Read power per substation, for all CUs of the group, on all SPG grid prequalifications of SPGs where they are the procuring system operator. The total only covers CUs they can read. | DONE   |
 
 #### Service Provider
 
