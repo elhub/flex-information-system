@@ -53,5 +53,12 @@ class MailTemplate(
                 body = resource("notice-mail.html"),
             )
         }
+
+        val SPGPA_REJECTED: MailTemplate by lazy {
+            MailTemplate(
+                subject = "Produktsøknad avslått i {{systemName}}",
+                body = resource("spgpa-rejected-mail.html"),
+            )
+        }
     }
 }

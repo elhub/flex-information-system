@@ -62,6 +62,27 @@ creating and filling a templated email file. Once done, the `MailClient`
 handles delivery of the email. As of now, sending emails is "fire and forget".
 We also do not maintain any state of previously sent emails.
 
+## Mail on rejected SPG product applications
+
+The job `send-spgpa-rejected-mail` mails the members of a service provider
+when the procuring SO rejects one of the SP's SPG product applications. It is
+event-like, not notice-based, and runs hourly by cronjob (`0 * * * *`, UTC).
+
+Each run handles the previous full hour, `[now-1h, now)` where `now` is the current
+hour. The job picks SPG product applications whose status changed to
+`rejected` in the window (the previous version in the history had another
+status), recorded by an identity of the procuring SO of the application.
+
+Recipients are the email-entities in the SP party of the SPG (active parties
+only), one mail per entity per run. The template and content are generic, as
+above. It uses the same mail configuration and database user
+(`NOTICE_MAIL_DB_*`) as `send-notice-mail`.
+
+There is no state: a missed run loses the mails for that hour, and an
+overlapping or repeated run for the same hour sends duplicates. This is
+accepted. The long-term direction is to drive such mails from `flex.event`
+through a stream rather than from the history table.
+
 ## What do we NOT do here?
 
 We always "fire and forget" emails. Errors on the FIS side are logged. We never

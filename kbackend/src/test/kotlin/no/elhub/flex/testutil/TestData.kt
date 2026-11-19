@@ -700,6 +700,14 @@ class SeedScope(private val conn: Connection) {
             key,
         )
 
+    /** Executes an arbitrary update statement with positional parameters. */
+    fun execute(sql: String, vararg params: Any?) {
+        conn.prepareStatement(sql).use { stmt ->
+            params.forEachIndexed { i, p -> stmt.setObject(i + 1, p) }
+            stmt.executeUpdate()
+        }
+    }
+
     private fun queryLong(sql: String, vararg params: Any?): Long =
         conn.prepareStatement(sql).use { stmt ->
             params.forEachIndexed { i, p -> stmt.setObject(i + 1, p) }

@@ -87,6 +87,10 @@ The system also checks this regularly, so any missing grid prequalifications are
 |----------------|-------------------------|---------|
 | create, update | Procuring SO, SP of SPG |         |
 
+In addition, when the procuring SO rejects an application, the members of the SP
+of the SPG with a registered email address receive a generic email, sent by an
+hourly job. See [mail](../../docs-dev/mail.md).
+
 ## Authorization
 
 ### Resource Level Authorization
