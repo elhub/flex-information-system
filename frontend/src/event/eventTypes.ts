@@ -136,14 +136,20 @@ const eventTypes: EventType[] = [
   {
     id: "no.elhub.flex.controllable_unit_service_provider.create",
     label: "event_type.controllable_unit_service_provider.create",
+    navigateTo: "source",
+    tab: "service_provider",
   },
   {
     id: "no.elhub.flex.controllable_unit_service_provider.update",
     label: "event_type.controllable_unit_service_provider.update",
+    navigateTo: "source",
+    tab: "service_provider",
   },
   {
     id: "no.elhub.flex.controllable_unit_service_provider.delete",
     label: "event_type.controllable_unit_service_provider.delete",
+    navigateTo: "source",
+    tab: "service_provider",
   },
   {
     id: "no.elhub.flex.controllable_unit_suspension.create",
@@ -176,10 +182,12 @@ const eventTypes: EventType[] = [
   {
     id: "no.elhub.flex.party_membership.create",
     label: "event_type.party_membership.create",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.party_membership.delete",
     label: "event_type.party_membership.delete",
+    navigateTo: "source",
   },
   {
     id: "no.elhub.flex.service_provider_product_application.create",
@@ -253,11 +261,15 @@ const eventTypes: EventType[] = [
     id: "no.elhub.flex.service_providing_group_product_application_attachment.create",
     label:
       "event_type.service_providing_group_product_application_attachment.create",
+    navigateTo: "source",
+    tab: "attachments",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_application_attachment.delete",
     label:
       "event_type.service_providing_group_product_application_attachment.delete",
+    navigateTo: "source",
+    tab: "attachments",
   },
   {
     id: "no.elhub.flex.service_providing_group_product_suspension.create",
@@ -282,14 +294,20 @@ const eventTypes: EventType[] = [
   {
     id: "no.elhub.flex.technical_resource.create",
     label: "event_type.technical_resource.create",
+    navigateTo: "source",
+    tab: "technical_resources",
   },
   {
     id: "no.elhub.flex.technical_resource.update",
     label: "event_type.technical_resource.update",
+    navigateTo: "source",
+    tab: "technical_resources",
   },
   {
     id: "no.elhub.flex.technical_resource.delete",
     label: "event_type.technical_resource.delete",
+    navigateTo: "source",
+    tab: "technical_resources",
   },
 ];
 

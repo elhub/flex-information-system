@@ -353,6 +353,7 @@ export type TextKey =
   | "header_nav_parties"
   | "header_nav_events"
   | "header_nav_notifications"
+  | "header_nav_notifications_unacknowledged"
   | "header_nav_notices"
   | "header_nav_need_help"
   | "header_nav_user_guide"
@@ -875,6 +876,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_parties: "Parties",
     header_nav_events: "Events",
     header_nav_notifications: "Notifications",
+    header_nav_notifications_unacknowledged:
+      "Notifications (unacknowledged comments)",
     header_nav_notices: "Notices",
     header_nav_need_help: "Need help?",
     header_nav_user_guide: "User guide",
@@ -1418,6 +1421,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_parties: "Parter",
     header_nav_events: "Hendelser",
     header_nav_notifications: "Varsler",
+    header_nav_notifications_unacknowledged: "Varsler (ukvitterte kommentarer)",
     header_nav_notices: "Merknader",
     header_nav_need_help: "Trenger du hjelp?",
     header_nav_user_guide: "Brukerveiledning",

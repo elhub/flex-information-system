@@ -12,9 +12,15 @@ export const Header = () => {
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const canReadNotification = !!permissions?.allow("notification", "read");
-  const { count: unacknowledgedCount } = useUnacknowledgedComments({
+  const { hasUnacknowledged } = useUnacknowledgedComments({
     enabled: canReadNotification,
   });
+
+  const bellLabel = translate(
+    hasUnacknowledged
+      ? "text.header_nav_notifications_unacknowledged"
+      : "text.header_nav_notifications",
+  );
 
   return (
     <DSHeader className="w-full p-0 print:hidden">
@@ -35,15 +41,16 @@ export const Header = () => {
           {canReadNotification && (
             <NavLink
               to="/notification"
-              aria-label={translate("text.header_nav_notifications")}
-              title={translate("text.header_nav_notifications")}
+              aria-label={bellLabel}
+              title={bellLabel}
               className="flex h-10 w-10 items-center justify-center rounded text-semantic-background hover:bg-white/10"
             >
               <span className="relative flex">
                 <IconAlarmBell />
-                {unacknowledgedCount > 0 && (
+                {hasUnacknowledged && (
                   <span
                     data-testid="notification-bell-dot"
+                    aria-hidden="true"
                     className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border border-semantic-background-action-primary bg-semantic-background-error-alternative"
                   />
                 )}

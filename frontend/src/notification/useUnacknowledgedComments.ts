@@ -3,9 +3,32 @@ import { useGetIdentity } from "ra-core";
 import type { ListFilters } from "../components/list/types";
 import {
   EVENT_CATEGORY_FILTER_SOURCE,
-  fetchNotifications,
-  notificationQueryKey,
+  NotificationQueryParams,
+  Query,
+  toQueryFilters,
 } from "./useNotificationList";
+import { listNotification } from "../generated-client";
+import { buildListQuery } from "../components/list/postgrest";
+import { throwOnError } from "../util";
+
+// Cheap existence check: no count, no party embed and a single row, so that
+// the database can stop at the first match.
+export const fetchHasNotification = ({
+  filters,
+}: Pick<NotificationQueryParams, "filters">) =>
+  listNotification({
+    query: {
+      ...buildListQuery({
+        filters: toQueryFilters(filters),
+        sort: { field: "id", order: "desc" },
+        page: 1,
+        perPage: 1,
+      }),
+      embed: "event!",
+    } as Query,
+  })
+    .then(throwOnError)
+    .then((data) => data.length > 0);
 
 export const useUnacknowledgedComments = ({
   enabled = true,
@@ -22,18 +45,11 @@ export const useUnacknowledgedComments = ({
       : {}),
   };
 
-  // only the count is needed, so fetch a single row
-  const params = {
-    filters,
-    sort: { field: "id", order: "desc" as const },
-    page: 1,
-    perPage: 1,
-  };
   const { data } = useQuery({
-    queryKey: notificationQueryKey(params),
-    queryFn: () => fetchNotifications(params),
+    queryKey: ["notification", "unacknowledged-comments", filters],
+    queryFn: () => fetchHasNotification({ filters }),
     enabled: enabled && !isIdentityPending && !!identity?.partyID,
   });
 
-  return { count: data?.count ?? 0 };
+  return { hasUnacknowledged: data ?? false };
 };

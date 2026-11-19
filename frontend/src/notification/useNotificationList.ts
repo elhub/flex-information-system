@@ -29,9 +29,11 @@ export const toQueryFilters = (filters: ListFilters): ListFilters => {
   return { ...rest, [EVENT_TYPE_QUERY_SOURCE]: types.join(",") };
 };
 
-type Query = NonNullable<Parameters<typeof listNotification>[0]>["query"];
+export type Query = NonNullable<
+  Parameters<typeof listNotification>[0]
+>["query"];
 
-type NotificationQueryParams = {
+export type NotificationQueryParams = {
   filters: ListFilters;
   sort: ListSort;
   page: number;
