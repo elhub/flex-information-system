@@ -29,5 +29,11 @@ enum class TestPartyRole(val abbreviation: String, val type: String, val role: S
          * The FISO and the organisation have policies of their own.
          */
         val withoutRla: List<TestPartyRole> = rolesWithDataGrants - FISO
+
+        /**
+         * The roles that are related to a controllable unit through its accounting point (the balance responsible
+         * party, the end user and the energy supplier), or through a contract on it (the service provider).
+         */
+        val relatedToControllableUnit: List<TestPartyRole> = listOf(BRP, EU, ES, SP)
     }
 }
