@@ -213,6 +213,7 @@ class SeedScope(private val conn: Connection) {
         regulationDirection: ControllableUnitRegulationDirection = ControllableUnitRegulationDirection.BOTH,
         status: String = "new",
         maximumActivePower: Double = 1.0,
+        businessId: String = UUID.randomUUID().toString(),
     ): Long =
         queryLong(
             """
@@ -222,7 +223,7 @@ class SeedScope(private val conn: Connection) {
             VALUES (?::uuid, ?, ?::date, ?, ?, ?, ?)
             RETURNING id
             """.trimIndent(),
-            UUID.randomUUID().toString(),
+            businessId,
             name,
             startDate.toString(),
             regulationDirection.value,
@@ -261,6 +262,14 @@ class SeedScope(private val conn: Connection) {
             conn.createArrayOf("text", technology.toTypedArray()),
             maximumActivePower,
         )
+
+    /** Deletes the technical resource, which moves it to the history. Seed with [Triggers.ON], so that the audit trigger runs. */
+    fun deleteTechnicalResource(id: Long) {
+        conn.prepareStatement("DELETE FROM flex.technical_resource WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
 
     /**
      * Renames the technical resource, which archives the previous revision in the history. A revision is only archived
@@ -708,6 +717,33 @@ class SeedScope(private val conn: Connection) {
         clientId: Long? = null,
     ): SeededActor = SeededActor(entityId, null, "flex_entity", insertIdentity(entityId, null, clientId))
 
+    /** Attaches a file to the product application of a group, and returns the id of the attachment as the API shows it. */
+    fun insertServiceProvidingGroupProductApplicationAttachment(applicationId: Long, filename: String = "test.pdf"): Long {
+        val attachment = queryLong(
+            "INSERT INTO flex.attachment (filename, filename_sanitised, size_bytes) VALUES (?, ?, 1) RETURNING id",
+            filename,
+            filename,
+        )
+        return queryLong(
+            "INSERT INTO flex.service_providing_group_product_application_attachment " +
+                "(service_providing_group_product_application_id, attachment_id) VALUES (?, ?) RETURNING id",
+            applicationId,
+            attachment,
+        )
+    }
+
+    /** Records an event, as the lookup of a controllable unit does. The triggers of the resources record the others. */
+    fun insertEvent(type: String, sourceResource: String, sourceId: Long, subjectResource: String? = null, subjectId: Long? = null): Long =
+        queryLong(
+            "INSERT INTO flex.event (type, source_resource, source_id, subject_resource, subject_id) " +
+                "VALUES (public.text2ltree(?), ?, ?, ?, ?) RETURNING id",
+            type,
+            sourceResource,
+            sourceId,
+            subjectResource,
+            subjectId,
+        )
+
     /** Inserts a person entity with a unique email address as business id. */
     fun insertPersonEntity(name: String = "Test person"): Long =
         insertPerson("person-${UUID.randomUUID()}@example.com", name = name)
@@ -849,6 +885,14 @@ class SeedScope(private val conn: Connection) {
         conn.prepareStatement("UPDATE flex.service_providing_group SET name = ? WHERE id = ?").use { stmt ->
             stmt.setString(1, name)
             stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Makes the group active, which needs a member. Call it in a [seed] block of its own, after the membership is added. */
+    fun activateServiceProvidingGroup(id: Long) {
+        conn.prepareStatement("UPDATE flex.service_providing_group SET status = 'active' WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
             stmt.executeUpdate()
         }
     }
@@ -1246,6 +1290,16 @@ class SeedScope(private val conn: Connection) {
         conn.prepareStatement("UPDATE flex.service_provider_product_application SET status = ? WHERE id = ?").use { stmt ->
             stmt.setString(1, status.value)
             stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Qualifies the application, with the time of the qualification that the status needs. */
+    fun qualifyServiceProviderProductApplication(id: Long) {
+        conn.prepareStatement(
+            "UPDATE flex.service_provider_product_application SET status = 'qualified', qualified_at = current_timestamp WHERE id = ?",
+        ).use { stmt ->
+            stmt.setLong(1, id)
             stmt.executeUpdate()
         }
     }
