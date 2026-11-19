@@ -20,8 +20,8 @@ abstract class ApiSpec(body: ApiSpec.() -> Unit, syncAccountingPoints: Boolean =
             api = ApiClient("http://127.0.0.1:$port")
         }
         afterSpec {
-            api.close()
-            server.stop()
+            if (::api.isInitialized) api.close()
+            if (::server.isInitialized) server.stop()
         }
         body()
     }

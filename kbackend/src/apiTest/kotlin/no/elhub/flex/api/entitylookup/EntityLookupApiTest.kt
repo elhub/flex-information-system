@@ -97,7 +97,8 @@ class EntityLookupApiTest :
             api.post(PATH, org.token(), person("test@example.com")).status shouldBe HttpStatusCode.Created
         }
 
-        for (role in TestPartyRole.withoutRla) {
+        // Only the FISO and the organisation can look up an entity.
+        for (role in TestPartyRole.common - setOf(TestPartyRole.FISO, TestPartyRole.ORG)) {
             test("${role.type} cannot look up an entity") {
                 val actor = seed { insertActor(role) }
 
@@ -106,6 +107,15 @@ class EntityLookupApiTest :
                 response.status shouldBe HttpStatusCode.Unauthorized
                 response.body<ErrorMessage>().code shouldBe "HTTP401"
             }
+        }
+
+        test("an entity that has not assumed a party cannot look up an entity") {
+            val entity = seed { insertEntityActor() }
+
+            val response = api.post(PATH, entity.token(), person("test@example.com"))
+
+            response.status shouldBe HttpStatusCode.Unauthorized
+            response.body<ErrorMessage>().code shouldBe "HTTP401"
         }
 
         context("a token") {

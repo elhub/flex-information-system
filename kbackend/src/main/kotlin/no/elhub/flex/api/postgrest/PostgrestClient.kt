@@ -176,7 +176,8 @@ class PostgrestClient(config: PostgrestConfig) {
     }
 
     private suspend fun relay(call: ApplicationCall, response: HttpResponse) {
-        copyResponseHeaders(call, response)
+        // the length is sent once, by StreamedResponse
+        copyResponseHeaders(call, response, skip = HttpHeaders.ContentLength)
 
         if (response.status == HttpStatusCode.NoContent || response.status == HttpStatusCode.NotModified) {
             call.respond(response.status)
