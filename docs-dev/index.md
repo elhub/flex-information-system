@@ -72,9 +72,9 @@ To start the `dev` environment, run `just frontend` for the frontend and
 the kbackend container first. The dev environment is available at
 [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
 
-The Go backend container only runs the event worker, which creates
-notifications. Leave it running if you need notifications in the dev
-environment. It does not serve any API requests.
+Notifications are created by the `kbackend-event-worker` container, which
+`just start` runs alongside the other containers. The Go backend container
+does not serve any API requests and is not needed in the dev environment.
 
 ## Code generation
 

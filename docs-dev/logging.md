@@ -4,8 +4,8 @@ This document describes our logging strategy in different part of the system.
 
 ## Backend - Go
 
-This only applies to the Go event worker, which is the only part of the Go backend
-that is still running.
+This only applies to the Go backend, which no longer serves API requests or
+runs the event worker. It will be removed.
 
 We are using the [fairly recent](https://go.dev/blog/slog) package
 [slog](https://pkg.go.dev/log/slog) for logging. We are currently experimenting
