@@ -42,20 +42,21 @@ export const useUnacknowledgedComments = ({
 
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
-  const filters: ListFilters = {
-    acknowledged: "false",
-    [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
-    ...(identity?.partyID && !isFiso
-      ? { party_id: String(identity.partyID) }
-      : {}),
-  };
+  const partyID = identity?.partyID;
 
   const { data } = useQuery({
-    queryKey: ["notification", "unacknowledged-comments", filters],
-    queryFn: () => fetchHasNotification({ filters }),
+    queryKey: ["notification", "unacknowledged-comments", partyID],
+    queryFn: () => {
+      const filters: ListFilters = {
+        acknowledged: "false",
+        [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
+        party_id: String(partyID),
+      };
+      return fetchHasNotification({ filters });
+    },
     staleTime: 60_000,
-    enabled: enabled && !isIdentityPending && !!identity?.partyID,
+    enabled: enabled && !isIdentityPending && !!partyID && !isFiso,
   });
 
-  return { hasUnacknowledged: data ?? false };
+  return { hasUnacknowledged: !isFiso && (data ?? false) };
 };
