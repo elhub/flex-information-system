@@ -196,6 +196,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     }
 
                     gitOps {
+                        buildNameSuffix = "event-worker test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-event-worker"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
                         buildNameSuffix = "kbackend prod1"
                         clusters = setOf(KubeCluster.PROD1)
                         gitOpsRepository = gitOpsRepo
@@ -215,6 +230,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         clusters = setOf(KubeCluster.PROD1)
                         gitOpsRepository = gitOpsRepo
                         projectName = "flex-scheduled-jobs-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "event-worker prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-event-worker"
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = false
