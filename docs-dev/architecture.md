@@ -41,7 +41,7 @@ While we are not suggesting going all in on Supabase, we are looking at
 the open-source building blocks that Supabase is making use of, e.g., for REST
 API, authn/z, etc.
 
-### Backend - PostgREST + Go -> Kotlin
+### Backend - PostgREST + Kotlin
 
 The Flexibility Information System will be API first. Regulations from EU
 (Network Code Demand Response) and just the general idea of a central system
@@ -54,32 +54,26 @@ We currently have two APIs:
 * **Main API** - our main API that provides access to the data in the database.
   See the [API design documentation](./api-design.md) for more details.
 
-Both of them are served by distinct modules of a backend built with Go. Early on
-we used the [**Gin**](https://gin-gonic.com/) web framework for its ease of
-development. We half-way made a transition to using the standard library. This
-basically means using only the `net/http` module.
+Both of them are served by a backend built with Kotlin and the
+[Ktor](https://ktor.io/) framework (kbackend).
 
 The Main API relies on a component that generates REST APIs automatically from
 the database. [PostgREST](https://postgrest.org/) is the leading open-source
 tool for this. It provides us with a RESTish API by plugging into the database.
-By default, the backend simply redirects calls on the Main API to PostgREST.
+The backend checks the scopes of the caller, rewrites the request for PostgREST
+(for example `embed` and `valid_at`) and forwards it.
 
-The Go backend also includes other functionalities implemented as services
-running in the background alongside the web server.
+#### Transition from Go
+
+The backend used to be built with Go. We moved it to Kotlin because Kotlin
+aligns better with other teams at Elhub. The Go backend no longer serves any
+API requests: the gateway sends them directly to kbackend.
+
+The Go backend still runs the event worker, which will be moved to kbackend.
 
 * **Notification** - The `event` module is used to start an _event worker_ in
   the background, handling events happening on the system and creating
   notifications to the users.
-
-#### Transition to Kotlin
-
-We are moving the Go + PostgREST backend to a Ktor-based Kotlin service. While
-Go is a great choice for our use case, Kotlin aligns better with other teams at
-Elhub.
-
-We will proxy requests via the Go backend to the Kotlin backend. This allows us
-to do a gradual transition, where we can move one API at a time to the new
-backend.
 
 ### Adapter
 
@@ -105,8 +99,8 @@ For each of our APIs we ..
 
 * describe them with an OpenAPI document.
 * serve generated API documentation from the document.
-* provide the functionality from the backend, reverse proxied and slightly
-  augmented by NGINX.
+* provide the functionality from the backend (kbackend, which uses PostgREST
+  for the data), reverse proxied by NGINX.
 
 For some details about the API design, see the [API design documentation](./api-design.md).
 
@@ -118,13 +112,13 @@ the [OpenAPI v3.1.0](https://spec.openapis.org/oas/v3.1.0) dialect.
 
 The API provided by PostgREST is larger and a bit different from what we want to
 expose. We "subtract" functionality by not documenting it in the OpenAPI
-document and "add/augment" functionality with Nginx. The following venn-like
+document and "add/augment" functionality in the backend. The following venn-like
 diagram shows the API surface of the system. Some examples of what is realized
 where are also shown.
 
-* auth API is done by the Go backend
+* auth API is done by kbackend
 * singular resources (`<rsrc>/{id}`) are done by PostgREST with some rewrites
-  by Nginx
+  by kbackend
 * plural resources (`<rsrc>`) are done by just PostgREST
 
 ![api-surface](./diagrams/api-surface.drawio.png)
@@ -137,11 +131,8 @@ To read about the API design, see the [API design documentation](../docs/api-des
     termination. The diagram above just shows where the _functionality_ is
     implemented.
 
-    The full functionality of PostgREST is available and *not* restricted in the
-    reverse proxy. We do this to avoid toil/busywork when changing the API.
-
-    However, the functionality that is not exposed in the API spec might be
-    locked down at any point in time. Do _not_ rely on it.
+    kbackend only serves the routes that are in the API spec, so the rest of
+    the PostgREST functionality is not reachable from outside.
 
 #### (Generated) API Docs - Elements
 

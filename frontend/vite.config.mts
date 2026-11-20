@@ -40,19 +40,19 @@ export default defineConfig({
     // Using the proxy instance
     proxy: {
       "/api": {
-        target: "http://dev.flex.internal:5444",
+        target: "http://dev.flex.internal:7002",
         changeOrigin: true,
       },
       "/auth": {
-        target: "http://dev.flex.internal:5444",
+        target: "http://dev.flex.internal:7002",
         changeOrigin: true,
       },
       "/grid": {
-        target: "http://dev.flex.internal:5444",
+        target: "http://dev.flex.internal:7002",
         changeOrigin: true,
       },
       "/readyz": {
-        target: "http://dev.flex.internal:5444",
+        target: "http://dev.flex.internal:7002",
         changeOrigin: true,
       },
     },

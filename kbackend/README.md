@@ -26,8 +26,8 @@ one place.
 The same application image can start in two modes, selected by the `JOB`
 environment variable (see `Application.kt`):
 
-- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data
-  and auth APIs.
+- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
+  grid and auth APIs.
 - **Job mode** (`JOB` set): the backend does **not** start. Only the selected
   job runs, then the process exits.
 

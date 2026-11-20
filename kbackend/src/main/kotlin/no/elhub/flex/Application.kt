@@ -12,6 +12,7 @@ import no.elhub.flex.auth.AuthModule
 import no.elhub.flex.auth.config.authConfig
 import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureCors
 import no.elhub.flex.config.configureDatabase
 import no.elhub.flex.config.configureErrorHandling
 import no.elhub.flex.config.configureHealth
@@ -57,6 +58,7 @@ fun Application.module() {
     install(Tracing.plugin)
     // HEAD is answered by the GET route, without a body
     install(AutoHeadResponse)
+    configureCors()
     configureLogging()
     configureSerialization()
     configureErrorHandling()

@@ -115,7 +115,7 @@ down:
 # down pull build start load
 reset: down pull build start load
 
-# start backend in dev mode
+# start the Go backend in dev mode (only runs the event worker, no API requests are served)
 backend:
     #!/usr/bin/env bash
     set -euo pipefail
