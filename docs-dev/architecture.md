@@ -67,13 +67,9 @@ The backend checks the scopes of the caller, rewrites the request for PostgREST
 
 The backend used to be built with Go. We moved it to Kotlin because Kotlin
 aligns better with other teams at Elhub. The Go backend no longer serves any
-API requests: the gateway sends them directly to kbackend.
-
-The Go backend still runs the event worker, which will be moved to kbackend.
-
-* **Notification** - The `event` module is used to start an _event worker_ in
-  the background, handling events happening on the system and creating
-  notifications to the users.
+API requests: the gateway sends them directly to kbackend. The event worker
+that creates notifications now runs as a job in kbackend (see
+[Background jobs](#background-jobs)).
 
 ### Adapter
 
@@ -83,6 +79,19 @@ Flexibility Information System. The adapter is not part of the system itself,
 but it is an important part of the overall architecture.
 
 The OpenAPI spec for the adapter is defined in this repository.
+
+### Background jobs
+
+The Kotlin backend can also be run in "job mode" to run background processes:
+
+* **Data synchronisation** - Synchronisation of data from external sources is
+  done in jobs (one per different source) running once in a while at a fixed
+  frequency. Data is queried from the adapter and merged into the database after
+  performing data quality checks.
+
+* **Notification** - One of the jobs is long-running and is an _event worker_.
+  It continuously handles events happening on the system and creates
+  notifications to the users.
 
 ### Web Server - Static assets
 

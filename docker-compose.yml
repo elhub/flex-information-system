@@ -107,6 +107,17 @@ services:
         condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
+  kbackend-event-worker:
+    # same image as kbackend, started in job mode for notifications
+    image: flex-kbackend
+    pull_policy: never # the image is always built locally
+    env_file: "./local/kbackend/test.env"
+    environment:
+      JOB: event-worker
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
   frontend:
     build: ./frontend
     volumes:

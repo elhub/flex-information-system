@@ -414,6 +414,40 @@ class TokenTest : FunSpec({
             app.stop()
         }
 
+        test("an owner of a party gets a token for the party, with the scopes of the client only") {
+            val key = TestRsaKey()
+            val (client, gln) = seed(Triggers.OFF) {
+                val so = insertSystemOperator("Bearer Owned SO")
+                val client = insertEntityClient(
+                    entityId = so.entityId,
+                    scopes = listOf("use:data", "manage:auth"),
+                    publicKey = key.publicKeyPem,
+                )
+                client to partyBusinessId(so.partyId)
+            }
+            val app = testApp()
+
+            val response = app.jwtBearer(makeGrant(key, client.clientId, subject = "no:party:gln:$gln:system_operator"))
+
+            response.status shouldBe HttpStatusCode.OK
+            val token = AccessToken.parse(response.json().getValue("access_token").jsonPrimitive.content, TEST_JWT_SECRET).shouldBeRight()
+            token.role shouldBe "flex_system_operator"
+            token.scope.toSet() shouldBe setOf(Scope(ScopeVerb.Use, "data"), Scope(ScopeVerb.Manage, "auth"))
+            app.stop()
+        }
+
+        test("a party that does not exist returns 400 invalid_client") {
+            val key = TestRsaKey()
+            val client = seed(Triggers.OFF) { insertEntityClient(publicKey = key.publicKeyPem) }
+            val app = testApp()
+
+            val response = app.jwtBearer(makeGrant(key, client.clientId, subject = "no:party:gln:1337121312322:service_provider"))
+
+            response.status shouldBe HttpStatusCode.BadRequest
+            response.json().oauthError() shouldBe ("invalid_client" to "could not assume the requested party in sub")
+            app.stop()
+        }
+
         test("a caller with a token returns 401 invalid_client") {
             val key = TestRsaKey()
             val client = seed(Triggers.OFF) { insertEntityClient(publicKey = key.publicKeyPem) }
@@ -504,6 +538,26 @@ class TokenTest : FunSpec({
 
             response.status shouldBe HttpStatusCode.BadRequest
             response.json().oauthError() shouldBe ("invalid_request" to "assertion audience is not $TEST_GRANT_AUDIENCE")
+            app.stop()
+        }
+
+        test("an audience that differs from the auth API only by the trailing slash returns 400 invalid_request") {
+            val app = testApp()
+
+            val response = app.jwtBearer(makeGrant(TestRsaKey(), UUID.randomUUID().toString(), audience = TEST_GRANT_AUDIENCE.removeSuffix("/")))
+
+            response.status shouldBe HttpStatusCode.BadRequest
+            response.json().oauthError() shouldBe ("invalid_request" to "assertion audience is not $TEST_GRANT_AUDIENCE")
+            app.stop()
+        }
+
+        test("an empty issuer returns 400 invalid_request") {
+            val app = testApp()
+
+            val response = app.jwtBearer(makeGrant(TestRsaKey(), ""))
+
+            response.status shouldBe HttpStatusCode.BadRequest
+            response.json().oauthError().first shouldBe "invalid_request"
             app.stop()
         }
 

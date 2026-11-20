@@ -7,7 +7,7 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-private val silentPaths = setOf("/healthz", "/metrics")
+private val silentPaths = setOf("/healthz", "/readyz", "/metrics")
 
 /** Configures the call logging plugin with standard Elhub format and trace information. */
 fun Application.configureLogging() {

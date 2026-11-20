@@ -23,8 +23,17 @@ sealed class Job(val name: String) {
 
     data object SyncAccountingPointData : Job("sync-accounting-point-data")
 
+    data object EventWorker : Job("event-worker")
+
     companion object {
-        private val all: List<Job> = listOf(SyncMeteringGridAreaData, SendNoticeMail, SyncGridModelData, SyncPartyData, SyncAccountingPointData)
+        private val all: List<Job> = listOf(
+            SyncMeteringGridAreaData,
+            SendNoticeMail,
+            SyncGridModelData,
+            SyncPartyData,
+            SyncAccountingPointData,
+            EventWorker,
+        )
 
         fun fromString(jobName: String): Either<String, Job> =
             all.firstOrNull { it.name.equals(jobName, ignoreCase = true) }?.right()
