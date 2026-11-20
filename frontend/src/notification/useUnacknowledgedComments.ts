@@ -102,7 +102,14 @@ export const useUnacknowledgedComments = ({
   const { lastChecked, markChecked } = useLastChecked(storageKey);
 
   const { data } = useQuery({
-    queryKey: ["notification", "unacknowledged-comments", partyID, lastChecked],
+    queryKey: [
+      "notification",
+      "unacknowledged-comments",
+      identity?.id,
+      identity?.role,
+      partyID,
+      lastChecked,
+    ],
     queryFn: () => {
       const filters: ListFilters = {
         acknowledged: "false",

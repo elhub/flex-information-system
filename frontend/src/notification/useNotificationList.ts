@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useGetIdentity } from "ra-core";
 import { listEvent, listNotification } from "../generated-client";
 import type { Event, Notification } from "../generated-client";
@@ -33,11 +33,34 @@ export const categoriesFromFilters = (filters: ListFilters): string[] =>
     ? filters[EVENT_CATEGORY_FILTER_SOURCE].split(",")
     : [];
 
+// The party is derived from the identity, never from the (URL) filters.
+// FISO sees all parties and has no party constraint.
+export const scopeFilters = (
+  filters: ListFilters,
+  scope: NotificationScope,
+): ListFilters => {
+  const rest = Object.fromEntries(
+    Object.entries(filters).filter(([source]) => source !== "party_id"),
+  );
+  return scope.partyId !== undefined &&
+    scope.role !== "flex_flexibility_information_system_operator"
+    ? { ...rest, party_id: String(scope.partyId) }
+    : rest;
+};
+
 export type Query = NonNullable<
   Parameters<typeof listNotification>[0]
 >["query"];
 
+// Identity the query runs as, used to scope cached results.
+export type NotificationScope = {
+  identityId?: string | number;
+  role?: string;
+  partyId?: number | string;
+};
+
 export type NotificationQueryParams = {
+  scope: NotificationScope;
   filters: ListFilters;
   sort: ListSort;
   page: number;
@@ -119,9 +142,10 @@ export type NotificationPage = {
 };
 
 export const notificationQueryKey = (params: NotificationQueryParams) =>
-  ["notification", "list", params] as const;
+  ["notification", "list", params.scope, params] as const;
 
 export const fetchNotifications = async ({
+  scope,
   filters,
   sort,
   page,
@@ -131,7 +155,7 @@ export const fetchNotifications = async ({
   const filterOnCategory = categories.length > 0;
 
   const base = buildListQuery({
-    filters: toQueryFilters(filters),
+    filters: scopeFilters(toQueryFilters(filters), scope),
     sort,
     page,
     perPage,
@@ -169,17 +193,15 @@ export const fetchNotifications = async ({
 export const useNotificationList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
-  // FISO can see the notifications of all parties, so it is not narrowed down
-  // to its own party by default.
-  const isFiso =
-    identity?.role === "flex_flexibility_information_system_operator";
+  const scope: NotificationScope = {
+    identityId: identity?.id,
+    role: identity?.role,
+    partyId: identity?.partyID,
+  };
 
   const defaultFilters: ListFilters = {
     acknowledged: "false",
     [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
-    ...(identity?.partyID && !isFiso
-      ? { party_id: String(identity.partyID) }
-      : {}),
   };
 
   const state = useListState({
@@ -194,13 +216,19 @@ export const useNotificationList = () => {
 
   const query = useQuery({
     queryKey: notificationQueryKey({
+      scope,
       filters,
       sort,
       page: clientPaged ? 0 : page,
       perPage: clientPaged ? 0 : perPage,
     }),
-    queryFn: () => fetchNotifications({ filters, sort, page, perPage }),
-    placeholderData: keepPreviousData,
+    queryFn: () => fetchNotifications({ scope, filters, sort, page, perPage }),
+    // Never show rows from another identity while loading.
+    placeholderData: (previous, previousQuery) =>
+      previousQuery &&
+      JSON.stringify(previousQuery.queryKey[2]) === JSON.stringify(scope)
+        ? previous
+        : undefined,
     enabled: !isIdentityPending,
   });
 
