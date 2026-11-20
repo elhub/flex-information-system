@@ -15,6 +15,7 @@ export type TextKey =
   | "notification.show_acknowledged"
   | "notification.resource"
   | "notification.acknowledge"
+  | "notification.description"
   | "notification.acknowledged_at_by"
   | "notification.mark_as_acknowledged"
   | "notification.event_category.all"
@@ -559,6 +560,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.mark_as_acknowledged": "Mark as acknowledged",
     "notification.resource": "Resource",
     "notification.acknowledge": "Acknowledge",
+    "notification.description":
+      'Here you see notifications for the party you have assumed. When you acknowledge a notification, you confirm it on behalf of that party. Acknowledged notifications are hidden unless you turn on "Show acknowledged".',
     "notification.acknowledged_at_by": "Acknowledged %{time} by %{name}",
     "notification.event_category.all": "All",
     "notification.event_category.comment": "Comments",
@@ -1091,6 +1094,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "notification.mark_as_acknowledged": "Marker som kvittert",
     "notification.resource": "Ressurs",
     "notification.acknowledge": "Kvitter",
+    "notification.description":
+      "Her ser du varslene til parten du har assumet. Når du kvitterer et varsel, bekrefter du det på vegne av denne parten. Kvitterte varsler skjules, med mindre du slår på «Vis kvitterte».",
     "notification.acknowledged_at_by": "Kvittert %{time} av %{name}",
     "notification.event_category.all": "Alle",
     "notification.event_category.comment": "Kommentarer",

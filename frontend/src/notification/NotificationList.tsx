@@ -258,10 +258,13 @@ export const NotificationList = () => {
 
   return (
     <div className="flex flex-col gap-2 max-w-7xl w-full mx-auto">
-      <div className="mb-4 flex items-center justify-between gap-2">
+      <div className="mb-4 flex flex-col gap-2">
         <Heading level={2} size="large">
           {translate("text.header_nav_notifications")}
         </Heading>
+        <p className="text-semantic-text-subtle">
+          {translate("text.notification.description")}
+        </p>
       </div>
       <Panel border className="flex flex-col gap-5">
         <div className="flex flex-wrap items-center justify-between gap-2">

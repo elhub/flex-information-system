@@ -12,7 +12,7 @@ export const Header = () => {
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const canReadNotification = !!permissions?.allow("notification", "read");
-  const { hasUnacknowledged } = useUnacknowledgedComments({
+  const { hasUnacknowledged, markChecked } = useUnacknowledgedComments({
     enabled: canReadNotification,
   });
 
@@ -41,6 +41,7 @@ export const Header = () => {
           {canReadNotification && (
             <NavLink
               to="/notification"
+              onClick={markChecked}
               aria-label={bellLabel}
               title={bellLabel}
               className="flex h-10 w-10 items-center justify-center rounded text-semantic-background hover:bg-white/10"
