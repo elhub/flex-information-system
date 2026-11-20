@@ -3,6 +3,7 @@ package no.elhub.flex
 import arrow.core.left
 import arrow.core.right
 import io.ktor.server.application.install
+import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.testing.TestApplication
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
@@ -59,6 +60,7 @@ fun defaultTestApplication(): TestApplication {
     return TestApplication {
         application {
             install(Tracing.plugin)
+            install(AutoHeadResponse)
             configureLogging()
             configureSerialization()
             configureAuthentication(TEST_JWT_SECRET)
