@@ -164,7 +164,7 @@ services:
       NGINX_SERVER_NAME: test.flex.internal
       NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
       NGINX_UPSTREAM_FRONTEND: http://frontend:8080
-      NGINX_UPSTREAM_BACKEND: http://backend:7001
+      NGINX_UPSTREAM_BACKEND: http://kbackend:8080
       NGINX_UPSTREAM_S3: http://s3mock:9090
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
@@ -173,7 +173,7 @@ services:
       - "host.docker.internal:host-gateway"
       - "idp.flex.internal:host-gateway"
     depends_on:
-      - backend
+      - kbackend
       - frontend
   authelia:
     image: 'docker.io/authelia/authelia:latest'

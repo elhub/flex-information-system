@@ -29,6 +29,7 @@ ktor = [
   "ktor-server-config-yaml",
   "ktor-server-content-negotiation",
   "ktor-server-core",
+  "ktor-server-cors",
   "ktor-server-netty",
   "ktor-server-status-pages",
 ]
@@ -78,6 +79,7 @@ ktor-server-auto-head-response = { group = "io.ktor", name = "ktor-server-auto-h
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref = "ktor" }
 ktor-client-apache5 = { group = "io.ktor", name = "ktor-client-apache5", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
