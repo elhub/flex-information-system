@@ -36,6 +36,56 @@ The following diagram shows the sequence of OIDC login and the BFF.
 
 ![OIDC login sequence](diagrams/oidc_login_sequence.png)
 
+### Refresh tokens
+
+To avoid asking the user to log in again every time their access token expires,
+we use refresh tokens. Refresh tokens are long-lived, opaque tokens that can
+only be used to get a new access token from a dedicated refresh endpoint in the
+BFF. Like access tokens, they are stored in cookies and not accessible to
+JavaScript in the portal. Whenever the portal gets an authentication failure
+from the API, it calls the refresh endpoint to receive a new token and retries
+the request. Optionally, it can also call the refresh endpoint a little before
+expiry of the access token, to avoid most failed requests for this reason.
+
+The logic of the refresh endpoint is the one of the standard OAuth 2.0
+`refresh_token` grant, but we choose not to ask or return refresh tokens in the
+body of requests and responses on the refresh endpoint, and only transport them
+in cookies, for security reasons.
+
+Server-side, refresh tokens are stored in a database table, as hashed values.
+Refresh tokens are _rotated_: every refresh returns a new refresh token and
+invalidates the previous one. All refresh tokens related to the same initial
+login flow share a common session identifier. We remember used tokens so as to
+detect reuse: if an already used token is presented again, the whole session is
+revoked and the user must log in again. Revoking a session is done by deleting
+all tokens from the same session. Logging out also revokes the session.
+
+Sessions have a maximum age measured from the OIDC login (the first refresh
+token issued). Refresh token rotation does not extend it, so a session can never
+be kept alive forever, and at some point the user must log in again. Tokens from
+expired sessions are deleted by a periodic cleanup job.
+
+Here are the fields of the refresh token table:
+
+| Column       | Description                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------|
+| `id`         | Primary key.                                                                                         |
+| `token_hash` | Unique SHA-256 hash of the refresh token.                                                            |
+| `session_id` | UUID shared by all tokens that come from the same login. Also stored in access tokens (`sid` claim). |
+| `entity_id`  | The entity the token belongs to. Potentially used to alert users about token reuse for instance.     |
+| `created_at` | When the token was issued.                                                                           |
+| `expires_at` | When the token stops being valid.                                                                    |
+| `used_at`    | Set when the token has been exchanged. Used for reuse detection.                                     |
+
+The middleware reading the access token on regular calls can also check this
+table to check whether there exists a valid session. If not, it means it got
+revoked and so the used access token should not be allowed to be used on the API
+even though it may still be valid.
+
+The following diagram shows a refresh, including the failure paths.
+
+![Token refresh sequence](diagrams/token_refresh_sequence.png)
+
 ## Logout
 
 Logout is also done via redirects between the Identity provider and the frontend.

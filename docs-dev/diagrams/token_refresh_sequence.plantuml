@@ -1,0 +1,49 @@
+@startuml token_refresh_sequence
+
+!theme plain
+
+title Token Refresh Flow
+
+autonumber
+
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "User Agent\n(Browser)" as UA
+participant "Frontend Portal" as PORTAL
+participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
+database "Database\nrefresh tokens" as DB
+
+note over PORTAL
+    The access token has expired
+    (or is about to expire).
+end note
+
+PORTAL -> AUTH: POST /auth/v1/refresh\n<:cookie:> __Host-flex_session\n<:cookie:> __Host-flex_refresh
+AUTH -> DB: Look up hash of refresh token
+DB --> AUTH
+
+alt refresh token is unknown or expired,\nor does not match the access token session
+    AUTH --> PORTAL: HTTP 400\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_refresh
+    PORTAL -> UA: Go to /#/login
+else refresh token has already been used
+    note over AUTH
+        Reuse detected.
+        The token was probably stolen.
+    end note
+    AUTH -> DB: Revoke the session
+    AUTH --> PORTAL: HTTP 400\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_refresh
+    PORTAL -> UA: Go to /#/login
+else refresh token is valid
+    AUTH -> DB: Mark token as used and insert\nnew token in the same session
+    DB --> AUTH
+    AUTH --> PORTAL: HTTP 200\nSet <:cookie:> __Host-flex_session (new)\nSet <:cookie:> __Host-flex_refresh (new)
+    note over PORTAL
+        The original request
+        can now be retried.
+    end note
+end
+
+|||
+@enduml
