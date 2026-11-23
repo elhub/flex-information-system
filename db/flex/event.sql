@@ -7,10 +7,10 @@
 CREATE TABLE IF NOT EXISTS event (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- reverse DNS style identifier
-    -- (ltree makes it faster to filter on this field in the queries,
-    -- because it looks like a path)
-    type ltree NOT NULL CHECK ( -- noqa
-        type ~ 'no.elhub.flex.*'
+    -- (text rather than ltree, because the text equality operators are
+    -- leakproof, so filters on this field run before RLS policies)
+    type text NOT NULL CHECK ( -- noqa
+        type LIKE 'no.elhub.flex.%'
     ),
     source_resource text NOT NULL,
     source_id bigint NOT NULL,
@@ -116,9 +116,7 @@ BEGIN
         subject_id,
         data
     ) VALUES (
-        public.text2ltree(
-            'no.elhub.flex.' || TG_TABLE_NAME || '.' || l_operation
-        ),
+        'no.elhub.flex.' || TG_TABLE_NAME || '.' || l_operation,
         l_source,
         l_source_id,
         l_subject,
