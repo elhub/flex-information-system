@@ -5,10 +5,19 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import no.elhub.flex.api.util.BigDecimalSerializer
+import java.math.BigDecimal
+
+/** Serializers for the types that the generated DTOs mark as `@Contextual`. */
+val flexSerializersModule = SerializersModule {
+    contextual(BigDecimal::class, BigDecimalSerializer)
+}
 
 fun Application.configureSerialization() {
     val defaultJson =
         Json {
+            serializersModule = flexSerializersModule
             encodeDefaults = true
             explicitNulls = false
             isLenient = true

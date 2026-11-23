@@ -67,10 +67,14 @@ This will give you a fresh set of containers.
 This starts the `test` environment at
 [https://test.flex.internal:6443](https://test.flex.internal:6443).
 
-To start the `dev` environment, first stop the backend container with
-`docker compose stop backend` and run `just frontend` for frontend and
-`just backend` for the backend (in separate terminals). The dev environment is
-available at [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
+To start the `dev` environment, run `just frontend` for the frontend and
+`just kbackend` for the backend (in separate terminals). `just kbackend` stops
+the kbackend container first. The dev environment is available at
+[https://dev.flex.internal:5443](https://dev.flex.internal:5443).
+
+Notifications are created by the `kbackend-event-worker` container, which
+`just start` runs alongside the other containers. The Go backend container
+does not serve any API requests and is not needed in the dev environment.
 
 ## Code generation
 

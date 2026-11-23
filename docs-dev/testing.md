@@ -63,7 +63,7 @@ It operates at a lower level, because we must describe the whole request, with
 URL, headers and body. It is therefore a good combination to have this for
 authentication endpoints, but something more automated for the rest of the API.
 
-The authentication tests can be found under the `test/auth_tests` directory.
+Everything is implemented and tested in the Kotlin backend.
 
 ## Other tests
 

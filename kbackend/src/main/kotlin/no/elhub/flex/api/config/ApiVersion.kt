@@ -1,9 +1,11 @@
 package no.elhub.flex.api.config
 
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationPlugin
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.application.hooks.CallSetup
+import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import io.ktor.server.response.header
 import no.elhub.flex.api.model.dto.generated.models.ApiVersion
@@ -51,6 +53,7 @@ class RequireApiVersionConfig {
  * Responds with HTTP 400 otherwise. Paths outside the prefixes are left alone.
  *
  * Downloads are exempt since browsers navigate to them directly and cannot send custom headers.
+ * CORS preflight (`OPTIONS`) requests are exempt too, since browsers do not send custom headers in them.
  */
 val RequireApiVersion: ApplicationPlugin<RequireApiVersionConfig> =
     createApplicationPlugin("RequireApiVersion", ::RequireApiVersionConfig) {
@@ -60,6 +63,7 @@ val RequireApiVersion: ApplicationPlugin<RequireApiVersionConfig> =
         val current = ApiVersion.entries.last().value
 
         on(CallSetup) { call ->
+            if (call.request.httpMethod == HttpMethod.Options) return@on
             val path = call.request.path()
             if (pathPrefixes.none { path == it || path.startsWith("$it/") }) return@on
             if (path in exemptPaths || exemptSuffixes.any { path.endsWith(it) }) return@on

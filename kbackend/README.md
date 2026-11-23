@@ -26,8 +26,8 @@ one place.
 The same application image can start in two modes, selected by the `JOB`
 environment variable (see `Application.kt`):
 
-- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data
-  and auth APIs.
+- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
+  grid and auth APIs.
 - **Job mode** (`JOB` set): the backend does **not** start. Only the selected
   job runs, then the process exits.
 
@@ -152,7 +152,8 @@ in `test/api_client_tests`, one resource at a time, with the same scenarios.
 ./gradlew apiTest
 ```
 
-Docker must be running. The first run pulls `postgrest/postgrest`.
+Docker must be running. The first run pulls `postgrest/postgrest` and
+`adobe/s3mock`.
 
 Run a single class or test:
 
@@ -170,7 +171,9 @@ separate "API tests" step of the kbackend build.
 - `PostgresTestContainer` applies the Liquibase migrations once per run.
   `PostgrestTestContainer` starts PostgREST on top of it with the same settings
   as `docker-compose.yml`.
-- `apiTestApplication()` starts the backend's data routes in-process
+- `apiTestServer()` starts the backend's data routes in-process, on a free port.
+  The routes that kbackend implements itself (the lookups and the attachments)
+  run on the same database, with an S3Mock container for the attachments.
 - The tests run one after another against the same database.
 
 #### Writing a test
