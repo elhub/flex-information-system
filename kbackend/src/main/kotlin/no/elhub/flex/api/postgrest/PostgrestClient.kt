@@ -60,6 +60,10 @@ private val connectionHeaders = listOf(
 
 /** Headers that the HTTP client sets by itself, or refuses to have set. */
 private val headersOfHttpClient = HttpHeaders.UnsafeHeadersList + listOf(
+    // not in UnsafeHeadersList since Ktor 3.6, and the engine only skips them when the case matches exactly,
+    // so a lowercase content-length (HTTP/2) would be sent twice and be rejected
+    HttpHeaders.ContentLength,
+    HttpHeaders.ContentType,
     HttpHeaders.Host,
     HttpHeaders.ContentEncoding,
     HttpHeaders.AcceptEncoding,

@@ -274,6 +274,21 @@ class DataApiRoutesTest :
                 )
             }
 
+            test("POST with a lowercase content-length header, as sent over HTTP/2, is not rejected") {
+                postgrest.stubFor(post(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(201).withBody("""{"id":3}""")))
+                val body = """{"name":"p"}"""
+
+                val response = app.client.post("/api/v1/party") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                    headers.append("content-length", body.length.toString())
+                    headers.append("content-type", "application/json")
+                    setBody(body)
+                }
+
+                response.status shouldBe HttpStatusCode.Created
+            }
+
             test("PATCH of something the caller cannot update gets a friendly error") {
                 postgrest.stubFor(
                     patch(urlPathEqualTo("/party")).willReturn(
