@@ -17,8 +17,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val gitOpsRepo = "https://github.com/elhub/flex"
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
-    // the repository name is kept as is, the deployment of kbackend pulls the migrations image from it
-    val imageRepoLiquibase = "$imageRepoPrefix-backend"
     val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
     pipeline {
@@ -104,9 +102,10 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         }
                     }
 
+                    // the image is tagged with a "liquibase-" prefix, so it can share the repository
                     liquiBuild {
                         registrySettings = {
-                            repository = imageRepoLiquibase
+                            repository = imageRepoKotlinBackend
                         }
                         changelogDirectory = "./db"
                         liquibaseEntrypoint = "changelog.yml"
