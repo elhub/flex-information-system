@@ -7,8 +7,8 @@
 CREATE TABLE IF NOT EXISTS event (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- reverse DNS style identifier
-    -- (text rather than ltree, because the text equality operators are
-    -- leakproof, so filters on this field run before RLS policies)
+    -- (text because its equality operators are leakproof, so filters on this
+    -- field are applied before the RLS policies)
     type text NOT NULL CHECK ( -- noqa
         type LIKE 'no.elhub.flex.%'
     ),

@@ -38,11 +38,9 @@ WHERE e.id = lookup_event_data.event_id;
 -- changeset flex:event-type-ltree-to-text runOnChange:false endDelimiter:--
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:ltree SELECT udt_name FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'event' AND column_name = 'type'
--- ltree operators are not leakproof, text equality is. Everything that depends
--- on event.type has to be dropped and recreated, because Postgres does not
--- allow changing the type of a column used by views, functions or policies.
--- The runOnChange changesets that define these objects would not re-run
--- as their content is unchanged, so they are recreated here.
+-- ltree is not leakproof, text is. Postgres cannot alter a column used by views,
+-- functions or policies, so these are dropped and recreated here (their own
+-- runOnChange changesets are unchanged and would not re-run).
 SET LOCAL lock_timeout = '5s';
 
 DROP POLICY IF EXISTS "EVENT_EU001_LOOKUP" ON flex.event;
