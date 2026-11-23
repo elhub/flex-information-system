@@ -12,81 +12,9 @@ risk of making a copy-paste mistake.
 """
 
 DB_DIR = "./db"
-output_file_backend_schema = "backend/api.sql"
 output_file_embedding_api = f"{DB_DIR}/api/embedding/embedding.sql"
 output_file_embedding_api_history = f"{DB_DIR}/api/embedding/embedding_history.sql"
 output_file_embedding_grid = f"{DB_DIR}/grid/embedding/embedding.sql"
-# ------------------------------------------------------------------------------
-
-# this part generates the api.sql input file for sqlc in the backend
-
-# it must contain fake tables that are there only to inform sqlc about the types
-# of the various fields in the views we are interacting with, as well as which
-# ones are nullable, so it can type the generated Go functions accordingly
-
-
-def sql_type_of_field_attr(attr):
-    # allOf with a single $ref means a referenced enum type — treat as text
-    if "allOf" in attr:
-        return "text"
-    if attr["type"] == "array":
-        if "$ref" in attr["items"]:
-            # if the item is a reference, we assume it is a text enum
-            return "text []"
-        if "format" not in attr["items"]:
-            return "jsonb []"
-        return attr["items"]["format"] + " []"
-    else:
-        if "format" not in attr:
-            return "jsonb"
-        if attr["format"] == "date-time":
-            return "timestamp with time zone"
-        return attr["format"]
-
-
-def formatted_fields(properties):
-    return ",\n    ".join(
-        list(
-            [
-                f"{field} {sql_type_of_field_attr(attr)} "
-                + ("NULL" if attr.get("nullable") else "NOT NULL")
-                for (field, attr) in properties.items()
-            ]
-        )
-    )
-
-
-def fake_table_create_statement(resource, properties, has_audit):
-    return (
-        f"""\
-CREATE TABLE api.{resource} (
-    {formatted_fields(properties)}\
-"""
-        + (
-            """,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL\
-"""
-            if has_audit
-            else ""
-        )
-        + """
-);\
-"""
-    )
-
-
-def fake_history_table_create_statement(resource, properties):
-    return f"""\
-CREATE TABLE api.{resource}_history (
-    {resource}_id bigint NOT NULL,
-    {formatted_fields(properties)},
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL,
-    replaced_by bigint NULL,
-    replaced_at timestamp with time zone NULL
-);\
-"""
 
 
 if __name__ == "__main__":
@@ -94,178 +22,111 @@ if __name__ == "__main__":
     resources = yaml.safe_load(sys.stdin)
     resources = resources["resources"]
 
-    with open(output_file_backend_schema, "w") as backend_schema_f:
-        print(
-            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)",
-            file=backend_schema_f,
-        )
-        print(
-            "-- noqa: disable=all\n",
-            file=backend_schema_f,
-        )
-        print(
-            "CREATE SCHEMA api;\n",
-            file=backend_schema_f,
-        )
+    for resource in resources:
+        # generate sql for history table and audit triggers
+        if resource.get("audit"):
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "resource_history_audit.j2.sql",
+                f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
+            )
 
-        for resource in resources:
-            # generate fake table for sqlc in the backend
-            if resource.get("module") == "api":
-                print(
-                    fake_table_create_statement(
-                        resource["id"],
-                        resource["properties"],
-                        resource.get("audit"),
-                    ),
-                    file=backend_schema_f,
-                )
-                if resource.get("history"):
-                    print(
-                        fake_history_table_create_statement(
-                            resource["id"],
-                            resource["properties"],
-                        ),
-                        file=backend_schema_f,
-                    )
+        # generate views and history views
+        if resource.get("generate_views", False):
+            j2.template(
+                {
+                    "resource": resource["id"],
+                    "module": resource["module"],
+                    "data": resource,
+                },
+                "resource_view.j2.sql",
+                f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
+            )
 
-            # generate sql for history table and audit triggers
-            if resource.get("audit"):
-                j2.template(
+        # generate files for the attachment resource
+        if resource.get("attachments", False):
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "attachment_resource.j2.sql",
+                f"{DB_DIR}/flex/{resource['id']}_attachment.sql",
+            )
+
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "attachment_view.j2.sql",
+                f"{DB_DIR}/attachment/{resource['id']}_attachment.sql",
+            )
+
+            attachment_resource = yaml.safe_load(
+                j2.template_str(
                     {"resource": resource["id"], "data": resource},
-                    "resource_history_audit.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
-                )
+                    "attachment_resource.j2.yml",
+                ),
+            )["data"]
 
-            # generate views and history views
-            if resource.get("generate_views", False):
-                j2.template(
-                    {
-                        "resource": resource["id"],
-                        "module": resource["module"],
-                        "data": resource,
-                    },
-                    "resource_view.j2.sql",
-                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
-                )
+            j2.template(
+                {
+                    "resource": attachment_resource["id"],
+                    "data": attachment_resource,
+                },
+                "resource_history_audit.j2.sql",
+                f"{DB_DIR}/flex/{attachment_resource['id']}_history_audit.sql",
+            )
 
-            # generate files for the attachment resource
-            if resource.get("attachments", False):
-                j2.template(
+        # generate files for the comment resource
+        if resource.get("comments", False):
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "comment_resource.j2.sql",
+                f"{DB_DIR}/flex/{resource['id']}_comment.sql",
+            )
+
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "comment_rls.j2.sql",
+                f"{DB_DIR}/flex/{resource['id']}_comment_rls.sql",
+            )
+
+            resource = yaml.safe_load(
+                j2.template_str(
                     {"resource": resource["id"], "data": resource},
-                    "attachment_resource.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_attachment.sql",
-                )
+                    "comment_resource.j2.yml",
+                ),
+            )["data"]
 
-                j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "attachment_view.j2.sql",
-                    f"{DB_DIR}/attachment/{resource['id']}_attachment.sql",
-                )
+            j2.template(
+                {"resource": resource["id"], "data": resource},
+                "resource_history_audit.j2.sql",
+                f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
+            )
 
-                attachment_resource = yaml.safe_load(
-                    j2.template_str(
-                        {"resource": resource["id"], "data": resource},
-                        "attachment_resource.j2.yml",
-                    ),
-                )["data"]
+            j2.template(
+                {
+                    "resource": resource["id"],
+                    "module": resource["module"],
+                    "data": resource,
+                },
+                "resource_view.j2.sql",
+                f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
+            )
 
-                print(
-                    fake_table_create_statement(
-                        attachment_resource["id"],
-                        attachment_resource["properties"],
-                        True,
-                    ),
-                    file=backend_schema_f,
-                )
+    # generate embedding functions for all FK relationships with cardinality
+    api_rels = relationship.collect(resources, module="api")
+    j2.template(
+        {"module": "api", "rels": [rel for rel in api_rels if not rel.history]},
+        "embedding.j2.sql",
+        output_file_embedding_api,
+    )
 
-                print(
-                    fake_history_table_create_statement(
-                        attachment_resource["id"],
-                        attachment_resource["properties"],
-                    ),
-                    file=backend_schema_f,
-                )
+    j2.template(
+        {"module": "api", "rels": [rel for rel in api_rels if rel.history]},
+        "embedding.j2.sql",
+        output_file_embedding_api_history,
+    )
 
-                j2.template(
-                    {
-                        "resource": attachment_resource["id"],
-                        "data": attachment_resource,
-                    },
-                    "resource_history_audit.j2.sql",
-                    f"{DB_DIR}/flex/{attachment_resource['id']}_history_audit.sql",
-                )
-
-            # generate files for the comment resource
-            if resource.get("comments", False):
-                j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "comment_resource.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_comment.sql",
-                )
-
-                j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "comment_rls.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_comment_rls.sql",
-                )
-
-                resource = yaml.safe_load(
-                    j2.template_str(
-                        {"resource": resource["id"], "data": resource},
-                        "comment_resource.j2.yml",
-                    ),
-                )["data"]
-
-                print(
-                    fake_table_create_statement(
-                        resource["id"],
-                        resource["properties"],
-                        True,
-                    ),
-                    file=backend_schema_f,
-                )
-
-                print(
-                    fake_history_table_create_statement(
-                        resource["id"],
-                        resource["properties"],
-                    ),
-                    file=backend_schema_f,
-                )
-
-                j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "resource_history_audit.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
-                )
-
-                j2.template(
-                    {
-                        "resource": resource["id"],
-                        "module": resource["module"],
-                        "data": resource,
-                    },
-                    "resource_view.j2.sql",
-                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
-                )
-
-        # generate embedding functions for all FK relationships with cardinality
-        api_rels = relationship.collect(resources, module="api")
-        j2.template(
-            {"module": "api", "rels": [rel for rel in api_rels if not rel.history]},
-            "embedding.j2.sql",
-            output_file_embedding_api,
-        )
-
-        j2.template(
-            {"module": "api", "rels": [rel for rel in api_rels if rel.history]},
-            "embedding.j2.sql",
-            output_file_embedding_api_history,
-        )
-
-        grid_rels = relationship.collect(resources, module="grid")
-        j2.template(
-            {"module": "grid", "rels": grid_rels},
-            "embedding.j2.sql",
-            output_file_embedding_grid,
-        )
+    grid_rels = relationship.collect(resources, module="grid")
+    j2.template(
+        {"module": "grid", "rels": grid_rels},
+        "embedding.j2.sql",
+        output_file_embedding_grid,
+    )

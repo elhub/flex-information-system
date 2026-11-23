@@ -10,7 +10,6 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.gitOps
 import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
 import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
-import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
 
 elhubProject(Group.FLEX, "flex-information-system") {
@@ -18,74 +17,12 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val gitOpsRepo = "https://github.com/elhub/flex"
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
-    val imageRepoBackend = "$imageRepoPrefix-backend"
+    // the repository name is kept as is, the deployment of kbackend pulls the migrations image from it
+    val imageRepoLiquibase = "$imageRepoPrefix-backend"
     val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
     pipeline {
         parallel {
-            sequential {
-                makeVerify {
-                    workingDir = "backend"
-                    sonarScanSettings = {
-                        sonarProjectSources = "backend"
-                        workingDir = "backend"
-                    }
-                    dependencyTrackProjectName = "flex-information-system-backend"
-                }
-
-                dockerBuild {
-                    registrySettings = {
-                        repository = imageRepoBackend
-                    }
-                    contextDirectory = "backend"
-                    dockerBuildNameSuffix = "Backend"
-                    dockerfileName = "./backend/Dockerfile"
-                    source = Source.CommitSha
-                }
-
-                liquiBuild {
-                    registrySettings = {
-                        repository = imageRepoBackend
-                    }
-                    changelogDirectory = "./db"
-                    liquibaseEntrypoint = "changelog.yml"
-                    source = Source.CommitSha
-                }
-
-                parallel {
-                    gitOps {
-                        buildNameSuffix = "backend test"
-                        clusters = setOf(KubeCluster.TEST9)
-                        gitOpsRepository = gitOpsRepo
-                        projectName = "fis-backend"
-                        source = Source.CommitSha
-                        isMonoRepo = true
-                        autoMerge = true
-                    }.triggerOnVcsChange {
-                        triggerRules = """
-                                -:*
-                                +:backend/**
-                                +:db/**
-                        """.trimIndent()
-                    }
-
-                    gitOps {
-                        buildNameSuffix = "backend prod1"
-                        clusters = setOf(KubeCluster.PROD1)
-                        gitOpsRepository = gitOpsRepo
-                        projectName = "fis-backend"
-                        source = Source.CommitSha
-                        isMonoRepo = true
-                        autoMerge = false
-                    }.triggerOnVcsChange {
-                        triggerRules = """
-                                -:*
-                                +:backend/**
-                                +:db/**
-                        """.trimIndent()
-                    }
-                }
-            }
             sequential {
                 npmVerify {
                     workingDir = "frontend"
@@ -156,11 +93,24 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     """.trimIndent()
                 }
 
-                gradleJib {
-                    workingDir = "kbackend"
-                    source = Source.CommitSha
-                    registrySettings = {
-                        repository = imageRepoKotlinBackend
+                // the migrations are executed as part of the kbackend deployment, so both images
+                // must exist before it starts
+                parallel {
+                    gradleJib {
+                        workingDir = "kbackend"
+                        source = Source.CommitSha
+                        registrySettings = {
+                            repository = imageRepoKotlinBackend
+                        }
+                    }
+
+                    liquiBuild {
+                        registrySettings = {
+                            repository = imageRepoLiquibase
+                        }
+                        changelogDirectory = "./db"
+                        liquibaseEntrypoint = "changelog.yml"
+                        source = Source.CommitSha
                     }
                 }
 
@@ -177,6 +127,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
 
@@ -192,6 +143,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
 
@@ -207,6 +159,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
 
@@ -222,6 +175,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
 
@@ -237,6 +191,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
 
@@ -252,6 +207,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
                         """.trimIndent()
                     }
                 }
