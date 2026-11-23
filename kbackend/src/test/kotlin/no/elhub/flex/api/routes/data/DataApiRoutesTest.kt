@@ -253,6 +253,25 @@ class DataApiRoutesTest :
         }
 
         context("relaying responses") {
+            test("a single object is answered as application/json, not with the media type of PostgREST") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/party")).willReturn(
+                        aResponse().withStatus(200)
+                            .withHeader("Content-Type", "application/vnd.pgrst.object+json; charset=utf-8")
+                            .withBody("""{"id":1}"""),
+                    ),
+                )
+
+                val response = app.client.get("/api/v1/party/1") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.headers["Content-Type"] shouldBe "application/json"
+                response.bodyAsText() shouldBe """{"id":1}"""
+            }
+
             test("a response keeps the media type PostgREST answered with") {
                 postgrest.stubFor(
                     get(urlPathEqualTo("/party")).willReturn(

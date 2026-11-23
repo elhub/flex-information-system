@@ -193,10 +193,23 @@ class PostgrestClient(config: PostgrestConfig) {
     }
 }
 
+private val singleObjectMediaType = ContentType("application", "vnd.pgrst.object+json")
+
+/**
+ * The media type to respond with for the one PostgREST answered with. The API documents JSON responses as
+ * `application/json`, so PostgREST's own single-object type is not exposed. Other types are passed on as they are.
+ */
+private fun publicMediaType(upstream: ContentType?): ContentType =
+    if (upstream == null || upstream.match(ContentType.Application.Json) || upstream.match(singleObjectMediaType)) {
+        ContentType.Application.Json
+    } else {
+        upstream
+    }
+
 /** The [body] of [response], passed on as it arrives instead of being read into memory. */
 private class StreamedResponse(response: HttpResponse, private val body: ByteReadChannel) : OutgoingContent.ReadChannelContent() {
     override val status: HttpStatusCode = response.status
-    override val contentType: ContentType = response.contentType() ?: ContentType.Application.Json
+    override val contentType: ContentType = publicMediaType(response.contentType())
     override val contentLength: Long? = response.contentLength()
 
     override fun readFrom(): ByteReadChannel = body
