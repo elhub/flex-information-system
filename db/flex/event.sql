@@ -116,7 +116,9 @@ BEGIN
         subject_id,
         data
     ) VALUES (
-        'no.elhub.flex.' || TG_TABLE_NAME || '.' || l_operation,
+        public.text2ltree(
+            'no.elhub.flex.' || TG_TABLE_NAME || '.' || l_operation
+        ),
         l_source,
         l_source_id,
         l_subject,
