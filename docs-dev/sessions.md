@@ -135,6 +135,15 @@ We store access tokens, and not only refresh tokens, for the following reasons:
 * **Machine clients have no refresh token.** Clients using the `JWT Bearer`
   grant only get an access token, which must be stored like any other.
 
+#### Cleanup
+
+Expired sessions and tokens are deleted by a periodic job running inside the
+database with [`pg_cron`](https://github.com/citusdata/pg_cron), like we already
+do for some functionality (see for instance the notice sync in
+[Notices](./notice.md)). Everything runs in the database, so no backend code is
+involved. Each run deletes a batch of expired tokens and sessions, based on the
+`expires_at` timestamps. An index on `expires_at` keeps the job cheap.
+
 #### Summary of operations
 
 | Operation                 | Effect on `session` and `token`                                                                |
