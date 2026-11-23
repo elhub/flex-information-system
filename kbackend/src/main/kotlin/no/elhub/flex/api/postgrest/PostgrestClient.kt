@@ -60,10 +60,6 @@ private val connectionHeaders = listOf(
 
 /** Headers that the HTTP client sets by itself, or refuses to have set. */
 private val headersOfHttpClient = HttpHeaders.UnsafeHeadersList + listOf(
-    // not in UnsafeHeadersList since Ktor 3.6, and the engine only skips them when the case matches exactly,
-    // so a lowercase content-length (HTTP/2) would be sent twice and be rejected
-    HttpHeaders.ContentLength,
-    HttpHeaders.ContentType,
     HttpHeaders.Host,
     HttpHeaders.ContentEncoding,
     HttpHeaders.AcceptEncoding,
@@ -72,9 +68,14 @@ private val headersOfHttpClient = HttpHeaders.UnsafeHeadersList + listOf(
 private fun caseInsensitiveSetOf(names: Collection<String>): Set<String> =
     sortedSetOf(String.CASE_INSENSITIVE_ORDER).apply { addAll(names) }
 
-/** Request headers that are not forwarded. The token is sent as `Authorization` from `presentedJwt`. */
+/**
+ * Request headers that are not forwarded. The token is sent as `Authorization` from `presentedJwt`.
+ * The body headers are set by the HTTP client: they are not in `UnsafeHeadersList` since Ktor 3.6, and the engine only
+ * skips them when the case matches exactly, so a lowercase content-length (HTTP/2) would be sent twice and be rejected.
+ */
 private val notForwardedRequestHeaders = caseInsensitiveSetOf(
-    connectionHeaders + headersOfHttpClient + listOf(HttpHeaders.Authorization, HttpHeaders.Cookie, "traceparent", "tracestate"),
+    connectionHeaders + headersOfHttpClient +
+        listOf(HttpHeaders.Authorization, HttpHeaders.Cookie, HttpHeaders.ContentLength, HttpHeaders.ContentType, "traceparent", "tracestate"),
 )
 
 /** Response headers that are not forwarded. */
@@ -167,21 +168,21 @@ class PostgrestClient(config: PostgrestConfig) {
         logger.info { "data API failure: ${error.code} ${error.message} ${error.details.orEmpty()} ${error.hint.orEmpty()}" }
         // headers such as WWW-Authenticate and Content-Range still apply, the body is the only thing we replace,
         // so the length of the original body must not be sent along with the rewritten one
-        copyResponseHeaders(call, response, skip = HttpHeaders.ContentLength)
+        copyResponseHeaders(call, response, skip = listOf(HttpHeaders.ContentLength))
         call.respondError(response.status, error)
     }
 
-    private fun copyResponseHeaders(call: ApplicationCall, response: HttpResponse, skip: String? = null) {
+    private fun copyResponseHeaders(call: ApplicationCall, response: HttpResponse, skip: List<String> = emptyList()) {
         response.headers.forEach { name, values ->
-            if (name !in notForwardedResponseHeaders && !name.equals(skip, ignoreCase = true)) {
+            if (name !in notForwardedResponseHeaders && skip.none { it.equals(name, ignoreCase = true) }) {
                 values.forEach { call.response.header(name, it) }
             }
         }
     }
 
     private suspend fun relay(call: ApplicationCall, response: HttpResponse) {
-        // the length is sent once, by StreamedResponse
-        copyResponseHeaders(call, response, skip = HttpHeaders.ContentLength)
+        // the length and the media type are sent once, by StreamedResponse
+        copyResponseHeaders(call, response, skip = listOf(HttpHeaders.ContentLength, HttpHeaders.ContentType))
 
         if (response.status == HttpStatusCode.NoContent || response.status == HttpStatusCode.NotModified) {
             call.respond(response.status)
@@ -195,7 +196,7 @@ class PostgrestClient(config: PostgrestConfig) {
 /** The [body] of [response], passed on as it arrives instead of being read into memory. */
 private class StreamedResponse(response: HttpResponse, private val body: ByteReadChannel) : OutgoingContent.ReadChannelContent() {
     override val status: HttpStatusCode = response.status
-    override val contentType: ContentType = ContentType.Application.Json
+    override val contentType: ContentType = response.contentType() ?: ContentType.Application.Json
     override val contentLength: Long? = response.contentLength()
 
     override fun readFrom(): ByteReadChannel = body

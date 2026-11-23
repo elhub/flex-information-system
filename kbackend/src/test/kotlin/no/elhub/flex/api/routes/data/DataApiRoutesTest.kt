@@ -252,6 +252,26 @@ class DataApiRoutesTest :
             }
         }
 
+        context("relaying responses") {
+            test("a response keeps the media type PostgREST answered with") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/party")).willReturn(
+                        aResponse().withStatus(200).withHeader("Content-Type", "text/csv; charset=utf-8").withBody("id\n1\n"),
+                    ),
+                )
+
+                val response = app.client.get("/api/v1/party") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                    header("Accept", "text/csv")
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.headers["Content-Type"] shouldBe "text/csv; charset=utf-8"
+                response.bodyAsText() shouldBe "id\n1\n"
+            }
+        }
+
         context("writing") {
             test("POST sends the body and asks for the created object") {
                 postgrest.stubFor(post(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(201).withBody("""{"id":3}""")))
