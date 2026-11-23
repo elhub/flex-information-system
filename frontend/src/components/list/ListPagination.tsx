@@ -1,21 +1,77 @@
-import { Combobox, FormItem, Pagination } from "../ui";
+import { useTranslate } from "ra-core";
+import { IconChevronLeft, IconChevronRight } from "@elhub/ds-icons";
+import { BodyText, Button, Combobox, FormItem, Pagination } from "../ui";
 import type { ListInterface } from "./types";
 
 const PER_PAGE_OPTIONS = ["25", "50", "75", "100"];
 
+// Same layout as the design system Pagination, but without page numbers since
+// the total is unknown.
+const PreviousNextPagination = <T,>({ list }: { list: ListInterface<T> }) => {
+  const translate = useTranslate();
+  return (
+    <nav className="mr-auto">
+      <ul className="eds-pagination__list">
+        <li>
+          <Button
+            type="button"
+            variant="invisible"
+            className="eds-pagination__prev-next"
+            disabled={list.page <= 1}
+            onClick={() => list.setPage(list.page - 1)}
+            icon={IconChevronLeft}
+          >
+            <BodyText weight="bold">
+              {translate("text.list_pagination_previous")}
+            </BodyText>
+          </Button>
+        </li>
+        <li>
+          <Pagination.Item selected>
+            <BodyText weight="bold">{list.page}</BodyText>
+          </Pagination.Item>
+        </li>
+        <li>
+          <Button
+            type="button"
+            variant="invisible"
+            className="eds-pagination__prev-next"
+            disabled={!list.hasNextPage}
+            onClick={() => list.setPage(list.page + 1)}
+            icon={IconChevronRight}
+            iconPosition="right"
+          >
+            <BodyText weight="bold">
+              {translate("text.list_pagination_next")}
+            </BodyText>
+          </Button>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
 export const ListPagination = <T,>({ list }: { list: ListInterface<T> }) => {
-  if (!list.total) return null;
+  const translate = useTranslate();
+  const hasTotal = list.total !== undefined;
+  if (hasTotal ? !list.total : list.page <= 1 && !list.hasNextPage) {
+    return null;
+  }
   return (
     <div className="flex items-center gap-4">
-      <div className="mr-auto">
-        <Pagination
-          count={Math.ceil(list.total / list.perPage)}
-          page={list.page}
-          onPageChange={list.setPage}
-          prevText="Previous"
-          nextText="Next"
-        />
-      </div>
+      {hasTotal ? (
+        <div className="mr-auto">
+          <Pagination
+            count={Math.ceil(list.total! / list.perPage)}
+            page={list.page}
+            onPageChange={list.setPage}
+            prevText={translate("text.list_pagination_previous")}
+            nextText={translate("text.list_pagination_next")}
+          />
+        </div>
+      ) : (
+        <PreviousNextPagination list={list} />
+      )}
       <div className="w-32 shrink-0">
         <FormItem size="medium">
           <Combobox

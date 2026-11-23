@@ -3,10 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetIdentity } from "ra-core";
 import type { ListFilters } from "../components/list/types";
 import {
-  categoriesFromFilters,
+  categoryQuery,
   EVENT_CATEGORY_FILTER_SOURCE,
-  eventTypeIdsForCategories,
-  hasEventOfTypes,
   Query,
   toQueryFilters,
 } from "./useNotificationList";
@@ -17,48 +15,27 @@ import { bellStorageKey, getLastChecked, setLastChecked } from "./lastChecked";
 
 const CHECKED_EVENT = "notification-bell-checked";
 
-// Fetch the unacknowledged notifications matching the filters (id and time only).
-const fetchNotificationRefs = (filters: ListFilters) =>
-  listNotification({
+// Whether any unacknowledged notification matching the filters was recorded
+// after the given time (any time if null).
+const fetchHasNewComments = async (
+  filters: ListFilters,
+  lastChecked: string | null,
+) => {
+  const { embed, filter } = categoryQuery(filters);
+  const notifications = await listNotification({
     query: {
       ...buildListQuery({
         filters: toQueryFilters(filters),
         sort: { field: "id", order: "desc" },
         page: 1,
-        perPage: 3000,
+        perPage: 1,
       }),
-      select: "event_id,recorded_at",
+      ...filter,
+      ...(lastChecked ? { recorded_at: `gt.${lastChecked}` } : {}),
+      embed,
     } as Query,
   }).then(throwOnError);
-
-// Keep only notifications recorded after the given time (all if null).
-const recordedAfter = <T extends { recorded_at: string }>(
-  notifications: T[],
-  sinceLastChecked: string | null,
-) => {
-  if (sinceLastChecked === null) return notifications;
-  const sinceTime = Date.parse(sinceLastChecked);
-  return notifications.filter((n) => Date.parse(n.recorded_at) > sinceTime);
-};
-
-// Whether any of the events belongs to the categories in the filters.
-const hasEventInCategories = (eventIds: number[], filters: ListFilters) =>
-  eventIds.length > 0 &&
-  hasEventOfTypes(
-    eventIds,
-    eventTypeIdsForCategories(categoriesFromFilters(filters)),
-  );
-
-const fetchHasNewComments = async (
-  filters: ListFilters,
-  lastChecked: string | null,
-) => {
-  const notifications = await fetchNotificationRefs(filters);
-  const recent = recordedAfter(notifications, lastChecked);
-  return hasEventInCategories(
-    recent.map((n) => n.event_id),
-    filters,
-  );
+  return notifications.length > 0;
 };
 
 // Time the user last clicked the bell, stored per user and party.
@@ -118,7 +95,7 @@ export const useUnacknowledgedComments = ({
       };
       return fetchHasNewComments(filters, lastChecked);
     },
-    staleTime: 60_000,
+    //staleTime: 60_000,
     enabled: enabled && !isIdentityPending && !!partyID && !isFiso,
   });
 
