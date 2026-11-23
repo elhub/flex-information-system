@@ -20,7 +20,10 @@ participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
 UA -> PORTAL: Click logout
 return Go to /auth/v1/logout
 UA -> AUTH: Navigate to /auth/v1/logout
-return HTTP 302 Redirect to Identity Provider\nRevoke refresh token family\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_refresh
+note over AUTH
+    The session and its tokens are revoked.
+end note
+return HTTP 302 Redirect to Identity Provider\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_refresh
 
 UA -> IDP: Follow redirect\nGET /logout?post_logout_redirect_uri=<login url>
 note over IDP
