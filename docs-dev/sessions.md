@@ -22,9 +22,9 @@ In this diagram with refer to these solutions as the _Identity Provider_ (IDp).
 
 We are following the pattern known as
 [Backend For Frontend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
-(BFF). To avoid having to deal with "sticky sessions", we are implementing using
-"client-side sessions" as described. The cookie setting following the cookie
-security recommendations, including the
+(BFF). The tokens are opaque and the session state is kept in the database (see
+[Tokens and sessions](#tokens-and-sessions)), so no "sticky sessions" are needed.
+The cookie setting follows the cookie security recommendations, including the
 [`__Host-` prefix.](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-19#name-the-__host-prefix).
 
 We are using the OpenID Connect Authorization Code Flow with Proof Key for Code
@@ -36,51 +36,116 @@ The following diagram shows the sequence of OIDC login and the BFF.
 
 ![OIDC login sequence](diagrams/oidc_login_sequence.png)
 
-### Refresh tokens
+### Tokens and sessions
+
+Tokens are **opaque** and carry no information. Such information about the
+current user is available from the `/userinfo` endpoint. Internally, the data
+API still forwards short-lived JWTs to PostgREST as it needs one to switch roles.
+
+Opaque tokens contain no claims, so the server must look up what a token means.
+This is done in two database tables, `session` and `token`. Both are `UNLOGGED`
+and are kept out of the audit mechanisms, since they are written on every login
+and refresh. They only contain hashes, so there is nothing worth restoring in
+case of crash for instance.
+
+#### Refresh tokens
 
 To avoid asking the user to log in again every time their access token expires,
 we use refresh tokens. Refresh tokens are long-lived, opaque tokens that can
 only be used to get a new access token from a dedicated refresh endpoint in the
 BFF. Like access tokens, they are stored in cookies and not accessible to
 JavaScript in the portal. Whenever the portal gets an authentication failure
-from the API, it calls the refresh endpoint to receive a new token and retries
+from the API, it calls the refresh endpoint to receive new tokens and retries
 the request. Optionally, it can also call the refresh endpoint a little before
 expiry of the access token, to avoid most failed requests for this reason.
 
-The logic of the refresh endpoint is the one of the standard OAuth 2.0
-`refresh_token` grant, but we choose not to ask or return refresh tokens in the
-body of requests and responses on the refresh endpoint, and only transport them
-in cookies, for security reasons.
+The logic of the refresh endpoint is the one of the
+[standard OAuth 2.0 `refresh_token` grant](https://www.rfc-editor.org/info/rfc6749/#section-6),
+but we choose not to ask or return refresh tokens in the body of requests and
+responses on the refresh endpoint, and only transport them in cookies, for
+security reasons.
 
-Server-side, refresh tokens are stored in a database table, as hashed values.
 Refresh tokens are _rotated_: every refresh returns a new refresh token and
-invalidates the previous one. All refresh tokens related to the same initial
-login flow share a common session identifier. We remember used tokens so as to
-detect reuse: if an already used token is presented again, the whole session is
-revoked and the user must log in again. Revoking a session is done by deleting
-all tokens from the same session. Logging out also revokes the session.
+invalidates the previous one. We remember used tokens so as to detect reuse: if
+an already used token is presented again, the whole session is revoked and the
+user must log in again. Logging out also revokes the session.
 
-Sessions have a maximum age measured from the OIDC login (the first refresh
-token issued). Refresh token rotation does not extend it, so a session can never
-be kept alive forever, and at some point the user must log in again. Tokens from
-expired sessions are deleted by a periodic cleanup job.
+The refresh only needs the refresh token. It belongs to a session, so the new
+tokens are issued for that session, with its current identity and scope. Nothing
+needs to be read from the expired access token.
 
-Here are the fields of the refresh token table:
+#### Session
 
-| Column       | Description                                                                                          |
-|--------------|------------------------------------------------------------------------------------------------------|
-| `id`         | Primary key.                                                                                         |
-| `token_hash` | Unique SHA-256 hash of the refresh token.                                                            |
-| `session_id` | UUID shared by all tokens that come from the same login. Also stored in access tokens (`sid` claim). |
-| `entity_id`  | The entity the token belongs to. Potentially used to alert users about token reuse for instance.     |
-| `created_at` | When the token was issued.                                                                           |
-| `expires_at` | When the token stops being valid.                                                                    |
-| `used_at`    | Set when the token has been exchanged. Used for reuse detection.                                     |
+A session is created at login (or when a client authenticates with the
+`JWT Bearer` grant, or when a token exchange is done). It represents _who_ is
+logged in and _what they may do_, independently of which tokens are currently
+valid.
 
-The middleware reading the access token on regular calls can also check this
-table to check whether there exists a valid session. If not, it means it got
-revoked and so the used access token should not be allowed to be used on the API
-even though it may still be valid.
+| Column        | Description                                                                                  |
+|---------------|----------------------------------------------------------------------------------------------|
+| `id`          | Primary key.                                                                                 |
+| `identity_id` | The identity (entity, assumed party and client) of the session. The role is derived from it. |
+| `scope`       | The scopes granted to the session.                                                           |
+| `parent_id`   | The session this one was exchanged from (token exchange), if any. Cascade delete.            |
+| `expires_at`  | Absolute end of the session. Refresh token rotation never extends it.                        |
+
+We store the session, and not just the tokens, for the following reasons:
+
+* **The identity and scope change during a session, but the tokens should not.**
+  When the user assumes or unassumes a party, only the `identity_id` and
+  `scope` of the session are updated. The cookies stay the same, and all tabs
+  and tokens of the session see the change at once. There is no race between an
+  assume and a refresh, since a refresh does not need to carry any claims
+  forward. It just issues new tokens for the session as it is.
+* **It is the unit of revocation.** All tokens reference their session, so
+  logging out, detecting refresh token reuse or an administrative revocation is
+  one `DELETE` of the session, and everything that belongs to it goes with it.
+* **It carries the absolute lifetime.** Tokens are rotated and short-lived,
+  while the session has a maximum age measured from the login. This is what
+  makes sure a session cannot be kept alive forever.
+* **It links exchanged sessions to their origin.** A token exchange creates a
+  child session with `parent_id`, so that revoking the parent also revokes the
+  child. Its scope is the intersection of the parent scope and the party scopes,
+  and it cannot outlive the parent.
+
+#### Token
+
+A token is a credential of a session. Only the SHA-256 hash of the token is
+stored, and the hashing is done by the application, so the token itself never
+passes through SQL or its logs.
+
+| Column       | Description                                                       |
+|--------------|-------------------------------------------------------------------|
+| `token_hash` | Primary key. SHA-256 hash of the token.                           |
+| `session_id` | The session the token belongs to. Cascade delete.                 |
+| `type`       | `access` or `refresh`.                                            |
+| `expires_at` | When the token stops being valid.                                 |
+| `used_at`    | Set when a refresh token has been exchanged. For reuse detection. |
+
+We store access tokens, and not only refresh tokens, for the following reasons:
+
+* **An opaque token can only be validated by looking it up.** There is no
+  signature to verify and no claims to read. Every API call therefore resolves
+  the access token to its session with one indexed lookup. This is the reason we
+  need to store them.
+* **Revocation takes effect immediately.** Since the lookup happens on every
+  call, deleting a session invalidates its access tokens on the next request.
+  Without it, a revoked session would stay usable until the access token
+  expires, which was the main weakness of a stateless JWT.
+* **Machine clients have no refresh token.** Clients using the `JWT Bearer`
+  grant only get an access token, which must be stored like any other.
+
+#### Summary of operations
+
+| Operation                 | Effect on `session` and `token`                                                                |
+|---------------------------|------------------------------------------------------------------------------------------------|
+| Login (`/callback`)       | Create a session, an access token and a refresh token.                                         |
+| Refresh                   | Mark the refresh token as used, delete the old access token, insert a new pair in the session. |
+| API call                  | Look up the access token to get user info. Forge an internal JWT for PostgREST if needed.      |
+| Assume / unassume         | Update `identity_id` and `scope` of the session. Tokens are unchanged.                         |
+| Token exchange            | Create a child session (`parent_id`) with one access token.                                    |
+| `JWT Bearer` login        | Create a session with one access token. No refresh token.                                      |
+| Logout, reuse, revocation | Delete the session. Its tokens and child sessions are deleted with it.                         |
 
 The following diagram shows a refresh, including the failure paths.
 
