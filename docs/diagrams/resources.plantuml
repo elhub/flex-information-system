@@ -18,6 +18,8 @@ digraph flex {
     controllable_unit_summary -> controllable_unit     [label=controllable_unit_id]
     service_providing_group_power_per_substation    [label="{service_providing_group_power_per_substation}|{Per-substation breakdown of controllable\nunits and their technical details for a\nservice providing group.}" shape=record style=solid]
     service_providing_group_power_per_substation -> service_providing_group     [label=service_providing_group_id]
+    service_providing_group_grid_prequalification_substation_power    [label="{service_providing_group_grid_prequalification_substation_power}|{Flexible power per substation for a service providing group\ngrid prequalification, together with the total approved\nflexible power of the substation across all approved grid\nprequalifications of the same impacted system operator.}" shape=record style=solid]
+    service_providing_group_grid_prequalification_substation_power -> service_providing_group_grid_prequalification     [label=service_providing_group_grid_prequalification_id]
     service_providing_group_summary    [label="{service_providing_group_summary}|{Aggregated summary of\ncontrollable units and\ntechnical resources belonging\nto a service providing group.}" shape=record style=solid]
     service_providing_group_summary -> service_providing_group     [label=service_providing_group_id]
     service_providing_group    [label="{service_providing_group}|{Group of controllable\nunits}|{🕰️}" shape=record style=solid]

@@ -378,6 +378,11 @@ databaseChangeLog:
       endsWithFilter: _rls.sql
       maxDepth: 1
 
+  # uses spg_cu_snapshot (notice) and current_party_is_pso_in_spg (RLS)
+  - include:
+      file: ./service_providing_group_grid_prequalification_substation_power.sql
+      relativeToChangelogFile: true
+
   - includeAll:
       path: ./grants/
       relativeToChangelogFile: true

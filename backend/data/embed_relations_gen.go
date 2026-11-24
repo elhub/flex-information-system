@@ -145,10 +145,14 @@ var embedRelations = map[string]map[string]string{
 	"service_providing_group_grid_prequalification": {
 		"impacted_system_operator": "party",
 		"service_providing_group": "service_providing_group",
+		"substation_power": "service_providing_group_grid_prequalification_substation_power",
 	},
 	"service_providing_group_grid_prequalification_history": {
 		"impacted_system_operator_history": "party_history",
 		"service_providing_group_history": "service_providing_group_history",
+	},
+	"service_providing_group_grid_prequalification_substation_power": {
+		"service_providing_group_grid_prequalification": "service_providing_group_grid_prequalification",
 	},
 	"service_providing_group_grid_suspension": {
 		"impacted_system_operator": "party",

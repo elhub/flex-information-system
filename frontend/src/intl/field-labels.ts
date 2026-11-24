@@ -357,6 +357,12 @@ export type FieldLabel =
   | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
   | "service_providing_group_grid_prequalification_history.service_providing_group_id"
   | "service_providing_group_grid_prequalification_history.status"
+  | "service_providing_group_grid_prequalification_substation_power.controllable_unit_count"
+  | "service_providing_group_grid_prequalification_substation_power.maximum_active_power"
+  | "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_grid_prequalification_substation_power.substation_business_id"
+  | "service_providing_group_grid_prequalification_substation_power.substation_name"
+  | "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power"
   | "service_providing_group_grid_suspension.id"
   | "service_providing_group_grid_suspension.impacted_system_operator_id"
   | "service_providing_group_grid_suspension.reason"
@@ -695,6 +701,18 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Service Providing Group ID",
     "service_providing_group_power_per_substation.substations":
       "Per-substation aggregates",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Service Providing Group Grid Prequalification ID",
+    "service_providing_group_grid_prequalification_substation_power.substation_business_id":
+      "Substation Business ID",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Substation Name",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Controllable unit count",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maximum active power",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total approved maximum active power",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Service Providing Group ID",
@@ -1472,6 +1490,18 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Fleksibilitetsgruppe-ID",
     "service_providing_group_power_per_substation.substations":
       "Aggregat per transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Nettprekvalifisering-ID for fleksibilitetsgruppe",
+    "service_providing_group_grid_prequalification_substation_power.substation_business_id":
+      "Forretnings-ID for transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Navn på transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Antall styrbare enheter",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total godkjent maksimal aktiv effekt",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",
@@ -2246,6 +2276,18 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Fleksibilitetsgruppe-ID",
     "service_providing_group_power_per_substation.substations":
       "Aggregat per transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Nettprekvalifisering-ID for fleksibilitetsgruppe",
+    "service_providing_group_grid_prequalification_substation_power.substation_business_id":
+      "Forretnings-ID for transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Navn på transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Antall styrbare enheter",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total godkjent maksimal aktiv effekt",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",
