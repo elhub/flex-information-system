@@ -124,6 +124,7 @@ export type TextKey =
   | "service_provider_product_application"
   | "service_provider"
   | "system_operator"
+  | "procuring_system_operator"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
@@ -553,6 +554,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Service provider product application",
     service_provider: "Service provider",
     system_operator: "System operator",
+    procuring_system_operator: "Procuring system operator",
     delete: "Delete",
     yes: "Yes",
     "notification.event_category": "Event category",
@@ -1093,6 +1095,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Produktprekvalifisering for tjenesteleverandør",
     service_provider: "Tjenesteleverandør",
     system_operator: "Systemoperatør",
+    procuring_system_operator: "Kjøpende systemoperatør",
     delete: "Slett",
     yes: "Ja",
     "notification.event_category": "Hendelseskategori",
