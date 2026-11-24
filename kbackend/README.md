@@ -29,7 +29,9 @@ environment variable (see `Application.kt`):
 - **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
   grid and auth APIs.
 - **Job mode** (`JOB` set): the backend does **not** start. Only the selected
-  job runs, then the process exits.
+  job runs, then the process exits. Every job also starts a minimal Ktor server
+  on `PORT` (default 8080) that only serves `/healthz` and `/readyz`, in case
+  they are deployed as regular Kubernetes applications with probes.
 
 The value of `JOB` must match the name of a job defined in `jobs/Job.kt`.
 Jobs may take their own settings from environment variables.
