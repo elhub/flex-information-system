@@ -44,9 +44,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: "(test/flex/.*)|(docs/.*)"
+        exclude: "(docs/.*)"
       - id: end-of-file-fixer
-        exclude: "(test/flex/.*)|(local/scripts/templates/.*)"
+        exclude: "(local/scripts/templates/.*)"
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-added-large-files
@@ -58,7 +58,7 @@ repos:
         entry: Only files that have formatters/linters configured are allowed
         language: fail
         # yamllint disable-line rule:line-length
-        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|\.teamcity.*|.sqlfluff|.yamlfmt|.*\.npmrc|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.part|.*\.cfg|.*\.mts|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*\.dockerfilelintrc|.*.docx|.*\.psql|.*\.hurl|.*\.http|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*|.*\.properties|gradlew|gradlew\.bat|.*\.bat|gradle-wrapper\.jar|.editorconfig|.python-version)$
+        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|\.teamcity.*|.sqlfluff|.yamlfmt|.*\.npmrc|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.part|.*\.cfg|.*\.mts|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*\.dockerfilelintrc|.*.docx|.*\.psql|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*authelia/secrets/.*|.*\.properties|gradlew|gradlew\.bat|.*\.bat|gradle-wrapper\.jar|.editorconfig|.python-version)$
         # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
         exclude_types:
           - json
@@ -78,7 +78,6 @@ repos:
           - javascript
           - ts
           - tsx
-          - go
           - svg
           - kotlin
           - batch
@@ -120,7 +119,7 @@ repos:
     hooks:
       - id: markdownlint-cli2
         language_version: lts
-        exclude: ^(docs/resources/.*)|(docs/tables/.*)|(test/flex/.*)|(\.github/.*)$
+        exclude: ^(docs/resources/.*)|(docs/tables/.*)|(\.github/.*)$
   #
   ## SQL
   #
@@ -128,9 +127,9 @@ repos:
     rev: 4.3.0
     hooks:
       - id: sqlfluff-fix
-        exclude: ^(backend/event/.*)|(backend/data/.*)|(.*j2\.sql)$
+        exclude: ^(.*j2\.sql)$
       - id: sqlfluff-lint
-        exclude: ^(backend/event/.*)|(backend/data/.*)|(.*j2\.sql)$
+        exclude: ^(.*j2\.sql)$
 
   # squawk errors on CREATE TABLE LIKE clauses had to be disabled
   # TODO - report bug to squawk and update this
@@ -244,62 +243,18 @@ repos:
           - pre-push
 
   #
-  ## Go
-  #
-  - repo: local
-    hooks:
-      - id: golangci-lint-config-verify
-        name: golangci-lint config verify
-        entry: /usr/bin/bash
-        args: ['-c', 'cd backend && golangci-lint config verify']
-        files: '\.golangci\.(?:yml|yaml|toml|json)'
-        pass_filenames: false
-        language: script
-      - id: golangci-lint
-        name: golangci-lint
-        entry: /usr/bin/bash
-        pass_filenames: false
-        args: ['-c', 'cd backend && golangci-lint run --fix --new-from-rev=HEAD']
-        types: [go]
-        language: script
-      - id: go-unit-tests
-        name: go-unit-tests
-        entry: /usr/bin/bash
-        args: ['-c', 'cd backend && go test -tags=unit -timeout 30s -short -v']
-        types: [go]
-        language: script
-      - id: go-build
-        name: go-build
-        entry: /usr/bin/bash
-        args: ['-c', 'cd backend/cmd/flex && go build && rm -f flex']
-        types: [go]
-        language: script
-      - id: go-mod-tidy
-        name: go-mod-tidy
-        entry: /usr/bin/bash
-        args: ['-c', 'cd backend && go mod tidy -v']
-        types: [go]
-        language: script
-
-
-  #
   ## Python
   #
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: "v0.15.20"
     hooks:
       - id: ruff-format
-        exclude: "test/flex/.*"
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-        # test/flex is excluded because it is a generated directory
-        exclude: "test/flex/.*"
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.411
     hooks:
       - id: pyright
-        # test/flex is excluded because it is a generated directory
-        exclude: "test/flex/.*"
 
   #
   ## TOML
@@ -308,12 +263,10 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-        exclude: "test/flex/.*"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-toml
-        exclude: "test/flex/.*"
 
   #
   ## OpenAPI

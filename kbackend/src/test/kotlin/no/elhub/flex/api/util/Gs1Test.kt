@@ -10,7 +10,7 @@ class Gs1Test :
             context("valid GSRNs") {
                 withData(
                     nameFn = { "GSRN $it is valid" },
-                    // Known-valid 18-digit GSRN values taken from the Go backend test suite
+                    // Known-valid 18-digit GSRN values
                     "123456789012345675",
                     "133700000000000053",
                     "133700000000000060",

@@ -1,9 +1,5 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "postUpdateOptions": [
-        "gomodTidy",
-        "gomodUpdateImportPaths"
-    ],
     "extends": [
         // https://github.com/elhub/devxp-renovate/blob/main/default.json
         "github>elhub/devxp-renovate"
@@ -27,11 +23,6 @@
         // This should allow us to override the default grouping from elhub/devxp-renovate
         // since apparently "Last matching rule wins". Ref https://github.com/renovatebot/renovate/discussions/15796#discussioncomment-2940148
         {
-            "groupName": "backend",
-            "matchFileNames": ["backend/**"],
-            "commitMessageSuffix": "",
-        },
-        {
             "groupName": "kbackend",
             "matchFileNames": ["kbackend/**"],
             "commitMessageSuffix": "",
@@ -50,7 +41,7 @@
         },
         {
             "groupName": "local",
-            "matchFileNames": ["test/**", "pyproject.toml", "uv.lock" ],
+            "matchFileNames": ["pyproject.toml", "uv.lock" ],
             "commitMessageSuffix": "",
         },
     ],

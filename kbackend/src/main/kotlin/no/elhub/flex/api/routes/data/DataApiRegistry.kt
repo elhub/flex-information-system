@@ -23,7 +23,7 @@ object DataApiRegistry {
     )
 
     /**
-     * Routes that are in the OpenAPI document but that the Go backend never served.
+     * Routes that are in the OpenAPI document but are not served.
      * They stay unreachable until they are deliberately enabled.
      */
     val notExposed: Set<ApiRoute> = setOf(
