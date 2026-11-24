@@ -15,7 +15,7 @@ a Kotlin file with
 
   * `Generated<name>ApiRoutes.routes`: every (method, path) in the OpenAPI document, and
   * `Generated<name>ApiRoutes.embedRelations`: (parent resource, embed name) -> embedded
-    resource, the same mapping as in the Go backend's embed_relations_gen.go.
+    resource.
 
 The file only contains data. Which routes go to PostgREST as is, rewritten or
 implemented natively is decided in Kotlin, see DataApiRegistry.kt.

@@ -10,7 +10,6 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.gitOps
 import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
 import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
-import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
 
 elhubProject(Group.FLEX, "flex-information-system") {
@@ -18,74 +17,10 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val gitOpsRepo = "https://github.com/elhub/flex"
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
-    val imageRepoBackend = "$imageRepoPrefix-backend"
     val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
     pipeline {
         parallel {
-            sequential {
-                makeVerify {
-                    workingDir = "backend"
-                    sonarScanSettings = {
-                        sonarProjectSources = "backend"
-                        workingDir = "backend"
-                    }
-                    dependencyTrackProjectName = "flex-information-system-backend"
-                }
-
-                dockerBuild {
-                    registrySettings = {
-                        repository = imageRepoBackend
-                    }
-                    contextDirectory = "backend"
-                    dockerBuildNameSuffix = "Backend"
-                    dockerfileName = "./backend/Dockerfile"
-                    source = Source.CommitSha
-                }
-
-                liquiBuild {
-                    registrySettings = {
-                        repository = imageRepoBackend
-                    }
-                    changelogDirectory = "./db"
-                    liquibaseEntrypoint = "changelog.yml"
-                    source = Source.CommitSha
-                }
-
-                parallel {
-                    gitOps {
-                        buildNameSuffix = "backend test"
-                        clusters = setOf(KubeCluster.TEST9)
-                        gitOpsRepository = gitOpsRepo
-                        projectName = "fis-backend"
-                        source = Source.CommitSha
-                        isMonoRepo = true
-                        autoMerge = true
-                    }.triggerOnVcsChange {
-                        triggerRules = """
-                                -:*
-                                +:backend/**
-                                +:db/**
-                        """.trimIndent()
-                    }
-
-                    gitOps {
-                        buildNameSuffix = "backend prod1"
-                        clusters = setOf(KubeCluster.PROD1)
-                        gitOpsRepository = gitOpsRepo
-                        projectName = "fis-backend"
-                        source = Source.CommitSha
-                        isMonoRepo = true
-                        autoMerge = false
-                    }.triggerOnVcsChange {
-                        triggerRules = """
-                                -:*
-                                +:backend/**
-                                +:db/**
-                        """.trimIndent()
-                    }
-                }
-            }
             sequential {
                 npmVerify {
                     workingDir = "frontend"
@@ -156,11 +91,25 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     """.trimIndent()
                 }
 
-                gradleJib {
-                    workingDir = "kbackend"
-                    source = Source.CommitSha
-                    registrySettings = {
-                        repository = imageRepoKotlinBackend
+                // the migrations are executed as part of the kbackend deployment, so both images
+                // must exist before it starts
+                parallel {
+                    gradleJib {
+                        workingDir = "kbackend"
+                        source = Source.CommitSha
+                        registrySettings = {
+                            repository = imageRepoKotlinBackend
+                        }
+                    }
+
+                    // the image is tagged with a "liquibase-" prefix, so it can share the repository
+                    liquiBuild {
+                        registrySettings = {
+                            repository = imageRepoKotlinBackend
+                        }
+                        changelogDirectory = "./db"
+                        liquibaseEntrypoint = "changelog.yml"
+                        source = Source.CommitSha
                     }
                 }
 
@@ -174,9 +123,15 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // skip changes that only touch the jobs code, and test-only changes
+                        // keep DB because liquibase is linked to the kbackend app
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/test/**
+                            -:kbackend/src/apiTest/**
                         """.trimIndent()
                     }
 
@@ -189,9 +144,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files, the entry point
+                        // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
-                            +:kbackend/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/resources/mail/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -204,9 +171,20 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files, the entry point
+                        // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
-                            +:kbackend/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -219,9 +197,15 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // skip changes that only touch the jobs code, and test-only changes
+                        // keep DB because liquibase is linked to the kbackend app
                         triggerRules = """
                             -:*
                             +:kbackend/**
+                            +:db/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/test/**
+                            -:kbackend/src/apiTest/**
                         """.trimIndent()
                     }
 
@@ -234,9 +218,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files, the entry point
+                        // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
-                            +:kbackend/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/resources/mail/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -249,9 +245,20 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files, the entry point
+                        // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
-                            +:kbackend/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
                 }

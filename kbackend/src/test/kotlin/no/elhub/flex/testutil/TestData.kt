@@ -970,17 +970,6 @@ class SeedScope(private val conn: Connection) {
         return id
     }
 
-    /** Approves the grid prequalification with `prequalified_at` set to the time of the transaction. */
-    fun approveGridPrequalification(id: Long) {
-        conn.prepareStatement(
-            "UPDATE flex.service_providing_group_grid_prequalification " +
-                "SET status = 'approved', prequalified_at = current_timestamp WHERE id = ?",
-        ).use { stmt ->
-            stmt.setLong(1, id)
-            stmt.executeUpdate()
-        }
-    }
-
     /** A suspension of the group by the impacted system operator, which needs an approved grid prequalification of both. */
     fun insertGridSuspension(serviceProvidingGroupId: Long, impactedSystemOperatorId: Long, reason: String = "other"): Long =
         queryLong(

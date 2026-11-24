@@ -63,14 +63,6 @@ tool for this. It provides us with a RESTish API by plugging into the database.
 The backend checks the scopes of the caller, rewrites the request for PostgREST
 (for example `embed` and `valid_at`) and forwards it.
 
-#### Transition from Go
-
-The backend used to be built with Go. We moved it to Kotlin because Kotlin
-aligns better with other teams at Elhub. The Go backend no longer serves any
-API requests: the gateway sends them directly to kbackend. The event worker
-that creates notifications now runs as a job in kbackend (see
-[Background jobs](#background-jobs)).
-
 ### Adapter
 
 The adapter component is an external component responsible for making available

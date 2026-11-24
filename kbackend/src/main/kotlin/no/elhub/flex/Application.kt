@@ -15,12 +15,12 @@ import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureCors
 import no.elhub.flex.config.configureDatabase
 import no.elhub.flex.config.configureErrorHandling
-import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMetrics
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.jobs.runJob
 import no.elhub.flex.shared.SharedModule
+import no.elhub.flex.shared.http.configureHealth
 import no.elhub.flex.shared.metrics.MetricsModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication

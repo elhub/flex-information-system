@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 -- AUTO-GENERATED FILE (just permissions-to-db)
 
--- changeset flex:api-field-level-authorization runOnChange:true
+-- changeset flex:api-field-level-authorization runOnChange:true runAlways:true
 
 GRANT SELECT (
     id,
@@ -2095,28 +2095,6 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE
 api.service_providing_group_history
 TO flex_internal_event_notification;
-
-GRANT SELECT (
-    service_providing_group_grid_prequalification_id,
-    substation_business_id,
-    substation_name,
-    controllable_unit_count,
-    maximum_active_power,
-    total_approved_maximum_active_power
-) ON TABLE
-api.service_providing_group_grid_prequalification_substation_power
-TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    service_providing_group_grid_prequalification_id,
-    substation_business_id,
-    substation_name,
-    controllable_unit_count,
-    maximum_active_power,
-    total_approved_maximum_active_power
-) ON TABLE
-api.service_providing_group_grid_prequalification_substation_power
-TO flex_system_operator;
 
 GRANT SELECT (
     id,
