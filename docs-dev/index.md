@@ -73,8 +73,7 @@ the kbackend container first. The dev environment is available at
 [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
 
 Notifications are created by the `kbackend-event-worker` container, which
-`just start` runs alongside the other containers. The Go backend container
-does not serve any API requests and is not needed in the dev environment.
+`just start` runs alongside the other containers.
 
 ## Code generation
 
@@ -82,6 +81,5 @@ Test code generation with the following commands.
 
 ```bash
 just permissions
-just generate
 just openapi
 ```

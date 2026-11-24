@@ -24,7 +24,6 @@ links:
     type: DOCUMENT
     url: "https://docs.elhub.cloud/value-streams/flex/index.html"
 labels:
-  - "language:go"
   - "language:kotlin"
   - "language:python"
   - "language:typescript"

@@ -174,15 +174,23 @@ Once the resource and its permissions are edited, one can run the various
 generation mechanisms through the associated `just` recipes (see the `justfile`
 to find them). Then, in this updated state, the project should be testable.
 
-Resource-related tests are made using the generated API client, by adding a new
-file to the `test/api_client_tests` directory. All the endpoints can be called
-through the generated API client, and authentication is done automatically with
-a security token service object created in the setup function at the top of each
-test file.
+Tests are written in Kotlin in the `kbackend` directory, see
+[Testing](./testing.md). Two kinds are relevant when editing a resource:
+
+* **API tests** (`kbackend/src/apiTest`) run the backend in-process on top of
+  real Postgres and PostgREST containers. For resources served by PostgREST they
+  mainly cover roles, permissions and RLS policies. Add a new test class named
+  `<Resource>ApiTest` for a new resource, or edit the existing one, and run
+  `./gradlew apiTest` from `kbackend/`. Mark the tests of each RLS policy with a
+  `// RLS: <ID>` comment and run `just coverage` to see which policies are still
+  untested.
+* **Unit and repository tests** (`kbackend/src/test`) cover the custom code, such
+  as custom routes, repositories and jobs (e.g., notification recipients in the
+  event worker). Add or edit them when the change touches such code, and run
+  `./gradlew test` from `kbackend/`.
 
 If you are adding a new resource, do not forget to add data related to this
-resource in the test data package (`db/test_data`) and add the endpoint prefix
-to the Schemathesis test file (`test/other_tests/test_schemathesis.py`).
+resource in the test data package (`db/test_data`).
 
 ## Updating the UI
 

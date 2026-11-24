@@ -22,12 +22,12 @@ import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.auth.plugin.configureAuthentication
 import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.config.Tracing
-import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.db.DatabaseError
 import no.elhub.flex.shared.http.DataFetchError
+import no.elhub.flex.shared.http.configureHealth
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
