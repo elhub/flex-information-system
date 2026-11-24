@@ -279,7 +279,7 @@ Another approach of defining areas is listing all components that are part of
 the area. This could be as simple as a list of substations. Again, due to the
 need to have cuts "inside" a substation, we need to express it using
 line+substation pairs. A area definition becomes a list of `(substation,line)`
-tuples.
+tuples. Some substations does not have lines, thus line is nullable.
 
 ### Aggregation to service providing groups using areas
 
