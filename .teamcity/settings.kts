@@ -145,7 +145,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         autoMerge = true
                     }.triggerOnVcsChange {
                         // whitelist: only the jobs code, the shared code, logback and mail
-                        // templates, build files
+                        // templates, build files, the entry point
                         // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
@@ -154,6 +154,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/resources/mail/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
@@ -171,7 +172,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         autoMerge = true
                     }.triggerOnVcsChange {
                         // whitelist: only the event worker code, the shared code, logback, build
-                        // files
+                        // files, the entry point
                         // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
@@ -180,6 +181,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
@@ -217,7 +219,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         autoMerge = false
                     }.triggerOnVcsChange {
                         // whitelist: only the jobs code, the shared code, logback and mail
-                        // templates, build files
+                        // templates, build files, the entry point
                         // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
@@ -226,6 +228,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/resources/mail/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
@@ -243,7 +246,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         autoMerge = false
                     }.triggerOnVcsChange {
                         // whitelist: only the event worker code, the shared code, logback, build
-                        // files
+                        // files, the entry point
                         // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
@@ -252,6 +255,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
