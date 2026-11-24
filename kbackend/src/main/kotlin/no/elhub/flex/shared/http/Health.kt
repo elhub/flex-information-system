@@ -1,4 +1,4 @@
-package no.elhub.flex.config
+package no.elhub.flex.shared.http
 
 import com.sksamuel.cohort.Cohort
 import com.sksamuel.cohort.HealthCheckRegistry
