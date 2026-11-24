@@ -3,7 +3,11 @@ package no.elhub.flex.jobs
 import arrow.core.getOrElse
 import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import kotlinx.coroutines.runBlocking
+import no.elhub.flex.config.configureHealth
 import no.elhub.flex.jobs.eventworker.EventWorkerApp
 import no.elhub.flex.jobs.sendnoticemail.SendNoticeMailApp
 import no.elhub.flex.jobs.syncaccountingpoint.SyncAccountingPointDataApp
@@ -19,7 +23,9 @@ private val logger = KotlinLogging.logger {}
 
 /**
  * Main function when running the application in job mode.
- * Starts the Koin application of the selected job and runs it, without launching any Ktor application.
+ * Starts the Koin application of the selected job and runs it. Long-running jobs also start a
+ * minimal Ktor server that only serves the health endpoints, so that Kubernetes can probe them;
+ * other jobs start no server.
  */
 fun runJob(jobName: String) {
     val job = Job.fromString(jobName).getOrElse {
@@ -28,8 +34,22 @@ fun runJob(jobName: String) {
     }
 
     logger.info { "Starting job: ${job.name}" }
+
     val koin = startKoin(job)
-    val result = koin.get<HikariDataSource>().use { runBlocking { koin.get<ScheduledJob>().run() } }
+
+    val server = if (job.longRunning) {
+        val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+        embeddedServer(Netty, port = port) { configureHealth(SimpleMeterRegistry()) }
+            .start(wait = false)
+    } else {
+        null
+    }
+
+    val result = try {
+        koin.get<HikariDataSource>().use { runBlocking { koin.get<ScheduledJob>().run() } }
+    } finally {
+        server?.stop(1000, 5000)
+    }
 
     result.fold(
         {
