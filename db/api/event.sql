@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-event-create endDelimiter:-- runOnChange:true runAlways:true
+-- changeset flex:api-event-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.event
 WITH (security_invoker = true) AS (
     SELECT
