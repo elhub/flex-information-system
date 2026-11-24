@@ -701,7 +701,7 @@ permissions-to-db:
         | tee db/grid/grants/field_level_authorization.sql \
         > db/flex/grants/field_level_authorization.sql
 
-    echo "-- changeset flex:api-field-level-authorization runOnChange:true" \
+    echo "-- changeset flex:api-field-level-authorization runOnChange:true runAlways:true" \
         >> db/api/grants/field_level_authorization.sql
     echo "-- changeset flex:attachment-field-level-authorization runOnChange:true" \
         >> db/attachment/grants/field_level_authorization.sql
