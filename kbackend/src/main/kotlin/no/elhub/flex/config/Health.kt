@@ -17,9 +17,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 /** Configures health checks and exposes the /healthz and /readyz endpoints. */
-fun Application.configureHealth() {
-    val registry = get<MeterRegistry>()
-
+fun Application.configureHealth(registry: MeterRegistry = get<MeterRegistry>()) {
     install(Cohort) {
         sysprops = true
 

@@ -724,6 +724,14 @@ flex.service_providing_group_history
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.service_providing_group_grid_prequalification_substation_power
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_prequalification_substation_power
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE
 flex.service_providing_group_summary
 TO flex_balance_responsible_party;
 
