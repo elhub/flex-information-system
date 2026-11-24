@@ -23,9 +23,9 @@ private val logger = KotlinLogging.logger {}
 
 /**
  * Main function when running the application in job mode.
- * Starts the Koin application of the selected job and runs it. Long-running jobs also start a
- * minimal Ktor server that only serves the health endpoints, so that Kubernetes can probe them;
- * other jobs start no server.
+ * Starts the Koin application of the selected job and runs it. Also starts a minimal Ktor server
+ * that only serves the health endpoints, so that Kubernetes can probe them; the server stops when
+ * the job ends.
  */
 fun runJob(jobName: String) {
     val job = Job.fromString(jobName).getOrElse {
@@ -37,18 +37,14 @@ fun runJob(jobName: String) {
 
     val koin = startKoin(job)
 
-    val server = if (job.longRunning) {
-        val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
-        embeddedServer(Netty, port = port) { configureHealth(SimpleMeterRegistry()) }
-            .start(wait = false)
-    } else {
-        null
-    }
+    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+    val server = embeddedServer(Netty, port = port) { configureHealth(SimpleMeterRegistry()) }
+        .start(wait = false)
 
     val result = try {
         koin.get<HikariDataSource>().use { runBlocking { koin.get<ScheduledJob>().run() } }
     } finally {
-        server?.stop(1000, 5000)
+        server.stop(1000, 5000)
     }
 
     result.fold(

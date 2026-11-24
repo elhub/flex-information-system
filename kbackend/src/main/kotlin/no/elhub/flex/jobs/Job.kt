@@ -13,7 +13,7 @@ import arrow.core.right
  * A [longRunning] job never finishes on its own, so it also serves the health endpoints while it
  * runs.
  */
-sealed class Job(val name: String, val longRunning: Boolean = false) {
+sealed class Job(val name: String) {
 
     data object SyncMeteringGridAreaData : Job("sync-metering-grid-area-data")
 
@@ -25,7 +25,7 @@ sealed class Job(val name: String, val longRunning: Boolean = false) {
 
     data object SyncAccountingPointData : Job("sync-accounting-point-data")
 
-    data object EventWorker : Job("event-worker", longRunning = true)
+    data object EventWorker : Job("event-worker")
 
     companion object {
         private val all: List<Job> = listOf(
