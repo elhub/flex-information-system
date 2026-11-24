@@ -681,7 +681,7 @@ api.technical_resource(
 )
 TO flex_common, flex_entity;
 
--- changeset flex:notification-event_id-to-event runOnChange:true endDelimiter:-- runAlways:true
+-- changeset flex:notification-event_id-to-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.event(
     api.notification
 )
@@ -691,14 +691,14 @@ RETURNS SETOF api.event ROWS 1 AS $$
   where id = $1.event_id
 $$ STABLE LANGUAGE sql;
 
--- changeset flex:notification-event_id-to-event-grant runOnChange:true endDelimiter:-- runAlways:true
+-- changeset flex:notification-event_id-to-event-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.event(
     api.notification
 )
 TO flex_common, flex_entity;
 
--- changeset flex:event-id-to-notification runOnChange:true endDelimiter:-- runAlways:true
+-- changeset flex:event-id-to-notification runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.notification(
     api.event
 )
@@ -708,7 +708,7 @@ RETURNS SETOF api.notification AS $$
   where event_id = $1.id
 $$ STABLE LANGUAGE sql;
 
--- changeset flex:event-id-to-notification-grant runOnChange:true endDelimiter:-- runAlways:true
+-- changeset flex:event-id-to-notification-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.notification(
     api.event

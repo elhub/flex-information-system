@@ -44,7 +44,7 @@ EXCEPTION
 END;
 $$;
 
--- changeset flex:event-rls runOnChange:true endDelimiter:; runAlways:true
+-- changeset flex:event-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS event ENABLE ROW LEVEL SECURITY;
 
 -- internal
