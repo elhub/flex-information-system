@@ -4,11 +4,11 @@ This page contains some information about how to check/audit dependencies.
 
 ## Licences
 
-There is a just recipe to check the licences of all `npm` and `go` dependencies
+There is a just recipe to check the licences of all `npm` dependencies
 in the project.
 
 ```bash
-just vet-licence
+just vet-license
 ```
 
 ## Upgrades
@@ -43,51 +43,6 @@ npx npm-check-updates --upgrade
 npx npm-check-updates --upgrade --dep dev
 npm install
 ```
-
-### Go version
-
-Check the latest release at the [Go download page](https://go.dev/dl/).
-
-First upgrade your go version using `devxp-wsl`.
-
-Then change the go version in
-
-* [/backend/go.mod](../backend/go.mod). You can use `go get go@latest` for this.
-* [/backend/Dockerfile](../backend/Dockerfile).
-
-Also remember to update/re-install go tools. Check
-[the main dev docs](./index.md).
-
-### Go dependencies
-
-Checking for vulnerabilities in go dependencies is done by running the
-[govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) tool. You
-should also
-[integrate it into your IDE](https://go.dev/doc/security/vuln/editor).
-
-[This tutorial](https://go.dev/doc/tutorial/govulncheck) is a pretty good guide
-on how to use it. The `TL;DR` is:
-
-```bash
-go install golang.org/x/vuln/cmd/govulncheck@latest
-govulncheck -show verbose ./...
-# handle the output!
-```
-
-To check for packages that have new versions use:
-
-```bash
-go list -m -u all | grep '\['
-```
-
-To upgrade all dependencies to the latest version use:
-
-```bash
-go get -u -t ./...
-go mod tidy
-```
-
-Then maybe rerun govulncheck 😉?
 
 ### Python
 

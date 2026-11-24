@@ -1,8 +1,6 @@
 # kbackend
 
-Kotlin/Ktor backend for the Flexibility Information System. This is the primary
-backend, intended to replace the existing Go backend. All new features should be
-implemented here.
+Kotlin/Ktor backend for the Flexibility Information System.
 
 ## Code structure
 
@@ -29,7 +27,9 @@ environment variable (see `Application.kt`):
 - **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
   grid and auth APIs.
 - **Job mode** (`JOB` set): the backend does **not** start. Only the selected
-  job runs, then the process exits.
+  job runs, then the process exits. Every job also starts a minimal Ktor server
+  on `PORT` (default 8080) that only serves `/healthz` and `/readyz`, in case
+  they are deployed as regular Kubernetes applications with probes.
 
 The value of `JOB` must match the name of a job defined in `jobs/Job.kt`.
 Jobs may take their own settings from environment variables.
@@ -145,8 +145,8 @@ running. They seed their own data (see `testutil/TestData.kt`).
 ### API tests
 
 The API tests run the data API in-process on top of real Postgres and
-[PostgREST](https://postgrest.org/) containers. They replace the Python tests
-in `test/api_client_tests`, one resource at a time, with the same scenarios.
+[PostgREST](https://postgrest.org/) containers. There is one test class per
+resource.
 
 ```bash
 ./gradlew apiTest
@@ -189,4 +189,5 @@ separate "API tests" step of the kbackend build.
   `CASCADE` also clears the tables that reference them. Seed inside the test or
   in `beforeEach`
 - Use `// RLS: <ID>` comments so the tests can be matched against the RLS
-policies they cover.
+  policies they cover. Run `just coverage` from the repository root to list the
+  RLS policies that are covered by the API tests.

@@ -55,18 +55,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  backend:
-    build: ./backend
-    ports:
-      - "7001:7001"
-    env_file: "./local/backend/test.env"
-    depends_on:
-      db:
-        condition: service_healthy
-      postgrest:
-        condition: service_started
-      kbackend:
-        condition: service_started
   s3mock:
     image: adobe/s3mock:latest
     environment:
@@ -130,7 +118,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - backend
+      - kbackend
   nginx:
     image: nginx:stable
     ports:
