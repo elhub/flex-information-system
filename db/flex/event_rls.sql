@@ -96,7 +96,7 @@ FOR SELECT
 TO flex_end_user
 USING (
     source_resource = 'accounting_point'
-    AND type ~ 'no.elhub.flex.controllable_unit.lookup'
+    AND type = 'no.elhub.flex.controllable_unit.lookup'
     AND EXISTS (
         SELECT 1
         FROM (
@@ -136,16 +136,16 @@ CREATE POLICY "EVENT_COM001" ON event
 FOR SELECT
 TO flex_common
 USING (
-    NOT (type ~ 'no.elhub.flex.controllable_unit.lookup')
+    type <> 'no.elhub.flex.controllable_unit.lookup'
     -- when subject is here, it is the most precise identifier of the thing
     -- the event concerns, so we should do the check on it instead of source
     AND CASE
         WHEN subject_resource IS NOT null
             THEN event_resource_visible_check(
-                subject_resource,
-                subject_id,
-                lower(record_time_range)
-            )
+                    subject_resource,
+                    subject_id,
+                    lower(record_time_range)
+                )
         ELSE
             event_resource_visible_check(
                 source_resource,

@@ -22,9 +22,9 @@ vs
 ## Our take
 
 There are many ways to implement a modular monolith. It depends on tech stack
-among other things. We are writing our monolith in Go on top of a PostgreSQL
+among other things. We are writing our monolith in Kotlin on top of a PostgreSQL
 database. We are also exposing our API via PostgREST and plan to transition away
-from that (write the API in Go) over time.
+from that (write the API in Kotlin) over time.
 
 This is how we are currently structuring our monolith.
 
@@ -40,9 +40,7 @@ These are the general rules we follow:
 * No module should access the common schema directly. All access should be
   through the module's schema to enforce encapsulation and access control.
 * No module should mix SQL code and business logic. All interactions with the
-  database should be carried out through methods of a `models` package local to
-  the module. Some of these local packages are generated with automated tools
-  like [sqlc](https://sqlc.dev/).
+  database should be carried out through repository classes local to the module.
 * Modules can _read_ from the schema of another module to facilitate efficient
   data retrieval/joins. We consider the views and functions as part of the
   public API of the module.
