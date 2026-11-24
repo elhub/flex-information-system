@@ -144,8 +144,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
-                        // whitelist: only the jobs code, the shared code, healthchecks common to
-                        // all Kubernetes apps, logback and mail templates, build files
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files
                         // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
@@ -154,7 +154,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
-                            +:kbackend/src/main/kotlin/no/elhub/flex/config/Health.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/resources/mail/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
@@ -171,8 +170,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
-                        // whitelist: only the event worker code, the shared code, healthchecks
-                        // common to all Kubernetes apps, logback, build files
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files
                         // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
@@ -181,7 +180,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
-                            +:kbackend/src/main/kotlin/no/elhub/flex/config/Health.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
@@ -218,8 +216,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
-                        // whitelist: only the jobs code, the shared code, healthchecks common to
-                        // all Kubernetes apps, logback and mail templates, build files
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files
                         // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
@@ -228,7 +226,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
-                            +:kbackend/src/main/kotlin/no/elhub/flex/config/Health.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/resources/mail/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
@@ -245,8 +242,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
-                        // whitelist: only the event worker code, the shared code, healthchecks
-                        // common to all Kubernetes apps, logback, build files
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files
                         // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
@@ -255,7 +252,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                             +:kbackend/gradle.properties
                             +:kbackend/gradle/**
                             +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
-                            +:kbackend/src/main/kotlin/no/elhub/flex/config/Health.kt
                             +:kbackend/src/main/resources/logback.xml
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
                             +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**

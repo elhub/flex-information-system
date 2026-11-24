@@ -7,13 +7,13 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import kotlinx.coroutines.runBlocking
-import no.elhub.flex.config.configureHealth
 import no.elhub.flex.jobs.eventworker.EventWorkerApp
 import no.elhub.flex.jobs.sendnoticemail.SendNoticeMailApp
 import no.elhub.flex.jobs.syncaccountingpoint.SyncAccountingPointDataApp
 import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataApp
 import no.elhub.flex.jobs.syncmeteringgridarea.SyncMeteringGridAreaDataApp
 import no.elhub.flex.jobs.syncparty.SyncPartyDataApp
+import no.elhub.flex.shared.http.configureHealth
 import org.koin.core.Koin
 import org.koin.logger.slf4jLogger
 import org.koin.plugin.module.dsl.startKoin
