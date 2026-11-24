@@ -10,8 +10,6 @@ import arrow.core.right
  * To add a job: create a package under `jobs` with the job, a `@Module` that scans it, and a
  * `@KoinApplication`; then add an object here and a branch in [runJob]. The [name] must match
  * the value set in the `JOB` environment variable (case-insensitive).
- * A [longRunning] job never finishes on its own, so it also serves the health endpoints while it
- * runs.
  */
 sealed class Job(val name: String) {
 
