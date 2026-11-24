@@ -1,9 +1,9 @@
 package no.elhub.flex.api.model.domain
 
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import no.elhub.flex.api.util.BigDecimalSerializer
 import java.math.BigDecimal
 
 @Serializable
@@ -17,7 +17,7 @@ data class ControllableUnit(
     val status: ControllableUnitStatus,
     @SerialName("regulation_direction")
     val regulationDirection: RegulationDirection,
-    @Serializable(with = BigDecimalSerializer::class)
+    @Contextual
     val maximumActivePower: BigDecimal,
     val isSmall: Boolean,
     @SerialName("additional_information")

@@ -4,6 +4,7 @@ import arrow.core.getOrElse
 import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
+import no.elhub.flex.jobs.eventworker.EventWorkerApp
 import no.elhub.flex.jobs.sendnoticemail.SendNoticeMailApp
 import no.elhub.flex.jobs.syncaccountingpoint.SyncAccountingPointDataApp
 import no.elhub.flex.jobs.syncgridmodel.SyncGridModelDataApp
@@ -48,4 +49,5 @@ private fun startKoin(job: Job): Koin = when (job) {
     is Job.SyncGridModelData -> startKoin<SyncGridModelDataApp> { slf4jLogger() }.koin
     is Job.SyncPartyData -> startKoin<SyncPartyDataApp> { slf4jLogger() }.koin
     is Job.SyncAccountingPointData -> startKoin<SyncAccountingPointDataApp> { slf4jLogger() }.koin
+    is Job.EventWorker -> startKoin<EventWorkerApp> { slf4jLogger() }.koin
 }

@@ -29,6 +29,7 @@ ktor = [
   "ktor-server-config-yaml",
   "ktor-server-content-negotiation",
   "ktor-server-core",
+  "ktor-server-cors",
   "ktor-server-netty",
   "ktor-server-status-pages",
 ]
@@ -78,6 +79,7 @@ ktor-server-auto-head-response = { group = "io.ktor", name = "ktor-server-auto-h
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref = "ktor" }
 ktor-client-apache5 = { group = "io.ktor", name = "ktor-client-apache5", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -127,23 +129,23 @@ koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plu
 [versions]
 arrow = "2.3.0.1"
 cohort = "2.9.12"
-elhub-jsonapi-wrapper = "0.6.13"
+elhub-jsonapi-wrapper = "0.6.14"
 elhub-gradle = "1.0.5"
 exposed = "1.6.1"
 gradle-docker = "0.17.21"
 hikari = "7.1.0"
 koin = "4.2.2"
 koin-plugin = "1.2.3"
-kotest = "6.2.6"
-kotlin-logging = "8.0.4"
+kotest = "6.2.7"
+kotlin-logging = "8.0.7"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
-kotlinx-serialization = "1.12.0"
+kotlinx-serialization = "1.13.0"
 kotlinx-serialization-plugin = "2.4.21"
 kotlinx-coroutines-slf4j = "1.11.0"
 ktor = "3.6.1"
 liquibase = "5.0.4"
 micrometer = "1.17.2"
-mockk = "1.14.11"
+mockk = "1.14.12"
 mybatis = "3.6.0"
 postgresql = "42.7.14"
 logback = "1.6.6"
@@ -153,7 +155,7 @@ snakeyaml = "2.7"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
 angus-mail = "2.0.5"
-aws-sdk-kotlin = "1.9.31"
+aws-sdk-kotlin = "1.9.36"
 pdfbox = "3.0.8"
 s3mock = "5.2.3"
 caffeine = "3.3.1"

@@ -4,8 +4,11 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.ktor.client.request.get
+import io.ktor.client.request.head
 import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.TestApplication
 import no.elhub.flex.shared.tracing.TraceInfo
@@ -38,7 +41,7 @@ class HealthCheckTest :
                 traceInfo.shouldBeRight()
             }
 
-            test("traceparent is taken into account") {
+            test("incoming traceparent is ignored") {
                 val traceID = "4bf92f3577b34da6a3ce929d0e0e4736"
 
                 val response = testApp.client.get("/healthz") {
@@ -49,7 +52,30 @@ class HealthCheckTest :
                 val traceInfo = response.headers["traceresponse"]!!.let { TraceInfo.parse(it) }
                 traceInfo.shouldBeRight()
 
-                traceInfo.getOrNull()!!.traceID shouldBe traceID
+                traceInfo.getOrNull()!!.traceID shouldNotBe traceID
+            }
+        }
+
+        context("GET /readyz") {
+            test("HTTP 200 with status ok") {
+                val response = testApp.client.get("/readyz")
+                response.status shouldBe HttpStatusCode.OK
+                response.bodyAsText() shouldBe """{"status":"ok"}"""
+            }
+
+            test("HEAD returns HTTP 200 without body") {
+                val response = testApp.client.head("/readyz")
+                response.status shouldBe HttpStatusCode.OK
+                response.bodyAsText() shouldBe ""
+            }
+
+            test("well-formed traceresponse header in response") {
+                val response = testApp.client.get("/readyz")
+
+                val traceResponse = response.headers["traceresponse"]
+                traceResponse.shouldNotBeNull()
+
+                TraceInfo.parse(traceResponse).shouldBeRight()
             }
         }
     })

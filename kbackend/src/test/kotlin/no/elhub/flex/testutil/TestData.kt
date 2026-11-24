@@ -2,6 +2,7 @@ package no.elhub.flex.testutil
 
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.api.model.dto.generated.models.ControllableUnitRegulationDirection
+import no.elhub.flex.api.model.dto.generated.models.ServiceProviderProductApplicationStatus
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupBiddingZone
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupGridPrequalificationStatus
 import no.elhub.flex.api.model.dto.generated.models.ServiceProvidingGroupProductApplicationStatus
@@ -25,6 +26,9 @@ fun osloMidnight(date: String): Instant = LocalDate.parse(date).atStartOfDay(osl
 /** Whether database triggers are active while seeding. */
 enum class Triggers { ON, OFF }
 
+/** A name of a resource that is renamed over time, and the time from which it was the name, as recorded in the database. */
+class NameRevision(val name: String, val recordedFrom: Instant)
+
 /** A seeded system operator party, and a principal that acts as it (resolved through its identity). */
 data class SeededSystemOperator(val partyId: Long, val principal: FlexPrincipal, val entityId: Long)
 
@@ -42,6 +46,9 @@ data class SeededActor(
     val eid: String,
     val ownerEntityId: Long? = null,
 )
+
+/** A controllable unit with the accounting point it is at and the metering grid area of that accounting point. */
+class SeededControllableUnit(val id: Long, val accountingPoint: Long, val meteringGridArea: Long)
 
 /** A seeded entity client of [entityId], with the UUID that it is known by outside the database (the `iss` of its grants). */
 data class SeededEntityClient(val id: Long, val clientId: String, val entityId: Long)
@@ -126,6 +133,79 @@ class SeedScope(private val conn: Connection) {
             quality.name.lowercase(),
         )
 
+    /**
+     * Renames the grid location, which archives the previous revision in the history. A revision is only archived when
+     * the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameGridLocation(id: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.accounting_point_grid_location SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Seeds an accounting point in a new metering grid area, which the system operator [owner] owns from 2024-01-01.
+     * That makes [owner] the CSO of the accounting point.
+     */
+    fun insertAccountingPointOwnedBy(owner: Long): Long {
+        val meteringGridArea = insertMeteringGridArea()
+        insertMeteringGridAreaSystemOperator(meteringGridArea, owner)
+        return insertAccountingPoint().also { insertAccountingPointMeteringGridArea(it, meteringGridArea) }
+    }
+
+    /**
+     * Puts a controllable unit at the accounting point in a new service providing group, and returns the group.
+     * This is the chain that links the accounting point to the system operators that the group is prequalified or
+     * has applied for:
+     *
+     *     accounting point <- controllable unit <- membership -> service providing group
+     *                                                              |- grid prequalification: impacted system operator (ISO)
+     *                                                              `- product application: procuring system operator (PSO)
+     *
+     * Seed it with [Triggers.OFF]. The triggers would require what the policies do not read: an active unit with a
+     * contract, an end user and a technical resource, and for a product application also an active group, a product
+     * type that the system operator has activated and a qualified service provider application.
+     */
+    fun insertGroupWithControllableUnitAt(accountingPoint: Long): Long {
+        val group = insertServiceProvidingGroup(insertParty(TestPartyRole.SP, "Group SP"))
+        insertMembership(insertControllableUnit(accountingPoint), group)
+        return group
+    }
+
+    /** Inserts a substation, with a cluster of its own, and returns its business ID. Grid locations refer to it. */
+    fun insertSubstation(): UUID {
+        val businessId = UUID.randomUUID()
+        val clusterId = queryLong(
+            """
+            INSERT INTO flex.substation_cluster (name, business_id, averaged_position, area)
+            VALUES (
+                ?,
+                ?,
+                ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326),
+                ST_SetSRID(ST_GeomFromText('POLYGON((9 59, 11 59, 11 61, 9 61, 9 59))'), 4326)
+            )
+            RETURNING id
+            """.trimIndent(),
+            "Test substation cluster",
+            UUID.randomUUID().toString(),
+        )
+        queryLong(
+            """
+            INSERT INTO flex.substation (
+                name, business_id, kind, primary_concessionaire, substation_cluster_id, voltage_levels, position
+            )
+            VALUES (?, ?, 'transformer', 'concessionaire', ?, ARRAY[132.0], ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326))
+            RETURNING id
+            """.trimIndent(),
+            "Test substation",
+            businessId.toString(),
+            clusterId,
+        )
+        return businessId
+    }
+
     fun insertControllableUnit(
         accountingPointId: Long,
         name: String = "Test CU",
@@ -133,6 +213,7 @@ class SeedScope(private val conn: Connection) {
         regulationDirection: ControllableUnitRegulationDirection = ControllableUnitRegulationDirection.BOTH,
         status: String = "new",
         maximumActivePower: Double = 1.0,
+        businessId: String = UUID.randomUUID().toString(),
     ): Long =
         queryLong(
             """
@@ -142,7 +223,7 @@ class SeedScope(private val conn: Connection) {
             VALUES (?::uuid, ?, ?::date, ?, ?, ?, ?)
             RETURNING id
             """.trimIndent(),
-            UUID.randomUUID().toString(),
+            businessId,
             name,
             startDate.toString(),
             regulationDirection.value,
@@ -150,6 +231,411 @@ class SeedScope(private val conn: Connection) {
             accountingPointId,
             status,
         )
+
+    /**
+     * Changes the contract reference of the contract, which archives the previous revision in the history. A revision is
+     * only archived when the change is made in another transaction than the insert, so call this in a [seed] block of
+     * its own.
+     */
+    fun renameContract(id: Long, contractReference: String) {
+        conn.prepareStatement("UPDATE flex.controllable_unit_service_provider SET contract_reference = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, contractReference)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    fun insertTechnicalResource(
+        controllableUnitId: Long,
+        name: String = "Test TR",
+        technology: List<String> = listOf("other.consumption"),
+        maximumActivePower: Double = 1.0,
+    ): Long =
+        queryLong(
+            """
+            INSERT INTO flex.technical_resource (name, controllable_unit_id, technology, maximum_active_power, device_type)
+            VALUES (?, ?, ?::text[], ?, 'other')
+            RETURNING id
+            """.trimIndent(),
+            name,
+            controllableUnitId,
+            conn.createArrayOf("text", technology.toTypedArray()),
+            maximumActivePower,
+        )
+
+    /** Deletes the technical resource, which moves it to the history. Seed with [Triggers.ON], so that the audit trigger runs. */
+    fun deleteTechnicalResource(id: Long) {
+        conn.prepareStatement("DELETE FROM flex.technical_resource WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Renames the technical resource, which archives the previous revision in the history. A revision is only archived
+     * when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameTechnicalResource(id: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.technical_resource SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Seeds a technical resource as if it had been renamed through the [revisions], which must be in order. The last
+     * revision is the current record, and the earlier ones are in the history, each until the next one was recorded.
+     *
+     * Seed it with [Triggers.OFF]: the audit triggers would record every revision at the time of the seeding, but
+     * the policies compare the time a revision was recorded to the period that a party was related to the unit.
+     */
+    fun insertTechnicalResourceWithRevisions(controllableUnitId: Long, revisions: List<NameRevision>): Long {
+        val current = revisions.last()
+        val id = queryLong(
+            """
+            INSERT INTO flex.technical_resource (
+                name, controllable_unit_id, technology, maximum_active_power, device_type, record_time_range
+            )
+            VALUES (?, ?, '{other.consumption}', 1.0, 'other', tstzrange(?::timestamptz, null, '[)'))
+            RETURNING id
+            """.trimIndent(),
+            current.name,
+            controllableUnitId,
+            current.recordedFrom.atOffset(ZoneOffset.UTC),
+        )
+        revisions.zipWithNext().forEach { (revision, next) ->
+            queryLong(
+                """
+                INSERT INTO flex.technical_resource_history (
+                    id, name, controllable_unit_id, technology, category, maximum_active_power, device_type, record_time_range,
+                    recorded_by, replaced_by
+                )
+                VALUES (?, ?, ?, '{other.consumption}', '{}', 1.0, 'other', tstzrange(?::timestamptz, ?::timestamptz, '[)'), 0, 0)
+                RETURNING history_id
+                """.trimIndent(),
+                id,
+                revision.name,
+                controllableUnitId,
+                revision.recordedFrom.atOffset(ZoneOffset.UTC),
+                next.recordedFrom.atOffset(ZoneOffset.UTC),
+            )
+        }
+        return id
+    }
+
+    /**
+     * Seeds a controllable unit at a new accounting point in the [priceArea], with a contract for the [serviceProvider]
+     * from [contractFrom] to [contractTo]. The end user of the contract owns the accounting point. The unit is still
+     * new, so call [activateControllableUnit] before it is added to a service providing group.
+     */
+    fun insertControllableUnitWithContract(
+        serviceProvider: Long,
+        priceArea: String = "NO3",
+        contractFrom: Instant = osloMidnight("2024-01-01"),
+        contractTo: Instant? = null,
+    ): SeededControllableUnit {
+        val unit = insertControllableUnitAtNewAccountingPoint()
+        insertMeteringGridAreaPriceArea(unit.meteringGridArea, priceArea)
+        val endUser = insertParty(TestPartyRole.EU, "EU of the contract")
+        insertAccountingPointEndUser(unit.accountingPoint, endUser)
+        insertControllableUnitServiceProvider(unit.id, serviceProvider, endUser, validFrom = contractFrom, validTo = contractTo)
+        return unit
+    }
+
+    /**
+     * Seeds a controllable unit at a new accounting point, in a new metering grid area. With [revisions] the unit has been
+     * renamed through them, see [insertControllableUnitWithRevisions], and must be seeded with `Triggers.OFF`.
+     */
+    fun insertControllableUnitAtNewAccountingPoint(revisions: List<NameRevision>? = null): SeededControllableUnit {
+        val meteringGridArea = insertMeteringGridArea()
+        val accountingPoint = insertAccountingPoint()
+        insertAccountingPointMeteringGridArea(accountingPoint, meteringGridArea)
+        val unit = revisions?.let { insertControllableUnitWithRevisions(accountingPoint, it) } ?: insertControllableUnit(accountingPoint)
+        return SeededControllableUnit(unit, accountingPoint, meteringGridArea)
+    }
+
+    /**
+     * Relates the [party], which has the given [role], to the [unit] from [validFrom] to [validTo] (open-ended when null).
+     * The party is the end user or the energy supplier of the accounting point, its balance responsible party (through a
+     * new energy supplier), or the service provider with a contract on the unit.
+     *
+     * A contract needs an end user that owns the accounting point, so the service provider's contract has a new end user
+     * from 2024-01-01, which is why the period of a service provider can not start before that.
+     */
+    fun insertPartyRelatedToControllableUnit(
+        role: TestPartyRole,
+        party: Long,
+        unit: SeededControllableUnit,
+        validFrom: Instant = osloMidnight("2024-01-01"),
+        validTo: Instant? = null,
+    ) {
+        when (role) {
+            TestPartyRole.EU -> insertAccountingPointEndUser(unit.accountingPoint, party, validFrom, validTo)
+
+            TestPartyRole.ES -> insertAccountingPointEnergySupplier(unit.accountingPoint, party, validFrom, validTo)
+
+            TestPartyRole.BRP -> {
+                val energySupplier = insertParty(TestPartyRole.ES, "ES of the BRP")
+                insertAccountingPointEnergySupplier(unit.accountingPoint, energySupplier, validFrom, validTo)
+                insertEnergySupplierBalanceResponsibility(unit.meteringGridArea, energySupplier, party)
+            }
+
+            TestPartyRole.SP -> {
+                val endUser = insertParty(TestPartyRole.EU, "EU of the contract")
+                insertAccountingPointEndUser(unit.accountingPoint, endUser)
+                insertControllableUnitServiceProvider(unit.id, party, endUser, validFrom = validFrom, validTo = validTo)
+            }
+
+            else -> error("A $role is not related to a controllable unit through its accounting point")
+        }
+    }
+
+    /**
+     * Seeds a controllable unit as if it had been renamed through the [revisions], with the same rules as
+     * [insertTechnicalResourceWithRevisions]: seed it with [Triggers.OFF].
+     */
+    fun insertControllableUnitWithRevisions(accountingPointId: Long, revisions: List<NameRevision>): Long {
+        val current = revisions.last()
+        val columns = "business_id, name, status, regulation_direction, maximum_active_power, accounting_point_id, created_by_party_id"
+        val id = queryLong(
+            """
+            INSERT INTO flex.controllable_unit ($columns, record_time_range)
+            VALUES (?::uuid, ?, 'new', 'both', 1.0, ?, 0, tstzrange(?::timestamptz, null, '[)'))
+            RETURNING id
+            """.trimIndent(),
+            UUID.randomUUID().toString(),
+            current.name,
+            accountingPointId,
+            current.recordedFrom.atOffset(ZoneOffset.UTC),
+        )
+        val businessId = queryString("SELECT business_id::text FROM flex.controllable_unit WHERE id = ?", id)
+        revisions.zipWithNext().forEach { (revision, next) ->
+            queryLong(
+                """
+                INSERT INTO flex.controllable_unit_history (
+                    id, $columns, is_small, record_time_range, recorded_by, replaced_by
+                )
+                VALUES (?, ?::uuid, ?, 'new', 'both', 1.0, ?, 0, true, tstzrange(?::timestamptz, ?::timestamptz, '[)'), 0, 0)
+                RETURNING history_id
+                """.trimIndent(),
+                id,
+                businessId,
+                revision.name,
+                accountingPointId,
+                revision.recordedFrom.atOffset(ZoneOffset.UTC),
+                next.recordedFrom.atOffset(ZoneOffset.UTC),
+            )
+        }
+        return id
+    }
+
+    /**
+     * Renames the controllable unit, which archives the previous revision in the history. A revision is only archived
+     * when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameControllableUnit(id: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.controllable_unit SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Makes the controllable unit active, which needs a technical resource, so this seeds one with the given
+     * [technicalResourcePower]. A unit whose own maximum active power (1.0) exceeds the power of its technical
+     * resources cannot become a member of a service providing group.
+     */
+    fun activateControllableUnit(id: Long, technicalResourcePower: Double = 1.0) {
+        insertTechnicalResource(id, maximumActivePower = technicalResourcePower)
+        conn.prepareStatement("UPDATE flex.controllable_unit SET status = 'active' WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** A suspension of the controllable unit by the impacted system operator. The unit must be active. */
+    fun insertControllableUnitSuspension(
+        controllableUnitId: Long,
+        impactedSystemOperatorId: Long,
+        reason: String = "other",
+    ): Long =
+        queryLong(
+            "INSERT INTO flex.controllable_unit_suspension (controllable_unit_id, impacted_system_operator_id, reason) " +
+                "VALUES (?, ?, ?) RETURNING id",
+            controllableUnitId,
+            impactedSystemOperatorId,
+            reason,
+        )
+
+    /**
+     * Changes the reason of the suspension, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeSuspensionReason(id: Long, reason: String) {
+        conn.prepareStatement("UPDATE flex.controllable_unit_suspension SET reason = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, reason)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** A comment on the suspension, written by the identity [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertControllableUnitSuspensionComment(
+        suspensionId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment("controllable_unit_suspension_comment", "controllable_unit_suspension_id", suspensionId, createdBy, visibility, content)
+
+    /**
+     * Changes the content of the comment, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeCommentContent(id: Long, content: String) = changeContent("controllable_unit_suspension_comment", id, content)
+
+    /** A comment on the grid prequalification, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertGridPrequalificationComment(
+        gridPrequalificationId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_providing_group_grid_prequalification_comment",
+        "service_providing_group_grid_prequalification_id",
+        gridPrequalificationId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeGridPrequalificationCommentContent(id: Long, content: String) =
+        changeContent("service_providing_group_grid_prequalification_comment", id, content)
+
+    /** A comment on the grid suspension, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertGridSuspensionComment(
+        gridSuspensionId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_providing_group_grid_suspension_comment",
+        "service_providing_group_grid_suspension_id",
+        gridSuspensionId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeGridSuspensionCommentContent(id: Long, content: String) =
+        changeContent("service_providing_group_grid_suspension_comment", id, content)
+
+    /** A comment on the product application of a group, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertServiceProvidingGroupProductApplicationComment(
+        productApplicationId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_providing_group_product_application_comment",
+        "service_providing_group_product_application_id",
+        productApplicationId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeServiceProvidingGroupProductApplicationCommentContent(id: Long, content: String) =
+        changeContent("service_providing_group_product_application_comment", id, content)
+
+    /** A comment on the product suspension of a group, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertServiceProvidingGroupProductSuspensionComment(
+        productSuspensionId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_providing_group_product_suspension_comment",
+        "service_providing_group_product_suspension_id",
+        productSuspensionId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeServiceProvidingGroupProductSuspensionCommentContent(id: Long, content: String) =
+        changeContent("service_providing_group_product_suspension_comment", id, content)
+
+    /** A comment on the product application of a service provider, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertServiceProviderProductApplicationComment(
+        productApplicationId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_provider_product_application_comment",
+        "service_provider_product_application_id",
+        productApplicationId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeServiceProviderProductApplicationCommentContent(id: Long, content: String) =
+        changeContent("service_provider_product_application_comment", id, content)
+
+    /** A comment on the product suspension of a service provider, written by [createdBy]. [visibility] is `same_party` or `any_involved_party`. */
+    fun insertServiceProviderProductSuspensionComment(
+        productSuspensionId: Long,
+        createdBy: SeededActor,
+        visibility: String,
+        content: String = "Test comment",
+    ): Long = insertComment(
+        "service_provider_product_suspension_comment",
+        "service_provider_product_suspension_id",
+        productSuspensionId,
+        createdBy,
+        visibility,
+        content,
+    )
+
+    /** Changes the content of the comment, which archives the revision. Call it in a [seed] block of its own. */
+    fun changeServiceProviderProductSuspensionCommentContent(id: Long, content: String) =
+        changeContent("service_provider_product_suspension_comment", id, content)
+
+    @Suppress("LongParameterList")
+    private fun insertComment(table: String, parentColumn: String, parentId: Long, createdBy: SeededActor, visibility: String, content: String): Long =
+        queryLong(
+            "INSERT INTO flex.$table ($parentColumn, visibility, content, created_by) " +
+                "VALUES (?, ?, ?, (SELECT id FROM flex.identity WHERE eid = ?::uuid)) RETURNING id",
+            parentId,
+            visibility,
+            content,
+            createdBy.eid,
+        )
+
+    private fun changeContent(table: String, id: Long, content: String) {
+        conn.prepareStatement("UPDATE flex.$table SET content = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, content)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Changes the visibility of the comment, which archives the previous revision. Call it in a [seed] block of its own. */
+    fun changeCommentVisibility(id: Long, visibility: String) {
+        conn.prepareStatement("UPDATE flex.controllable_unit_suspension_comment SET visibility = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, visibility)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
 
     /** Inserts an organisation entity and a party of the given type, returning the entity id and party id. */
     private fun insertEntityAndParty(name: String, type: String, role: String): Pair<Long, Long> {
@@ -230,6 +716,33 @@ class SeedScope(private val conn: Connection) {
         entityId: Long = insertPersonEntity("Test entity"),
         clientId: Long? = null,
     ): SeededActor = SeededActor(entityId, null, "flex_entity", insertIdentity(entityId, null, clientId))
+
+    /** Attaches a file to the product application of a group, and returns the id of the attachment as the API shows it. */
+    fun insertServiceProvidingGroupProductApplicationAttachment(applicationId: Long, filename: String = "test.pdf"): Long {
+        val attachment = queryLong(
+            "INSERT INTO flex.attachment (filename, filename_sanitised, size_bytes) VALUES (?, ?, 1) RETURNING id",
+            filename,
+            filename,
+        )
+        return queryLong(
+            "INSERT INTO flex.service_providing_group_product_application_attachment " +
+                "(service_providing_group_product_application_id, attachment_id) VALUES (?, ?) RETURNING id",
+            applicationId,
+            attachment,
+        )
+    }
+
+    /** Records an event, as the lookup of a controllable unit does. The triggers of the resources record the others. */
+    fun insertEvent(type: String, sourceResource: String, sourceId: Long, subjectResource: String? = null, subjectId: Long? = null): Long =
+        queryLong(
+            "INSERT INTO flex.event (type, source_resource, source_id, subject_resource, subject_id) " +
+                "VALUES (public.text2ltree(?), ?, ?, ?, ?) RETURNING id",
+            type,
+            sourceResource,
+            sourceId,
+            subjectResource,
+            subjectId,
+        )
 
     /** Inserts a person entity with a unique email address as business id. */
     fun insertPersonEntity(name: String = "Test person"): Long =
@@ -364,6 +877,26 @@ class SeedScope(private val conn: Connection) {
             status.value,
         )
 
+    /**
+     * Renames the group, which archives the previous revision in the history. A revision is only archived when the
+     * change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun renameServiceProvidingGroup(id: Long, name: String) {
+        conn.prepareStatement("UPDATE flex.service_providing_group SET name = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Makes the group active, which needs a member. Call it in a [seed] block of its own, after the membership is added. */
+    fun activateServiceProvidingGroup(id: Long) {
+        conn.prepareStatement("UPDATE flex.service_providing_group SET status = 'active' WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
     /** Adds the controllable unit to the group. A null [validTo] means the membership has no end. */
     fun insertMembership(
         controllableUnitId: Long,
@@ -380,6 +913,17 @@ class SeedScope(private val conn: Connection) {
             validFrom.atOffset(ZoneOffset.UTC),
             validTo?.atOffset(ZoneOffset.UTC),
         )
+
+    /** Ends the membership at [validTo], which is the way a unit leaves a group without the membership being deleted. */
+    fun endMembership(membershipId: Long, validTo: Instant) {
+        conn.prepareStatement(
+            "UPDATE flex.service_providing_group_membership SET valid_time_range = tstzrange(lower(valid_time_range), ?::timestamptz, '[)') WHERE id = ?",
+        ).use { stmt ->
+            stmt.setObject(1, validTo.atOffset(ZoneOffset.UTC))
+            stmt.setLong(2, membershipId)
+            stmt.executeUpdate()
+        }
+    }
 
     /**
      * Deletes the membership. Seed with [Triggers.ON] so that the audit trigger moves the deleted row
@@ -407,18 +951,75 @@ class SeedScope(private val conn: Connection) {
         )
 
     /**
-     * Approves the grid prequalification as of now (`prequalified_at`), like the SO does when it approves
-     * the grid prequalification or the changes to it. Call it in a seed block of its own, so that the
-     * record time of other rows is clearly before or after the approval.
+     * A grid prequalification that is approved, which a suspension of the group by the impacted system operator needs.
+     * It is inserted as requested and then approved, as the status of a new grid prequalification must be requested.
      */
-    fun approveGridPrequalification(gridPrequalificationId: Long) {
+    fun insertApprovedGridPrequalification(
+        serviceProvidingGroupId: Long,
+        impactedSystemOperatorId: Long,
+        prequalifiedAt: Instant = Instant.parse("2024-01-01T08:00:00Z"),
+    ): Long {
+        val id = insertGridPrequalification(serviceProvidingGroupId, impactedSystemOperatorId)
         conn.prepareStatement(
-            "UPDATE flex.service_providing_group_grid_prequalification " +
-                "SET status = 'approved', prequalified_at = current_timestamp WHERE id = ?",
+            "UPDATE flex.service_providing_group_grid_prequalification SET status = 'approved', prequalified_at = ? WHERE id = ?",
         ).use { stmt ->
-            stmt.setLong(1, gridPrequalificationId)
+            stmt.setObject(1, prequalifiedAt.atOffset(ZoneOffset.UTC))
+            stmt.setLong(2, id)
             stmt.executeUpdate()
         }
+        return id
+    }
+
+    /** A suspension of the group by the impacted system operator, which needs an approved grid prequalification of both. */
+    fun insertGridSuspension(serviceProvidingGroupId: Long, impactedSystemOperatorId: Long, reason: String = "other"): Long =
+        queryLong(
+            "INSERT INTO flex.service_providing_group_grid_suspension (service_providing_group_id, impacted_system_operator_id, reason) " +
+                "VALUES (?, ?, ?) RETURNING id",
+            serviceProvidingGroupId,
+            impactedSystemOperatorId,
+            reason,
+        )
+
+    /** Deletes the suspension, which moves it to the history. */
+    fun deleteGridSuspension(id: Long) {
+        conn.prepareStatement("DELETE FROM flex.service_providing_group_grid_suspension WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Changes the reason of the suspension, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeGridSuspensionReason(id: Long, reason: String) {
+        conn.prepareStatement("UPDATE flex.service_providing_group_grid_suspension SET reason = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, reason)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Changes the status of the grid prequalification, which archives the previous revision in the history. A revision
+     * is only archived when the change is made in another transaction than the insert, so call this in a [seed] block
+     * of its own.
+     */
+    fun changeGridPrequalificationStatus(id: Long, status: ServiceProvidingGroupGridPrequalificationStatus) {
+        conn.prepareStatement("UPDATE flex.service_providing_group_grid_prequalification SET status = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, status.value)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * Runs the job that keeps the grid prequalifications in line with the product applications and memberships of the
+     * groups. The database runs it every hour, and when a product application changes. Call it in a [seed] block of its
+     * own, after the data it reads is in place.
+     */
+    fun syncGridPrequalifications() {
+        conn.createStatement().use { it.execute("SELECT flex.service_providing_group_grid_prequalification_sync()") }
     }
 
     fun insertMeteringGridArea(name: String = "Test MGA", businessId: String = uniqueEicY()): Long =
@@ -570,33 +1171,178 @@ class SeedScope(private val conn: Connection) {
         }
     }
 
-    fun insertProductType(name: String = "Test product type"): Long =
+    fun insertProductType(name: String = "Test product type", businessId: String = UUID.randomUUID().toString()): Long =
         queryLong(
             "INSERT INTO flex.product_type (business_id, name, service) VALUES (?, ?, 'test') RETURNING id",
-            UUID.randomUUID().toString(),
+            businessId,
             name,
         )
 
     /**
      * Note: the trigger that creates grid prequalifications from product applications
      * does not run when seeding with [Triggers.OFF], so this does not make the SO an ISO.
+     * The timestamps are what the triggers on the status of the application check, and are not set by default.
      */
+    @Suppress("LongParameterList")
     fun insertServiceProvidingGroupProductApplication(
         serviceProvidingGroupId: Long,
         procuringSystemOperatorId: Long,
         productTypeIds: List<Long>,
         status: ServiceProvidingGroupProductApplicationStatus = ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+        completeAt: Instant? = null,
+        prequalifiedAt: Instant? = null,
+        verifiedAt: Instant? = null,
     ): Long =
         queryLong(
             "INSERT INTO flex.service_providing_group_product_application " +
                 "(service_providing_group_id, procuring_system_operator_id, product_type_ids, status, " +
-                "maximum_active_power_up, maximum_active_power_down) " +
-                "VALUES (?, ?, ?::bigint[], ?, 1.0, 1.0) RETURNING id",
+                "maximum_active_power_up, maximum_active_power_down, complete_at, prequalified_at, verified_at) " +
+                "VALUES (?, ?, ?::bigint[], ?, 1.0, 1.0, ?::timestamptz, ?::timestamptz, ?::timestamptz) RETURNING id",
             serviceProvidingGroupId,
             procuringSystemOperatorId,
             conn.createArrayOf("bigint", productTypeIds.toTypedArray()),
             status.value,
+            completeAt?.atOffset(ZoneOffset.UTC),
+            prequalifiedAt?.atOffset(ZoneOffset.UTC),
+            verifiedAt?.atOffset(ZoneOffset.UTC),
         )
+
+    /**
+     * Changes the additional information of the product application, which archives the previous revision in the
+     * history. A revision is only archived when the change is made in another transaction than the insert, so call
+     * this in a [seed] block of its own.
+     */
+    fun changeServiceProvidingGroupProductApplicationInformation(id: Long, additionalInformation: String) {
+        conn.prepareStatement("UPDATE flex.service_providing_group_product_application SET additional_information = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, additionalInformation)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * A suspension of the group for the product types, by the procuring system operator. With [Triggers.ON] the
+     * operator must have a product application for the group that is ready for the market, for each product type.
+     */
+    fun insertServiceProvidingGroupProductSuspension(
+        serviceProvidingGroupId: Long,
+        procuringSystemOperatorId: Long,
+        productTypeIds: List<Long>,
+        reason: String = "other",
+    ): Long =
+        queryLong(
+            "INSERT INTO flex.service_providing_group_product_suspension " +
+                "(service_providing_group_id, procuring_system_operator_id, product_type_ids, reason) " +
+                "VALUES (?, ?, ?::bigint[], ?) RETURNING id",
+            serviceProvidingGroupId,
+            procuringSystemOperatorId,
+            conn.createArrayOf("bigint", productTypeIds.toTypedArray()),
+            reason,
+        )
+
+    /**
+     * Changes the reason of the suspension, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeServiceProvidingGroupProductSuspensionReason(id: Long, reason: String) {
+        conn.prepareStatement("UPDATE flex.service_providing_group_product_suspension SET reason = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, reason)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Deletes the suspension, which moves it to the history. Seed with [Triggers.ON], so that the audit trigger runs. */
+    fun deleteServiceProvidingGroupProductSuspension(id: Long) {
+        conn.prepareStatement("DELETE FROM flex.service_providing_group_product_suspension WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * An application of the service provider to the system operator for the product types. With [Triggers.ON] the
+     * product types must be active for the system operator, and the status must be requested. A qualified application
+     * gets a time of qualification.
+     */
+    fun insertServiceProviderProductApplication(
+        serviceProviderId: Long,
+        systemOperatorId: Long,
+        productTypeIds: List<Long>,
+        status: ServiceProviderProductApplicationStatus = ServiceProviderProductApplicationStatus.REQUESTED,
+    ): Long =
+        queryLong(
+            "INSERT INTO flex.service_provider_product_application " +
+                "(service_provider_id, system_operator_id, product_type_ids, status, qualified_at) " +
+                "VALUES (?, ?, ?::bigint[], ?, CASE WHEN ? = 'qualified' THEN current_timestamp END) RETURNING id",
+            serviceProviderId,
+            systemOperatorId,
+            conn.createArrayOf("bigint", productTypeIds.toTypedArray()),
+            status.value,
+            status.value,
+        )
+
+    /**
+     * Changes the status of the application, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeServiceProviderProductApplicationStatus(id: Long, status: ServiceProviderProductApplicationStatus) {
+        conn.prepareStatement("UPDATE flex.service_provider_product_application SET status = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, status.value)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Qualifies the application, with the time of the qualification that the status needs. */
+    fun qualifyServiceProviderProductApplication(id: Long) {
+        conn.prepareStatement(
+            "UPDATE flex.service_provider_product_application SET status = 'qualified', qualified_at = current_timestamp WHERE id = ?",
+        ).use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /**
+     * A suspension of the service provider for the product types, by the procuring system operator. With [Triggers.ON]
+     * the operator must have qualified the service provider for each product type.
+     */
+    fun insertServiceProviderProductSuspension(
+        serviceProviderId: Long,
+        procuringSystemOperatorId: Long,
+        productTypeIds: List<Long>,
+        reason: String = "other",
+    ): Long =
+        queryLong(
+            "INSERT INTO flex.service_provider_product_suspension " +
+                "(service_provider_id, procuring_system_operator_id, product_type_ids, reason) " +
+                "VALUES (?, ?, ?::bigint[], ?) RETURNING id",
+            serviceProviderId,
+            procuringSystemOperatorId,
+            conn.createArrayOf("bigint", productTypeIds.toTypedArray()),
+            reason,
+        )
+
+    /**
+     * Changes the reason of the suspension, which archives the previous revision in the history. A revision is only
+     * archived when the change is made in another transaction than the insert, so call this in a [seed] block of its own.
+     */
+    fun changeServiceProviderProductSuspensionReason(id: Long, reason: String) {
+        conn.prepareStatement("UPDATE flex.service_provider_product_suspension SET reason = ? WHERE id = ?").use { stmt ->
+            stmt.setString(1, reason)
+            stmt.setLong(2, id)
+            stmt.executeUpdate()
+        }
+    }
+
+    /** Deletes the suspension, which moves it to the history. Seed with [Triggers.ON], so that the audit trigger runs. */
+    fun deleteServiceProviderProductSuspension(id: Long) {
+        conn.prepareStatement("DELETE FROM flex.service_provider_product_suspension WHERE id = ?").use { stmt ->
+            stmt.setLong(1, id)
+            stmt.executeUpdate()
+        }
+    }
 
     /** Inserts a person entity. Uses [businessId] as the name suffix so entities are easy to tell apart. */
     fun insertPerson(businessId: String, businessIdType: String = "email", name: String = "Person $businessId"): Long =
@@ -643,6 +1389,15 @@ class SeedScope(private val conn: Connection) {
             status,
             key,
         )
+
+    private fun queryString(sql: String, vararg params: Any?): String =
+        conn.prepareStatement(sql).use { stmt ->
+            params.forEachIndexed { i, p -> stmt.setObject(i + 1, p) }
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getString(1)
+            }
+        }
 
     private fun queryLong(sql: String, vararg params: Any?): Long =
         conn.prepareStatement(sql).use { stmt ->

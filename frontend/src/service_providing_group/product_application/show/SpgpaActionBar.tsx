@@ -19,6 +19,7 @@ import {
   updateServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { throwOnError } from "../../../util";
+import { Role } from "../../../auth/permissions";
 import { spgpaQueryKey } from "./useSpgpaShowViewModel";
 
 type ActionConfig = {
@@ -48,7 +49,18 @@ const getRejectAction = (
   commentPlaceholder: translate("text.spgpa_reject_placeholder"),
 });
 
-const getActionsForStatus = (
+const getResendAction = (
+  translate: ReturnType<typeof useTranslate>,
+): ActionConfig => ({
+  label: translate("text.spgpa_resend_label"),
+  payload: { status: "requested" },
+  confirmTitle: translate("text.spgpa_resend_title"),
+  confirmContent: translate("text.spgpa_resend_description"),
+  variant: "primary",
+  requiresCompleteAt: false,
+});
+
+const getSystemOperatorActions = (
   spgpa: ServiceProvidingGroupProductApplication,
   translate: ReturnType<typeof useTranslate>,
 ): ActionConfig[] => {
@@ -82,6 +94,22 @@ const getActionsForStatus = (
         },
         rejectAction,
       ];
+    default:
+      return [];
+  }
+};
+
+export const getActionsForStatus = (
+  spgpa: ServiceProvidingGroupProductApplication,
+  translate: ReturnType<typeof useTranslate>,
+  role: Role | undefined,
+): ActionConfig[] => {
+  switch (role) {
+    case "flex_service_provider":
+      return spgpa.status === "rejected" ? [getResendAction(translate)] : [];
+    case "flex_system_operator":
+    case "flex_flexibility_information_system_operator":
+      return getSystemOperatorActions(spgpa, translate);
     default:
       return [];
   }
@@ -228,11 +256,12 @@ const ActionButton = ({
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
+  role: Role | undefined;
 };
 
-export const SpgpaActionBar = ({ spgpa }: Props) => {
+export const SpgpaActionBar = ({ spgpa, role }: Props) => {
   const translate = useTranslate();
-  const actions = getActionsForStatus(spgpa, translate);
+  const actions = getActionsForStatus(spgpa, translate, role);
 
   if (actions.length === 0) {
     return null;

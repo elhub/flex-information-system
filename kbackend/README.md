@@ -26,8 +26,8 @@ one place.
 The same application image can start in two modes, selected by the `JOB`
 environment variable (see `Application.kt`):
 
-- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data
-  and auth APIs.
+- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
+  grid and auth APIs.
 - **Job mode** (`JOB` set): the backend does **not** start. Only the selected
   job runs, then the process exits.
 
@@ -54,7 +54,7 @@ be edited by hand.
 | API  | Source                              | Package                                  |
 |------|-------------------------------------|------------------------------------------|
 | data | `kbackend/data/static/openapi.json` | `no.elhub.flex.api.model.dto.generated`  |
-| auth | `backend/auth/static/openapi.json`  | `no.elhub.flex.auth.model.dto.generated` |
+| auth | `kbackend/auth/static/openapi.json` | `no.elhub.flex.auth.model.dto.generated` |
 
 The documents are produced from the files in `openapi/`, so generate them first
 (`just openapi` does everything in the right order). To only run the model
@@ -124,10 +124,12 @@ Each API serves an Elements page and its OpenAPI document under its own path:
 |------|--------------------|-----------------------------|
 | Data | `GET /api/v1/`     | `GET /api/v1/openapi.json`  |
 | Grid | `GET /grid/v0/`    | `GET /grid/v0/openapi.json` |
+| Auth | `GET /auth/v1/`    | `GET /auth/v1/openapi.json` |
 
 The documents are bundled at build time from `data/static/openapi.json` and
-`grid/static/openapi.json`. The `servers` entry of each is set to
-`FLEX_BASE_URL` plus the path of the API, which is the URL its clients use.
+`grid/static/openapi.json` and `auth/static/openapi.json`. The `servers` entry
+of each is set to `FLEX_BASE_URL` plus the path of the API, which is the URL
+its clients use.
 
 ## Testing
 
@@ -150,7 +152,8 @@ in `test/api_client_tests`, one resource at a time, with the same scenarios.
 ./gradlew apiTest
 ```
 
-Docker must be running. The first run pulls `postgrest/postgrest`.
+Docker must be running. The first run pulls `postgrest/postgrest` and
+`adobe/s3mock`.
 
 Run a single class or test:
 
@@ -168,7 +171,9 @@ separate "API tests" step of the kbackend build.
 - `PostgresTestContainer` applies the Liquibase migrations once per run.
   `PostgrestTestContainer` starts PostgREST on top of it with the same settings
   as `docker-compose.yml`.
-- `apiTestApplication()` starts the backend's data routes in-process
+- `apiTestServer()` starts the backend's data routes in-process, on a free port.
+  The routes that kbackend implements itself (the lookups and the attachments)
+  run on the same database, with an S3Mock container for the attachments.
 - The tests run one after another against the same database.
 
 #### Writing a test

@@ -252,6 +252,45 @@ class DataApiRoutesTest :
             }
         }
 
+        context("relaying responses") {
+            test("a single object is answered as application/json, not with the media type of PostgREST") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/party")).willReturn(
+                        aResponse().withStatus(200)
+                            .withHeader("Content-Type", "application/vnd.pgrst.object+json; charset=utf-8")
+                            .withBody("""{"id":1}"""),
+                    ),
+                )
+
+                val response = app.client.get("/api/v1/party/1") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.headers["Content-Type"] shouldBe "application/json"
+                response.bodyAsText() shouldBe """{"id":1}"""
+            }
+
+            test("a response keeps the media type PostgREST answered with") {
+                postgrest.stubFor(
+                    get(urlPathEqualTo("/party")).willReturn(
+                        aResponse().withStatus(200).withHeader("Content-Type", "text/csv; charset=utf-8").withBody("id\n1\n"),
+                    ),
+                )
+
+                val response = app.client.get("/api/v1/party") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                    header("Accept", "text/csv")
+                }
+
+                response.status shouldBe HttpStatusCode.OK
+                response.headers["Content-Type"] shouldBe "text/csv; charset=utf-8"
+                response.bodyAsText() shouldBe "id\n1\n"
+            }
+        }
+
         context("writing") {
             test("POST sends the body and asks for the created object") {
                 postgrest.stubFor(post(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(201).withBody("""{"id":3}""")))
@@ -272,6 +311,21 @@ class DataApiRoutesTest :
                         .withHeader("Prefer", equalTo("return=representation"))
                         .withHeader("Accept", equalTo("application/vnd.pgrst.object+json")),
                 )
+            }
+
+            test("POST with a lowercase content-length header, as sent over HTTP/2, is not rejected") {
+                postgrest.stubFor(post(urlPathEqualTo("/party")).willReturn(aResponse().withStatus(201).withBody("""{"id":3}""")))
+                val body = """{"name":"p"}"""
+
+                val response = app.client.post("/api/v1/party") {
+                    header("Authorization", "Bearer ${token()}")
+                    header("Api-Version", VERSION)
+                    headers.append("content-length", body.length.toString())
+                    headers.append("content-type", "application/json")
+                    setBody(body)
+                }
+
+                response.status shouldBe HttpStatusCode.Created
             }
 
             test("PATCH of something the caller cannot update gets a friendly error") {

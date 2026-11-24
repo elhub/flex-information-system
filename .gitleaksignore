@@ -20,4 +20,4 @@ a2e03e98dd070447283fb25649eab499ceae5cec:openapi/openapi-auth.json:jwt:541
 docs/technical/auth/getting-started.md:generic-api-key:115
 local/kbackend/dev.env:generic-api-key:6
 openapi/openapi-auth.yml:jwt:196
-backend/auth/static/openapi.json:jwt:241
+kbackend/auth/static/openapi.json:jwt:241
