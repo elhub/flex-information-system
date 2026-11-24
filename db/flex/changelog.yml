@@ -378,11 +378,6 @@ databaseChangeLog:
       endsWithFilter: _rls.sql
       maxDepth: 1
 
-  # uses spg_cu_snapshot (notice) and current_party_is_pso_in_spg (RLS)
-  - include:
-      file: ./service_providing_group_grid_prequalification_substation_power.sql
-      relativeToChangelogFile: true
-
   - includeAll:
       path: ./grants/
       relativeToChangelogFile: true
@@ -406,3 +401,8 @@ databaseChangeLog:
         - sql: GRANT SELECT ON ALL TABLES IN SCHEMA flex TO flex_operation_readonly
         - sql: GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA flex TO flex_operation_update
         - sql: GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA flex TO flex_operation_readwrite
+
+  # the reverted power per substation view for grid prequalifications
+  - include:
+      file: ./service_providing_group_grid_prequalification_substation_power_drop.sql
+      relativeToChangelogFile: true
