@@ -127,6 +127,7 @@ object GeneratedDataApiRoutes {
         ApiRoute(HttpMethod.Get, "/service_providing_group_grid_prequalification_comment_history/{id}"),
         ApiRoute(HttpMethod.Get, "/service_providing_group_grid_prequalification_history"),
         ApiRoute(HttpMethod.Get, "/service_providing_group_grid_prequalification_history/{id}"),
+        ApiRoute(HttpMethod.Get, "/service_providing_group_grid_prequalification_substation_power"),
         ApiRoute(HttpMethod.Get, "/service_providing_group_grid_suspension"),
         ApiRoute(HttpMethod.Post, "/service_providing_group_grid_suspension"),
         ApiRoute(HttpMethod.Delete, "/service_providing_group_grid_suspension/{id}"),
@@ -341,10 +342,14 @@ object GeneratedDataApiRoutes {
         "service_providing_group_grid_prequalification" to mapOf(
             "impacted_system_operator" to "party",
             "service_providing_group" to "service_providing_group",
+            "substation_power" to "service_providing_group_grid_prequalification_substation_power",
         ),
         "service_providing_group_grid_prequalification_history" to mapOf(
             "impacted_system_operator_history" to "party_history",
             "service_providing_group_history" to "service_providing_group_history",
+        ),
+        "service_providing_group_grid_prequalification_substation_power" to mapOf(
+            "service_providing_group_grid_prequalification" to "service_providing_group_grid_prequalification",
         ),
         "service_providing_group_grid_suspension" to mapOf(
             "impacted_system_operator" to "party",
