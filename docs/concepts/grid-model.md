@@ -259,7 +259,7 @@ typically be connected to the black and white dots.
 
 An area (blue) is separated from the rest by the red cuts. This splits the graph
 in two. The data model must then contain information about which of the graphs
-that is the one we are targeting, e.g. by pointing at one of the nodes within
+is the one we are targeting, e.g. by pointing at one of the nodes within
 the circle. Any accounting point connected to the nodes inside the blue area
 then belongs to the area.
 
@@ -271,15 +271,15 @@ would impact the area.
 
 Using cutsets to define areas requires that the graph is granular enough to
 express the exact cut. Some areas might have cuts "inside" substations, which
-makes it impossible to use in the current state of the common nation grid model.
+makes it impossible to use in the current state of the common national grid model.
 
 #### Using component lists
 
 Another approach of defining areas is listing all components that are part of
 the area. This could be as simple as a list of substations. Again, due to the
 need to have cuts "inside" a substation, we need to express it using
-line+substation pairs. A area definition becomes a list of `(substation,line)`
-tuples. Some substations does not have lines, thus line is nullable.
+line+substation pairs. An area definition becomes a list of `(substation,line)`
+tuples. Some substations do not have lines, thus line is nullable.
 
 ### Aggregation to service providing groups using areas
 
