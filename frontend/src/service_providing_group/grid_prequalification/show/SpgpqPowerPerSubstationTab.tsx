@@ -1,20 +1,31 @@
+import { useState } from "react";
 import { useTranslate } from "ra-core";
 import { Loader } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
+import { useSpgControllableUnitsMap } from "../../show/useSpgControllableUnits";
+import { SpgSubstationControllableUnitsTable } from "../../show/SpgSubstationControllableUnitsTable";
 import {
   SpgpqSubstationPowerRow,
   useSpgpqSubstationPower,
 } from "./useSpgpqSubstationPower";
 
 type Props = {
+  spgId: number;
   spgpqId: number;
   powerScale: Scale;
 };
 
-export const SpgpqPowerPerSubstationTab = ({ spgpqId, powerScale }: Props) => {
+export const SpgpqPowerPerSubstationTab = ({
+  spgId,
+  spgpqId,
+  powerScale,
+}: Props) => {
   const translate = useTranslate();
   const { data, isLoading, error } = useSpgpqSubstationPower(spgpqId);
+
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const cuMap = useSpgControllableUnitsMap(spgId, Array.from(expanded));
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
@@ -53,5 +64,25 @@ export const SpgpqPowerPerSubstationTab = ({ spgpqId, powerScale }: Props) => {
   if (isLoading) return <Loader />;
   if (error) throw error;
 
-  return <SimpleTable data={data ?? []} columns={columns} className="w-full" />;
+  return (
+    <SimpleTable
+      expandPanel={(row) => (
+        <SpgSubstationControllableUnitsTable
+          data={cuMap.get(row.substationBusinessId) ?? []}
+          powerScale={powerScale}
+        />
+      )}
+      onExpand={(row, isOpen) =>
+        setExpanded((prev) => {
+          const next = new Set(prev);
+          if (isOpen) next.add(row.substationBusinessId);
+          else next.delete(row.substationBusinessId);
+          return next;
+        })
+      }
+      data={data ?? []}
+      columns={columns}
+      className="w-full"
+    />
+  );
 };

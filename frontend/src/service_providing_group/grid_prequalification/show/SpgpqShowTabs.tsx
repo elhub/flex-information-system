@@ -124,6 +124,7 @@ export const SpgpqShowTabs = ({
       {showPowerPerSubstation && (
         <Tabs.Panel value="power_per_substation">
           <SpgpqPowerPerSubstationTab
+            spgId={spgId}
             spgpqId={spgpqId}
             powerScale={powerScale}
           />
