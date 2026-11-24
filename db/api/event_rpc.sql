@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-event-source-create endDelimiter:-- runOnChange:true runAlways:true
+-- changeset flex:api-event-source-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.event_source(
     source_resource text,
     source_id bigint
@@ -27,12 +27,12 @@ AS $$
       AND e.source_id IS NOT DISTINCT FROM event_source.source_id;
 $$;
 
--- changeset flex:api-event-source-grants runOnChange:true runAlways:true
+-- changeset flex:api-event-source-grants runOnChange:true
 GRANT EXECUTE ON FUNCTION api.event_source(text, bigint)
 TO flex_common;
 
 
--- changeset flex:api-event-subject-create endDelimiter:-- runOnChange:true runAlways:true
+-- changeset flex:api-event-subject-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.event_subject(
     subject_resource text,
     subject_id bigint
@@ -58,6 +58,6 @@ AS $$
       AND e.subject_id IS NOT DISTINCT FROM event_subject.subject_id;
 $$;
 
--- changeset flex:api-event-subject-grants runOnChange:true runAlways:true
+-- changeset flex:api-event-subject-grants runOnChange:true
 GRANT EXECUTE ON FUNCTION api.event_subject(text, bigint)
 TO flex_common;
