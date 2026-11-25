@@ -14,18 +14,29 @@ type Props = {
   spgId: number;
   spgpqId: number;
   powerScale: Scale;
+  impactedSystemOperatorId: number;
+  // a PSO of the SPG sees all CUs of the group, others only the CUs of the
+  // impacted system operator
+  isPso: boolean;
 };
 
 export const SpgpqPowerPerSubstationTab = ({
   spgId,
   spgpqId,
   powerScale,
+  impactedSystemOperatorId,
+  isPso,
 }: Props) => {
   const translate = useTranslate();
   const { data, isLoading, error } = useSpgpqSubstationPower(spgpqId);
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const cuMap = useSpgControllableUnitsMap(spgId, Array.from(expanded), "name");
+  const cuMap = useSpgControllableUnitsMap(
+    spgId,
+    Array.from(expanded),
+    "name",
+    isPso ? undefined : impactedSystemOperatorId,
+  );
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);

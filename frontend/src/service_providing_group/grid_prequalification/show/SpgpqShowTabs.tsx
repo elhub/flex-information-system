@@ -127,6 +127,8 @@ export const SpgpqShowTabs = ({
             spgId={spgId}
             spgpqId={spgpqId}
             powerScale={powerScale}
+            impactedSystemOperatorId={spgpq.impacted_system_operator_id}
+            isPso={isPso}
           />
         </Tabs.Panel>
       )}
