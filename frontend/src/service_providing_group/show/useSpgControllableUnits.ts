@@ -22,16 +22,20 @@ export type SpgControllableUnitRow = {
   substationBusinessId: string | null;
 };
 
+/** How the substation is identified: by its business ID or by its name. */
+export type SubstationKey = "business_id" | "name";
+
 const fetchSpgControllableUnits = async (
   spgId: number,
   substationBusinessId: string,
+  filterBy: SubstationKey,
 ): Promise<SpgControllableUnitRow[]> => {
   const query: Record<string, string> = {
     embed:
       "controllable_unit!(summary,accounting_point!(grid_location!,balance_responsible_party(balance_responsible_party)))",
     valid_at: new Date().toISOString(),
     service_providing_group_id: `eq.${spgId}`,
-    "controllable_unit.accounting_point.grid_location.business_id": `eq.${substationBusinessId}`,
+    [`controllable_unit.accounting_point.grid_location.${filterBy}`]: `eq.${substationBusinessId}`,
   };
 
   const memberships = await listServiceProvidingGroupMembership({
@@ -65,17 +69,23 @@ const fetchSpgControllableUnits = async (
 const spgControllableUnitsQueryKey = (
   spgId: number | undefined,
   substationBusinessId: string,
-) => ["spg_cu", spgId, substationBusinessId];
+  filterBy: SubstationKey,
+) => ["spg_cu", spgId, substationBusinessId, filterBy];
 
 export const useSpgControllableUnitsMap = (
   spgId: number | undefined,
   substationBusinessIds: string[],
+  filterBy: SubstationKey = "business_id",
 ): Map<string, SpgControllableUnitRow[] | undefined> => {
   const results = useQueries({
     queries: substationBusinessIds.map((substationBusinessId) => ({
-      queryKey: spgControllableUnitsQueryKey(spgId, substationBusinessId),
+      queryKey: spgControllableUnitsQueryKey(
+        spgId,
+        substationBusinessId,
+        filterBy,
+      ),
       queryFn: () =>
-        fetchSpgControllableUnits(spgId ?? 0, substationBusinessId),
+        fetchSpgControllableUnits(spgId ?? 0, substationBusinessId, filterBy),
       enabled: !!spgId,
     })),
   });
