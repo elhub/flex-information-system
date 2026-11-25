@@ -7,7 +7,6 @@
 -- These changesets recreate the functions and their grants.
 
 -- changeset flex:substation-power-embedding-restore-spggp endDelimiter:--
--- noqa: disable=LT05
 CREATE OR REPLACE FUNCTION api.service_providing_group_grid_prequalification(
     api.service_providing_group_grid_prequalification_substation_power
 )
@@ -16,7 +15,6 @@ RETURNS SETOF api.service_providing_group_grid_prequalification ROWS 1 AS $$
   from api.service_providing_group_grid_prequalification
   where id = $1.service_providing_group_grid_prequalification_id
 $$ STABLE LANGUAGE sql;
--- noqa: enable=LT05
 
 GRANT EXECUTE ON FUNCTION
 api.service_providing_group_grid_prequalification(
@@ -25,7 +23,6 @@ api.service_providing_group_grid_prequalification(
 TO flex_common, flex_entity;
 
 -- changeset flex:substation-power-embedding-restore-substation-power endDelimiter:--
--- noqa: disable=LT05
 CREATE OR REPLACE FUNCTION api.substation_power(
     api.service_providing_group_grid_prequalification
 )
@@ -34,7 +31,6 @@ RETURNS SETOF api.service_providing_group_grid_prequalification_substation_power
   from api.service_providing_group_grid_prequalification_substation_power
   where service_providing_group_grid_prequalification_id = $1.id
 $$ STABLE LANGUAGE sql;
--- noqa: enable=LT05
 
 GRANT EXECUTE ON FUNCTION
 api.substation_power(

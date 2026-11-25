@@ -11,18 +11,17 @@ CREATE OR REPLACE VIEW service_providing_group_grid_prequalification_substation_
 --   * the CUs and power the SPGGP has now ("own"), and
 --   * the power of all CUs that have been approved for the same SO in the
 --     same substation ("total approved").
--- Substations are identified by name, as the same substation can have
--- different business IDs.
 WITH (security_invoker = true) AS (
-    WITH own AS (
+    WITH current_power_by_station AS (
         -- The current CUs of the SPG of each SPGGP, per substation.
         -- The impacted SO only sees the CUs it is CSO of. A PSO of the SPG sees
         -- all CUs of the group.
         SELECT
             gp.id AS gp_id,
             gp.impacted_system_operator_id AS so_id,
-            cu.maximum_active_power AS power,
-            apgl.name
+            apgl.name AS substation_name,
+            COUNT(*) AS controllable_unit_count,
+            SUM(cu.maximum_active_power) AS maximum_active_power
         FROM flex.service_providing_group_grid_prequalification AS gp
             INNER JOIN flex.service_providing_group_membership AS spgm
                 ON gp.service_providing_group_id = spgm.service_providing_group_id
@@ -39,37 +38,33 @@ WITH (security_invoker = true) AS (
                     AND ap_so.valid_time_range @> current_timestamp
             )
             OR flex.current_party_is_pso_in_spg(gp.service_providing_group_id)
+        GROUP BY gp.id, gp.impacted_system_operator_id, apgl.name
     ),
 
-    -- The CUs each approved SPGGP had when it was approved, and still has.
-    -- A CU added later is not counted until the changes are approved
-    -- (prequalified_at moves).
-    -- The snapshot is expensive (about 30 ms), so it is called once for each
-    -- (SPG, SO, approval time) in the subquery. Do not call it from "own":
-    -- that has one row per CU, which made the view take over a minute.
-    approved_cu AS (
-        SELECT DISTINCT
-            a.so_id,
-            cu.id AS cu_id,
-            cu.accounting_point_id,
-            cu.maximum_active_power AS power
-        FROM (
-            SELECT DISTINCT
-                service_providing_group_id AS spg_id,
-                impacted_system_operator_id AS so_id,
-                prequalified_at
-            FROM flex.service_providing_group_grid_prequalification
-            WHERE status IN ('approved', 'conditionally_approved')
-        ) AS a
+    -- Compute the historical snapshot per approval before joining current memberships.
+    -- Using existing spg_cu_snapshot function to find which CUs has changed since prequalified_at
+    approval_snapshot AS MATERIALIZED (
+        SELECT
+            gp.service_providing_group_id AS spg_id,
+            gp.impacted_system_operator_id AS so_id,
+            snapshot.controllable_unit_id AS cu_id
+        FROM flex.service_providing_group_grid_prequalification AS gp
             CROSS JOIN LATERAL flex.spg_cu_snapshot(
-                a.spg_id, a.so_id, a.prequalified_at
+                gp.service_providing_group_id,
+                gp.impacted_system_operator_id,
+                gp.prequalified_at
             ) AS snapshot
-            INNER JOIN flex.controllable_unit AS cu
-                ON snapshot.controllable_unit_id = cu.id
-            INNER JOIN flex.service_providing_group_membership AS spgm
-                ON spgm.service_providing_group_id = a.spg_id
-                    AND spgm.controllable_unit_id = cu.id
-                    AND spgm.valid_time_range @> current_timestamp
+        WHERE gp.status IN ('approved', 'conditionally_approved')
+    ),
+
+    -- Check membership in the same SPG before counting a CU only once per SO.
+    approved_cu AS (
+        SELECT DISTINCT s.so_id, s.cu_id
+        FROM approval_snapshot AS s
+            INNER JOIN flex.service_providing_group_membership AS m
+                ON m.service_providing_group_id = s.spg_id
+                    AND m.controllable_unit_id = s.cu_id
+                    AND m.valid_time_range @> current_timestamp
     ),
 
     -- The total per SO and substation. The DISTINCT above means a CU in several
@@ -78,29 +73,28 @@ WITH (security_invoker = true) AS (
     total_approved AS (
         SELECT
             approved_cu.so_id,
-            apgl.name,
-            SUM(approved_cu.power) AS power
+            apgl.name AS substation_name,
+            SUM(cu.maximum_active_power) AS power
         FROM approved_cu
+            INNER JOIN flex.controllable_unit AS cu ON cu.id = approved_cu.cu_id
             INNER JOIN flex.accounting_point_system_operator AS ap_so
-                ON approved_cu.accounting_point_id = ap_so.accounting_point_id
+                ON cu.accounting_point_id = ap_so.accounting_point_id
                     AND approved_cu.so_id = ap_so.system_operator_id
                     AND ap_so.valid_time_range @> current_timestamp
             INNER JOIN flex.accounting_point_grid_location AS apgl
-                ON approved_cu.accounting_point_id = apgl.accounting_point_id
+                ON cu.accounting_point_id = apgl.accounting_point_id
         GROUP BY approved_cu.so_id, apgl.name
     )
 
     SELECT
         own.gp_id AS service_providing_group_grid_prequalification_id,
         own.so_id AS impacted_system_operator_id,
-        own.name AS substation_name,
-        COUNT(*) AS controllable_unit_count,
-        SUM(own.power) AS maximum_active_power,
-        COALESCE(MAX(total_approved.power), 0) AS total_approved_maximum_active_power
-    FROM own
-        LEFT JOIN total_approved
-            ON own.so_id = total_approved.so_id AND own.name = total_approved.name
-    GROUP BY own.gp_id, own.so_id, own.name
+        own.substation_name,
+        own.controllable_unit_count,
+        own.maximum_active_power,
+        COALESCE(total_approved.power, 0) AS total_approved_maximum_active_power
+    FROM current_power_by_station AS own
+        LEFT JOIN total_approved USING (so_id, substation_name)
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-substation-power-grants-v2 runOnChange:true endDelimiter:;

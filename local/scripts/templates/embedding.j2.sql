@@ -2,7 +2,6 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 {% for rel in rels %}
 -- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }} runOnChange:true endDelimiter:--
--- noqa: disable=LT05
 CREATE OR REPLACE FUNCTION {{ module }}.{{ rel.name }}(
     {{ module }}.{{ rel.child.resource }}
 )
@@ -11,7 +10,6 @@ RETURNS SETOF {{ module }}.{{ rel.parent.resource }}{% if rel.cardinality == 'on
   from {{ module }}.{{ rel.parent.resource }}
   where {{ rel.parent.name }} = $1.{{ rel.child.name }}
 $$ STABLE LANGUAGE sql;
--- noqa: enable=LT05
 
 -- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }}-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
