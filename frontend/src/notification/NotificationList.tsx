@@ -138,11 +138,9 @@ const AcknowledgedInfo = ({ notification }: { notification: Notification }) => {
 
 const NotificationItem = ({
   notification,
-  showRecipient,
   canAcknowledge,
 }: {
   notification: Notification;
-  showRecipient: boolean;
   canAcknowledge: boolean;
 }) => {
   const translate = useTranslate();
@@ -186,12 +184,7 @@ const NotificationItem = ({
         </div>
       </div>
       <BodyText size="small" className="text-semantic-text-subtle">
-        {[
-          toDateTimeString(event?.time),
-          showRecipient ? notification.party?.name : undefined,
-        ]
-          .filter(Boolean)
-          .join(" · ")}
+        {toDateTimeString(event?.time)}
       </BodyText>
     </li>
   );
@@ -199,11 +192,9 @@ const NotificationItem = ({
 
 const NotificationItems = ({
   list,
-  isFiso,
   canAcknowledge,
 }: {
   list: ListInterface<Notification>;
-  isFiso: boolean;
   canAcknowledge: (n: Notification) => boolean;
 }) => {
   const translate = useTranslate();
@@ -222,7 +213,6 @@ const NotificationItems = ({
         <NotificationItem
           key={n.id}
           notification={n}
-          showRecipient={isFiso}
           canAcknowledge={canAcknowledge(n)}
         />
       ))}
@@ -250,8 +240,6 @@ export const NotificationList = () => {
     );
   };
 
-  const isFiso =
-    identity?.role === "flex_flexibility_information_system_operator";
   const canAcknowledge = (n: Notification) =>
     identity?.partyID != null &&
     Number(n.party_id) === Number(identity.partyID);
@@ -303,11 +291,7 @@ export const NotificationList = () => {
             </Switch>
           </FormItem>
         </div>
-        <NotificationItems
-          list={list}
-          isFiso={isFiso}
-          canAcknowledge={canAcknowledge}
-        />
+        <NotificationItems list={list} canAcknowledge={canAcknowledge} />
         <ListPagination list={list} />
       </Panel>
     </div>

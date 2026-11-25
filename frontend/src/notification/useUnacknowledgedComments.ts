@@ -23,7 +23,7 @@ const fetchLatestRecordedAt = async (filters: ListFilters) => {
     query: {
       ...buildListQuery({
         filters: toQueryFilters(filters),
-        sort: { field: "recorded_at", order: "desc" },
+        sort: { field: "id", order: "desc" },
         page: 1,
         perPage: 1,
       }),
@@ -62,8 +62,6 @@ export const useUnacknowledgedComments = ({
 }: { enabled?: boolean } = {}) => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
-  const isFiso =
-    identity?.role === "flex_flexibility_information_system_operator";
   const partyID = identity?.partyID;
 
   const { data: storageKey } = useQuery({
@@ -79,7 +77,6 @@ export const useUnacknowledgedComments = ({
       "notification",
       "unacknowledged-comments",
       identity?.id,
-      identity?.role,
       partyID,
     ],
     queryFn: () => {
@@ -90,12 +87,12 @@ export const useUnacknowledgedComments = ({
       };
       return fetchLatestRecordedAt(filters);
     },
-    enabled: enabled && !isIdentityPending && !!partyID && !isFiso,
+    enabled: enabled && !isIdentityPending && !!partyID,
   });
 
   const hasNew =
     !!latestRecordedAt &&
     (!lastChecked || new Date(latestRecordedAt) > new Date(lastChecked));
 
-  return { hasUnacknowledged: !isFiso && hasNew, markChecked };
+  return { hasUnacknowledged: hasNew, markChecked };
 };

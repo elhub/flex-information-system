@@ -5,8 +5,8 @@ import type { ListInterface } from "./types";
 
 const PER_PAGE_OPTIONS = ["25", "50", "75", "100"];
 
-// Same layout as the design system Pagination, but without page numbers since
-// the total is unknown.
+// Previous/next-only pagination for lists fetched without a total count,
+// since counting is too expensive on large data sets.
 const PreviousNextPagination = <T,>({ list }: { list: ListInterface<T> }) => {
   const translate = useTranslate();
   return (

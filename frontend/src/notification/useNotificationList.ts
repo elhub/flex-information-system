@@ -48,34 +48,22 @@ export const categoryQuery = (
   };
 };
 
-// The party is derived from the identity, never from the (URL) filters.
-// FISO sees all parties and has no party constraint.
 export const scopeFilters = (
   filters: ListFilters,
-  scope: NotificationScope,
+  partyId?: number | string,
 ): ListFilters => {
   const rest = Object.fromEntries(
     Object.entries(filters).filter(([source]) => source !== "party_id"),
   );
-  return scope.partyId !== undefined &&
-    scope.role !== "flex_flexibility_information_system_operator"
-    ? { ...rest, party_id: String(scope.partyId) }
-    : rest;
+  return partyId !== undefined ? { ...rest, party_id: String(partyId) } : rest;
 };
 
 export type Query = NonNullable<
   Parameters<typeof listNotification>[0]
 >["query"];
 
-// Identity the query runs as, used to scope cached results.
-export type NotificationScope = {
-  identityId?: string | number;
-  role?: string;
-  partyId?: number | string;
-};
-
 export type NotificationQueryParams = {
-  scope: NotificationScope;
+  partyId?: number | string;
   filters: ListFilters;
   sort: ListSort;
   page: number;
@@ -88,10 +76,10 @@ export type NotificationPage = {
 };
 
 export const notificationQueryKey = (params: NotificationQueryParams) =>
-  ["notification", "list", params.scope, params] as const;
+  ["notification", "list", params.partyId, params] as const;
 
 export const fetchNotifications = async ({
-  scope,
+  partyId,
   filters,
   sort,
   page,
@@ -99,7 +87,7 @@ export const fetchNotifications = async ({
 }: NotificationQueryParams): Promise<NotificationPage> => {
   const { embed, filter } = categoryQuery(filters);
   const base = buildListQuery({
-    filters: scopeFilters(toQueryFilters(filters), scope),
+    filters: scopeFilters(toQueryFilters(filters), partyId),
     sort,
     page,
     perPage,
@@ -112,7 +100,7 @@ export const fetchNotifications = async ({
       ...base,
       ...filter,
       limit: String(perPage + 1),
-      embed: `party,${embed}`,
+      embed,
     } as Query,
   }).then(throwOnError);
 
@@ -122,11 +110,7 @@ export const fetchNotifications = async ({
 export const useNotificationList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
-  const scope: NotificationScope = {
-    identityId: identity?.id,
-    role: identity?.role,
-    partyId: identity?.partyID,
-  };
+  const partyId = identity?.partyID;
 
   const defaultFilters: ListFilters = {
     acknowledged: "false",
@@ -140,15 +124,15 @@ export const useNotificationList = () => {
   const { filters, sort, page, perPage } = state;
 
   const query = useQuery({
-    queryKey: notificationQueryKey({ scope, filters, sort, page, perPage }),
-    queryFn: () => fetchNotifications({ scope, filters, sort, page, perPage }),
-    // Never show rows from another identity while loading.
+    queryKey: notificationQueryKey({ partyId, filters, sort, page, perPage }),
+    queryFn: () =>
+      fetchNotifications({ partyId, filters, sort, page, perPage }),
+    // Never show rows from another party while loading.
     placeholderData: (previous, previousQuery) =>
-      previousQuery &&
-      JSON.stringify(previousQuery.queryKey[2]) === JSON.stringify(scope)
+      previousQuery && previousQuery.queryKey[2] === partyId
         ? previous
         : undefined,
-    enabled: !isIdentityPending,
+    enabled: !isIdentityPending && partyId !== undefined,
   });
 
   const list: ListInterface<Notification> = {
