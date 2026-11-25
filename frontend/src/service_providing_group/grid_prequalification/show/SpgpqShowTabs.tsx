@@ -1,8 +1,10 @@
 import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
+import { useQuery } from "@tanstack/react-query";
 import { Tabs } from "../../../components/ui";
 import { SpgInfoTab } from "../../shared/SpgInfoTab";
 import { SpgpqCommentFeed } from "./SpgpqCommentFeed";
 import {
+  listServiceProvidingGroupProductApplication,
   ServiceProvidingGroup,
   ServiceProvidingGroupGridPrequalification,
 } from "../../../generated-client";
@@ -10,15 +12,25 @@ import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { ServiceProvidingGroupGridPrequalificationHistoryList } from "../ServiceProvidingGroupGridPrequalificationHistoryList";
 import { Permissions } from "../../../auth/permissions";
 import { SpgpqChangesTab } from "./SpgpqChangesTab";
+import { SpgpqPowerPerSubstationTab } from "./SpgpqPowerPerSubstationTab";
+import { throwOnError } from "../../../util";
+import type { Scale } from "../../../utils/scales";
 
 type Props = {
   spgId: number;
   spgpqId: number;
   spg: ServiceProvidingGroup | undefined;
   spgpq: ServiceProvidingGroupGridPrequalification;
+  powerScale: Scale;
 };
 
-export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
+export const SpgpqShowTabs = ({
+  spgId,
+  spgpqId,
+  spg,
+  spgpq,
+  powerScale,
+}: Props) => {
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -31,8 +43,33 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
   const isSpgServiceProvider = spg?.service_provider_id === identity?.partyID;
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
+  const isSystemOperator = identity?.role === "flex_system_operator";
+  // a PSO of the SPG sees the power per substation of all its grid
+  // prequalifications
+  const { data: pso } = useQuery({
+    queryKey: ["spgpq-pso", spgId, identity?.partyID],
+    enabled: isSystemOperator && identity?.partyID !== undefined,
+    queryFn: () =>
+      listServiceProvidingGroupProductApplication({
+        query: {
+          service_providing_group_id: `eq.${spgId}`,
+          procuring_system_operator_id: `eq.${identity?.partyID}`,
+          limit: "1",
+        },
+      })
+        .then(throwOnError)
+        .then((r) => r.length > 0),
+  });
+  const isPso = !!pso;
   const canViewComments =
     isImpactedSystemOperator || isSpgServiceProvider || isFiso;
+
+  const showPowerPerSubstation =
+    (isImpactedSystemOperator || isPso || isFiso) &&
+    !!permissions?.allow(
+      "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+      "read",
+    );
 
   const showChanges = isImpactedSystemOperator || isFiso;
   // changes can only be approved when the grid prequalification is approved
@@ -55,6 +92,12 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
         {showChanges && (
           <Tabs.Tab label={translate("text.tab.changes")} value="changes" />
         )}
+        {showPowerPerSubstation && (
+          <Tabs.Tab
+            label={translate("text.tab.power_per_substation")}
+            value="power_per_substation"
+          />
+        )}
         {canViewComments && (
           <Tabs.Tab label={translate("text.tab.comments")} value="comments" />
         )}
@@ -75,6 +118,17 @@ export const SpgpqShowTabs = ({ spgId, spgpqId, spg, spgpq }: Props) => {
             key={`${spgpq.id}-${spgpq.prequalified_at}`}
             spgpq={spgpq}
             canApprove={canApproveChanges}
+          />
+        </Tabs.Panel>
+      )}
+      {showPowerPerSubstation && (
+        <Tabs.Panel value="power_per_substation">
+          <SpgpqPowerPerSubstationTab
+            spgId={spgId}
+            spgpqId={spgpqId}
+            powerScale={powerScale}
+            impactedSystemOperatorId={spgpq.impacted_system_operator_id}
+            isPso={isPso}
           />
         </Tabs.Panel>
       )}
