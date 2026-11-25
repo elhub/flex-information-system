@@ -43,15 +43,19 @@ WITH (security_invoker = true) AS (
             AND gp.prequalified_at IS NOT NULL
     ),
 
-    -- OFFSET 0 keeps the planner from merging these CTEs into the joins below
+    -- OFFSET 0 keeps the planner from merging this CTE into the joins below,
+    -- which would call the function once per row instead of once per SPGGP
     snap AS MATERIALIZED (
-        SELECT
+        SELECT DISTINCT
             a.so_id,
-            s.controllable_unit_id AS cu_id
+            cu.id AS cu_id,
+            cu.accounting_point_id,
+            cu.maximum_active_power AS power
         FROM approved_gp AS a
             CROSS JOIN LATERAL flex.spg_cu_snapshot(
                 a.spg_id, a.so_id, a.prequalified_at
             ) AS s
+            INNER JOIN flex.controllable_unit AS cu ON s.controllable_unit_id = cu.id
         -- only CUs that are still members of the SPG
         WHERE EXISTS (
             SELECT 1
@@ -60,17 +64,6 @@ WITH (security_invoker = true) AS (
                 AND m.controllable_unit_id = s.controllable_unit_id
                 AND m.valid_time_range @> current_timestamp
         )
-        OFFSET 0
-    ),
-
-    snap_cu AS MATERIALIZED (
-        SELECT DISTINCT
-            snap.so_id,
-            cu.id AS cu_id,
-            cu.accounting_point_id,
-            cu.maximum_active_power AS power
-        FROM snap
-            INNER JOIN flex.controllable_unit AS cu ON cu.id = snap.cu_id
         OFFSET 0
     ),
 
@@ -90,7 +83,7 @@ WITH (security_invoker = true) AS (
                 apgl.name,
                 c.cu_id,
                 c.power
-            FROM snap_cu AS c
+            FROM snap AS c
                 INNER JOIN flex.accounting_point_grid_location AS apgl
                     ON c.accounting_point_id = apgl.accounting_point_id
             WHERE EXISTS (
