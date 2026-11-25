@@ -2076,6 +2076,8 @@
       
         
       
+        
+      
     
     
     
@@ -2924,6 +2926,34 @@
     
   
     Service Providing Group Grid Prequalification Comment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_providing_group_grid_prequalification_substation_power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Grid Prequalification Substation Power
   
 
     
@@ -4068,7 +4098,10 @@ Initially, the status is set to <code>requested</code>. The system operator then
 quickly take over and choose whether the group needs a full prequalification or
 only verification, by setting the status to either <code>prequalification</code> or
 <code>temporary_qualified</code>. They are responsible for taking to application to either
-<code>prequalified</code>, <code>verified</code> or <code>rejected</code>. If it is rejected, the service
+<code>prequalified</code>, <code>verified</code> or <code>rejected</code>. When rejecting, the system operator
+adds a comment (visible to all involved parties) explaining why, and
+whether the service provider can update the application and propose it again
+or whether it will be rejected regardless. If it is rejected, the service
 provider can then make updates and propose the application again.</p>
 <p>While an application is <code>requested</code>, the service provider can also withdraw it
 by setting the status to <code>inactive</code>. An <code>inactive</code> application is not processed
@@ -4181,6 +4214,12 @@ The system also checks this regularly, so any missing grid prequalifications are
 <tr>
 <td><a name="field-complete_at" href="#field-complete_at">complete_at</a></td>
 <td>When the application was last marked complete by the procuring system operator.</td>
+<td>date-time</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-requested_at" href="#field-requested_at">requested_at</a></td>
+<td>When the product application was put to requested.</td>
 <td>date-time</td>
 <td></td>
 </tr>
@@ -4583,6 +4622,18 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>complete_at</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>RU</td>
+<td>RU</td>
+<td>R</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>requested_at</td>
 <td></td>
 <td></td>
 <td></td>

@@ -2217,6 +2217,8 @@
       
         
       
+        
+      
     
     
     
@@ -3085,6 +3087,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_grid_prequalification_substation_power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Grid Prequalification Substation Power
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../resources/service_providing_group_grid_suspension/" class="md-nav__link">
         
   
@@ -3848,7 +3878,7 @@ See the <a href="https://postgrest.org/en/latest/references/api/tables_views.htm
 <p>See <a href="https://postgrest.org/en/latest/references/api/tables_views.html#limits-and-pagination">PostgREST pagination</a>.</p>
 <h2 id="embedding-related-resources-embed">Embedding related resources — <code>embed</code></h2>
 <p>The <code>embed</code> parameter lets you fetch related resources in a single request.
-It is a Flex-specific parameter — the proxy rewrites it into a PostgREST
+It is a Flex-specific parameter — the API rewrites it into a PostgREST
 <a href="https://postgrest.org/en/latest/references/api/resource_embedding.html"><code>select</code> with resource embedding</a>
 before forwarding.</p>
 <h3 id="syntax">Syntax</h3>
@@ -3898,7 +3928,9 @@ nest further embeds inside this relation, using the same syntax recursively.</li
 <span class="err">GET /controllable_unit?embed=accounting_point,technical_resource</span>
 </code></pre></div>
 <h3 id="available-relations">Available relations</h3>
-<p>Available relations are defined per parent resource in <a href="https://github.com/elhub/flex-information-system/blob/main/backend/data/embed_relations_gen.go"><code>embed_relations_gen.go</code></a></p>
+<p>Available relations are defined per parent resource by the relationships
+between resources in
+<a href="https://github.com/elhub/flex-information-system/blob/main/openapi/resources.yml"><code>resources.yml</code></a>.</p>
 <p>For example, on <code>controllable_unit</code>:</p>
 <table>
 <thead>
@@ -3926,12 +3958,12 @@ nest further embeds inside this relation, using the same syntax recursively.</li
 endpoint, every embedding relation it is involved in also exists in a history
 version.</p>
 <h3 id="scope-enforcement">Scope enforcement</h3>
-<p>The proxy checks that the caller's OAuth2 token contains a <code>read:data:&lt;resource&gt;</code>
+<p>The API checks that the caller's OAuth2 token contains a <code>read:data:&lt;resource&gt;</code>
 scope for <strong>every</strong> embedded resource. If a required scope is missing the
 request fails with <code>403 Forbidden</code>.</p>
 <h2 id="time-range-filtering-valid_at">Time-range filtering — <code>valid_at</code></h2>
 <p><code>valid_at</code> is a convenience shorthand for resources with <code>valid_from</code> /
-<code>valid_to</code> columns. The proxy rewrites it to the equivalent PostgREST filter:</p>
+<code>valid_to</code> columns. The API rewrites it to the equivalent PostgREST filter:</p>
 <div class="highlight"><pre><span></span><code><span class="err">valid_from=lte.&lt;value&gt;&amp;or=(valid_to.gt.&lt;value&gt;,valid_to.is.null)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="err">GET /controllable_unit_service_provider?valid_at=2025-01-01T00:00:00Z</span>

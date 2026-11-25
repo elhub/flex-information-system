@@ -2074,6 +2074,8 @@
       
         
       
+        
+      
     
     
     
@@ -2942,6 +2944,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_grid_prequalification_substation_power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Grid Prequalification Substation Power
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../resources/service_providing_group_grid_suspension/" class="md-nav__link">
         
   
@@ -3483,10 +3513,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#background-sync-flow" class="md-nav__link">
+  <a href="#synchronisation-job-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Background sync flow
+        Synchronisation job flow
       
     </span>
   </a>
@@ -3793,10 +3823,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#background-sync-flow" class="md-nav__link">
+  <a href="#synchronisation-job-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Background sync flow
+        Synchronisation job flow
       
     </span>
   </a>
@@ -3877,7 +3907,7 @@ depending on what country/context the system is deployed in, the data may be
 sourced from different places with widely different source formats/APIs.</p>
 <h3 id="api-contract">API Contract</h3>
 <p>The adapter service must implement the OpenAPI document defined in
-<a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml">kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml</a>.</p>
+<a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/src/main/kotlin/no/elhub/flex/shared/adapter/openapi.yaml">kbackend/src/main/kotlin/no/elhub/flex/shared/adapter/openapi.yaml</a>.</p>
 <h3 id="authorization">Authorization</h3>
 <p>Since the adapter service is assumed to be specifically deployed for the FIS, a
 shared API Bearer key is configured on both sides.</p>
@@ -3960,7 +3990,7 @@ is used in each of them.</p>
 <ul>
 <li><code>Service Provider</code> - the external caller</li>
 <li><code>CU Lookup</code> - the functionality in FIS that provides CU lookup</li>
-<li><code>Batch Sync</code> - the background sync process that runs on a schedule to keep
+<li><code>Batch Sync</code> - the synchronisation job that runs on a schedule to keep
   data in sync</li>
 <li><code>AP</code> - the <code>flex.accounting_point</code> table</li>
 <li><code>AP Sync</code> - the <code>flex.accounting_point_sync</code> table</li>
@@ -3972,9 +4002,10 @@ is used in each of them.</p>
 </ul>
 <h3 id="lookup-flow">Lookup flow</h3>
 <p><img alt="Accounting point internal lookup flow" src="../../diagrams/accounting-point-sync-lookup.png" /></p>
-<h3 id="background-sync-flow">Background sync flow</h3>
-<p>The batch size for the background sync is set to a static size of 50.
-A batch will be processed every 5 minutes.</p>
+<h3 id="synchronisation-job-flow">Synchronisation job flow</h3>
+<p>The synchronisation happens as a scheduled job (defined in <code>kbackend/jobs</code>),
+triggered by a Kubernetes CronJob. Each run processes one batch, and the batch
+size is set to a static size of 50.</p>
 <p>We can make this better in the future, but for now we can live with this simple
 approach.</p>
 <p>Our goal is either way that we want to spread the load out during the whole day,

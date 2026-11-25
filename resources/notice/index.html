@@ -2076,6 +2076,8 @@
       
         
       
+        
+      
     
     
     
@@ -3212,6 +3214,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../service_providing_group_grid_prequalification_substation_power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Grid Prequalification Substation Power
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../service_providing_group_grid_suspension/" class="md-nav__link">
         
   
@@ -4107,6 +4137,12 @@ from the responsible party.</p>
 <td>Confirm or update the grid location</td>
 </tr>
 <tr>
+<td>no.elhub.flex.party.connecting_system_operator.no_active_users</td>
+<td>CSO has active CUs but no active user in FIS</td>
+<td>FISO</td>
+<td>Follow up with the CSO to get a user registered</td>
+</tr>
+<tr>
 <td>no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract</td>
 <td>Inconsistency: CUSP valid while end user is not valid on the AP</td>
 <td>SP</td>
@@ -4179,6 +4215,12 @@ from the responsible party.</p>
 <td>Initiate SPG grid prequalification and update status</td>
 </tr>
 <tr>
+<td>no.elhub.flex.service_providing_group_grid_prequalification.outdated</td>
+<td>Outdated: SPG changed by more than 50 kW (net) since it was grid prequalified</td>
+<td>ISO</td>
+<td>Review the changes and approve them (sets a new grid prequalification time)</td>
+</tr>
+<tr>
 <td>no.elhub.flex.service_providing_group_membership.valid_time.outside_contract</td>
 <td>Inconsistency: SPG contains expired CU(s)</td>
 <td>SP</td>
@@ -4195,6 +4237,12 @@ from the responsible party.</p>
 <td>SPG product application status requested</td>
 <td>PSO</td>
 <td>Initiate SPG product prequalification and update status</td>
+</tr>
+<tr>
+<td>no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive</td>
+<td>Inconsistency: SPG is inactive but still has product applications that are not inactive or rejected</td>
+<td>SP</td>
+<td>Deactivate the product applications on the SPG</td>
 </tr>
 <tr>
 <td>no.elhub.flex.service_provider_product_suspension.product_type.not_qualified</td>

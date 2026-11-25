@@ -332,10 +332,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#path-versioning-major-changes" class="md-nav__link">
+  <a href="#path-versioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Path versioning (major changes)
+        Path versioning
       
     </span>
   </a>
@@ -343,10 +343,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#rolling-versions-minor-changes" class="md-nav__link">
+  <a href="#rolling-versions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rolling versions (minor changes)
+        Rolling versions
       
     </span>
   </a>
@@ -2193,6 +2193,8 @@
       
         
       
+        
+      
     
     
     
@@ -3061,6 +3063,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../resources/service_providing_group_grid_prequalification_substation_power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Grid Prequalification Substation Power
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../resources/service_providing_group_grid_suspension/" class="md-nav__link">
         
   
@@ -3713,10 +3743,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#path-versioning-major-changes" class="md-nav__link">
+  <a href="#path-versioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Path versioning (major changes)
+        Path versioning
       
     </span>
   </a>
@@ -3724,10 +3754,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#rolling-versions-minor-changes" class="md-nav__link">
+  <a href="#rolling-versions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rolling versions (minor changes)
+        Rolling versions
       
     </span>
   </a>
@@ -3791,7 +3821,7 @@ time to gradually acknowledge and support new features.</p>
 is <em>always needed</em> at some point. In order to keep a stable API while allowing
 ourselves to introduce breaking changes, we introduced two mechanisms: path
 versioning and rolling versions.</p>
-<h3 id="path-versioning-major-changes">Path versioning (major changes)</h3>
+<h3 id="path-versioning">Path versioning</h3>
 <p>This consists in including a version segment (<em>e.g.</em>, <code>/v1/</code>) in all URLs of the
 API. Incrementing this API version conceptually means using a substantially
 different API. We expect very few such changes, only after major API reworks on
@@ -3800,47 +3830,41 @@ the long run.</p>
 learnt a lot while building it. As the system is used, we will progressively get
 more insights into its limitations and have all the ingredients in our control
 to build a general <code>/v2/</code>. The timeline for such a change will be communicated
-well in advance, and users will be able to run major versions in parallel for a
-period.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p>Major logical changes, like several resources becoming related in different
-ways than before, or time-dependent information being stored in completely
-different resources, require substantial logic to be <em>translated</em> to the old
-concepts implemented in the existing API.</p>
-<p>Any such changes requiring an advanced "bridge" between the old and new
-logic would belong to a major version bump.</p>
-</div>
-<h3 id="rolling-versions-minor-changes">Rolling versions (minor changes)</h3>
-<p>Path versioning is a rather heavy change management strategy, as it forces us to
-handle a new set of endpoints everytime we update the major version, and set up
-translation mechanisms so that we do not repeat ourselves. Therefore, a major
-version should only be released once a critical amount of required changes is
-reached.</p>
-<p>Smaller changes can still be needed without requiring a bump to the major
+well in advance, and we will strive to run major versions in parallel for a
+period, if possible.</p>
+<p>Examples of possible upcoming changes:</p>
+<ul>
+<li>Moving from our current PostgREST-backed API to a custom implementation
+  based on <a href="https://jsonapi.org/">JSON:API</a>. This is the spec that Elhub in
+  general is trying to follow.</li>
+<li>Major restructure of the data model - due to changes or discoveries in
+  "functional" requirements or query semantics</li>
+</ul>
+<h3 id="rolling-versions">Rolling versions</h3>
+<p>Smaller breaking changes can still be needed without a bump to the path major
 version. In such cases, we introduce them <em>within the lifetime</em> of the active
 version of the API, by pinning them to a <em>date</em>. Our endpoints then <em>require</em> an
-<code>Api-Version</code> header in a <em>date format</em> to navigate between all small changes
-introduced since the last major version of the API. This is called
+<code>Api-Version</code> header in a <em>date format</em> to navigate between smaller breaking
+changes introduced since the last major version of the API. This is called
 <a href="https://www.getconvoy.io/blog/rolling-versions">rolling versions</a> and allows
 clients to progressively move to newer versions of the API at their own pace.</p>
+<p>To support both versions they must not fundamentally break the logic of the
+existing API. Meaning that it is easy to translate from old to new and new to
+old.</p>
 <p>We expect everyone to move to the latest versions of the API eventually. The
-exact schedule for removing older minor versions will be communicated explicitly
+exact schedule for removing older rolling versions will be communicated explicitly
 for each version.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p>For instance, moving a field from a resource to one of its subresources can
-be considered as a minor change, as it does not fundamentally break the
-logic of the existing API.</p>
-<p>Indeed, after having implemented the change in our data layout and added the
-field to the subresource in the new minor version, support for the old minor
-version can always be implemented by fetching the field from the subresource
-and exposing it in the main resource.</p>
-</div>
+<p>Examples of breaking changes that can be done rolling:</p>
+<ul>
+<li>Moving a field from a resource to one of its subresources (given that the
+  relationship is 1-to-1)</li>
+<li>Renaming a field or enum</li>
+</ul>
 <h2 id="non-breaking-changes">Non-breaking changes</h2>
 <p>There are also other kinds of changes we allow ourselves doing on the API
-<em>without considering them to be breaking changes</em>. Here is a list of these
-changes, from lowest to highest impact on the clients.</p>
+<em>without considering them to be breaking changes</em>. We do these changes without
+bumping the path or rolling version.</p>
+<p>Here is a list of these changes, from lowest to highest impact on the clients.</p>
 <p>The least impactful type of change is adding to the specification something
 completely new and optional. In such cases, integrations will continue to work
 seamlessly:</p>
@@ -3850,26 +3874,23 @@ seamlessly:</p>
 <li>adding an optional header to an endpoint</li>
 <li>making a required field optional</li>
 </ul>
-<p>Next is new values, schemas, or null behaviour, that may not make tolerant
-parsers fail when reading responses, but might need a bit of work, namely on the
+<p>Next is new values, schemas, or null behaviour. Tolerant parsers will not fail
+when reading responses. The changes might need a bit of work, namely on the
 request side:</p>
 <ul>
 <li>adding a new value to an enumeration</li>
-<li>adding a new HTTP status or response schema</li>
-<li>adding a new field to a resource</li>
-<li>making a field nullable or non-nullable</li>
+<li>adding a new HTTP status with response schema</li>
+<li>adding a new optional field to a resource</li>
 <li>switching between null, empty lists, and missing field</li>
+<li>specifying a freeform <code>object</code> in the OpenAPI document</li>
 </ul>
 <p>Next is everything that specifies more precisely things that were left a bit too
-vague in earlier versions of the API. If integrations are not strict enough in
-the formats, especially in the requests, they may need a bit of work as well:</p>
+vague in earlier versions of the API. We evaluate such changes based on the
+existing data prior to making them. If integrations are not strict enough in the
+formats, especially in the requests, they may need a bit of work as well:</p>
 <ul>
-<li>specifying a freeform <code>object</code> in the OpenAPI document</li>
 <li>adding constraints (<em>e.g.</em>, length, min, max)</li>
 <li>making a format stricter (<em>e.g.</em>, expecting a UUID instead of a plain string)</li>
-<li>changing a number format (32-bit vs. 64-bit integers)</li>
-<li>changing the unit of a field (<em>e.g.</em>, seconds vs. milliseconds)</li>
-<li>changing the rounding precision of numbers</li>
 </ul>
 <p>Last is changes in API behaviour or details going beyond the pure specification:</p>
 <ul>
@@ -3885,9 +3906,9 @@ for instance the
 <p>Developers can also track actual changes in the API by checking whether the
 OpenAPI specification files on our open source repository have been updated:</p>
 <ul>
-<li><a href="https://github.com/elhub/flex-information-system/blob/main/backend/data/static/openapi.json">Data API specification</a></li>
-<li><a href="https://github.com/elhub/flex-information-system/blob/main/backend/auth/static/openapi.json">Auth API specification</a></li>
-<li><a href="https://github.com/elhub/flex-information-system/blob/main/backend/grid/static/openapi.json">Grid API specification</a></li>
+<li><a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/data/static/openapi.json">Data API specification</a></li>
+<li><a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/auth/static/openapi.json">Auth API specification</a></li>
+<li><a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/grid/static/openapi.json">Grid API specification</a></li>
 </ul>
 
 
