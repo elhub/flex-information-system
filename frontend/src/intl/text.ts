@@ -251,10 +251,12 @@ export type TextKey =
   | "spgpa_hide_prequalified"
   | "spgpa_snapshot_total_capacity"
   | "spgpa_snapshot_approved_units"
+  | "spgpa_snapshot_grid_prequalified_units"
   | "spgpa_snapshot_pending_units"
   | "spgpa_snapshot_total_units"
   | "spgpa_snapshot_pending_badge"
   | "spgpa_snapshot_approved_flexible_power"
+  | "spgpa_snapshot_cso_prequalified_flexible_power"
   | "spgpa_snapshot_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
@@ -807,12 +809,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_snapshot_total_capacity: "Total flexible power",
     spgpa_snapshot_approved_units:
       "%{approved} of %{total} controllable units approved",
+    spgpa_snapshot_grid_prequalified_units:
+      "%{prequalified} of %{total} controllable units grid prequalified",
     spgpa_snapshot_pending_units:
       "%{count} controllable units awaiting approval",
     spgpa_snapshot_total_units: "%{count} controllable units in the group",
     spgpa_snapshot_pending_badge: "%{count} units",
     spgpa_snapshot_approved_flexible_power:
       "Flexible power with approved status",
+    spgpa_snapshot_cso_prequalified_flexible_power:
+      "Flexible power grid prequalified by CSO",
     spgpa_snapshot_flexible_power_needing_approval:
       "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
@@ -1360,12 +1366,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_snapshot_total_capacity: "Total fleksibel kapasitet",
     spgpa_snapshot_approved_units:
       "%{approved} av %{total} styrbare enheter godkjent",
+    spgpa_snapshot_grid_prequalified_units:
+      "%{prequalified} av %{total} styrbare enheter nettkvalifisert",
     spgpa_snapshot_pending_units:
       "%{count} styrbare enheter venter på godkjenning",
     spgpa_snapshot_total_units: "%{count} styrbare enheter i gruppen",
     spgpa_snapshot_pending_badge: "%{count} enheter",
     spgpa_snapshot_approved_flexible_power:
       "Fleksibel kapasitet som har status godkjent",
+    spgpa_snapshot_cso_prequalified_flexible_power:
+      "Fleksibel kapasitet som er nettprekvalifisert av CSO",
     spgpa_snapshot_flexible_power_needing_approval:
       "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
