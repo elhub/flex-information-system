@@ -54,7 +54,11 @@ const PreviousNextPagination = <T,>({ list }: { list: ListInterface<T> }) => {
 export const ListPagination = <T,>({ list }: { list: ListInterface<T> }) => {
   const translate = useTranslate();
   const hasTotal = list.total !== undefined;
-  if (hasTotal ? !list.total : list.page <= 1 && !list.hasNextPage) {
+  if (
+    hasTotal
+      ? !list.total
+      : list.page <= 1 && !list.hasNextPage && list.rows.length === 0
+  ) {
     return null;
   }
   return (
