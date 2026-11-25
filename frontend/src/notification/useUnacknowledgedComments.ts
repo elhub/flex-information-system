@@ -15,27 +15,23 @@ import { bellStorageKey, getLastChecked, setLastChecked } from "./lastChecked";
 
 const CHECKED_EVENT = "notification-bell-checked";
 
-// Whether any unacknowledged notification matching the filters was recorded
-// after the given time (any time if null).
-const fetchHasNewComments = async (
-  filters: ListFilters,
-  lastChecked: string | null,
-) => {
+// Recording time of the latest unacknowledged notification matching the
+// filters, or null if there is none.
+const fetchLatestRecordedAt = async (filters: ListFilters) => {
   const { embed, filter } = categoryQuery(filters);
   const notifications = await listNotification({
     query: {
       ...buildListQuery({
         filters: toQueryFilters(filters),
-        sort: { field: "id", order: "desc" },
+        sort: { field: "recorded_at", order: "desc" },
         page: 1,
         perPage: 1,
       }),
       ...filter,
-      ...(lastChecked ? { recorded_at: `gt.${lastChecked}` } : {}),
       embed,
     } as Query,
   }).then(throwOnError);
-  return notifications.length > 0;
+  return notifications[0]?.recorded_at ?? null;
 };
 
 // Time the user last clicked the bell, stored per user and party.
@@ -78,14 +74,13 @@ export const useUnacknowledgedComments = ({
   });
   const { lastChecked, markChecked } = useLastChecked(storageKey);
 
-  const { data } = useQuery({
+  const { data: latestRecordedAt } = useQuery({
     queryKey: [
       "notification",
       "unacknowledged-comments",
       identity?.id,
       identity?.role,
       partyID,
-      lastChecked,
     ],
     queryFn: () => {
       const filters: ListFilters = {
@@ -93,11 +88,14 @@ export const useUnacknowledgedComments = ({
         [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
         party_id: String(partyID),
       };
-      return fetchHasNewComments(filters, lastChecked);
+      return fetchLatestRecordedAt(filters);
     },
-    //staleTime: 60_000,
     enabled: enabled && !isIdentityPending && !!partyID && !isFiso,
   });
 
-  return { hasUnacknowledged: !isFiso && (data ?? false), markChecked };
+  const hasNew =
+    !!latestRecordedAt &&
+    (!lastChecked || new Date(latestRecordedAt) > new Date(lastChecked));
+
+  return { hasUnacknowledged: !isFiso && hasNew, markChecked };
 };
