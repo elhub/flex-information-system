@@ -138,8 +138,7 @@ export const useNotificationList = () => {
   const list: ListInterface<Notification> = {
     ...state,
     rows: query.data?.data ?? [],
-    hasNextPage:
-      !query.isPlaceholderData && (query.data?.hasNextPage ?? false),
+    hasNextPage: !query.isPlaceholderData && (query.data?.hasNextPage ?? false),
     isLoading: isIdentityPending || query.isLoading,
     isError: query.isError,
   };

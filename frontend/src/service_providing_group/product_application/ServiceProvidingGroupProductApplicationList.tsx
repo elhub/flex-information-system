@@ -145,6 +145,19 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       ),
     },
     {
+      header: translate("field.service_providing_group.bidding_zone"),
+      render: (row) => {
+        const zone = row.service_providing_group?.bidding_zone;
+        return zone ? (
+          <BodyText size="small">
+            {translate(`enum.service_providing_group.bidding_zone.${zone}`)}
+          </BodyText>
+        ) : (
+          <Dash />
+        );
+      },
+    },
+    {
       header: translate("field.service_providing_group.service_provider_id"),
       render: (row) => (
         <BodyText size="small">
