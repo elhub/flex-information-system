@@ -52,6 +52,14 @@ WITH (security_invoker = true) AS (
             CROSS JOIN LATERAL flex.spg_cu_snapshot(
                 a.spg_id, a.so_id, a.prequalified_at
             ) AS s
+        -- only CUs that are still members of the SPG
+        WHERE EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_membership AS m
+            WHERE m.service_providing_group_id = a.spg_id
+                AND m.controllable_unit_id = s.controllable_unit_id
+                AND m.valid_time_range @> current_timestamp
+        )
         OFFSET 0
     ),
 
