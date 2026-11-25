@@ -123,10 +123,15 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // skip changes that only touch the jobs code, and test-only changes
+                        // keep DB because liquibase is linked to the kbackend app
                         triggerRules = """
                             -:*
                             +:kbackend/**
                             +:db/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/test/**
+                            -:kbackend/src/apiTest/**
                         """.trimIndent()
                     }
 
@@ -139,10 +144,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files, the entry point
+                        // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
-                            +:kbackend/**
-                            +:db/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/resources/mail/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -155,10 +171,20 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files, the entry point
+                        // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
-                            +:kbackend/**
-                            +:db/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -171,10 +197,15 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // skip changes that only touch the jobs code, and test-only changes
+                        // keep DB because liquibase is linked to the kbackend app
                         triggerRules = """
                             -:*
                             +:kbackend/**
                             +:db/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/test/**
+                            -:kbackend/src/apiTest/**
                         """.trimIndent()
                     }
 
@@ -187,10 +218,21 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // whitelist: only the jobs code, the shared code, logback and mail
+                        // templates, build files, the entry point
+                        // remove the event worker as it has its own deployment
                         triggerRules = """
                             -:*
-                            +:kbackend/**
-                            +:db/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/resources/mail/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/**
+                            -:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
 
@@ -203,10 +245,20 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         isMonoRepo = true
                         autoMerge = false
                     }.triggerOnVcsChange {
+                        // whitelist: only the event worker code, the shared code, logback, build
+                        // files, the entry point
+                        // (code under /jobs for other jobs is not included)
                         triggerRules = """
                             -:*
-                            +:kbackend/**
-                            +:db/**
+                            +:kbackend/build.gradle.kts
+                            +:kbackend/settings.gradle.kts
+                            +:kbackend/gradle.properties
+                            +:kbackend/gradle/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/shared/**
+                            +:kbackend/src/main/kotlin/no/elhub/flex/Application.kt
+                            +:kbackend/src/main/resources/logback.xml
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/*
+                            +:kbackend/src/main/kotlin/no/elhub/flex/jobs/eventworker/**
                         """.trimIndent()
                     }
                 }

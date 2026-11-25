@@ -4,7 +4,7 @@
     <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
   </appender>
 
-  <logger name="no.elhub.flex" level="debug" />
+  <logger name="no.elhub.flex" level="info" />
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
