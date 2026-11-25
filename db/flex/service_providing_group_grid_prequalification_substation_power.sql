@@ -31,70 +31,48 @@ WITH (security_invoker = true) AS (
             OR flex.current_party_is_pso_in_spg(gp.service_providing_group_id)
     ),
 
-    -- the snapshot depends on the SPG, the SO and the approval time only, so
-    -- it is read once for each of those and not once for each CU
-    approved_gp AS MATERIALIZED (
-        SELECT DISTINCT
-            gp.service_providing_group_id AS spg_id,
-            gp.impacted_system_operator_id AS so_id,
-            gp.prequalified_at
-        FROM flex.service_providing_group_grid_prequalification AS gp
-        WHERE gp.status IN ('approved', 'conditionally_approved')
-            AND gp.prequalified_at IS NOT NULL
-    ),
-
-    -- OFFSET 0 keeps the planner from merging this CTE into the joins below,
-    -- which would call the function once per row instead of once per SPGGP
-    snap AS MATERIALIZED (
+    -- CUs of the approved SPGGPs as they were when approved, and still members.
+    -- The snapshot function is called once for each (SPG, SO, approval time).
+    snap AS (
         SELECT DISTINCT
             a.so_id,
             cu.id AS cu_id,
             cu.accounting_point_id,
             cu.maximum_active_power AS power
-        FROM approved_gp AS a
+        FROM (
+            SELECT DISTINCT
+                service_providing_group_id AS spg_id,
+                impacted_system_operator_id AS so_id,
+                prequalified_at
+            FROM flex.service_providing_group_grid_prequalification
+            WHERE status IN ('approved', 'conditionally_approved')
+        ) AS a
             CROSS JOIN LATERAL flex.spg_cu_snapshot(
                 a.spg_id, a.so_id, a.prequalified_at
             ) AS s
-            INNER JOIN flex.controllable_unit AS cu ON s.controllable_unit_id = cu.id
-        -- only CUs that are still members of the SPG
-        WHERE EXISTS (
-            SELECT 1
-            FROM flex.service_providing_group_membership AS m
-            WHERE m.service_providing_group_id = a.spg_id
-                AND m.controllable_unit_id = s.controllable_unit_id
-                AND m.valid_time_range @> current_timestamp
-        )
-        OFFSET 0
+            INNER JOIN flex.controllable_unit AS cu
+                ON s.controllable_unit_id = cu.id
+            INNER JOIN flex.service_providing_group_membership AS m
+                ON m.service_providing_group_id = a.spg_id
+                    AND m.controllable_unit_id = cu.id
+                    AND m.valid_time_range @> current_timestamp
     ),
 
+    -- per SO and substation. A CU in several approved SPGs is counted once.
+    -- Only CUs the SO is CSO of are counted.
     total_approved AS (
-        -- per SO and substation, over all approved SPGGPs. A CU in several
-        -- approved SPGs is counted once. Only CUs that were members of the SPG
-        -- (known and valid) at prequalified_at count, so CUs added after the
-        -- approval are left out until the changes are approved
-        -- (prequalified_at moves). Only CUs the SO is CSO of are counted.
         SELECT
-            x.so_id,
-            x.name,
-            SUM(x.power) AS power
-        FROM (
-            SELECT DISTINCT
-                c.so_id,
-                apgl.name,
-                c.cu_id,
-                c.power
-            FROM snap AS c
-                INNER JOIN flex.accounting_point_grid_location AS apgl
-                    ON c.accounting_point_id = apgl.accounting_point_id
-            WHERE EXISTS (
-                SELECT 1
-                FROM flex.accounting_point_system_operator AS ap_so
-                WHERE ap_so.accounting_point_id = c.accounting_point_id
-                    AND ap_so.system_operator_id = c.so_id
+            snap.so_id,
+            apgl.name,
+            SUM(snap.power) AS power
+        FROM snap
+            INNER JOIN flex.accounting_point_system_operator AS ap_so
+                ON snap.accounting_point_id = ap_so.accounting_point_id
+                    AND snap.so_id = ap_so.system_operator_id
                     AND ap_so.valid_time_range @> current_timestamp
-            )
-        ) AS x
-        GROUP BY x.so_id, x.name
+            INNER JOIN flex.accounting_point_grid_location AS apgl
+                ON snap.accounting_point_id = apgl.accounting_point_id
+        GROUP BY snap.so_id, apgl.name
     )
 
     SELECT
