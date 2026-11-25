@@ -1108,7 +1108,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.service_provider_id":
       "Service provider",
     "service_provider_product_application.system_operator_id":
-      "System operator",
+      "Procuring system operator",
     "service_provider_product_application.product_type_ids": "Product types",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Qualified at",
@@ -1118,7 +1118,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Service provider",
     "service_provider_product_application_history.system_operator_id":
-      "System operator",
+      "Procuring system operator",
     "service_provider_product_application_history.product_type_ids":
       "Product types",
     "service_provider_product_application_history.status": "Status",
@@ -1891,7 +1891,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.id": "ID",
     "service_provider_product_application.service_provider_id":
       "Tjenesteleverandør",
-    "service_provider_product_application.system_operator_id": "Systemoperatør",
+    "service_provider_product_application.system_operator_id":
+      "Kjøpende systemoperatør",
     "service_provider_product_application.product_type_ids": "Produkttyper",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Kvalifisert",
@@ -1901,7 +1902,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Tjenesteleverandør",
     "service_provider_product_application_history.system_operator_id":
-      "Systemoperatør",
+      "Kjøpende systemoperatør",
     "service_provider_product_application_history.product_type_ids":
       "Produkttyper",
     "service_provider_product_application_history.status": "Status",
@@ -2674,7 +2675,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.id": "ID",
     "service_provider_product_application.service_provider_id":
       "Tenesteleverandør",
-    "service_provider_product_application.system_operator_id": "Systemoperatør",
+    "service_provider_product_application.system_operator_id":
+      "Kjøpande systemoperatør",
     "service_provider_product_application.product_type_ids": "Produkttypar",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Kvalifisert",
@@ -2684,7 +2686,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Tenesteleverandør",
     "service_provider_product_application_history.system_operator_id":
-      "Systemoperatør",
+      "Kjøpande systemoperatør",
     "service_provider_product_application_history.product_type_ids":
       "Produkttypar",
     "service_provider_product_application_history.status": "Status",
