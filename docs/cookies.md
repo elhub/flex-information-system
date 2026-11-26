@@ -26,8 +26,22 @@ your device.
     <tr>
         <td>__Host-flex_session</td>
         <td>cookie</td>
-        <td>1 hour</td>
-        <td>Session cookie that is set after you log in. Removed on logout.</td>
+        <td>12 hours</td>
+        <td>
+            Session cookie that is set after you log in. It is used to renew
+            your access without logging in again, until the session ends.
+            Removed on logout.
+        </td>
+    </tr>
+    <tr>
+        <td>__Host-flex_access</td>
+        <td>cookie</td>
+        <td>12 hours</td>
+        <td>
+            Short-lived (2 minutes) access token that authorizes your requests,
+            renewed automatically while you use the portal.
+            Removed on logout.
+        </td>
     </tr>
     <tr>
         <td>flexSession</td>

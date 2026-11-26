@@ -18,8 +18,8 @@ participant "Identity Provider" as IDP
 participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
 
 UA -> PORTAL: Visit portal
-PORTAL -> AUTH: Check active sessions\nGET /auth/v1/session\n<:cookie:> __Host-flex_session
-return No active session\nUnset <:cookie:> __Host-flex_session
+PORTAL -> AUTH: Check active sessions\nGET /auth/v1/session\n<:cookie:> __Host-flex_access
+return No active session
 return Go to /auth/v1/login
 
 UA -> AUTH: Navigate to /auth/v1/login?return_url=<referer>
@@ -35,7 +35,7 @@ return HTTP 302 Redirect to callback url
 
 UA -> AUTH: Follow redirect\n/auth/v1/callback?code=<code>&state=<state>\nInclude <:fortune_cookie:> flex_login
 AUTH -> IDP: Request /token\nusing code and code_verifier
-return Return access, id and refresh tokens
+return Return access and id tokens
 note over AUTH
     The auth server verifies and inspects
     the ID token to establish the identity.
@@ -51,14 +51,15 @@ note over AUTH
 end note
 
 note over AUTH
-    A new refresh token family is created
-    and the hash of the refresh token is stored.
+    A session token is created and stored.
+    A short-lived access token (JWT) is
+    issued, but not stored.
 end note
 
-return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session\nSet <:cookie:> __Host-flex_refresh\nUnset <:fortune_cookie:> flex_login
+return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session (session token)\nSet <:cookie:> __Host-flex_access (JWT)\nUnset <:fortune_cookie:> flex_login
 
 UA -> PORTAL: Follow redirect to portal
-PORTAL -> AUTH: Check active sessions\nGET /auth/v1/session\n<:cookie:> __Host-flex_session
+PORTAL -> AUTH: Check active session\nGET /auth/v1/session\n<:cookie:> __Host-flex_access
 return Session and user details
 
 note over PORTAL
