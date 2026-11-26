@@ -28,6 +28,7 @@ import {
   IconPlus,
   IconTrash,
 } from "@elhub/ds-icons";
+import { eventListLink } from "../../event/eventListLink";
 
 // Long values (e.g. public keys) are truncated in the table. The full value is
 // available in a tooltip and can be copied with the button.
@@ -101,9 +102,7 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
     },
   });
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/entity_client/${record.id}` }),
-  );
+  const eventsLink = eventListLink("source", `/entity_client/${record.id}`);
 
   const hasActions = canUpdate || canDelete;
   if (!hasActions && !canReadEvent) return null;
@@ -158,10 +157,7 @@ const RowActionsMenu = ({ record }: { record: EntityClientRow }) => {
                 {translate("text.resource_show_layout.navigate_group_label")}
               </Dropdown.Menu.GroupedList.Heading>
               <Dropdown.Menu.GroupedList>
-                <Dropdown.Menu.GroupedList.Item
-                  as={RouterLink}
-                  to={`/event?filter=${eventsFilter}`}
-                >
+                <Dropdown.Menu.GroupedList.Item as={RouterLink} to={eventsLink}>
                   <div className="flex items-center gap-2">
                     {translate("text.events")}
                   </div>

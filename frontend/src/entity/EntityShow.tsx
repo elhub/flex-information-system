@@ -14,6 +14,7 @@ import { useTabSearchParam } from "../hooks/useTabSearchParam";
 import { usePermissions, useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
 import { useQuery } from "@tanstack/react-query";
+import { eventListLink } from "../event/eventListLink";
 
 const EntityTabs = ({ id }: { id: string }) => {
   const [tab, setTab] = useTabSearchParam("client");
@@ -119,9 +120,7 @@ export const EntityShow = () => {
     },
   ];
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/entity/${data.id}` }),
-  );
+  const eventsLink = eventListLink("source", `/entity/${data.id}`);
 
   return (
     <ResourceShowLayout
@@ -139,7 +138,7 @@ export const EntityShow = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.events"),
           shouldShow: true,
         },

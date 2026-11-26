@@ -12,6 +12,7 @@ import { ResourceShowLayout } from "../../components/ResourceShowLayout";
 import { ServiceProvidingGroupMembershipHistory } from "../../generated-client";
 import { useServiceProvidingGroupMembershipShowSummary } from "./ServiceProvidingGroupMembershipShowSummary";
 import { ServiceProvidingGroupMembershipShowTabs } from "./ServiceProvidingGroupMembershipShowTabs";
+import { eventListLink } from "../../event/eventListLink";
 
 const ServiceProvidingGroupMembershipShowContent = () => {
   const record = useRecordContext<ServiceProvidingGroupMembershipHistory>();
@@ -51,10 +52,9 @@ const ServiceProvidingGroupMembershipShowContent = () => {
   const historyFilter = encodeURIComponent(
     JSON.stringify({ service_providing_group_membership_id: membershipId }),
   );
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({
-      "subject@eq": `/service_providing_group_membership/${membershipId}`,
-    }),
+  const eventsLink = eventListLink(
+    "subject",
+    `/service_providing_group_membership/${membershipId}`,
   );
 
   return (
@@ -82,7 +82,7 @@ const ServiceProvidingGroupMembershipShowContent = () => {
           shouldShow: canViewHistory,
         },
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.events"),
           shouldShow: canReadEvents,
         },

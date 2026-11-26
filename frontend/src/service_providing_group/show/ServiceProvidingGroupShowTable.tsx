@@ -29,6 +29,7 @@ import type { AccountingPointGridLocationQuality } from "../../generated-client"
 import { GridLocationStatusBadge } from "../../accounting_point/grid_location/GridLocationStatusBadge";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { tooltips } from "../../tooltip/tooltips";
+import { eventListLink } from "../../event/eventListLink";
 
 type Props = {
   spgId: number;
@@ -75,10 +76,9 @@ const RowActionsMenu = ({
   const historyFilter = encodeURIComponent(
     JSON.stringify({ service_providing_group_membership_id: membershipId }),
   );
-  const eventFilter = encodeURIComponent(
-    JSON.stringify({
-      "subject@eq": `/service_providing_group_membership/${membershipId}`,
-    }),
+  const eventsLink = eventListLink(
+    "subject",
+    `/service_providing_group_membership/${membershipId}`,
   );
   const hasActions = canUpdate || canDelete;
 
@@ -144,7 +144,7 @@ const RowActionsMenu = ({
                 {canReadEvent && (
                   <Dropdown.Menu.GroupedList.Item
                     as={RouterLink}
-                    to={`/event?filter=${eventFilter}`}
+                    to={eventsLink}
                   >
                     <div className="flex items-center gap-2">
                       {translate("text.events")}

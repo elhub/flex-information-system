@@ -15,6 +15,7 @@ import { IconPencil } from "@elhub/ds-icons";
 import { useState } from "react";
 import { ScaleToggle } from "../../components/ScaleToggle";
 import { KILO, MEGA, Scale } from "../../utils/scales";
+import { eventListLink } from "../../event/eventListLink";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -53,10 +54,9 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   if (!spgpq) return null;
   if (spg.error) throw spg.error;
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({
-      "subject@eq": `/service_providing_group_grid_prequalification/${spgpq.id}`,
-    }),
+  const eventsLink = eventListLink(
+    "subject",
+    `/service_providing_group_grid_prequalification/${spgpq.id}`,
   );
 
   const variant =
@@ -94,7 +94,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.header_nav_events"),
           shouldShow: canReadEvents ?? false,
         },

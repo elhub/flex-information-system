@@ -18,6 +18,7 @@ import {
 import { SystemOperatorProductTypeHistory } from "../generated-client";
 import { useTranslateEnum } from "../intl/intl";
 import { partyStatusVariantMap } from "../party/partyStatus";
+import { eventListLink } from "../event/eventListLink";
 
 type SystemOperatorProductTypeRecord = SystemOperatorProductTypeHistory;
 
@@ -102,8 +103,9 @@ const SystemOperatorProductTypeShowContent = () => {
     partyStatusVariantMap[record.status as keyof typeof partyStatusVariantMap];
 
   const soptId = record.system_operator_product_type_id ?? record.id;
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/system_operator_product_type/${soptId}` }),
+  const eventsLink = eventListLink(
+    "source",
+    `/system_operator_product_type/${soptId}`,
   );
 
   const summary: ResourceSummaryField[] = [
@@ -147,7 +149,7 @@ const SystemOperatorProductTypeShowContent = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.events"),
           shouldShow: canReadEvents,
         },
