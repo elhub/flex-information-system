@@ -427,12 +427,12 @@ write through `FlexTransaction` with `SET LOCAL ROLE`, so RLS and field-level
 grants still apply. Frontend validation is only for user experience.
 
 ```text
-  Frontend (zod)  ──►  Go proxy  ──►  Kotlin POST / PATCH               ──►  Database
-  UX only                             1. parse into the typed variant         existing triggers,
-                                         (kind, fields, types, ranges)        RLS, field grants
-                                      2. business rules (below)
-                                      3. write in FlexTransaction
-  GET / list      ──►  Go proxy  ──►  PostgREST (api view)
+  Frontend (zod)  ──►  Kotlin POST / PATCH                   ──►  Database
+  UX only              1. parse into the typed variant           existing triggers,
+                          (kind, fields, types, ranges)          RLS, field grants
+                       2. business rules (below)
+                       3. write in FlexTransaction
+  GET / list      ──►  Kotlin pass-through  ──►  PostgREST (api view)
 ```
 
 ### Rules
@@ -526,8 +526,10 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
 
 * `POST /service_providing_group_product_application` and
   `PATCH /service_providing_group_product_application/{id}` keep the same path
-  and body shape as today, so clients only see the new fields. The Go proxy
-  routes them to Kotlin (`backend/data/data.go`).
+  and body shape as today, so clients only see the new fields. They are
+  explicit Kotlin routes, and the generic pass-through to PostgREST no longer
+  handles writes for this resource. They need the same auth scope checks as
+  the pass-through (`auth/scope`).
 * `GET`, list, filtering, pagination, `select` and embedding stay in
   PostgREST on the `api` view.
 * The endpoints write through `FlexTransaction` (`SET LOCAL ROLE`), so existing
@@ -552,8 +554,7 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
 | `local/scripts/resources_to_intl.py` | labels and tooltips for variant fields |
 | `kbackend/scripts/generate-openapi-models.sh` | possibly a `sed` fix for the sealed interfaces |
 | `frontend/.../product_application/` | product checkboxes, section per `kind` and selected product, FCR-D up/down refine, PSO assessment section, show/print, draft migration |
-| `kbackend` | regenerated models, `POST` and `PATCH` routes with validation (VAL012, VAL013) and legacy mapping, test data |
-| `backend/data/data.go` | route `POST` and `PATCH` for SPGPA to Kotlin |
+| `kbackend` | regenerated models, `POST` and `PATCH` routes with validation (VAL012, VAL013), legacy mapping and auth scopes, and the pass-through no longer used for SPGPA writes, test data |
 | `test/api_client_tests/` | mFRR, FCR-N, FCR-D, FCR-N + FCR-D, PSO response, legacy mapping, rejection cases; fixtures updated |
 | `docs/` | resource docs incl. variant table, product type docs, changelog |
 
@@ -584,7 +585,7 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
 9. Sections or a flat FCR variant? See
    [Alternative: flat FCR variant](#alternative-flat-fcr-variant-without-sections).
 10. Filtering on details, for example `application_details->>limited_energy_reservoir`:
-    do we need it, and does the Go proxy pass it through?
+    do we need it, and does the Kotlin pass-through to PostgREST support it?
 11. Should the database keep a minimal safety net, for example a check that
     `application_details.kind` matches the product types, or is Kotlin the only
     validation?
