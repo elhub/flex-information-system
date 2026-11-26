@@ -1,11 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import {
-  defaultExporter,
-  useGetIdentity,
-  usePermissions,
-  useTranslate,
-} from "ra-core";
-import type { DataProvider } from "ra-core";
+import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
 import { IconDownload, IconPlus } from "@elhub/ds-icons";
 import { ResourceListLayout } from "../components/list/ResourceListLayout";
 import type { ListColumn, ListFilterDef } from "../components/list/types";
@@ -22,6 +16,7 @@ import {
   BRP_FILTER_SOURCE,
   useControllableUnitList,
 } from "./useControllableUnitList";
+import { exportRowsAsCsv } from "../utils/exportRowsAsCsv";
 
 const Dash = () => <BodyText size="small">-</BodyText>;
 
@@ -223,7 +218,7 @@ export const ControllableUnitList = () => {
 
   const exportCsv = async () => {
     const data = await fetchAllForExport();
-    defaultExporter(
+    exportRowsAsCsv(
       data.map((cu) => ({
         id: cu.id,
         business_id: cu.business_id,
@@ -238,9 +233,6 @@ export const ControllableUnitList = () => {
         recorded_by: cu.recorded_by,
         recorded_at: cu.recorded_at,
       })),
-      // defaultExporter only uses the data and the resource name
-      async () => ({}),
-      {} as DataProvider,
       "controllable_unit",
     );
   };
