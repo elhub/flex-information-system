@@ -342,7 +342,12 @@ export const SpgpaControllableUnitsTable = ({
               />
             </FormItem>
           </div>
-          <Button variant="invisible" onClick={exportCsv} icon={IconDownload}>
+          <Button
+            variant="invisible"
+            onClick={exportCsv}
+            icon={IconDownload}
+            disabled={isLoading}
+          >
             Export
           </Button>
         </div>
