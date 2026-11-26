@@ -2,7 +2,6 @@ import { Tabs } from "../../components/ui";
 import { ServiceProvidingGroupShowTable } from "./ServiceProvidingGroupShowTable";
 import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProvidingGroupShowProductApplicationsTable";
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
-import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
 import {
   ServiceProvidingGroupStatus,
@@ -19,7 +18,6 @@ type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
   summary: ServiceProvidingGroupSummary | undefined;
-  showPowerPerSubstation?: boolean;
   powerScale: Scale;
 };
 
@@ -27,7 +25,6 @@ export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgStatus,
   summary,
-  showPowerPerSubstation,
   powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("overview");
@@ -57,12 +54,6 @@ export const ServiceProvidingGroupShowTabs = ({
           label={translate("text.tab.grid_prequalifications")}
           value="grid_prequalifications"
         />
-        {showPowerPerSubstation && (
-          <Tabs.Tab
-            label={translate("text.tab.power_per_substation")}
-            value="power_per_substation"
-          />
-        )}
         <Tabs.Tab label={translate("text.tab.history")} value="history" />
       </Tabs.List>
       <Tabs.Panel value="overview">
@@ -91,14 +82,6 @@ export const ServiceProvidingGroupShowTabs = ({
       <Tabs.Panel value="grid_prequalifications">
         <ServiceProvidingGroupShowGridPrequalificationsTable spgId={spgId} />
       </Tabs.Panel>
-      {showPowerPerSubstation && (
-        <Tabs.Panel value="power_per_substation">
-          <ServiceProvidingGroupShowPowerPerSubstationTable
-            spgId={spgId}
-            powerScale={powerScale}
-          />
-        </Tabs.Panel>
-      )}
       {canViewHistory && (
         <Tabs.Panel value="history">
           <ServiceProvidingGroupHistoryList spgId={spgId} />

@@ -6,7 +6,7 @@ import { readServiceProvidingGroup } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslateEnum } from "../../intl/intl";
-import { useGetIdentity, usePermissions, useTranslate } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "./ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
@@ -24,10 +24,6 @@ export const ServiceProvidingGroupShow = () => {
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
-  const { data: identity } = useGetIdentity();
-  const isFISOOrSO =
-    identity?.role === "flex_flexibility_information_system_operator" ||
-    identity?.role === "flex_system_operator";
 
   const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
@@ -105,7 +101,6 @@ export const ServiceProvidingGroupShow = () => {
           spgId={spg.id}
           spgStatus={spg.status}
           summary={spg.summary ?? undefined}
-          showPowerPerSubstation={isFISOOrSO}
           powerScale={powerScale}
         />
       }
