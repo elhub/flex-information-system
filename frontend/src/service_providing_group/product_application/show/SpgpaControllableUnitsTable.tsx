@@ -13,6 +13,7 @@ import {
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
   type SpgpaControllableUnitRow,
+  isCSOPrequalified,
   isFullyApproved,
   useSpgpaControllableUnits,
 } from "./useSpgpaControllableUnits";
@@ -113,15 +114,19 @@ export const SpgpaControllableUnitsTable = ({
     const power = (cus: SpgpaControllableUnitRow[]) =>
       cus.reduce((sum, cu) => sum + (cu.maximum_active_power ?? 0), 0);
     const approvedCus = data.rows.filter(isFullyApproved);
+    const prequalifiedCus = data.rows.filter(isCSOPrequalified);
     const pendingCus = data.rows.filter((cu) => !isFullyApproved(cu));
     const approvedPower = power(approvedCus);
+    const prequalifiedPower = power(prequalifiedCus);
     const pendingPower = power(pendingCus);
     const totalPower = approvedPower + pendingPower;
     return {
       approvedCount: approvedCus.length,
+      prequalifiedCount: prequalifiedCus.length,
       pendingCount: pendingCus.length,
       totalCount: data.rows.length,
       approvedPower,
+      prequalifiedPower,
       pendingPower,
       totalPower,
       approvedShare: totalPower > 0 ? approvedPower / totalPower : 0,
@@ -241,7 +246,7 @@ export const SpgpaControllableUnitsTable = ({
         {approvalSummary && (
           <div
             className={cn(
-              "grid grid-cols-1 gap-4 transition-opacity sm:grid-cols-3",
+              "grid grid-cols-1 gap-4 transition-opacity sm:grid-cols-2",
               isLoading ? "opacity-50" : undefined,
             )}
             aria-busy={isLoading || undefined}
@@ -265,6 +270,26 @@ export const SpgpaControllableUnitsTable = ({
                 approved: approvalSummary.approvedCount,
                 total: approvalSummary.totalCount,
               })}
+            />
+            <SummaryCard
+              label={translate(
+                "text.spgpa_snapshot_cso_prequalified_flexible_power",
+              )}
+              value={formatPower(approvalSummary.prequalifiedPower)}
+              icon={
+                <IconValidationCheck
+                  className="text-semantic-text-alternative"
+                  aria-hidden
+                />
+              }
+              accentClassName="border-semantic-border-alternative"
+              subtitle={translate(
+                "text.spgpa_snapshot_grid_prequalified_units",
+                {
+                  prequalified: approvalSummary.prequalifiedCount,
+                  total: approvalSummary.totalCount,
+                },
+              )}
             />
             <SummaryCard
               label={translate(

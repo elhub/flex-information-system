@@ -91,18 +91,3 @@ to install via npm.
 In VSCode, consider installing
 
 * [stoplight.spectral](https://marketplace.visualstudio.com/items?itemName=stoplight.spectral)
-
-### Go
-
-We rely on [golangci-lint](https://golangci-lint.run/) for linting Go code. It
-combines most of the linters in the ecosystem and provides powerful
-configuration and handling of false positives. We also run some of the commands
-in the `go` toolchain.
-
-Our `pre-commit` hooks local configurations since we have our go code in a
-sub-directory. We could not get the default hooks working.
-
-In VSCode, consider installing
-
-* [golang.go](https://marketplace.visualstudio.com/items?itemName=golang.Go)
-* configure [golangci-lint as the lintTool in settings](https://golangci-lint.run/welcome/integrations/)

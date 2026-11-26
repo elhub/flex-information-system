@@ -124,6 +124,7 @@ export type TextKey =
   | "service_provider_product_application"
   | "service_provider"
   | "system_operator"
+  | "procuring_system_operator"
   | "resource_show_layout.actions_group_label"
   | "resource_show_layout.navigate_group_label"
   | "resource_show_layout.more_button"
@@ -171,6 +172,7 @@ export type TextKey =
   | "technical_resources_show_location"
   | "technical_resources_show_label"
   | "table.header.aggregated_flexible_power"
+  | "table.header.total_approved_flexible_power"
   | "table.header.aggregated_rated_power"
   | "table.header.minimum_rated_power"
   | "table.header.maximum_rated_power"
@@ -249,10 +251,12 @@ export type TextKey =
   | "spgpa_hide_prequalified"
   | "spgpa_snapshot_total_capacity"
   | "spgpa_snapshot_approved_units"
+  | "spgpa_snapshot_grid_prequalified_units"
   | "spgpa_snapshot_pending_units"
   | "spgpa_snapshot_total_units"
   | "spgpa_snapshot_pending_badge"
   | "spgpa_snapshot_approved_flexible_power"
+  | "spgpa_snapshot_cso_prequalified_flexible_power"
   | "spgpa_snapshot_flexible_power_needing_approval"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
@@ -356,6 +360,8 @@ export type TextKey =
   | "header_nav_entities"
   | "header_nav_parties"
   | "header_nav_events"
+  | "list_pagination_previous"
+  | "list_pagination_next"
   | "header_nav_notifications"
   | "header_nav_notifications_unacknowledged"
   | "header_nav_notices"
@@ -552,6 +558,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Service provider product application",
     service_provider: "Service provider",
     system_operator: "System operator",
+    procuring_system_operator: "Procuring system operator",
     delete: "Delete",
     yes: "Yes",
     "notification.event_category": "Event category",
@@ -650,6 +657,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_spg_id: "SPG ID",
     cu_spg_empty: "No service providing groups for this controllable unit.",
     "table.header.aggregated_flexible_power": "Aggregated flexible power",
+    "table.header.total_approved_flexible_power":
+      "Total approved flexible power",
     "table.header.aggregated_rated_power": "Aggregated rated power",
     "table.header.minimum_rated_power": "Minimum rated power",
     "table.header.maximum_rated_power": "Maximum rated power",
@@ -802,12 +811,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_snapshot_total_capacity: "Total flexible power",
     spgpa_snapshot_approved_units:
       "%{approved} of %{total} controllable units approved",
+    spgpa_snapshot_grid_prequalified_units:
+      "%{prequalified} of %{total} controllable units grid prequalified",
     spgpa_snapshot_pending_units:
       "%{count} controllable units awaiting approval",
     spgpa_snapshot_total_units: "%{count} controllable units in the group",
     spgpa_snapshot_pending_badge: "%{count} units",
     spgpa_snapshot_approved_flexible_power:
       "Flexible power with approved status",
+    spgpa_snapshot_cso_prequalified_flexible_power:
+      "Flexible power grid prequalified by CSO",
     spgpa_snapshot_flexible_power_needing_approval:
       "Flexible power pending approval",
     spg_changes_since_label: "Compare changes since",
@@ -885,6 +898,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_entities: "Entities",
     header_nav_parties: "Parties",
     header_nav_events: "Events",
+    list_pagination_previous: "Previous",
+    list_pagination_next: "Next",
     header_nav_notifications: "Notifications",
     header_nav_notifications_unacknowledged:
       "Notifications (unacknowledged comments)",
@@ -1090,6 +1105,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Produktprekvalifisering for tjenesteleverandør",
     service_provider: "Tjenesteleverandør",
     system_operator: "Systemoperatør",
+    procuring_system_operator: "Kjøpende systemoperatør",
     delete: "Slett",
     yes: "Ja",
     "notification.event_category": "Hendelseskategori",
@@ -1191,6 +1207,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     technical_resources_show_location: "Vis",
     technical_resources_show_label: "Lokasjon",
     "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
+    "table.header.total_approved_flexible_power":
+      "Total godkjent fleksibel effekt",
     "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
     "table.header.minimum_rated_power": "Minimum merkeeffekt",
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
@@ -1352,12 +1370,16 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_snapshot_total_capacity: "Total fleksibel kapasitet",
     spgpa_snapshot_approved_units:
       "%{approved} av %{total} styrbare enheter godkjent",
+    spgpa_snapshot_grid_prequalified_units:
+      "%{prequalified} av %{total} styrbare enheter nettkvalifisert",
     spgpa_snapshot_pending_units:
       "%{count} styrbare enheter venter på godkjenning",
     spgpa_snapshot_total_units: "%{count} styrbare enheter i gruppen",
     spgpa_snapshot_pending_badge: "%{count} enheter",
     spgpa_snapshot_approved_flexible_power:
       "Fleksibel kapasitet som har status godkjent",
+    spgpa_snapshot_cso_prequalified_flexible_power:
+      "Fleksibel kapasitet som er nettprekvalifisert av CSO",
     spgpa_snapshot_flexible_power_needing_approval:
       "Fleksibel kapasitet som avventer status",
     spg_changes_since_label: "Sammenlign endringer siden",
@@ -1436,6 +1458,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_entities: "Entiteter",
     header_nav_parties: "Parter",
     header_nav_events: "Hendelser",
+    list_pagination_previous: "Forrige",
+    list_pagination_next: "Neste",
     header_nav_notifications: "Varsler",
     header_nav_notifications_unacknowledged: "Varsler (ukvitterte kommentarer)",
     header_nav_notices: "Merknader",

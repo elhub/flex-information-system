@@ -18,10 +18,6 @@ ENABLE_LINTERS:
   - REPOSITORY_GITLEAKS
   - REPOSITORY_SECRETLINT
 
-# We generally want to filter out generated files
-# https://megalinter.io/latest/config-filtering/
-FILTER_REGEX_EXCLUDE: (test/flex/)
-
 # Don't print the Alpaca image in console
 PRINT_ALPACA: false
 

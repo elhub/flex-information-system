@@ -22,60 +22,89 @@ export type SpgControllableUnitRow = {
   substationBusinessId: string | null;
 };
 
+/** How the substation is identified: by its business ID or by its name. */
+export type SubstationKey = "business_id" | "name";
+
 const fetchSpgControllableUnits = async (
   spgId: number,
   substationBusinessId: string,
+  filterBy: SubstationKey,
+  csoId?: number,
 ): Promise<SpgControllableUnitRow[]> => {
   const query: Record<string, string> = {
     embed:
       "controllable_unit!(summary,accounting_point!(grid_location!,balance_responsible_party(balance_responsible_party)))",
     valid_at: new Date().toISOString(),
     service_providing_group_id: `eq.${spgId}`,
-    "controllable_unit.accounting_point.grid_location.business_id": `eq.${substationBusinessId}`,
+    [`controllable_unit.accounting_point.grid_location.${filterBy}`]: `eq.${substationBusinessId}`,
   };
 
   const memberships = await listServiceProvidingGroupMembership({
     query,
   }).then(throwOnError);
 
-  return memberships
-    .filter((m) => m.controllable_unit)
-    .map((m) => {
-      const cu = m.controllable_unit!;
-      const ap = cu.accounting_point;
-      const brp = findCurrentlyValidRecord(ap?.balance_responsible_party ?? []);
-      return {
-        id: cu.id,
-        membershipId: m.id,
-        name: cu.name,
-        validFrom: toDateString(m.valid_from),
-        validTo: toDateString(m.valid_to),
-        maximum_active_power: cu.maximum_active_power,
-        rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
-        regulation_direction: cu.regulation_direction,
-        accountingPointId: cu.accounting_point_id,
-        location: ap?.business_id,
-        mpid: ap?.business_id,
-        brpName: brp?.balance_responsible_party?.name ?? "-",
-        substationBusinessId: ap?.grid_location?.business_id ?? null,
-      };
-    });
+  return (
+    memberships
+      .filter((m) => m.controllable_unit)
+      // only the CUs of this system operator, unless it is not restricted
+      .filter(
+        (m) =>
+          csoId === undefined ||
+          m.controllable_unit?.accounting_point?.system_operator_id === csoId,
+      )
+      .map((m) => {
+        const cu = m.controllable_unit!;
+        const ap = cu.accounting_point;
+        const brp = findCurrentlyValidRecord(
+          ap?.balance_responsible_party ?? [],
+        );
+        return {
+          id: cu.id,
+          membershipId: m.id,
+          name: cu.name,
+          validFrom: toDateString(m.valid_from),
+          validTo: toDateString(m.valid_to),
+          maximum_active_power: cu.maximum_active_power,
+          rated_power:
+            cu.summary?.technical_resource?.maximum_active_power?.sum,
+          regulation_direction: cu.regulation_direction,
+          accountingPointId: cu.accounting_point_id,
+          location: ap?.business_id,
+          mpid: ap?.business_id,
+          brpName: brp?.balance_responsible_party?.name ?? "-",
+          substationBusinessId: ap?.grid_location?.business_id ?? null,
+        };
+      })
+  );
 };
 
 const spgControllableUnitsQueryKey = (
   spgId: number | undefined,
   substationBusinessId: string,
-) => ["spg_cu", spgId, substationBusinessId];
+  filterBy: SubstationKey,
+  csoId?: number,
+) => ["spg_cu", spgId, substationBusinessId, filterBy, csoId];
 
 export const useSpgControllableUnitsMap = (
   spgId: number | undefined,
   substationBusinessIds: string[],
+  filterBy: SubstationKey = "business_id",
+  csoId?: number,
 ): Map<string, SpgControllableUnitRow[] | undefined> => {
   const results = useQueries({
     queries: substationBusinessIds.map((substationBusinessId) => ({
-      queryKey: spgControllableUnitsQueryKey(spgId, substationBusinessId),
+      queryKey: spgControllableUnitsQueryKey(
+        spgId,
+        substationBusinessId,
+        filterBy,
+      ),
       queryFn: () =>
-        fetchSpgControllableUnits(spgId ?? 0, substationBusinessId),
+        fetchSpgControllableUnits(
+          spgId ?? 0,
+          substationBusinessId,
+          filterBy,
+          csoId,
+        ),
       enabled: !!spgId,
     })),
   });

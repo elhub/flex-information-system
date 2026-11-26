@@ -97,7 +97,9 @@ const ControllableUnitServiceProviderForm = ({
       return;
     }
 
-    navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
+    navigate(
+      `/controllable_unit/${record.controllable_unit_id}/show?tab=service_provider`,
+    );
   };
 
   const createOrUpdate = useCreateOrUpdate();
