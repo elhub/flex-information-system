@@ -1,2 +1,2 @@
 export * from "./NoticeList";
-export * from "./NoticeShow";
+export * from "./show/NoticeShow";

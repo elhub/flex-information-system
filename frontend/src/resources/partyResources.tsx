@@ -6,7 +6,6 @@ import { PartyList } from "../party/PartyList";
 import { PartyShow } from "../party/show/PartyShow";
 import { PartyInput } from "../party/PartyInput";
 import { PartyHistoryList } from "../party/PartyHistoryList";
-import { PartyMembershipShow } from "../party/membership/PartyMembershipShow";
 import { PartyMembershipInput } from "../party/membership/PartyMembershipInput";
 import { PartyMembershipHistoryList } from "../party/membership/PartyMembershipHistoryList";
 
@@ -52,14 +51,6 @@ export const createPartyResources = (permissions: Permissions) => {
       {/* party membership relation */}
       {/* list is part of PTY show page */}
       <Route
-        path=":party_id/membership/:id/show"
-        element={
-          <ResourceContextProvider value="party_membership">
-            <PartyMembershipShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
         path=":party_id/membership/create"
         element={
           <ResourceContextProvider value="party_membership">
@@ -87,14 +78,6 @@ export const createPartyResources = (permissions: Permissions) => {
       <Route
         path=":party_id/membership_history"
         element={<PartyMembershipHistoryList />}
-      />
-      <Route
-        path=":party_id/membership_history/:id/show"
-        element={
-          <ResourceContextProvider value="party_membership_history">
-            <PartyMembershipShow />
-          </ResourceContextProvider>
-        }
       />
     </Resource>
   );

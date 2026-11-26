@@ -1,0 +1,127 @@
+package no.elhub.flex.api.controllableunit.db
+
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.serialization.json.Json
+import no.elhub.flex.api.model.domain.ControllableUnit
+import no.elhub.flex.api.model.domain.ControllableUnitForLookup
+import no.elhub.flex.api.model.domain.ControllableUnitStatus
+import no.elhub.flex.api.model.domain.RegulationDirection
+import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.db.FlexTransaction.flexTransaction
+import no.elhub.flex.shared.db.RepositoryError
+import no.elhub.flex.shared.db.prepareNamed
+import no.elhub.flex.shared.db.query
+import org.koin.core.annotation.Single
+import java.sql.ResultSet
+
+/**
+ * Repository interface for controllable units.
+ *
+ * All functions receive the caller's [FlexPrincipal] via context parameter so
+ * implementations can apply the per-request RLS preamble without it being
+ * threaded explicitly through every call site.
+ */
+interface ControllableUnitRepository {
+
+    /**
+     * Retrieves all non-terminated controllable units associated with either the given [controllableUnitBusinessId]
+     * or the given [accountingPointBusinessId].
+     *
+     * Returns [RepositoryError] when the query fails.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun lookupControllableUnits(
+        controllableUnitBusinessId: String,
+        accountingPointBusinessId: String,
+    ): Either<RepositoryError, List<ControllableUnitForLookup>>
+
+    /**
+     * Retrieves all controllable units associated with the given accounting point.
+     *
+     * Returns [DatabaseError] if the query fails.
+     *
+     * @param accountingPointId the internal ID of the accounting point.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getByAccountingPointId(accountingPointId: Long): Either<DatabaseError, List<ControllableUnit>>
+}
+
+private val logger = KotlinLogging.logger {}
+
+private val json = Json { ignoreUnknownKeys = true }
+
+@Single(createdAtStart = true)
+class ControllableUnitRepositoryImpl : ControllableUnitRepository {
+
+    context(principal: FlexPrincipal)
+    override suspend fun lookupControllableUnits(
+        controllableUnitBusinessId: String,
+        accountingPointBusinessId: String,
+    ): Either<RepositoryError, List<ControllableUnitForLookup>> =
+        flexTransaction { conn ->
+            runCatching {
+                conn.prepareStatement(GET_BY_CU_OR_AP_BUSINESS_ID)
+                    .use { stmt ->
+                        stmt.setString(1, controllableUnitBusinessId)
+                        stmt.setString(2, accountingPointBusinessId)
+                        stmt.executeQuery().use { rs -> if (rs.next()) rs.getString(1) else null }
+                    }
+            }.fold(
+                onSuccess = { jsonStr ->
+                    if (jsonStr == null) {
+                        emptyList<ControllableUnitForLookup>().right()
+                    } else {
+                        logger.debug { "Raw lookup query result: $jsonStr" }
+                        runCatching { json.decodeFromString<List<ControllableUnitForLookup>>(jsonStr) }.fold(
+                            onSuccess = { it.right() },
+                            onFailure = { e ->
+                                DatabaseError("failed to parse CU lookup result: ${e.message}").left()
+                            },
+                        )
+                    }
+                },
+                onFailure = { e ->
+                    logger.error { "lookupControllableUnits failed: ${e.message}" }
+                    DatabaseError("controllable unit lookup query failed: ${e.message}").left()
+                },
+            )
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getByAccountingPointId(
+        accountingPointId: Long
+    ): Either<DatabaseError, List<ControllableUnit>> = flexTransaction { conn ->
+        Either.catch {
+            conn.prepareNamed(
+                """
+                SELECT *
+                FROM flex.controllable_unit
+                WHERE accounting_point_id = :accountingPointId
+                """.trimIndent(),
+                mapOf("accountingPointId" to accountingPointId)
+            ).query { it.toControllableUnit() }
+        }.mapLeft { e ->
+            logger.error { "getByAccountingPointId failed: ${e.message}" }
+            DatabaseError("Failed to query  by accounting point id")
+        }
+    }
+
+    private fun ResultSet.toControllableUnit(): ControllableUnit = ControllableUnit(
+        id = getLong("id"),
+        businessId = getString("business_id"),
+        name = getString("name"),
+        startDate = getDate("start_date")?.toLocalDate()?.toKotlinLocalDate(),
+        status = ControllableUnitStatus.fromValue(getString("status")),
+        regulationDirection = RegulationDirection.fromValue(getString("regulation_direction")),
+        maximumActivePower = getBigDecimal("maximum_active_power"),
+        isSmall = getBoolean("is_small"),
+        additionalInformation = getString("additional_information"),
+        accountingPointId = getLong("accounting_point_id"),
+        createdByPartyId = getLong("created_by_party_id")
+    )
+}

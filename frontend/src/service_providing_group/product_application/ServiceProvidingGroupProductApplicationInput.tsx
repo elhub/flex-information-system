@@ -205,6 +205,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           warning="Please remember not to write any sensitive (power/market/personal) information in this field."
           infoElement={<AdditionalInformationNotice />}
         />
+        <DateTimeInput {...fields.requested_at} description tooltip={false} />
         <DateTimeInput
           {...fields.prequalified_at}
           description

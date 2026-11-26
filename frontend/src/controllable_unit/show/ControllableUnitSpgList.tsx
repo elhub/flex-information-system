@@ -73,7 +73,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
   }
 
   const rows: SpgMembershipRow[] = showHistory
-    ? (history ?? []).map((membership) => ({
+    ? (history ?? []).map((membership: any) => ({
         id: membership.id,
         spg_id: membership.service_providing_group_id,
         membership_id: membership.service_providing_group_membership_id,
@@ -87,7 +87,7 @@ export const ControllableUnitSpgList = ({ cuId }: Props) => {
         replaced_at: membership.replaced_at,
         replaced_by: membership.replaced_by,
       }))
-    : (memberships ?? []).map((membership) => ({
+    : (memberships ?? []).map((membership: any) => ({
         id: membership.id,
         spg_id: membership.service_providing_group_id,
         membership_id: membership.id,

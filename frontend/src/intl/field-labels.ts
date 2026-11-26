@@ -357,6 +357,11 @@ export type FieldLabel =
   | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
   | "service_providing_group_grid_prequalification_history.service_providing_group_id"
   | "service_providing_group_grid_prequalification_history.status"
+  | "service_providing_group_grid_prequalification_substation_power.controllable_unit_count"
+  | "service_providing_group_grid_prequalification_substation_power.maximum_active_power"
+  | "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_grid_prequalification_substation_power.substation_name"
+  | "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power"
   | "service_providing_group_grid_suspension.id"
   | "service_providing_group_grid_suspension.impacted_system_operator_id"
   | "service_providing_group_grid_suspension.reason"
@@ -436,6 +441,7 @@ export type FieldLabel =
   | "service_providing_group_product_application.ramping_description"
   | "service_providing_group_product_application.recorded_at"
   | "service_providing_group_product_application.recorded_by"
+  | "service_providing_group_product_application.requested_at"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
@@ -473,6 +479,7 @@ export type FieldLabel =
   | "service_providing_group_product_application_history.recorded_by"
   | "service_providing_group_product_application_history.replaced_at"
   | "service_providing_group_product_application_history.replaced_by"
+  | "service_providing_group_product_application_history.requested_at"
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
@@ -693,6 +700,16 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Service Providing Group ID",
     "service_providing_group_power_per_substation.substations":
       "Per-substation aggregates",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Service Providing Group Grid Prequalification ID",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Substation Name",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Controllable unit count",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maximum active power",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total approved maximum active power",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Service Providing Group ID",
@@ -1091,7 +1108,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.service_provider_id":
       "Service provider",
     "service_provider_product_application.system_operator_id":
-      "System operator",
+      "Procuring system operator",
     "service_provider_product_application.product_type_ids": "Product types",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Qualified at",
@@ -1101,7 +1118,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Service provider",
     "service_provider_product_application_history.system_operator_id":
-      "System operator",
+      "Procuring system operator",
     "service_provider_product_application_history.product_type_ids":
       "Product types",
     "service_provider_product_application_history.status": "Status",
@@ -1216,6 +1233,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Ramping description",
     "service_providing_group_product_application.created_at": "Created at",
     "service_providing_group_product_application.complete_at": "Complete at",
+    "service_providing_group_product_application.requested_at": "Requested at",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1244,6 +1262,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Created at",
     "service_providing_group_product_application_history.complete_at":
       "Complete at",
+    "service_providing_group_product_application_history.requested_at":
+      "Requested at",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1467,6 +1487,16 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Fleksibilitetsgruppe-ID",
     "service_providing_group_power_per_substation.substations":
       "Aggregat per transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Nettprekvalifisering-ID for fleksibilitetsgruppe",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Navn på transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Antall styrbare enheter",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total godkjent maksimal aktiv effekt",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",
@@ -1861,7 +1891,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.id": "ID",
     "service_provider_product_application.service_provider_id":
       "Tjenesteleverandør",
-    "service_provider_product_application.system_operator_id": "Systemoperatør",
+    "service_provider_product_application.system_operator_id":
+      "Kjøpende systemoperatør",
     "service_provider_product_application.product_type_ids": "Produkttyper",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Kvalifisert",
@@ -1871,7 +1902,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Tjenesteleverandør",
     "service_provider_product_application_history.system_operator_id":
-      "Systemoperatør",
+      "Kjøpende systemoperatør",
     "service_provider_product_application_history.product_type_ids":
       "Produkttyper",
     "service_provider_product_application_history.status": "Status",
@@ -1986,6 +2017,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskrivelse",
     "service_providing_group_product_application.created_at": "Opprettet",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2014,6 +2047,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Opprettet",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidspunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2237,6 +2272,16 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Fleksibilitetsgruppe-ID",
     "service_providing_group_power_per_substation.substations":
       "Aggregat per transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+      "Nettprekvalifisering-ID for fleksibilitetsgruppe",
+    "service_providing_group_grid_prequalification_substation_power.substation_name":
+      "Navn på transformatorstasjon",
+    "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+      "Antall styrbare enheter",
+    "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+      "Total godkjent maksimal aktiv effekt",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",
@@ -2630,7 +2675,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application.id": "ID",
     "service_provider_product_application.service_provider_id":
       "Tenesteleverandør",
-    "service_provider_product_application.system_operator_id": "Systemoperatør",
+    "service_provider_product_application.system_operator_id":
+      "Kjøpande systemoperatør",
     "service_provider_product_application.product_type_ids": "Produkttypar",
     "service_provider_product_application.status": "Status",
     "service_provider_product_application.qualified_at": "Kvalifisert",
@@ -2640,7 +2686,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_provider_product_application_history.service_provider_id":
       "Tenesteleverandør",
     "service_provider_product_application_history.system_operator_id":
-      "Systemoperatør",
+      "Kjøpande systemoperatør",
     "service_provider_product_application_history.product_type_ids":
       "Produkttypar",
     "service_provider_product_application_history.status": "Status",
@@ -2755,6 +2801,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Rampingbeskriving",
     "service_providing_group_product_application.created_at": "Oppretta",
     "service_providing_group_product_application.complete_at": "Fullført",
+    "service_providing_group_product_application.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2783,6 +2831,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Oppretta",
     "service_providing_group_product_application_history.complete_at":
       "Fullført",
+    "service_providing_group_product_application_history.requested_at":
+      "Tidpunkt for forespørsel",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

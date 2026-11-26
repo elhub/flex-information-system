@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Alert, BodyText, Loader, Table, type SortState } from "../ui";
 import type { ListColumn, ListInterface } from "./types";
 
+export type RowLinkTarget = string | { to: string; state?: unknown };
+
 export type ListTableProps<T extends { id: number | string }> = {
   list: ListInterface<T>;
   columns: ListColumn<T>[];
-  rowLink?: (row: T) => string;
+  rowLink?: (row: T) => RowLinkTarget;
   expandedContent?: (row: T) => React.ReactNode;
+  rowActions?: (row: T) => React.ReactNode;
 };
 
 // Sortable table for a ListInterface, including error, loading and empty states.
@@ -16,6 +19,7 @@ export const ListTable = <T extends { id: number | string }>({
   columns,
   rowLink,
   expandedContent,
+  rowActions,
 }: ListTableProps<T>) => {
   const translate = useTranslate();
 
@@ -33,6 +37,7 @@ export const ListTable = <T extends { id: number | string }>({
       columns={columns}
       rowLink={rowLink}
       expandedContent={expandedContent}
+      rowActions={rowActions}
     />
   );
 };
@@ -42,8 +47,11 @@ const RowsTable = <T extends { id: number | string }>({
   columns,
   rowLink,
   expandedContent,
+  rowActions,
 }: ListTableProps<T>) => {
   const navigate = useNavigate();
+  const showActions =
+    rowActions != null && list.rows.some((r) => rowActions(r) != null);
 
   const sortState: SortState = {
     orderBy: list.sort.field,
@@ -63,10 +71,12 @@ const RowsTable = <T extends { id: number | string }>({
   };
 
   const handleRowClick = (e: React.MouseEvent, row: T) => {
-    if (!rowLink) return;
     // links and buttons inside the row handle their own click
     if ((e.target as HTMLElement).closest("button, a")) return;
-    navigate(rowLink(row));
+    if (!rowLink) return;
+    const target = rowLink(row);
+    if (typeof target === "string") navigate(target);
+    else navigate(target.to, { state: target.state });
   };
 
   return (
@@ -79,7 +89,7 @@ const RowsTable = <T extends { id: number | string }>({
       >
         <Table.Header>
           <Table.Row>
-            {expandedContent && <Table.ColumnHeader style={{ width: "1px" }} />}
+            {expandedContent && <Table.ColumnHeader className="w-1" />}
             {columns.map((col) => (
               <Table.ColumnHeader
                 key={col.header}
@@ -87,10 +97,12 @@ const RowsTable = <T extends { id: number | string }>({
                 sortable={!!col.sortField}
                 sortKey={col.sortField}
                 sortType={col.sortType}
+                className={"break-normal"}
               >
                 {col.header}
               </Table.ColumnHeader>
             ))}
+            {showActions && <Table.ColumnHeader className="w-1" />}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -100,6 +112,13 @@ const RowsTable = <T extends { id: number | string }>({
                 {col.render(row)}
               </Table.DataCell>
             ));
+            if (showActions) {
+              cells.push(
+                <Table.DataCell key="__row_actions">
+                  {rowActions!(row)}
+                </Table.DataCell>,
+              );
+            }
             const style = rowLink ? { cursor: "pointer" } : undefined;
             return expandedContent ? (
               <Table.ExpandableRow

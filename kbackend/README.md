@@ -1,17 +1,64 @@
 # kbackend
 
-Kotlin/Ktor backend for the Flexibility Information System. This is the primary
-backend, intended to replace the existing Go backend. All new features should be
-implemented here.
+Kotlin/Ktor backend for the Flexibility Information System.
+
+## Code structure
+
+The project is split in several packages corresponding to relatively independent
+modules:
+
+| Package  | Purpose                                                                                     |
+|----------|---------------------------------------------------------------------------------------------|
+| `auth`   | Everything related to authentication: plugins, scopes, and the auth API                     |
+| `api`    | Domain logic, DB access and handlers for the data API                                       |
+| `jobs`   | Scheduled jobs that run synchronisation processes or regular actions (like sending e-mails) |
+| `config` | Ktor application setup                                                                      |
+| `shared` | Common code used by several of the packages above                                           |
+
+Code tends to be grouped by resource. Database access is done through
+repository classes so as to gather all SQL code related to a resource in only
+one place.
+
+### Run modes
+
+The same application image can start in two modes, selected by the `JOB`
+environment variable (see `Application.kt`):
+
+- **Normal mode** (`JOB` not set): the Ktor backend starts and serves the data,
+  grid and auth APIs.
+- **Job mode** (`JOB` set): the backend does **not** start. Only the selected
+  job runs, then the process exits. Every job also starts a minimal Ktor server
+  on `PORT` (default 8080) that only serves `/healthz` and `/readyz`, in case
+  they are deployed as regular Kubernetes applications with probes.
+
+The value of `JOB` must match the name of a job defined in `jobs/Job.kt`.
+Jobs may take their own settings from environment variables.
+
+### Dependency injection
+
+Dependency injection uses [Koin](https://insert-koin.io/) with annotations.
+Every package has a module class annotated with `@Module` and `@ComponentScan`
+that picks up the annotated classes (e.g. `@Single`) in that package.
+
+`AppModule` is the root of normal mode (`FlexApp`). Each job has its own
+`@KoinApplication` so that only the dependencies it needs are started.
 
 ## Code generation
 
 ### API Models
 
-Models for the API are generated from `openapi.yaml` at the module
-root using [Fabrikt](https://github.com/fabrikt-io/fabrikt). Generated classes
-are placed under the `no.elhub.flex.model.dto.generated` package and should not
-be edited by hand. To run the script:
+Models for the APIs are generated from their OpenAPI documents using
+[Fabrikt](https://github.com/fabrikt-io/fabrikt). Generated classes should not
+be edited by hand.
+
+| API  | Source                              | Package                                  |
+|------|-------------------------------------|------------------------------------------|
+| data | `kbackend/data/static/openapi.json` | `no.elhub.flex.api.model.dto.generated`  |
+| auth | `kbackend/auth/static/openapi.json` | `no.elhub.flex.auth.model.dto.generated` |
+
+The documents are produced from the files in `openapi/`, so generate them first
+(`just openapi` does everything in the right order). To only run the model
+generation, which needs Docker:
 
 ```bash
 scripts/generate-openapi-models.sh
@@ -25,7 +72,7 @@ Clients for external service integrations are generated using
 `openapi.yaml` file located at:
 
 ```bash
-src/main/kotlin/no/elhub/flex/integration/<service>/openapi.yaml
+src/main/kotlin/no/elhub/flex/shared/<service>/openapi.yaml
 ```
 
 The generated client is placed in a `generated` subpackage under the same
@@ -41,5 +88,106 @@ scripts/generate-openapi-client.sh adapter
 This generates a Ktor HTTP client with kotlinx.serialization under:
 
 ```bash
-src/main/kotlin/no/elhub/flex/integration/adapter/generated/
+src/main/kotlin/no/elhub/flex/shared/adapter/generated/
 ```
+
+### PostgREST routes
+
+The data and grid APIs are served by [PostgREST](https://postgrest.org/), with
+kbackend in front of it. The routes are generated from the OpenAPI documents by
+`local/scripts/openapi_to_kbackend_routes.py` (part of `just openapi`) into
+`GeneratedDataApiRoutes` and `GeneratedGridApiRoutes`. The files only contain
+data: every route of the document and the embed relations.
+
+Each request is checked against the scopes of the caller and rewritten for
+PostgREST: `/<resource>/<id>` becomes a filter, `embed` becomes `select`, and
+`valid_at` and `as_of` become filters.
+
+Authentication failures follow
+[RFC 6750](https://www.rfc-editor.org/rfc/rfc6750):
+HTTP 401 with `WWW-Authenticate: Bearer` for a missing token, HTTP 401 with
+`error="invalid_token"` for an invalid or expired one, and HTTP 403 with
+`error="insufficient_scope"` (naming the required scope) when the token lacks
+a scope. Most routes are declared with `authenticatedRouting` and restricted
+with `requireScope` or `requireRoles`; they respond with HTTP 401 when there is
+no token. An `Authorization` header that is not a `Bearer` header is rejected
+with HTTP 400. Some authentication endpoints handling tokens (e.g. `token` or
+`assume`) have a different error handling logic because they follow the OAuth
+flow. They are then declared in a plain `routing` block and read the token on
+their own.
+
+### API documentation
+
+Each API serves an Elements page and its OpenAPI document under its own path:
+
+| API  | Documentation page | OpenAPI document            |
+|------|--------------------|-----------------------------|
+| Data | `GET /api/v1/`     | `GET /api/v1/openapi.json`  |
+| Grid | `GET /grid/v0/`    | `GET /grid/v0/openapi.json` |
+| Auth | `GET /auth/v1/`    | `GET /auth/v1/openapi.json` |
+
+The documents are bundled at build time from `data/static/openapi.json` and
+`grid/static/openapi.json` and `auth/static/openapi.json`. The `servers` entry
+of each is set to `FLEX_BASE_URL` plus the path of the API, which is the URL
+its clients use.
+
+## Testing
+
+### Unit and repository tests
+
+```bash
+./gradlew test
+```
+
+Repository and job tests use Testcontainers for Postgres, so Docker must be
+running. They seed their own data (see `testutil/TestData.kt`).
+
+### API tests
+
+The API tests run the data API in-process on top of real Postgres and
+[PostgREST](https://postgrest.org/) containers. There is one test class per
+resource.
+
+```bash
+./gradlew apiTest
+```
+
+Docker must be running. The first run pulls `postgrest/postgrest` and
+`adobe/s3mock`.
+
+Run a single class or test:
+
+```bash
+./gradlew apiTest --tests 'no.elhub.flex.api.producttype.ProductTypeApiTest'
+```
+
+`./gradlew check` runs both `test` and `apiTest`. In CI the API tests run as a
+separate "API tests" step of the kbackend build.
+
+#### How they work
+
+- The tests live in the `apiTest` source set (`src/apiTest`) and can use the
+  classes from `src/test`, such as `PostgresTestContainer` and `makeJwt`.
+- `PostgresTestContainer` applies the Liquibase migrations once per run.
+  `PostgrestTestContainer` starts PostgREST on top of it with the same settings
+  as `docker-compose.yml`.
+- `apiTestServer()` starts the backend's data routes in-process, on a free port.
+  The routes that kbackend implements itself (the lookups and the attachments)
+  run on the same database, with an S3Mock container for the attachments.
+- The tests run one after another against the same database.
+
+#### Writing a test
+
+- One class per API resource, named `<Resource>ApiTest`. Extend `ApiSpec`,
+  which starts the application and gives the test an `api` client, for example
+  `api.get("/party", actor.token())`.
+- Each test seeds the data it needs with `seed { ... }`. Generic helpers belong
+  in `SeedScope` (`testutil/TestData.kt`) so other classes can reuse them;
+  helpers that only one class needs stay in that class.
+- Truncate the tables the class touches in `beforeEach`, for example
+  `beforeEach { truncate("flex.product_type", "flex.party", "flex.entity") }`.
+  `CASCADE` also clears the tables that reference them. Seed inside the test or
+  in `beforeEach`
+- Use `// RLS: <ID>` comments so the tests can be matched against the RLS
+  policies they cover. Run `just coverage` from the repository root to list the
+  RLS policies that are covered by the API tests.

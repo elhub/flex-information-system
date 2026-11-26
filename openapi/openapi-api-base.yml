@@ -512,6 +512,50 @@ components:
             format: bigint
             type: integer
             example: 5
+    notice_data_service_providing_group_grid_prequalification_outdated:
+      type: object
+      description: >-
+        Format of the data field in a notice with data.kind =
+        notice.data.service_providing_group_grid_prequalification.outdated
+      required:
+        - kind
+      properties:
+        kind:
+          description: Identifies the notice data schema for discriminated union deserialization.
+          type: string
+          const: notice.data.service_providing_group_grid_prequalification.outdated
+        service_providing_group_id:
+          description: The service providing group that changed.
+          format: bigint
+          type: integer
+          example: 5
+        prequalified_at:
+          description: >-
+            When the service providing group was last grid prequalified. The
+            changes are computed relative to the state at this time.
+          type: string
+          format: date-time
+          example: "2023-01-08T10:00:00+01"
+        added:
+          description: Number of controllable units added since the grid prequalification.
+          type: integer
+          example: 2
+        removed:
+          description: Number of controllable units removed since the grid prequalification.
+          type: integer
+          example: 1
+        changed:
+          description: >-
+            Number of controllable units whose maximum active power changed since
+            the grid prequalification.
+          type: integer
+          example: 0
+        maximum_active_power_diff:
+          description: >-
+            Net change in maximum active power (kW) of the controllable units
+            under the system operator since the grid prequalification.
+          type: number
+          example: 75.5
     notice_data:
       oneOf:
         - $ref: "#/components/schemas/notice_data_valid_time_outside_contract"
@@ -520,6 +564,7 @@ components:
         - $ref: "#/components/schemas/notice_data_party_incompatible"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
         - $ref: "#/components/schemas/notice_data_controllable_unit_product_duplication"
+        - $ref: "#/components/schemas/notice_data_service_providing_group_grid_prequalification_outdated"
       discriminator:
         propertyName: kind
         mapping:
@@ -529,6 +574,8 @@ components:
           notice.data.party.incompatible: "#/components/schemas/notice_data_party_incompatible"
           notice.data.product_type.not_qualified: "#/components/schemas/notice_data_product_type_not_qualified"
           notice.data.controllable_unit.product_duplication: "#/components/schemas/notice_data_controllable_unit_product_duplication"
+          # yamllint disable-line rule:line-length
+          notice.data.service_providing_group_grid_prequalification.outdated: "#/components/schemas/notice_data_service_providing_group_grid_prequalification_outdated"
     event_data_updated_fields:
       type: object
       description: >-

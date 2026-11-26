@@ -3,34 +3,41 @@ package no.elhub.flex
 import arrow.core.left
 import arrow.core.right
 import io.ktor.server.application.install
+import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.testing.TestApplication
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
-import no.elhub.flex.accountingpoint.AccountingPointService
-import no.elhub.flex.attachment.AttachmentStorageService
-import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.api.accountingpoint.AccountingPointService
+import no.elhub.flex.api.attachment.AttachmentStorageService
+import no.elhub.flex.api.config.AccountingPointAdapterConfig
+import no.elhub.flex.api.config.FlexConfig
+import no.elhub.flex.api.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.api.event.db.EventRepository
+import no.elhub.flex.api.metrics.FlexMetrics
+import no.elhub.flex.api.model.domain.Party
+import no.elhub.flex.api.party.PartyService
+import no.elhub.flex.api.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.auth.plugin.configureAuthentication
+import no.elhub.flex.auth.util.TEST_JWT_SECRET
 import no.elhub.flex.config.Tracing
-import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
-import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
-import no.elhub.flex.controllableunit.db.ControllableUnitRepository
-import no.elhub.flex.event.db.EventRepository
-import no.elhub.flex.metrics.FlexMetrics
-import no.elhub.flex.model.domain.Party
-import no.elhub.flex.model.domain.db.DatabaseError
-import no.elhub.flex.model.error.DataFetchError
-import no.elhub.flex.party.PartyService
-import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.shared.auth.FlexPrincipal
+import no.elhub.flex.shared.db.DatabaseError
+import no.elhub.flex.shared.http.DataFetchError
+import no.elhub.flex.shared.http.configureHealth
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
+import no.elhub.flex.shared.accountingpoint.AccountingPointService as SharedAccountingPointService
 
 fun defaultTestApplication(): TestApplication {
-    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
+    val mockSharedAccountingPointService = mockk<SharedAccountingPointService>().also { svc ->
         coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>()) } returns Unit.right()
+    }
+    val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
         coEvery { with(any<FlexPrincipal>()) { svc.getCurrentAccountingPoint(any()) } } returns
             DataFetchError("stub").left()
         coEvery { with(any<FlexPrincipal>()) { svc.getAccountingPointByBusinessId(any()) } } returns
@@ -53,18 +60,21 @@ fun defaultTestApplication(): TestApplication {
     return TestApplication {
         application {
             install(Tracing.plugin)
+            install(AutoHeadResponse)
             configureLogging()
             configureSerialization()
+            configureAuthentication(TEST_JWT_SECRET)
             install(Koin) {
                 modules(
                     module {
                         single<MeterRegistry> { SimpleMeterRegistry() }
                         single<AccountingPointService> { mockAccountingPointService }
+                        single<SharedAccountingPointService> { mockSharedAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
                         single { FlexMetrics(get()) }
                         single<PartyService> { mockPartyService }
-                        single { ControllableUnitLookup(get(), get(), get(), get(), get()) }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get(), get(), AccountingPointAdapterConfig("", ""), FlexConfig("Europe/Oslo", "https://flex.test/")) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )

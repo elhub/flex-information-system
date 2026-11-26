@@ -17,13 +17,11 @@
 !.tbls.yml
 !.yamlfmt
 !.yamllint.yml
-!.golangci*.yml
 !.spectral.yaml
 !.eslintrc.js
 !.dockerfilelintrc
 !.dockerignore
 *.dot
-!.air.toml
 !.editorconfig
 !.devxp/
 

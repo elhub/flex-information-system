@@ -116,27 +116,22 @@ enough functionality to "make it work".
     [logout using IDPorten](https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_logout.html).
     Like `id_token_hint` and front channel logout.
 
-## OpenID Connect Go libraries
+## OpenID Connect client
 
-We are building the flow in our Go backend. There are a few OIDC libraries
-available for Go. The most notable ones are:
+We are building the flow in our Kotlin backend. There are a few OIDC libraries
+available for Kotlin. The most notable ones are:
 
-* https://github.com/zitadel/oidc
-* https://github.com/coreos/go-oidc
+* [Nimbus](https://connect2id.com/products/nimbus-oauth-openid-connect-sdk)
+* [Ktor's OIDC plugin](https://ktor.io/docs/server-oidc.html)
 
-Both of these build on
-[golang.org/x/oauth2](https://pkg.go.dev/golang.org/x/oauth2) and provide an
-opinionated API on top.
+Both of these build on OAuth 2. The problem with Nimbus is that it introduces a
+new, non-standard dependency, and makes it harder to review the code migrating
+away from Go. The problem with the Ktor plugin is that it is experimental and
+lacks support for PAR.
 
-One of the general problems we face is that support for PAR is not there yet ( ref
-[x/oauth2](https://github.com/golang/go/issues/65956),
-[coreos/oidc](https://github.com/coreos/go-oidc/issues/409)
-).
-
-We have decided to roll-our-own OIDC client leaning directly on `x/oauth2` and
-leveraging some nice features of the `lestrrat-go/jwx` library for JOSE
-handling. The `jwx` library provides handy functions for caching remote JWKs and
-signing/validating ID and access tokens.
+We have decided to roll-our-own OIDC client like we did for Go, leaning only on
+Ktor mechanisms (e.g. HTTP clients) and existing dependencies such as
+`java-jwt` and `jwks-rsa` for the JOSE handling.
 
 ## Test user creation in Identity Providers
 

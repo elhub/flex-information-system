@@ -16,6 +16,9 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     UNION ALL
     SELECT * FROM notice_cu_maximum_active_power_ratio
 
+    UNION ALL
+    SELECT * FROM notice_cso_no_active_users
+
     -- Controllable Unit duplication of CU in SPG with same product
     UNION ALL
     SELECT * FROM notice_cu_spg_product_duplication
@@ -49,10 +52,14 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Service Providing Group Product Application notices
     UNION ALL
     SELECT * FROM notice_spgpa_status_requested
+    UNION ALL
+    SELECT * FROM notice_spgpa_spg_inactive
 
     -- Service Providing Group Grid Prequalification notices
     UNION ALL
     SELECT * FROM notice_spggp_status_requested
+    UNION ALL
+    SELECT * FROM notice_spggp_outdated
 
     -- Service Providing Group Grid Suspension notices
     UNION ALL

@@ -109,6 +109,8 @@ export type EnumLabel =
   | "service_providing_group_product_application.ramping_capability.always"
   | "service_providing_group_product_application.ramping_capability.never"
   | "service_providing_group_product_application.ramping_capability.partial"
+  | "service_providing_group_product_application.status.inactive"
+  | "service_providing_group_product_application.status.inactive.description"
   | "service_providing_group_product_application.status.prequalification"
   | "service_providing_group_product_application.status.prequalification.description"
   | "service_providing_group_product_application.status.prequalified"
@@ -308,6 +310,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Rejected",
     "service_providing_group_product_application.status.rejected.description":
       "The application was not approved and requires updates before it can be submitted again.",
+    "service_providing_group_product_application.status.inactive": "Inactive",
+    "service_providing_group_product_application.status.inactive.description":
+      "The Service Provider has witdrawn the application. Can be set to requested again.",
     "service_providing_group_product_application.ramping_capability.always":
       "Always",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -503,6 +508,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden ble ikke godkjent og må oppdateres før den kan sendes inn på nytt.",
+    "service_providing_group_product_application.status.inactive": "Inaktiv",
+    "service_providing_group_product_application.status.inactive.description":
+      "Søknaden er trukket tilbake. Kan oppdateres til etterspørt status igjen.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
@@ -695,6 +703,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.status.rejected.description":
       "Søknaden vart ikkje godkjend og må oppdaterast før ho kan sendast inn på nytt.",
+    "service_providing_group_product_application.status.inactive": "Inaktiv",
+    "service_providing_group_product_application.status.inactive.description":
+      "Søknaden er dregen tilbake. Kan oppdaterast til etterspurt status igjen.",
     "service_providing_group_product_application.ramping_capability.always":
       "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":

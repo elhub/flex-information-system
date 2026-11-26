@@ -33,13 +33,16 @@ import {
 import { formatScaled, KILO, Scale } from "../../../utils/scales";
 import { cn, toDateTimeString } from "../../../util";
 import { BoltIcon } from "../../../components/icons/BoltIcon";
-import { TimelineCard, TimelineDateField } from "./TimelineCard";
+import {
+  TimelineCard,
+  TimelineDateField,
+} from "../../shared/changes/TimelineCard";
 import {
   findMilestoneLabel,
   formatValue,
   parseValue,
-  useChangesTimelineMarks,
-} from "./timelineUtils";
+} from "../../shared/changes/timelineUtils";
+import { useSpgpaTimelineMarks } from "./useSpgpaMilestones";
 
 type Props = {
   spgId: number;
@@ -70,7 +73,7 @@ export const SpgpaControllableUnitsTable = ({
   powerScale,
 }: Props) => {
   const [now] = useState(() => new Date().toISOString());
-  const marks = useChangesTimelineMarks(spgpa, now);
+  const marks = useSpgpaTimelineMarks(spgpa, now);
   const fromDate = new Date(marks[0].value).toISOString();
   const [selectedDate, setSelectedDate] = useState<string>(now);
   const { data, isInitialLoading, isLoading, error } =

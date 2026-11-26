@@ -7,7 +7,7 @@ import {
   ServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { isAtOrBefore, throwOnError, toDateString } from "../../../util";
-import { fetchSnapshot } from "./useSpgChangesViewModel";
+import { fetchSnapshot } from "../../shared/changes/useSpgChangesViewModel";
 
 // Delay before a newly selected date is sent to the backend, so dragging
 // the timeline slider doesn't fire a request for every mark passed.

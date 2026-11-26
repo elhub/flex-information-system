@@ -95,7 +95,7 @@ load: liquibase
     done
 
     docker compose kill -s SIGUSR1 postgrest
-    docker compose restart backend
+    docker compose restart kbackend kbackend-event-worker
 
     echo Loaded!
     echo Hit this url to log in:
@@ -115,14 +115,14 @@ down:
 # down pull build start load
 reset: down pull build start load
 
-# start backend in dev mode
-backend:
+# start kbackend in dev mode
+kbackend:
     #!/usr/bin/env bash
     set -euo pipefail
-    docker compose stop backend || true
-    set -a; source ./local/backend/dev.env; set +a
-    cd backend
-    air
+    docker compose stop kbackend || true
+    set -a; source ./local/kbackend/dev.env; set +a
+    cd kbackend
+    ./gradlew run --args="-port=7002"
 
 # start frontend in dev mode
 frontend:
@@ -199,33 +199,6 @@ _keypair:
     ./local/scripts/generate_keypair.sh ./test/keys/ test
     ./local/scripts/generate_keypair.sh ./test/keys/ common
 
-test-local *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    uv run --env-file .env test/test.py {{args}}
-
-test-dev *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://dev.flex.internal:5443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    uv run test/test.py {{args}}
-
-test *args:
-    @just test-local {{args}}
-
-# directly use pytest
-# e.g. just pytest test/api_client_tests/test_cu.py
-pytest *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-
-    uv run pytest -v test/security_token_service.py {{args}}
-
 # Test migrations resetting the database to a given revision, and running the migrations on the current branch
 test-migrations revision="main":
     #!/usr/bin/env bash
@@ -261,8 +234,9 @@ test-migrations revision="main":
 
     echo "Migration test completed successfully!"
 
+# RLS coverage of the kbackend API tests
 coverage:
-    uv run test/check_coverage.py
+    uv run local/scripts/check_coverage.py
 
 liquibase pghost='localhost' password='flex_password' action='update' changelog='db/changelog.yml':
     #!/usr/bin/env bash
@@ -325,10 +299,10 @@ _mkdocs_build_elements:
         >"./docs/auth/v1/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.api.test]' <"backend/data/static/openapi.json" \
+        '.servers = [$servers.api.test]' <"kbackend/data/static/openapi.json" \
         >"./docs/api/v1/openapi.json"
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.auth.test]' <"backend/auth/static/openapi.json" \
+        '.servers = [$servers.auth.test]' <"kbackend/auth/static/openapi.json" \
         >"./docs/auth/v1/openapi.json"
 
 # deploy documentation to GitHub Pages
@@ -384,7 +358,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-kbackend-routes openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
@@ -422,7 +396,7 @@ resources-to-openapi:
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml \
     --scopes-file openapi/scopes.yml \
-    --module api > backend/data/static/openapi.json
+    --module api > kbackend/data/static/openapi.json
 
     .venv/bin/python3 local/scripts/resources_to_openapi.py \
     --common-base-file openapi/openapi-base-common.yml \
@@ -430,7 +404,7 @@ resources-to-openapi:
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml \
     --scopes-file openapi/scopes.yml \
-    --module grid > backend/grid/static/openapi.json
+    --module grid > kbackend/grid/static/openapi.json
 
     # remove custom fields from the final OpenAPI specification
     jq '( .components.schemas // empty )
@@ -440,9 +414,9 @@ resources-to-openapi:
                 else . end
             )' \
         --indent 4 \
-        < backend/data/static/openapi.json \
+        < kbackend/data/static/openapi.json \
         > openapi/openapi-api-clean.json
-    mv openapi/openapi-api-clean.json backend/data/static/openapi.json
+    mv openapi/openapi-api-clean.json kbackend/data/static/openapi.json
 
     jq '( .components.schemas // empty )
             |= walk(
@@ -451,26 +425,26 @@ resources-to-openapi:
                 else . end
             )' \
         --indent 4 \
-        < backend/grid/static/openapi.json \
+        < kbackend/grid/static/openapi.json \
         > openapi/openapi-grid-clean.json
-    mv openapi/openapi-grid-clean.json backend/grid/static/openapi.json
+    mv openapi/openapi-grid-clean.json kbackend/grid/static/openapi.json
 
-    yq -o=json --indent 4 openapi/openapi-auth.yml > backend/auth/static/openapi.json
-
-    spectral lint \
-        --fail-severity warn \
-        --verbose \
-        backend/data/static/openapi.json
+    yq -o=json --indent 4 openapi/openapi-auth.yml > kbackend/auth/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
         --verbose \
-        backend/auth/static/openapi.json
+        kbackend/data/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
         --verbose \
-        backend/grid/static/openapi.json
+        kbackend/auth/static/openapi.json
+
+    spectral lint \
+        --fail-severity warn \
+        --verbose \
+        kbackend/grid/static/openapi.json
 
 resources-to-diagram:
     #!/usr/bin/env bash
@@ -485,42 +459,21 @@ openapi-to-db:
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
 
-openapi-to-embed-relations:
+openapi-to-kbackend-routes:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    cat openapi/resources.yml | \
-        .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
-        --module api --package data \
-        > backend/data/embed_relations_gen.go
+    .venv/bin/python3 local/scripts/openapi_to_kbackend_routes.py \
+        --openapi kbackend/data/static/openapi.json \
+        --resources openapi/resources.yml \
+        --module api --package no.elhub.flex.api.routes.data.generated \
+        > kbackend/src/main/kotlin/no/elhub/flex/api/routes/data/generated/GeneratedDataApiRoutes.kt
 
-    cat openapi/resources.yml | \
-        .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
-        --module grid --package grid \
-        > backend/grid/embed_relations_gen.go
-
-sqlc:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    cd backend
-    for module in data event; do
-        mkdir -p $module/schemas
-        cp api.sql $module/schemas
-        cd $module
-        cat ../sqlc.yaml | \
-            ../../.venv/bin/python3 ../../local/scripts/sqlc.py schemas/* \
-            > sqlc.yaml
-        sqlc generate
-        rm sqlc.yaml
-        rm schemas/api.sql
-        cd ..
-    done
-
-generate:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    cd backend
-    go generate ./...
+    .venv/bin/python3 local/scripts/openapi_to_kbackend_routes.py \
+        --openapi kbackend/grid/static/openapi.json \
+        --resources openapi/resources.yml \
+        --module grid --name Grid --package no.elhub.flex.api.routes.grid.generated \
+        > kbackend/src/main/kotlin/no/elhub/flex/api/routes/grid/generated/GeneratedGridApiRoutes.kt
 
 openapi-to-md:
     #!/usr/bin/env bash
@@ -582,45 +535,13 @@ openapi-client-adapter:
     rm -rf local/adapter/client/* ./out/openapi-client-adapter
 
     uv run openapi-python-client generate \
-        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/adapter/openapi.yaml \
+        --path ./kbackend/src/main/kotlin/no/elhub/flex/shared/adapter/openapi.yaml \
         --output-path ./out/openapi-client-adapter \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client-adapter/flex/models local/adapter/client/models
     mv ./out/openapi-client-adapter/flex/types.py local/adapter/client/types.py
 
     uv run ruff format local/adapter/client
-
-openapi-client-test:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    mkdir -p ./out
-    rm -rf test/flex ./out/openapi-client
-
-    # We are removing default values from the OpenAPI spec since openapi-python-client
-    # assumes that the client should use the default value if it is not provided.
-    # Our interpretation of the default value is that it is a value that the
-    # _server_ uses if the client does not provide a value.
-    # We also remove the ApiVersion header parameter: it is injected centrally by
-    # SecurityTokenService on every client, so it must not appear as a required
-    # argument on every generated function.
-
-    jq '( .components.schemas // empty, .paths[].get.parameters // empty )
-            |= walk(if type == "object" then del(.default) else . end)
-        | del(.components.parameters.ApiVersion)
-        | .paths[][]
-          |= if type == "object" and has("parameters")
-             then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
-             else .
-             end' \
-        --indent 4 \
-        < backend/data/static/openapi.json \
-        > openapi/openapi-api-no-default.json
-
-    uv run openapi-python-client generate \
-        --path ./openapi/openapi-api-no-default.json \
-        --output-path ./out/openapi-client \
-        --config ./openapi/openapi-client-config.yml
-    mv ./out/openapi-client/flex test/flex
 
 openapi-client-frontend:
     #!/usr/bin/env bash
@@ -635,13 +556,13 @@ openapi-client-frontend:
           |= if type == "object" and has("parameters")
              then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
              else .
-             end' backend/data/static/openapi.json \
-    | sed 's/_response//g' > backend/data/static/.openapi-frontend-client.json
+             end' kbackend/data/static/openapi.json \
+    | sed 's/_response//g' > kbackend/data/static/.openapi-frontend-client.json
 
     cd frontend
     npx openapi-ts
 
-    rm ../backend/data/static/.openapi-frontend-client.json
+    rm ../kbackend/data/static/.openapi-frontend-client.json
 
     # Replace number and int with z.coerce.number
     sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
@@ -748,9 +669,3 @@ vet-license:
 
     npx license-checker --production --start ./frontend/ \
         --onlyAllow 'MIT;0BSD;BSD*;BSD-3-Clause;BSD-2-Clause;ISC;Apache-2.0' 1>/dev/null
-
-    echo 'Checking Go/backend licenses'
-    cd backend
-    # Forbidden licenses: https://github.com/google/licenseclassifier/blob/e6a9bb99b5a6f71d5a34336b8245e305f5430f99/license_type.go#L341
-    go-licenses check ./... --ignore flex --disallowed_types=forbidden,unknown
-    cd ..

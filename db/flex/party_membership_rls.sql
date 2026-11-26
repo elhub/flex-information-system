@@ -24,6 +24,14 @@ FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- internal: used by the mail notification job to find the members of a party
+GRANT SELECT ON party_membership TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "PTYM_INTERNAL_EVENT_NOTIFICATION" ON party_membership;
+CREATE POLICY "PTYM_INTERNAL_EVENT_NOTIFICATION" ON party_membership
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
 -- RLS: PTYM-ENT001
 GRANT SELECT ON party_membership TO flex_entity;
 DROP POLICY IF EXISTS "PTYM_ENT001" ON party_membership;

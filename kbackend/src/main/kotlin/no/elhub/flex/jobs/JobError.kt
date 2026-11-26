@@ -5,4 +5,5 @@ sealed class JobError {
     data class NetworkError(val message: String) : JobError()
     data class ParsingError(val message: String) : JobError()
     data class DatabaseError(val message: String) : JobError()
+    data class ConfigError(val message: String) : JobError()
 }

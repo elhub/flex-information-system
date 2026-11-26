@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 import { BodyText } from "../../ui";
-import { toDateTimeString } from "../../../util";
+import { toDateString, toDateTimeString } from "../../../util";
 
 type DateFieldProps = BaseFieldProps & {
   showTime?: boolean;
@@ -23,7 +23,7 @@ export const DateField = ({
   const value = record?.[source];
   const content = value ? (
     <BodyText size={textSize}>
-      {toDateTimeString(value, { showTime: showTime ?? false })}
+      {showTime ? toDateTimeString(value) : toDateString(value)}
     </BodyText>
   ) : emptyText ? (
     <BodyText size={textSize}>{emptyText}</BodyText>

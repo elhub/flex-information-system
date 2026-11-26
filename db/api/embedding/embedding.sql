@@ -222,6 +222,40 @@ api.power_per_substation(
 )
 TO flex_common, flex_entity;
 
+-- changeset flex:service_providing_group_grid_prequalification_substation_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.service_providing_group_grid_prequalification(
+    api.service_providing_group_grid_prequalification_substation_power
+)
+RETURNS SETOF api.service_providing_group_grid_prequalification ROWS 1 AS $$
+  select *
+  from api.service_providing_group_grid_prequalification
+  where id = $1.service_providing_group_grid_prequalification_id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:service_providing_group_grid_prequalification_substation_power-service_providing_group_grid_prequalification_id-to-service_providing_group_grid_prequalification-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.service_providing_group_grid_prequalification(
+    api.service_providing_group_grid_prequalification_substation_power
+)
+TO flex_common, flex_entity;
+
+-- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_power runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.substation_power(
+    api.service_providing_group_grid_prequalification
+)
+RETURNS SETOF api.service_providing_group_grid_prequalification_substation_power AS $$
+  select *
+  from api.service_providing_group_grid_prequalification_substation_power
+  where service_providing_group_grid_prequalification_id = $1.id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:service_providing_group_grid_prequalification-id-to-service_providing_group_grid_prequalification_substation_power-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.substation_power(
+    api.service_providing_group_grid_prequalification
+)
+TO flex_common, flex_entity;
+
 -- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_providing_group(
     api.service_providing_group_summary

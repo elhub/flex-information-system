@@ -183,6 +183,8 @@ const MultiSelectFilter = ({
       maxShown={2}
       selectedOptions={def.options.filter((o) => selected.includes(o.value))}
       onToggleSelected={toggle}
+      className="min-w-48"
+      inputClassName="w-10"
     />
   );
 };

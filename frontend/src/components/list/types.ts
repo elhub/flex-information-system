@@ -12,7 +12,11 @@ export type ListFilters = Record<string, string>;
 
 export type ListInterface<T> = {
   rows: T[];
-  total: number;
+  // Total number of rows. Leave undefined when the backend does not count
+  // (expensive queries); the pagination then only offers previous/next.
+  total?: number;
+  // Only used without a total: whether there is a page after the current one.
+  hasNextPage?: boolean;
   isLoading: boolean;
   isError: boolean;
 

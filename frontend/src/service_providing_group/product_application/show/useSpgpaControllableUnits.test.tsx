@@ -11,14 +11,14 @@ import {
   listAccountingPoint,
   listServiceProvidingGroupGridPrequalification,
 } from "../../../generated-client";
-import { fetchSnapshot } from "./useSpgChangesViewModel";
+import { fetchSnapshot } from "../../shared/changes/useSpgChangesViewModel";
 
 vi.mock("../../../generated-client", () => ({
   listServiceProvidingGroupGridPrequalification: vi.fn(),
   listAccountingPoint: vi.fn(),
 }));
 
-vi.mock("./useSpgChangesViewModel", () => ({
+vi.mock("../../shared/changes/useSpgChangesViewModel", () => ({
   fetchSnapshot: vi.fn(),
 }));
 

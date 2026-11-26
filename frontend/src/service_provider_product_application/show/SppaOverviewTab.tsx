@@ -32,7 +32,7 @@ export const SppaOverviewTab = ({
         linkText={translate("text.resource_card.see_service_provider")}
       />
       <ResourceCard
-        title={translate("text.system_operator")}
+        title={translate("text.procuring_system_operator")}
         content={[
           {
             label: translate("text.resource_card.resource_name"),

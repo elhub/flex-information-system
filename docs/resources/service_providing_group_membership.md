@@ -23,12 +23,12 @@ controllable unit can belong to several groups at the same time.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                                                                       | Status |
-|---------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------|
-| SPGM-VAL001         | The controllable unit and service providing group must belong to the same service provider.                                           | DONE  |
-| SPGM-VAL002         | The controllable unit must be in the bidding zone defined on the SPG.                                                                 | DONE  |
-| SPGM-VAL003         | The flexible power of the controllable unit must not exceed 100% of the combined maximum active power of all its technical resources. | DONE  |
-| SPGM-VAL004         | The controllable unit must be active before it can be added to a SPG.                                                                 | DONE  |
+| Validation rule key | Validation rule                                                                                  | Status |
+|---------------------|--------------------------------------------------------------------------------------------------|--------|
+| SPGM-VAL001         | The controllable unit and service providing group must belong to the same service provider.      | DONE   |
+| SPGM-VAL002         | The controllable unit must be in the bidding zone defined on the SPG.                            | DONE   |
+| SPGM-VAL003         | The flexible power of CU must not exceed the sum of rated power of its TRs, when added to a SPG. | DONE   |
+| SPGM-VAL004         | The controllable unit must be active before it can be added to a SPG.                            | DONE   |
 
 ## Notifications
 

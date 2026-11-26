@@ -68,9 +68,9 @@ No policies.
 
 #### System Operator
 
-| Policy key   | Policy                                           | Status |
-|--------------|--------------------------------------------------|--------|
-| SPGPPS-SO001 | Read power per substation for SPGs they can see. | DONE   |
+| Policy key   | Policy                                                                                                          | Status |
+|--------------|-----------------------------------------------------------------------------------------------------------------|--------|
+| SPGPPS-SO001 | Read power per substation for SPGs they can see, limited to the substations of controllable units they can see. | DONE   |
 
 #### Service Provider
 

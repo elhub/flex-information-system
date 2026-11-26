@@ -399,6 +399,12 @@ export type PermissionTarget =
   | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
   | "service_providing_group_grid_prequalification_history.service_providing_group_id"
   | "service_providing_group_grid_prequalification_history.status"
+  | "service_providing_group_grid_prequalification_substation_power"
+  | "service_providing_group_grid_prequalification_substation_power.controllable_unit_count"
+  | "service_providing_group_grid_prequalification_substation_power.maximum_active_power"
+  | "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_grid_prequalification_substation_power.substation_name"
+  | "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power"
   | "service_providing_group_grid_suspension"
   | "service_providing_group_grid_suspension.id"
   | "service_providing_group_grid_suspension.impacted_system_operator_id"
@@ -487,6 +493,7 @@ export type PermissionTarget =
   | "service_providing_group_product_application.ramping_description"
   | "service_providing_group_product_application.recorded_at"
   | "service_providing_group_product_application.recorded_by"
+  | "service_providing_group_product_application.requested_at"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
@@ -537,6 +544,7 @@ export type PermissionTarget =
   | "service_providing_group_product_application_history.recorded_by"
   | "service_providing_group_product_application_history.replaced_at"
   | "service_providing_group_product_application_history.replaced_by"
+  | "service_providing_group_product_application_history.requested_at"
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
@@ -7746,6 +7754,35 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.controllable_unit_count",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_substation_power",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.substation_name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_suspension",
       operation: "create",
     },
@@ -8250,6 +8287,14 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application.requested_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.requested_at",
+      operation: "update",
+    },
+    {
       target:
         "service_providing_group_product_application.service_providing_group_id",
       operation: "read",
@@ -8552,6 +8597,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.requested_at",
       operation: "read",
     },
     {
@@ -12362,6 +12412,35 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.controllable_unit_count",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_substation_power",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.substation_name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_suspension",
       operation: "create",
     },
@@ -12807,6 +12886,14 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application.requested_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.requested_at",
+      operation: "update",
+    },
+    {
       target:
         "service_providing_group_product_application.service_providing_group_id",
       operation: "read",
@@ -13072,6 +13159,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.requested_at",
       operation: "read",
     },
     {
@@ -15929,6 +16021,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application.requested_at",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.service_providing_group_id",
       operation: "create",
@@ -16236,6 +16332,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.requested_at",
       operation: "read",
     },
     {

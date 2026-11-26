@@ -139,7 +139,7 @@ export const useDashboardApplications = () => {
       systemOperator: r.procuring_system_operator?.name,
       status: r.status,
       route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
-      timestamp: r.created_at,
+      timestamp: r.requested_at ?? r.created_at,
     })) || [];
 
   const gridPrequalifications =

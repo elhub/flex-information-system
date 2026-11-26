@@ -4,14 +4,12 @@ type Props = {
   statCards: ReactNode;
   activeTable: ReactNode;
   resolvedTable: ReactNode;
-  extra?: ReactNode;
 };
 
 export const DashboardLayout = ({
   statCards,
   activeTable,
   resolvedTable,
-  extra,
 }: Props) => {
   return (
     <>
@@ -29,8 +27,6 @@ export const DashboardLayout = ({
         </p>
         {resolvedTable}
       </div>
-
-      {extra}
     </>
   );
 };

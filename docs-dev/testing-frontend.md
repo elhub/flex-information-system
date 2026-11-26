@@ -108,7 +108,7 @@ Both the backend and the frontend must be running locally. Start each in its
 own terminal and leave them running:
 
 ```bash
-just backend
+just kbackend
 ```
 
 ```bash

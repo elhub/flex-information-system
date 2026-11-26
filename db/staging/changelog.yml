@@ -20,3 +20,11 @@ databaseChangeLog:
   - include:
       file: ./substation_staging.sql
       relativeToChangelogFile: true
+  - changeSet:
+      id: staging-operation-roles-grants
+      author: flex
+      runAlways: true
+      changes:
+        - sql: GRANT SELECT ON ALL TABLES IN SCHEMA staging TO flex_operation_readonly
+        - sql: GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA staging TO flex_operation_update
+        - sql: GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA staging TO flex_operation_readwrite

@@ -7,6 +7,15 @@ const noticeTypes = [
       "Controllable unit is used in two or more Service Providing Group within the same Product Type. It can only be part of one Service Providing Group within the same Product Type",
   },
   {
+    id: "no.elhub.flex.party.connecting_system_operator.no_active_users",
+    shortId: "party.connecting_system_operator.no_active_users",
+    label: "CSO does not have an active user",
+    description:
+      "The connecting system operator has active controllable units but no active users in the system.",
+    action:
+      "Follow up with the connecting system operator to get a user registered.",
+  },
+  {
     id: "no.elhub.flex.accounting_point_grid_location.source_insufficient",
     shortId: "accounting_point_grid_location.source_insufficient",
     label: "Insufficient Grid Location Source",
@@ -113,6 +122,15 @@ const noticeTypes = [
     action: "Initiate SPG grid prequalification and update status.",
   },
   {
+    id: "no.elhub.flex.service_providing_group_grid_prequalification.outdated",
+    shortId: "service_providing_group_grid_prequalification.outdated",
+    label: "Outdated: SPG changed since grid prequalification",
+    description:
+      "The service providing group has changed by more than 50 kW (net) since it was grid prequalified.",
+    action:
+      "Review the changes and approve them, or follow up with the service provider.",
+  },
+  {
     id: "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract",
     shortId: "service_providing_group_membership.valid_time.outside_contract",
     label: "Inconsistency: SPG contains expired CU(s)",
@@ -125,6 +143,16 @@ const noticeTypes = [
     label: "SPG product application status requested",
     description: "SPG product application status requested.",
     action: "Initiate SPG product prequalification and update status.",
+  },
+  {
+    id: "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive",
+    shortId:
+      "service_providing_group_product_application.service_providing_group.inactive",
+    label: "Inconsistency: Inactive SPG has product applications",
+    description:
+      "The SPG is inactive but still has product applications that are not inactive or rejected.",
+    action:
+      "Deactivate requested product applications and ask the procuring system operator to deactivate applications already being processed or qualified.",
   },
   {
     id: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",

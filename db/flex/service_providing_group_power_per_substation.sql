@@ -4,7 +4,9 @@
 
 -- changeset flex:service-providing-group-power-per-substation-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW service_providing_group_power_per_substation
-WITH (security_invoker = false) AS (
+-- security_invoker: RLS on the CUs applies, so only the CUs visible to the
+-- caller are aggregated (SPGPPS-SO001)
+WITH (security_invoker = true) AS (
     SELECT
         spg.id,
         spg.id AS service_providing_group_id,
@@ -82,6 +84,9 @@ WITH (security_invoker = false) AS (
                     WHERE spgm.service_providing_group_id = spg.id
                         AND spgm.valid_time_range @> current_timestamp
                     GROUP BY apgl.business_id, apgl.name
+                    -- RLS applies to the CUs, so substations without any
+                    -- visible CU must not show up
+                    HAVING COUNT(spgm.controllable_unit_id) > 0
                 ) AS per_substation_details
             ),
             '[]'::jsonb

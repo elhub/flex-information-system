@@ -284,3 +284,69 @@ EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     '{prequalification,temporary_qualified,prequalified,verified}',
     '{}'
 );
+-- changeset flex:spgpa-add-inactive-status runOnChange:false endDelimiter:;
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'spg_product_application_status_check' AND pg_get_constraintdef(oid) LIKE '%inactive%'
+ALTER TABLE flex.service_providing_group_product_application
+DROP CONSTRAINT IF EXISTS spg_product_application_status_check;
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_status_check
+CHECK (
+    status IN (
+        'requested',
+        'prequalification',
+        'temporary_qualified',
+        'prequalified',
+        'verified',
+        'rejected',
+        'inactive'
+    )
+);
+
+-- changeset flex:spgpa-add-new-column-requested-at runOnChange:false endDelimiter:;
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
+
+-- changeset flex:spgpa-add-new-column-requested-at-history-table runOnChange:false endDelimiter:;
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS requested_at timestamp with time zone;
+
+-- changeset flex:spgpa-requested-at-new-insert-func runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION flex.spgpa_set_requested_at()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        -- FISO/PSO keep a supplied value; everyone else (and no value) gets now
+        IF current_role IN ('flex_flexibility_information_system_operator',
+                            'flex_system_operator') THEN
+            NEW.requested_at := coalesce(NEW.requested_at, current_timestamp);
+        ELSE
+            NEW.requested_at := current_timestamp;
+        END IF;
+
+    ELSIF NEW.requested_at IS DISTINCT FROM OLD.requested_at THEN
+        -- manual edit: only FISO/PSO, and their value wins even on a move into requested
+        IF current_role NOT IN ('flex_flexibility_information_system_operator',
+                                'flex_system_operator') THEN
+            RAISE sqlstate 'PT403' USING
+                message = 'Only FISO or PSO can edit requested_at';
+        END IF;
+
+    ELSIF NEW.status = 'requested'
+        AND OLD.status IS DISTINCT FROM 'requested' THEN
+        -- moved into requested (rejected/inactive -> requested) with no manual value: reset
+        NEW.requested_at := current_timestamp;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:spgpa-set-requested-at-on-insert runOnChange:false endDelimiter:;
+CREATE OR REPLACE TRIGGER service_providing_group_product_application_set_requested_at
+BEFORE INSERT OR UPDATE ON flex.service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION flex.spgpa_set_requested_at();

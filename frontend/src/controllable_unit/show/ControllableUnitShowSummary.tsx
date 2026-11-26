@@ -1,6 +1,7 @@
 import type { ResourceSummaryField } from "../../components/ResourceShowLayout";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
+import { toDateTimeString } from "../../util";
 import { useTranslate } from "ra-core";
 
 const formatRange = (start?: string, end?: string) => {
@@ -102,7 +103,7 @@ export const useControllableUnitShowSummary = ({
     {
       labelKey: "controllable_unit.recorded_at",
       value: controllableUnit.recorded_at
-        ? formatDate(controllableUnit.recorded_at, "dd.MM.yyyy HH:mm")
+        ? toDateTimeString(controllableUnit.recorded_at)
         : undefined,
     },
   ];

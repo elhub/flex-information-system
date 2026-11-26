@@ -107,6 +107,7 @@ export type AuthScope =
   | "read:data:service_providing_group_grid_prequalification_comment"
   | "read:data:service_providing_group_grid_prequalification_comment_history"
   | "read:data:service_providing_group_grid_prequalification_history"
+  | "read:data:service_providing_group_grid_prequalification_substation_power"
   | "read:data:service_providing_group_grid_suspension"
   | "read:data:service_providing_group_grid_suspension_comment"
   | "read:data:service_providing_group_grid_suspension_comment_history"
@@ -404,6 +405,40 @@ export type NoticeDataControllableUnitProductDuplication = {
   service_providing_group_ids?: Array<number>;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.service_providing_group_grid_prequalification.outdated
+ */
+export type NoticeDataServiceProvidingGroupGridPrequalificationOutdated = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+  /**
+   * The service providing group that changed.
+   */
+  service_providing_group_id?: number;
+  /**
+   * When the service providing group was last grid prequalified. The changes are computed relative to the state at this time.
+   */
+  prequalified_at?: string;
+  /**
+   * Number of controllable units added since the grid prequalification.
+   */
+  added?: number;
+  /**
+   * Number of controllable units removed since the grid prequalification.
+   */
+  removed?: number;
+  /**
+   * Number of controllable units whose maximum active power changed since the grid prequalification.
+   */
+  changed?: number;
+  /**
+   * Net change in maximum active power (kW) of the controllable units under the system operator since the grid prequalification.
+   */
+  maximum_active_power_diff?: number;
+};
+
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -422,7 +457,10 @@ export type NoticeData =
     } & NoticeDataProductTypeNotQualified)
   | ({
       kind: "notice.data.controllable_unit.product_duplication";
-    } & NoticeDataControllableUnitProductDuplication);
+    } & NoticeDataControllableUnitProductDuplication)
+  | ({
+      kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * Common format of the data field in events concerning update operations.
@@ -685,7 +723,8 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "temporary_qualified"
   | "prequalified"
   | "verified"
-  | "rejected";
+  | "rejected"
+  | "inactive";
 
 /**
  * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
@@ -1145,6 +1184,36 @@ export type ServiceProvidingGroupPowerPerSubstation = {
 };
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export type ServiceProvidingGroupGridPrequalificationSubstationPower = {
+  /**
+   * The ID of the service providing group grid prequalification.
+   */
+  readonly service_providing_group_grid_prequalification_id: number;
+  /**
+   * Name of the substation.
+   */
+  readonly substation_name: string;
+  /**
+   * Number of controllable units currently in the service providing group at the substation.
+   */
+  readonly controllable_unit_count: number;
+  /**
+   * Sum of the maximum active power of the controllable units currently in the service providing group at the substation, in kW.
+   */
+  readonly maximum_active_power: number;
+  /**
+   * Total approved flexible power at the substation, in kW. It is the sum of the maximum active power of the controllable units of all service providing groups with an approved or conditionally approved grid prequalification for the same impacted system operator, each controllable unit counted once. Controllable units added to a group after its approval are not included until the changes are approved. Controllable units without a substation are not included. Zero when nothing is approved.
+   */
+  readonly total_approved_maximum_active_power: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummary = {
@@ -1437,6 +1506,10 @@ export type ServiceProvidingGroupGridPrequalification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification_substation_power
+   */
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPower> | null;
   /**
    * Embedded service_providing_group
    */
@@ -3003,6 +3076,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3051,6 +3128,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
 };
 
 /**
@@ -3107,6 +3188,10 @@ export type ServiceProvidingGroupProductApplication = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4530,6 +4615,10 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    */
   complete_at?: string;
   /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -4833,7 +4922,10 @@ export type NoticeDataWritable =
     } & NoticeDataProductTypeNotQualified)
   | ({
       kind: "notice.data.controllable_unit.product_duplication";
-    } & NoticeDataControllableUnitProductDuplication);
+    } & NoticeDataControllableUnitProductDuplication)
+  | ({
+      kind: "notice.data.service_providing_group_grid_prequalification.outdated";
+    } & NoticeDataServiceProvidingGroupGridPrequalificationOutdated);
 
 /**
  * An empty object
@@ -5003,6 +5095,16 @@ export type ServiceProvidingGroupPowerPerSubstationWritable = {
 };
 
 /**
+ * Response schema - Flexible power per substation for a service providing group grid prequalification, together with the total approved flexible power of the substation across all approved grid prequalifications of the same impacted system operator.
+ */
+export type ServiceProvidingGroupGridPrequalificationSubstationPowerWritable = {
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummaryWritable = {
@@ -5111,6 +5213,10 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    * When the current grid prequalification was last approved.
    */
   prequalified_at?: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification_substation_power
+   */
+  substation_power?: Array<ServiceProvidingGroupGridPrequalificationSubstationPowerWritable> | null;
   /**
    * Embedded service_providing_group
    */
@@ -5751,6 +5857,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * Embedded service_providing_group
    */
@@ -6698,6 +6808,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the application was last marked complete by the procuring system operator.
    */
   complete_at?: string;
+  /**
+   * When the product application was put to requested.
+   */
+  requested_at?: string;
   /**
    * Reference to the resource that was updated.
    */
@@ -8838,6 +8952,88 @@ export type ReadServiceProvidingGroupPowerPerSubstationResponses = {
 
 export type ReadServiceProvidingGroupPowerPerSubstationResponse =
   ReadServiceProvidingGroupPowerPerSubstationResponses[keyof ReadServiceProvidingGroupPowerPerSubstationResponses];
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The ID of the service providing group grid prequalification.
+     */
+    service_providing_group_grid_prequalification_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_grid_prequalification_substation_power";
+};
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Not Acceptable
+     */
+    406: ErrorMessage;
+    /**
+     * Range Not Satisfiable
+     */
+    416: ErrorMessage;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerError =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerErrors];
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses =
+  {
+    /**
+     * OK
+     */
+    200: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
+    /**
+     * Partial Content
+     */
+    206: Array<ServiceProvidingGroupGridPrequalificationSubstationPower>;
+  };
+
+export type ListServiceProvidingGroupGridPrequalificationSubstationPowerResponse =
+  ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses[keyof ListServiceProvidingGroupGridPrequalificationSubstationPowerResponses];
 
 export type ReadServiceProvidingGroupSummaryData = {
   body?: never;

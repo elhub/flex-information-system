@@ -4,6 +4,9 @@ ktor:
       - no.elhub.flex.ApplicationKt.module
   deployment:
     port: 8080
+    # Netty rejects longer request lines (method + URL + version) with 400.
+    # Default is 4096 bytes.
+    maxInitialLineLength: 32768
   database:
     url: ${FLEX_DATABASE_URL}
     username: ${FLEX_DATABASE_USERNAME}
@@ -13,18 +16,31 @@ ktor:
       maximumPoolSize: 10
 
 flex:
-  jwt-secret: ${FLEX_JWT_SECRET}
   timezone: ${FLEX_TIMEZONE:Europe/Oslo}
+  baseUrl: ${FLEX_BASE_URL}
 
-accounting-point-adapter:
-  base-url: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
-  api-key: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
-  sync-enabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
+auth:
+  jwtSecret: ${FLEX_JWT_SECRET}
 
-attachment-storage:
+oidc:
+  issuer: ${FLEX_OIDC_ISSUER}
+  clientId: ${FLEX_OIDC_CLIENT_ID}
+  clientSecret: ${FLEX_OIDC_CLIENT_SECRET}
+  redirectUrl: ${FLEX_OIDC_REDIRECT_URL}
+  postLogoutRedirectUrl: ${FLEX_OIDC_POST_LOGOUT_REDIRECT_URL}
+
+postgrest:
+  baseUrl: ${FLEX_POSTGREST_URL}
+
+accountingPointAdapter:
+  baseUrl: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
+  apiKey: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
+  syncEnabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
+
+attachmentStorage:
   bucket: ${S3_BUCKET:}
-  internal-endpoint: ${S3_INTERNAL_ENDPOINT:}
-  public-endpoint: ${S3_PUBLIC_ENDPOINT:}
+  internalEndpoint: ${S3_INTERNAL_ENDPOINT:}
+  publicEndpoint: ${S3_PUBLIC_ENDPOINT:}
   region: ${S3_REGION:}
-  access-key: ${S3_ACCESS_KEY:}
-  secret-key: ${S3_SECRET_KEY:}
+  accessKey: ${S3_ACCESS_KEY:}
+  secretKey: ${S3_SECRET_KEY:}

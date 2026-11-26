@@ -18,15 +18,18 @@ dependency-injection = [
 documentation = ["ktor-server-swagger"]
 functional-programming = ["fp-arrow-core", "fp-arrow-fx-coroutines"]
 ktor = [
+  "ktor-client-apache5",
   "ktor-client-cio",
   "ktor-client-content-negotiation",
   "ktor-client-core",
   "ktor-client-logging",
   "ktor-server-auth",
   "ktor-server-auth-jwt",
+  "ktor-server-auto-head-response",
   "ktor-server-config-yaml",
   "ktor-server-content-negotiation",
   "ktor-server-core",
+  "ktor-server-cors",
   "ktor-server-netty",
   "ktor-server-status-pages",
 ]
@@ -72,9 +75,12 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging", version.ref = "ktor" }
 ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth", version.ref = "ktor" }
 ktor-server-auth-jwt = { group = "io.ktor", name = "ktor-server-auth-jwt", version.ref = "ktor" }
+ktor-server-auto-head-response = { group = "io.ktor", name = "ktor-server-auto-head-response", version.ref = "ktor" }
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref = "ktor" }
+ktor-client-apache5 = { group = "io.ktor", name = "ktor-client-apache5", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
@@ -83,7 +89,7 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktor-server-swagger = { group = "io.ktor", name = "ktor-server-swagger", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
-krontab = { group = "dev.inmo", name = "krontab", version.ref = "krontab" }
+angus-mail = { group = "org.eclipse.angus", name = "angus-mail", version.ref = "angus-mail" }
 logging-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 logging-logstash-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 logging-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
@@ -121,35 +127,35 @@ kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization"
 koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 
 [versions]
-arrow = "2.2.3"
-cohort = "2.9.11"
-elhub-jsonapi-wrapper = "0.6.9"
-elhub-gradle = "1.0.2"
-exposed = "1.5.1"
+arrow = "2.3.0.1"
+cohort = "2.9.12"
+elhub-jsonapi-wrapper = "0.6.16"
+elhub-gradle = "1.0.6"
+exposed = "1.6.1"
 gradle-docker = "0.17.21"
 hikari = "7.1.0"
 koin = "4.2.2"
-koin-plugin = "1.2.1"
-kotest = "6.2.6"
-kotlin-logging = "8.0.4"
+koin-plugin = "1.2.3"
+kotest = "6.2.7"
+kotlin-logging = "8.0.7"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
-kotlinx-serialization = "1.11.0"
+kotlinx-serialization = "1.13.0"
 kotlinx-serialization-plugin = "2.4.21"
 kotlinx-coroutines-slf4j = "1.11.0"
-ktor = "3.6.0"
+ktor = "3.6.1"
 liquibase = "5.0.4"
-micrometer = "1.17.1"
-mockk = "1.14.11"
-mybatis = "3.5.19"
+micrometer = "1.18.0"
+mockk = "1.14.12"
+mybatis = "3.6.0"
 postgresql = "42.7.14"
-logback = "1.6.5"
+logback = "1.6.8"
 logstash-logback-encoder = "9.0"
 slf4j = "2.0.20"
 snakeyaml = "2.7"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
-krontab = "3.1.0"
-aws-sdk-kotlin = "1.9.20"
+angus-mail = "2.0.5"
+aws-sdk-kotlin = "1.9.43"
 pdfbox = "3.0.8"
 s3mock = "5.2.3"
 caffeine = "3.3.1"

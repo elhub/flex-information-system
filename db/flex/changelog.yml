@@ -298,9 +298,6 @@ databaseChangeLog:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
   - include:
-      file: ./controllable_unit_procuring_system_operator.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
@@ -320,9 +317,6 @@ databaseChangeLog:
   - include:
       file: ./notice.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./notice_fresh.sql
-      relativeToChangelogFile: true
   # history
   - includeAll:
       path: ./
@@ -330,6 +324,13 @@ databaseChangeLog:
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
+  # views that depend on the history tables are created after them
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./notice_fresh.sql
+      relativeToChangelogFile: true
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true
@@ -376,6 +377,11 @@ databaseChangeLog:
       relativeToChangelogFile: true
       endsWithFilter: _rls.sql
       maxDepth: 1
+
+  # uses spg_cu_snapshot (notice) and current_party_is_pso_in_spg (RLS)
+  - include:
+      file: ./service_providing_group_grid_prequalification_substation_power.sql
+      relativeToChangelogFile: true
 
   - includeAll:
       path: ./grants/

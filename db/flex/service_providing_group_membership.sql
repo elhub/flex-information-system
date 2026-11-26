@@ -168,7 +168,7 @@ $$;
 -- changeset flex:service-providing-group-membership-flexible-power-check-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_membership_flexible_power_check
-BEFORE INSERT OR UPDATE ON service_providing_group_membership
+BEFORE INSERT ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE
 service_providing_group_membership_flexible_power_check();
 

@@ -164,6 +164,16 @@ export const tooltips = {
     "The ID of the service providing group this resource is a breakdown of.",
   "service_providing_group_power_per_substation.substations":
     "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+  "service_providing_group_grid_prequalification_substation_power.service_providing_group_grid_prequalification_id":
+    "The ID of the service providing group grid prequalification.",
+  "service_providing_group_grid_prequalification_substation_power.substation_name":
+    "Name of the substation.",
+  "service_providing_group_grid_prequalification_substation_power.controllable_unit_count":
+    "Number of controllable units currently in the service providing group at the substation.",
+  "service_providing_group_grid_prequalification_substation_power.maximum_active_power":
+    "Sum of the maximum active power of the controllable units currently in the service providing group at the substation, in kW.",
+  "service_providing_group_grid_prequalification_substation_power.total_approved_maximum_active_power":
+    "Total approved flexible power at the substation, in kW. It is the sum of the maximum active power of the controllable units of all service providing groups with an approved or conditionally approved grid prequalification for the same impacted system operator, each controllable unit counted once. Controllable units added to a group after its approval are not included until the changes are approved. Controllable units without a substation are not included. Zero when nothing is approved.",
   "service_providing_group_summary.id":
     "Unique surrogate key (service providing group ID).",
   "service_providing_group_summary.service_providing_group_id":
@@ -894,6 +904,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -926,6 +938,8 @@ export const tooltips = {
     "When the application was first created.",
   "service_providing_group_product_application_history.complete_at":
     "When the application was last marked complete by the procuring system operator.",
+  "service_providing_group_product_application_history.requested_at":
+    "When the product application was put to requested.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

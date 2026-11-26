@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "ra-core";
 import { useTranslateEnum } from "../../intl/intl";
@@ -11,6 +12,7 @@ import {
 import { DashboardItem } from "../hooks/useDashboardApplications";
 import { toDateTimeString } from "../../util";
 import { StatusBadge } from "../../components/StatusBadge";
+import type { SortState } from "../../components/ui";
 
 type Props = {
   label?: string;
@@ -28,6 +30,19 @@ export const SOApplicationsTable = ({
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
+  // oldest first by default, so the table reads as a queue
+  const [sort, setSort] = useState<SortState | undefined>({
+    orderBy: "timestamp",
+    direction: "ascending",
+  });
+
+  const sortedItems = useMemo(() => {
+    if (!sort) return items;
+    const time = (item: DashboardItem) =>
+      item.timestamp ? new Date(item.timestamp).getTime() : 0;
+    const factor = sort.direction === "ascending" ? 1 : -1;
+    return [...items].sort((a, b) => factor * (time(a) - time(b)));
+  }, [items, sort]);
 
   const columns: Column<DashboardItem>[] = [
     {
@@ -73,6 +88,8 @@ export const SOApplicationsTable = ({
           {
             key: "timestamp" as const,
             header: timestampLabel,
+            sortable: true,
+            sortType: "date" as const,
             render: (value: string | undefined) => toDateTimeString(value),
           },
         ]
@@ -82,7 +99,9 @@ export const SOApplicationsTable = ({
   return (
     <SimpleTable
       columns={columns}
-      data={items}
+      data={sortedItems}
+      sort={sort}
+      onSortChange={setSort}
       empty={empty}
       className="w-full"
       rowClick={(item) => navigate(item.route)}

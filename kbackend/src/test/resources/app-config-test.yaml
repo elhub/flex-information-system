@@ -1,0 +1,38 @@
+ktor:
+  database:
+    url: jdbc:postgresql://db/flex
+    username: user
+    password: pw
+    driverClass: org.postgresql.Driver
+    hikari:
+      maximumPoolSize: 5
+
+flex:
+  timezone: Europe/Oslo
+  baseUrl: https://flex.test/
+
+auth:
+  jwtSecret: secret
+
+oidc:
+  issuer: https://idp.test
+  clientId: client
+  clientSecret: client-secret
+  redirectUrl: https://flex.test/auth/v1/callback
+  postLogoutRedirectUrl: https://flex.test/#/login
+
+postgrest:
+  baseUrl: http://postgrest
+
+accountingPointAdapter:
+  baseUrl: http://adapter
+  apiKey: key
+  syncEnabled: false
+
+attachmentStorage:
+  bucket: bucket
+  internalEndpoint: http://internal
+  publicEndpoint: http://public
+  region: ""
+  accessKey: ak
+  secretKey: sk

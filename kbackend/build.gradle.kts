@@ -29,7 +29,7 @@ dependencies {
     implementation(libs.bundles.monitoring)
     implementation(libs.elhub.jsonapi)
     // Scheduling
-    implementation(libs.krontab)
+    implementation(libs.angus.mail)
     // Object storage (S3)
     implementation(libs.storage.aws.s3)
     // File validation
@@ -78,4 +78,43 @@ configurations.all {
             because("CVE-2026-48006: RedisArrayAggregator direct-memory leak fixed in 4.2.15.Final")
         }
     }
+}
+
+// the API documentation serves the OpenAPI documents, which live outside of src/
+tasks.processResources {
+    from("data/static") {
+        include("openapi.json")
+        into("openapi/data")
+    }
+    from("grid/static") {
+        include("openapi.json")
+        into("openapi/grid")
+    }
+    from("auth/static") {
+        include("openapi.json")
+        into("openapi/auth")
+    }
+}
+
+// API tests run the data API in-process against real Postgres and PostgREST containers.
+// They are kept apart from the unit tests so that `./gradlew test` stays fast; `check` runs both.
+val apiTest: SourceSet by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+    runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+}
+
+configurations["apiTestImplementation"].extendsFrom(configurations.testImplementation.get())
+configurations["apiTestRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
+
+val apiTestTask = tasks.register<Test>("apiTest") {
+    description = "Runs the API tests against Postgres and PostgREST containers."
+    group = "verification"
+    testClassesDirs = apiTest.output.classesDirs
+    classpath = apiTest.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter(tasks.test)
+}
+
+tasks.check {
+    dependsOn(apiTestTask)
 }

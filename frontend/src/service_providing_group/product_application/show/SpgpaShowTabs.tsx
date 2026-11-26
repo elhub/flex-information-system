@@ -8,10 +8,10 @@ import {
 import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
-import { SpgInfoTab } from "./SpgInfoTab";
+import { SpgInfoTab } from "../../shared/SpgInfoTab";
 import { ServiceProvidingGroupProductApplicationHistoryList } from "../ServiceProvidingGroupProductApplicationHistoryList";
 import { SpgpaControllableUnitsTable } from "./SpgpaControllableUnitsTable";
-import { ServiceProvidingGroupShowChangesTab } from "./ServiceProvidingGroupShowChangesTab";
+import { SpgpaChangesTab } from "./SpgpaChangesTab";
 import { usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 
@@ -79,7 +79,7 @@ export const SpgpaShowTabs = ({
 
       {showChanges && (
         <Tabs.Panel value="changes">
-          <ServiceProvidingGroupShowChangesTab
+          <SpgpaChangesTab
             key={`${spgId}-${spgpa.id}-${spgpa.created_at}`}
             spgId={spgId}
             spgpa={spgpa}

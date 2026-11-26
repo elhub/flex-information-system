@@ -1,0 +1,356 @@
+import {
+  RecordContextProvider,
+  ResourceContextProvider,
+  useGetMany,
+  useGetOne,
+  useRecordContext,
+  useTranslate,
+} from "ra-core";
+import { FunctionField } from "react-admin";
+import { BodyText, Button, Heading, VerticalSpace } from "../../components/ui";
+import { Link as RouterLink } from "react-router-dom";
+import { DateField } from "../../components/EDS-ra";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
+import { Notice as GNotice } from "../../generated-client";
+import {
+  zControllableUnitServiceProvider,
+  zNoticeDataProductTypeNotQualified,
+} from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
+import { SimpleTable } from "../../components/SimpleTable";
+import { DataTable } from "../../components/EDS-ra/list/Datagrid";
+import { NoticePartyMissing } from "./NoticePartyMissing";
+import { NoticePartyOutdated } from "./NoticePartyOutdated";
+import { NoticePartyIncompatible } from "./NoticePartyIncompatible";
+import { NoticePartyResidual } from "./NoticePartyResidual";
+import { NoticeControllableUnitMaximumActivePowerRatio } from "./NoticeControllableUnitMaximumActivePowerRatio";
+import noticeTypes from "../noticeTypes";
+import type { ReactNode } from "react";
+import { NoticeActionButton } from "./NoticeActionButton";
+import { LabelValue } from "../../components/LabelValue";
+import { toDateTimeString } from "../../util";
+
+type Notice = GNotice & {
+  data: any;
+};
+
+type NoticeShowDetailsProps = {
+  notice: Notice;
+};
+
+type NoticeDetailsRenderer = (notice: Notice) => ReactNode;
+
+// component to show details of a notice of type
+// no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
+const NoticeCUSPValidTimeOutsideContractShowDetails = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const cuspFields = getFields(zControllableUnitServiceProvider.shape);
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        Inconsistency: Controllable unit service provider / Accounting point end
+        user.
+      </Heading>
+      <VerticalSpace />
+      <BodyText>
+        The following time intervals are the valid time sections of the
+        Controllable Unit Service Provider relation where the end user given in
+        the contract is not the one behind the accounting point:
+      </BodyText>
+      <VerticalSpace />
+      <ResourceContextProvider value="controllable_unit_service_provider">
+        <DataTable
+          rowClick={false}
+          data={notice.data.invalid_timeline.map(
+            (item: object, index: number) => ({
+              ...item,
+              id: index,
+            }),
+          )}
+        >
+          <DateField source={cuspFields.valid_from.source} />
+          <DateField source={cuspFields.valid_to.source} />
+        </DataTable>
+      </ResourceContextProvider>
+    </>
+  );
+};
+
+// component to show details of a notice of type
+// no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const noticeDataFields = getFields(zNoticeDataProductTypeNotQualified.shape);
+
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        The following product types are not qualified for the service provider:
+      </Heading>
+      <VerticalSpace />
+      <RecordContextProvider value={notice.data}>
+        <FunctionField
+          label="field.service_provider_product_suspension.product_type_ids"
+          source={noticeDataFields.product_type_ids.source}
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
+      </RecordContextProvider>
+    </>
+  );
+};
+
+// component for showing which CUs are duplicate within the same Product Type
+// no.elhub.flex.controllable_unit.service_providing_group.product_duplication
+const NoticeSPGDuplicationOfCuWithinSameProductType = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const spgIds: number[] = notice.data.service_providing_group_ids ?? [];
+  const cuId = Number(notice.source?.split("/")[2]);
+  const { data: cu } = useGetOne(
+    "controllable_unit",
+    { id: cuId },
+    { enabled: Number.isInteger(cuId) },
+  );
+  const { data: spgs, isPending } = useGetMany("service_providing_group", {
+    ids: spgIds,
+  });
+
+  const cuLink = Number.isInteger(cuId) ? (
+    <a href={`#/controllable_unit/${cuId}/show`} className="eds-link">
+      {cu?.name ?? `#${cuId}`}
+    </a>
+  ) : (
+    notice.source
+  );
+
+  const rows = spgIds.map((id) => ({
+    id,
+    name: spgs?.find((spg) => spg.id === id)?.name,
+    controllable_unit: cuId,
+    product_type: notice.data.product_type_id as number,
+  }));
+
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        Controllable unit defined in multiple service providing groups for the
+        same product type
+      </Heading>
+      <SimpleTable
+        size="small"
+        empty="No service providing groups"
+        data={rows}
+        columns={[
+          {
+            key: "id",
+            header: "Service providing group",
+            render: (_, row) => (
+              <a
+                href={`#/service_providing_group/${row.id}/show`}
+                className="eds-link"
+              >
+                {isPending ? `#${row.id}` : (row.name ?? `#${row.id}`)}
+              </a>
+            ),
+          },
+          {
+            key: "controllable_unit",
+            header: "Controllable unit",
+            render: () => cuLink,
+          },
+          {
+            key: "product_type",
+            header: "Product type",
+            render: () => (
+              <ProductTypeArrayField
+                productTypeIds={[notice.data.product_type_id]}
+              />
+            ),
+          },
+        ]}
+      />
+    </>
+  );
+};
+
+// component to show details of a notice of type
+// no.elhub.flex.service_providing_group_grid_prequalification.outdated
+const NoticeSPGGPOutdated = ({ notice }: NoticeShowDetailsProps) => {
+  const translate = useTranslate();
+  const powerDiff: number = notice.data.maximum_active_power_diff ?? 0;
+
+  const rows = [
+    {
+      id: "added",
+      change: "Controllable units added",
+      value: notice.data.added,
+    },
+    {
+      id: "removed",
+      change: "Controllable units removed",
+      value: notice.data.removed,
+    },
+    {
+      id: "changed",
+      change: "Controllable units changed",
+      value: notice.data.changed,
+    },
+    {
+      id: "power",
+      change: "Net flexible power change",
+      value: `${powerDiff > 0 ? "+" : ""}${powerDiff} kW`,
+    },
+  ];
+
+  return (
+    <>
+      <Heading level={3} size="xsmall" spacing>
+        {translate("text.notice_spggp_outdated_heading", {
+          date: toDateTimeString(notice.data.prequalified_at),
+        })}
+      </Heading>
+      <SimpleTable
+        size="small"
+        data={rows}
+        columns={[
+          { key: "change", header: "Change" },
+          { key: "value", header: "Value" },
+        ]}
+      />
+      <VerticalSpace />
+      {notice.source != null && (
+        <Button as={RouterLink} to={`${notice.source}/show?tab=changes`}>
+          {translate("text.notice_spggp_outdated_button")}
+        </Button>
+      )}
+    </>
+  );
+};
+
+const NoticeCsoNoActiveUsers = ({ notice }: NoticeShowDetailsProps) => {
+  const translate = useTranslate();
+  const csoId = Number(notice.source?.split("/")[2]);
+  if (!Number.isInteger(csoId)) return null;
+  const search = new URLSearchParams({
+    filtered: "1",
+    "f.status@in": "active",
+    "f.accounting_point.system_operator_id@in": String(csoId),
+  }).toString();
+  return (
+    <Button as={RouterLink} to={`/controllable_unit?${search}`}>
+      {translate("text.notice_cso_no_active_users_button")}
+    </Button>
+  );
+};
+
+const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
+  "no.elhub.flex.party.connecting_system_operator.no_active_users": (
+    notice,
+  ) => <NoticeCsoNoActiveUsers notice={notice} />,
+  "no.elhub.flex.controllable_unit.service_providing_group.product_duplication":
+    (notice) => (
+      <NoticeSPGDuplicationOfCuWithinSameProductType notice={notice} />
+    ),
+  "no.elhub.flex.service_providing_group_grid_prequalification.outdated": (
+    notice,
+  ) => <NoticeSPGGPOutdated notice={notice} />,
+  "no.elhub.flex.party.outdated": (notice) => (
+    <NoticePartyOutdated source={notice.source} noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.missing": (notice) => (
+    <NoticePartyMissing noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.incompatible": (notice) => (
+    <NoticePartyIncompatible noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.residual": (notice) => (
+    <NoticePartyResidual source={notice.source} />
+  ),
+  "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
+    (notice) => (
+      <NoticeCUSPValidTimeOutsideContractShowDetails notice={notice} />
+    ),
+  "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
+    (notice) => (
+      <NoticeSPPSProductTypeNotQualifiedShowDetails notice={notice} />
+    ),
+  "no.elhub.flex.controllable_unit.maximum_active_power.ratio": (notice) => (
+    <NoticeControllableUnitMaximumActivePowerRatio notice={notice} />
+  ),
+  "no.elhub.flex.accounting_point_grid_location.source_insufficient": (
+    notice,
+  ) => (
+    <NoticeActionButton
+      notice={notice}
+      buttonTextKey={"text.notice_insufficient_grid_location_source_button"}
+    />
+  ),
+  "no.elhub.flex.accounting_point_grid_location.missing": (notice) => (
+    <NoticeActionButton
+      notice={notice}
+      buttonTextKey={"text.notice_missing_grid_location_button"}
+    />
+  ),
+  "no.elhub.flex.service_providing_group_product_application.service_providing_group.inactive":
+    (notice) => (
+      <NoticeActionButton
+        notice={notice}
+        buttonTextKey={"text.notice_spg_product_applications_button"}
+        search="?tab=product_applications"
+      />
+    ),
+  "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch": (
+    notice,
+  ) => (
+    <NoticeActionButton
+      notice={notice}
+      buttonTextKey={"text.notice_bidding_zone_mismatch_button"}
+    />
+  ),
+  "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract":
+    (notice) => (
+      <NoticeActionButton
+        notice={notice}
+        buttonTextKey={"text.notice_spg_membership_button"}
+      />
+    ),
+};
+
+export const NoticeShowDetails = () => {
+  const translate = useTranslate();
+  const record = useRecordContext<Notice>();
+  const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
+  const typeSpecificDetails = record
+    ? noticeDetailsRenderers[record.type]?.(record)
+    : null;
+
+  return (
+    <>
+      {noticeType?.description && (
+        <>
+          <LabelValue
+            label={translate("text.notice_description")}
+            value={noticeType.description}
+          />
+          <VerticalSpace />
+        </>
+      )}
+      {noticeType?.action && (
+        <>
+          <LabelValue
+            label={translate("text.notice_action")}
+            value={noticeType.action}
+          />
+          <VerticalSpace />
+        </>
+      )}
+      {typeSpecificDetails ?? (
+        <BodyText>No additional details on this notice.</BodyText>
+      )}
+    </>
+  );
+};

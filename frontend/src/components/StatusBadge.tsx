@@ -9,6 +9,7 @@ export type StatusVariant = {
     | "approved-with-warning"
     | "approved"
     | "stopped"
+    | "inactive"
     | "temporarily-stopped";
   icon: ComponentType<SvgIconProps>;
 };

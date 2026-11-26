@@ -20,6 +20,7 @@ digraph G {
         prequalified;
         rejected;
     }
+    inactive;
 
 
     start -> requested [label="", color="pink"];
@@ -36,5 +37,8 @@ digraph G {
     prequalified -> requested [label="SPG has changed\nsignificantly", color="green"];
     verified -> requested [label="SPG has changed\nsignificantly", color="green"];
     rejected -> requested [label="SP has made \nupdates to \ncomply", color="blue"];
+
+    requested -> inactive [label="SP withdraws\nthe application", color="blue"];
+    inactive -> requested [label="SP reactivates\nthe application", color="blue"];
 }
 @enddot

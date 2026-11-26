@@ -51,6 +51,14 @@ FOR ALL
 TO flex_internal_data
 USING (true);
 
+-- internal: used by the mail notification job to find email addresses
+GRANT SELECT ON entity TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "ENT_INTERNAL_EVENT_NOTIFICATION" ON entity;
+CREATE POLICY "ENT_INTERNAL_EVENT_NOTIFICATION" ON entity
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
 -- RLS: ENT-ORG001
 GRANT SELECT ON entity TO flex_organisation;
 DROP POLICY IF EXISTS "ENT_ORG001" ON entity;

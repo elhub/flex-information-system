@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { useTranslate } from "ra-core";
-import { BodyText, Table } from "./ui";
+import { BodyText, Table, type SortState } from "./ui";
 import { Tooltip } from "../components/ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
 
@@ -13,6 +13,9 @@ export type Column<T> = {
   header: ReactNode;
   headerTooltip?: string;
   render?: (value: T[keyof T], row: T) => ReactNode;
+  // makes the header sortable; requires `sort` and `onSortChange` on the table
+  sortable?: boolean;
+  sortType?: "string" | "number" | "date";
 };
 
 type SimpleTableProps<T extends { id?: string | number }> = {
@@ -30,6 +33,9 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   rowClick?: (record: T) => void;
   loading?: boolean;
   loadingRows?: number;
+  // controlled sorting: the caller sorts `data` in response to `onSortChange`
+  sort?: SortState;
+  onSortChange?: (sort?: SortState) => void;
 };
 
 export const SimpleTable = <T extends { id?: string | number }>({
@@ -47,6 +53,8 @@ export const SimpleTable = <T extends { id?: string | number }>({
   rowClick,
   loading,
   loadingRows = 5,
+  sort,
+  onSortChange,
 }: SimpleTableProps<T>) => {
   const translate = useTranslate();
   const hasRowClick = rowClick !== undefined;
@@ -86,7 +94,13 @@ export const SimpleTable = <T extends { id?: string | number }>({
     (hasAnyAction ? 1 : 0);
 
   return (
-    <Table className={className} size={size} aria-busy={loading || undefined}>
+    <Table
+      className={className}
+      size={size}
+      aria-busy={loading || undefined}
+      sort={sort}
+      onSortChange={onSortChange}
+    >
       <Table.Header>
         <Table.Row>
           {expandPanel && <Table.ColumnHeader style={{ width: "1px" }} />}
@@ -100,6 +114,9 @@ export const SimpleTable = <T extends { id?: string | number }>({
               key={String(col.key)}
               scope="col"
               className="break-normal"
+              sortable={col.sortable}
+              sortKey={col.sortable ? String(col.key) : undefined}
+              sortType={col.sortable ? col.sortType : undefined}
             >
               {col.headerTooltip ? (
                 <div className={"flex items-center gap-1"}>
