@@ -12,7 +12,7 @@ import {
 import { DashboardItem } from "../hooks/useDashboardApplications";
 import { toDateTimeString } from "../../util";
 import { StatusBadge } from "../../components/StatusBadge";
-import { ToggleGroup, type SortState } from "../../components/ui";
+import type { SortState } from "../../components/ui";
 
 type Props = {
   label?: string;
@@ -32,11 +32,6 @@ const STATUS_ORDER = [
 ];
 
 const DATE_KEYS = new Set<string>(["timestamp", "completeAt", "deadline"]);
-
-const statusRank = (status: string) => {
-  const index = STATUS_ORDER.indexOf(status);
-  return index === -1 ? STATUS_ORDER.length : index;
-};
 
 const sortValue = (item: DashboardItem, key: string): number | undefined => {
   if (key === "status") {
@@ -60,24 +55,6 @@ export const SOApplicationsTable = ({
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
-  // statuses present in this table, in workflow order
-  const statusOptions = useMemo(
-    () =>
-      [...new Set(items.map((item) => item.status))].sort(
-        (a, b) => statusRank(a) - statusRank(b),
-      ),
-    [items],
-  );
-  // track deselected (not selected) statuses, so new ones show by default
-  const [hiddenStatuses, setHiddenStatuses] = useState<string[]>([]);
-  const visibleStatuses = statusOptions.filter(
-    (status) => !hiddenStatuses.includes(status),
-  );
-  const filteredItems = useMemo(
-    () => items.filter((item) => !hiddenStatuses.includes(item.status)),
-    [items, hiddenStatuses],
-  );
-
   // oldest first by default, so the table reads as a queue
   const [sort, setSort] = useState<SortState | undefined>({
     orderBy: "timestamp",
@@ -85,14 +62,11 @@ export const SOApplicationsTable = ({
   });
 
   const sortedItems = useMemo(() => {
-    if (!sort) return filteredItems;
+    if (!sort) return items;
     const key = String(sort.orderBy);
     const factor = sort.direction === "ascending" ? 1 : -1;
 
-    const rows = filteredItems.map((item) => ({
-      item,
-      value: sortValue(item, key),
-    }));
+    const rows = items.map((item) => ({ item, value: sortValue(item, key) }));
     const withValue = rows.filter((row) => row.value !== undefined);
     const withoutValue = rows.filter((row) => row.value === undefined);
 
@@ -100,7 +74,7 @@ export const SOApplicationsTable = ({
 
     // rows without a value always go last, regardless of direction
     return [...withValue, ...withoutValue].map((row) => row.item);
-  }, [filteredItems, sort]);
+  }, [items, sort]);
 
   const columns: Column<DashboardItem>[] = [
     {
@@ -175,44 +149,15 @@ export const SOApplicationsTable = ({
       : []),
   ];
 
-  // the kind is the same for all rows of a table, so take it from the first
-  const statusLabel = (status: string) =>
-    items.length
-      ? translateEnum(
-          `${ENUM_KEY_PREFIX[items[0].kind]}.${status}` as EnumLabel,
-        )
-      : status;
-
   return (
-    <div className="flex flex-col gap-2">
-      {statusOptions.length > 1 && (
-        <ToggleGroup
-          type="multiple"
-          value={visibleStatuses}
-          defaultValue={visibleStatuses}
-          onChange={(value) =>
-            setHiddenStatuses(
-              statusOptions.filter((status) => !(value ?? []).includes(status)),
-            )
-          }
-        >
-          {statusOptions.map((status) => (
-            <ToggleGroup.Item key={status} value={status}>
-              {statusLabel(status)}
-            </ToggleGroup.Item>
-          ))}
-        </ToggleGroup>
-      )}
-      <SimpleTable
-        columns={columns}
-        data={sortedItems}
-        sort={sort}
-        onSortChange={setSort}
-        // when the filter hides every row, show the default "no results" text
-        empty={items.length > 0 ? undefined : empty}
-        className="w-full"
-        rowClick={(item) => navigate(item.route)}
-      />
-    </div>
+    <SimpleTable
+      columns={columns}
+      data={sortedItems}
+      sort={sort}
+      onSortChange={setSort}
+      empty={empty}
+      className="w-full"
+      rowClick={(item) => navigate(item.route)}
+    />
   );
 };
