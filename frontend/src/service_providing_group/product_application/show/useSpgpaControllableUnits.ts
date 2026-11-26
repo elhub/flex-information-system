@@ -45,6 +45,10 @@ export const isFullyApproved = (
     row.productApplicationPrequalifiedAt,
   );
 
+export const isCSOPrequalified = (
+  row: Pick<SpgpaControllableUnitRow, "gridPrequalifiedAt">,
+): boolean => Boolean(row.gridPrequalifiedAt);
+
 const getGridPrequalifiedAt = (
   membershipRecordedAt: string | undefined,
   gridPrequalification: ServiceProvidingGroupGridPrequalification | undefined,
