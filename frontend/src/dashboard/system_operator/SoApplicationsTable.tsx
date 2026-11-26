@@ -65,15 +65,15 @@ export const SOApplicationsTable = ({
     if (!sort) return items;
     const key = String(sort.orderBy);
     const factor = sort.direction === "ascending" ? 1 : -1;
-    return [...items].sort((a, b) => {
-      const va = sortValue(a, key);
-      const vb = sortValue(b, key);
-      // rows without a value always go last, regardless of direction
-      if (va === undefined && vb === undefined) return 0;
-      if (va === undefined) return 1;
-      if (vb === undefined) return -1;
-      return factor * (va - vb);
-    });
+
+    const rows = items.map((item) => ({ item, value: sortValue(item, key) }));
+    const withValue = rows.filter((row) => row.value !== undefined);
+    const withoutValue = rows.filter((row) => row.value === undefined);
+
+    withValue.sort((a, b) => factor * (a.value! - b.value!));
+
+    // rows without a value always go last, regardless of direction
+    return [...withValue, ...withoutValue].map((row) => row.item);
   }, [items, sort]);
 
   const columns: Column<DashboardItem>[] = [
