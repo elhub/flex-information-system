@@ -4,19 +4,20 @@
 
 ## TL;DR
 
-* An **application** has **one or more product types**, from a fixed list of
-  allowed combinations. Today: mFRR alone, FCR-N, FCR-D, or FCR-N and FCR-D
-  together. More combinations (for example mFRR and mFRR-D) can be added later
-  in `product-variants.yml`.
+* An **application** is for **exactly one product type**. A product type can
+  have several products, and the SP applies for one or several of them. FCR is
+  one product type with the products FCR-N and FCR-D, so one application can
+  cover FCR-N, FCR-D or both.
 * The product-specific details are stored in **two new JSONB columns** on
   _Service Providing Group Product Application_ (SPGPA):
     * `application_details`: what the **applicant (SP)** asks for
     * `assessment_details`: the **procuring system operator's (PSO)** response
 * Both are **polymorphic objects** with a `kind` discriminator. `kind`
-  identifies the **variant**, which is derived from the product types.
+  identifies the **variant**. It is the `business_id` of the product type.
 * Variants are **typed**, defined in the OpenAPI spec and released with the
-  API. The first ones are **mFRR** (existing fields moved in) and **FCR** (new,
-  covers FCR-N, FCR-D or both).
+  API. The first ones are **mFRR** (existing fields moved in) and **FCR** (new).
+  In the FCR variant, the products applied for are the sections that are
+  present (`fcr_n`, `fcr_d`).
 * Models for the **frontend (TS + zod)**, **Kotlin (Fabrikt)** and the
   **Python test client** are generated from the spec.
 * **Create and update are Kotlin endpoints** (`POST` and `PATCH`). They
@@ -31,8 +32,10 @@
 | --- | --- |
 | Application details | Product-specific input from the applicant (SP). |
 | Assessment details | Product-specific response from the PSO, for example approved values. |
-| Variant | The schema of the details for a product type or an allowed combination of product types, for example `spgpa_application_details_fcr`. |
-| Section | A nested object in a variant with the fields of one product, for example `fcr_n` and `fcr_d`. |
+| Product type | What an application is for, for example FCR. It can have several products. |
+| Product | A product within a product type, for example FCR-N and FCR-D within FCR. |
+| Variant | The schema of the details for one product type, for example `spgpa_application_details_fcr`. |
+| Section | A nested object in a variant with the fields of one product, for example `fcr_n` and `fcr_d`. A section is present if the SP applies for that product. |
 | `kind` | Discriminator inside the details. Identifies the variant. |
 
 ## Background
@@ -61,13 +64,14 @@ keeping typed models and documentation.
 
 ### Decisions already made
 
-* **One or more product types per application, only from allowed
-  combinations.** FCR-N and FCR-D share most data and are often assessed
-  together. mFRR is not combined for now (see
-  [mFRR and mFRR-D later](#adding-combinations-later-mfrr-and-mfrr-d)).
+* **One product type per application.** This makes a single details object per
+  column possible.
+* **Several products per product type in one application.** FCR-N and FCR-D
+  are products of the FCR product type. They share most data and are often
+  assessed together, so the SP can apply for one of them or both. The products
+  applied for are expressed by which sections are present.
 * **Discriminator (`kind`)** instead of an object keyed by product type, like
-  `notice.data` and `event.data`.
-* **FCR-N and FCR-D are separate product types.**
+  `notice.data` and `event.data`. `kind` is the product type `business_id`.
 * **JSONB columns and Kotlin endpoints for create and update.** Typed models
   make the validation easier to write, test and give good error messages for.
   Validating in the database (generated plpgsql or `pg_jsonschema`) was
@@ -79,14 +83,14 @@ sections vs a flat FCR variant.
 
 ## Product types
 
-| Product | `business_id` | Change |
-| --- | --- | --- |
-| mFRR | `manual_frequency_restoration` | none |
-| FCR-N | `automatic_frequency_containment` | existing row, name and products changed to FCR-N only |
-| FCR-D | `automatic_frequency_containment_disturbance` | new row |
+| Product type | `business_id` (= `kind`) | Products | Change |
+| --- | --- | --- | --- |
+| mFRR | `manual_frequency_restoration` | mFRR EAM, mFRR CM | none |
+| FCR | `automatic_frequency_containment` | FCR-N, FCR-D | none |
 
-Reusing the existing `business_id` for FCR-N keeps ids stable. Changes go in
-`db/flex/reference_data/product_type.csv`.
+No change to `db/flex/reference_data/product_type.csv`. The products within a
+product type are not separate rows. They are chosen in the details, with one
+section per product.
 
 ## Data model
 
@@ -94,14 +98,14 @@ Reusing the existing `business_id` for FCR-N keeps ids stable. Changes go in
                        ┌──────────────────────────────┐
                        │ product_type                 │
                        └──────────────▲───────────────┘
-                                      │ product_type_ids (1..n, allowed combination)
+                                      │ product_type_ids (exactly one)
 ┌─────────────────────────────────────┴───────────────────────────────┐
 │ service_providing_group_product_application                         │
 │  id, service_providing_group_id, procuring_system_operator_id,      │
 │  product_type_ids, status, ...                                      │
 │                                                                     │
 │  application_details  jsonb  ◄── NEW, written by the SP             │
-│    { "kind": "<variant kind>", ...variant fields }                  │
+│    { "kind": "<product type business_id>", ...variant fields }      │
 │  assessment_details   jsonb  ◄── NEW, written by the PSO            │
 │    { "kind": "<same as application_details>", ...fields }           │
 │                                                                     │
@@ -112,88 +116,64 @@ Reusing the existing `business_id` for FCR-N keeps ids stable. Changes go in
 
 **Rules:**
 
-* `product_type_ids` has one or more elements, and all belong to the same
-  variant.
-* `application_details` is required if the variant has an application variant,
-  and `null` otherwise. Its `kind` is the variant's `kind`.
-* A section is present **if and only if** its product type is in
-  `product_type_ids` (for example `fcr_d` only when FCR-D is applied for).
+* `product_type_ids` keeps its array type, but must have exactly one element.
+* `application_details` is required if the product type has an application
+  variant, and `null` otherwise. Its `kind` equals the product type
+  `business_id`.
+* In a variant with sections (FCR), at least one section is present. The
+  sections present are the products applied for.
 * `assessment_details` is `null` until the PSO responds, and always `null` for
-  variants without an assessment variant. Its `kind` equals the `kind` of
-  `application_details`, and the same section rule applies.
+  product types without an assessment variant. Its `kind` equals the `kind` of
+  `application_details`, and it has a section for each product applied for.
 
 ## Variants
 
 ### Connection between product types and variants
 
-| Product types                  | `kind`                            | Application variant              | Assessment variant             |
-|--------------------------------|-----------------------------------|----------------------------------|--------------------------------|
-| mFRR                           | `manual_frequency_restoration`    | `spgpa_application_details_mfrr` | none                           |
-| FCR-N, FCR-D, or FCR-N + FCR-D | `automatic_frequency_containment` | `spgpa_application_details_fcr`  | `spgpa_assessment_details_fcr` |
+| Product type | `kind`                            | Application variant              | Assessment variant             |
+|--------------|-----------------------------------|----------------------------------|--------------------------------|
+| mFRR         | `manual_frequency_restoration`    | `spgpa_application_details_mfrr` | none                           |
+| FCR          | `automatic_frequency_containment` | `spgpa_application_details_fcr`  | `spgpa_assessment_details_fcr` |
 
-Defined once in a build-time file, `openapi/product-variants.yml`. The `kind`
-reuses the `business_id` of the main product type of the variant (mFRR and
-FCR-N). It identifies the variant, so it is also used when FCR-D is applied
-for alone or together with FCR-N.
+Defined once in a build-time file, `openapi/product-variants.yml`:
 
 ```yaml
 - kind: manual_frequency_restoration
-  product_types: [manual_frequency_restoration]
   application: spgpa_application_details_mfrr
 - kind: automatic_frequency_containment
-  product_types:
-    - automatic_frequency_containment
-    - automatic_frequency_containment_disturbance
   application: spgpa_application_details_fcr
   assessment: spgpa_assessment_details_fcr
-  sections:                       # section -> product type that requires it
-    fcr_n: automatic_frequency_containment
-    fcr_d: automatic_frequency_containment_disturbance
+  sections: [fcr_n, fcr_d]        # at least one is required
 ```
 
-`product_types` is the set that can be in one application for the variant (any
-non-empty subset). Product types of different variants can't be mixed. The
-generators use the file for the `oneOf` lists and discriminator mappings, the
+The generators use it for the `oneOf` lists and discriminator mappings, the
 Kotlin validation, the table above in the resource docs, and the frontend map
 from `kind` to section components.
 
-### Adding combinations later: mFRR and mFRR-D
-
-mFRR and mFRR-D have the same fields, so the mFRR variant can stay flat, with
-no sections and no new variant. Listing mFRR-D in the existing entry is
-enough:
-
-```yaml
-- kind: manual_frequency_restoration
-  product_types: [manual_frequency_restoration, manual_frequency_restoration_disturbance]
-  application: spgpa_application_details_mfrr
-```
-
-The shape, the backfill and the legacy sync don't change. This only works if
-**one set of values covers both products** (same up/down capacity and ramping
-information). If not, the mFRR variant would need sections, which is a breaking
-change, so confirm before mFRR is released flat (open point 7).
+Only one product type per application means product types can't be combined,
+for example mFRR and mFRR-D. If two products should be possible in one
+application, they have to be products of the same product type.
 
 ### Fields per variant
 
 **Application details** (SP). All fields are required, except
 `additional_information`.
 
-| Property                               | Type                      | mFRR | FCR                  |
-|----------------------------------------|---------------------------|------|----------------------|
-| `kind`                                 | text (discriminator)      | ✅   | ✅                   |
-| `maximum_active_power_up`              | decimal (kW)              | ✅   |                      |
-| `maximum_active_power_down`            | decimal (kW)              | ✅   |                      |
-| `ramping_capability`                   | enum always/partial/never | ✅   |                      |
-| `ramping_description`                  | text                      | ✅   |                      |
-| `additional_information`               | text (max 512), optional  | ✅   |                      |
-| `service_provider_contact_information` | text                      |      | ✅                   |
-| `technical_contact_information`        | text                      |      | ✅                   |
-| `limited_energy_reservoir`             | boolean                   |      | ✅                   |
-| `variable_production_consumption`      | boolean                   |      | ✅                   |
-| `planned_prequalification_test_date`   | date                      |      | ✅                   |
-| `fcr_n` (section)                      |                           |      | if FCR-N applied for |
-| `fcr_d` (section)                      |                           |      | if FCR-D applied for |
+| Property                               | Type                      | mFRR | FCR                            |
+|----------------------------------------|---------------------------|------|--------------------------------|
+| `kind`                                 | text (discriminator)      | ✅   | ✅                             |
+| `maximum_active_power_up`              | decimal (kW)              | ✅   |                                |
+| `maximum_active_power_down`            | decimal (kW)              | ✅   |                                |
+| `ramping_capability`                   | enum always/partial/never | ✅   |                                |
+| `ramping_description`                  | text                      | ✅   |                                |
+| `additional_information`               | text (max 512), optional  | ✅   |                                |
+| `service_provider_contact_information` | text                      |      | ✅                             |
+| `technical_contact_information`        | text                      |      | ✅                             |
+| `limited_energy_reservoir`             | boolean                   |      | ✅                             |
+| `variable_production_consumption`      | boolean                   |      | ✅                             |
+| `planned_prequalification_test_date`   | date                      |      | ✅                             |
+| `fcr_n` (section)                      |                           |      | optional, at least one section |
+| `fcr_d` (section)                      |                           |      | optional, at least one section |
 
 | Section | Property                    | Type         | Rule                                                  |
 |---------|-----------------------------|--------------|-------------------------------------------------------|
@@ -204,7 +184,8 @@ change, so confirm before mFRR is released flat (open point 7).
 **Assessment details** (PSO). Only the FCR variant has one for now, mFRR has
 none yet. All fields are required once the PSO responds, for the sections that
 are present: `fcr_n.approved_maximum_active_power` and
-`fcr_d.approved_maximum_active_power_up/_down` (at least one).
+`fcr_d.approved_maximum_active_power_up/_down` (at least one). The assessment
+has a section for each product applied for.
 
 Notes:
 
@@ -215,6 +196,8 @@ Notes:
 * The shared FCR fields are stored once, also when both products are applied
   for. The FCR-N and FCR-D sections have different shapes and can have
   different values.
+* The product selection is not stored separately. A section present means the
+  SP applies for that product.
 
 ### Alternative: FCR-N capacity as up and down
 
@@ -255,31 +238,33 @@ else stays the same.
 ```
 
 The assessment follows the same pattern (`fcr_n_approved_maximum_active_power`
-and so on). In `product-variants.yml`, a `fields` map (field → product type)
+and so on). In `product-variants.yml`, a `fields` map (field → product)
 replaces `sections`, and the validation checks per field instead of per section.
+The products applied for are then implied by which prefixed fields are present.
 
 | | Sections (proposed) | Flat with prefixes |
 | --- | --- | --- |
 | Filling in the API | ⚠️ nested objects per product | ✅ one level |
 | Which fields belong to which product | ✅ clear from structure | ⚠️ only from the prefix |
-| "Present only if applied for" | ✅ one check per section | ⚠️ one check per field |
+| Which products are applied for | ✅ explicit: a section is a product | ⚠️ implied by which fields exist |
+| "At least one product" | ✅ one check on the sections | ⚠️ one check across fields |
 | "Up or down required" for FCR-D | ✅ `minProperties: 1` in the section | ⚠️ Kotlin code and a manual zod refine |
 | Generated types | ⚠️ nested optional objects, check in the spike | ✅ flat |
 | More products in the variant | ✅ a new section | ⚠️ top level grows |
 | Consistency with mFRR and notices | ⚠️ new pattern | ✅ same flat style |
 
 In both options the generated docs show the product fields as optional, because
-"required if the product is applied for" depends on `product_type_ids` and
-can't be expressed in the schema. The descriptions have to explain it.
+"at least one product" can't be expressed well in the schema and is checked in
+Kotlin. The descriptions have to explain it.
 
-Leaning: sections pay off with more products or fields. With two FCR products,
-flat is simpler for API users and generators. Open for review (open point 9).
+Since the products applied for are now expressed by what is present, sections
+make that explicit. Flat is simpler to fill in. Open for review (open point 9).
 
 ## Examples
 
 The product type ids are illustrative.
 
-### FCR-N and FCR-D together
+### FCR: FCR-N and FCR-D together
 
 The SP creates the application with `POST /service_providing_group_product_application`:
 
@@ -287,7 +272,7 @@ The SP creates the application with `POST /service_providing_group_product_appli
 {
   "service_providing_group_id": 18,
   "procuring_system_operator_id": 39,
-  "product_type_ids": [6, 10],
+  "product_type_ids": [6],
   "application_details": {
     "kind": "automatic_frequency_containment",
     "service_provider_contact_information": "Kari Nordmann, +47 ...",
@@ -313,9 +298,9 @@ The PSO responds with `PATCH /service_providing_group_product_application/{id}`:
 }
 ```
 
-For FCR-N only, `product_type_ids` is `[6]` and only `fcr_n` is sent. For
-FCR-D only, it is `[10]` and only `fcr_d` is sent, and `fcr_d` may contain just
-one direction.
+For FCR-N only, only `fcr_n` is sent. For FCR-D only, only `fcr_d` is sent,
+and it may contain just one direction. The assessment then has the same
+sections.
 
 ### mFRR
 
@@ -342,11 +327,10 @@ Illustrative messages. The final error format follows the other Kotlin
 endpoints, and all errors in a request can be returned at once.
 
 ```text
-product_type_ids is not an allowed combination of product types              (mFRR + FCR)
-application_details.fcr_d is not allowed without product type automatic_frequency_containment_disturbance
-application_details.fcr_n is required for product type automatic_frequency_containment
+product_type_ids must contain exactly one product type
+application_details must contain at least one of fcr_n and fcr_d
 application_details.fcr_d must contain maximum_active_power_up or maximum_active_power_down
-assessment_details.fcr_d is not allowed without product type automatic_frequency_containment_disturbance
+assessment_details.fcr_d is not allowed when application_details has no fcr_d
 ```
 
 ### Updates replace the whole object
@@ -354,8 +338,8 @@ assessment_details.fcr_d is not allowed without product type automatic_frequency
 On `PATCH`, a details object is replaced as a whole, not merged. The SP sends
 the full `application_details`, and the PSO the full `assessment_details`.
 Each role only writes its own column, so they can't overwrite each other. If
-the SP changes `product_type_ids` (for example adds FCR-D), the same request
-must contain the matching `application_details`.
+the SP adds or removes a product, the whole `application_details` is sent with
+the changed sections.
 
 ## OpenAPI and generated code
 
@@ -396,19 +380,18 @@ spgpa_application_details_fcr:
 ```
 
 `spgpa_assessment_details` is built the same way (only FCR for now, other
-variants can be added). `fcr_n` and `fcr_d` are optional in the schema,
-because whether they must be present depends on `product_type_ids`. The Kotlin
-validation checks that. In `resources.yml`, both columns are nullable
-references, like `notice.data`. Variant descriptions name their counterpart
-("Answered by `spgpa_assessment_details_fcr`").
+variants can be added). `fcr_n` and `fcr_d` are optional in the schema, and
+the Kotlin validation checks that at least one is present. In `resources.yml`,
+both columns are nullable references, like `notice.data`. Variant descriptions
+name their counterpart ("Answered by `spgpa_assessment_details_fcr`").
 
 * **Frontend:** a union type and a `z.discriminatedUnion("kind", ...)` schema.
-  The form has checkboxes for the product types, limited to the allowed
-  combinations. `kind` is derived from the selection. For FCR it shows the
-  shared fields once, plus a section per selected product. Deselecting a
-  product removes its section. The PSO edits the assessment with one block per
-  applied-for product, and the SP sees it read-only. The "up or down" rule needs
-  a small manual `.refine`, because `minProperties` probably isn't generated.
+  The form selects one product type, and `kind` is set from it. For FCR it
+  shows checkboxes for FCR-N and FCR-D, the shared fields once, and a section
+  per checked product. Unchecking a product removes its section. The PSO edits
+  the assessment with one block per applied-for product, and the SP sees it
+  read-only. The "at least one product" and "up or down" rules need a small
+  manual `.refine`, because they probably aren't generated.
 * **Kotlin:** a sealed interface `SpgpaApplicationDetails` with
   `@JsonClassDiscriminator("kind")` and a data class per variant, for example
   `SpgpaApplicationDetailsFcr(fcrN: FcrN?, fcrD: FcrD?, ...)`. It probably
@@ -440,22 +423,21 @@ grants still apply. Frontend validation is only for user experience.
 The rules keep the ids VAL012 and VAL013 in the docs, but are implemented in
 Kotlin.
 
-**VAL012: allowed combination of product types.** `product_type_ids` keeps its
-array type. It must have at least one element, no duplicates, and only product
-types of the same variant according to `product-variants.yml`.
+**VAL012: exactly one product type.** `product_type_ids` keeps its array type,
+but new and updated applications must have exactly one element.
 
 **VAL013: application and assessment details.**
 
-1. `application_details` is required with the variant's `kind` if the variant
-   has an application variant, and `null` otherwise.
-2. A section is present if and only if its product type is in
-   `product_type_ids`.
-3. `assessment_details` is `null`, or the variant has an assessment variant,
-   the `kind` matches `application_details`, and the same section rule applies.
+1. `application_details` is required with the product type `business_id` as
+   `kind` if the product type has an application variant, and `null` otherwise.
+2. In a variant with sections, at least one section is present.
+3. `assessment_details` is `null`, or the product type has an assessment
+   variant, the `kind` matches `application_details`, and it has a section for
+   each product applied for and no others.
 4. Each object is valid against its variant: required fields, no unknown
    fields, types, `minimum`, `maximum`, `maxLength`, `minProperties`, `enum`.
-   The typed models cover this. The rules that depend on `product_type_ids`
-   (1–3) and the FCR-D "up or down" rule are Kotlin code.
+   The typed models cover this. Rules 1–3 and the FCR-D "up or down" rule are
+   Kotlin code.
 
 VAL007 and VAL008 are **replaced** by VAL013, the `NOT NULL` on
 `maximum_active_power_*` is removed, and the 512-character limit on
@@ -516,8 +498,8 @@ table**, so nothing is lost in Phase 2. The migration also counts and logs:
 
 * non-mFRR applications with values in the legacy columns (only in history
   after Phase 2)
-* applications with a product type combination that isn't allowed. VAL012 only
-  applies to new and updated rows, so these stay as they are until updated.
+* applications with more than one product type. VAL012 only applies to new
+  and updated rows, so these stay as they are until updated.
 
 ## Endpoints
 
@@ -544,18 +526,17 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
 
 | Area | Change |
 | --- | --- |
-| `openapi/product-variants.yml` | new: `kind` → allowed product types, sections, application / assessment variant |
+| `openapi/product-variants.yml` | new: `kind` → application / assessment variant, sections |
 | `openapi/openapi-api-base.yml` | union components with discriminator, variants for mFRR and FCR, shared `ramping_capability` enum |
 | `openapi/resources.yml` | add `application_details` and `assessment_details`; deprecate 5 fields |
 | `local/scripts/resources_to_openapi.py` | build the `oneOf` lists and mappings from `product-variants.yml` |
-| `db/flex/reference_data/product_type.csv` | FCR-N renamed, FCR-D added |
 | `db/flex/..._migrations.sql` | new columns, drop NOT NULL, backfill (incl. history), drop VAL007/008 |
 | `local/input/permissions.csv` | rows for `application_details` and `assessment_details`; remove PostgREST write access to SPGPA |
 | `local/scripts/resources_to_intl.py` | labels and tooltips for variant fields |
 | `kbackend/scripts/generate-openapi-models.sh` | possibly a `sed` fix for the sealed interfaces |
-| `frontend/.../product_application/` | product checkboxes, section per `kind` and selected product, FCR-D up/down refine, PSO assessment section, show/print, draft migration |
+| `frontend/.../product_application/` | single product type, product checkboxes for FCR, section per checked product, "at least one" and FCR-D up/down refine, PSO assessment section, show/print, draft migration |
 | `kbackend` | regenerated models, `POST` and `PATCH` routes with validation (VAL012, VAL013), legacy mapping and auth scopes, and the pass-through no longer used for SPGPA writes, test data |
-| `test/api_client_tests/` | mFRR, FCR-N, FCR-D, FCR-N + FCR-D, PSO response, legacy mapping, rejection cases; fixtures updated |
+| `test/api_client_tests/` | mFRR, FCR with FCR-N, FCR-D and both, PSO response, legacy mapping, rejection cases; fixtures with one product type |
 | `docs/` | resource docs incl. variant table, product type docs, changelog |
 
 ## Open points for discussion
@@ -566,19 +547,19 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
    names?
 3. When can the PSO write `assessment_details`: at any status, or only from
    `prequalification`? Must it be set before `prequalified` for FCR?
-4. Can the PSO give different outcomes per product in a combined application
-   (approve FCR-N, reject FCR-D)? Status is per application, so no. Workarounds
-   are an approved power of 0, or separate applications. If this is common,
-   linked applications (one per product type) may fit better.
-5. How is a prequalified application used downstream? Does anything assume a
-   single product type in `product_type_ids`?
+4. Can the PSO give different outcomes per product within an application
+   (approve FCR-N, reject FCR-D)? Status is per application, so no.
+   Workarounds are an approved power of 0, or the SP applying separately.
+5. Does anything downstream need to know which products (FCR-N, FCR-D) an
+   application covers, and not only the product type? Today that is only in
+   `application_details`.
 6. Can the SP add or remove a product while the status is `requested`? The
    proposal assumes yes. Must the PSO fill in approved values for every
    applied-for section, and may they include a direction the SP didn't apply
    for?
-7. When mFRR and mFRR-D are combined later, will one set of values cover both
-   products? If not, the mFRR variant needs sections, so better to know before
-   it is released flat.
+7. Do we need to combine product types later (for example mFRR and mFRR-D)?
+   With one product type per application, that would need them to be products
+   of one product type.
 8. FCR-N capacity: a single `maximum_active_power`, or up and down with an
    equal rule? See
    [Alternative: FCR-N capacity as up and down](#alternative-fcr-n-capacity-as-up-and-down).
@@ -586,9 +567,10 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
    [Alternative: flat FCR variant](#alternative-flat-fcr-variant-without-sections).
 10. Filtering on details, for example `application_details->>limited_energy_reservoir`:
     do we need it, and does the Kotlin pass-through to PostgREST support it?
-11. Should the database keep a minimal safety net, for example a check that
-    `application_details.kind` matches the product types, or is Kotlin the only
-    validation?
+11. Should the database keep a minimal safety net, for example a `CHECK` that
+    `product_type_ids` has exactly one element (`NOT VALID` for old rows) and
+    that `application_details.kind` matches the product type, or is Kotlin the
+    only validation?
 12. Are there other writers to SPGPA than the frontend (integrations, scripts,
     status changes) that use PostgREST today and must move to the new
     endpoints?
