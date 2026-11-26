@@ -439,6 +439,16 @@ but new and updated applications must have exactly one element.
    The typed models cover this. Rules 1–3 and the FCR-D "up or down" rule are
    Kotlin code.
 
+**VAL010: no duplicate applications (changed).** Today the database rejects
+a second application for the same SPG and procuring system operator if it
+shares a product type with an existing one. With one FCR product type, that
+would block applying for FCR-D when an FCR-N application exists, and it would
+not catch FCR-N being applied for twice. The rule moves to Kotlin and compares
+**products** instead: for FCR, the sections (`fcr_n`, `fcr_d`) of other
+applications for the same SPG and procuring system operator must not overlap
+with the new one. For other product types it still compares the product type.
+The database trigger for VAL010 is removed.
+
 VAL007 and VAL008 are **replaced** by VAL013, the `NOT NULL` on
 `maximum_active_power_*` is removed, and the 512-character limit on
 `additional_information` moves to `maxLength` in the mFRR variant.
@@ -530,12 +540,12 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
 | `openapi/openapi-api-base.yml` | union components with discriminator, variants for mFRR and FCR, shared `ramping_capability` enum |
 | `openapi/resources.yml` | add `application_details` and `assessment_details`; deprecate 5 fields |
 | `local/scripts/resources_to_openapi.py` | build the `oneOf` lists and mappings from `product-variants.yml` |
-| `db/flex/..._migrations.sql` | new columns, drop NOT NULL, backfill (incl. history), drop VAL007/008 |
+| `db/flex/..._migrations.sql` | new columns, drop NOT NULL, backfill (incl. history), drop VAL007/008, drop the VAL010 trigger (moved to Kotlin) |
 | `local/input/permissions.csv` | rows for `application_details` and `assessment_details`; remove PostgREST write access to SPGPA |
 | `local/scripts/resources_to_intl.py` | labels and tooltips for variant fields |
 | `kbackend/scripts/generate-openapi-models.sh` | possibly a `sed` fix for the sealed interfaces |
 | `frontend/.../product_application/` | single product type, product checkboxes for FCR, section per checked product, "at least one" and FCR-D up/down refine, PSO assessment section, show/print, draft migration |
-| `kbackend` | regenerated models, `POST` and `PATCH` routes with validation (VAL012, VAL013), legacy mapping and auth scopes, and the pass-through no longer used for SPGPA writes, test data |
+| `kbackend` | regenerated models, `POST` and `PATCH` routes with validation (VAL010, VAL012, VAL013), legacy mapping and auth scopes, and the pass-through no longer used for SPGPA writes, test data |
 | `test/api_client_tests/` | mFRR, FCR with FCR-N, FCR-D and both, PSO response, legacy mapping, rejection cases; fixtures with one product type |
 | `docs/` | resource docs incl. variant table, product type docs, changelog |
 
@@ -571,7 +581,13 @@ attachments precedent (writes in Kotlin, reads in PostgREST).
     `product_type_ids` has exactly one element (`NOT VALID` for old rows) and
     that `application_details.kind` matches the product type, or is Kotlin the
     only validation?
-12. Are there other writers to SPGPA than the frontend (integrations, scripts,
+12. Should a second FCR application for the same SPG and procuring system
+    operator be allowed when it applies for a different product (FCR-D after
+    FCR-N)? The proposal assumes yes, with VAL010 comparing products. The
+    alternative is to keep one FCR application per SPG and procuring system
+    operator, and to let the SP add a product to it after the `requested`
+    status.
+13. Are there other writers to SPGPA than the frontend (integrations, scripts,
     status changes) that use PostgREST today and must move to the new
     endpoints?
 
