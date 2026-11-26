@@ -19,6 +19,30 @@ type Props = {
   timestampLabel?: string;
   items: DashboardItem[];
   empty?: string | null;
+  // adds the "complete at" and "deadline" columns (SPG product applications)
+  showDeadlineColumns?: boolean;
+};
+
+// statuses sort in workflow order, unknown statuses last
+const STATUS_ORDER = [
+  "requested",
+  "in_progress",
+  "communication_test",
+  "prequalification",
+];
+
+const DATE_KEYS = new Set<string>(["timestamp", "completeAt", "deadline"]);
+
+const sortValue = (item: DashboardItem, key: string): number | undefined => {
+  if (key === "status") {
+    const index = STATUS_ORDER.indexOf(item.status);
+    return index === -1 ? undefined : index;
+  }
+  if (DATE_KEYS.has(key)) {
+    const value = item[key as "timestamp" | "completeAt" | "deadline"];
+    return value ? new Date(value).getTime() : undefined;
+  }
+  return undefined;
 };
 
 export const SOApplicationsTable = ({
@@ -26,6 +50,7 @@ export const SOApplicationsTable = ({
   timestampLabel,
   items,
   empty,
+  showDeadlineColumns,
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
@@ -38,10 +63,17 @@ export const SOApplicationsTable = ({
 
   const sortedItems = useMemo(() => {
     if (!sort) return items;
-    const time = (item: DashboardItem) =>
-      item.timestamp ? new Date(item.timestamp).getTime() : 0;
+    const key = String(sort.orderBy);
     const factor = sort.direction === "ascending" ? 1 : -1;
-    return [...items].sort((a, b) => factor * (time(a) - time(b)));
+    return [...items].sort((a, b) => {
+      const va = sortValue(a, key);
+      const vb = sortValue(b, key);
+      // rows without a value always go last, regardless of direction
+      if (va === undefined && vb === undefined) return 0;
+      if (va === undefined) return 1;
+      if (vb === undefined) return -1;
+      return factor * (va - vb);
+    });
   }, [items, sort]);
 
   const columns: Column<DashboardItem>[] = [
@@ -69,6 +101,7 @@ export const SOApplicationsTable = ({
     {
       key: "status",
       header: "Status",
+      sortable: true,
       render: (_, row) => {
         const variant = getStatusVariant(row.kind, row.status);
         const tooltipLabel = getDescriptionEnumLabel(row.kind, row.status);
@@ -88,6 +121,26 @@ export const SOApplicationsTable = ({
           {
             key: "timestamp" as const,
             header: timestampLabel,
+            sortable: true,
+            sortType: "date" as const,
+            render: (value: string | undefined) => toDateTimeString(value),
+          },
+        ]
+      : []),
+    ...(showDeadlineColumns
+      ? [
+          {
+            key: "completeAt" as const,
+            header: translate(
+              "field.service_providing_group_product_application.complete_at",
+            ),
+            sortable: true,
+            sortType: "date" as const,
+            render: (value: string | undefined) => toDateTimeString(value),
+          },
+          {
+            key: "deadline" as const,
+            header: translate("text.dashboard.deadline"),
             sortable: true,
             sortType: "date" as const,
             render: (value: string | undefined) => toDateTimeString(value),

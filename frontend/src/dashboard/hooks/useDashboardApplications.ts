@@ -1,5 +1,6 @@
 import { useGetIdentity, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
+import { getSpgpaDeadline } from "../shared/spgpaDeadline";
 import {
   listServiceProviderProductApplication,
   listServiceProvidingGroupGridPrequalification,
@@ -43,6 +44,8 @@ export type DashboardItem = {
   status: string;
   route: string;
   timestamp?: string; // the timestamp meaningful to show on the dashboard
+  completeAt?: string;
+  deadline?: string;
 };
 
 export const useDashboardApplications = () => {
@@ -140,6 +143,8 @@ export const useDashboardApplications = () => {
       status: r.status,
       route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
       timestamp: r.requested_at ?? r.created_at,
+      completeAt: r.complete_at,
+      deadline: getSpgpaDeadline(r.requested_at, r.complete_at),
     })) || [];
 
   const gridPrequalifications =
