@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   EVENT_CATEGORY_FILTER_SOURCE,
-  eventMatchesCategories,
+  categoryQuery,
   eventTypeIdsForCategories,
   toQueryFilters,
 } from "./useNotificationList";
@@ -21,14 +21,17 @@ describe("notification list", () => {
     expect(result).toEqual({ acknowledged: "false" });
   });
 
-  it("matches events on the types of the selected categories", () => {
-    const [commentType] = eventTypeIdsForCategories(["comment"]);
-    expect(eventMatchesCategories({ type: commentType }, ["comment"])).toBe(
-      true,
+  it("inner-joins and filters the event on the category types", () => {
+    const { embed, filter } = categoryQuery({
+      [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
+    });
+    expect(embed).toBe("event!");
+    expect(filter["event.type"]).toBe(
+      `in.(${eventTypeIdsForCategories(["comment"]).join(",")})`,
     );
-    expect(eventMatchesCategories({ type: "no.such.type" }, ["comment"])).toBe(
-      false,
-    );
-    expect(eventMatchesCategories(null, ["comment"])).toBe(false);
+  });
+
+  it("embeds the event without a filter when no category is selected", () => {
+    expect(categoryQuery({})).toEqual({ embed: "event", filter: {} });
   });
 });

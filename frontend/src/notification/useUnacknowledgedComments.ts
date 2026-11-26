@@ -3,10 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetIdentity } from "ra-core";
 import type { ListFilters } from "../components/list/types";
 import {
-  categoriesFromFilters,
+  categoryQuery,
   EVENT_CATEGORY_FILTER_SOURCE,
-  eventTypeIdsForCategories,
-  hasEventOfTypes,
   Query,
   toQueryFilters,
 } from "./useNotificationList";
@@ -17,48 +15,23 @@ import { bellStorageKey, getLastChecked, setLastChecked } from "./lastChecked";
 
 const CHECKED_EVENT = "notification-bell-checked";
 
-// Fetch the unacknowledged notifications matching the filters (id and time only).
-const fetchNotificationRefs = (filters: ListFilters) =>
-  listNotification({
+// Recording time of the latest unacknowledged notification matching the
+// filters, or null if there is none.
+const fetchLatestRecordedAt = async (filters: ListFilters) => {
+  const { embed, filter } = categoryQuery(filters);
+  const notifications = await listNotification({
     query: {
       ...buildListQuery({
         filters: toQueryFilters(filters),
         sort: { field: "id", order: "desc" },
         page: 1,
-        perPage: 3000,
+        perPage: 1,
       }),
-      select: "event_id,recorded_at",
+      ...filter,
+      embed,
     } as Query,
   }).then(throwOnError);
-
-// Keep only notifications recorded after the given time (all if null).
-const recordedAfter = <T extends { recorded_at: string }>(
-  notifications: T[],
-  sinceLastChecked: string | null,
-) => {
-  if (sinceLastChecked === null) return notifications;
-  const sinceTime = Date.parse(sinceLastChecked);
-  return notifications.filter((n) => Date.parse(n.recorded_at) > sinceTime);
-};
-
-// Whether any of the events belongs to the categories in the filters.
-const hasEventInCategories = (eventIds: number[], filters: ListFilters) =>
-  eventIds.length > 0 &&
-  hasEventOfTypes(
-    eventIds,
-    eventTypeIdsForCategories(categoriesFromFilters(filters)),
-  );
-
-const fetchHasNewComments = async (
-  filters: ListFilters,
-  lastChecked: string | null,
-) => {
-  const notifications = await fetchNotificationRefs(filters);
-  const recent = recordedAfter(notifications, lastChecked);
-  return hasEventInCategories(
-    recent.map((n) => n.event_id),
-    filters,
-  );
+  return notifications[0]?.recorded_at ?? null;
 };
 
 // Time the user last clicked the bell, stored per user and party.
@@ -89,8 +62,6 @@ export const useUnacknowledgedComments = ({
 }: { enabled?: boolean } = {}) => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
-  const isFiso =
-    identity?.role === "flex_flexibility_information_system_operator";
   const partyID = identity?.partyID;
 
   const { data: storageKey } = useQuery({
@@ -101,14 +72,12 @@ export const useUnacknowledgedComments = ({
   });
   const { lastChecked, markChecked } = useLastChecked(storageKey);
 
-  const { data } = useQuery({
+  const { data: latestRecordedAt } = useQuery({
     queryKey: [
       "notification",
       "unacknowledged-comments",
       identity?.id,
-      identity?.role,
       partyID,
-      lastChecked,
     ],
     queryFn: () => {
       const filters: ListFilters = {
@@ -116,11 +85,14 @@ export const useUnacknowledgedComments = ({
         [EVENT_CATEGORY_FILTER_SOURCE]: "comment",
         party_id: String(partyID),
       };
-      return fetchHasNewComments(filters, lastChecked);
+      return fetchLatestRecordedAt(filters);
     },
-    staleTime: 60_000,
-    enabled: enabled && !isIdentityPending && !!partyID && !isFiso,
+    enabled: enabled && !isIdentityPending && !!partyID,
   });
 
-  return { hasUnacknowledged: !isFiso && (data ?? false), markChecked };
+  const hasNew =
+    !!latestRecordedAt &&
+    (!lastChecked || new Date(latestRecordedAt) > new Date(lastChecked));
+
+  return { hasUnacknowledged: hasNew, markChecked };
 };

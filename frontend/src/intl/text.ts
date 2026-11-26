@@ -360,6 +360,8 @@ export type TextKey =
   | "header_nav_entities"
   | "header_nav_parties"
   | "header_nav_events"
+  | "list_pagination_previous"
+  | "list_pagination_next"
   | "header_nav_notifications"
   | "header_nav_notifications_unacknowledged"
   | "header_nav_notices"
@@ -896,6 +898,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_entities: "Entities",
     header_nav_parties: "Parties",
     header_nav_events: "Events",
+    list_pagination_previous: "Previous",
+    list_pagination_next: "Next",
     header_nav_notifications: "Notifications",
     header_nav_notifications_unacknowledged:
       "Notifications (unacknowledged comments)",
@@ -1454,6 +1458,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_entities: "Entiteter",
     header_nav_parties: "Parter",
     header_nav_events: "Hendelser",
+    list_pagination_previous: "Forrige",
+    list_pagination_next: "Neste",
     header_nav_notifications: "Varsler",
     header_nav_notifications_unacknowledged: "Varsler (ukvitterte kommentarer)",
     header_nav_notices: "Merknader",
