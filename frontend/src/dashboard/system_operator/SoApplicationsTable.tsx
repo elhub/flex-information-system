@@ -12,13 +12,42 @@ import {
 import { DashboardItem } from "../hooks/useDashboardApplications";
 import { toDateTimeString } from "../../util";
 import { StatusBadge } from "../../components/StatusBadge";
-import type { SortState } from "../../components/ui";
+import { ToggleGroup, type SortState } from "../../components/ui";
 
 type Props = {
   label?: string;
   timestampLabel?: string;
   items: DashboardItem[];
   empty?: string | null;
+  // adds the "complete at" and "deadline" columns (SPG product applications)
+  showDeadlineColumns?: boolean;
+};
+
+// statuses sort in workflow order, unknown statuses last
+const STATUS_ORDER = [
+  "requested",
+  "in_progress",
+  "communication_test",
+  "prequalification",
+];
+
+const DATE_KEYS = new Set<string>(["timestamp", "completeAt", "deadline"]);
+
+const statusRank = (status: string) => {
+  const index = STATUS_ORDER.indexOf(status);
+  return index === -1 ? STATUS_ORDER.length : index;
+};
+
+const sortValue = (item: DashboardItem, key: string): number | undefined => {
+  if (key === "status") {
+    const index = STATUS_ORDER.indexOf(item.status);
+    return index === -1 ? undefined : index;
+  }
+  if (DATE_KEYS.has(key)) {
+    const value = item[key as "timestamp" | "completeAt" | "deadline"];
+    return value ? new Date(value).getTime() : undefined;
+  }
+  return undefined;
 };
 
 export const SOApplicationsTable = ({
@@ -26,10 +55,29 @@ export const SOApplicationsTable = ({
   timestampLabel,
   items,
   empty,
+  showDeadlineColumns,
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
   const translate = useTranslate();
+  // statuses present in this table, in workflow order
+  const statusOptions = useMemo(
+    () =>
+      [...new Set(items.map((item) => item.status))].sort(
+        (a, b) => statusRank(a) - statusRank(b),
+      ),
+    [items],
+  );
+  // track deselected (not selected) statuses, so new ones show by default
+  const [hiddenStatuses, setHiddenStatuses] = useState<string[]>([]);
+  const visibleStatuses = statusOptions.filter(
+    (status) => !hiddenStatuses.includes(status),
+  );
+  const filteredItems = useMemo(
+    () => items.filter((item) => !hiddenStatuses.includes(item.status)),
+    [items, hiddenStatuses],
+  );
+
   // oldest first by default, so the table reads as a queue
   const [sort, setSort] = useState<SortState | undefined>({
     orderBy: "timestamp",
@@ -37,12 +85,22 @@ export const SOApplicationsTable = ({
   });
 
   const sortedItems = useMemo(() => {
-    if (!sort) return items;
-    const time = (item: DashboardItem) =>
-      item.timestamp ? new Date(item.timestamp).getTime() : 0;
+    if (!sort) return filteredItems;
+    const key = String(sort.orderBy);
     const factor = sort.direction === "ascending" ? 1 : -1;
-    return [...items].sort((a, b) => factor * (time(a) - time(b)));
-  }, [items, sort]);
+
+    const rows = filteredItems.map((item) => ({
+      item,
+      value: sortValue(item, key),
+    }));
+    const withValue = rows.filter((row) => row.value !== undefined);
+    const withoutValue = rows.filter((row) => row.value === undefined);
+
+    withValue.sort((a, b) => factor * (a.value! - b.value!));
+
+    // rows without a value always go last, regardless of direction
+    return [...withValue, ...withoutValue].map((row) => row.item);
+  }, [filteredItems, sort]);
 
   const columns: Column<DashboardItem>[] = [
     {
@@ -69,6 +127,7 @@ export const SOApplicationsTable = ({
     {
       key: "status",
       header: "Status",
+      sortable: true,
       render: (_, row) => {
         const variant = getStatusVariant(row.kind, row.status);
         const tooltipLabel = getDescriptionEnumLabel(row.kind, row.status);
@@ -94,17 +153,66 @@ export const SOApplicationsTable = ({
           },
         ]
       : []),
+    ...(showDeadlineColumns
+      ? [
+          {
+            key: "completeAt" as const,
+            header: translate(
+              "field.service_providing_group_product_application.complete_at",
+            ),
+            sortable: true,
+            sortType: "date" as const,
+            render: (value: string | undefined) => toDateTimeString(value),
+          },
+          {
+            key: "deadline" as const,
+            header: translate("text.dashboard.deadline"),
+            sortable: true,
+            sortType: "date" as const,
+            render: (value: string | undefined) => toDateTimeString(value),
+          },
+        ]
+      : []),
   ];
 
+  // the kind is the same for all rows of a table, so take it from the first
+  const statusLabel = (status: string) =>
+    items.length
+      ? translateEnum(
+          `${ENUM_KEY_PREFIX[items[0].kind]}.${status}` as EnumLabel,
+        )
+      : status;
+
   return (
-    <SimpleTable
-      columns={columns}
-      data={sortedItems}
-      sort={sort}
-      onSortChange={setSort}
-      empty={empty}
-      className="w-full"
-      rowClick={(item) => navigate(item.route)}
-    />
+    <div className="flex flex-col gap-2">
+      {statusOptions.length > 1 && (
+        <ToggleGroup
+          type="multiple"
+          value={visibleStatuses}
+          defaultValue={visibleStatuses}
+          onChange={(value) =>
+            setHiddenStatuses(
+              statusOptions.filter((status) => !(value ?? []).includes(status)),
+            )
+          }
+        >
+          {statusOptions.map((status) => (
+            <ToggleGroup.Item key={status} value={status}>
+              {statusLabel(status)}
+            </ToggleGroup.Item>
+          ))}
+        </ToggleGroup>
+      )}
+      <SimpleTable
+        columns={columns}
+        data={sortedItems}
+        sort={sort}
+        onSortChange={setSort}
+        // when the filter hides every row, show the default "no results" text
+        empty={items.length > 0 ? undefined : empty}
+        className="w-full"
+        rowClick={(item) => navigate(item.route)}
+      />
+    </div>
   );
 };

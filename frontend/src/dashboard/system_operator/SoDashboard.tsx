@@ -7,8 +7,7 @@ import { SOApplicationsTable } from "./SoApplicationsTable";
 
 export const SoDashboard = () => {
   const translate = useTranslate();
-  const { activeItems, resolvedItems, isLoading, error } =
-    useDashboardApplications();
+  const { activeItems, isLoading, error } = useDashboardApplications();
 
   if (isLoading) return <Loader size="medium" />;
   if (error) return <Alert variant="error">Failed to load dashboard.</Alert>;
@@ -48,6 +47,7 @@ export const SoDashboard = () => {
               timestampLabel={translate(
                 "field.service_providing_group_product_application.requested_at",
               )}
+              showDeadlineColumns
             />
             <SOApplicationsTable
               label={translate("text.dashboard.spg_grid_prequalification")}
@@ -57,12 +57,6 @@ export const SoDashboard = () => {
             />
           </div>
         )
-      }
-      resolvedTable={
-        <SOApplicationsTable
-          items={resolvedItems}
-          empty="No resolved applications."
-        />
       }
     />
   );
