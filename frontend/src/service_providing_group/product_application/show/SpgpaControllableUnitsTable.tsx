@@ -9,6 +9,7 @@ import {
   Switch,
   Tooltip,
   TimelineSlider,
+  Button,
 } from "../../../components/ui";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import {
@@ -24,6 +25,7 @@ import { useTranslateField } from "../../../intl/intl";
 import {
   IconClockCircle,
   IconCross,
+  IconDownload,
   IconValidationCheck,
 } from "@elhub/ds-icons";
 import { RegulationDirectionIcon } from "../../../controllable_unit/RegulationDirectionField";
@@ -44,6 +46,7 @@ import {
   parseValue,
 } from "../../shared/changes/timelineUtils";
 import { useSpgpaTimelineMarks } from "./useSpgpaMilestones";
+import { exportRowsAsCsv } from "../../../utils/exportRowsAsCsv";
 
 type Props = {
   spgId: number;
@@ -206,6 +209,25 @@ export const SpgpaControllableUnitsTable = ({
     },
   ];
 
+  function exportCsv() {
+    exportRowsAsCsv(
+      (filteredCUs ?? []).map((cu) => ({
+        name: cu.name,
+        recorded_at: cu.membershipRecordedAt,
+        flexible_power_kw: cu.maximum_active_power,
+        accounting_point_id: cu.mpid,
+        system_operator: cu.soName,
+        regulation_direction: cu.regulation_direction,
+        grid_prequalification: cu.gridPrequalifiedAt ? "true" : "false",
+        pso_grid_prequalification: cu.psoGridPrequalifiedAt ? "true" : "false",
+        product_application: cu.productApplicationPrequalifiedAt
+          ? "true"
+          : "false",
+      })),
+      "spgpa_controllable_unit",
+    );
+  }
+
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-4">
@@ -345,6 +367,14 @@ export const SpgpaControllableUnitsTable = ({
               />
             </FormItem>
           </div>
+          <Button
+            variant="invisible"
+            onClick={exportCsv}
+            icon={IconDownload}
+            disabled={isLoading}
+          >
+            Export
+          </Button>
         </div>
         {isLoading || (filteredCUs && filteredCUs.length > 0) ? (
           <SimpleTable
