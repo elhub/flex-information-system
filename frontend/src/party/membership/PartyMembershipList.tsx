@@ -27,6 +27,7 @@ import {
   usePartyMemberships,
   useRemovePartyMembership,
 } from "./usePartyMemberships";
+import { eventListLink } from "../../event/eventListLink";
 
 const CreateButton = ({ id }: { id: Identifier }) => {
   const navigate = useNavigate();
@@ -59,9 +60,7 @@ const RowActionsMenu = ({ record }: { record: PartyMembershipRow }) => {
   const historyFilter = encodeURIComponent(
     JSON.stringify({ party_membership_id: record.id }),
   );
-  const eventFilter = encodeURIComponent(
-    JSON.stringify({ "subject@eq": `/party_membership/${record.id}` }),
-  );
+  const eventsLink = eventListLink("subject", `/party_membership/${record.id}`);
 
   const hasActions = canUpdate || canDelete;
   if (!hasActions && !canReadHistory && !canReadEvent) return null;
@@ -129,7 +128,7 @@ const RowActionsMenu = ({ record }: { record: PartyMembershipRow }) => {
                 {canReadEvent && (
                   <Dropdown.Menu.GroupedList.Item
                     as={RouterLink}
-                    to={`/event?filter=${eventFilter}`}
+                    to={eventsLink}
                   >
                     <div className="flex items-center gap-2">
                       {translate("text.events")}

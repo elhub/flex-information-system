@@ -11,6 +11,7 @@ import { useSppaRecord } from "./useSppaShowViewModel";
 import { useTranslateEnum } from "../../intl/intl";
 import { sppaStatusVariantMap } from "../sppaStatus";
 import { useParty } from "../../hooks/party";
+import { eventListLink } from "../../event/eventListLink";
 
 export const ServiceProviderProductApplicationShow = () => {
   const sppaId = Number(useParams<{ id: string }>().id);
@@ -43,10 +44,9 @@ export const ServiceProviderProductApplicationShow = () => {
   if (serviceProvider.error) throw serviceProvider.error;
   if (systemOperator.error) throw systemOperator.error;
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({
-      "source@eq": `/service_provider_product_application/${sppa.id}`,
-    }),
+  const eventsLink = eventListLink(
+    "source",
+    `/service_provider_product_application/${sppa.id}`,
   );
 
   const { status, icon } = sppaStatusVariantMap[sppa.status];
@@ -76,7 +76,7 @@ export const ServiceProviderProductApplicationShow = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.header_nav_events"),
           shouldShow: canReadEvents,
         },

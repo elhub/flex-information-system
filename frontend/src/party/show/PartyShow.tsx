@@ -19,6 +19,7 @@ import {
 import { IconPencil } from "@elhub/ds-icons";
 import { PartyHistoryList } from "../PartyHistoryList";
 import { EntityShow } from "./EntityShow";
+import { eventListLink } from "../../event/eventListLink";
 
 const PartyShowTabs = ({
   partyId,
@@ -98,9 +99,7 @@ const PartyShowContent = ({ canEdit }: { canEdit: boolean }) => {
 
   const canReadEvents = permissions?.allow("event", "read");
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/party/${party!.id}` }),
-  );
+  const eventsLink = eventListLink("source", `/party/${party!.id}`);
   if (!party) {
     return null;
   }
@@ -124,7 +123,7 @@ const PartyShowContent = ({ canEdit }: { canEdit: boolean }) => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.events"),
           shouldShow: canReadEvents ?? false,
         },

@@ -35,6 +35,12 @@ event_subject_idx
 ON event (subject_resource, subject_id)
 WHERE subject_resource IS NOT null AND subject_id IS NOT null;
 
+-- changeset flex:event-type-idx runOnChange:true endDelimiter:-- runInTransaction:false
+-- filtering on type in the event list, sorted on id
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+event_type_idx
+ON event (type, id);
+
 -- changeset flex:event-capture runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION capture_event()
 RETURNS trigger

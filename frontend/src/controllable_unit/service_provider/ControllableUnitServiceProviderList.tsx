@@ -24,6 +24,7 @@ import { ControllableUnitServiceProviderLocationState } from "./ControllableUnit
 import { ControllableUnit } from "../../generated-client";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
+import { eventListLink } from "../../event/eventListLink";
 
 type CuspRow = { id: number; controllable_unit_id: number };
 
@@ -57,8 +58,9 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
   const historyFilter = encodeURIComponent(
     `{ "controllable_unit_service_provider_id": ${record.id} }`,
   );
-  const eventFilter = encodeURIComponent(
-    `{ "subject@eq": "/controllable_unit_service_provider/${record.id}" }`,
+  const eventsLink = eventListLink(
+    "subject",
+    `/controllable_unit_service_provider/${record.id}`,
   );
 
   const hasActions = canUpdate || canDelete;
@@ -127,7 +129,7 @@ const RowActionsMenu = ({ record }: { record: CuspRow }) => {
                 {canReadEvent && (
                   <Dropdown.Menu.GroupedList.Item
                     as={RouterLink}
-                    to={`/event?filter=${eventFilter}`}
+                    to={eventsLink}
                   >
                     <div className="flex items-center gap-2">
                       {translate("text.events")}

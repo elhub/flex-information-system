@@ -21,6 +21,7 @@ import { KILO, MEGA, Scale } from "../../../utils/scales";
 import { IconExternal, IconPencil } from "@elhub/ds-icons";
 import { useTranslateEnum } from "../../../intl/intl";
 import { type EnumLabel } from "../../../intl/enum-labels";
+import { eventListLink } from "../../../event/eventListLink";
 
 const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
@@ -62,10 +63,9 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   if (!spgpa) return null;
   if (spg.error) throw spg.error;
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({
-      "subject@eq": `/service_providing_group_product_application/${spgpa.id}`,
-    }),
+  const eventsLink = eventListLink(
+    "subject",
+    `/service_providing_group_product_application/${spgpa.id}`,
   );
 
   const spgpaStatusVariant = spgpaStatusVariantMap[spgpa.status];
@@ -117,7 +117,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.header_nav_events"),
           shouldShow: canReadEvents ?? false,
         },

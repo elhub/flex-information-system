@@ -11,6 +11,7 @@ import { usePermissions, useTranslate } from "ra-core";
 import { ResourceShowLayout } from "../../components/ResourceShowLayout";
 import { cuStatusVariantMap } from "../controllableUnitStatus";
 import { IconPencil } from "@elhub/ds-icons";
+import { eventListLink } from "../../event/eventListLink";
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,9 +42,7 @@ export const ControllableUnitShow = () => {
     return null;
   }
 
-  const eventsFilter = encodeURIComponent(
-    JSON.stringify({ "source@eq": `/controllable_unit/${cu.id}` }),
-  );
+  const eventsLink = eventListLink("source", `/controllable_unit/${cu.id}`);
   const canActivateControllableUnit =
     !!permissions?.allow("controllable_unit", "update") &&
     (viewModel.technicalResources?.length ?? 0) > 0;
@@ -70,7 +69,7 @@ export const ControllableUnitShow = () => {
       ]}
       moreNavigationActions={[
         {
-          to: `/event?filter=${eventsFilter}`,
+          to: eventsLink,
           title: translate("text.events"),
           shouldShow: canReadEvents ?? false,
         },
