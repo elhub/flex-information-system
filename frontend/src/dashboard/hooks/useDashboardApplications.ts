@@ -144,7 +144,7 @@ export const useDashboardApplications = () => {
       route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
       timestamp: r.requested_at ?? r.created_at,
       completeAt: r.complete_at,
-      deadline: getSpgpaDeadline(r.requested_at, r.complete_at),
+      deadline: getSpgpaDeadline(r.requested_at, r.complete_at, r.created_at),
     })) || [];
 
   const gridPrequalifications =
