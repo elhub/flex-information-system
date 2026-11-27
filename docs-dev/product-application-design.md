@@ -92,6 +92,31 @@ No change to `db/flex/reference_data/product_type.csv`. The products within a
 product type are not separate rows. They are chosen in the details, with one
 section per product.
 
+### Alternative: FCR-N and FCR-D as separate product types
+
+Instead of one FCR product type with two products, FCR-N and FCR-D could be
+separate product types, with several product types allowed in one application
+from an approved list of combinations (FCR-N, FCR-D, or both). Suspension,
+procuring system operator products and qualification are not expected to differ
+between FCR-N and FCR-D, so they don't favour either option.
+
+| | A: separate product types, several per application | B: one FCR product type, products as sections (proposed) |
+| --- | --- | --- |
+| Reference data | ⚠️ rename the FCR row to FCR-N, add FCR-D | ✅ no change, the FCR row already lists FCR-N and FCR-D |
+| Where the product choice is stored | ✅ `product_type_ids`, easy to query | ⚠️ sections in `application_details` |
+| Validation | ⚠️ allowed combinations, and sections must match `product_type_ids` | ✅ exactly one product type, at least one section |
+| `kind` | ⚠️ identifies a variant, not one product type | ✅ equals the product type `business_id` |
+| Duplicate applications (VAL010) | ✅ existing check per product type works | ⚠️ moves to Kotlin and compares sections |
+| Filtering and reporting by product | ✅ array column | ⚠️ JSONB filter (open point 10) |
+| Downstream systems | ✅ products visible in `product_type_ids` | ⚠️ products only in the details (open point 5) |
+| Frontend | ⚠️ multi-select limited to allowed combinations | ✅ one product type, product checkboxes |
+| If FCR-N and FCR-D later differ in procurement or suspension | ✅ already separate | ⚠️ migrate sections to product types |
+| Effort now | ⚠️ more | ✅ less |
+
+Choosing B keeps the model simple as long as the two products are handled as
+one product type everywhere else. Moving to A later is a mechanical migration
+(sections to `product_type_ids`), but it touches existing data.
+
 ## Data model
 
 ```text
