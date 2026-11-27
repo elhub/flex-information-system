@@ -80,3 +80,23 @@ USING (
             AND spgpa_ip.party_id = (SELECT flex.current_party())
     )
 );
+
+-- no history view in api schema, only internal (to be able to read events)
+GRANT SELECT ON service_providing_group_product_application_attachment_history
+TO flex_common;
+DROP POLICY IF EXISTS "SPGPAA_COM001_HISTORY"
+ON service_providing_group_product_application_attachment_history;
+CREATE POLICY "SPGPAA_COM001_HISTORY"
+ON service_providing_group_product_application_attachment_history
+FOR SELECT
+TO flex_common
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.service_providing_group_product_application_involved_parties AS spgpa_ip -- noqa
+        WHERE
+            spgpa_ip.service_providing_group_product_application_id
+            = service_providing_group_product_application_attachment_history.service_providing_group_product_application_id -- noqa
+            AND spgpa_ip.party_id = (SELECT flex.current_party())
+    )
+);
