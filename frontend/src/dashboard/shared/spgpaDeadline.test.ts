@@ -44,6 +44,13 @@ it("prefers complete_at over created_at", () => {
   ).toBe("2027-01-20T11:00:00.000Z");
 });
 
+it("ignores a complete_at from before the latest request", () => {
+  // complete 20.10.26, rejected, requested again 01.12.26 -> 26.01.27
+  expect(getSpgpaDeadline("2026-12-01T11:00:00Z", "2026-10-20T10:00:00Z")).toBe(
+    "2027-01-26T11:00:00.000Z",
+  );
+});
+
 it("has no deadline when neither is set", () => {
   expect(getSpgpaDeadline(undefined, undefined)).toBeUndefined();
   expect(getSpgpaDeadline(null, null)).toBeUndefined();
