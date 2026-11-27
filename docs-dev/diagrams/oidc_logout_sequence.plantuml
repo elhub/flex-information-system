@@ -21,8 +21,8 @@ UA -> PORTAL: Click logout
 return Go to /auth/v1/logout
 UA -> AUTH: Navigate to /auth/v1/logout\n<:cookie:> __Host-flex_session
 note over AUTH
-    The session token and its descendants are
-    deleted, whichever token of the chain is sent.
+    The session of the token is deleted with all
+    its tokens, whichever of its tokens is sent.
     The access token expires on its own.
 end note
 return HTTP 302 Redirect to Identity Provider\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_access

@@ -79,43 +79,53 @@ has expired, since it is signed.
 
 Access tokens contain information that can be used directly, whereas opaque
 tokens contain no claims, so the server must look up what a session token means.
-This is done in a `session` database table. This table is `UNLOGGED` and kept
-out of the audit mechanisms. Indeed, it only contains hashes, so there is
-nothing worth restoring in case of crash for instance. Users will just log in
+This is done in two database tables, `session` and `token`. Both are `UNLOGGED`
+and kept out of the audit mechanisms. Indeed, they only contain hashes, so there
+is nothing worth restoring in case of crash for instance. Users will just log in
 again when the system is restored.
 
 A session is created at login. It represents _who_ is logged in and therefore
 what they may do, independently of which tokens are currently valid. Here is
 the content of the `session` table:
 
-| Column       | Description                                                                                       |
-|--------------|---------------------------------------------------------------------------------------------------|
-| `id`         | SHA-256 hash of the session token (32 bytes).                                                     |
-| `entity_id`  | The entity that logged in.                                                                        |
-| `parent_id`  | The `id` of the token this one was issued from at refresh. `NULL` for the token created at login. |
-| `expires_at` | Absolute end of the session. Copied unchanged from parent to child, so rotation never extends it. |
-| `used_at`    | Set when the token has been exchanged for a new pair at refresh.                                  |
+| Column       | Description                                  |
+|--------------|----------------------------------------------|
+| `id`         | Random UUID (primary key).                   |
+| `entity_id`  | The entity that logged in.                   |
+| `expires_at` | Absolute end of the session. Never extended. |
 
-Session tokens are _rotated_: every refresh returns a new session token and
-marks the previous one as used. We remember used tokens so as to detect reuse:
-if an already used token is presented again, the whole session is revoked and
-the user must log in again. Logging out also revokes the session. Revocation of
-a session amounts to deleting the session token from the database. A cascading
-delete will then delete all tokens in the `parent_id` chain.
+A session initially owns one session tokens. Only the SHA-256 hash of a session
+token is stored, in the `token` table:
 
-With rotation every 2 minutes, a long-lived session creates hundreds of rows, so
-deleting all sessions from the previous day is costly on the index. Instead, we
-partition the `session` table with one partition per day. Cleaning old and
-expired sessions can then be done by just dropping old partitions. We set up two
-periodic jobs running inside the database with
+| Column       | Description                                                     |
+|--------------|-----------------------------------------------------------------|
+| `token_hash` | SHA-256 hash of the session token (32 bytes).                   |
+| `session_id` | The session the token belongs to. Cascading delete.             |
+| `expires_at` | Copied from the session. Used for partitioning.                 |
+| `used_at`    | Set when the token has been exchanged for a new one at refresh. |
+
+Session tokens are _rotated_: every refresh inserts a new token in the same
+session and marks the previous one as used. We remember used tokens so as to
+detect reuse: if an already used token is presented again, the whole session is
+revoked and the user must log in again. Logging out also revokes the session.
+Revocation of a session amounts to deleting its row in `session`. All related
+tokens are then automatically removed based on the `session_id`.
+
+With rotation every 2 minutes, a long-lived session creates hundreds of tokens,
+so deleting all tokens from the previous day is costly on the index. Instead, we
+partition the `token` table with one partition per day, based on `expires_at`.
+Since a token copies it from its session, all the tokens of a session end in the
+same partition. Cleaning old and expired sessions can then be done by just
+dropping old partitions. For optimisation reasons, every query on the `token`
+table has a time filter on `expires_at`, so that the database can select the
+right partitions from the beginning.
+
+We set up a periodic job running inside the database with
 [`pg_cron`](https://github.com/citusdata/pg_cron), like we already do for
 some functionality (see for instance the notice sync in [Notices](./notice.md)).
-One job creates partitions in advance, the other one drops the old partitions.
-Partitioning is done based on the `expires_at` field. Since children tokens copy
-it from the parent, we are sure that a whole token family will live in the same
-partition chosen at login. As a result, for optimisation reasons, every query
-against the `session` table has a time filter, so that the database can select
-the right partition from the beginning.
+The job creates token partitions in advance and drops the old ones. It then
+deletes the sessions that expired long enough ago for all their tokens to be
+gone.
 
 #### Concurrent refreshes
 
@@ -140,14 +150,14 @@ tokens can also be revoked even though we do not store them in the database.
 
 #### Summary of operations
 
-| Operation              | Effect                                                                                      |
-|------------------------|---------------------------------------------------------------------------------------------|
-| Login (`/callback`)    | Insert a session row. Issue an access token. Set both cookies.                              |
-| Refresh                | Mark the session token used, insert a child. Issue a new access token with the same claims. |
-| API call               | Verify the JWT signature and expiration time. No session lookup required.                   |
-| Assume / unassume      | Issue a new access token. The session is unchanged.                                         |
-| Logout, reuse          | Delete the session and its descendants, clear cookies.                                      |
-| `/token` (API clients) | Issue a 10 minute JWT. No session.                                                          |
+| Operation              | Effect                                                                                                       |
+|------------------------|--------------------------------------------------------------------------------------------------------------|
+| Login (`/callback`)    | Insert a session and its first token. Issue an access token. Set both cookies.                               |
+| Refresh                | Mark the session token used, insert a new one in the session. Issue a new access token with the same claims. |
+| API call               | Verify the JWT signature and expiration time. No session lookup required.                                    |
+| Assume / unassume      | Issue a new access token with the remaining lifetime of the one to exchange. The session is unchanged.       |
+| Logout, reuse          | Delete the session, and with it all its tokens. Clear cookies.                                               |
+| `/token` (API clients) | Issue a 10 minute JWT. No session.                                                                           |
 
 The following diagram shows a refresh, including the failure paths.
 

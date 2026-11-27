@@ -13,7 +13,7 @@ skinparam note {
 actor "User Agent\n(Browser)" as UA
 participant "Frontend Portal" as PORTAL
 participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
-database "Database\nauth.session" as DB
+database "Database\nauth.session\nauth.token" as DB
 
 note over PORTAL
     The access token (JWT) has expired
@@ -34,7 +34,7 @@ alt access token is invalid
     PORTAL -> UA: Go to /#/login
 end
 
-AUTH -> DB: Look up hash of session token
+AUTH -> DB: Look up hash of session token\nand its session
 DB --> AUTH
 
 alt session token is unknown or expired,\nor entity does not match the access token
@@ -59,7 +59,7 @@ else session token was used earlier
     AUTH --> PORTAL: HTTP 401\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_access
     PORTAL -> UA: Go to /#/login
 else session token is valid
-    AUTH -> DB: Mark token as used\nand insert a child (same expires_at)
+    AUTH -> DB: Mark token as used and insert a\nnew token in the session (same expires_at)
     DB --> AUTH
     note over AUTH
         Issue a new access token with the same party and scope.
