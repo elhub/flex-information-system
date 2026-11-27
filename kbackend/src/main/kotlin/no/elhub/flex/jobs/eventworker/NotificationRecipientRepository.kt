@@ -41,6 +41,7 @@ class NotificationRecipientRepositoryImpl : NotificationRecipientRepository {
                             "recorded_at" to event.recordedAt,
                             "ap_id" to event.sourceId,
                             "cu_id" to event.subjectId,
+                            "source_id" to event.sourceId,
                         )
                         conn.prepareNamed(sql, params)
                             .query { rs -> rs.getLong(1).takeUnless { rs.wasNull() } }

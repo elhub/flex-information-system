@@ -26,7 +26,7 @@ class NotificationRecipientRepositoryTest : FunSpec({
         PostgresTestContainer.database // makes sure the database is ready
 
         val types = RecipientQueries.eventTypes
-        types shouldHaveSize 50
+        types shouldHaveSize 52
 
         types.forEach { type ->
             listOf(null, 2L).forEach { subjectId ->

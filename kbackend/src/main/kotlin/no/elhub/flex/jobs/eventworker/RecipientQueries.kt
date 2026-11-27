@@ -56,6 +56,18 @@ internal object RecipientQueries {
             AND spgpach.visibility = 'any_involved_party'
         """
 
+    val serviceProvidingGroupProductApplicationAttachment = """
+        SELECT spgpa.procuring_system_operator_id
+        FROM api.service_providing_group_product_application spgpa
+        WHERE spgpa.id = :source_id
+        UNION
+        SELECT spg.service_provider_id
+        FROM api.service_providing_group_product_application spgpa
+            INNER JOIN api.service_providing_group spg
+                ON spgpa.service_providing_group_id = spg.id
+        WHERE spgpa.id = :source_id
+        """
+
     val controllableUnitCreate = """
         SELECT unnest(
             array_remove(
@@ -562,7 +574,17 @@ internal object RecipientQueries {
             "service_providing_group_product_application_comment",
             *CREATE_UPDATE,
         )
-        register(serviceProvidingGroupGridPrequalification, "service_providing_group_grid_prequalification", *CREATE_UPDATE)
+        register(
+            serviceProvidingGroupProductApplicationAttachment,
+            "service_providing_group_product_application_attachment",
+            "create",
+            "delete",
+        )
+        register(
+            serviceProvidingGroupGridPrequalification,
+            "service_providing_group_grid_prequalification",
+            *CREATE_UPDATE
+        )
         register(
             serviceProvidingGroupGridPrequalificationComment,
             "service_providing_group_grid_prequalification_comment",
