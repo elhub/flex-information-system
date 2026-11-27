@@ -29,11 +29,11 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.UUID
 
-/** `GET /auth/v1/session`: the session is read from the session cookie only. */
+/** `GET /auth/v1/session`: the session is read from the access cookie only. */
 class SessionTest : FunSpec({
 
     // port of test/inspect/session_empty_cookie.hurl
-    test("no session cookie returns 204 with an empty body") {
+    test("no access cookie returns 204 with an empty body") {
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session")
@@ -44,21 +44,21 @@ class SessionTest : FunSpec({
     }
 
     // port of test/inspect/session_malformed_cookie.hurl
-    test("a malformed session cookie returns 400 in the auth error format and unsets the cookie") {
+    test("a malformed access cookie returns 400 in the auth error format and unsets the cookie") {
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
-            header(HttpHeaders.Cookie, "__Host-flex_session=malformed")
+            header(HttpHeaders.Cookie, "__Host-flex_access=malformed")
         }
 
         response.status shouldBe HttpStatusCode.BadRequest
         val body = Json.parseToJsonElement(response.bodyAsText()).jsonObject
         body["code"]?.jsonPrimitive?.content shouldBe "HTTP400"
         body["message"]?.jsonPrimitive?.content shouldBe "Bad Request"
-        body["details"]?.jsonPrimitive?.content shouldBe "invalid session cookie"
+        body["details"]?.jsonPrimitive?.content shouldBe "invalid access cookie"
         body["hint"] shouldNotBe null
         val setCookie = response.headers[HttpHeaders.SetCookie].orEmpty()
-        setCookie shouldContain "__Host-flex_session=not.a.session"
+        setCookie shouldContain "__Host-flex_access=not.a.session"
         setCookie shouldContain "Max-Age=0"
         setCookie shouldContain "Path=/"
         setCookie shouldContain "Secure"
@@ -67,22 +67,22 @@ class SessionTest : FunSpec({
         app.stop()
     }
 
-    test("an empty session cookie returns 400") {
+    test("an empty access cookie returns 400") {
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
-            header(HttpHeaders.Cookie, "__Host-flex_session=")
+            header(HttpHeaders.Cookie, "__Host-flex_access=")
         }
 
         response.status shouldBe HttpStatusCode.BadRequest
         app.stop()
     }
 
-    test("an expired session cookie returns 400") {
+    test("an expired access cookie returns 400") {
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
-            header(HttpHeaders.Cookie, "__Host-flex_session=${makeJwt(ttlSeconds = -60)}")
+            header(HttpHeaders.Cookie, "__Host-flex_access=${makeJwt(ttlSeconds = -60)}")
         }
 
         response.status shouldBe HttpStatusCode.BadRequest
@@ -101,14 +101,14 @@ class SessionTest : FunSpec({
     }
 
     // port of test/inspect/session_success.hurl, with an entity token (no party)
-    test("an entity session cookie returns the session without party") {
+    test("an entity access cookie returns the session without party") {
         val entity = seed(Triggers.OFF) { insertEntityIdentity("Session IT Entity") }
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
             header(
                 HttpHeaders.Cookie,
-                "__Host-flex_session=${makeJwt(role = "flex_entity", eid = entity.principal.eid, scope = "manage:auth", partyId = 0)}",
+                "__Host-flex_access=${makeJwt(role = "flex_entity", eid = entity.principal.eid, scope = "manage:auth", partyId = 0)}",
             )
         }
 
@@ -124,7 +124,7 @@ class SessionTest : FunSpec({
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
-            header(HttpHeaders.Cookie, "__Host-flex_session=${makeJwt(role = "flex_entity", eid = UUID.randomUUID().toString(), scope = "manage:auth")}")
+            header(HttpHeaders.Cookie, "__Host-flex_access=${makeJwt(role = "flex_entity", eid = UUID.randomUUID().toString(), scope = "manage:auth")}")
         }
 
         response.status shouldBe HttpStatusCode.InternalServerError
@@ -135,11 +135,11 @@ class SessionTest : FunSpec({
         app.stop()
     }
 
-    test("a session cookie that does not cover read:auth:session returns 403") {
+    test("a access cookie that does not cover read:auth:session returns 403") {
         val app = testApp()
 
         val response = app.client.get("/auth/v1/session") {
-            header(HttpHeaders.Cookie, "__Host-flex_session=${makeJwt(scope = "read:data")}")
+            header(HttpHeaders.Cookie, "__Host-flex_access=${makeJwt(scope = "read:data")}")
         }
 
         response.status shouldBe HttpStatusCode.Forbidden

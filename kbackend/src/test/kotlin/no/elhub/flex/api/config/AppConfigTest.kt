@@ -29,7 +29,7 @@ class AppConfigTest : FunSpec({
     }
 
     test("auth config") {
-        config.authConfig() shouldBe AuthConfig(jwtSecret = "secret")
+        config.authConfig() shouldBe AuthConfig(jwtSecret = "secret", portalTokenSeconds = 90, apiTokenSeconds = 300)
     }
 
     test("oidc config") {

@@ -13,6 +13,8 @@ flex:
 
 auth:
   jwtSecret: secret
+  portalTokenSeconds: 90
+  apiTokenSeconds: 300
 
 oidc:
   issuer: https://idp.test

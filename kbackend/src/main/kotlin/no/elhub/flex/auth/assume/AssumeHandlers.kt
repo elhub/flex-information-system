@@ -17,14 +17,14 @@ import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.db.AuthRepository
 import no.elhub.flex.auth.model.dto.generated.models.FlexRole
 import no.elhub.flex.auth.model.dto.generated.models.SessionResponse
-import no.elhub.flex.auth.plugin.SESSION_COOKIE_NAME
+import no.elhub.flex.auth.plugin.ACCESS_COOKIE_NAME
 import no.elhub.flex.auth.plugin.callerToken
 import no.elhub.flex.auth.plugin.ensureCallerScope
 import no.elhub.flex.auth.scope.DefaultEntityScopes
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
 import no.elhub.flex.auth.scope.intersection
-import no.elhub.flex.auth.session.setSessionCookie
+import no.elhub.flex.auth.session.setAccessCookie
 import no.elhub.flex.auth.token.AccessToken
 import no.elhub.flex.auth.token.toFlexPrincipal
 import no.elhub.flex.shared.auth.FlexPrincipal
@@ -56,7 +56,7 @@ private suspend fun ApplicationCall.receiveBoundedForm(maxBytes: Long): Paramete
 private const val ENTITY_ROLE = "flex_entity"
 
 /**
- * Assumes a party, as a person in the browser: replaces the session cookie of the entity by one
+ * Assumes a party, as a person in the browser: replaces the access cookie of the entity by one
  * of the party.
  */
 @Single
@@ -69,7 +69,7 @@ class AssumeHandler(
         either {
             ensureCallerScope(call, callerToken(call, config.jwtSecret), REQUIRED_SCOPE)
 
-            val entityToken = sessionToken(call, config.jwtSecret)
+            val entityToken = accessCookieToken(call, config.jwtSecret)
 
             ensure(call.request.contentType().match(ContentType.Application.FormUrlEncoded)) {
                 OAuthError("invalid_request", "invalid content type")
@@ -119,7 +119,7 @@ class AssumeHandler(
                 }
                 .bind()
 
-            call.setSessionCookie(partyToken.sign(config.jwtSecret), partyToken.expiresIn())
+            call.setAccessCookie(partyToken.sign(config.jwtSecret), partyToken.expiresIn())
 
             SessionResponse(
                 entityId = partyToken.entityId,
@@ -133,7 +133,7 @@ class AssumeHandler(
 }
 
 /**
- * Unassumes a party, as a person in the browser: replaces the session cookie of the party by one
+ * Unassumes a party, as a person in the browser: replaces the access cookie of the party by one
  * of the bare entity.
  */
 @Single
@@ -146,10 +146,10 @@ class UnassumeHandler(
         either {
             ensureCallerScope(call, callerToken(call, config.jwtSecret), REQUIRED_SCOPE)
 
-            val receivedToken = sessionToken(call, config.jwtSecret)
+            val receivedToken = accessCookieToken(call, config.jwtSecret)
 
             ensure(receivedToken.partyId != 0) {
-                OAuthError("invalid_request", "session cookie is already a bare entity")
+                OAuthError("invalid_request", "access cookie is already a bare entity")
             }
 
             val principal = receivedToken.toFlexPrincipal()
@@ -191,7 +191,7 @@ class UnassumeHandler(
                 expiryUnixSeconds = receivedToken.expiryUnixSeconds,
             )
 
-            call.setSessionCookie(entityToken.sign(config.jwtSecret), entityToken.expiresIn())
+            call.setAccessCookie(entityToken.sign(config.jwtSecret), entityToken.expiresIn())
 
             SessionResponse(
                 entityId = entityToken.entityId,
@@ -202,12 +202,12 @@ class UnassumeHandler(
         }.respondJson(call)
 }
 
-/** The token of the session cookie, which is the one that is replaced. */
-private fun Raise<AppError>.sessionToken(call: ApplicationCall, secret: String): AccessToken {
-    val cookie = call.request.cookies[SESSION_COOKIE_NAME]
-        ?: raise(OAuthError("invalid_request", "missing session cookie"))
+/** The token of the access cookie, which is the one that is replaced. */
+private fun Raise<AppError>.accessCookieToken(call: ApplicationCall, secret: String): AccessToken {
+    val cookie = call.request.cookies[ACCESS_COOKIE_NAME]
+        ?: raise(OAuthError("invalid_request", "missing access cookie"))
     return AccessToken.parse(cookie, secret)
-        .mapLeft { OAuthError("invalid_request", "invalid session cookie") }
+        .mapLeft { OAuthError("invalid_request", "invalid access cookie") }
         .bind()
 }
 

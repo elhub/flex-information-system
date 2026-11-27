@@ -47,7 +47,7 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.UUID
 
-private const val SESSION_COOKIE = "__Host-flex_session"
+private const val ACCESS_COOKIE = "__Host-flex_access"
 private const val SESSION_TTL_SECONDS = 600L
 
 private val repository = AuthRepositoryImpl()
@@ -57,7 +57,7 @@ class AssumeTest : FunSpec({
 
     context("assume") {
 
-        test("a member of a party gets a session cookie for the party, with the scopes of the membership") {
+        test("a member of a party gets a access cookie for the party, with the scopes of the membership") {
             val (entity, partyId) = seedMember()
             val app = testApp()
 
@@ -71,7 +71,7 @@ class AssumeTest : FunSpec({
             body["party_name"]?.jsonPrimitive?.content shouldBe "Assume SP"
             body["role"]?.jsonPrimitive?.content shouldBe "flex_service_provider"
 
-            val cookie = response.sessionCookie()
+            val cookie = response.accessCookie()
             cookie.maxAge?.shouldBeInRange((SESSION_TTL_SECONDS.toInt() - 5)..SESSION_TTL_SECONDS.toInt())
             val setCookie = response.headers[HttpHeaders.SetCookie].orEmpty()
             setCookie shouldContain "Secure"
@@ -85,7 +85,7 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
-        test("an owner of a party gets a session cookie for the party") {
+        test("an owner of a party gets a access cookie for the party") {
             val (owner, so) = seed(Triggers.OFF) {
                 val so = insertSystemOperator("Assume Owned SO")
                 insertIdentityOf(so.entityId) to so
@@ -99,13 +99,13 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
-        test("a missing session cookie returns 400 invalid_request") {
+        test("a missing access cookie returns 400 invalid_request") {
             val app = testApp()
 
             val response = app.assume(cookie = null, partyId = 1, bearer = makeJwt(scope = "manage:auth"))
 
             response.status shouldBe HttpStatusCode.BadRequest
-            response.json().oauthError() shouldBe ("invalid_request" to "missing session cookie")
+            response.json().oauthError() shouldBe ("invalid_request" to "missing access cookie")
             app.stop()
         }
 
@@ -118,7 +118,7 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
-        test("an invalid session cookie returns 400 invalid_request") {
+        test("an invalid access cookie returns 400 invalid_request") {
             val app = testApp()
 
             // the cookie is also the token of the caller when there is no Authorization header, so it is checked first
@@ -129,13 +129,13 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
-        test("a session cookie that is not the token of the Authorization header returns 400 invalid_request") {
+        test("a access cookie that is not the token of the Authorization header returns 400 invalid_request") {
             val app = testApp()
 
             val response = app.assume(cookie = "not.a.jwt", partyId = 1, bearer = makeJwt(scope = "manage:auth:assume"))
 
             response.status shouldBe HttpStatusCode.BadRequest
-            response.json().oauthError() shouldBe ("invalid_request" to "invalid session cookie")
+            response.json().oauthError() shouldBe ("invalid_request" to "invalid access cookie")
             app.stop()
         }
 
@@ -153,7 +153,7 @@ class AssumeTest : FunSpec({
             val app = testApp()
 
             val response = app.client.post("/auth/v1/assume") {
-                header(HttpHeaders.Cookie, "$SESSION_COOKIE=${entityCookie(1, "eid")}")
+                header(HttpHeaders.Cookie, "$ACCESS_COOKIE=${entityCookie(1, "eid")}")
                 contentType(ContentType.Application.Json)
                 setBody("""{"party_id":1}""")
             }
@@ -181,7 +181,7 @@ class AssumeTest : FunSpec({
 
             val chunked = app.assumeChunked(cookie, bigForm)
             val sized = app.client.post("/auth/v1/assume") {
-                header(HttpHeaders.Cookie, "$SESSION_COOKIE=$cookie")
+                header(HttpHeaders.Cookie, "$ACCESS_COOKIE=$cookie")
                 contentType(ContentType.Application.FormUrlEncoded)
                 setBody(bigForm)
             }
@@ -257,7 +257,7 @@ class AssumeTest : FunSpec({
         test("a party session goes back to the entity, with the default scopes") {
             val (entity, partyId) = seedMember()
             val app = testApp()
-            val partyCookie = app.assume(entityCookie(entity.entityId, entity.principal.eid), partyId).sessionCookie().value
+            val partyCookie = app.assume(entityCookie(entity.entityId, entity.principal.eid), partyId).accessCookie().value
 
             val response = app.unassume(partyCookie)
 
@@ -266,7 +266,7 @@ class AssumeTest : FunSpec({
             body.keys shouldBe setOf("entity_id", "entity_name", "exp", "role")
             body["entity_id"]?.jsonPrimitive?.int shouldBe entity.entityId.toInt()
             body["role"]?.jsonPrimitive?.content shouldBe "flex_entity"
-            val token = AccessToken.parse(response.sessionCookie().value, TEST_JWT_SECRET).shouldBeRight()
+            val token = AccessToken.parse(response.accessCookie().value, TEST_JWT_SECRET).shouldBeRight()
             token.partyId shouldBe 0
             token.role shouldBe "flex_entity"
             token.externalId shouldBe entity.principal.eid
@@ -275,13 +275,13 @@ class AssumeTest : FunSpec({
             app.stop()
         }
 
-        test("a missing session cookie returns 400 invalid_request") {
+        test("a missing access cookie returns 400 invalid_request") {
             val app = testApp()
 
             val response = app.unassume(cookie = null, bearer = makeJwt(scope = "manage:auth"))
 
             response.status shouldBe HttpStatusCode.BadRequest
-            response.json().oauthError() shouldBe ("invalid_request" to "missing session cookie")
+            response.json().oauthError() shouldBe ("invalid_request" to "missing access cookie")
             app.stop()
         }
 
@@ -291,7 +291,7 @@ class AssumeTest : FunSpec({
             val response = app.unassume(entityCookie(1, "eid"))
 
             response.status shouldBe HttpStatusCode.BadRequest
-            response.json().oauthError() shouldBe ("invalid_request" to "session cookie is already a bare entity")
+            response.json().oauthError() shouldBe ("invalid_request" to "access cookie is already a bare entity")
             app.stop()
         }
 
@@ -310,7 +310,7 @@ class AssumeTest : FunSpec({
                 partyId = partyId.toInt(),
                 role = assumed.role,
                 scope = assumed.partyScopes(),
-                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
+                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(SESSION_TTL_SECONDS),
             ).sign(TEST_JWT_SECRET)
             val app = testApp()
 
@@ -336,7 +336,7 @@ class AssumeTest : FunSpec({
                 partyId = partyId.toInt(),
                 role = assumed.role,
                 scope = assumed.partyScopes(),
-                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
+                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(SESSION_TTL_SECONDS),
             ).sign(TEST_JWT_SECRET)
             seed(Triggers.OFF) { deleteEntityClient(client.id) }
             val app = testApp()
@@ -419,24 +419,24 @@ private suspend fun TestApplication.assume(
         "/auth/v1/assume",
         Parameters.build { partyId?.let { append("party_id", it.toString()) } },
     ) {
-        cookie?.let { header(HttpHeaders.Cookie, "$SESSION_COOKIE=$it") }
+        cookie?.let { header(HttpHeaders.Cookie, "$ACCESS_COOKIE=$it") }
         bearer?.let { header(HttpHeaders.Authorization, "Bearer $it") }
     }
 
 /** Posts the form as a chunked request: there is no `Content-Length` header. */
 private suspend fun TestApplication.assumeChunked(cookie: String, form: String): HttpResponse =
     client.post("/auth/v1/assume") {
-        header(HttpHeaders.Cookie, "$SESSION_COOKIE=$cookie")
+        header(HttpHeaders.Cookie, "$ACCESS_COOKIE=$cookie")
         setBody(ChannelWriterContent({ writeStringUtf8(form) }, ContentType.Application.FormUrlEncoded))
     }
 
 private suspend fun TestApplication.unassume(cookie: String?, bearer: String? = null): HttpResponse =
     client.delete("/auth/v1/assume") {
-        cookie?.let { header(HttpHeaders.Cookie, "$SESSION_COOKIE=$it") }
+        cookie?.let { header(HttpHeaders.Cookie, "$ACCESS_COOKIE=$it") }
         bearer?.let { header(HttpHeaders.Authorization, "Bearer $it") }
     }
 
-private fun HttpResponse.sessionCookie() = setCookie().first { it.name == SESSION_COOKIE }
+private fun HttpResponse.accessCookie() = setCookie().first { it.name == ACCESS_COOKIE }
 
 private suspend fun HttpResponse.json(): JsonObject = Json.parseToJsonElement(bodyAsText()).jsonObject
 

@@ -40,10 +40,10 @@ class FlexAuthenticationTest : FunSpec({
             app.stop()
         }
 
-        test("accepts the session cookie when there is no Authorization header") {
+        test("accepts the access cookie when there is no Authorization header") {
             val app = testApp()
 
-            val response = app.client.get("/whoami") { header(HttpHeaders.Cookie, "__Host-flex_session=${jwt()}") }
+            val response = app.client.get("/whoami") { header(HttpHeaders.Cookie, "__Host-flex_access=${jwt()}") }
 
             response.status shouldBe HttpStatusCode.OK
             app.stop()
@@ -54,7 +54,7 @@ class FlexAuthenticationTest : FunSpec({
 
             val withCookie = app.client.get("/whoami") {
                 header(HttpHeaders.Authorization, "")
-                header(HttpHeaders.Cookie, "__Host-flex_session=${jwt()}")
+                header(HttpHeaders.Cookie, "__Host-flex_access=${jwt()}")
             }
             val withoutCookie = app.client.get("/whoami") { header(HttpHeaders.Authorization, "") }
 
@@ -68,7 +68,7 @@ class FlexAuthenticationTest : FunSpec({
 
             val response = app.client.get("/whoami") {
                 header(HttpHeaders.Authorization, "Bearer not.a.jwt")
-                header(HttpHeaders.Cookie, "__Host-flex_session=${jwt()}")
+                header(HttpHeaders.Cookie, "__Host-flex_access=${jwt()}")
             }
 
             response.status shouldBe HttpStatusCode.Unauthorized
@@ -136,10 +136,10 @@ class FlexAuthenticationTest : FunSpec({
             app.stop()
         }
 
-        test("the same invalid token in the session cookie") {
+        test("the same invalid token in the access cookie") {
             val app = testApp()
 
-            val response = app.client.get("/whoami") { header(HttpHeaders.Cookie, "__Host-flex_session=not.a.jwt") }
+            val response = app.client.get("/whoami") { header(HttpHeaders.Cookie, "__Host-flex_access=not.a.jwt") }
 
             response.status shouldBe HttpStatusCode.Unauthorized
             response.headers[HttpHeaders.WWWAuthenticate] shouldBe INVALID_TOKEN_CHALLENGE

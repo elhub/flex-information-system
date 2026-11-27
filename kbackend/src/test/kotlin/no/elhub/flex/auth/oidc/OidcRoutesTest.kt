@@ -122,8 +122,8 @@ private suspend fun HttpResponse.errorBody() = Json.parseToJsonElement(bodyAsTex
 
 private fun HttpResponse.setCookies(): List<String> = headers.getAll(HttpHeaders.SetCookie).orEmpty()
 
-private fun HttpResponse.sessionCookie(): String? =
-    setCookie().firstOrNull { it.name == "__Host-flex_session" && it.value != "not.a.session" }?.value
+private fun HttpResponse.accessCookie(): String? =
+    setCookie().firstOrNull { it.name == "__Host-flex_access" && it.value != "not.a.session" }?.value
 
 /**
  * Logs in with an ID token that has the [claims] and the [subject], and returns what is stored about the person who
@@ -140,7 +140,7 @@ private suspend fun HttpClient.loginAndFindPerson(
     val response = callback(state = login.state, loginCookie = login.cookie)
 
     response.status shouldBe HttpStatusCode.Found
-    val token = AccessToken.parse(response.sessionCookie()!!, TEST_JWT_SECRET).shouldBeRight()
+    val token = AccessToken.parse(response.accessCookie()!!, TEST_JWT_SECRET).shouldBeRight()
     return PostgresTestContainer.withConnection { conn ->
         conn.prepareStatement("SELECT business_id, business_id_type, name FROM flex.entity WHERE id = ?").use { stmt ->
             stmt.setLong(1, token.entityId.toLong())
@@ -271,7 +271,7 @@ class OidcRoutesTest : FunSpec({
     }
 
     context("callback") {
-        test("logs the person in: sets the session cookie of the entity, unsets the login cookie, and redirects to the frontend") {
+        test("logs the person in: sets the access cookie of the entity, unsets the login cookie, and redirects to the frontend") {
             withFlow(repository = databaseRepository()) { provider, http ->
                 val pid = uniquePid()
                 val login = startLogin(provider, http)
@@ -284,14 +284,14 @@ class OidcRoutesTest : FunSpec({
                 response.status shouldBe HttpStatusCode.Found
                 response.headers[HttpHeaders.Location] shouldBe "/#/login/assumeParty"
 
-                // the session cookie
-                val sessionCookie = response.setCookies().single { it.startsWith("__Host-flex_session=") }
-                sessionCookie shouldContain "Path=/"
-                sessionCookie shouldContain "Max-Age=3600"
-                sessionCookie shouldContain "Secure"
-                sessionCookie shouldContain "HttpOnly"
-                sessionCookie shouldContain "SameSite=Strict"
-                val token = AccessToken.parse(response.sessionCookie()!!, TEST_JWT_SECRET).shouldBeRight()
+                // the access cookie
+                val accessCookie = response.setCookies().single { it.startsWith("__Host-flex_access=") }
+                accessCookie shouldContain "Path=/"
+                accessCookie shouldContain "Max-Age=120"
+                accessCookie shouldContain "Secure"
+                accessCookie shouldContain "HttpOnly"
+                accessCookie shouldContain "SameSite=Strict"
+                val token = AccessToken.parse(response.accessCookie()!!, TEST_JWT_SECRET).shouldBeRight()
                 token.role shouldBe "flex_entity"
                 token.partyId shouldBe 0
                 token.scope shouldBe DefaultEntityScopes
@@ -331,7 +331,7 @@ class OidcRoutesTest : FunSpec({
                     provider.stubTokenWithIdToken(provider.idToken(nonce = login.nonce, claims = claims))
                     val response = http.callback(state = login.state, loginCookie = login.cookie)
                     response.status shouldBe HttpStatusCode.Found
-                    AccessToken.parse(response.sessionCookie()!!, TEST_JWT_SECRET).shouldBeRight()
+                    AccessToken.parse(response.accessCookie()!!, TEST_JWT_SECRET).shouldBeRight()
                 }
 
                 sessions[0].entityId shouldBe sessions[1].entityId
@@ -346,7 +346,7 @@ class OidcRoutesTest : FunSpec({
                     val login = startLogin(provider, http)
                     provider.stubTokenWithIdToken(provider.idToken(nonce = login.nonce, claims = mapOf("preferred_username" to username)))
                     val response = http.callback(state = login.state, loginCookie = login.cookie)
-                    AccessToken.parse(response.sessionCookie()!!, TEST_JWT_SECRET).shouldBeRight()
+                    AccessToken.parse(response.accessCookie()!!, TEST_JWT_SECRET).shouldBeRight()
                 }
 
                 sessions[0].entityId shouldBe sessions[1].entityId
@@ -377,7 +377,7 @@ class OidcRoutesTest : FunSpec({
                 val body = response.errorBody()
                 body["error"]?.jsonPrimitive?.content shouldBe "invalid_client"
                 body["error_description"]?.jsonPrimitive?.content shouldBe "you are not a registered user"
-                response.sessionCookie() shouldBe null
+                response.accessCookie() shouldBe null
             }
         }
 
@@ -392,7 +392,7 @@ class OidcRoutesTest : FunSpec({
 
                         response.status shouldBe status
                         response.errorBody()["details"]?.jsonPrimitive?.content shouldBe detail
-                        response.setCookies().none { it.startsWith("__Host-flex_session=") } shouldBe true
+                        response.setCookies().none { it.startsWith("__Host-flex_access=") } shouldBe true
                     }
                 }
 
@@ -540,7 +540,7 @@ class OidcRoutesTest : FunSpec({
     }
 
     context("logout") {
-        test("unsets the session cookie and redirects to the logout page of the identity provider (Authelia)") {
+        test("unsets the access cookie and redirects to the logout page of the identity provider (Authelia)") {
             withFlow { provider, http ->
                 val response = http.get("/auth/v1/logout")
 
@@ -548,8 +548,8 @@ class OidcRoutesTest : FunSpec({
                 val location = response.headers[HttpHeaders.Location]!!
                 location shouldStartWith "${provider.issuer}/logout?"
                 Url(location).parameters["rd"] shouldBe TEST_POST_LOGOUT_URL
-                val cookie = response.setCookies().single { it.startsWith("__Host-flex_session=") }
-                cookie shouldContain "__Host-flex_session=not.a.session"
+                val cookie = response.setCookies().single { it.startsWith("__Host-flex_access=") }
+                cookie shouldContain "__Host-flex_access=not.a.session"
                 cookie shouldContain "Max-Age=0"
                 cookie shouldContain "Path=/"
                 cookie shouldContain "Secure"
@@ -567,12 +567,12 @@ class OidcRoutesTest : FunSpec({
             }
         }
 
-        test("works with a session cookie") {
+        test("works with a access cookie") {
             withFlow { _, http ->
-                val response = http.get("/auth/v1/logout") { header(HttpHeaders.Cookie, "__Host-flex_session=${makeJwt(scope = "manage:auth")}") }
+                val response = http.get("/auth/v1/logout") { header(HttpHeaders.Cookie, "__Host-flex_access=${makeJwt(scope = "manage:auth")}") }
 
                 response.status shouldBe HttpStatusCode.Found
-                response.setCookies().single { it.startsWith("__Host-flex_session=") } shouldContain "Max-Age=0"
+                response.setCookies().single { it.startsWith("__Host-flex_access=") } shouldContain "Max-Age=0"
             }
         }
 

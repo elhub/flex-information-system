@@ -12,7 +12,7 @@ import no.elhub.flex.auth.plugin.requireCallerScope
 import no.elhub.flex.auth.scope.DefaultEntityScopes
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
-import no.elhub.flex.auth.session.setSessionCookie
+import no.elhub.flex.auth.session.setAccessCookie
 import no.elhub.flex.auth.token.AccessToken
 import no.elhub.flex.shared.auth.FlexPrincipal
 import no.elhub.flex.shared.http.AuthError
@@ -24,11 +24,9 @@ private val logger = KotlinLogging.logger {}
 
 private val REQUIRED_SCOPE = Scope(ScopeVerb.Read, "auth:callback")
 
-private const val MILLIS_PER_SECOND = 1000L
-
 /**
  * Handles the callback from the external identity provider.
- * It exchanges the authorization code for an access token and sets the session cookie.
+ * It exchanges the authorization code for an access token and sets the access cookie.
  */
 @Single
 class CallbackHandler(
@@ -97,10 +95,10 @@ class CallbackHandler(
                 partyId = 0,
                 role = "flex_entity",
                 scope = DefaultEntityScopes,
-                expiryUnixSeconds = System.currentTimeMillis() / MILLIS_PER_SECOND + AccessToken.DURATION_SECONDS,
+                expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(config.portalTokenSeconds),
             )
 
-            call.setSessionCookie(accessToken.sign(config.jwtSecret), AccessToken.DURATION_SECONDS.toInt())
+            call.setAccessCookie(accessToken.sign(config.jwtSecret), config.portalTokenSeconds.toInt())
             call.response.cookies.append(LoginCookie.unset())
 
             loginCookie.returnUrl

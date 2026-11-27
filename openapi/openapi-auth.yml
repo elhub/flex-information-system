@@ -209,7 +209,7 @@ components:
         expires_in:
           type: integer
           description: The time in seconds until the token expires.
-          example: 3600
+          example: 600
       required:
         - access_token
         - issued_token_type

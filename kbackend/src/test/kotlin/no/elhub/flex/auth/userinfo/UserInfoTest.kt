@@ -82,14 +82,14 @@ class UserInfoTest : FunSpec({
             app.stop()
         }
 
-        test("the session cookie works like the Authorization header") {
+        test("the access cookie works like the Authorization header") {
             val entity = seed(Triggers.OFF) { insertEntityIdentity("Userinfo IT Cookie") }
             val app = testApp()
 
             val response = app.client.get("/auth/v1/userinfo") {
                 header(
                     HttpHeaders.Cookie,
-                    "__Host-flex_session=${makeJwt(role = "flex_entity", eid = entity.principal.eid, scope = "manage:auth")}",
+                    "__Host-flex_access=${makeJwt(role = "flex_entity", eid = entity.principal.eid, scope = "manage:auth")}",
                 )
             }
 

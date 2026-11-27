@@ -24,9 +24,9 @@ import no.elhub.flex.auth.model.dto.generated.models.TokenExchangeRequestGrantTy
 import no.elhub.flex.auth.model.dto.generated.models.TokenResponse
 import no.elhub.flex.auth.model.dto.generated.models.TokenResponseIssuedTokenType
 import no.elhub.flex.auth.model.dto.generated.models.TokenResponseTokenType
+import no.elhub.flex.auth.plugin.ACCESS_COOKIE_NAME
 import no.elhub.flex.auth.plugin.AnonymousScopes
 import no.elhub.flex.auth.plugin.BearerChallenge
-import no.elhub.flex.auth.plugin.SESSION_COOKIE_NAME
 import no.elhub.flex.auth.plugin.callerToken
 import no.elhub.flex.auth.plugin.ensureCallerScope
 import no.elhub.flex.auth.scope.Scope
@@ -240,7 +240,7 @@ class TokenHandler(
                     partyId = partyId.toInt(),
                     role = assumedParty.role,
                     scope = entityClient.scopes.intersection(assumedParty.partyScopes()),
-                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
+                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(config.apiTokenSeconds),
                 )
             } else {
                 logger.info {
@@ -253,7 +253,7 @@ class TokenHandler(
                     partyId = 0,
                     role = ENTITY_ROLE,
                     scope = entityClient.scopes,
-                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(),
+                    expiryUnixSeconds = AccessToken.newExpiryUnixSeconds(config.apiTokenSeconds),
                 )
             }
 
