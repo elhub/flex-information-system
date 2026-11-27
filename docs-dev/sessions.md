@@ -22,9 +22,9 @@ In this diagram with refer to these solutions as the _Identity Provider_ (IDp).
 
 We are following the pattern known as
 [Backend For Frontend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
-(BFF). To avoid having to deal with "sticky sessions", we are implementing using
-"client-side sessions" as described. The cookie setting following the cookie
-security recommendations, including the
+(BFF). The session token is opaque and kept in the database, and the access
+token is a short-lived JWT (see [Tokens and sessions](#tokens-and-sessions)).
+The cookie setting follows the cookie security recommendations, including the
 [`__Host-` prefix.](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-19#name-the-__host-prefix).
 
 We are using the OpenID Connect Authorization Code Flow with Proof Key for Code
@@ -35,6 +35,133 @@ Exchange (PKCE) and
 The following diagram shows the sequence of OIDC login and the BFF.
 
 ![OIDC login sequence](diagrams/oidc_login_sequence.png)
+
+### Tokens and sessions
+
+API calls are authenticated with **access tokens** which are short-lived (2 min),
+signed JWTs. A JWT is validated by signature, never stored in the database, and
+carries no personal information, only what is needed to authorise requests. The
+user asks for a new access token when their current token expires.
+
+Using only access tokens degrades user experience for users logging in through
+the portal, as they regularly have to go through a whole new login flow to renew
+their access tokens. Our previous, temporary solution was to have long-lived
+access tokens (1h), but this is a security weakness as a stolen token gives
+access on a long period of time, and it does not really solve the problem as
+users still have to log out and in again every hour.
+
+We are now using **session tokens** in addition to access tokens. Session tokens
+are long-lived (12h), opaque tokens that represent the _entity_ connected to the
+system. It does not give access to the API, but it can be used to regularly get
+new access tokens based on what the entity can do in the system.
+
+#### Refresh mechanism
+
+We expose a dedicated refresh endpoint in the BFF that can be called whenever
+the portal gets an authentication failure because the access token has expired.
+If the session is still alive and represents a valid entity matching the expired
+access token, the endpoint issues a new access token so that the user can
+continue using the API. Optionally, the portal can also call the refresh
+endpoint a little before expiry of the access token, to avoid most failed
+requests for this reason.
+
+The logic of the refresh endpoint is the one of the
+[standard OAuth 2.0 `refresh_token` grant](https://www.rfc-editor.org/info/rfc6749/#section-6),
+but we choose not to ask or return tokens in the body of requests and responses
+on the refresh endpoint, and only transport them in cookies, for security
+reasons. Tokens are also not accessible to JavaScript in the portal (`HttpOnly`).
+The cookie storing the access token must live as long as the session, so that
+it keeps being sent to the refresh endpoint to give information about the token
+that must be refreshed. This information can be trusted even though the token
+has expired, since it is signed.
+
+#### Session lifecycle
+
+Access tokens contain information that can be used directly, whereas opaque
+tokens contain no claims, so the server must look up what a session token means.
+This is done in two database tables, `session` and `token`. Both are `UNLOGGED`
+and kept out of the audit mechanisms. Indeed, they only contain hashes, so there
+is nothing worth restoring in case of crash for instance. Users will just log in
+again when the system is restored.
+
+A session is created at login. It represents _who_ is logged in and therefore
+what they may do, independently of which tokens are currently valid. Here is
+the content of the `session` table:
+
+| Column       | Description                                  |
+|--------------|----------------------------------------------|
+| `id`         | Random UUID (primary key).                   |
+| `entity_id`  | The entity that logged in.                   |
+| `expires_at` | Absolute end of the session. Never extended. |
+
+A session initially owns one session tokens. Only the SHA-256 hash of a session
+token is stored, in the `token` table:
+
+| Column       | Description                                                     |
+|--------------|-----------------------------------------------------------------|
+| `token_hash` | SHA-256 hash of the session token (32 bytes).                   |
+| `session_id` | The session the token belongs to. Cascading delete.             |
+| `expires_at` | Copied from the session. Used for partitioning.                 |
+| `used_at`    | Set when the token has been exchanged for a new one at refresh. |
+
+Session tokens are _rotated_: every refresh inserts a new token in the same
+session and marks the previous one as used. We remember used tokens so as to
+detect reuse: if an already used token is presented again, the whole session is
+revoked and the user must log in again. Logging out also revokes the session.
+Revocation of a session amounts to deleting its row in `session`. All related
+tokens are then automatically removed based on the `session_id`.
+
+With rotation every 2 minutes, a long-lived session creates hundreds of tokens,
+so deleting all tokens from the previous day is costly on the index. Instead, we
+partition the `token` table with one partition per day, based on `expires_at`.
+Since a token copies it from its session, all the tokens of a session end in the
+same partition. Cleaning old and expired sessions can then be done by just
+dropping old partitions. For optimisation reasons, every query on the `token`
+table has a time filter on `expires_at`, so that the database can select the
+right partitions from the beginning.
+
+We set up a periodic job running inside the database with
+[`pg_cron`](https://github.com/citusdata/pg_cron), like we already do for
+some functionality (see for instance the notice sync in [Notices](./notice.md)).
+The job creates token partitions in advance and drops the old ones. It then
+deletes the sessions that expired long enough ago for all their tokens to be
+gone.
+
+#### Concurrent refreshes
+
+Parallel requests failing at the same moment (the portal sends many at once)
+try to refresh with the same token. Only one can win, but then it means that the
+others present a used token, without it being a theft. Cookies are shared
+between tabs, so a refresh from one tab updates all of them. To avoid logging
+users out by accident:
+
+* The portal only runs one refresh at a time per tab (a shared promise), and
+  retries the failed requests when it resolves.
+* A used token presented within a few seconds after `used_at` gets a retryable
+  error (`409`) with no other effect. The client can retry with the cookies the
+  winner set.
+
+#### API access tokens
+
+Tokens from the `/token` endpoint (`JWT Bearer`, token exchange) are not linked
+to a session row and cannot be refreshed. Their lifetime is therefore longer
+(10 minutes). We may consider adding a revocation list later, so that access
+tokens can also be revoked even though we do not store them in the database.
+
+#### Summary of operations
+
+| Operation              | Effect                                                                                                       |
+|------------------------|--------------------------------------------------------------------------------------------------------------|
+| Login (`/callback`)    | Insert a session and its first token. Issue an access token. Set both cookies.                               |
+| Refresh                | Mark the session token used, insert a new one in the session. Issue a new access token with the same claims. |
+| API call               | Verify the JWT signature and expiration time. No session lookup required.                                    |
+| Assume / unassume      | Issue a new access token with the remaining lifetime of the one to exchange. The session is unchanged.       |
+| Logout, reuse          | Delete the session, and with it all its tokens. Clear cookies.                                               |
+| `/token` (API clients) | Issue a 10 minute JWT. No session.                                                                           |
+
+The following diagram shows a refresh, including the failure paths.
+
+![Token refresh sequence](diagrams/token_refresh_sequence.png)
 
 ## Logout
 

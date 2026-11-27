@@ -85,7 +85,7 @@ class ControllableUnitLookupTest :
                 app.stop()
             }
 
-            test("valid session cookie is accepted when no Authorization header") {
+            test("valid access cookie is accepted when no Authorization header") {
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
@@ -111,14 +111,14 @@ class ControllableUnitLookupTest :
                 val app = testApp(mockRepo, mockAccountingPointService, mockSharedAccountingPointService, mockEventRepo, metrics, mockPartyService)
                 val response = app.client.post("/api/v1/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
-                    header("Cookie", "__Host-flex_session=${makeJwt()}")
+                    header("Cookie", "__Host-flex_access=${makeJwt()}")
                     setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                 }
                 response.status shouldBe HttpStatusCode.OK
                 app.stop()
             }
 
-            test("Authorization header takes precedence over invalid session cookie") {
+            test("Authorization header takes precedence over invalid access cookie") {
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
@@ -145,7 +145,7 @@ class ControllableUnitLookupTest :
                 val response = app.client.post("/api/v1/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
-                    header("Cookie", "__Host-flex_session=not-a-valid-token")
+                    header("Cookie", "__Host-flex_access=not-a-valid-token")
                     setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                 }
                 response.status shouldBe HttpStatusCode.OK

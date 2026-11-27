@@ -24,8 +24,8 @@ import no.elhub.flex.auth.token.MissingTokenError
 
 private val logger = KotlinLogging.logger {}
 
-/** Name of the session cookie carrying the JWT */
-const val SESSION_COOKIE_NAME = "__Host-flex_session"
+/** Name of the access cookie carrying the JWT */
+const val ACCESS_COOKIE_NAME = "__Host-flex_access"
 
 private const val BEARER_PREFIX = "Bearer "
 
@@ -46,7 +46,7 @@ class FlexAuthenticationConfig(name: String?) : AuthenticationProvider.Config(na
  *
  * Token resolution order:
  * 1. `Authorization: Bearer <token>` header — takes precedence. An empty header counts as absent.
- * 2. `__Host-flex_session` cookie — fallback for browser/OIDC sessions.
+ * 2. `__Host-flex_access` cookie — fallback for browser/OIDC sessions.
  *
  * Failures are answered with
  * - HTTP 401 and `WWW-Authenticate: Bearer` when there is no token at all,
@@ -60,7 +60,7 @@ class FlexAuthenticationProvider(config: FlexAuthenticationConfig) : Authenticat
     override suspend fun onAuthenticate(context: AuthenticationContext) {
         val call = context.call
         val authHeader = call.request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
-        val sessionCookie = call.request.cookies[SESSION_COOKIE_NAME]
+        val accessCookie = call.request.cookies[ACCESS_COOKIE_NAME]
 
         val jwt = when {
             authHeader != null -> {
@@ -81,10 +81,10 @@ class FlexAuthenticationProvider(config: FlexAuthenticationConfig) : Authenticat
                 authHeader.removePrefix(BEARER_PREFIX)
             }
 
-            sessionCookie != null -> sessionCookie
+            accessCookie != null -> accessCookie
 
             else -> {
-                logger.debug { "No Authorization header or session cookie present" }
+                logger.debug { "No Authorization header or access cookie present" }
                 context.reject(NoTokenChallengeKey, AuthenticationFailedCause.NoCredentials) {
                     response.headers.append(HttpHeaders.WWWAuthenticate, "Bearer")
                     respond(
@@ -166,7 +166,7 @@ fun Application.optionalAuthenticatedRouting(build: Route.() -> Unit) {
 
 /**
  * The raw JWT of the request, resolved like [FlexAuthenticationProvider] does: the `Authorization: Bearer`
- * header takes precedence over the session cookie. `null` if the request has neither.
+ * header takes precedence over the access cookie. `null` if the request has neither.
  *
  * Meant for forwarding a token that the provider has verified, e.g. to PostgREST.
  */
@@ -174,7 +174,7 @@ fun ApplicationCall.presentedJwt(): String? {
     val authHeader = request.headers[HttpHeaders.Authorization]?.takeIf { it.isNotEmpty() }
     return when {
         authHeader != null -> authHeader.takeIf { it.startsWith(BEARER_PREFIX) }?.removePrefix(BEARER_PREFIX)
-        else -> request.cookies[SESSION_COOKIE_NAME]
+        else -> request.cookies[ACCESS_COOKIE_NAME]
     }
 }
 

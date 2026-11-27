@@ -10,8 +10,8 @@ import no.elhub.flex.auth.config.AuthConfig
 import no.elhub.flex.auth.db.AuthRepository
 import no.elhub.flex.auth.model.dto.generated.models.FlexRole
 import no.elhub.flex.auth.model.dto.generated.models.SessionResponse
+import no.elhub.flex.auth.plugin.ACCESS_COOKIE_NAME
 import no.elhub.flex.auth.plugin.BearerChallenge
-import no.elhub.flex.auth.plugin.SESSION_COOKIE_NAME
 import no.elhub.flex.auth.scope.Scope
 import no.elhub.flex.auth.scope.ScopeVerb
 import no.elhub.flex.auth.scope.covers
@@ -26,7 +26,7 @@ private val logger = KotlinLogging.logger {}
 
 private val REQUIRED_SCOPE = Scope(ScopeVerb.Read, "auth:session")
 
-/** Returns the session information of the session cookie if available. */
+/** Returns the session information of the access cookie if available. */
 @Single
 class SessionHandler(
     private val config: AuthConfig,
@@ -35,13 +35,13 @@ class SessionHandler(
 
     suspend fun handle(call: ApplicationCall) =
         either {
-            val sessionCookie = call.cookie(SESSION_COOKIE_NAME).bind()
+            val accessCookie = call.cookie(ACCESS_COOKIE_NAME).bind()
 
-            // TODO: actually implement an opaque session cookie that is backed by e.g. an unlogged database table
-            val token = AccessToken.parse(sessionCookie, config.jwtSecret)
+            // TODO: actually implement an opaque cookie that is backed by e.g. an unlogged database table
+            val token = AccessToken.parse(accessCookie, config.jwtSecret)
                 .mapLeft { e ->
-                    call.unsetSessionCookie()
-                    AuthError(detail = "invalid session cookie", hint = e.message)
+                    call.unsetAccessCookie()
+                    AuthError(detail = "invalid access cookie", hint = e.message)
                 }
                 .bind()
 

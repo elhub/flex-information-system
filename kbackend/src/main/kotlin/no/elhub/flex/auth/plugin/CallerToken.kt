@@ -17,7 +17,7 @@ private const val BEARER_PREFIX = "Bearer "
 
 /**
  * The token of the caller of an endpoint that does not use the authentication plugin: the one of
- * the `Authorization: Bearer` header, which takes precedence, or of the session cookie.
+ * the `Authorization: Bearer` header, which takes precedence, or of the access cookie.
  * `null` for an anonymous caller.
  *
  * The plugin answers 401 to an invalid token, where the OAuth endpoints answer 400, so these
@@ -34,7 +34,7 @@ fun Raise<AppError>.callerToken(call: ApplicationCall, secret: String): AccessTo
             }
             authHeader.removePrefix(BEARER_PREFIX)
         } else {
-            call.request.cookies[SESSION_COOKIE_NAME]
+            call.request.cookies[ACCESS_COOKIE_NAME]
         } ?: return null
 
     return AccessToken.parse(jwt, secret).getOrElse {

@@ -21,6 +21,8 @@ flex:
 
 auth:
   jwtSecret: ${FLEX_JWT_SECRET}
+  portalTokenSeconds: ${FLEX_PORTAL_TOKEN_SECONDS:120}
+  apiTokenSeconds: ${FLEX_API_TOKEN_SECONDS:600}
 
 oidc:
   issuer: ${FLEX_OIDC_ISSUER}

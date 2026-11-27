@@ -115,7 +115,7 @@ A successful response should look like the following:
 ```json
 {
   "access_token": "eyJhb...fG-3SD21", // truncated for readability
-  "expires_in": 3600,
+  "expires_in": 600,
   "issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
   "token_type": "Bearer"
 }

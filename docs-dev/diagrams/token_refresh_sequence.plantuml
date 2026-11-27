@@ -1,0 +1,76 @@
+@startuml token_refresh_sequence
+
+!theme plain
+
+title Token Refresh Flow
+
+autonumber
+
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "User Agent\n(Browser)" as UA
+participant "Frontend Portal" as PORTAL
+participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
+database "Database\nauth.session\nauth.token" as DB
+
+note over PORTAL
+    The access token (JWT) has expired
+    or is about to expire.
+    Only one refresh runs at a time.
+end note
+
+PORTAL -> AUTH: POST /auth/v1/refresh\n<:cookie:> __Host-flex_session (session token)\n<:cookie:> __Host-flex_access (possibly expired JWT)
+
+note over AUTH
+    Verify the access token:
+    signature, issuer, audience and type.
+    The expiry is ignored.
+end note
+
+alt access token is invalid
+    AUTH --> PORTAL: HTTP 401\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_access
+    PORTAL -> UA: Go to /#/login
+end
+
+AUTH -> DB: Look up hash of session token\nand its session
+DB --> AUTH
+
+alt session token is unknown or expired,\nor entity does not match the access token
+    AUTH --> PORTAL: HTTP 401\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_access
+    PORTAL -> UA: Go to /#/login
+else session token was used a few seconds ago
+    note over AUTH
+        Probably a concurrent refresh.
+        Nothing is changed.
+    end note
+    AUTH --> PORTAL: HTTP 409
+    note over PORTAL
+        Retry with the cookies
+        set by the other refresh.
+    end note
+else session token was used earlier
+    note over AUTH
+        Outdated but valid token:
+        it was probably copied.
+    end note
+    AUTH -> DB: Revoke the session
+    AUTH --> PORTAL: HTTP 401\nUnset <:cookie:> __Host-flex_session\nUnset <:cookie:> __Host-flex_access
+    PORTAL -> UA: Go to /#/login
+else session token is valid
+    AUTH -> DB: Mark token as used and insert a\nnew token in the session (same expires_at)
+    DB --> AUTH
+    note over AUTH
+        Issue a new access token with the same party and scope.
+        Its lifetime is the remaining session lifetime.
+    end note
+    AUTH --> PORTAL: HTTP 200\nSet <:cookie:> __Host-flex_session (new)\nSet <:cookie:> __Host-flex_access (new)
+    note over PORTAL
+        The original request
+        can now be retried.
+    end note
+end
+
+|||
+@enduml

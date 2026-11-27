@@ -146,12 +146,12 @@ class DataApiRoutesTest :
                 )
             }
 
-            test("the session cookie is sent on as a bearer token") {
+            test("the access cookie is sent on as a bearer token") {
                 postgrest.stubFor(get(urlPathEqualTo("/product_type")).willReturn(aResponse().withBody("[]")))
 
                 val jwt = token()
                 app.client.get("/api/v1/product_type") {
-                    header("Cookie", "__Host-flex_session=$jwt")
+                    header("Cookie", "__Host-flex_access=$jwt")
                     header("Api-Version", VERSION)
                 }.status shouldBe HttpStatusCode.OK
 

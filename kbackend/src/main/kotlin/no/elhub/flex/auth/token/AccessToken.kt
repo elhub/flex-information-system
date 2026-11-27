@@ -52,17 +52,14 @@ data class AccessToken(
         @Suppress("MagicNumber")
         private const val MILLIS_PER_SECOND = 1000L
 
-        /** How long the access tokens issued by the auth API are valid. */
-        const val DURATION_SECONDS = 3600L
-
         /** The role of a token that has not assumed a party. */
         private const val ENTITY_ROLE = "flex_entity"
 
         /** The current time as a Unix timestamp (seconds). */
         fun nowUnixSeconds(): Long = System.currentTimeMillis() / MILLIS_PER_SECOND
 
-        /** The expiry time of a token issued now, as a Unix timestamp (seconds). */
-        fun newExpiryUnixSeconds(): Long = nowUnixSeconds() + DURATION_SECONDS
+        /** The expiry time of a token issued now and valid for [durationSeconds], as a Unix timestamp (seconds). */
+        fun newExpiryUnixSeconds(durationSeconds: Long): Long = nowUnixSeconds() + durationSeconds
 
         /**
          * Verifies [jwt] with HS256 using [secret], then parses the claims into an [AccessToken].

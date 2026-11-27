@@ -209,7 +209,7 @@ components:
         expires_in:
           type: integer
           description: The time in seconds until the token expires.
-          example: 3600
+          example: 600
       required:
         - access_token
         - issued_token_type
@@ -424,7 +424,8 @@ paths:
       description: >-
         Handles the callback from the external identity provider.
         Exchanges the authorisation code for an access token and sets the
-        session cookie.
+        session cookie. Also sets a cookie with a refresh token which can later
+        be used with the refresh endpoint.
       security:
         - bearerAuth: ["read:auth:callback"]
         - {}
@@ -481,7 +482,8 @@ paths:
       operationId: call_logout
       summary: Call logout
       description: >-
-        Unsets the __Host-flex_session cookie.
+        Revokes the refresh token and all its related tokens from the same
+        login, and unsets the session cookies.
       security:
         - bearerAuth: ["read:auth:logout"]
         - {}
@@ -493,6 +495,48 @@ paths:
             Found
 
             Always returned to redirect the user to the root after logout.
+  /refresh:
+    post:
+      operationId: call_refresh
+      summary: Call refresh
+      description: >-
+        Refreshes the session of a user logged in via the portal.
+        Reads the refresh token from the refresh cookie and, if it is valid,
+        returns a new pair of access and refresh tokens.
+      security:
+        - bearerAuth: ["use:auth:refresh"]
+        - {}
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: |-
+            OK
+
+            Returned when the session was refreshed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_response'
+        '400':
+          description: |-
+            Bad Request
+
+            Returned when the refresh token is missing, unknown, expired,
+            revoked or has already been used. The reason is not disclosed.
+            The response ends the session and the user has to log in again.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oauth_error_message'
+              example:
+                error: invalid_grant
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
   /token:
     post:
       operationId: call_token

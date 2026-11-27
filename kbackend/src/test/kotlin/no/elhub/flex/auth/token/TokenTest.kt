@@ -143,7 +143,7 @@ class TokenTest : FunSpec({
             app.stop()
         }
 
-        test("a valid session cookie is not anonymous either") {
+        test("a valid access cookie is not anonymous either") {
             val app = testApp()
 
             val response = app.client.submitForm(
@@ -153,7 +153,7 @@ class TokenTest : FunSpec({
                     append("assertion", "a.b.c")
                 },
             ) {
-                header(HttpHeaders.Cookie, "__Host-flex_session=${makeJwt(scope = "use:auth:token")}")
+                header(HttpHeaders.Cookie, "__Host-flex_access=${makeJwt(scope = "use:auth:token")}")
             }
 
             response.status shouldBe HttpStatusCode.Unauthorized
@@ -351,7 +351,7 @@ class TokenTest : FunSpec({
             val body = response.json()
             body["token_type"]?.jsonPrimitive?.content shouldBe "Bearer"
             body["issued_token_type"]?.jsonPrimitive?.content shouldBe "urn:ietf:params:oauth:token-type:access_token"
-            body["expires_in"]?.jsonPrimitive?.int?.shouldBeInRange(3595..3600)
+            body["expires_in"]?.jsonPrimitive?.int?.shouldBeInRange(595..600)
             val token = AccessToken.parse(body.getValue("access_token").jsonPrimitive.content, TEST_JWT_SECRET).shouldBeRight()
             token.entityId.toLong() shouldBe client.entityId
             token.partyId shouldBe 0
@@ -625,7 +625,7 @@ private fun testApp(): TestApplication =
 private fun actorJwt(eid: String = "12345678901"): String =
     makeJwt(role = "flex_entity", partyId = 0, scope = "use:auth:token", eid = eid)
 
-/** An entity token like the one the session cookie carries, with the scopes of an entity that just logged in. */
+/** An entity token like the one the access cookie carries, with the scopes of an entity that just logged in. */
 private fun entityToken(entityId: Long, eid: String): String =
     AccessToken(
         entityId = entityId.toInt(),
